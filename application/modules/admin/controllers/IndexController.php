@@ -7,9 +7,9 @@ class Admin_IndexController extends Fancrank_Admin_Controller_BaseController
     {
         //check for user authorization
         $this->_auth = Zend_Auth::getInstance();
+        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
 
         if($this->_auth->hasIdentity()) {
-            $this->_identity = $this->_auth->getIdentity();
             //bring the user into the app if he is already logged in
             $this->_helper->redirector('dasboard');   
         }

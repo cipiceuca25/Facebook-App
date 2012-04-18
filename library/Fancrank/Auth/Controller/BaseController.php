@@ -65,7 +65,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 if ($authenticate) {
                     $source = $this->authenticateSource($source_data);
                 } else {
-                    $source = $this->addSource($source_data, $user_id);
+                    //$source = $this->addSource($source_data, $user_id);
                 }
 
                 $this->view->source = $source;
@@ -113,7 +113,6 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
 
         switch (count($user)) {
             case 0:
-
                 // check for duplicate user handle
                 if ($users->countByUserHandle($source_data->user_handle) > 0) {
                     $source_data->user_handle = $source_data->user_handle . substr(time(), -5);
@@ -127,8 +126,8 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             case 1:
                 //update some user data
                 $user = $users->findByUserId($source_data->user_id)->current();
-                $user->user_access_token = $source_data->oauth_user_key;
-                $user->user_avatar = $source_data->source_avatar;
+                $user->user_access_token = $source_data->user_access_token;
+                $user->user_avatar = $source_data->user_avatar;
                 $user->save();
                 break;
 
@@ -137,15 +136,12 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         }
 
         if ($user) {
-            die("here");
-            $user = $user->toArray();
-            $token = $tokens->getToken('00000000-0000-0000-0000-000000000000', $user['user_id'])->toArray();
-
-            // web token
-            // TODO: What about mobile?
-            $this->view->user = $this->cleanUser($user + $token);
+            //create user session
+            $this->_auth = Zend_Auth::getInstance();
+            $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
+            $this->_auth->getStorage()->write($user);
         }
 
-        return $source;
+        return $user;
     }
 }
