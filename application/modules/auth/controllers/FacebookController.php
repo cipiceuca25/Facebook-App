@@ -41,7 +41,7 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
 
         return (object) array(
             'user_id'               => $data->id,
-            'user_handle'           => $data->username,
+            'user_handle'           => isset($data->username) ? $data->username : $data->first_name . ' ' . $data->last_name,
             'user_first_name'       => $data->first_name,
             'user_last_name'        => $data->last_name,
             'user_access_token'     => $access_token,
