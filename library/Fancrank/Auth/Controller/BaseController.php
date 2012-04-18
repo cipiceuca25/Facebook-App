@@ -140,6 +140,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             $this->_auth = Zend_Auth::getInstance();
             $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
             $this->_auth->getStorage()->write($user);
+            //$this->_auth->setExpirationSeconds(5259487);
         }
 
         return $user;
