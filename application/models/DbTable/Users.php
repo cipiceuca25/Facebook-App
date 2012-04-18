@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_Users extends Application_Db_Table
+class Model_DbTable_Users extends Zend_Db_Table
 {
 
     protected $_name = 'users';
@@ -16,7 +16,7 @@ class Model_DbTable_Users extends Application_Db_Table
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '32',
+            'LENGTH' => '100',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -24,15 +24,15 @@ class Model_DbTable_Users extends Application_Db_Table
             'PRIMARY_POSITION' => 1,
             'IDENTITY' => false
             ),
-        'user_password' => array(
+        'user_handle' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'users',
-            'COLUMN_NAME' => 'user_password',
+            'COLUMN_NAME' => 'user_handle',
             'COLUMN_POSITION' => 2,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '32',
+            'LENGTH' => '45',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -40,15 +40,15 @@ class Model_DbTable_Users extends Application_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'user_name' => array(
+        'user_first_name' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'users',
-            'COLUMN_NAME' => 'user_name',
+            'COLUMN_NAME' => 'user_first_name',
             'COLUMN_POSITION' => 3,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '30',
+            'LENGTH' => '45',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -56,15 +56,31 @@ class Model_DbTable_Users extends Application_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'user_level' => array(
+        'user_last_name' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'users',
-            'COLUMN_NAME' => 'user_level',
+            'COLUMN_NAME' => 'user_last_name',
             'COLUMN_POSITION' => 4,
-            'DATA_TYPE' => 'enum(\'0\',\'1\',\'2\',\'3\')',
-            'DEFAULT' => '0',
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => null,
+            'LENGTH' => '45',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
+        'user_avatar' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'users',
+            'COLUMN_NAME' => 'user_avatar',
+            'COLUMN_POSITION' => 5,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => false,
+            'LENGTH' => '255',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -76,7 +92,23 @@ class Model_DbTable_Users extends Application_Db_Table
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'users',
             'COLUMN_NAME' => 'user_email',
-            'COLUMN_POSITION' => 5,
+            'COLUMN_POSITION' => 6,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => false,
+            'LENGTH' => '255',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
+        'user_access_token' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'users',
+            'COLUMN_NAME' => 'user_access_token',
+            'COLUMN_POSITION' => 7,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -92,7 +124,7 @@ class Model_DbTable_Users extends Application_Db_Table
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'users',
             'COLUMN_NAME' => 'user_created',
-            'COLUMN_POSITION' => 6,
+            'COLUMN_POSITION' => 8,
             'DATA_TYPE' => 'timestamp',
             'DEFAULT' => 'CURRENT_TIMESTAMP',
             'NULLABLE' => false,
@@ -108,10 +140,12 @@ class Model_DbTable_Users extends Application_Db_Table
 
     protected $_cols = array(
         'user_id',
-        'user_password',
-        'user_name',
-        'user_level',
+        'user_handle',
+        'user_first_name',
+        'user_last_name',
+        'user_avatar',
         'user_email',
+        'user_access_token',
         'user_created'
         );
 

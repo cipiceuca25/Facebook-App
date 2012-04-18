@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_Row_TopFans extends Application_Db_Table_Row
+class Model_DbTable_Row_TopFans extends Zend_Db_Table_Row
 {
 
 
