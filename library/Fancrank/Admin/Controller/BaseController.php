@@ -9,14 +9,12 @@ abstract class Fancrank_Admin_Controller_BaseController extends Fancrank_Control
     {
         //check for user authorization
         $this->_auth = Zend_Auth::getInstance();
+        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
 
-        if($this->_auth->hasIdentity()) {
+        if(!$this->_auth->hasIdentity()) {
             $this->_identity = $this->_auth->getIdentity();
-            $this->_helper->redirector('dasboard');   
-        } else {
-            //bring the user to the login page if he is not logged in
-            $this->_helper->redirector('index');
-        }
+            $this->_helper->redirector('index', 'index');   
+        } 
     }
 
     public function init() 
