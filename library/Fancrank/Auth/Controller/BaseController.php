@@ -33,6 +33,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     	 $this->_helper->viewRenderer->setRender('index/login', null, true);
     	 $this->oauth2(true, false);
     }
+ 
 
     private function oauth2($authenticate = false, $user_id = false)
     {
