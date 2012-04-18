@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_Row_Users extends Application_Db_Table_Row
+class Model_DbTable_Row_Users extends Zend_Db_Table_Row
 {
 
 

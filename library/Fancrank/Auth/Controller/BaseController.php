@@ -100,107 +100,36 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         }
     }
 
-    private function addSource($source_data, $user_id)
-    {
-        if (is_array($source_data)) {
-            foreach ($source_data as $value) {
-                $sources[] = $this->addSource($value, $user_id);
-            }
-
-            return $sources;
-        }
-
-        // initiate the model
-        $sources = new Model_Sources;
-
-        // check for matching records
-        $select = $sources->select();
-        $select->where('source_provider = ?', $source_data->source_provider);
-        $select->where('source_user_id = ?', $source_data->source_user_id);
-        $select->where('user_id = ?', $user_id);
-
-        // Returns NULL if no records match selection criteria.
-        $source = $sources->fetchRow($select);
-
-        if ($source) {
-            // Update the source with returned access tokens.
-            $source->setFromArray((array) $source_data);
-            $source->active = true;
-            $source->save();
-
-            // trigger update
-            $this->postSourceUpdate($source);
-        } else {
-            // associate with the logged in user
-            $source_data->user_id = $user_id;
-
-            // create new source
-            $source = $sources->createRow((array) $source_data);
-            $source->save();
-
-            // trigger initialization
-            $this->postSourceCreation($source);
-        }
-
-        return $source;
-    }
-
     private function authenticateSource($source_data)
     {
-        $users = new Model_FacebookUsers;
+        $users = new Model_Users;
 
         // check for matching records
-        $select = $sources->select();
-        $select->where('facebook_user_id = ?', $source_data->source_user_id);
-        $select->where('source_user_id = ?', $source_data->source_user_id);
+        $select = $users->select();
+        $select->where('user_id = ?', $source_data->user_id);
 
         // Returns NULL if no records match selection criteria.
-        $source = $sources->fetchAll($select);
+        $user = $users->fetchAll($select);
 
-        switch (count($source)) {
+        switch (count($user)) {
             case 0:
-                // create new user
-                $row = $this->getUserInfo($source_data);
-
-                $filter = new Zend_Filter_Alnum();
-                $row['user_handle'] = $return = $filter->filter($row['user_handle']);
 
                 // check for duplicate user handle
-                if ($users->countByUserHandle($row['user_handle']) > 0) {
-                    $row['user_handle'] = $row['user_handle'] . substr(time(), -5);
+                if ($users->countByUserHandle($source_data->user_handle) > 0) {
+                    $source_data->user_handle = $source_data->user_handle . substr(time(), -5);
                 }
 
-                // check for duplicate user handle
-                if (!empty($row['user_email']) and $users->countByUserEmail($row['user_email']) > 0) {
-                    $row['user_email'] = null;
-                }
-
-                $user = $users->createRow($row);
+                $user = $users->createRow((array)$source_data);
                 $user->save();
 
-                // associate with the new user
-                $source_data->user_id = $user->user_id;
-
-                // create new source
-                $source = $sources->createRow((array) $source_data);
-                $source->save();
-
-                // trigger initialization
-                $this->postSourceCreation($source);
                 break;
 
             case 1:
-                $source = $source[0];
-                // Update the source with returned access tokens.
-                $source->setFromArray((array) $source_data);
-                $source->active = true;
-                $source->save();
-
-                // get the user object
-                $user = $users->findByUserId($source->user_id)->current();
-
-                // trigger update
-                $this->postSourceUpdate($source);
+                //update some user data
+                $user = $users->findByUserId($source_data->user_id)->current();
+                $user->user_access_token = $source_data->oauth_user_key;
+                $user->user_avatar = $source_data->source_avatar;
+                $user->save();
                 break;
 
             default:
@@ -208,6 +137,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         }
 
         if ($user) {
+            die("here");
             $user = $user->toArray();
             $token = $tokens->getToken('00000000-0000-0000-0000-000000000000', $user['user_id'])->toArray();
 

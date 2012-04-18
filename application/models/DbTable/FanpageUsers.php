@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_FanpageUsers extends Application_Db_Table
+class Model_DbTable_FanpageUsers extends Zend_Db_Table
 {
 
     protected $_name = 'fanpage_users';
