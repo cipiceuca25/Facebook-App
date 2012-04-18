@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_TopFans extends Application_Db_Table
+class Model_DbTable_TopFans extends Zend_Db_Table
 {
 
     protected $_name = 'top_fans';
@@ -52,15 +52,15 @@ class Model_DbTable_TopFans extends Application_Db_Table
     protected $_rowsetClass = 'Model_DbTable_Rowset_TopFans';
 
     protected $_referenceMap = array(
-        'TOP_FAN_FB_USER' => array(
-            'columns' => 'facebook_user_id',
-            'refTableClass' => 'Model_FacebookUsers',
-            'refColumns' => 'facebook_user_id'
-            ),
         'TOP_FAN_FB_PAGE' => array(
             'columns' => 'fanpage_id',
             'refTableClass' => 'Model_Fanpages',
             'refColumns' => 'fanpage_id'
+            ),
+        'TOP_FAN_FB_USER' => array(
+            'columns' => 'facebook_user_id',
+            'refTableClass' => 'Model_FacebookUsers',
+            'refColumns' => 'facebook_user_id'
             )
         );
 
@@ -96,14 +96,14 @@ class Model_DbTable_TopFans extends Application_Db_Table
         return $this->fetchRow($this->select()->from($this->_name, array('fanpage_id', 'num'=> 'COUNT(*)'))->where('facebook_user_id = ?', $value))->num;
     }
 
-    public function findFacebookUsers($select = null)
-    {
-        return $this->findParentRow(new Model_DbTable_FacebookUsers(), null, $select);
-    }
-
     public function findFanpages($select = null)
     {
         return $this->findParentRow(new Model_DbTable_Fanpages(), null, $select);
+    }
+
+    public function findFacebookUsers($select = null)
+    {
+        return $this->findParentRow(new Model_DbTable_FacebookUsers(), null, $select);
     }
 
 

@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_ActiveGuests extends Application_Db_Table
+class Model_DbTable_ActiveGuests extends Zend_Db_Table
 {
 
     protected $_name = 'active_guests';
