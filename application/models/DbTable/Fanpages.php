@@ -39,12 +39,29 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
             'PRIMARY' => false,
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
+            ),
+        'latest_timestamp' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fanpages',
+            'COLUMN_NAME' => 'latest_timestamp',
+            'COLUMN_POSITION' => 3,
+            'DATA_TYPE' => 'bigint',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => null,
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
             )
         );
 
     protected $_cols = array(
         'fanpage_id',
-        'fanpage_name'
+        'fanpage_name',
+        'latest_timestamp'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Fanpages';
