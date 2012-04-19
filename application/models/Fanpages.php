@@ -2,7 +2,6 @@
 
 class Model_Fanpages extends Model_DbTable_Fanpages
 {
-
 	public function getFeed($fanpage_id)
 	{
 		$fanpage = $this->findRow($fanpage_id);
