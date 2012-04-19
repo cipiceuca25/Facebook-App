@@ -41,6 +41,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             //$this->_auth->setExpirationSeconds(5259487);
         }
     }
+ 
 
     private function oauth2($authenticate = false, $user_id = false)
     {
