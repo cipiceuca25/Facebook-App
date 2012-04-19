@@ -1,5 +1,5 @@
 <?php
-class Collectors_Bootstrap extends App_Module_Bootstrap
+class Collectors_Bootstrap extends Zend_Application_Module_Bootstrap
 {
     public function __initSources()
     {
