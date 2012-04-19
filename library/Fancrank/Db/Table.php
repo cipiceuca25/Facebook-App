@@ -1,7 +1,22 @@
 <?php
 class Fancrank_Db_Table extends Zend_Db_Table_Abstract
 {
-    public function getTableName()
+	protected function facebookRequest($end_point, $access_token, $fields = NULL)
+	{
+		$client = new Zend_Http_Client;
+		$client->setUri('https://graph.facebook.com/' . $end_point);
+		$client->setMethod(Zend_Http_Client::GET);
+		$client->setParameterGet('access_token', $access_token);
+		
+		if ($fields)
+			$client->setParameterGet('fields', implode(',', $fields));
+	
+		$response = $client->request();
+	
+		return Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+	}
+	
+	public function getTableName()
     {
         return $this->_name;
     }
