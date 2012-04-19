@@ -77,6 +77,8 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 }
 
                 $this->view->source = $source;
+
+                return $source;
             }
         } else {
             // redirect the user
