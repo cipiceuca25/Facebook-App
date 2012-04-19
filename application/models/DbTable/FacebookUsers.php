@@ -13,10 +13,10 @@ class Model_DbTable_FacebookUsers extends Fancrank_Db_Table
             'TABLE_NAME' => 'facebook_users',
             'COLUMN_NAME' => 'facebook_user_id',
             'COLUMN_POSITION' => 1,
-            'DATA_TYPE' => 'varchar',
+            'DATA_TYPE' => 'bigint',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '32',
+            'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -121,7 +121,7 @@ class Model_DbTable_FacebookUsers extends Fancrank_Db_Table
 
     protected $_referenceMap = array();
 
-    protected $_dependentTables = array('Model_TopFans');
+    protected $_dependentTables = array();
 
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {
