@@ -54,7 +54,13 @@ class Model_DbTable_Fanpages extends Zend_Db_Table
     protected $_referenceMap = array();
 
     protected $_dependentTables = array(
-        'Model_FanpageUsers',
+        'Model_Albums',
+        'Model_Comments',
+        'Model_Fans',
+        'Model_Likes',
+        'Model_Photos',
+        'Model_Posts',
+        'Model_FanpageAdmins',
         'Model_TopFans'
         );
 
