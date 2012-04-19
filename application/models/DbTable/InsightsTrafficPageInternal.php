@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_InsightsTrafficPageInternal extends Zend_Db_Table
+class Model_DbTable_InsightsTrafficPageInternal extends Fancrank_Db_Table
 {
 
     protected $_name = 'Insights_Traffic_Page_Internal';

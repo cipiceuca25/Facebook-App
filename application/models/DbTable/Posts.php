@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_Posts extends Zend_Db_Table
+class Model_DbTable_Posts extends Fancrank_Db_Table
 {
 
     protected $_name = 'Posts';
