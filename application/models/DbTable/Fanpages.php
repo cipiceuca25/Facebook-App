@@ -60,8 +60,7 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
         'Model_Likes',
         'Model_Photos',
         'Model_Posts',
-        'Model_FanpageAdmins',
-        'Model_TopFans'
+        'Model_FanpageAdmins'
         );
 
     public function findAll($where = null, $order = null, $count = null, $offset = null)
