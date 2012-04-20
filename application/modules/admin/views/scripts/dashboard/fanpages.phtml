@@ -13,9 +13,9 @@
 			<td class="category"><?= $account->category ?></td>
 			<td class="status">
 				<?php if (in_array($account->id, $this->authorized)): ?>
-					<button class="deactivate btn btn-danger" data-id="<?= $account->id ?>">Deactivate</button>
+					<button class="deactivate btn btn-danger" data-id="<?= $account->id ?>">Un-install</button>
 				<?php else: ?>
-					<button class="deactivate btn btn-success" data-id="<?= $account->id ?>">Activate</button>
+					<button class="deactivate btn btn-success" data-id="<?= $account->id ?>">Install</button>
 				<?php endif; ?>
 			</td>
 		</tr>

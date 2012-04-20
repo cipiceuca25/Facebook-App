@@ -30,12 +30,13 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		//cycle through all posts, comments, likes to retrieve list of fans
 	}
 
-	public function getAuthorizedFanpages($user_id)
+	public function getActiveFanpages($user_id)
 	{
 		$select = $this->getAdapter()->select();
 		$select->from(array('fanpages' => 'fanpages'));
 		$select->join(array('admins' => 'fanpage_admins'), 'fanpages.fanpage_id = admins.fanpage_id');
 		$select->where($this->getAdapter()->quoteInto('admins.facebook_user_id = ?', $user_id));
+		$select->where('fanpages.active = TRUE');
 
 		return $this->getAdapter()->fetchAll($select);
 	}

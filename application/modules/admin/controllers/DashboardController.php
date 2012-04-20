@@ -13,7 +13,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         $fanpages_model = new Model_Fanpages;
         $fanpages = $fanpages_model->facebookRequest('me', $this->_identity->user_access_token, array('accounts'));
         
-        $authorized_pages = $fanpages_model->getAuthorizedFanpages($this->_identity->user_id);
+        $authorized_pages = $fanpages_model->getActiveFanpages($this->_identity->user_id);
 
         if (count($authorized_pages)) {
             foreach($authorized_pages as $authorized_page) {
