@@ -1,5 +1,5 @@
 <?php
-class Collectors_FacebookController extends Collectors_Library_Controller
+class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseController
 {
     private $types = array(
         'fans'  => 'fans',
@@ -7,13 +7,13 @@ class Collectors_FacebookController extends Collectors_Library_Controller
         'albums' => 'photo'
     );
 
-    public function initAction()
+    public function init()
     {
         parent::init();
 
         // get the fanpage object
         $this->fanpages = new Model_Fanpages;
-        $fanpage = $fanpages->findRow($this->_getParam(0));
+        $fanpage = $this->fanpages->findRow($this->_getParam(0));
 
         if ($fanpage === null) {
             // TODO not exiting
@@ -48,6 +48,7 @@ class Collectors_FacebookController extends Collectors_Library_Controller
 
     public function fetchAction()
     {
+
         $type       = $this->_getParam(1, false);
         $direction  = $this->_getParam(2, 'since');
         $timestamp  = $this->_getParam(3, 0);
@@ -56,7 +57,7 @@ class Collectors_FacebookController extends Collectors_Library_Controller
         $url = 'https://graph.facebook.com/' . $this->fanpage->fanpage_id . '/' . $type;
 
         switch ($type) {
-            case: 'feeds':
+            case 'feeds':
                 $fields = array();
                 break;
             case 'albums':

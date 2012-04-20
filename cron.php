@@ -38,7 +38,7 @@ $adapter = Zend_Db::factory($config->resources->db);
 Zend_Db_Table::setDefaultAdapter($adapter);
 
 // init queue
-$adapter = new App_Queue_Adapter($config->queue);
+$adapter = new Fancrank_Queue_Adapter($config->queue);
 $queue = new Zend_Queue($adapter, $config->queue);
 
 // Get up to 10 messages from a queue
