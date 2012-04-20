@@ -1,1 +1,19 @@
-fan pages stuff goes here
+<h2>Fanpages</h2>
+<table>
+	<thead>
+		<th>Name</th>
+		<th>Category</th>
+		<th>Status</th>
+	</thead>
+	<tbody>
+	<?php foreach($this->accounts as $account): ?>
+		<?php if($account->category != 'Application'): ?>
+		<tr>
+			<td class="name"><img src="http://graph.facebook.com/<?= $account->id ?>/picture"><?= $account->name ?></td>
+			<td class="category"><?= $account->category ?></td>
+			<td class="status"></td>
+		</tr>
+		<?php endif; ?>
+	<?php endforeach; ?>
+	</tbody>	
+</table>
