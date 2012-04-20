@@ -1,1 +1,618 @@
 2012-04-20T15:26:56+00:00 [CLI] ERR (3): Invalid Fanpage ID: "432432"
+2012-04-20T18:26:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "7r837498327483743"
+2012-04-20T18:26:47+00:00 [CLI] ERR (3): Invalid Fanpage ID: "7r837498327483743"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:28+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:29+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:30+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:31+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:31+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:31+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:31+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:32+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:32+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:32+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:32+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:32+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:32+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:32+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:32+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:33+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:33+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:33+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:33+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" until: "1263718389"
+2012-04-20T18:36:34+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:34+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:34+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:34+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:34+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:34+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:35+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:35+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:35+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:35+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:35+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:35+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:35+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:35+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:36+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:36+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" until: "1263718389"
+2012-04-20T18:36:36+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:37+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" until: "1263718389"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:38+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:38+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:39+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:39+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:40+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:40+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:40+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:40+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" until: "1263718389"
+2012-04-20T18:36:40+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:40+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:41+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:41+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:41+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:41+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:41+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:42+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:41+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:42+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:42+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:42+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:42+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:42+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:42+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:43+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" until: "1263718389"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:42+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:42+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:43+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:43+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:43+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:43+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:43+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:43+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:44+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:44+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:46+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:46+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:45+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:45+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:46+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:46+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:46+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:47+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-20T18:36:47+00:00 [CLI] INFO (6): Fetching feeds from Fanpage: "178384541065" since: "0"
+2012-04-20T18:36:47+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:47+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:47+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:47+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:47+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:47+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:47+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:47+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:47+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:47+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:48+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:48+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:48+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:48+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:48+00:00 [CLI] INFO (6): no new fans found
+2012-04-20T18:36:49+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:50+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:50+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:51+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:51+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:51+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:51+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:52+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:52+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:52+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:52+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:52+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:52+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:53+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:53+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:54+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:54+00:00 [CLI] INFO (6): no new feeds found
+2012-04-20T18:36:55+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:55+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:55+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:55+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:55+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:55+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:55+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:58+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:36:59+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:36:58+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:37:01+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:37:02+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:37:02+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-20T18:37:11+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:37:14+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:42:47+00:00 [CLI] INFO (6): Initializing Fanpage: "178384541065"
+2012-04-20T18:42:47+00:00 [CLI] INFO (6): new job sceduled after 1 hour

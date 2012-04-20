@@ -12,9 +12,11 @@ abstract class Fancrank_Admin_Controller_BaseController extends Fancrank_Control
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
 
         if(!$this->_auth->hasIdentity()) {
-            $this->_identity = $this->_auth->getIdentity();
             $this->_helper->redirector('index', 'index');   
-        } 
+        } else {
+            $this->_identity = $this->_auth->getIdentity();
+            $this->view->user = $this->_identity;
+        }
     }
 
     public function init() 

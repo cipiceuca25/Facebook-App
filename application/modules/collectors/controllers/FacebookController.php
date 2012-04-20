@@ -25,13 +25,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
         Log::Info('Initializing Fanpage: "%s"', $this->fanpage->fanpage_id);
 
-        foreach ($this->types as $callback => $type) {
-            // fetch statuses
-            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, $callback, 'since', 0));
-        }
-
         // schedule the next auto update
-        Collector::Queue('1 hour', 'facebook', 'update', array($this->source->source_id));
+        Collector::Queue('1 hour', 'facebook', 'update', array($this->fanpage->fanpage_id));
     }
 
     public function updateAction()

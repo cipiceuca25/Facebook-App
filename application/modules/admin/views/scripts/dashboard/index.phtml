@@ -1,1 +1,35 @@
-Welcome to the dashboard
+
+
+<div id="logo"></div>
+
+<div id="frame">
+
+    <div id="frame_top"></div>
+    
+    <div id="frame_content">
+
+    	<div id="fanpage">
+        
+        	<div id="welcome"><p>Welcome to Fancrank, <span><?= $this->user->user_handle ?></span></p></div>
+    
+            <div id="nav">
+            
+                <ul>
+                    <li><a href="process.php">Log out</a></li>
+                                            <li><a href="useredit.php">Edit Account</a></li>
+                    <li><a href="userinfo.php?user=adrianmaurer">My Account</a></li>
+                    <li><a href="index.php">Fan Pages</a></li>
+                </ul>
+                
+                <div class="clear"></div>
+            
+            </div>
+       	<p>Have you logged into our app? To see your fan page information log in -<a href="https://www.facebook.com/dialog/oauth?client_id=176125149111816&amp;redirect_uri=https%3A%2F%2Ffancrankapp.com%2Fapps%2Findex.php&amp;state=fcb1f64b07750fc9fbf0d2fde6e355f1&amp;canvas=1&amp;fbconnect=0&amp;scope=offline_access%2C%0A++++++++++++++++%09%09publish_stream%2C%0A++++++++++++++++%09%09user_activities%2C%0A++++++++++++++++%09%09user_likes%2C%0A++++++++++++++++%09%09user_birthday%2C%0A++++++++++++++++%09%09user_about_me%2C%0A++++++++++++++++%09%09user_hometown%2C%0A++++++++++++++++%09%09manage_pages%2C%0A++++++++++++++++%09%09read_insights">Facebook Login</a>-
+       	</p>
+       
+ 	</div>
+    <div id="frame_bottom"></div>
+
+	</div>
+
+</div>
