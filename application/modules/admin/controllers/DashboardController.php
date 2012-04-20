@@ -7,6 +7,16 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     {
         
     }
+
+    public function fanpagesAction() 
+    {
+
+    }
+
+    public function myaccountAction()
+    {
+        
+    }
     
     public function actionSources()
     {
