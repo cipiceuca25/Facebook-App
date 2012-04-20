@@ -14,69 +14,17 @@
 
 		&.brand {
 			position: fixed;
+
+			img {
+				height: 40px;
+			}
 		}
 	}
 }
 
 [role="main"] {
-	margin-top: 40px;
+	margin-top: 60px;
 }
 
-div#logo {
-	position:absolute;
-	top:50px;
-	left:-40px;
-	width:278px;
-	height:105px;
-	background:url(/img/logo.png) top left no-repeat;	
-	z-index:10;
-}
-
-div#frame_top {
-	background:url(/img/bg_frame_top.jpg) top center no-repeat;	
-}
-
-div#frame_bottom {
-	background:url(/img/bg_frame_bottom.jpg) top center no-repeat;	
-}
-
-div#frame_content {
-	width:960px;
-	background:url(/img/bg_frame_content.jpg) top center repeat-y;	
-}
-
-div#welcome p {
-	font:bold 14px Arial, Helvetica, sans-serif;
-	color:#A81E1E;
-}
-
-div#welcome p span {
-	color:#000;
-}
-
-div#nav {
-	border-bottom:1px solid #CCC;
-}
-
-div#nav ul {
-	list-style-type:none;	
-}
-
-div#nav li {
-	float:right;
-	margin-left:1px;
-}
-
-div#nav li a {
-	font:normal 14px/200% Arial, Helvetica, sans-serif;
-	text-decoration:none;
-	padding:7px 15px;
-	color:#FFF;
-	background:#A81E1E;
-}
-
-div#nav li a:hover {
-	background:#8C1A1A;	
-}
 
 @import "dashboard/index.less";
