@@ -6,20 +6,18 @@
 		<th></th>
 	</thead>
 	<tbody>
-	<?php foreach($this->accounts as $account): ?>
-		<?php if($account->category != 'Application'): ?>
+	<?php foreach($this->pages as $page): ?>
 		<tr>
-			<td class="name"><img src="http://graph.facebook.com/<?= $account->id ?>/picture"><?= $account->name ?></td>
-			<td class="category"><?= $account->category ?></td>
+			<td class="name"><img src="http://graph.facebook.com/<?=  $page['fanpage_id'] ?>/picture"><?= $page['fanpage_name'] ?></td>
+			<td class="category"><?= $page['fanpage_category'] ?></td>
 			<td class="status">
-				<?php if (in_array($account->id, $this->authorized)): ?>
-					<button class="deactivate btn btn-danger" data-id="<?= $account->id ?>">Un-install</button>
+				<?php if ($page['active']): ?>
+					<button class="deactivate btn btn-danger" data-id="<?= $page['fanpage_id'] ?>">Un-install</button>
 				<?php else: ?>
-					<button class="deactivate btn btn-success" data-id="<?= $account->id ?>">Install</button>
+					<button class="deactivate btn btn-success" data-id="<?= $page['fanpage_id'] ?>">Install</button>
 				<?php endif; ?>
 			</td>
 		</tr>
-		<?php endif; ?>
 	<?php endforeach; ?>
 	</tbody>	
 </table>

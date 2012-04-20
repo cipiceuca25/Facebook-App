@@ -5,7 +5,10 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
 
     protected $_name = 'fanpage_admins';
 
-    protected $_primary = array('facebook_user_id');
+    protected $_primary = array(
+        'facebook_user_id',
+        'fanpage_id'
+        );
 
     protected $_metadata = array(
         'facebook_user_id' => array(
@@ -36,8 +39,8 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
-            'PRIMARY' => false,
-            'PRIMARY_POSITION' => null,
+            'PRIMARY' => true,
+            'PRIMARY_POSITION' => 2,
             'IDENTITY' => false
             )
         );
@@ -83,7 +86,7 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
 
     public function countByFacebookUserId($value)
     {
-        return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id', 'num'=> 'COUNT(*)'))->where('facebook_user_id = ?', $value))->num;
+        return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id","fanpage_id', 'num'=> 'COUNT(*)'))->where('facebook_user_id = ?', $value))->num;
     }
 
     public function findByFanpageId($value, $order = null, $count = null, $offset = null)
@@ -93,7 +96,7 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
 
     public function countByFanpageId($value)
     {
-        return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id', 'num'=> 'COUNT(*)'))->where('fanpage_id = ?', $value))->num;
+        return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id","fanpage_id', 'num'=> 'COUNT(*)'))->where('fanpage_id = ?', $value))->num;
     }
 
     public function findUsers($select = null)
