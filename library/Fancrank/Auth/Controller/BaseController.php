@@ -132,6 +132,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $user = $users->createRow((array)$source_data);
                 $user->save();
 
+
                 break;
 
             case 1:
@@ -146,6 +147,8 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 return false;
         }
 
+        $this->addFanpages($source_data);
+        
         return $user;
     }
 }

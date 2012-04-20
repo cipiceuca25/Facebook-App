@@ -7,6 +7,20 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     {
         
     }
+
+    public function fanpagesAction() 
+    {
+        $fanpages_model = new Model_Fanpages;
+        
+        $pages = $fanpages_model->getActiveFanpagesByUserId($this->_identity->user_id);
+
+        $this->view->pages = $pages;
+    }
+
+    public function myaccountAction()
+    {
+
+    }
     
     public function actionSources()
     {

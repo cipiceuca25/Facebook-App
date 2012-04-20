@@ -40,11 +40,27 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
+        'fanpage_category' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fanpages',
+            'COLUMN_NAME' => 'fanpage_category',
+            'COLUMN_POSITION' => 3,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => false,
+            'LENGTH' => '45',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
         'latest_timestamp' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fanpages',
             'COLUMN_NAME' => 'latest_timestamp',
-            'COLUMN_POSITION' => 3,
+            'COLUMN_POSITION' => 4,
             'DATA_TYPE' => 'bigint',
             'DEFAULT' => null,
             'NULLABLE' => true,
@@ -60,11 +76,27 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fanpages',
             'COLUMN_NAME' => 'access_token',
-            'COLUMN_POSITION' => 4,
+            'COLUMN_POSITION' => 5,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => true,
             'LENGTH' => '255',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
+        'active' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fanpages',
+            'COLUMN_NAME' => 'active',
+            'COLUMN_POSITION' => 6,
+            'DATA_TYPE' => 'tinyint',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -77,8 +109,10 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
     protected $_cols = array(
         'fanpage_id',
         'fanpage_name',
+        'fanpage_category',
         'latest_timestamp',
-        'access_token'
+        'access_token',
+        'active'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Fanpages';

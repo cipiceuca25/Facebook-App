@@ -88,7 +88,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $client->setUri($url);
         $client->setMethod(Zend_Http_Client::GET);
         $client->setParameterGet($direction, $timestamp);
+
         $client->setParameterGet('access_token', $this->fanpage->access_token);
+
         $client->setParameterGet(array(
             'format' => 'json',
             'limit' => 1,

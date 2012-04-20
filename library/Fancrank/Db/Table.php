@@ -1,7 +1,7 @@
 <?php
 class Fancrank_Db_Table extends Zend_Db_Table_Abstract
 {
-	protected function facebookRequest($end_point, $access_token, $fields = NULL)
+	public function facebookRequest($end_point, $access_token, $fields = NULL)
 	{
 		$client = new Zend_Http_Client;
 		$client->setUri('https://graph.facebook.com/' . $end_point);
