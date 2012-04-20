@@ -3,7 +3,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 {
     private $types = array(
         'fans'  => 'fans',
-        'feeds' => 'feeds',
+        'feed' => 'feed',
         'albums' => 'photo'
     );
 
@@ -14,7 +14,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         // get the fanpage object
         $this->fanpages = new Model_Fanpages;
         $fanpage = $this->fanpages->findRow($this->_getParam(0));
-
+        
         if ($fanpage === null) {
             // TODO not exiting
             Log::Err('Invalid Fanpage ID: "%s"', $this->_getParam(0));
@@ -43,16 +43,17 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
     public function fetchAction()
     {
-
         $type       = $this->_getParam(1, false);
         $direction  = $this->_getParam(2, 'since');
         $timestamp  = $this->_getParam(3, 0);
         $extra      = $this->_getParam(4, false);
-
-        $url = 'https://graph.facebook.com/' . $this->fanpage->fanpage_id . '/' . $type;
+        
+        //$token		= 'AAACgL1Ty5ggBAMH9LGdNEp9SSRWCC2CGIrgwjyuAL8jQlC3PtHksaWIoxAqTCv6qQ8FloIWVgA4T3hHusKErw7F2U88mogqMFf6A2QZDZD';
+        
+        $url = 'https://graph.facebook.com/' . $this->fanpage->fanpage_id . '/' . $type;// . '?access_token=' . $token;
 
         switch ($type) {
-            case 'feeds':
+            case 'feed':
                 $fields = array();
                 break;
             case 'albums':
@@ -87,10 +88,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $client->setUri($url);
         $client->setMethod(Zend_Http_Client::GET);
         $client->setParameterGet($direction, $timestamp);
-        $client->setParameterGet('access_token', $this->source->oauth_user_key);
+        $client->setParameterGet('access_token', $this->fanpage->access_token);
         $client->setParameterGet(array(
             'format' => 'json',
-            'limit' => 1000,
+            'limit' => 1,
             'fields' => implode(',', $fields)
         ));
 
@@ -110,7 +111,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         }
 
         $json = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-
+		die(print_r($json));
         if (property_exists($json, 'code')) {
             // try again
             Collector::Queue('5 minutes', 'facebook', 'fetch', array($this->fanpage->fanpage_id, $type, $direction, $timestamp));
