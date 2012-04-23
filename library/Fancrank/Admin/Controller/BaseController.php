@@ -13,9 +13,15 @@ abstract class Fancrank_Admin_Controller_BaseController extends Fancrank_Control
 
         if(!$this->_auth->hasIdentity()) {
             $this->_helper->redirector('index', 'index');   
+
+            //set the proper navbar
+            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array());
         } else {
             $this->_identity = $this->_auth->getIdentity();
             $this->view->user = $this->_identity;
+
+            //set the proper navbar
+            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedin.phtml', array());
         }
     }
 
