@@ -40,13 +40,24 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $this->getAdapter()->fetchAll($select);
 	}
 
-	public function getActiveFanpageByFanpageId($user_id)
+	public function getActiveFanpageByFanpageId($fanpage_id, $user_id)
 	{
 		$select = $this->getAdapter()->select();
 		$select->from(array('fanpages' => 'fanpages'));
 		$select->join(array('admins' => 'fanpage_admins'), 'fanpages.fanpage_id = admins.fanpage_id');
 		$select->where($this->getAdapter()->quoteInto('admins.facebook_user_id = ?', $user_id));
 		$select->where('fanpages.active = TRUE');
+
+		return $this->getAdapter()->fetchAll($select);
+	}
+
+	public function getFanpageByFanpageIdAndUserId($fanpage_id, $user_id) 
+	{
+		$select = $this->getAdapter()->select();
+		$select->from(array('fanpages' => 'fanpages'));
+		$select->join(array('admins' => 'fanpage_admins'), 'fanpages.fanpage_id = admins.fanpage_id');
+		$select->where($this->getAdapter()->quoteInto('admins.facebook_user_id = ?', $user_id));
+		$select->where($this->getAdapter()->quoteInto('fanpages.fanpage_id = ?', $fanpage_id));
 
 		return $this->getAdapter()->fetchAll($select);
 	}

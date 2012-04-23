@@ -1,10 +1,26 @@
 jQuery(document).ready(function($){
 
-	$('.activate').click(function(event){
+	$(document).delegate('.activate', 'click', function(event) {
 		//approve the current selected page for collection
+		var btn = this;
 		$.ajax({
-			'url': '/api/fanpage/' + $(this).closest('tr').attr('id'),
-			'type': 'APPROVE'
+			'url': '/api/fanpages/' + $(this).closest('tr').attr('id'),
+			'type': 'ACTIVATE',
+			'success': function(xhr) {
+				$(btn).attr('class', 'btn btn-danger deactivate').html('Deactivate');
+			}
+		});
+	});
+
+	$(document).delegate('.deactivate', 'click', function(event) {
+		//approve the current selected page for collection
+		var btn = this;
+		$.ajax({
+			'url': '/api/fanpages/' + $(this).closest('tr').attr('id'),
+			'type': 'DEACTIVATE',
+			'success': function(xhr) {
+				$(btn).attr('class', 'btn btn-success activate').html('Activate');
+			}
 		});
 	});
 
