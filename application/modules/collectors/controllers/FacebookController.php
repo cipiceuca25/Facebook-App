@@ -19,6 +19,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             // TODO not exiting
             Log::Err('Invalid Fanpage ID: "%s"', $this->_getParam(0));
             exit;
+        } else if (!$fanpage->active) {
+            Log::Info('Inactive Fanpage ID: "%s". Exiting.', $this->_getParam(0));
+            exit;
         } else {
             $this->fanpage = $fanpage;
         }

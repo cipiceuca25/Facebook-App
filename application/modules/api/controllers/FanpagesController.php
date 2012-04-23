@@ -13,6 +13,9 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		if ($admin->facebook_user_id == $this->_identity->user_id && !$fanpage->active) {
 			$fanpage->active = TRUE;
 			$fanpage->save();
+
+			//init collection
+			Collector::Run('facebook', 'init', array($this->_getParam('id')));
 		} else {
 			//send access deinied 403
 		}
@@ -29,6 +32,9 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		if ($admin->facebook_user_id == $this->_identity->user_id && $fanpage->active) {
 			$fanpage->active = FALSE;
 			$fanpage->save();
+
+			//TODO: maybe remove from queue list?
+			
 		} else {
 			//send access deinied 403
 		}
