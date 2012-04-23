@@ -1,6 +1,6 @@
 <?php
 
-class Api_FanpageController extends Fancrank_Controller_API_BaseController
+class Api_FanpageController extends Fancrank_API_Controller_BaseController
 {
 	public function activateAction()
 	{

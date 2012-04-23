@@ -7,14 +7,14 @@
 	</thead>
 	<tbody>
 	<?php foreach($this->pages as $page): ?>
-		<tr>
+		<tr id="<?= $page['fanpage_id'] ?>">
 			<td class="name"><img src="http://graph.facebook.com/<?=  $page['fanpage_id'] ?>/picture"><?= $page['fanpage_name'] ?></td>
 			<td class="category"><?= $page['fanpage_category'] ?></td>
 			<td class="status">
 				<?php if ($page['active']): ?>
-					<button class="deactivate btn btn-danger" data-id="<?= $page['fanpage_id'] ?>">Un-install</button>
+					<button class="deactivate btn btn-danger" data-id="<?= $page['fanpage_id'] ?>">Deactivate</button>
 				<?php else: ?>
-					<button class="deactivate btn btn-success" data-id="<?= $page['fanpage_id'] ?>">Install</button>
+					<button class="activate btn btn-success" data-id="<?= $page['fanpage_id'] ?>">Activate</button>
 				<?php endif; ?>
 			</td>
 		</tr>

@@ -3,7 +3,7 @@
  * RESTful ErrorController
  *
  **/
-class Api_ErrorController extends Fancrank_Controller_API_BaseController
+class Api_ErrorController extends Fancrank_API_Controller_BaseController
 {
     public function errorAction()
     {

@@ -1,8 +1,8 @@
 <?php
 
-class REST_Controller extends Fancrank_Action{}
+class REST_Controller extends Fancrank_Controller_Action{}
 
-abstract class Fancrank_Controller_API_BaseController extends REST_Controller
+abstract class Fancrank_API_Controller_BaseController extends REST_Controller
 {
 
     public function preDispatch()
