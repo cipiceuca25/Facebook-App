@@ -16,7 +16,7 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '100',
+            'LENGTH' => '255',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,

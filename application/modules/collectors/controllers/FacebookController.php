@@ -164,21 +164,71 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
 
     private function storeFeed ($feed)
-    {
-    	static $activity;
-    	//$feed = call_user_func(array($this, 'objectToArray'), $feed);
-    	//die(print_r($feed));
-    	
-    	foreach($feed as $key => $value){
+    {	
+        $posts_model = new Model_Posts;
+        $posts_media_model = new Model_PostsMedia;
+
+    	foreach($feed as $post) {
+
+            //die(print_r(split('_', $post->id)));
+
+            $row = array(
+                'post_id' => $post->id,
+                'facebook_user_id' => $post->from->id,
+                'fanpage_id' => $this->fanpage->fanpage_id,
+                'message' => isset($post->message) ? $post->message : '',
+                'type' => $post->type,
+                'created_time' => $post->created_time,
+                'updated_time' => $post->updated_time,
+                'comments_count' => $post->comments->count
+            );
+
+            if (property_exists($post, 'application') && isset($post->application_id)) {
+                $row['application_id'] = $post->application->application_id;
+                $row['application_name'] = $post->application->application_name;
+            } else {
+                $row['application_id'] = '';
+                $row['application_name'] = '';
+            }
+
+            $posts[] = $row;
+
+            if ($post->type != 'page' && $post->type != 'status') {
+
+                $medias[] = array(
+                    'post_id' => $post->id,
+                    'post_type' => $post->type,
+                    'post_picture' => $post->picture,
+                    'post_link' => $post->link,
+                    'post_source' => isset($post->source) ? $post->source : '',
+                    'post_name' => $post->name,
+                    'post_caption'  => $post->caption,
+                    'post_description' => isset($post->description) ? $post->description : '',
+                    'post_icon' => $post->icon
+                );
+            }
+        }
+
+        $cols = array('post_id', 'facebook_user_id', 'fanpage_id', 'message', 'type', 'created_time', 'updated_time', 'comments_count');
+        $update = array('updated_time', 'comments_count');
+        $posts_model->insertMultiple($posts, $cols, $update);
+
+        if (isset($medias)) {
+            $cols = array('post_id', 'post_type', 'post_picture', 'post_link', 'post_source', 'post_name', 'post_caption', 'post_description', 'post_icon');
+            $update = array('post_description');
+            $posts_media_model->insertMultiple($medias, $cols, $update);
+        }
+
+            /*static $activity;
     		//echo $key."<br/>";
 			//print_r($value);
-    		if(is_object($value)){ //[0], [1], [2], etc
+    		if(is_object($value)) { //[0], [1], [2], etc
 
     			foreach($value as $key2 => $value2){
-    					
+    					 
     				if(is_object($value2)){ //[from], [comments], [likes], [privacy], [actions]
     	
-    					if($key2==="from"){
+    					if($key2 ==="from") {
     						
     						foreach($value2 as $fromkey => $fromvalue){
     	
@@ -289,7 +339,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     		//reset the activity array
     		$activity=array();
     	} //end inserting posts
-    	
+    	*/
     }
     
     private function storeComments($comments)
