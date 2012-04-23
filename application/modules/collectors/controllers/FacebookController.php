@@ -56,6 +56,14 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             case 'feed':
                 $fields = array();
                 break;
+            case 'comments':
+            	$url = 'https://graph.facebook.com/' . $extra . '/comments'; //$extra here is the post id
+            	$fields = array();
+            	break;
+            case 'likes':
+            	$url = 'https://graph.facebook.com/' . $extra . '/likes'; //$extra here is the post id or the comment id
+            	$fields = array();
+            	break;
             case 'albums':
                 $fields = array('id');
                 break;
@@ -93,7 +101,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
         $client->setParameterGet(array(
             'format' => 'json',
-            'limit' => 1,
+            'limit' => 50,
             'fields' => implode(',', $fields)
         ));
 
@@ -113,7 +121,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         }
 
         $json = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-		die(print_r($json));
+		//die(print_r($json));
         if (property_exists($json, 'code')) {
             // try again
             Collector::Queue('5 minutes', 'facebook', 'fetch', array($this->fanpage->fanpage_id, $type, $direction, $timestamp));
@@ -155,9 +163,216 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         }
     }
 
-    private function storeFeeds($feeds)
+    private function storeFeed ($feed)
     {
-       
+    	static $activity;
+    	//$feed = call_user_func(array($this, 'objectToArray'), $feed);
+    	//die(print_r($feed));
+    	
+    	foreach($feed as $key => $value){
+    		//echo $key."<br/>";
+			//print_r($value);
+    		if(is_object($value)){ //[0], [1], [2], etc
+
+    			foreach($value as $key2 => $value2){
+    					
+    				if(is_object($value2)){ //[from], [comments], [likes], [privacy], [actions]
+    	
+    					if($key2==="from"){
+    						
+    						foreach($value2 as $fromkey => $fromvalue){
+    	
+    							if($fromkey === "name"){
+    								
+    								$activity["from".$fromkey]=$fromvalue;
+    									
+    							}else{
+    								$activity["from".$fromkey]=$fromvalue;
+    							}
+    						}
+    					}else if($key2==="likes"){
+    	
+    						$activity["likescount"]=$value2->count;
+    							
+    						if($activity["likescount"]>0){
+    							
+    							//run the fetch method for likes
+    							//grab_inner("walllikes",$activity['activityid'], $db_name);
+    							//Collector::Run('facebook', 'fetch', array($this->source->source_id, 'likes', $direction, $timestamp, $activity->id));
+    	
+    						}
+    							
+    					}else if($key2 === "comments"){
+    							
+    						$activity["commentscount"]=$value2->count;
+    							
+    						if($activity["commentscount"]>0){
+    							
+    							//run the fetch method for comments
+    							//grab_inner("comments",$activity['activityid'], $db_name);
+    							//Collector::Run('facebook', 'fetch', array($this->source->source_id, 'comments', $direction, $timestamp, $activity->id));
+    	
+    						}
+    					}else if($key2==="privacy"){
+    	
+    						foreach($value2 as $privkey => $privvalue){
+    	
+    							$activity["privacy".$privkey]=$privvalue;
+    								
+    						}
+    	
+    					}else if($key2==="application"){
+    	
+    						foreach($value2 as $appkey => $appvalue){
+    	
+    							$activity["application".$appkey]=$appvalue;
+    								
+    						}
+    	
+    					}
+    	
+    				}else{//[id], [message], [type], etc
+    						
+    					if ($key2=== 'created_time' || $key2=== 'updated_time') {
+    	
+    						$activity["activity".$key2]=strtotime($value2);
+    							
+    					}else if($key2=== 'message'|| $key2==='name'|| $key2==='description'|| $key2==='caption'){
+    	
+    						$activity["activity".$key2]=$value2;
+    						//echo "message: ".$value."<br/>";
+    	
+    						$activity["activity".$key2]=$value2;
+    					}
+    				}
+    			}
+    		}
+
+    		//die(print_r($activity));
+    		
+    		$db_keys=array('activityid', 'fromname', 'fromid', 'fromcategory', 'activitymessage', 'privacydescription', 'privacyvalue', 'activitytype', 'activitycreated_time', 'activityupdated_time', 'applicationname', 'applicationid', 'commentscount', 'likescount', 'activitypicture', 'activitylink', 'activitysource', 'activityname', 'activitycaption', 'activityicon', 'activitydescription');
+    		foreach($db_keys as $key => $value){
+    			if(!array_key_exists($key, $activity)){
+
+    				$activity[$key]=NULL;
+    			}
+    		}
+    		
+    		$posts_model = new Model_Posts;
+    		$activity_id = $activity['activityid'];
+    		$updated_time = $activity['activityupdated_time'];
+    		$postExists = $posts_model->checkPostExists($activity_id);
+    		
+    		if($postExists){
+    			
+    			//this post exists in the database
+    			//check if the updated time is old
+    			$postTime = $posts_model->checkPostUpdatedTime($activity_id, $updated_time);
+    			
+    			if(!$postTime){
+    				
+    				//post time has changed since last fetch
+    				//update the values in the db
+    				$postUpdateDB = $posts_model->updateExistingPost($activity);
+    			}
+    			
+    		}else{
+    			
+    			//this post does not exist - enter it into the db
+    			
+    			$dividePost = explode('_', $activity_id);
+    			$fanpage_id = $dividePost[0];
+    			
+    			$postInsertDB = $posts_model->insertPost($fanpage_id, $activity);
+    		}
+			
+    		//reset the activity array
+    		$activity=array();
+    	} //end inserting posts
+    	
+    }
+    
+    private function storeComments($comments)
+    {
+    	static $facebookComments;
+    	
+    	foreach($comments[data] as $key => $value){
+    	
+    		if(is_array($value)){
+    				
+    			foreach($value as $key2 => $value2){
+    					
+    				if(is_array($value2)){ //this is the FROM inner array
+    					
+    					foreach($value2 as $key3=>$value3){
+    						
+    						if($key3==='name'){
+    							$facebookComments[$key2.$key3]=$value3;
+    	
+    						}else{
+    							$facebookComments[$key2.$key3]=$value3;
+    						}
+    					}
+    				}else{ //this is for fan comments i.e. no inner FROM Category
+    					if ($key2=== 'created_time' || $key2=== 'updated_time') {
+    							
+    						$facebookComments[$key2]=strtotime($value2);
+    	
+    					}else if($key2=== 'message'|| $key2==='name'){
+    							
+    						$facebookComments[$key2]=$value2;
+    	
+    					}else{
+    						$facebookComments[$key2]=$value2;
+    						//$commentsinner[fromid]=NULL;
+    						$facebookComments[fromcategory]=NULL;
+    	
+    					}
+    				}
+    			}
+    		}
+    		$divideCommentID=explode("_", $facebookComments['id']);
+    		$fanpage_id = $divideCommentID[0];
+    		$post_id = $divideCommentID[0] . '_' . $divideCommentID[1];
+    		
+    		//insert comments into DB
+    		
+    		//get likes for comment now
+    		if($facebookComments['likes'] > 0){
+    				
+    			//grab_inner("walllikes", $commentsinner['id']);
+    			//Collector::Run('facebook', 'fetch', array($this->source->source_id, 'likes', $direction, $timestamp, $activity->id));
+    				
+    		}
+    		$facebookComments=array();
+    	}
+    }
+    
+    private function storeLikes($likes)
+    {
+    	static $facebookLikes;
+    	//store likes
+    	foreach($likes[data] as $key => $value){
+    	
+    		if(is_array($value)){
+    				
+    			foreach($value as $key2 => $value2){
+    				if($key2==='name'){
+    					$facebookLikes[$key2]=mysql_real_escape_string($value2);
+    	
+    				}
+    				else{
+    					$facebookLikes[$key2]=$value2;
+    				}
+    			}
+    		}
+    	
+    		$primarykey= $post."_".$facebookLikes[id];
+    		$post_type_temp=explode("_", $post);
+    		
+    		//reset our variable
+    		$facebookLikes = array();
+    	}
     }
 
     private function storeAlbums($albums)
@@ -179,4 +394,5 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     {
         
     }
+    
 }
