@@ -2,6 +2,7 @@ jQuery(document).ready(function($){
 
 	//set up ajax call
 	$.ajaxSetup({	
+		'accepts': 'application/json',
 		'error': function(xhr, status, error) {
 			new Alert.create('error', xhr.responseText);
 		}

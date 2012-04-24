@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
 				$('.tooltip-inner').html('Turn off data collection for this page');
 
 				//add the install button
-				$(this).closest('tr').find('.app').append('<button class="app btn btn-success" rel="tooltip" title="See fancrank working with your data." data-id="' + $(this).attr('data-id') + '">App</button>');
+				$(this).closest('tr').find('.app').append('<button class="app btn btn-success" rel="tooltip" title="See fancrank working with your data." data-id="' + $(this).attr('data-id') + '">Preview</button>');
 			}.bind(this)
 		});
 	});
@@ -34,4 +34,31 @@ jQuery(document).ready(function($){
 		});
 	});
 
+	$(document).delegate('.app', 'click', function(event) {
+		//preview the app
+		id = $(event.target).attr('data-id');
+		window.open('/dashboard/preview?id=' + id, 'preview', null, true);
+	})
+
+	$(document).delegate('.install', 'click', function(event){
+		//show the install screen in the iframe
+		$.ajax({
+			'url': '/api/fanpages/' + $(this).attr('data-id'),
+			'type': 'INSTALL',
+			'success': function(xhr) {	
+				if (window.opener != null) {
+		            //window.opener.location.reload();
+		            window.opener.installSuccess();
+					self.close($(this).attr('data-id'));
+		        }
+			}.bind(this)
+		});
+		
+	});
+
 });
+
+function installSuccess(page)
+{
+	new Alert.create('success', 'Page tab installed successfully!');
+}

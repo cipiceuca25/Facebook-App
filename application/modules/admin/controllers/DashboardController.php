@@ -33,6 +33,15 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         $this->_helper->redirector('index', 'index');
     }
 
+    public function previewAction()
+    {
+        $fanpages_model = new Model_Fanpages;
+        $fanpage = $fanpages_model->findByFanpageId($this->_getParam('id'))->current();
+
+        $this->view->installed = $fanpage->installed;
+        $this->view->preview = '/app/index/' . $this->_getParam('id');
+        $this->view->page_id = $this->_getParam('id');
+    }
 
 }
 
