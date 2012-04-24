@@ -31,10 +31,27 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		
 		if ($admin->facebook_user_id == $this->_identity->user_id && $fanpage->active) {
 			$fanpage->active = FALSE;
+
+			if ($fanpage->installed) {
+				//uninstall
+				$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
+	        	$this->config = $sources->get('facebook');
+
+				$response = $this->installTab($this->_getParam('id'), $fanpage->access_token, $this->config->client_id);
+
+		        $body = $response->getBody();
+		        $message = Zend_Json::decode($body, Zend_Json::TYPE_OBJECT);
+
+		        if ($message == true) {
+		        	$fanpage->installed = TRUE;
+		        	$fanpage->tab_id = $this->_getParam('id'). '/tabs/app_' . $this->config->client_id;
+		        } else {
+		        	echo $message->error->message;
+		        }
+	    	}
+
 			$fanpage->save();
 
-			//TODO: maybe remove from queue list?
-			
 		} else {
 			//send access deinied 403
 		}
@@ -72,7 +89,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		}
 	}
 
-	public function deleteAction()
+	public function uninstallAction()
 	{
 		$fanpage = $this->model->findByFanpageId($this->_getParam('id'))->current();
 		
@@ -86,7 +103,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
         	$this->config = $sources->get('facebook');
 
 	        //reuturn success or not
-	        $response = $this->delete($this->_getParam('id'), $fanpage->access_token, $fanpage->tab_id);
+	        $response = $this->deleteTab($this->_getParam('id'), $fanpage->access_token, $fanpage->tab_id);
 
 	        $body = $response->getBody();
 	        $message = Zend_Json::decode($body, Zend_Json::TYPE_OBJECT);

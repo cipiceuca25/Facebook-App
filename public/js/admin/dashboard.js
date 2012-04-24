@@ -11,8 +11,8 @@ jQuery(document).ready(function($){
 				$(this).attr('data-original-title', 'Turn off data collection for this page');
 				$('.tooltip-inner').html('Turn off data collection for this page');
 
-				//add the install button
-				$(this).closest('tr').find('.app').append('<button class="app btn btn-success" rel="tooltip" title="See fancrank working with your data." data-id="' + $(this).attr('data-id') + '">Preview</button>');
+				addPreviewButton(this, $(this).attr('data-id'));
+				addInstallButton(this, $(this).attr('data-id'));
 			}.bind(this)
 		});
 	});
@@ -29,7 +29,8 @@ jQuery(document).ready(function($){
 				$('.tooltip-inner').html('Turn on data collection for this page');
 
 				//remove the install button
-				$(this).closest('tr').find('.app').find('button').remove();
+				$(this).closest('tr').find('.preview').find('button').remove();
+				$(this).closest('tr').find('.tab').find('button').remove();
 			}.bind(this)
 		});
 	});
@@ -58,9 +59,56 @@ jQuery(document).ready(function($){
 		
 	});
 
+	$(document).delegate('.install-tab', 'click', function(event){
+		//show the install screen in the iframe
+		$.ajax({
+			'url': '/api/fanpages/' + $(this).attr('data-id'),
+			'type': 'INSTALL',
+			'success': function(xhr) {	
+		        installSuccess($(this).attr('data-id'));
+
+		        $(this).attr('class', 'btn btn-danger delete-tab').html('Delete Tab');
+				$(this).attr('data-original-title', 'Delete the fancrank app on your page');
+				$('.tooltip-inner').html('Delete the fancrank app on your page');
+			}.bind(this)
+		});
+		
+	});
+
+	$(document).delegate('.delete-tab', 'click', function(event){
+		//show the install screen in the iframe
+		$.ajax({
+			'url': '/api/fanpages/' + $(this).attr('data-id'),
+			'type': 'UNINSTALL',
+			'success': function(xhr) {	
+		        deleteSuccess($(this).attr('data-id'));
+
+		        $(this).attr('class', 'btn btn-success install-tab').html('Install Tab');
+				$(this).attr('data-original-title', 'Install the fancrank app on your page');
+				$('.tooltip-inner').html('Install the fancrank app on your page');
+			}.bind(this)
+		});
+		
+	});
+
 });
+
+function addPreviewButton(btn, id) 
+{
+	$(btn).closest('tr').find('.preview').append('<button class="app btn btn-success" rel="tooltip" title="See fancrank working with your data" data-id="' + id + '">Preview</button>');
+}
+
+function addInstallButton(btn, id)
+{
+	$(btn).closest('tr').find('.tab').append('<button class="install-tab btn btn-success" rel="tooltip" title="Install the fancrank app on your page" data-id="' + id + '">Install Tab</button>');
+}
 
 function installSuccess(page)
 {
 	new Alert.create('success', 'Page tab installed successfully!');
+}
+
+function deleteSuccess(page)
+{
+	new Alert.create('success', 'Page tab removed successfully!');
 }

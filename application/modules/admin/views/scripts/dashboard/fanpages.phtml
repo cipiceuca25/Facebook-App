@@ -5,6 +5,7 @@
 		<th>Category</th>
 		<th></th>
 		<th></th>
+		<th></th>
 	</thead>
 	<tbody>
 	<?php foreach($this->pages as $page): ?>
@@ -18,9 +19,16 @@
 					<button class="activate btn btn-success" rel="tooltip" title="Turn on data collection for this page" data-id="<?= $page['fanpage_id'] ?>">Activate</button>
 				<?php endif; ?>
 			</td>
-			<td class="app">
+			<td class="tab">
+				<?php if ($page['installed']): ?>
+					<button class="delete-tab btn btn-danger" rel="tooltip" title="Remove the fancrank app on you page" data-id="<?= $page['fanpage_id'] ?>">Delete Tab</button>
+				<?php elseif($page['active']): ?>
+					<button class="install-tab btn btn-success" rel="tooltip" title="Install the fancrank app on you page" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
+				<?php endif; ?>
+			</td>
+			<td class="preview">
 				<?php if ($page['active']): ?>
-					<button class="app btn btn-success" rel="tooltip" title="See fancrank working with your data." data-id="<?= $page['fanpage_id'] ?>">Preview</button>
+					<button class="app btn btn-success" rel="tooltip" title="See fancrank working with your data" data-id="<?= $page['fanpage_id'] ?>">Preview</button>
 				<?php endif; ?>
 			</td>
 		</tr>
