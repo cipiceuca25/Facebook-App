@@ -49,7 +49,7 @@ jQuery(document).ready(function($){
 				if (window.opener != null) {
 		            //window.opener.location.reload();
 		            window.opener.installSuccess();
-					self.close($(this).attr('data-id'));
+				    self.close($(this).attr('data-id'));
 		        }
 			}.bind(this)
 		});

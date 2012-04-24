@@ -88,11 +88,27 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
+        'tab_id' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fanpages',
+            'COLUMN_NAME' => 'tab_id',
+            'COLUMN_POSITION' => 6,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => '255',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
         'active' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fanpages',
             'COLUMN_NAME' => 'active',
-            'COLUMN_POSITION' => 6,
+            'COLUMN_POSITION' => 7,
             'DATA_TYPE' => 'tinyint',
             'DEFAULT' => '0',
             'NULLABLE' => false,
@@ -108,7 +124,7 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fanpages',
             'COLUMN_NAME' => 'installed',
-            'COLUMN_POSITION' => 7,
+            'COLUMN_POSITION' => 8,
             'DATA_TYPE' => 'tinyint',
             'DEFAULT' => '0',
             'NULLABLE' => true,
@@ -128,6 +144,7 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
         'fanpage_category',
         'latest_timestamp',
         'access_token',
+        'tab_id',
         'active',
         'installed'
         );
