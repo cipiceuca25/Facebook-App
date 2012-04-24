@@ -37,7 +37,8 @@ jQuery(document).ready(function($){
 	$(document).delegate('.app', 'click', function(event) {
 		//preview the app
 		id = $(event.target).attr('data-id');
-		window.open('/dashboard/preview?id=' + id, 'preview', null, true);
+		//window.open('/dashboard/preview?id=' + id, 'preview', null, true);
+		window.location = '/dashboard/preview?id=' + id;
 	})
 
 	$(document).delegate('.install', 'click', function(event){
@@ -46,11 +47,12 @@ jQuery(document).ready(function($){
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
 			'type': 'INSTALL',
 			'success': function(xhr) {	
-				if (window.opener != null) {
+				/*if (window.opener != null) {
 		            //window.opener.location.reload();
 		            window.opener.installSuccess();
 				    self.close($(this).attr('data-id'));
-		        }
+		        }*/
+		        installSuccess($(this).attr('data-id'));
 			}.bind(this)
 		});
 		
