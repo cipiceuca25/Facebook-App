@@ -18,6 +18,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 			Collector::Run('facebook', 'init', array($this->_getParam('id')));
 		} else {
 			//send access deinied 403
+			$this->_response->setHttpResponseCode(403);
 		}
 	}
 
@@ -37,16 +38,18 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 				$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
 	        	$this->config = $sources->get('facebook');
 
-				$response = $this->installTab($this->_getParam('id'), $fanpage->access_token, $this->config->client_id);
+				$response = $this->deleteTab($this->_getParam('id'), $fanpage->access_token, $this->config->client_id);
 
 		        $body = $response->getBody();
 		        $message = Zend_Json::decode($body, Zend_Json::TYPE_OBJECT);
 
-		        if ($message == true) {
-		        	$fanpage->installed = TRUE;
-		        	$fanpage->tab_id = $this->_getParam('id'). '/tabs/app_' . $this->config->client_id;
+		        if (!isset($message->error)) {
+		        	$fanpage->installed = FALSE;
+		        	$fanpage->tab_id = '';
 		        } else {
+		        	$fanpage->active = TRUE;
 		        	echo $message->error->message;
+		        	$this->_response->setHttpResponseCode(400);
 		        }
 	    	}
 
@@ -54,6 +57,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 
 		} else {
 			//send access deinied 403
+			$this->_response->setHttpResponseCode(403);
 		}
 	}
 
@@ -82,10 +86,12 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 	            $fanpage->save();
 	        } else {
 	        	echo $message->error->message;
+	        	$this->_response->setHttpResponseCode(400);
 	        }
 	       
 		} else {
 			//send access deinied 403
+			$this->_response->setHttpResponseCode(403);
 		}
 	}
 
@@ -114,10 +120,12 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 	            $fanpage->save();
 	        } else {
 	        	echo $message->error->message;
+	        	$this->_response->setHttpResponseCode(400);
 	        }
 
 		} else {
 			//send access deinied 403
+			$this->_response->setHttpResponseCode(403);
 		}
 	}
 
