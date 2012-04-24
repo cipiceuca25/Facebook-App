@@ -261,7 +261,7 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'refColumns' => 'fanpage_id'
             ));
 
-    protected $_dependentTables = array();
+    protected $_dependentTables = array('Model_PostsMedia');
 
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {

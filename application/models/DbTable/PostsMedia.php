@@ -170,7 +170,11 @@ class Model_DbTable_PostsMedia extends Fancrank_Db_Table
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_PostsMedia';
 
-    protected $_referenceMap = array();
+    protected $_referenceMap = array('fk_posts_media_1' => array(
+            'columns' => 'post_id',
+            'refTableClass' => 'Model_Posts',
+            'refColumns' => 'post_id'
+            ));
 
     protected $_dependentTables = array();
 
@@ -192,6 +196,11 @@ class Model_DbTable_PostsMedia extends Fancrank_Db_Table
     public function countByPostId($value)
     {
         return $this->fetchRow($this->select()->from($this->_name, array('post_id', 'num'=> 'COUNT(*)'))->where('post_id = ?', $value))->num;
+    }
+
+    public function findPosts($select = null)
+    {
+        return $this->findParentRow(new Model_DbTable_Posts(), null, $select);
     }
 
 
