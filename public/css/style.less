@@ -1,9 +1,109 @@
 @import "global.less";
 
+@media (max-width: 980px) {
+	ul.nav.pull-right {
+		display: none;
+	}
+
+	.nav-collapse {
+
+		ul.nav {
+			margin-top: 15px;
+		}
+	}
+}
+
+@media (min-width: 980px) {
+	.nav-collapse {
+		display: none;
+	}
+}
+
+// Landscape phones and down
+@media (max-width: 480px) {  }
+
+// Landscape phone to portrait tablet
+@media (max-width: 768px) {  }
+
+// Portrait tablet to landscape and desktop
+@media (min-width: 768px) and (max-width: 980px) {  
+
+}
+// Large desktop
+@media (min-width: 1200px) {  }
+
+.alert {
+    @height: 65px;
+
+    position: fixed;
+    right: 20px;
+    margin: 0px;
+    z-index: 9001;
+
+    &.alert-error {
+        width: 300px;
+    }
+
+   // display: none;
+
+    &:nth-of-type(1) {
+        top: @height;
+    }
+
+    &:nth-of-type(2) {
+        top: @height * 2;
+    }
+
+    &:nth-of-type(3) {
+        top: @height * 3 ;
+    }
+
+    &:nth-of-type(4) {
+        top: @height * 4 ;
+    }
+
+    &:nth-of-type(5) {
+        top: @height * 5 ;
+    }
+
+    &:nth-of-type(6) {
+        top: @height * 6 ;
+    }
+
+    &:nth-of-type(7) {
+        top: @height * 7 ;
+    }
+
+    &:nth-of-type(8) {
+        top: @height * 8 ;
+    }
+
+    &:nth-of-type(9) {
+        top: @height * 9 ;
+    }
+
+    &:nth-of-type(10) {
+        top: @height * 10 ;
+    }
+}
+
 .navbar-inner {
 	background-image: none !important;
 	background-color: white !important;
 	color: white;
+
+	[data-toggle="collapse"] {
+		background-color: @red;
+		background-image: none;
+
+		.icon-bar {
+
+		}
+
+		&:hover {
+			//background-color: white;
+		}
+	}
 
 	a {
 		color: @red !important;
@@ -13,7 +113,7 @@
 		}
 
 		&.brand {
-			position: fixed;
+			margin-bottom: -25px;
 
 			img {
 				height: 40px;
@@ -29,3 +129,4 @@
 
 @import "dashboard/index.less";
 @import "dashboard/fanpages.less";
+@import "dashboard/preview.less";

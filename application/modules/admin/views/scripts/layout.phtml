@@ -46,22 +46,9 @@
         <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
     </head>
 
-    <body>
+    <body controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>">
         <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" href="/dashboard"><img src="/img/logo.png"></a>
-                    <ul class="nav pull-right">
-                        <li><a href="/dashboard/myaccount">My Account</a></li>
-                        <li><a href="/dashboard/fanpages">Fan Pages</a></li>
-                        <li><a href="/dashboard/logout">Log out</a></li>
-                    </ul>
-
-                    <div class="nav-collapse">
-                        <!-- .nav, .navbar-search, .navbar-form, etc -->
-                    </div>
-                </div>
-            </div>
+            <?= $this->layout()->navbar ?>
         </div>
 
         <div class="container" role="main">
