@@ -2,12 +2,18 @@ jQuery(document).ready(function($){
 
 	//set up ajax call
 	$.ajaxSetup({	
+		'accepts': 'application/json',
+		'contentType': 'application/x-www-form-urlencoded',
 		'error': function(xhr, status, error) {
 			new Alert.create('error', xhr.responseText);
 		}
 	});
 
+	//responsive menu
 	$(".collapse").collapse();
+	//tooltip class
+	$('[rel=tooltip]').tooltip()
+
 });
 
 var Alert = new function() {

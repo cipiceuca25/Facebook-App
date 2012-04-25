@@ -4,3 +4,5 @@ application.ini
 .settings/
 *.log
 .meta
+app.log
+db.log

@@ -18,12 +18,6 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         // set the config property
         $this->config = $sources->get($this->source);
 
-        // initiate session
-        $this->session = new Zend_Session_Namespace('AUTH_' . $this->source);
-
-        // expire in five minute
-        $this->session->setExpirationSeconds(60 * 5);
-
         // set callback url
         $this->callback = sprintf('%s://%s%s', $this->_request->getScheme(), $this->_request->getHttpHost(), $this->_request->getPathInfo());
 	}
@@ -41,7 +35,22 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             //$this->_auth->setExpirationSeconds(5259487);
         }
     }
- 
+
+    public function installAction()
+    {
+        $this->_auth = Zend_Auth::getInstance();
+        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
+        
+        if ($this->_auth->hasIdentity()) {
+            $this->_identity = $this->_auth->getIdentity();
+
+            $this->_helper->viewRenderer->setRender('index/install', null, true);
+            $this->oauth2(false, $this->_identity->user_id);
+        } else {
+            $this->view->error = 'Unauthorized';
+            $this->_helper->viewRenderer->setRender('home/failure', null, true);
+        }
+    } 
 
     private function oauth2($authenticate = false, $user_id = false)
     {
