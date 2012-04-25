@@ -125,12 +125,15 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         $users = new Model_Users;
 
         // check for matching records
-        $select = $users->select();
-        $select->where('user_id = ?', $source_data->user_id);
+        try {
+            $select = $users->select();
+            $select->where('user_id = ?', $source_data->user_id);
 
-        // Returns NULL if no records match selection criteria.
-        $user = $users->fetchAll($select);
-
+            // Returns NULL if no records match selection criteria.
+            $user = $users->fetchAll($select);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
         switch (count($user)) {
             case 0:
                 // check for duplicate user handle
@@ -155,7 +158,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             default:
                 return false;
         }
-die('hjere');
+
         $this->addFanpages($source_data);
         
         return $user;
