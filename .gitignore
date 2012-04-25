@@ -7,3 +7,4 @@ application.ini
 app.log
 db.log
 application/data/logs/app.log
+.htaccess
