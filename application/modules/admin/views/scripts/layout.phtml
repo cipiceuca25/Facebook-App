@@ -9,7 +9,7 @@
         <meta http-equiv="Content-Language" content="en"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-        <meta name="description" content="Mira Vitae Inc."/>
+        <meta name="description" content="Fancrank Inc."/>
         <meta name="viewport" content="width=device-width,initial-scale=1"/>
 
         <meta name="author" content="FanCrank" />
@@ -29,13 +29,13 @@
 
         <? if (APPLICATION_ENV == 'development'): ?>
             <link href="/css/style.less" rel="stylesheet/less"/>
+            <script src="/js/libs/less-1.3.0.min.js"></script>
             <script type="text/javascript">
                 env = 'development';
 
                 less = {};
                 less.env = 'development';
 
-                FB_APP_ID = 359633657407080;
             </script>
             <script src="/js/libs/less-1.3.0.min.js"></script>
         <? else: ?>
@@ -47,10 +47,25 @@
     </head>
 
     <body>
-        <div class="container" role="main">
-            <div class="span8">
-                <?= $this->layout()->content ?>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="/dashboard"><img src="/img/logo.png"></a>
+                    <ul class="nav pull-right">
+                        <li><a href="/dashboard/myaccount">My Account</a></li>
+                        <li><a href="/dashboard/fanpages">Fan Pages</a></li>
+                        <li><a href="/dashboard/logout">Log out</a></li>
+                    </ul>
+
+                    <div class="nav-collapse">
+                        <!-- .nav, .navbar-search, .navbar-form, etc -->
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <div class="container" role="main">
+                <?= $this->layout()->content ?>
         </div>
 
         <div id="fb-root"></div>

@@ -2,13 +2,24 @@
 
 class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 {
+
     public function indexAction()
     {
-        //load the dashboard page
-       // $fanpage_users = new Model_FanpageUsers();
-        //$this->view->fanpage_users = $fanpage_users->fanpageUserSummary($this->_getParam('fanpage_id'));
         
+    }
+
+    public function fanpagesAction() 
+    {
+        $fanpages_model = new Model_Fanpages;
         
+        $pages = $fanpages_model->getActiveFanpagesByUserId($this->_identity->user_id);
+
+        $this->view->pages = $pages;
+    }
+
+    public function myaccountAction()
+    {
+
     }
     
     public function actionSources()

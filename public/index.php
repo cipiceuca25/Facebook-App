@@ -1,5 +1,12 @@
 <?php
 
+define('PS', PATH_SEPARATOR);
+define('DS', DIRECTORY_SEPARATOR);
+
+// Define path to application public directory
+defined('PUBLIC_PATH')
+    || define('PUBLIC_PATH', realpath(dirname(__FILE__)));
+
 // Define path to application directory
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
@@ -7,6 +14,10 @@ defined('APPLICATION_PATH')
 // Define application environment
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+
+// Define path to data directory
+defined('DATA_PATH')
+    || define('DATA_PATH', APPLICATION_PATH . DS . 'data');
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(

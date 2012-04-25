@@ -1,0 +1,23 @@
+<h2>Fanpages</h2>
+<table class="table-striped">
+	<thead>
+		<th>Name</th>
+		<th>Category</th>
+		<th></th>
+	</thead>
+	<tbody>
+	<?php foreach($this->pages as $page): ?>
+		<tr>
+			<td class="name"><img src="http://graph.facebook.com/<?=  $page['fanpage_id'] ?>/picture"><?= $page['fanpage_name'] ?></td>
+			<td class="category"><?= $page['fanpage_category'] ?></td>
+			<td class="status">
+				<?php if ($page['active']): ?>
+					<button class="deactivate btn btn-danger" data-id="<?= $page['fanpage_id'] ?>">Un-install</button>
+				<?php else: ?>
+					<button class="deactivate btn btn-success" data-id="<?= $page['fanpage_id'] ?>">Install</button>
+				<?php endif; ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+	</tbody>	
+</table>

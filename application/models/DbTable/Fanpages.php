@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_Fanpages extends Zend_Db_Table
+class Model_DbTable_Fanpages extends Fancrank_Db_Table
 {
 
     protected $_name = 'fanpages';
@@ -39,12 +39,80 @@ class Model_DbTable_Fanpages extends Zend_Db_Table
             'PRIMARY' => false,
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
+            ),
+        'fanpage_category' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fanpages',
+            'COLUMN_NAME' => 'fanpage_category',
+            'COLUMN_POSITION' => 3,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => false,
+            'LENGTH' => '45',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
+        'latest_timestamp' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fanpages',
+            'COLUMN_NAME' => 'latest_timestamp',
+            'COLUMN_POSITION' => 4,
+            'DATA_TYPE' => 'bigint',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => null,
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
+        'access_token' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fanpages',
+            'COLUMN_NAME' => 'access_token',
+            'COLUMN_POSITION' => 5,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => '255',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
+        'active' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fanpages',
+            'COLUMN_NAME' => 'active',
+            'COLUMN_POSITION' => 6,
+            'DATA_TYPE' => 'tinyint',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => null,
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
             )
         );
 
     protected $_cols = array(
         'fanpage_id',
-        'fanpage_name'
+        'fanpage_name',
+        'fanpage_category',
+        'latest_timestamp',
+        'access_token',
+        'active'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Fanpages';
@@ -54,8 +122,13 @@ class Model_DbTable_Fanpages extends Zend_Db_Table
     protected $_referenceMap = array();
 
     protected $_dependentTables = array(
-        'Model_FanpageUsers',
-        'Model_TopFans'
+        'Model_Albums',
+        'Model_Comments',
+        'Model_Fans',
+        'Model_Likes',
+        'Model_Photos',
+        'Model_Posts',
+        'Model_FanpageAdmins'
         );
 
     public function findAll($where = null, $order = null, $count = null, $offset = null)

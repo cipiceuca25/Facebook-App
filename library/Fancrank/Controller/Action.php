@@ -2,9 +2,10 @@
 
 class Fancrank_Controller_Action extends Zend_Controller_Action
 {
+	
     protected function getModuleBootstrap()
     {
-        // get the request object
+        // get the request object 
         $module = Zend_Controller_Front::getInstance()->getRequest()->getModuleName();
         return $this->getInvokeArg('bootstrap')->modules->{$module};
     }

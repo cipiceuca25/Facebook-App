@@ -1,6 +1,6 @@
 <?php
 
-class Model_DbTable_Users extends Zend_Db_Table
+class Model_DbTable_Users extends Fancrank_Db_Table
 {
 
     protected $_name = 'users';
@@ -13,10 +13,10 @@ class Model_DbTable_Users extends Zend_Db_Table
             'TABLE_NAME' => 'users',
             'COLUMN_NAME' => 'user_id',
             'COLUMN_POSITION' => 1,
-            'DATA_TYPE' => 'varchar',
+            'DATA_TYPE' => 'bigint',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '100',
+            'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -155,7 +155,7 @@ class Model_DbTable_Users extends Zend_Db_Table
 
     protected $_referenceMap = array();
 
-    protected $_dependentTables = array();
+    protected $_dependentTables = array('Model_FanpageAdmins');
 
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {

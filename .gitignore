@@ -2,3 +2,5 @@ application.ini
 .buildpath
 .project
 .settings/
+*.log
+.meta
