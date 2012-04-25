@@ -38,8 +38,8 @@
         "_extends": "production",
 
         "facebook": {
-            "client_id":            "",
-            "client_secret":        ""
+            "client_id":            "397291290302596",
+            "client_secret":        "146e4e28c507ed15be387c2dbbc57800"
         }
     },
 
