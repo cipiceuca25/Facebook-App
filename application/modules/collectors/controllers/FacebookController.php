@@ -14,7 +14,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         // get the fanpage object
         $this->fanpages = new Model_Fanpages;
         $fanpage = $this->fanpages->findRow($this->_getParam(0));
-        
+
         if ($fanpage === null) {
             // TODO not exiting
             Log::Err('Invalid Fanpage ID: "%s"', $this->_getParam(0));
@@ -52,7 +52,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $extra      = $this->_getParam(4, false);
         
         //$token		= 'AAACgL1Ty5ggBAMH9LGdNEp9SSRWCC2CGIrgwjyuAL8jQlC3PtHksaWIoxAqTCv6qQ8FloIWVgA4T3hHusKErw7F2U88mogqMFf6A2QZDZD';
-        
+
         $url = 'https://graph.facebook.com/' . $this->fanpage->fanpage_id . '/' . $type;// . '?access_token=' . $token;
 
         switch ($type) {
