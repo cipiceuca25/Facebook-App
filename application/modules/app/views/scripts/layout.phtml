@@ -27,7 +27,7 @@
 
         <?= $this->headScript(); ?>
 
-        <? if (APPLICATION_ENV == 'development'): ?>
+        <? if (APPLICATION_ENV != 'production'): ?>
             <link href="/css/style.less" rel="stylesheet/less"/>
             <script type="text/javascript">
                 env = 'development';
@@ -45,7 +45,7 @@
         <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
     </head>
 
-    <body>
+    <body controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>">
         <div class="container" role="main">
             <div class="span8">
                 <?= $this->layout()->content ?>

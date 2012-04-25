@@ -36,15 +36,15 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         }
     }
 
-    public function installAction()
+    public function authorizeAction()
     {
         $this->_auth = Zend_Auth::getInstance();
-        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
+        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
         
         if ($this->_auth->hasIdentity()) {
             $this->_identity = $this->_auth->getIdentity();
 
-            $this->_helper->viewRenderer->setRender('index/install', null, true);
+            $this->_helper->viewRenderer->setRender('index/authorize', null, true);
             $this->oauth2(false, $this->_identity->user_id);
         } else {
             $this->view->error = 'Unauthorized';
@@ -83,7 +83,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 if ($authenticate) {
                     $source = $this->authenticateSource($source_data);
                 } else {
-                    //$source = $this->addSource($source_data, $user_id);
+                    $source = $this->authenticateFan($source_data);
                 }
 
                 $this->view->source = $source;
@@ -121,6 +121,47 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     }
 
     private function authenticateSource($source_data)
+    {
+        $users = new Model_Users;
+
+        // check for matching records
+        $select = $users->select();
+        $select->where('user_id = ?', $source_data->user_id);
+
+        // Returns NULL if no records match selection criteria.
+        $user = $users->fetchAll($select);
+
+        switch (count($user)) {
+            case 0:
+                // check for duplicate user handle
+                if ($users->countByUserHandle($source_data->user_handle) > 0) {
+                    $source_data->user_handle = $source_data->user_handle . substr(time(), -5);
+                }
+
+                $user = $users->createRow((array)$source_data);
+                $user->save();
+
+
+                break;
+
+            case 1:
+                //update some user data
+                $user = $users->findByUserId($source_data->user_id)->current();
+                $user->user_access_token = $source_data->user_access_token;
+                $user->user_avatar = $source_data->user_avatar;
+                $user->save();
+                break;
+
+            default:
+                return false;
+        }
+
+        $this->addFanpages($source_data);
+        
+        return $user;
+    }
+
+    private function authenticateFan($source_data)
     {
         $users = new Model_Users;
 

@@ -1829,3 +1829,51 @@
 2012-04-25T15:56:03+00:00 [CLI] INFO (6): new job sceduled after 1 hour
 2012-04-25T15:56:03+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "91136502117" until: "1299370990"
 2012-04-25T15:56:05+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): Updating Fanpage: "91136502117"
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "91136502117" since: "0"
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T16:57:01+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "91136502117" since: "0"
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "91136502117" since: "0"
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): no new fans found
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "91136502117" until: "1299370990"
+2012-04-25T16:57:02+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T16:57:02+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T16:57:02+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "91136502117" until: "1244932115"
+2012-04-25T16:57:03+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-25T17:58:01+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T17:58:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T17:58:01+00:00 [CLI] INFO (6): Updating Fanpage: "91136502117"
+2012-04-25T17:58:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "91136502117" since: "0"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "91136502117" since: "0"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "91136502117" since: "0"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): no new fans found
+2012-04-25T17:58:02+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "91136502117" until: "1299370990"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Initializing Fanpage: "91136502117"
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-25T17:58:02+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "91136502117" until: "1244932115"
+2012-04-25T17:58:02+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-25T17:58:03+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-25T18:45:42+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-25T18:45:42+00:00 [CLI] INFO (6): new job sceduled after 1 hour
