@@ -81,7 +81,6 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $source_data = $this->getSourceInfo($response->getBody());
 
                 if ($authenticate) {
-                    die('here');
                     $source = $this->authenticateSource($source_data);
                 } else {
                     $source = $this->authenticateFan($source_data);
@@ -156,7 +155,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             default:
                 return false;
         }
-
+die('hjere');
         $this->addFanpages($source_data);
         
         return $user;
