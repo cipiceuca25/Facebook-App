@@ -135,6 +135,38 @@ class Model_DbTable_Users extends Fancrank_Db_Table
             'PRIMARY' => false,
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
+            ),
+        'gender' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'users',
+            'COLUMN_NAME' => 'gender',
+            'COLUMN_POSITION' => 9,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => '45',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
+        'locale' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'users',
+            'COLUMN_NAME' => 'locale',
+            'COLUMN_POSITION' => 10,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => '45',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
             )
         );
 
@@ -146,7 +178,9 @@ class Model_DbTable_Users extends Fancrank_Db_Table
         'user_avatar',
         'user_email',
         'user_access_token',
-        'user_created'
+        'user_created',
+        'gender',
+        'locale'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Users';

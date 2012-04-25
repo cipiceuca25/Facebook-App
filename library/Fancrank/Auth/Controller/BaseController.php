@@ -43,12 +43,15 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         
         if ($this->_auth->hasIdentity()) {
             $this->_identity = $this->_auth->getIdentity();
-
-            $this->_helper->viewRenderer->setRender('index/authorize', null, true);
-            $this->oauth2(false, $this->_identity->user_id);
         } else {
-            $this->view->error = 'Unauthorized';
-            $this->_helper->viewRenderer->setRender('home/failure', null, true);
+            $this->_helper->viewRenderer->setRender('index/authorize', null, true);
+            $user = $this->oauth2(false, false);
+            
+            if ($user) {
+                //create user session
+                $this->_auth->getStorage()->write($user);
+                //$this->_auth->setExpirationSeconds(5259487);
+            }
         }
     } 
 
@@ -159,48 +162,73 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 return false;
         }
 
-        $this->addFanpages($source_data);
+        $fanpages = $this->addFanpages($source_data);
         
         return $user;
     }
 
     private function authenticateFan($source_data)
     {
-        $users = new Model_Users;
+        $fancrank_users_model = new Model_FancrankUsers;
 
         // check for matching records
-        $select = $users->select();
-        $select->where('user_id = ?', $source_data->user_id);
+        $select = $fancrank_users_model->select();
+        $select->where('facebook_user_id = ?', $source_data->user_id);
 
         // Returns NULL if no records match selection criteria.
-        $user = $users->fetchAll($select);
+        $user = $fancrank_users_model->fetchAll($select);
 
         switch (count($user)) {
             case 0:
-                // check for duplicate user handle
-                if ($users->countByUserHandle($source_data->user_handle) > 0) {
-                    $source_data->user_handle = $source_data->user_handle . substr(time(), -5);
+                //add the fan if it doesnt exist
+                $fans_model = new Model_Fans;
+                $select = $fans_model->select();
+                $select->where($fans_model->getAdapter()->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data->user_id, $this->_getParam('id')));
+                $fan = $fans_model->fetchAll($select);
+//die(print_r($source_data));
+                if (!count($fan)) {
+                    $new_fan_row = array(
+                        'facebook_user_id'      => $source_data->user_id,
+                        'name'                  => isset($source_data->username) ? $source_data->username : $source_data->user_first_name . ' ' . $source_data->user_last_name,
+                        'first_name'            => $source_data->user_first_name,
+                        'last_name'             => $source_data->user_last_name,
+                        'user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $source_data->user_id),
+                        'gender'                => $source_data->gender,
+                        'locale'                 => $source_data->locale,
+                        'lang'                  => '',
+                        'fanpage_id'            => $this->_getParam('id')
+                    );  
+
+                    $new_fan = $fans_model->createRow($new_fan_row);
+                    try {
+                        $new_fan->save();
+                    } catch (Exception $e) {
+                        die($e->getMessage());
+                    }
                 }
 
-                $user = $users->createRow((array)$source_data);
-                $user->save();
+                $row = array(
+                    'facebook_user_id' => $source_data->user_id,
+                    'fancrank_user_email'   => $source_data->user_email,
+                    'access_token' => $source_data->user_access_token,
+                );
 
+                //will only insert if fan is present in fan table so must collect fans
+                $user = $fancrank_users_model->createRow($row);
+                $user->save();
 
                 break;
 
             case 1:
                 //update some user data
-                $user = $users->findByUserId($source_data->user_id)->current();
+                $user = $users->findByFacebookUserId($source_data->user_id)->current();
                 $user->user_access_token = $source_data->user_access_token;
-                $user->user_avatar = $source_data->user_avatar;
                 $user->save();
                 break;
 
             default:
                 return false;
         }
-
-        $this->addFanpages($source_data);
         
         return $user;
     }

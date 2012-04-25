@@ -3,7 +3,7 @@
 class Model_DbTable_Fans extends Fancrank_Db_Table
 {
 
-    protected $_name = 'Fans';
+    protected $_name = 'fans';
 
     protected $_primary = array(
         'facebook_user_id',
@@ -13,7 +13,7 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
     protected $_metadata = array(
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Fans',
+            'TABLE_NAME' => 'fans',
             'COLUMN_NAME' => 'facebook_user_id',
             'COLUMN_POSITION' => 1,
             'DATA_TYPE' => 'bigint',
@@ -29,7 +29,7 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             ),
         'fanpage_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Fans',
+            'TABLE_NAME' => 'fans',
             'COLUMN_NAME' => 'fanpage_id',
             'COLUMN_POSITION' => 2,
             'DATA_TYPE' => 'bigint',
@@ -45,7 +45,7 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             ),
         'name' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Fans',
+            'TABLE_NAME' => 'fans',
             'COLUMN_NAME' => 'name',
             'COLUMN_POSITION' => 3,
             'DATA_TYPE' => 'varchar',
@@ -61,7 +61,7 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             ),
         'first_name' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Fans',
+            'TABLE_NAME' => 'fans',
             'COLUMN_NAME' => 'first_name',
             'COLUMN_POSITION' => 4,
             'DATA_TYPE' => 'varchar',
@@ -77,7 +77,7 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             ),
         'last_name' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Fans',
+            'TABLE_NAME' => 'fans',
             'COLUMN_NAME' => 'last_name',
             'COLUMN_POSITION' => 5,
             'DATA_TYPE' => 'varchar',
@@ -91,11 +91,27 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
+        'user_avatar' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fans',
+            'COLUMN_NAME' => 'user_avatar',
+            'COLUMN_POSITION' => 6,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => false,
+            'LENGTH' => '255',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
         'gender' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Fans',
+            'TABLE_NAME' => 'fans',
             'COLUMN_NAME' => 'gender',
-            'COLUMN_POSITION' => 6,
+            'COLUMN_POSITION' => 7,
             'DATA_TYPE' => 'text',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -109,9 +125,9 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             ),
         'locale' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Fans',
+            'TABLE_NAME' => 'fans',
             'COLUMN_NAME' => 'locale',
-            'COLUMN_POSITION' => 7,
+            'COLUMN_POSITION' => 8,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -125,9 +141,9 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             ),
         'lang' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Fans',
+            'TABLE_NAME' => 'fans',
             'COLUMN_NAME' => 'lang',
-            'COLUMN_POSITION' => 8,
+            'COLUMN_POSITION' => 9,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -141,9 +157,9 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             ),
         'country' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Fans',
+            'TABLE_NAME' => 'fans',
             'COLUMN_NAME' => 'country',
-            'COLUMN_POSITION' => 9,
+            'COLUMN_POSITION' => 10,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -163,6 +179,7 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
         'name',
         'first_name',
         'last_name',
+        'user_avatar',
         'gender',
         'locale',
         'lang',

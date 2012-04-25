@@ -54,18 +54,11 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_FanpageAdmins';
 
-    protected $_referenceMap = array(
-        'FANAPAGE_ADMIN_USER_FK' => array(
+    protected $_referenceMap = array('fk_fanpage_admins_1' => array(
             'columns' => 'facebook_user_id',
             'refTableClass' => 'Model_Users',
             'refColumns' => 'user_id'
-            ),
-        'FANPAGE_ADMIN_PAGE_FK' => array(
-            'columns' => 'fanpage_id',
-            'refTableClass' => 'Model_Fanpages',
-            'refColumns' => 'fanpage_id'
-            )
-        );
+            ));
 
     protected $_dependentTables = array();
 
@@ -102,11 +95,6 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
     public function findUsers($select = null)
     {
         return $this->findParentRow(new Model_DbTable_Users(), null, $select);
-    }
-
-    public function findFanpages($select = null)
-    {
-        return $this->findParentRow(new Model_DbTable_Fanpages(), null, $select);
     }
 
 

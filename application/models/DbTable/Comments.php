@@ -3,14 +3,14 @@
 class Model_DbTable_Comments extends Fancrank_Db_Table
 {
 
-    protected $_name = 'Comments';
+    protected $_name = 'comments';
 
     protected $_primary = array('comment_id');
 
     protected $_metadata = array(
         'comment_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Comments',
+            'TABLE_NAME' => 'comments',
             'COLUMN_NAME' => 'comment_id',
             'COLUMN_POSITION' => 1,
             'DATA_TYPE' => 'varchar',
@@ -26,7 +26,7 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
             ),
         'fanpage_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Comments',
+            'TABLE_NAME' => 'comments',
             'COLUMN_NAME' => 'fanpage_id',
             'COLUMN_POSITION' => 2,
             'DATA_TYPE' => 'bigint',
@@ -42,7 +42,7 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
             ),
         'post_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Comments',
+            'TABLE_NAME' => 'comments',
             'COLUMN_NAME' => 'post_id',
             'COLUMN_POSITION' => 3,
             'DATA_TYPE' => 'varchar',
@@ -58,7 +58,7 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
             ),
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Comments',
+            'TABLE_NAME' => 'comments',
             'COLUMN_NAME' => 'facebook_user_id',
             'COLUMN_POSITION' => 4,
             'DATA_TYPE' => 'bigint',
@@ -74,7 +74,7 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
             ),
         'user_category' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Comments',
+            'TABLE_NAME' => 'comments',
             'COLUMN_NAME' => 'user_category',
             'COLUMN_POSITION' => 5,
             'DATA_TYPE' => 'varchar',
@@ -90,7 +90,7 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
             ),
         'message' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Comments',
+            'TABLE_NAME' => 'comments',
             'COLUMN_NAME' => 'message',
             'COLUMN_POSITION' => 6,
             'DATA_TYPE' => 'text',
@@ -106,7 +106,7 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
             ),
         'created_time' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Comments',
+            'TABLE_NAME' => 'comments',
             'COLUMN_NAME' => 'created_time',
             'COLUMN_POSITION' => 7,
             'DATA_TYPE' => 'bigint',
@@ -122,7 +122,7 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
             ),
         'likes_count' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Comments',
+            'TABLE_NAME' => 'comments',
             'COLUMN_NAME' => 'likes_count',
             'COLUMN_POSITION' => 8,
             'DATA_TYPE' => 'float',
@@ -138,7 +138,7 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
             ),
         'type' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Comments',
+            'TABLE_NAME' => 'comments',
             'COLUMN_NAME' => 'type',
             'COLUMN_POSITION' => 9,
             'DATA_TYPE' => 'tinyint',

@@ -1,0 +1,31 @@
+<div class="center">
+    <div>
+        <? if ($this->source === false): ?>
+            <h1>Error</h1>
+        <? else: ?>
+            <h1>Success!</h1>
+        <? endif ?>
+
+        <p><a href="#">Close this Window</a></p>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+ 	jQuery(document).ready(function($){
+
+        $('a').click(function(event){
+            event.preventDefault();
+            self.close();
+        });
+
+        if (window.opener != null) {
+            <? if (property_exists($this, 'source')): ?>
+                //because jquery sucks ass. thats why.
+                window.opener.location.reload();
+            <? endif ?>
+           
+            //self.close();
+        }
+    });
+</script>

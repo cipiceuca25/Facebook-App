@@ -16,7 +16,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 
     public function indexAction()
     {
-        
+        $this->view->fanpage_id = $this->_getParam('id');
     }
 }
 

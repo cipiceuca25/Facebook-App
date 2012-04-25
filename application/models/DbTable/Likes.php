@@ -3,14 +3,14 @@
 class Model_DbTable_Likes extends Fancrank_Db_Table
 {
 
-    protected $_name = 'Likes';
+    protected $_name = 'likes';
 
     protected $_primary = array('likes_id');
 
     protected $_metadata = array(
         'likes_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Likes',
+            'TABLE_NAME' => 'likes',
             'COLUMN_NAME' => 'likes_id',
             'COLUMN_POSITION' => 1,
             'DATA_TYPE' => 'varchar',
@@ -26,7 +26,7 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
             ),
         'fanpage_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Likes',
+            'TABLE_NAME' => 'likes',
             'COLUMN_NAME' => 'fanpage_id',
             'COLUMN_POSITION' => 2,
             'DATA_TYPE' => 'bigint',
@@ -42,7 +42,7 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
             ),
         'post_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Likes',
+            'TABLE_NAME' => 'likes',
             'COLUMN_NAME' => 'post_id',
             'COLUMN_POSITION' => 3,
             'DATA_TYPE' => 'varchar',
@@ -58,7 +58,7 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
             ),
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Likes',
+            'TABLE_NAME' => 'likes',
             'COLUMN_NAME' => 'facebook_user_id',
             'COLUMN_POSITION' => 4,
             'DATA_TYPE' => 'bigint',
@@ -74,7 +74,7 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
             ),
         'post_type' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Likes',
+            'TABLE_NAME' => 'likes',
             'COLUMN_NAME' => 'post_type',
             'COLUMN_POSITION' => 5,
             'DATA_TYPE' => 'tinyint',

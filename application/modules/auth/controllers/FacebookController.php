@@ -24,7 +24,7 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
         $client->setUri('https://graph.facebook.com/me');
         $client->setMethod(Zend_Http_Client::GET);
         $client->setParameterGet('access_token', $access_token);
-        $client->setParameterGet('fields', 'id,username,link,first_name,last_name,email,birthday');
+        $client->setParameterGet('fields', 'id,username,link,first_name,last_name,email,birthday,gender,locale,languages');
 
         $response = $client->request();
 
@@ -46,6 +46,8 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
             'user_last_name'        => $data->last_name,
             'user_access_token'     => $access_token,
             'user_email'            => $email,
+            'locale'                => $data->locale,
+            'gender'                => $data->gender,
             'user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $data->id),
         );
     }
@@ -61,7 +63,7 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
                     'fanpage_id'        => $fanpage->id,
                     'fanpage_name'      => $fanpage->name,
                     'fanpage_category'  => $fanpage->category,
-                    'access_token'      => $fanpage->access_token
+                    'access_token'      => $fanpage->access_token,
                 );
 
                 $admins[] = array(
@@ -72,11 +74,14 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
         }
 
         $cols = $update = array('fanpage_id', 'fanpage_name', 'fanpage_category', 'access_token');
-
         $fanpages_model->insertMultiple($rows, $cols, $update);
+
 //die(print_r($admins));
-        $cols = $update = array('facebook_user_id', 'fanpage_id');
+        $cols = array('facebook_user_id', 'fanpage_id');
+        $update = array('facebook_user_id', 'fanpage_id');
         $fanpage_admins_model = new Model_FanpageAdmins;
         $fanpage_admins_model->insertMultiple($admins, $cols, $update);
+
+        return $rows;
     }
 }
