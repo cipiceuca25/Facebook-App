@@ -60,7 +60,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 $fields = array();
                 break;
             case 'albums':
-                $fields = array();
+                $fields = array('paging');
                 break;
             case 'photos':
                 if ($extra) {
@@ -173,7 +173,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 'type' => $post->type,
                 'created_time' => $post->created_time,
                 'updated_time' => $post->updated_time,
-                'comments_count' => $post->comments->count
+                'comments_count' => $post->comments->count,
+                'likes_count'   => isset($post->likes) && isset($post->likes->count) ? $post->likes->count : 0
             );
 
             if (property_exists($post, 'application') && isset($post->application_id)) {
@@ -185,6 +186,22 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             }
 
             $posts[] = $row;
+
+            if (isset($post->likes) && isset($post->likes->count)) {
+                
+                foreach($post->likes->data as $like) {
+                    $fans[] = $like->id;
+
+                    $likes[] = array(
+                        'fanpage_id' => $this->fanpage->fanpage_id,
+                        'post_id'   => $post->id,
+                        'facebook_user_id'  => $like->id,
+                        'post_type' => $post->type        
+                    );
+                }
+            }
+
+            $fans[] = $post->from->id;
 
             if ($post->type != 'page' && $post->type != 'status') {
 
@@ -214,12 +231,14 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                         'created_time'      => $comment->created_time,
                         'likes_count'             => isset($comment->likes) ? $comment->likes : 0
                     );
+
+                    $fans[] = $comment->from->id;
                 }
             }
         }
 
-        $cols = array('post_id', 'facebook_user_id', 'fanpage_id', 'message', 'type', 'created_time', 'updated_time', 'comments_count');
-        $update = array('updated_time', 'comments_count');
+        $cols = array('post_id', 'facebook_user_id', 'fanpage_id', 'message', 'type', 'created_time', 'updated_time', 'comments_count', 'likes_count');
+        $update = array('updated_time', 'comments_count', 'likes_count');
         $posts_model->insertMultiple($posts, $cols, $update);
 
         if (isset($medias)) {
@@ -228,13 +247,24 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             $posts_media_model->insertMultiple($medias, $cols, $update);
         }
 
-        if (isset($comments)) {
-            $cols = array('comment_id', 'fanpage_id', 'post_id', 'facebook_user_id', 'user_category', 'message', 'created_time', 'likes_count');
+        if(isset($comments)) {
+            $cols = array('post_id', 'fanpage_id','facebook_user_id', 'user_category', 'message', 'created_time', 'likes_count');
             $update = array('message', 'likes_count');
 
             $comments_model = new Model_Comments;
-            $comments_model->insertMultiple($comments, $cols, $update);
+            $comments_model->insertMultiple($comments, $cols, $update);   
         }
+
+        if (isset($likes)) {
+            $cols = array('fanpage_id','post_id', 'facebook_user_id', 'post_type');
+            $update = array('post_type',);
+
+            $likes_model = new Model_Likes;
+            $likes_model->insertMultiple($comments, $cols, $update);
+        }
+
+//ie(print_r($fans));
+        $this->storeFans(array_unique($fans));
     }
 
     private function storeAlbums($albums)
@@ -255,7 +285,42 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
     private function storeFans($fans)
     {
-        
+
+        foreach($fans as $fan) {
+            $client = new Zend_Http_Client;
+            $client->setUri('https://graph.facebook.com/' . $fan);
+            $client->setMethod(Zend_Http_Client::GET);
+            $client->setParameterGet('access_token', $this->fanpage->access_token);
+            //$client->setParameterGet('fields', 'id,username,link,first_name,last_name,email,birthday,gender,locale,languages');
+            
+            $response = $client->request();
+            $data = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+
+            if (isset($data->languages)) {
+                foreach($data->languages as $language) {
+                    $lang[] = $language->name;
+                }
+            } else {
+                $lang = array();
+            }
+
+            $rows[] = array(
+                'facebook_user_id'  => $data->id,
+                'fanpage_id'        => isset($data->picture) ? $data->picture : $this->fanpage->fanpage_id,
+                'name'              => $data->name,
+                'user_avatar'       => sprintf('https://graph.facebook.com/%s/picture', $data->id),
+                'location'          => isset($data->location) ? $data->location->name : '',
+                'gender'            => isset($data->gender) ? $data->gender : '',
+                'locale'            => isset($data->locale) ? $data->locale : '',
+                'lang'              => implode(',', $lang)
+            );
+        }
+
+        $cols = array('facebook_user_id', 'fanpage_id', 'name', 'user_avatar', 'location', 'gender', 'locale', 'lang');
+        $update = array('user_avatar', 'location', 'gender', 'locale', 'lang');
+
+        $fans_model = new Model_Fans;
+        $fans_model->insertMultiple($rows, $cols, $update);
     }
     
 }

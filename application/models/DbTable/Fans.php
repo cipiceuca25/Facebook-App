@@ -170,6 +170,22 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY' => false,
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
+            ),
+        'location' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'fans',
+            'COLUMN_NAME' => 'location',
+            'COLUMN_POSITION' => 11,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => false,
+            'LENGTH' => '255',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
             )
         );
 
@@ -183,7 +199,8 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
         'gender',
         'locale',
         'lang',
-        'country'
+        'country',
+        'location'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Fans';

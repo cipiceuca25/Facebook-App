@@ -1925,3 +1925,323 @@
 2012-04-25T20:14:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
 2012-04-25T21:10:27+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
 2012-04-25T21:10:27+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): Updating Fanpage: "265158018597"
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "265158018597" since: "0"
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "265158018597" since: "0"
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T15:57:01+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T15:57:02+00:00 [CLI] INFO (6): no new fans found
+2012-04-26T15:57:02+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T15:57:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T15:57:02+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "265158018597" until: "1287779376"
+2012-04-26T15:57:02+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-26T15:57:03+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-26T15:57:04+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T15:57:04+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T15:57:04+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T15:57:05+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T15:57:05+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T15:57:05+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T15:57:06+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): Updating Fanpage: "265158018597"
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "265158018597" since: "0"
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T16:58:01+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "265158018597" since: "0"
+2012-04-26T16:58:02+00:00 [CLI] INFO (6): no new fans found
+2012-04-26T16:58:02+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-26T16:58:02+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T16:58:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T16:58:02+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "265158018597" until: "1287779376"
+2012-04-26T16:58:02+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T16:58:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T16:58:02+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T16:58:02+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-26T16:58:03+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T16:58:03+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T16:58:03+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T16:58:04+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T17:12:42+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:12:42+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:12:42+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T17:12:45+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:12:45+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:12:45+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T17:12:46+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:12:46+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:12:46+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T17:12:47+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): Updating Fanpage: "265158018597"
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "265158018597" since: "0"
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "265158018597" since: "0"
+2012-04-26T17:59:01+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T17:59:02+00:00 [CLI] INFO (6): no new fans found
+2012-04-26T17:59:02+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-26T17:59:02+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:59:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:59:02+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "265158018597" until: "1287779376"
+2012-04-26T17:59:03+00:00 [CLI] ERR (3): Invalid Fanpage ID: "photos"
+2012-04-26T17:59:03+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:59:03+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:59:03+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T17:59:04+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T17:59:04+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T17:59:04+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T17:59:05+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T18:48:11+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:48:11+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:48:11+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T18:48:13+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:48:13+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:48:13+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T18:48:13+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:48:13+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:48:13+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T18:48:14+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T18:48:30+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:48:30+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:48:30+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T18:49:00+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:49:00+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:49:00+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T18:53:57+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:53:57+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:53:57+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T18:54:00+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:54:00+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:54:00+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T18:54:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:54:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:54:01+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T18:54:02+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T18:54:23+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:54:23+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:54:23+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T18:56:47+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:56:47+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:56:47+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T18:57:09+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:57:09+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:57:09+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T18:57:10+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:57:10+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:57:10+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T18:57:11+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:57:11+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:57:11+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T18:57:11+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T18:59:44+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T18:59:44+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T18:59:44+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "265158018597" since: "0"
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): Updating Fanpage: "265158018597"
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "265158018597" since: "0"
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "265158018597" since: "0"
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:00:01+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:00:02+00:00 [CLI] INFO (6): no new fans found
+2012-04-26T19:00:05+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:00:05+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:00:05+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T19:00:06+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:00:06+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:00:06+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T19:00:07+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T19:08:11+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:08:11+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:08:11+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:08:28+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:08:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:08:28+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:08:42+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:08:42+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:08:42+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:08:57+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:08:57+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:08:57+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:09:10+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:09:10+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:09:10+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:09:40+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:09:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:09:40+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:09:48+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:09:48+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:09:48+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:12:51+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:12:51+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:12:51+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:13:18+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:13:18+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:13:18+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:14:46+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:14:46+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:14:46+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:15:18+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:15:18+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:15:18+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:16:15+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:16:15+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:16:15+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:17:43+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:17:43+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:17:43+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:18:05+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:18:05+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:18:05+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:19:21+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:19:21+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:19:21+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:20:18+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:20:18+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:20:18+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:21:43+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:21:43+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:21:43+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:22:24+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:22:24+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:22:24+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:22:57+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:22:57+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:22:57+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:23:22+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:23:22+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:23:22+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:26:51+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:26:51+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:26:51+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:27:19+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:27:19+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:27:19+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:27:48+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:27:48+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:27:48+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:28:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:28:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:28:01+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:28:15+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:28:15+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:28:15+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:29:19+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:29:19+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:29:19+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:29:28+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:29:28+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:29:28+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:29:40+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:29:40+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:29:40+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:30:43+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:30:43+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:30:43+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:30:54+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:30:54+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:30:54+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:32:54+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:32:54+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:32:54+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:33:08+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:33:08+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:33:08+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:34:07+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:34:07+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:34:07+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:35:48+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:35:48+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:35:48+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:36:15+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:36:15+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:36:15+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:36:17+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:36:17+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:36:17+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T19:36:21+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:36:21+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:36:21+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T19:36:21+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T19:36:52+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:36:52+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:36:52+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:36:54+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:36:54+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:36:54+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T19:36:58+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:36:58+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:36:58+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T19:36:58+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T19:39:33+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:39:33+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:39:33+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:41:34+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:41:34+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:41:34+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T19:57:46+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T19:57:46+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T19:57:46+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T20:01:01+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:01:01+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:01:01+00:00 [CLI] INFO (6): Updating Fanpage: "265158018597"
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): Fetching albums from Fanpage: "265158018597" since: "0"
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): Fetching fans from Fanpage: "265158018597" since: "0"
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): no new albums found
+2012-04-26T20:01:02+00:00 [CLI] INFO (6): no new fans found
+2012-04-26T20:01:04+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:01:04+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:01:04+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T20:01:08+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:01:08+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:01:08+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T20:01:08+00:00 [CLI] INFO (6): no new feed found
+2012-04-26T20:04:24+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:04:24+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:04:24+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T20:05:05+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:05:05+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:05:05+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" since: "0"
+2012-04-26T20:05:07+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:05:07+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:05:07+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1299617884"
+2012-04-26T20:05:11+00:00 [CLI] INFO (6): Initializing Fanpage: "265158018597"
+2012-04-26T20:05:11+00:00 [CLI] INFO (6): new job sceduled after 1 hour
+2012-04-26T20:05:11+00:00 [CLI] INFO (6): Fetching feed from Fanpage: "265158018597" until: "1264140338"
+2012-04-26T20:05:11+00:00 [CLI] INFO (6): no new feed found

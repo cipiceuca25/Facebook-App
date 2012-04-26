@@ -39,6 +39,14 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
             $email = null;
         }
 
+        if (isset($data->languages)) {
+            foreach($data->languages as $language) {
+                $lang[] = $language->name;
+            }
+        } else {
+            $lang = array();
+        }
+
         return (object) array(
             'user_id'               => $data->id,
             'user_handle'           => isset($data->username) ? $data->username : $data->first_name . ' ' . $data->last_name,
@@ -49,6 +57,7 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
             'locale'                => $data->locale,
             'gender'                => $data->gender,
             'user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $data->id),
+            'lang'                  => implode(',', $lang)
         );
     }
 

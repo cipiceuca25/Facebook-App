@@ -185,7 +185,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $select = $fans_model->select();
                 $select->where($fans_model->getAdapter()->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data->user_id, $this->_getParam('id')));
                 $fan = $fans_model->fetchAll($select);
-//die(print_r($source_data));
+
                 if (!count($fan)) {
                     $new_fan_row = array(
                         'facebook_user_id'      => $source_data->user_id,
@@ -195,7 +195,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                         'user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $source_data->user_id),
                         'gender'                => $source_data->gender,
                         'locale'                 => $source_data->locale,
-                        'lang'                  => '',
+                        'lang'                  =>  $source_data->lang,
                         'fanpage_id'            => $this->_getParam('id')
                     );  
 

@@ -5,18 +5,22 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
 
     protected $_name = 'likes';
 
-    protected $_primary = array('likes_id');
+    protected $_primary = array(
+        'fanpage_id',
+        'post_id',
+        'facebook_user_id'
+        );
 
     protected $_metadata = array(
-        'likes_id' => array(
+        'fanpage_id' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'likes',
-            'COLUMN_NAME' => 'likes_id',
+            'COLUMN_NAME' => 'fanpage_id',
             'COLUMN_POSITION' => 1,
-            'DATA_TYPE' => 'varchar',
+            'DATA_TYPE' => 'bigint',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '200',
+            'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -24,27 +28,11 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
             'PRIMARY_POSITION' => 1,
             'IDENTITY' => false
             ),
-        'fanpage_id' => array(
-            'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'likes',
-            'COLUMN_NAME' => 'fanpage_id',
-            'COLUMN_POSITION' => 2,
-            'DATA_TYPE' => 'bigint',
-            'DEFAULT' => null,
-            'NULLABLE' => false,
-            'LENGTH' => null,
-            'SCALE' => null,
-            'PRECISION' => null,
-            'UNSIGNED' => null,
-            'PRIMARY' => false,
-            'PRIMARY_POSITION' => null,
-            'IDENTITY' => false
-            ),
         'post_id' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'likes',
             'COLUMN_NAME' => 'post_id',
-            'COLUMN_POSITION' => 3,
+            'COLUMN_POSITION' => 2,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -52,15 +40,15 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
-            'PRIMARY' => false,
-            'PRIMARY_POSITION' => null,
+            'PRIMARY' => true,
+            'PRIMARY_POSITION' => 2,
             'IDENTITY' => false
             ),
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'likes',
             'COLUMN_NAME' => 'facebook_user_id',
-            'COLUMN_POSITION' => 4,
+            'COLUMN_POSITION' => 3,
             'DATA_TYPE' => 'bigint',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -68,15 +56,15 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
-            'PRIMARY' => false,
-            'PRIMARY_POSITION' => null,
+            'PRIMARY' => true,
+            'PRIMARY_POSITION' => 3,
             'IDENTITY' => false
             ),
         'post_type' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'likes',
             'COLUMN_NAME' => 'post_type',
-            'COLUMN_POSITION' => 5,
+            'COLUMN_POSITION' => 4,
             'DATA_TYPE' => 'tinyint',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -91,7 +79,6 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
         );
 
     protected $_cols = array(
-        'likes_id',
         'fanpage_id',
         'post_id',
         'facebook_user_id',
@@ -120,16 +107,6 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
         return $this->find($key)->current();
     }
 
-    public function findByLikesId($value, $order = null, $count = null, $offset = null)
-    {
-        return $this->fetchAll($this->getAdapter()->quoteInto('likes_id = ?', $value), $order, $count, $offset);
-    }
-
-    public function countByLikesId($value)
-    {
-        return $this->fetchRow($this->select()->from($this->_name, array('likes_id', 'num'=> 'COUNT(*)'))->where('likes_id = ?', $value))->num;
-    }
-
     public function findByFanpageId($value, $order = null, $count = null, $offset = null)
     {
         return $this->fetchAll($this->getAdapter()->quoteInto('fanpage_id = ?', $value), $order, $count, $offset);
@@ -137,7 +114,27 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
 
     public function countByFanpageId($value)
     {
-        return $this->fetchRow($this->select()->from($this->_name, array('likes_id', 'num'=> 'COUNT(*)'))->where('fanpage_id = ?', $value))->num;
+        return $this->fetchRow($this->select()->from($this->_name, array('fanpage_id","post_id","facebook_user_id', 'num'=> 'COUNT(*)'))->where('fanpage_id = ?', $value))->num;
+    }
+
+    public function findByPostId($value, $order = null, $count = null, $offset = null)
+    {
+        return $this->fetchAll($this->getAdapter()->quoteInto('post_id = ?', $value), $order, $count, $offset);
+    }
+
+    public function countByPostId($value)
+    {
+        return $this->fetchRow($this->select()->from($this->_name, array('fanpage_id","post_id","facebook_user_id', 'num'=> 'COUNT(*)'))->where('post_id = ?', $value))->num;
+    }
+
+    public function findByFacebookUserId($value, $order = null, $count = null, $offset = null)
+    {
+        return $this->fetchAll($this->getAdapter()->quoteInto('facebook_user_id = ?', $value), $order, $count, $offset);
+    }
+
+    public function countByFacebookUserId($value)
+    {
+        return $this->fetchRow($this->select()->from($this->_name, array('fanpage_id","post_id","facebook_user_id', 'num'=> 'COUNT(*)'))->where('facebook_user_id = ?', $value))->num;
     }
 
     public function findFanpages($select = null)
