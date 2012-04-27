@@ -91,7 +91,7 @@ class Model_DbTable_FancrankUsers extends Fancrank_Db_Table
             'refColumns' => 'facebook_user_id'
             ));
 
-    protected $_dependentTables = array();
+    protected $_dependentTables = array('Model_FancrankUserLikes');
 
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {

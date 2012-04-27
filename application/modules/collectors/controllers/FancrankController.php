@@ -1,6 +1,6 @@
 <?php
 
-//WARNING: NOT TESTED
+//MAYBE THIS CAN RUN ONCE AFTER WE HAVE REAL TIME SETUP
 class Collectors_FancrankController extends Fancrank_Collectors_Controller_BaseController
 {
     private $types = array(
@@ -146,7 +146,22 @@ class Collectors_FancrankController extends Fancrank_Collectors_Controller_BaseC
 
     private function storeLikes($likes)
     {
-        
+        foreach($likes as $like)
+        {
+            $rows[] = array(
+                'facebook_user_id'  => $this->fancrank_user->facebook_user_id,
+                'like_id'           => $like->id,
+                'like_category'     => $like->category,
+                'like_name'         => $like->name,
+                'created_time'      => $like->created_time
+            );
+        }
+
+        $fancrank_user_likes_model = new Model_FancrankUserLikes;
+        $cols = array('facebook_user_id', 'like_id', 'like_category', 'like_name', 'created_time');
+        $update = array('like_category');
+
+        $fancrank_user_likes_model->insertMultiple($rows, $cols, $update);
     }
 }
 
