@@ -80,8 +80,8 @@ class Model_DbTable_FancrankUserLikes extends Fancrank_Db_Table
             'TABLE_NAME' => 'fancrank_user_likes',
             'COLUMN_NAME' => 'created_time',
             'COLUMN_POSITION' => 5,
-            'DATA_TYPE' => 'bigint',
-            'DEFAULT' => null,
+            'DATA_TYPE' => 'timestamp',
+            'DEFAULT' => 'CURRENT_TIMESTAMP',
             'NULLABLE' => false,
             'LENGTH' => null,
             'SCALE' => null,
@@ -141,6 +141,16 @@ class Model_DbTable_FancrankUserLikes extends Fancrank_Db_Table
     public function countByLikeId($value)
     {
         return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id","like_id', 'num'=> 'COUNT(*)'))->where('like_id = ?', $value))->num;
+    }
+
+    public function findByCreatedTime($value, $order = null, $count = null, $offset = null)
+    {
+        return $this->fetchAll($this->getAdapter()->quoteInto('created_time = ?', $value), $order, $count, $offset);
+    }
+
+    public function countByCreatedTime($value)
+    {
+        return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id","like_id', 'num'=> 'COUNT(*)'))->where('created_time = ?', $value))->num;
     }
 
     public function findFancrankUsers($select = null)

@@ -56,27 +56,11 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'user_category' => array(
-            'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'albums',
-            'COLUMN_NAME' => 'user_category',
-            'COLUMN_POSITION' => 4,
-            'DATA_TYPE' => 'varchar',
-            'DEFAULT' => null,
-            'NULLABLE' => true,
-            'LENGTH' => '255',
-            'SCALE' => null,
-            'PRECISION' => null,
-            'UNSIGNED' => null,
-            'PRIMARY' => false,
-            'PRIMARY_POSITION' => null,
-            'IDENTITY' => false
-            ),
         'album_name' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'albums',
             'COLUMN_NAME' => 'album_name',
-            'COLUMN_POSITION' => 5,
+            'COLUMN_POSITION' => 4,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -88,10 +72,26 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'description' => array(
+        'album_description' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'albums',
-            'COLUMN_NAME' => 'description',
+            'COLUMN_NAME' => 'album_description',
+            'COLUMN_POSITION' => 5,
+            'DATA_TYPE' => 'text',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => null,
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
+        'album_location' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'albums',
+            'COLUMN_NAME' => 'album_location',
             'COLUMN_POSITION' => 6,
             'DATA_TYPE' => 'text',
             'DEFAULT' => null,
@@ -104,10 +104,10 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'location' => array(
+        'album_link' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'albums',
-            'COLUMN_NAME' => 'location',
+            'COLUMN_NAME' => 'album_link',
             'COLUMN_POSITION' => 7,
             'DATA_TYPE' => 'text',
             'DEFAULT' => null,
@@ -120,27 +120,11 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'link' => array(
+        'album_cover_photo_id' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'albums',
-            'COLUMN_NAME' => 'link',
+            'COLUMN_NAME' => 'album_cover_photo_id',
             'COLUMN_POSITION' => 8,
-            'DATA_TYPE' => 'text',
-            'DEFAULT' => null,
-            'NULLABLE' => true,
-            'LENGTH' => null,
-            'SCALE' => null,
-            'PRECISION' => null,
-            'UNSIGNED' => null,
-            'PRIMARY' => false,
-            'PRIMARY_POSITION' => null,
-            'IDENTITY' => false
-            ),
-        'cover_photo_id' => array(
-            'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'albums',
-            'COLUMN_NAME' => 'cover_photo_id',
-            'COLUMN_POSITION' => 9,
             'DATA_TYPE' => 'bigint',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -152,11 +136,11 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'count' => array(
+        'album_photo_count' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'albums',
-            'COLUMN_NAME' => 'count',
-            'COLUMN_POSITION' => 10,
+            'COLUMN_NAME' => 'album_photo_count',
+            'COLUMN_POSITION' => 9,
             'DATA_TYPE' => 'int',
             'DEFAULT' => null,
             'NULLABLE' => false,
@@ -168,12 +152,28 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'type' => array(
+        'album_type' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'albums',
-            'COLUMN_NAME' => 'type',
-            'COLUMN_POSITION' => 11,
+            'COLUMN_NAME' => 'album_type',
+            'COLUMN_POSITION' => 10,
             'DATA_TYPE' => 'text',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => null,
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
+        'updated_time' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'albums',
+            'COLUMN_NAME' => 'updated_time',
+            'COLUMN_POSITION' => 11,
+            'DATA_TYPE' => 'timestamp',
             'DEFAULT' => null,
             'NULLABLE' => true,
             'LENGTH' => null,
@@ -189,25 +189,9 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
             'TABLE_NAME' => 'albums',
             'COLUMN_NAME' => 'created_time',
             'COLUMN_POSITION' => 12,
-            'DATA_TYPE' => 'bigint',
-            'DEFAULT' => null,
+            'DATA_TYPE' => 'timestamp',
+            'DEFAULT' => 'CURRENT_TIMESTAMP',
             'NULLABLE' => false,
-            'LENGTH' => null,
-            'SCALE' => null,
-            'PRECISION' => null,
-            'UNSIGNED' => null,
-            'PRIMARY' => false,
-            'PRIMARY_POSITION' => null,
-            'IDENTITY' => false
-            ),
-        'updated_time' => array(
-            'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'albums',
-            'COLUMN_NAME' => 'updated_time',
-            'COLUMN_POSITION' => 13,
-            'DATA_TYPE' => 'bigint',
-            'DEFAULT' => null,
-            'NULLABLE' => true,
             'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
@@ -222,16 +206,15 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
         'album_id',
         'fanpage_id',
         'facebook_user_id',
-        'user_category',
         'album_name',
-        'description',
-        'location',
-        'link',
-        'cover_photo_id',
-        'count',
-        'type',
-        'created_time',
-        'updated_time'
+        'album_description',
+        'album_location',
+        'album_link',
+        'album_cover_photo_id',
+        'album_photo_count',
+        'album_type',
+        'updated_time',
+        'created_time'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Albums';

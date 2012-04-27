@@ -197,9 +197,9 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                         'first_name'            => $source_data->user_first_name,
                         'last_name'             => $source_data->user_last_name,
                         'user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $source_data->user_id),
-                        'gender'                => $source_data->gender,
-                        'locale'                => $source_data->locale,
-                        'lang'                  =>  $source_data->lang,
+                        'gender'                => $source_data->user_gender,
+                        'locale'                => $source_data->user_locale,
+                        'lang'                  => $source_data->user_lang,
                         'fanpage_id'            => $this->_getParam('id')
                     );  
 
