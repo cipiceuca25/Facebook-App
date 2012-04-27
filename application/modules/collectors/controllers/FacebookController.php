@@ -233,7 +233,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                     $comments[] = array(
                         'comment_id'            => $comment->id,
                         'fanpage_id'            => $this->fanpage->fanpage_id,
-                        'post_id'               => $post->id,
+                        'comment_post_id'               => $post->id,
                         'facebook_user_id'      => $comment->from->id,
                         'comment_message'       => $comment->message,
                         'created_time'          => $created->toString(Zend_Date::ISO_8601),
@@ -256,7 +256,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         }
 
         if(isset($comments)) {
-            $cols = array('post_id', 'fanpage_id','facebook_user_id', 'comment_message', 'created_time', 'comment_likes_count');
+            $cols = array('comment_id', 'fanpage_id', 'comment_post_id', 'facebook_user_id', 'comment_message', 'created_time', 'comment_likes_count');
             $update = array('comment_message', 'comment_likes_count');
 
             $comments_model = new Model_Comments;
@@ -339,9 +339,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
             $rows[] = array(
                 'facebook_user_id'      => $data->id,
-                'fanpage_id'            => isset($data->picture) ? $data->picture : $this->fanpage->fanpage_id,
+                'fanpage_id'            => $this->fanpage->fanpage_id,
                 'fan_name'              => $data->name,
-                'fan_user_avatar'       => sprintf('https://graph.facebook.com/%s/picture', $data->id),
+                'fan_user_avatar'       => isset($data->picture) ? $data->picture : sprintf('https://graph.facebook.com/%s/picture', $data->id),
                 'fan_location'          => isset($data->location) ? $data->location->name : '',
                 'fan_gender'            => isset($data->gender) ? $data->gender : '',
                 'fan_locale'            => isset($data->locale) ? $data->locale : '',
