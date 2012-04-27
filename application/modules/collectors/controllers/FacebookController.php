@@ -67,12 +67,13 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 $fields = array();
                 break;
             case 'albums':
-                $fields = array('paging');
+                $fields = array();
                 break;
             case 'photos':
                 if ($extra) {
+                    $this->album_id = $extra;
                     $url = 'https://graph.facebook.com/' . $extra . '/photos';
-                    $fields = array('id','name','source','height','width','created_time');
+                    $fields = array('id','name','source','height','width', 'name', 'tags', 'place', 'updated_time', 'created_time');
                 } else {
                     return;
                 }
@@ -119,11 +120,11 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
         $json = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
 		//die(print_r($json));
-        if (property_exists($json, 'code')) {
+        if (property_exists($json, 'error')) {
             // try again
             Collector::Queue('5 minutes', 'facebook', 'fetch', array($this->fanpage->fanpage_id, $type, $direction, $timestamp));
 
-            Log::Info('Facebook request failed, re-trying after 5 minutes [%s]', $json->error_code);
+            Log::Info('Facebook request failed, re-trying after 5 minutes [%s]', $json->error->message);
 
             return;
         } else {
@@ -273,18 +274,37 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
     private function storeAlbums($albums)
     {
-        die(print_r($albums));
         $direction  = $this->_getParam(2, 'since');
         $timestamp  = $this->_getParam(3, 0);
 
         foreach ($albums as $album) {
-            Collector::Run('facebook', 'fetch', array($this->source->source_id, 'photos', $direction, $timestamp, $album->id));
+            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'photos', $direction, $timestamp, $album->id));
         }
     }
 
     private function storePhotos($photos)
     {
-        
+        //currenty not storing place, tags
+
+        foreach($photos as $photo) {
+            $rows[] = array(
+                'photo_id'      => $photo->id,
+                'fanpage_id'    => $this->fanpage->fanpage_id,
+                'album_id'      => $this->album_id,
+                'source'          => $photo->source,
+                'caption'       => isset($photo->name) ? $photo->name : '',
+                'width'         => $photo->width,
+                'height'        => $photo->height,
+                'updated_time'  => $photo->updated_time,
+                'created_time'  => $photo->created_time
+            );
+        }  
+
+        $cols = array('photo_id', 'fanpage_id', 'album_id', 'source', 'caption', 'width', 'height', 'updated_time', 'created_time');
+        $update = array('source', 'caption', 'updated_time');
+
+        $photos_model = new Model_Photos;
+        $photos_model->insertMultiple($rows, $cols, $update);
     }
 
     private function storeFans($fans)
