@@ -148,12 +148,14 @@ class Collectors_FancrankController extends Fancrank_Collectors_Controller_BaseC
     {
         foreach($likes as $like)
         {
+            $created = new Zend_Date($post->created_time);
+            
             $rows[] = array(
                 'facebook_user_id'  => $this->fancrank_user->facebook_user_id,
                 'like_id'           => $like->id,
                 'like_category'     => $like->category,
                 'like_name'         => $like->name,
-                'created_time'      => $like->created_time
+                'created_time'      => $created->toString(Zend_Date::ISO_8601)
             );
         }
 

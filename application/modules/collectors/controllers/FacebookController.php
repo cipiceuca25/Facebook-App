@@ -168,6 +168,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
     	foreach($feed as $post) {
             //die(print_r(split('_', $post->id)));
+            $created = new Zend_Date($post->created_time);
+            $updated = new Zend_Date($post->updated_time);
 
             $row = array(
                 'post_id'               => $post->id,
@@ -175,8 +177,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 'fanpage_id'            => $this->fanpage->fanpage_id,
                 'post_message'          => isset($post->message) ? $post->message : '',
                 'post_type'             => $post->type,
-                'created_time'          => $post->created_time,
-                'updated_time'          => $post->updated_time,
+                'created_time'          => $created->toString(Zend_Date::ISO_8601),
+                'updated_time'          => $updated->toString(Zend_Date::ISO_8601),
                 'post_comments_count'   => $post->comments->count,
                 'post_likes_count'      => isset($post->likes) && isset($post->likes->count) ? $post->likes->count : 0
             );
@@ -225,13 +227,16 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             if (isset($post->comments) && $post->comments->count ) {
                 
                 foreach($post->comments->data as $comment) {
+
+                    $created = new Zend_Date($comment->created_time);
+
                     $comments[] = array(
                         'comment_id'            => $comment->id,
                         'fanpage_id'            => $this->fanpage->fanpage_id,
                         'post_id'               => $post->id,
                         'facebook_user_id'      => $comment->from->id,
                         'comment_message'       => $comment->message,
-                        'created_time'          => $comment->created_time,
+                        'created_time'          => $created->toString(Zend_Date::ISO_8601),
                         'comment_likes_count'   => isset($comment->likes) ? $comment->likes : 0
                     );
 
@@ -287,6 +292,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     private function storePhotos($photos)
     {
         //currenty not storing place, tags
+        $created = new Zend_Date($photo->created_time);
+        $updated = new Zend_Date($photo->updated_time);
 
         foreach($photos as $photo) {
             $rows[] = array(
@@ -297,8 +304,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 'photo_caption'     => isset($photo->name) ? $photo->name : '',
                 'photo_width'       => $photo->width,
                 'photo_height'      => $photo->height,
-                'updated_time'      => $photo->updated_time,
-                'created_time'      => $photo->created_time
+                'updated_time'      => $created->toString(Zend_Date::ISO_8601),
+                'created_time'      => $updated->toString(Zend_Date::ISO_8601),
             );
         }  
 
