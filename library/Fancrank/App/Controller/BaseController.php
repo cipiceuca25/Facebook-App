@@ -9,7 +9,7 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
 
         if(!$this->_auth->hasIdentity()) {
-            $this->_helper->redirector('index', 'index');  
+            $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id')));  
         } else {
             $this->_identity = $this->_auth->getIdentity();
             $this->view->user = $this->_identity;

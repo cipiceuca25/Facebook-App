@@ -40,18 +40,14 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     {
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
-        
-        if ($this->_auth->hasIdentity()) {
-            $this->_identity = $this->_auth->getIdentity();
-        } else {
-            $this->_helper->viewRenderer->setRender('index/authorize', null, true);
-            $user = $this->oauth2(false, false);
+        $this->_helper->viewRenderer->setRender('index/authorize', null, true);
             
-            if ($user) {
-                //create user session
-                $this->_auth->getStorage()->write($user);
-                //$this->_auth->setExpirationSeconds(5259487);
-            }
+        $user = $this->oauth2(false, false);
+        
+        if ($user) {
+            //create user session
+            $this->_auth->getStorage()->write($user);
+            //$this->_auth->setExpirationSeconds(5259487);
         }
     } 
 
@@ -207,8 +203,6 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                     try {
                         $new_fan->save();
 
-                        Collector::Run($this->source, 'init', array($source->source_id));
-
                     } catch (Exception $e) {
                         die($e->getMessage());
                     }
@@ -224,7 +218,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $user = $fancrank_users_model->createRow($row);
                 $user->save();
 
-                Collector::Run($this->source, 'update', array($source->source_id));
+                Collector::Run('fancrank', 'init', array($source_data->user_id, 'likes'));
 
                 break;
 
@@ -233,6 +227,9 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $user = $fancrank_users_model->findByFacebookUserId($source_data->user_id)->current();
                 $user->access_token = $source_data->user_access_token;
                 $user->save();
+
+                Collector::Run('fancrank', 'update', array($source_data->user_id, 'likes'));
+
                 break;
 
             default:
