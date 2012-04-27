@@ -3,14 +3,14 @@
 class Model_DbTable_Photos extends Fancrank_Db_Table
 {
 
-    protected $_name = 'Photos';
+    protected $_name = 'photos';
 
     protected $_primary = array('photo_id');
 
     protected $_metadata = array(
         'photo_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'photo_id',
             'COLUMN_POSITION' => 1,
             'DATA_TYPE' => 'bigint',
@@ -26,7 +26,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'fanpage_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'fanpage_id',
             'COLUMN_POSITION' => 2,
             'DATA_TYPE' => 'bigint',
@@ -42,7 +42,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'album_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'album_id',
             'COLUMN_POSITION' => 3,
             'DATA_TYPE' => 'bigint',
@@ -58,7 +58,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'faceboook_user_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'faceboook_user_id',
             'COLUMN_POSITION' => 4,
             'DATA_TYPE' => 'bigint',
@@ -74,7 +74,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'user_category' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'user_category',
             'COLUMN_POSITION' => 5,
             'DATA_TYPE' => 'varchar',
@@ -90,7 +90,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'caption' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'caption',
             'COLUMN_POSITION' => 6,
             'DATA_TYPE' => 'text',
@@ -106,7 +106,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'picture' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'picture',
             'COLUMN_POSITION' => 7,
             'DATA_TYPE' => 'text',
@@ -122,7 +122,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'source' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'source',
             'COLUMN_POSITION' => 8,
             'DATA_TYPE' => 'text',
@@ -138,7 +138,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'height' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'height',
             'COLUMN_POSITION' => 9,
             'DATA_TYPE' => 'int',
@@ -154,7 +154,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'width' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'width',
             'COLUMN_POSITION' => 10,
             'DATA_TYPE' => 'int',
@@ -170,7 +170,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'link' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'link',
             'COLUMN_POSITION' => 11,
             'DATA_TYPE' => 'text',
@@ -186,7 +186,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'position' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'position',
             'COLUMN_POSITION' => 12,
             'DATA_TYPE' => 'int',
@@ -202,7 +202,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'created_time' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'created_time',
             'COLUMN_POSITION' => 13,
             'DATA_TYPE' => 'bigint',
@@ -218,7 +218,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
             ),
         'updated_time' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Photos',
+            'TABLE_NAME' => 'photos',
             'COLUMN_NAME' => 'updated_time',
             'COLUMN_POSITION' => 14,
             'DATA_TYPE' => 'bigint',

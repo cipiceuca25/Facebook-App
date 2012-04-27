@@ -17,8 +17,7 @@ class Admin_IndexController extends Fancrank_Admin_Controller_BaseController
 
     public function indexAction()
     {
-        //load the login page
-        $this->view->variable = "This is a view variable";
+        
         
     }
 }

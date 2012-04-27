@@ -47,12 +47,8 @@
     </head>
 
     <body controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>">
-        <div class="navbar navbar-fixed-top">
-            <?= $this->layout()->navbar ?>
-        </div>
-
+        
         <div class="container" role="main">
-                <?= APPLICATION_ENV ?>
                 <?= $this->layout()->content ?>
         </div>
 

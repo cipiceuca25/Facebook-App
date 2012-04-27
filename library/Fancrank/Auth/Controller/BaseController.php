@@ -36,19 +36,22 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         }
     }
 
-    public function installAction()
+    public function authorizeAction()
     {
         $this->_auth = Zend_Auth::getInstance();
-        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
+        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
         
         if ($this->_auth->hasIdentity()) {
             $this->_identity = $this->_auth->getIdentity();
-
-            $this->_helper->viewRenderer->setRender('index/install', null, true);
-            $this->oauth2(false, $this->_identity->user_id);
         } else {
-            $this->view->error = 'Unauthorized';
-            $this->_helper->viewRenderer->setRender('home/failure', null, true);
+            $this->_helper->viewRenderer->setRender('index/authorize', null, true);
+            $user = $this->oauth2(false, false);
+            
+            if ($user) {
+                //create user session
+                $this->_auth->getStorage()->write($user);
+                //$this->_auth->setExpirationSeconds(5259487);
+            }
         }
     } 
 
@@ -83,7 +86,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 if ($authenticate) {
                     $source = $this->authenticateSource($source_data);
                 } else {
-                    //$source = $this->addSource($source_data, $user_id);
+                    $source = $this->authenticateFan($source_data);
                 }
 
                 $this->view->source = $source;
@@ -125,12 +128,15 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         $users = new Model_Users;
 
         // check for matching records
-        $select = $users->select();
-        $select->where('user_id = ?', $source_data->user_id);
+        try {
+            $select = $users->select();
+            $select->where('user_id = ?', $source_data->user_id);
 
-        // Returns NULL if no records match selection criteria.
-        $user = $users->fetchAll($select);
-
+            // Returns NULL if no records match selection criteria.
+            $user = $users->fetchAll($select);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
         switch (count($user)) {
             case 0:
                 // check for duplicate user handle
@@ -156,7 +162,73 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 return false;
         }
 
-        $this->addFanpages($source_data);
+        $fanpages = $this->addFanpages($source_data);
+        
+        return $user;
+    }
+
+    private function authenticateFan($source_data)
+    {
+        $fancrank_users_model = new Model_FancrankUsers;
+
+        // check for matching records
+        $select = $fancrank_users_model->select();
+        $select->where('facebook_user_id = ?', $source_data->user_id);
+
+        // Returns NULL if no records match selection criteria.
+        $user = $fancrank_users_model->fetchAll($select);
+
+        switch (count($user)) {
+            case 0:
+                //add the fan if it doesnt exist
+                $fans_model = new Model_Fans;
+                $select = $fans_model->select();
+                $select->where($fans_model->getAdapter()->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data->user_id, $this->_getParam('id')));
+                $fan = $fans_model->fetchAll($select);
+
+                if (!count($fan)) {
+                    $new_fan_row = array(
+                        'facebook_user_id'      => $source_data->user_id,
+                        'name'                  => isset($source_data->username) ? $source_data->username : $source_data->user_first_name . ' ' . $source_data->user_last_name,
+                        'first_name'            => $source_data->user_first_name,
+                        'last_name'             => $source_data->user_last_name,
+                        'user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $source_data->user_id),
+                        'gender'                => $source_data->gender,
+                        'locale'                 => $source_data->locale,
+                        'lang'                  =>  $source_data->lang,
+                        'fanpage_id'            => $this->_getParam('id')
+                    );  
+
+                    $new_fan = $fans_model->createRow($new_fan_row);
+                    try {
+                        $new_fan->save();
+                    } catch (Exception $e) {
+                        die($e->getMessage());
+                    }
+                }
+
+                $row = array(
+                    'facebook_user_id' => $source_data->user_id,
+                    'fancrank_user_email'   => $source_data->user_email,
+                    'access_token' => $source_data->user_access_token,
+                );
+
+                //will only insert if fan is present in fan table so must collect fans
+                $user = $fancrank_users_model->createRow($row);
+                $user->save();
+
+                break;
+
+            case 1:
+                //update some user data
+                $user = $users->findByFacebookUserId($source_data->user_id)->current();
+                $user->user_access_token = $source_data->user_access_token;
+                $user->save();
+                break;
+
+            default:
+                return false;
+        }
         
         return $user;
     }
