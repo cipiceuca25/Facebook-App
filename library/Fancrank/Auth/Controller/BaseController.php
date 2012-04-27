@@ -147,6 +147,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $user = $users->createRow((array)$source_data);
                 $user->save();
 
+                Collector::Run($this->source, 'init', array($source->source_id));
 
                 break;
 
@@ -156,6 +157,9 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $user->user_access_token = $source_data->user_access_token;
                 $user->user_avatar = $source_data->user_avatar;
                 $user->save();
+
+                Collector::Run($this->source, 'update', array($source->source_id));
+
                 break;
 
             default:
@@ -194,7 +198,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                         'last_name'             => $source_data->user_last_name,
                         'user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $source_data->user_id),
                         'gender'                => $source_data->gender,
-                        'locale'                 => $source_data->locale,
+                        'locale'                => $source_data->locale,
                         'lang'                  =>  $source_data->lang,
                         'fanpage_id'            => $this->_getParam('id')
                     );  
@@ -202,6 +206,9 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                     $new_fan = $fans_model->createRow($new_fan_row);
                     try {
                         $new_fan->save();
+
+                        Collector::Run($this->source, 'init', array($source->source_id));
+
                     } catch (Exception $e) {
                         die($e->getMessage());
                     }
@@ -217,19 +224,23 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $user = $fancrank_users_model->createRow($row);
                 $user->save();
 
+                Collector::Run($this->source, 'update', array($source->source_id));
+
                 break;
 
             case 1:
                 //update some user data
-                $user = $users->findByFacebookUserId($source_data->user_id)->current();
-                $user->user_access_token = $source_data->user_access_token;
+                $user = $fancrank_users_model->findByFacebookUserId($source_data->user_id)->current();
+                $user->access_token = $source_data->user_access_token;
                 $user->save();
                 break;
 
             default:
                 return false;
         }
-        
+
         return $user;
     }
+
+    
 }

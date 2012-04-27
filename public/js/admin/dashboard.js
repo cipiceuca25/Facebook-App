@@ -39,7 +39,7 @@ jQuery(document).ready(function($){
 		//preview the app
 		id = $(event.target).attr('data-id');
 		//window.open('/dashboard/preview?id=' + id, 'preview', null, true);
-		window.location = '/dashboard/preview?id=' + id;
+		window.location = '/admin/dashboard/preview?id=' + id;
 	})
 
 	$(document).delegate('.install', 'click', function(event){

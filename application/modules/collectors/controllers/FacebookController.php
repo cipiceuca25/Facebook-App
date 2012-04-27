@@ -10,11 +10,11 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     public function init()
     {
         parent::init();
-
+        
         // get the fanpage object
         $this->fanpages = new Model_Fanpages;
         $fanpage = $this->fanpages->findRow($this->_getParam(0));
-        
+
         if ($fanpage === null) {
             // TODO not exiting
             Log::Err('Invalid Fanpage ID: "%s"', $this->_getParam(0));
@@ -25,8 +25,15 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         } else {
             $this->fanpage = $fanpage;
         }
+    }
 
+    public function initAction()
+    {
         Log::Info('Initializing Fanpage: "%s"', $this->fanpage->fanpage_id);
+
+        foreach ($this->types as $callback => $type) {
+            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, $callback, 'since', $this->fanpage->latest_timestamp));
+        }
 
         // schedule the next auto update
         Collector::Queue('1 hour', 'facebook', 'update', array($this->fanpage->fanpage_id));
@@ -69,10 +76,6 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 } else {
                     return;
                 }
-                break;
-
-            case 'fans':
-                $fields = array('id', 'name');
                 break;
 
             default:
@@ -264,7 +267,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         }
 
 //ie(print_r($fans));
-        $this->storeFans(array_unique($fans));
+        $unique_fans = array_unique($fans);
+        $this->storeFans($unique_fans);
     }
 
     private function storeAlbums($albums)
@@ -322,5 +326,4 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $fans_model = new Model_Fans;
         $fans_model->insertMultiple($rows, $cols, $update);
     }
-    
 }
