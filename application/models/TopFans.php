@@ -5,20 +5,123 @@ class Model_TopFans extends Model_DbTable_TopFans
 	public function getTopFans($page_id)
 	{
 		$select = $this->getAdapter()->select();
-		$select->from(array('fans' => 'fans'));
-		$select->where($this->getAdapter()->quoteInto('posts.post_id = ?', $id) AND $this->getAdapter()->quoteInto('posts.updated_time < ?', $updated_time));
-		$getTopFans = 	mysql_query(
-			"SELECT
-				Fans.fan_id, Fans.name, Likes.person_id, count(Likes.person_id) as num_likes
-			FROM
- 				Fans
- 				INNER JOIN Likes ON (Fans.fan_id = Likes.person_id)
-			WHERE
-				Likes.person_id IN (SELECT fan_id FROM Fans)
-			GROUP BY Likes.person_id
-			ORDER BY num_likes DESC
-			LIMIT 10"
+		$select->from(array('fans' => 'fans'),
+			array(
+				'fans.facebook_user_id', 
+				'fans.fan_name',
+				'likes.facebook_user_id',
+				'num_likes' => new Zend_Db_Expr('COUNT(likes.facebook_user_id)') 
+			)
 		);
+		$select->join(array('likes' => 'likes'), 'fans.facebook_user_id = likes.facebook_user_id');
+		//$select->where('likes.facebook_user_id IN (SELECT facebook_user_id FROM fans)');
+		$select->where($this->getAdapter()->quoteInto('fans.fanpage_id = ?', $page_id));
+		$select->group('likes.facebook_user_id');
+		$select->order('num_likes');
+		$select->limit(5);
+
+		//die(print_r($select->__toString()));
+		
+		return $this->getAdapter()->fetchAll($select);
+	}
+
+	public function getTopTalker($page_id)
+	{
+		$relevant_period = new Zend_Date(time() - 15552000);
+		$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
+
+		$select = "
+			SELECT posts_count.facebook_user_id, fans.fan_name, COUNT(fans.fan_name) AS number_of_posts 
+				FROM 
+				(SELECT facebook_user_id 
+					FROM posts
+					WHERE created_time > '".$relevant_period."' 
+					AND facebook_user_id != '". $page_id ."'
+					AND fanpage_id = '". $page_id ."'
+						UNION ALL 
+							SELECT facebook_user_id 
+							FROM comments
+							WHERE created_time > '".$relevant_period."' 
+							AND facebook_user_id != '". $page_id ."'
+							AND fanpage_id = '". $page_id ."'
+				) AS posts_count 
+			
+			INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id)		
+	
+			GROUP BY fans.fan_name 
+			ORDER BY number_of_posts DESC 
+			LIMIT 5";
+
+		return $this->getAdapter()->fetchAll($select);
+	}
+
+	public function getTopClicker($page_id)
+	{
+		$select = "
+			SELECT likes_count.facebook_user_id, fans.fan_name, COUNT(fans.fan_name) AS number_of_likes 
+				FROM (
+					SELECT facebook_user_id FROM likes
+					WHERE facebook_user_id != '". $page_id ."'
+					AND fanpage_id = '". $page_id ."' 
+				) AS likes_count
+				
+			INNER JOIN fans ON (fans.facebook_user_id = likes_count.facebook_user_id)	
+
+			GROUP BY fans.fan_name 
+			ORDER BY number_of_likes 
+			DESC LIMIT 10";
+
+		return $this->getAdapter()->fetchAll($select);
+	}
+
+	public function getMostPopular($page_id)
+	{
+
+		$relevant_period = new Zend_Date(time() - 15552000);
+		$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
+
+		$select = "
+			SELECT total_count.facebook_user_id, fans.fan_name, SUM(count) AS count 
+				FROM
+				(
+					SELECT facebook_user_id, SUM(likes_count) AS count 
+					FROM 
+					(
+						SELECT facebook_user_id, SUM(post_likes_count) AS likes_count 
+						FROM posts
+						WHERE created_time > '".$relevant_period."'  
+						AND facebook_user_id != '". $page_id ."'
+						AND fanpage_id = '". $page_id ."'
+						GROUP BY facebook_user_id 
+
+						UNION ALL 
+
+						SELECT facebook_user_id, SUM(comment_likes_count) AS likes_count 
+						FROM comments 
+						WHERE created_time > '".$relevant_period."' 
+						AND facebook_user_id != '". $page_id ."'
+						AND fanpage_id = '". $page_id ."'
+						GROUP BY facebook_user_id
+					) AS total_likes
+
+					GROUP BY facebook_user_id 
+
+					UNION ALL
+
+					SELECT facebook_user_id, SUM(post_comments_count) AS count 
+					FROM posts 
+					WHERE created_time > '".$relevant_period."'  
+					AND facebook_user_id != '". $page_id ."'
+					AND fanpage_id = '". $page_id ."'
+					GROUP BY facebook_user_id
+				) AS total_count
+				
+				INNER JOIN fans ON (fans.facebook_user_id = total_count.facebook_user_id)
+
+				GROUP BY facebook_user_id 
+				ORDER BY count DESC";
+
+		return $this->getAdapter()->fetchAll($select);
+
 	}
 }
-
