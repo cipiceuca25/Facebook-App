@@ -64,9 +64,8 @@ jQuery(document).ready(function($){
 			'success': function(xhr) {	
 		        installSuccess($(this).attr('data-id'));
 
-		        $(this).attr('class', 'btn btn-danger delete-tab').html('Delete Tab');
-				$(this).attr('data-original-title', 'Delete the fancrank app on your page');
-				$('.tooltip-inner').html('Delete the fancrank app on your page');
+		        $(this).addClass('disabled');
+				$('.tooltip-inner').html('Fancrank is already installed');
 			}.bind(this)
 		});
 		
@@ -87,6 +86,19 @@ jQuery(document).ready(function($){
 		});
 		
 	});*/
+
+	$('form[name=account]').submit(function(event) {
+		event.preventDefault();
+
+		$.ajax({
+			'url': $(this).attr('method'),
+			'type': 'UPDATE',
+			'data': $(this).serializeObject(),
+			'success': function(xhr) {	
+				new Alert.create('success', 'Updated user account successfully!');		
+			}.bind(this)
+		});
+	});
 
 });
 
