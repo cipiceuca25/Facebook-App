@@ -120,15 +120,15 @@ class Model_DbTable_Users extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'user_created' => array(
+        'user_gender' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'users',
-            'COLUMN_NAME' => 'user_created',
+            'COLUMN_NAME' => 'user_gender',
             'COLUMN_POSITION' => 8,
-            'DATA_TYPE' => 'timestamp',
-            'DEFAULT' => 'CURRENT_TIMESTAMP',
-            'NULLABLE' => false,
-            'LENGTH' => null,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => true,
+            'LENGTH' => '45',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -136,10 +136,10 @@ class Model_DbTable_Users extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'gender' => array(
+        'user_locale' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'users',
-            'COLUMN_NAME' => 'gender',
+            'COLUMN_NAME' => 'user_locale',
             'COLUMN_POSITION' => 9,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -152,15 +152,15 @@ class Model_DbTable_Users extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'locale' => array(
+        'user_created' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'users',
-            'COLUMN_NAME' => 'locale',
+            'COLUMN_NAME' => 'user_created',
             'COLUMN_POSITION' => 10,
-            'DATA_TYPE' => 'varchar',
-            'DEFAULT' => null,
-            'NULLABLE' => true,
-            'LENGTH' => '45',
+            'DATA_TYPE' => 'timestamp',
+            'DEFAULT' => 'CURRENT_TIMESTAMP',
+            'NULLABLE' => false,
+            'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -178,9 +178,9 @@ class Model_DbTable_Users extends Fancrank_Db_Table
         'user_avatar',
         'user_email',
         'user_access_token',
-        'user_created',
-        'gender',
-        'locale'
+        'user_gender',
+        'user_locale',
+        'user_created'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Users';

@@ -54,10 +54,10 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
             'user_last_name'        => $data->last_name,
             'user_access_token'     => $access_token,
             'user_email'            => $email,
-            'locale'                => $data->locale,
-            'gender'                => $data->gender,
+            'user_locale'           => $data->locale,
+            'user_gender'           => $data->gender,
             'user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $data->id),
-            'lang'                  => implode(',', $lang)
+            'user_lang'             => implode(',', $lang)
         );
     }
 

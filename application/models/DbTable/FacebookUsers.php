@@ -72,14 +72,30 @@ class Model_DbTable_FacebookUsers extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
+        'access_token' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'facebook_users',
+            'COLUMN_NAME' => 'access_token',
+            'COLUMN_POSITION' => 5,
+            'DATA_TYPE' => 'varchar',
+            'DEFAULT' => null,
+            'NULLABLE' => false,
+            'LENGTH' => '255',
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
+            ),
         'updated_time' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'facebook_users',
             'COLUMN_NAME' => 'updated_time',
-            'COLUMN_POSITION' => 5,
+            'COLUMN_POSITION' => 6,
             'DATA_TYPE' => 'timestamp',
-            'DEFAULT' => 'CURRENT_TIMESTAMP',
-            'NULLABLE' => false,
+            'DEFAULT' => null,
+            'NULLABLE' => true,
             'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
@@ -88,15 +104,15 @@ class Model_DbTable_FacebookUsers extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'access_token' => array(
+        'created_time' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'facebook_users',
-            'COLUMN_NAME' => 'access_token',
-            'COLUMN_POSITION' => 6,
-            'DATA_TYPE' => 'varchar',
-            'DEFAULT' => null,
+            'COLUMN_NAME' => 'created_time',
+            'COLUMN_POSITION' => 7,
+            'DATA_TYPE' => 'timestamp',
+            'DEFAULT' => 'CURRENT_TIMESTAMP',
             'NULLABLE' => false,
-            'LENGTH' => '255',
+            'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -111,8 +127,9 @@ class Model_DbTable_FacebookUsers extends Fancrank_Db_Table
         'facebook_user_name',
         'facebook_user_email',
         'facebook_user_gender',
+        'access_token',
         'updated_time',
-        'access_token'
+        'created_time'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_FacebookUsers';

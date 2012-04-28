@@ -5,7 +5,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
     public function indexAction()
     {
-        
+
     }
 
     public function fanpagesAction() 

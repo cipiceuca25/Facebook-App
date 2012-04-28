@@ -1,16 +1,19 @@
 <?php
 
-class Model_DbTable_FancrankUsers extends Fancrank_Db_Table
+class Model_DbTable_FancrankUserLikes extends Fancrank_Db_Table
 {
 
-    protected $_name = 'fancrank_users';
+    protected $_name = 'fancrank_user_likes';
 
-    protected $_primary = array('facebook_user_id');
+    protected $_primary = array(
+        'facebook_user_id',
+        'like_id'
+        );
 
     protected $_metadata = array(
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'fancrank_users',
+            'TABLE_NAME' => 'fancrank_user_likes',
             'COLUMN_NAME' => 'facebook_user_id',
             'COLUMN_POSITION' => 1,
             'DATA_TYPE' => 'bigint',
@@ -24,26 +27,26 @@ class Model_DbTable_FancrankUsers extends Fancrank_Db_Table
             'PRIMARY_POSITION' => 1,
             'IDENTITY' => false
             ),
-        'fancrank_user_email' => array(
+        'like_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'fancrank_users',
-            'COLUMN_NAME' => 'fancrank_user_email',
+            'TABLE_NAME' => 'fancrank_user_likes',
+            'COLUMN_NAME' => 'like_id',
             'COLUMN_POSITION' => 2,
-            'DATA_TYPE' => 'varchar',
+            'DATA_TYPE' => 'bigint',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '255',
+            'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
-            'PRIMARY' => false,
-            'PRIMARY_POSITION' => null,
+            'PRIMARY' => true,
+            'PRIMARY_POSITION' => 2,
             'IDENTITY' => false
             ),
-        'access_token' => array(
+        'like_category' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'fancrank_users',
-            'COLUMN_NAME' => 'access_token',
+            'TABLE_NAME' => 'fancrank_user_likes',
+            'COLUMN_NAME' => 'like_category',
             'COLUMN_POSITION' => 3,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -56,15 +59,15 @@ class Model_DbTable_FancrankUsers extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'updated_time' => array(
+        'like_name' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'fancrank_users',
-            'COLUMN_NAME' => 'updated_time',
+            'TABLE_NAME' => 'fancrank_user_likes',
+            'COLUMN_NAME' => 'like_name',
             'COLUMN_POSITION' => 4,
-            'DATA_TYPE' => 'bigint',
+            'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
-            'NULLABLE' => true,
-            'LENGTH' => null,
+            'NULLABLE' => false,
+            'LENGTH' => '255',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -74,7 +77,7 @@ class Model_DbTable_FancrankUsers extends Fancrank_Db_Table
             ),
         'created_time' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'fancrank_users',
+            'TABLE_NAME' => 'fancrank_user_likes',
             'COLUMN_NAME' => 'created_time',
             'COLUMN_POSITION' => 5,
             'DATA_TYPE' => 'timestamp',
@@ -92,23 +95,23 @@ class Model_DbTable_FancrankUsers extends Fancrank_Db_Table
 
     protected $_cols = array(
         'facebook_user_id',
-        'fancrank_user_email',
-        'access_token',
-        'updated_time',
+        'like_id',
+        'like_category',
+        'like_name',
         'created_time'
         );
 
-    protected $_rowClass = 'Model_DbTable_Row_FancrankUsers';
+    protected $_rowClass = 'Model_DbTable_Row_FancrankUserLikes';
 
-    protected $_rowsetClass = 'Model_DbTable_Rowset_FancrankUsers';
+    protected $_rowsetClass = 'Model_DbTable_Rowset_FancrankUserLikes';
 
-    protected $_referenceMap = array('FANCRANK_USER_FAN_FK' => array(
+    protected $_referenceMap = array('fk_fancrank_user_likes_facebook_user_id' => array(
             'columns' => 'facebook_user_id',
-            'refTableClass' => 'Model_Fans',
+            'refTableClass' => 'Model_FancrankUsers',
             'refColumns' => 'facebook_user_id'
             ));
 
-    protected $_dependentTables = array('Model_FancrankUserLikes');
+    protected $_dependentTables = array();
 
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {
@@ -127,12 +130,32 @@ class Model_DbTable_FancrankUsers extends Fancrank_Db_Table
 
     public function countByFacebookUserId($value)
     {
-        return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id', 'num'=> 'COUNT(*)'))->where('facebook_user_id = ?', $value))->num;
+        return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id","like_id', 'num'=> 'COUNT(*)'))->where('facebook_user_id = ?', $value))->num;
     }
 
-    public function findFans($select = null)
+    public function findByLikeId($value, $order = null, $count = null, $offset = null)
     {
-        return $this->findParentRow(new Model_DbTable_Fans(), null, $select);
+        return $this->fetchAll($this->getAdapter()->quoteInto('like_id = ?', $value), $order, $count, $offset);
+    }
+
+    public function countByLikeId($value)
+    {
+        return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id","like_id', 'num'=> 'COUNT(*)'))->where('like_id = ?', $value))->num;
+    }
+
+    public function findByCreatedTime($value, $order = null, $count = null, $offset = null)
+    {
+        return $this->fetchAll($this->getAdapter()->quoteInto('created_time = ?', $value), $order, $count, $offset);
+    }
+
+    public function countByCreatedTime($value)
+    {
+        return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id","like_id', 'num'=> 'COUNT(*)'))->where('created_time = ?', $value))->num;
+    }
+
+    public function findFancrankUsers($select = null)
+    {
+        return $this->findParentRow(new Model_DbTable_FancrankUsers(), null, $select);
     }
 
 

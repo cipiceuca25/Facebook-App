@@ -43,10 +43,10 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => 2,
             'IDENTITY' => false
             ),
-        'name' => array(
+        'fan_name' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fans',
-            'COLUMN_NAME' => 'name',
+            'COLUMN_NAME' => 'fan_name',
             'COLUMN_POSITION' => 3,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -59,10 +59,10 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'first_name' => array(
+        'fan_first_name' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fans',
-            'COLUMN_NAME' => 'first_name',
+            'COLUMN_NAME' => 'fan_first_name',
             'COLUMN_POSITION' => 4,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -75,10 +75,10 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'last_name' => array(
+        'fan_last_name' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fans',
-            'COLUMN_NAME' => 'last_name',
+            'COLUMN_NAME' => 'fan_last_name',
             'COLUMN_POSITION' => 5,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -91,10 +91,10 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'user_avatar' => array(
+        'fan_user_avatar' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fans',
-            'COLUMN_NAME' => 'user_avatar',
+            'COLUMN_NAME' => 'fan_user_avatar',
             'COLUMN_POSITION' => 6,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -107,12 +107,12 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'gender' => array(
+        'fan_gender' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fans',
-            'COLUMN_NAME' => 'gender',
+            'COLUMN_NAME' => 'fan_gender',
             'COLUMN_POSITION' => 7,
-            'DATA_TYPE' => 'text',
+            'DATA_TYPE' => 'enum(\'MALE\',\'FEMALE\')',
             'DEFAULT' => null,
             'NULLABLE' => false,
             'LENGTH' => null,
@@ -123,10 +123,10 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'locale' => array(
+        'fan_locale' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fans',
-            'COLUMN_NAME' => 'locale',
+            'COLUMN_NAME' => 'fan_locale',
             'COLUMN_POSITION' => 8,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -139,15 +139,15 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'lang' => array(
+        'fan_lang' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fans',
-            'COLUMN_NAME' => 'lang',
+            'COLUMN_NAME' => 'fan_lang',
             'COLUMN_POSITION' => 9,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '5',
+            'LENGTH' => '25',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -155,15 +155,15 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'country' => array(
+        'fan_country' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fans',
-            'COLUMN_NAME' => 'country',
+            'COLUMN_NAME' => 'fan_country',
             'COLUMN_POSITION' => 10,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => false,
-            'LENGTH' => '5',
+            'LENGTH' => '25',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -171,10 +171,10 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'location' => array(
+        'fan_location' => array(
             'SCHEMA_NAME' => null,
             'TABLE_NAME' => 'fans',
-            'COLUMN_NAME' => 'location',
+            'COLUMN_NAME' => 'fan_location',
             'COLUMN_POSITION' => 11,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -192,15 +192,15 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
     protected $_cols = array(
         'facebook_user_id',
         'fanpage_id',
-        'name',
-        'first_name',
-        'last_name',
-        'user_avatar',
-        'gender',
-        'locale',
-        'lang',
-        'country',
-        'location'
+        'fan_name',
+        'fan_first_name',
+        'fan_last_name',
+        'fan_user_avatar',
+        'fan_gender',
+        'fan_locale',
+        'fan_lang',
+        'fan_country',
+        'fan_location'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Fans';
