@@ -1,5 +1,5 @@
 *.log
-.htacess
+.htaccess
 application.ini
 .buildpath
 .project
