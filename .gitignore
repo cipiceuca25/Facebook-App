@@ -1,8 +1,11 @@
+*.log
+.htaccess
 application.ini
 .buildpath
 .project
-.settings/
-*.log
+.settings
 .meta
 app.log
 db.log
+application/data/logs/app.log
+fancrank/application/data/logs/app.log

@@ -39,7 +39,7 @@ jQuery(document).ready(function($){
 		//preview the app
 		id = $(event.target).attr('data-id');
 		//window.open('/dashboard/preview?id=' + id, 'preview', null, true);
-		window.location = '/dashboard/preview?id=' + id;
+		window.location = '/admin/dashboard/preview?id=' + id;
 	})
 
 	$(document).delegate('.install', 'click', function(event){
@@ -48,18 +48,15 @@ jQuery(document).ready(function($){
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
 			'type': 'INSTALL',
 			'success': function(xhr) {	
-				/*if (window.opener != null) {
-		            //window.opener.location.reload();
-		            window.opener.installSuccess();
-				    self.close($(this).attr('data-id'));
-		        }*/
+				$(this).remove();
+				$('h1').html('This app is now installed');
 		        installSuccess($(this).attr('data-id'));
 			}.bind(this)
 		});
 		
 	});
 
-	$(document).delegate('.install-tab', 'click', function(event){
+	$(document).delegate('.install-tab:not(.disabled)', 'click', function(event){
 		//show the install screen in the iframe
 		$.ajax({
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
@@ -67,15 +64,14 @@ jQuery(document).ready(function($){
 			'success': function(xhr) {	
 		        installSuccess($(this).attr('data-id'));
 
-		        $(this).attr('class', 'btn btn-danger delete-tab').html('Delete Tab');
-				$(this).attr('data-original-title', 'Delete the fancrank app on your page');
-				$('.tooltip-inner').html('Delete the fancrank app on your page');
+		        $(this).addClass('disabled');
+				$('.tooltip-inner').html('Fancrank is already installed');
 			}.bind(this)
 		});
 		
 	});
 
-	$(document).delegate('.delete-tab', 'click', function(event){
+	/*$(document).delegate('.delete-tab', 'click', function(event){
 		//show the install screen in the iframe
 		$.ajax({
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
@@ -89,6 +85,19 @@ jQuery(document).ready(function($){
 			}.bind(this)
 		});
 		
+	});*/
+
+	$('form[name=account]').submit(function(event) {
+		event.preventDefault();
+
+		$.ajax({
+			'url': $(this).attr('method'),
+			'type': 'UPDATE',
+			'data': $(this).serializeObject(),
+			'success': function(xhr) {	
+				new Alert.create('success', 'Updated user account successfully!');		
+			}.bind(this)
+		});
 	});
 
 });

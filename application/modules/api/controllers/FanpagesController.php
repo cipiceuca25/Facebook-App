@@ -82,7 +82,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 
 	        if (!isset($message->error)) {
 	        	$fanpage->installed = TRUE;
-	        	$fanpage->tab_id = $this->_getParam('id'). '/tabs/app_' . $this->config->client_id;
+	        	$fanpage->fanpage_tab_id = $this->_getParam('id'). '/tabs/app_' . $this->config->client_id;
 	            $fanpage->save();
 	        } else {
 	        	echo $message->error->message;

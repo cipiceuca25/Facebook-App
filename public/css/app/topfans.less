@@ -1,0 +1,199 @@
+
+[controller='app'] {
+
+	&[action='topfans'] {
+
+		
+		
+		
+		
+		
+		div#content {
+		    padding-top: 20px;
+		}
+		#ranking {
+		    width: 770px;
+		    background:red;
+		}
+		#ranking h1 {
+		    border-bottom: 1px solid #CCCCCC;
+		    color: #FFFFFF;
+		    font: bold 20px/400% Arial,Helvetica,sans-serif;
+		    height: 80px;
+		    padding: 0 0 0 110px;
+		}
+		#top_fans, #fan_favorite, #top_talker, #top_clicker {
+		    position: relative;
+		}
+		#top_fans h1 span, #fan_favorite h1 span, #top_talker h1 span, #top_clicker h1 span {
+		    font: 12px/680% Arial,Helvetica,sans-serif;
+		}
+		#top_fans h1 {
+		    background: url("../images/header_top_fans.jpg") no-repeat scroll left top transparent;
+		}
+		#fan_favorite h1 {
+		    background: url("../images/header_fan_favorite.jpg") no-repeat scroll left top transparent;
+		}
+		#top_talker h1 {
+		    background: url("../images/header_top_talker.jpg") no-repeat scroll left top transparent;
+		}
+		#top_clicker h1 {
+		    background: url("../images/header_top_clicker.jpg") no-repeat scroll left top transparent;
+		}
+		.tooltip {
+		    position: absolute;
+		    right: 10px;
+		    top: 28px;
+		}
+		.tooltip a {
+		    background: none repeat scroll 0 0 #FFFFFF;
+		    border: 1px solid #333333;
+		    color: #333333;
+		    cursor: pointer;
+		    display: block;
+		    font: bold 16px/100% Arial,Helvetica,sans-serif;
+		    height: 20px;
+		    padding: 3px 5px 0;
+		    text-decoration: none;
+		    width: 10px;
+		}
+		.tooltip a:hover {
+		    background: none repeat scroll 0 0 #333333;
+		    border: 1px solid #FFFFFF;
+		    color: #FFFFFF;
+		}
+		.border {
+		    border-bottom: 1px solid #CCCCCC;
+		    border-left: 1px solid #CCCCCC;
+		    border-right: 1px solid #CCCCCC;
+		    height: 80px;
+		}
+		.rank {
+		    background: none repeat scroll 0 0 #333333;
+		    float: left;
+		    height: 80px;
+		    width: 60px;
+		}
+		#ranking .rank h1 {
+		    background: url("../images/icon_pound.jpg") no-repeat scroll left top transparent;
+		    border-bottom: medium none;
+		    color: #FFFFFF;
+		    font: bold 50px/100% Arial,Helvetica,sans-serif;
+		    height: 70px;
+		    padding: 15px 10px 0 0;
+		    text-align: right;
+		    width: 50px;
+		}
+		.rank h2 {
+		    color: #FFFFFF;
+		    font: bold 20px/100% Arial,Helvetica,sans-serif;
+		    margin-bottom: 0;
+		    padding-right: 5px;
+		    text-align: right;
+		}
+		.photo {
+		    float: left;
+		    height: 80px;
+		    position: relative;
+		    width: 80px;
+		}
+		.photo .face {
+		    background: none repeat scroll 0 0 #666666;
+		    left: 10px;
+		    padding: 5px;
+		    position: absolute;
+		    text-align: center;
+		    top: 10px;
+		}
+		.name {
+		    display: table;
+		    float: left;
+		    height: 60px;
+		    padding: 10px;
+		    width: 180px;
+		}
+		.name a {
+		    display: table-cell;
+		    font: bold 14px Arial,Helvetica,sans-serif;
+		    margin: 0;
+		    padding: 0;
+		    vertical-align: middle;
+		}
+		.first .name a {
+		    color: #A81E1E;
+		    font-size: 20px !important;
+		}
+		.points {
+		    color: #333333;
+		    display: table;
+		    float: left;
+		    height: 60px;
+		    padding: 10px 20px 10px 0;
+		    width: 158px;
+		}
+		.points p {
+		    display: table-cell;
+		    font: bold 32px/100% Arial,Helvetica,sans-serif;
+		    margin: 0;
+		    padding: 0;
+		    text-align: right;
+		    vertical-align: middle;
+		}
+		.points span {
+		    float: right;
+		    font: 12px Arial,Helvetica,sans-serif;
+		    padding: 0 0 0 5px;
+		    text-align: left;
+		}
+		.panel {
+		    display: none;
+		    height: 324px;
+		}
+		#top_fans .panel {
+		    display: block;
+		    height: 324px;
+		}
+		.shadow {
+		    background: url("../images/bg_shadow.jpg") no-repeat scroll center top transparent;
+		    height: 36px;
+		    width: 520px;
+		}
+		.toggle {
+		    -moz-border-bottom-colors: none;
+		    -moz-border-image: none;
+		    -moz-border-left-colors: none;
+		    -moz-border-right-colors: none;
+		    -moz-border-top-colors: none;
+		    background: none repeat scroll 0 0 #EEEEEE;
+		    border-color: -moz-use-text-color #CCCCCC #CCCCCC;
+		    border-right: 1px solid #CCCCCC;
+		    border-style: none solid solid;
+		    border-width: medium 1px 1px;
+		    color: #666666;
+		    cursor: pointer;
+		    margin: 0 auto;
+		    padding: 8px 15px;
+		    text-align: center;
+		    width: 55px;
+		}
+		.toggle:hover {
+		    -moz-border-bottom-colors: none;
+		    -moz-border-image: none;
+		    -moz-border-left-colors: none;
+		    -moz-border-right-colors: none;
+		    -moz-border-top-colors: none;
+		    border-color: -moz-use-text-color #999999 #999999;
+		    border-right: 1px solid #999999;
+		    border-style: none solid solid;
+		    border-width: medium 1px 1px;
+		    color: #333333;
+		}
+
+		
+		
+		
+		
+		
+	}
+}
+

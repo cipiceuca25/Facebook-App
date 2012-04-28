@@ -36,19 +36,18 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         }
     }
 
-    public function installAction()
+    public function authorizeAction()
     {
         $this->_auth = Zend_Auth::getInstance();
-        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
+        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
+        $this->_helper->viewRenderer->setRender('index/authorize', null, true);
+            
+        $user = $this->oauth2(false, false);
         
-        if ($this->_auth->hasIdentity()) {
-            $this->_identity = $this->_auth->getIdentity();
-
-            $this->_helper->viewRenderer->setRender('index/install', null, true);
-            $this->oauth2(false, $this->_identity->user_id);
-        } else {
-            $this->view->error = 'Unauthorized';
-            $this->_helper->viewRenderer->setRender('home/failure', null, true);
+        if ($user) {
+            //create user session
+            $this->_auth->getStorage()->write($user);
+            //$this->_auth->setExpirationSeconds(5259487);
         }
     } 
 
@@ -83,7 +82,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 if ($authenticate) {
                     $source = $this->authenticateSource($source_data);
                 } else {
-                    //$source = $this->addSource($source_data, $user_id);
+                    $source = $this->authenticateFan($source_data);
                 }
 
                 $this->view->source = $source;
@@ -125,12 +124,15 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         $users = new Model_Users;
 
         // check for matching records
-        $select = $users->select();
-        $select->where('user_id = ?', $source_data->user_id);
+        try {
+            $select = $users->select();
+            $select->where('user_id = ?', $source_data->user_id);
 
-        // Returns NULL if no records match selection criteria.
-        $user = $users->fetchAll($select);
-
+            // Returns NULL if no records match selection criteria.
+            $user = $users->fetchAll($select);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
         switch (count($user)) {
             case 0:
                 // check for duplicate user handle
@@ -141,6 +143,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $user = $users->createRow((array)$source_data);
                 $user->save();
 
+                Collector::Run($this->source, 'init', array($source->source_id));
 
                 break;
 
@@ -150,14 +153,91 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 $user->user_access_token = $source_data->user_access_token;
                 $user->user_avatar = $source_data->user_avatar;
                 $user->save();
+
+                Collector::Run($this->source, 'update', array($source->source_id));
+
                 break;
 
             default:
                 return false;
         }
 
-        $this->addFanpages($source_data);
+        $fanpages = $this->addFanpages($source_data);
         
         return $user;
     }
+
+    private function authenticateFan($source_data)
+    {
+        $fancrank_users_model = new Model_FancrankUsers;
+
+        // check for matching records
+        $select = $fancrank_users_model->select();
+        $select->where('facebook_user_id = ?', $source_data->user_id);
+
+        // Returns NULL if no records match selection criteria.
+        $user = $fancrank_users_model->fetchAll($select);
+
+        switch (count($user)) {
+            case 0:
+                //add the fan if it doesnt exist
+                $fans_model = new Model_Fans;
+                $select = $fans_model->select();
+                $select->where($fans_model->getAdapter()->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data->user_id, $this->_getParam('id')));
+                $fan = $fans_model->fetchAll($select);
+
+                if (!count($fan)) {
+                    $new_fan_row = array(
+                        'facebook_user_id'      => $source_data->user_id,
+                        'fan_name'                  => isset($source_data->username) ? $source_data->username : $source_data->user_first_name . ' ' . $source_data->user_last_name,
+                        'fan_first_name'            => $source_data->user_first_name,
+                        'fan_last_name'             => $source_data->user_last_name,
+                        'fan_user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $source_data->user_id),
+                        'fan_gender'                => $source_data->user_gender,
+                        'fan_locale'                => $source_data->user_locale,
+                        'fan_lang'                  => $source_data->user_lang,
+                        'fanpage_id'            => $this->_getParam('id')
+                    );  
+
+                    $new_fan = $fans_model->createRow($new_fan_row);
+                    try {
+                        $new_fan->save();
+
+                    } catch (Exception $e) {
+                        die($e->getMessage());
+                    }
+                }
+
+                $row = array(
+                    'facebook_user_id' => $source_data->user_id,
+                    'fancrank_user_email'   => $source_data->user_email,
+                    'access_token' => $source_data->user_access_token,
+                );
+
+                //will only insert if fan is present in fan table so must collect fans
+                $user = $fancrank_users_model->createRow($row);
+                $user->save();
+
+                Collector::Run('fancrank', 'init', array($source_data->user_id, 'likes'));
+
+                break;
+
+            case 1:
+                //update some user data
+                $user = $fancrank_users_model->findByFacebookUserId($source_data->user_id)->current();
+                $user->access_token = $source_data->user_access_token;
+                $user->save();
+
+                Collector::Run('fancrank', 'update', array($source_data->user_id, 'likes'));
+
+                break;
+
+            default:
+                return false;
+        }
+
+        return $user;
+    }
+
+    
 }

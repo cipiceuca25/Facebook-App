@@ -2,8 +2,8 @@ jQuery(document).ready(function($){
 
 	//set up ajax call
 	$.ajaxSetup({	
-		'accepts': 'application/json',
 		'contentType': 'application/x-www-form-urlencoded',
+		'dataType': 'json',
 		'error': function(xhr, status, error) {
 			new Alert.create('error', xhr.responseText);
 		}
@@ -15,6 +15,23 @@ jQuery(document).ready(function($){
 	$('[rel=tooltip]').tooltip()
 
 });
+
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
 
 var Alert = new function() {
 

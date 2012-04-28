@@ -10,11 +10,11 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     public function init()
     {
         parent::init();
-
+        
         // get the fanpage object
         $this->fanpages = new Model_Fanpages;
         $fanpage = $this->fanpages->findRow($this->_getParam(0));
-        
+
         if ($fanpage === null) {
             // TODO not exiting
             Log::Err('Invalid Fanpage ID: "%s"', $this->_getParam(0));
@@ -25,8 +25,15 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         } else {
             $this->fanpage = $fanpage;
         }
+    }
 
+    public function initAction()
+    {
         Log::Info('Initializing Fanpage: "%s"', $this->fanpage->fanpage_id);
+
+        foreach ($this->types as $callback => $type) {
+            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, $callback, 'since', $this->fanpage->latest_timestamp));
+        }
 
         // schedule the next auto update
         Collector::Queue('1 hour', 'facebook', 'update', array($this->fanpage->fanpage_id));
@@ -52,36 +59,24 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $extra      = $this->_getParam(4, false);
         
         //$token		= 'AAACgL1Ty5ggBAMH9LGdNEp9SSRWCC2CGIrgwjyuAL8jQlC3PtHksaWIoxAqTCv6qQ8FloIWVgA4T3hHusKErw7F2U88mogqMFf6A2QZDZD';
-        
+
         $url = 'https://graph.facebook.com/' . $this->fanpage->fanpage_id . '/' . $type;// . '?access_token=' . $token;
 
         switch ($type) {
             case 'feed':
                 $fields = array();
                 break;
-            case 'comments':
-            	$url = 'https://graph.facebook.com/' . $extra . '/comments'; //$extra here is the post id
-            	$fields = array();
-            	break;
-            case 'likes':
-            	$url = 'https://graph.facebook.com/' . $extra . '/likes'; //$extra here is the post id or the comment id
-            	$fields = array();
-            	break;
             case 'albums':
-                $fields = array('id');
+                $fields = array();
                 break;
-
             case 'photos':
                 if ($extra) {
+                    $this->album_id = $extra;
                     $url = 'https://graph.facebook.com/' . $extra . '/photos';
-                    $fields = array('id','name','source','height','width','created_time');
+                    $fields = array('id','name','source','height','width', 'name', 'tags', 'place', 'updated_time', 'created_time');
                 } else {
                     return;
                 }
-                break;
-
-            case 'fans':
-                $fields = array('id', 'name');
                 break;
 
             default:
@@ -125,11 +120,11 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
         $json = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
 		//die(print_r($json));
-        if (property_exists($json, 'code')) {
+        if (property_exists($json, 'error')) {
             // try again
             Collector::Queue('5 minutes', 'facebook', 'fetch', array($this->fanpage->fanpage_id, $type, $direction, $timestamp));
 
-            Log::Info('Facebook request failed, re-trying after 5 minutes [%s]', $json->error_code);
+            Log::Info('Facebook request failed, re-trying after 5 minutes [%s]', $json->error->message);
 
             return;
         } else {
@@ -172,48 +167,86 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $posts_media_model = new Model_PostsMedia;
 
     	foreach($feed as $post) {
-
             //die(print_r(split('_', $post->id)));
+            $created = new Zend_Date($post->created_time);
+            $updated = new Zend_Date($post->updated_time);
 
             $row = array(
-                'post_id' => $post->id,
-                'facebook_user_id' => $post->from->id,
-                'fanpage_id' => $this->fanpage->fanpage_id,
-                'message' => isset($post->message) ? $post->message : '',
-                'type' => $post->type,
-                'created_time' => $post->created_time,
-                'updated_time' => $post->updated_time,
-                'comments_count' => $post->comments->count
+                'post_id'               => $post->id,
+                'facebook_user_id'      => $post->from->id,
+                'fanpage_id'            => $this->fanpage->fanpage_id,
+                'post_message'          => isset($post->message) ? $post->message : '',
+                'post_type'             => $post->type,
+                'created_time'          => $created->toString(Zend_Date::ISO_8601),
+                'updated_time'          => $updated->toString(Zend_Date::ISO_8601),
+                'post_comments_count'   => $post->comments->count,
+                'post_likes_count'      => isset($post->likes) && isset($post->likes->count) ? $post->likes->count : 0
             );
 
             if (property_exists($post, 'application') && isset($post->application_id)) {
-                $row['application_id'] = $post->application->application_id;
-                $row['application_name'] = $post->application->application_name;
+                $row['post_application_id'] = $post->application->application_id;
+                $row['post_application_name'] = $post->application->application_name;
             } else {
-                $row['application_id'] = '';
-                $row['application_name'] = '';
+                $row['post_application_id'] = '';
+                $row['post_application_name'] = '';
             }
 
             $posts[] = $row;
 
+            if (isset($post->likes) && isset($post->likes->count)) {
+                
+                foreach($post->likes->data as $like) {
+                    $fans[] = $like->id;
+
+                    $likes[] = array(
+                        'fanpage_id'        => $this->fanpage->fanpage_id,
+                        'post_id'           => $post->id,
+                        'facebook_user_id'  => $like->id,
+                        'post_type'         => $post->type        
+                    );
+                }
+            }
+
+            $fans[] = $post->from->id;
+
             if ($post->type != 'page' && $post->type != 'status') {
 
                 $medias[] = array(
-                    'post_id' => $post->id,
-                    'post_type' => $post->type,
-                    'post_picture' => $post->picture,
-                    'post_link' => $post->link,
-                    'post_source' => isset($post->source) ? $post->source : '',
-                    'post_name' => $post->name,
-                    'post_caption'  => $post->caption,
-                    'post_description' => isset($post->description) ? $post->description : '',
-                    'post_icon' => $post->icon
+                    'post_id'           => $post->id,
+                    'post_type'         => $post->type,
+                    'post_picture'      => $post->picture,
+                    'post_link'         => $post->link,
+                    'post_source'       => isset($post->source) ? $post->source : '',
+                    'post_name'         => $post->name,
+                    'post_caption'      => $post->caption,
+                    'post_description'  => isset($post->description) ? $post->description : '',
+                    'post_icon'         => $post->icon
                 );
+            }
+
+            if (isset($post->comments) && $post->comments->count ) {
+                
+                foreach($post->comments->data as $comment) {
+
+                    $created = new Zend_Date($comment->created_time);
+
+                    $comments[] = array(
+                        'comment_id'            => $comment->id,
+                        'fanpage_id'            => $this->fanpage->fanpage_id,
+                        'comment_post_id'               => $post->id,
+                        'facebook_user_id'      => $comment->from->id,
+                        'comment_message'       => $comment->message,
+                        'created_time'          => $created->toString(Zend_Date::ISO_8601),
+                        'comment_likes_count'   => isset($comment->likes) ? $comment->likes : 0
+                    );
+
+                    $fans[] = $comment->from->id;
+                }
             }
         }
 
-        $cols = array('post_id', 'facebook_user_id', 'fanpage_id', 'message', 'type', 'created_time', 'updated_time', 'comments_count');
-        $update = array('updated_time', 'comments_count');
+        $cols = array('post_id', 'facebook_user_id', 'fanpage_id', 'post_message', 'post_type', 'created_time', 'updated_time', 'post_comments_count', 'post_likes_count');
+        $update = array('updated_time', 'post_comments_count', 'post_likes_count');
         $posts_model->insertMultiple($posts, $cols, $update);
 
         if (isset($medias)) {
@@ -222,210 +255,25 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             $posts_media_model->insertMultiple($medias, $cols, $update);
         }
 
-            /*static $activity;
-    		//echo $key."<br/>";
-			//print_r($value);
-    		if(is_object($value)) { //[0], [1], [2], etc
+        if(isset($comments)) {
+            $cols = array('comment_id', 'fanpage_id', 'comment_post_id', 'facebook_user_id', 'comment_message', 'created_time', 'comment_likes_count');
+            $update = array('comment_message', 'comment_likes_count');
 
-    			foreach($value as $key2 => $value2){
-    					 
-    				if(is_object($value2)){ //[from], [comments], [likes], [privacy], [actions]
-    	
-    					if($key2 ==="from") {
-    						
-    						foreach($value2 as $fromkey => $fromvalue){
-    	
-    							if($fromkey === "name"){
-    								
-    								$activity["from".$fromkey]=$fromvalue;
-    									
-    							}else{
-    								$activity["from".$fromkey]=$fromvalue;
-    							}
-    						}
-    					}else if($key2==="likes"){
-    	
-    						$activity["likescount"]=$value2->count;
-    							
-    						if($activity["likescount"]>0){
-    							
-    							//run the fetch method for likes
-    							//grab_inner("walllikes",$activity['activityid'], $db_name);
-    							//Collector::Run('facebook', 'fetch', array($this->source->source_id, 'likes', $direction, $timestamp, $activity->id));
-    	
-    						}
-    							
-    					}else if($key2 === "comments"){
-    							
-    						$activity["commentscount"]=$value2->count;
-    							
-    						if($activity["commentscount"]>0){
-    							
-    							//run the fetch method for comments
-    							//grab_inner("comments",$activity['activityid'], $db_name);
-    							//Collector::Run('facebook', 'fetch', array($this->source->source_id, 'comments', $direction, $timestamp, $activity->id));
-    	
-    						}
-    					}else if($key2==="privacy"){
-    	
-    						foreach($value2 as $privkey => $privvalue){
-    	
-    							$activity["privacy".$privkey]=$privvalue;
-    								
-    						}
-    	
-    					}else if($key2==="application"){
-    	
-    						foreach($value2 as $appkey => $appvalue){
-    	
-    							$activity["application".$appkey]=$appvalue;
-    								
-    						}
-    	
-    					}
-    	
-    				}else{//[id], [message], [type], etc
-    						
-    					if ($key2=== 'created_time' || $key2=== 'updated_time') {
-    	
-    						$activity["activity".$key2]=strtotime($value2);
-    							
-    					}else if($key2=== 'message'|| $key2==='name'|| $key2==='description'|| $key2==='caption'){
-    	
-    						$activity["activity".$key2]=$value2;
-    						//echo "message: ".$value."<br/>";
-    	
-    						$activity["activity".$key2]=$value2;
-    					}
-    				}
-    			}
-    		}
+            $comments_model = new Model_Comments;
+            $comments_model->insertMultiple($comments, $cols, $update);   
+        }
 
-    		//die(print_r($activity));
-    		
-    		$db_keys=array('activityid', 'fromname', 'fromid', 'fromcategory', 'activitymessage', 'privacydescription', 'privacyvalue', 'activitytype', 'activitycreated_time', 'activityupdated_time', 'applicationname', 'applicationid', 'commentscount', 'likescount', 'activitypicture', 'activitylink', 'activitysource', 'activityname', 'activitycaption', 'activityicon', 'activitydescription');
-    		foreach($db_keys as $key => $value){
-    			if(!array_key_exists($key, $activity)){
+        if (isset($likes)) {
+            $cols = array('fanpage_id','post_id', 'facebook_user_id', 'post_type');
+            $update = array('post_type',);
 
-    				$activity[$key]=NULL;
-    			}
-    		}
-    		
-    		$posts_model = new Model_Posts;
-    		$activity_id = $activity['activityid'];
-    		$updated_time = $activity['activityupdated_time'];
-    		$postExists = $posts_model->checkPostExists($activity_id);
-    		
-    		if($postExists){
-    			
-    			//this post exists in the database
-    			//check if the updated time is old
-    			$postTime = $posts_model->checkPostUpdatedTime($activity_id, $updated_time);
-    			
-    			if(!$postTime){
-    				
-    				//post time has changed since last fetch
-    				//update the values in the db
-    				$postUpdateDB = $posts_model->updateExistingPost($activity);
-    			}
-    			
-    		}else{
-    			
-    			//this post does not exist - enter it into the db
-    			
-    			$dividePost = explode('_', $activity_id);
-    			$fanpage_id = $dividePost[0];
-    			
-    			$postInsertDB = $posts_model->insertPost($fanpage_id, $activity);
-    		}
-			
-    		//reset the activity array
-    		$activity=array();
-    	} //end inserting posts
-    	*/
-    }
-    
-    private function storeComments($comments)
-    {
-    	static $facebookComments;
-    	
-    	foreach($comments[data] as $key => $value){
-    	
-    		if(is_array($value)){
-    				
-    			foreach($value as $key2 => $value2){
-    					
-    				if(is_array($value2)){ //this is the FROM inner array
-    					
-    					foreach($value2 as $key3=>$value3){
-    						
-    						if($key3==='name'){
-    							$facebookComments[$key2.$key3]=$value3;
-    	
-    						}else{
-    							$facebookComments[$key2.$key3]=$value3;
-    						}
-    					}
-    				}else{ //this is for fan comments i.e. no inner FROM Category
-    					if ($key2=== 'created_time' || $key2=== 'updated_time') {
-    							
-    						$facebookComments[$key2]=strtotime($value2);
-    	
-    					}else if($key2=== 'message'|| $key2==='name'){
-    							
-    						$facebookComments[$key2]=$value2;
-    	
-    					}else{
-    						$facebookComments[$key2]=$value2;
-    						//$commentsinner[fromid]=NULL;
-    						$facebookComments[fromcategory]=NULL;
-    	
-    					}
-    				}
-    			}
-    		}
-    		$divideCommentID=explode("_", $facebookComments['id']);
-    		$fanpage_id = $divideCommentID[0];
-    		$post_id = $divideCommentID[0] . '_' . $divideCommentID[1];
-    		
-    		//insert comments into DB
-    		
-    		//get likes for comment now
-    		if($facebookComments['likes'] > 0){
-    				
-    			//grab_inner("walllikes", $commentsinner['id']);
-    			//Collector::Run('facebook', 'fetch', array($this->source->source_id, 'likes', $direction, $timestamp, $activity->id));
-    				
-    		}
-    		$facebookComments=array();
-    	}
-    }
-    
-    private function storeLikes($likes)
-    {
-    	static $facebookLikes;
-    	//store likes
-    	foreach($likes[data] as $key => $value){
-    	
-    		if(is_array($value)){
-    				
-    			foreach($value as $key2 => $value2){
-    				if($key2==='name'){
-    					$facebookLikes[$key2]=mysql_real_escape_string($value2);
-    	
-    				}
-    				else{
-    					$facebookLikes[$key2]=$value2;
-    				}
-    			}
-    		}
-    	
-    		$primarykey= $post."_".$facebookLikes[id];
-    		$post_type_temp=explode("_", $post);
-    		
-    		//reset our variable
-    		$facebookLikes = array();
-    	}
+            $likes_model = new Model_Likes;
+            $likes_model->insertMultiple($comments, $cols, $update);
+        }
+
+//ie(print_r($fans));
+        $unique_fans = array_unique($fans);
+        $this->storeFans($unique_fans);
     }
 
     private function storeAlbums($albums)
@@ -434,18 +282,77 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $timestamp  = $this->_getParam(3, 0);
 
         foreach ($albums as $album) {
-            Collector::Run('facebook', 'fetch', array($this->source->source_id, 'photos', $direction, $timestamp, $album->id));
+
+
+
+            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'photos', $direction, $timestamp, $album->id));
         }
     }
 
     private function storePhotos($photos)
     {
-        
+        //currenty not storing place, tags
+        $created = new Zend_Date($photo->created_time);
+        $updated = new Zend_Date($photo->updated_time);
+
+        foreach($photos as $photo) {
+            $rows[] = array(
+                'photo_id'          => $photo->id,
+                'fanpage_id'        => $this->fanpage->fanpage_id,
+                'photo_album_id'    => $this->album_id,
+                'photo_source'      => $photo->source,
+                'photo_caption'     => isset($photo->name) ? $photo->name : '',
+                'photo_width'       => $photo->width,
+                'photo_height'      => $photo->height,
+                'updated_time'      => $created->toString(Zend_Date::ISO_8601),
+                'created_time'      => $updated->toString(Zend_Date::ISO_8601),
+            );
+        }  
+
+        $cols = array('photo_id', 'fanpage_id', 'album_id', 'source', 'caption', 'width', 'height', 'updated_time', 'created_time');
+        $update = array('photo_source', 'photo_caption', 'updated_time');
+
+        $photos_model = new Model_Photos;
+        $photos_model->insertMultiple($rows, $cols, $update);
     }
 
     private function storeFans($fans)
     {
-        
+
+        foreach($fans as $fan) {
+            $client = new Zend_Http_Client;
+            $client->setUri('https://graph.facebook.com/' . $fan);
+            $client->setMethod(Zend_Http_Client::GET);
+            $client->setParameterGet('access_token', $this->fanpage->access_token);
+            //$client->setParameterGet('fields', 'id,username,link,first_name,last_name,email,birthday,gender,locale,languages');
+            
+            $response = $client->request();
+            $data = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+
+            if (isset($data->languages)) {
+                foreach($data->languages as $language) {
+                    $lang[] = $language->name;
+                }
+            } else {
+                $lang = array();
+            }
+
+            $rows[] = array(
+                'facebook_user_id'      => $data->id,
+                'fanpage_id'            => $this->fanpage->fanpage_id,
+                'fan_name'              => $data->name,
+                'fan_user_avatar'       => isset($data->picture) ? $data->picture : sprintf('https://graph.facebook.com/%s/picture', $data->id),
+                'fan_location'          => isset($data->location) ? $data->location->name : '',
+                'fan_gender'            => isset($data->gender) ? $data->gender : '',
+                'fan_locale'            => isset($data->locale) ? $data->locale : '',
+                'fan_lang'              => implode(',', $lang)
+            );
+        }
+
+        $cols = array('facebook_user_id', 'fanpage_id', 'fan_name', 'fan_user_avatar', 'fan_location', 'fan_gender', 'fan_locale', 'fan_lang');
+        $update = array('fan_user_avatar', 'fan_location', 'fan_gender', 'fan_locale', 'fan_lang');
+
+        $fans_model = new Model_Fans;
+        $fans_model->insertMultiple($rows, $cols, $update);
     }
-    
 }

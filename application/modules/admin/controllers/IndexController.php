@@ -11,14 +11,13 @@ class Admin_IndexController extends Fancrank_Admin_Controller_BaseController
 
         if($this->_auth->hasIdentity()) {
             //bring the user into the app if he is already logged in
-            $this->_helper->redirector('index', 'dashboard');   
+            $this->_helper->redirector('fanpages', 'dashboard');   
         }
     }
 
     public function indexAction()
     {
-        //load the login page
-        $this->view->variable = "This is a view variable";
+        
         
     }
 }

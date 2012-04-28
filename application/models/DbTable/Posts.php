@@ -3,14 +3,14 @@
 class Model_DbTable_Posts extends Fancrank_Db_Table
 {
 
-    protected $_name = 'Posts';
+    protected $_name = 'posts';
 
     protected $_primary = array('post_id');
 
     protected $_metadata = array(
         'post_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
+            'TABLE_NAME' => 'posts',
             'COLUMN_NAME' => 'post_id',
             'COLUMN_POSITION' => 1,
             'DATA_TYPE' => 'varchar',
@@ -26,7 +26,7 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             ),
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
+            'TABLE_NAME' => 'posts',
             'COLUMN_NAME' => 'facebook_user_id',
             'COLUMN_POSITION' => 2,
             'DATA_TYPE' => 'bigint',
@@ -42,7 +42,7 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             ),
         'fanpage_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
+            'TABLE_NAME' => 'posts',
             'COLUMN_NAME' => 'fanpage_id',
             'COLUMN_POSITION' => 3,
             'DATA_TYPE' => 'bigint',
@@ -56,10 +56,10 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'user_category' => array(
+        'post_user_category' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'user_category',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'post_user_category',
             'COLUMN_POSITION' => 4,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -72,10 +72,10 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'message' => array(
+        'post_message' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'message',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'post_message',
             'COLUMN_POSITION' => 5,
             'DATA_TYPE' => 'text',
             'DEFAULT' => null,
@@ -88,10 +88,10 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'privacy_descr' => array(
+        'post_privacy_descr' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'privacy_descr',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'post_privacy_descr',
             'COLUMN_POSITION' => 6,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -104,10 +104,10 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'privacy_value' => array(
+        'post_privacy_value' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'privacy_value',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'post_privacy_value',
             'COLUMN_POSITION' => 7,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -120,10 +120,10 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'type' => array(
+        'post_type' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'type',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'post_type',
             'COLUMN_POSITION' => 8,
             'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
@@ -136,15 +136,15 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'created_time' => array(
+        'post_application_name' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'created_time',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'post_application_name',
             'COLUMN_POSITION' => 9,
-            'DATA_TYPE' => 'bigint',
+            'DATA_TYPE' => 'varchar',
             'DEFAULT' => null,
             'NULLABLE' => true,
-            'LENGTH' => null,
+            'LENGTH' => '25',
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -152,10 +152,10 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'updated_time' => array(
+        'post_application_id' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'updated_time',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'post_application_id',
             'COLUMN_POSITION' => 10,
             'DATA_TYPE' => 'bigint',
             'DEFAULT' => null,
@@ -168,15 +168,15 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'application_name' => array(
+        'post_comments_count' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'application_name',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'post_comments_count',
             'COLUMN_POSITION' => 11,
-            'DATA_TYPE' => 'varchar',
+            'DATA_TYPE' => 'float',
             'DEFAULT' => null,
             'NULLABLE' => true,
-            'LENGTH' => '25',
+            'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
             'UNSIGNED' => null,
@@ -184,12 +184,12 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'application_id' => array(
+        'post_likes_count' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'application_id',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'post_likes_count',
             'COLUMN_POSITION' => 12,
-            'DATA_TYPE' => 'bigint',
+            'DATA_TYPE' => 'float',
             'DEFAULT' => null,
             'NULLABLE' => true,
             'LENGTH' => null,
@@ -200,12 +200,12 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'comments_count' => array(
+        'updated_time' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'comments_count',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'updated_time',
             'COLUMN_POSITION' => 13,
-            'DATA_TYPE' => 'float',
+            'DATA_TYPE' => 'timestamp',
             'DEFAULT' => null,
             'NULLABLE' => true,
             'LENGTH' => null,
@@ -216,14 +216,14 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
             ),
-        'likes_count' => array(
+        'created_time' => array(
             'SCHEMA_NAME' => null,
-            'TABLE_NAME' => 'Posts',
-            'COLUMN_NAME' => 'likes_count',
+            'TABLE_NAME' => 'posts',
+            'COLUMN_NAME' => 'created_time',
             'COLUMN_POSITION' => 14,
-            'DATA_TYPE' => 'float',
-            'DEFAULT' => null,
-            'NULLABLE' => true,
+            'DATA_TYPE' => 'timestamp',
+            'DEFAULT' => 'CURRENT_TIMESTAMP',
+            'NULLABLE' => false,
             'LENGTH' => null,
             'SCALE' => null,
             'PRECISION' => null,
@@ -238,17 +238,17 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
         'post_id',
         'facebook_user_id',
         'fanpage_id',
-        'user_category',
-        'message',
-        'privacy_descr',
-        'privacy_value',
-        'type',
-        'created_time',
+        'post_user_category',
+        'post_message',
+        'post_privacy_descr',
+        'post_privacy_value',
+        'post_type',
+        'post_application_name',
+        'post_application_id',
+        'post_comments_count',
+        'post_likes_count',
         'updated_time',
-        'application_name',
-        'application_id',
-        'comments_count',
-        'likes_count'
+        'created_time'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Posts';

@@ -5,7 +5,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
     public function indexAction()
     {
-        
+    
     }
 
     public function fanpagesAction() 
@@ -19,7 +19,10 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
     public function myaccountAction()
     {
-
+        $this->view->user_id = $this->_identity->user_id;
+        $this->view->user_email = $this->_identity->user_email;
+        $this->view->user_first_name  = $this->_identity->user_first_name;
+        $this->view->user_last_name = $this->_identity->user_last_name;
     }
     
     public function actionSources()
