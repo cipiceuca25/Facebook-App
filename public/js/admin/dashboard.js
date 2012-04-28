@@ -48,18 +48,15 @@ jQuery(document).ready(function($){
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
 			'type': 'INSTALL',
 			'success': function(xhr) {	
-				/*if (window.opener != null) {
-		            //window.opener.location.reload();
-		            window.opener.installSuccess();
-				    self.close($(this).attr('data-id'));
-		        }*/
+				$(this).remove();
+				$('h1').html('This app is now installed');
 		        installSuccess($(this).attr('data-id'));
 			}.bind(this)
 		});
 		
 	});
 
-	$(document).delegate('.install-tab', 'click', function(event){
+	$(document).delegate('.install-tab:not(.disabled)', 'click', function(event){
 		//show the install screen in the iframe
 		$.ajax({
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
@@ -75,7 +72,7 @@ jQuery(document).ready(function($){
 		
 	});
 
-	$(document).delegate('.delete-tab', 'click', function(event){
+	/*$(document).delegate('.delete-tab', 'click', function(event){
 		//show the install screen in the iframe
 		$.ajax({
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
@@ -89,7 +86,7 @@ jQuery(document).ready(function($){
 			}.bind(this)
 		});
 		
-	});
+	});*/
 
 });
 

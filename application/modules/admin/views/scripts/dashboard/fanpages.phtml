@@ -21,7 +21,7 @@
 			</td>
 			<td class="tab">
 				<?php if ($page['installed']): ?>
-					<button class="delete-tab btn btn-danger" rel="tooltip" title="Remove the fancrank app on you page" data-id="<?= $page['fanpage_id'] ?>">Delete Tab</button>
+					<button class="install-tab btn btn-success disabled" rel="tooltip" title="Fancran is already installed" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
 				<?php elseif($page['active']): ?>
 					<button class="install-tab btn btn-success" rel="tooltip" title="Install the fancrank app on you page" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
 				<?php endif; ?>
