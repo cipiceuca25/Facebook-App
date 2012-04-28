@@ -69,6 +69,24 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             case 'albums':
                 $fields = array();
                 break;
+            case 'comments':
+            	if($extra) {
+            		$this->post_id = $extra;
+            		$url = 'https://graph.facebook.com/' . $extra . '/comments';
+            		$fields = array();
+            	} else {
+                    return;
+                }
+            	break;
+            case 'likes':
+        		if($extra) {
+            		$this->post_id = $extra;
+            		$url = 'https://graph.facebook.com/' . $extra . '/likes';
+            		$fields = array();
+            	} else {
+                    return;
+                }
+            	break;
             case 'photos':
                 if ($extra) {
                     $this->album_id = $extra;
@@ -165,11 +183,14 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     {	
         $posts_model = new Model_Posts;
         $posts_media_model = new Model_PostsMedia;
-
+        
     	foreach($feed as $post) {
             //die(print_r(split('_', $post->id)));
             $created = new Zend_Date($post->created_time);
             $updated = new Zend_Date($post->updated_time);
+            
+            $direction  = $this->_getParam(2, 'since');
+            $timestamp  = $this->_getParam(3, 0);
 
             $row = array(
                 'post_id'               => $post->id,
@@ -193,18 +214,27 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
             $posts[] = $row;
 
-            if (isset($post->likes) && isset($post->likes->count)) {
-                
-                foreach($post->likes->data as $like) {
-                    $fans[] = $like->id;
-
-                    $likes[] = array(
-                        'fanpage_id'        => $this->fanpage->fanpage_id,
-                        'post_id'           => $post->id,
-                        'facebook_user_id'  => $like->id,
-                        'post_type'         => $post->type        
-                    );
-                }
+            if (isset($post->likes->data) && isset($post->likes->count)) {
+            	//die(print_r($post->likes->count));
+            	if($post->likes->count > 1){
+            	
+            		Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', $direction, $timestamp, $post->id));
+            		
+            	}else{
+            		
+            		foreach($post->likes->data as $like) {
+            			//die(print_r($like));
+            			$fans[] = $like->id;
+            		
+            			$likes[] = array(
+            					'fanpage_id'        => $this->fanpage->fanpage_id,
+            					'post_id'           => $post->id,
+            					'facebook_user_id'  => $like->id,
+            					'post_type'         => $post->type
+            			);
+            		
+            		}
+            	}
             }
 
             $fans[] = $post->from->id;
@@ -214,11 +244,11 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 $medias[] = array(
                     'post_id'           => $post->id,
                     'post_type'         => $post->type,
-                    'post_picture'      => $post->picture,
-                    'post_link'         => $post->link,
+                    'post_picture'      => isset($post->picture) ? $post->picture : '',
+                    'post_link'         => isset($post->link) ? $post->link : '',
                     'post_source'       => isset($post->source) ? $post->source : '',
                     'post_name'         => $post->name,
-                    'post_caption'      => $post->caption,
+                    'post_caption'      => isset($post->caption) ? $post->caption : '',
                     'post_description'  => isset($post->description) ? $post->description : '',
                     'post_icon'         => $post->icon
                 );
@@ -233,7 +263,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                     $comments[] = array(
                         'comment_id'            => $comment->id,
                         'fanpage_id'            => $this->fanpage->fanpage_id,
-                        'comment_post_id'               => $post->id,
+                        'comment_post_id'       => $post->id,
                         'facebook_user_id'      => $comment->from->id,
                         'comment_message'       => $comment->message,
                         'created_time'          => $created->toString(Zend_Date::ISO_8601),
@@ -241,6 +271,11 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                     );
 
                     $fans[] = $comment->from->id;
+                    if($post->comments->count > 2){
+                    	
+                    	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', $direction, $timestamp, $post->id));
+                    }
+                    
                 }
             }
         }
@@ -265,10 +300,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
         if (isset($likes)) {
             $cols = array('fanpage_id','post_id', 'facebook_user_id', 'post_type');
-            $update = array('post_type',);
+            $update = array('post_type');
 
             $likes_model = new Model_Likes;
-            $likes_model->insertMultiple($comments, $cols, $update);
+            $likes_model->insertMultiple($likes, $cols, $update);
         }
 
 //ie(print_r($fans));
@@ -276,6 +311,62 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $this->storeFans($unique_fans);
     }
 
+    private function storeComments($comments)
+    {
+    	$comments_model = new Model_Comments;
+    	
+    	$direction  = $this->_getParam(2, 'since');
+    	$timestamp  = $this->_getParam(3, 0);
+    	
+    	foreach($comments as $comment) {
+    		//die(print_r(split('_', $post->id)));
+    		$created	= new Zend_Date($post->created_time);
+    	
+    		$row = array(
+    				'comment_id'           	=> $comment->id,
+    				'facebook_user_id'      => $comment->from->id,
+    				'fanpage_id'            => $this->fanpage->fanpage_id,
+    				'comment_post_id'		=> $this->post_id,
+    				'comment_message'       => isset($comment->message) ? $comment->message : '',
+    				'created_time'          => $created->toString(Zend_Date::ISO_8601),
+    				'comment_likes_count'   => isset($comment->likes) ? $comment->likes : 0
+    		);
+    		
+    		$comments[] = $row;
+    		
+    		$cols = array('comment_id', 'fanpage_id', 'comment_post_id', 'facebook_user_id', 'comment_message', 'created_time', 'comment_likes_count');
+    		$update = array('comment_message', 'comment_likes_count');
+    		$comments_model->insertMultiple($comments, $cols, $update);
+    		
+    		if($comment->likes > 1){
+    			Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', $direction, $timestamp, $comment->id));
+    		}
+    	}
+    }
+    
+    private function storeLikes($likes)
+    {
+    	$likes_model = new Model_Likes;
+    	 die("here");
+    	foreach($likes as $like) {
+    		$temp		= explode('_',$this->post_id);
+    		$type 		= count($temp);
+    	
+    		$row = array(
+    				'facebook_user_id'      => $like->id,
+    				'fanpage_id'            => $this->fanpage->fanpage_id,
+    				'post_id'				=> $this->post_id,
+    				'post_type'				=> $type
+    		);
+    
+    		$likes[] = $row;
+    
+    		$cols = array('fanpage_id', 'post_id', 'facebook_user_id', 'post_type');
+    		$update = array('post_type');
+    		$likes_model->insertMultiple($likes, $cols, $update);
+    	}
+    }
+    
     private function storeAlbums($albums)
     {
         $direction  = $this->_getParam(2, 'since');
