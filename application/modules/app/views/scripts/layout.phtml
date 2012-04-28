@@ -46,10 +46,13 @@
     </head>
 
     <body controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>">
-        <div class="container" role="main">
-            <div class="span8">
-                <?= $this->layout()->content ?>
-            </div>
+    
+    	<div class="wrapper">
+    
+	        <div class="container-fluid" role="main">            
+	            <?= $this->layout()->content ?>
+	        </div>
+        
         </div>
 
         <div id="fb-root"></div>
