@@ -106,7 +106,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
     private function fetchData($type, $url, array $fields, $direction = 'since', $timestamp = 0)
     {
-        Log::Info('Fetching %s from Fanpage: "%s" %s: "%d"', $type, $this->fanpage->fanpage_id, $direction, $timestamp);
+        Log::Info('Fetching %s from Fanpage: "%s" %s: "%d" with URL: "%s"', $type, $this->fanpage->fanpage_id, $direction, $timestamp, $url);
 
         $client = new Zend_Http_Client;
         $client->setUri($url);
@@ -271,10 +271,12 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                     );
 
                     $fans[] = $comment->from->id;
+                    /* DOESN'T WORK
                     if($post->comments->count > 2){
                     	
                     	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', $direction, $timestamp, $post->id));
                     }
+                    */
                     
                 }
             }
@@ -317,12 +319,12 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	
     	$direction  = $this->_getParam(2, 'since');
     	$timestamp  = $this->_getParam(3, 0);
-    	
+
     	foreach($comments as $comment) {
     		//die(print_r(split('_', $post->id)));
     		$created	= new Zend_Date($post->created_time);
-    	
-    		$row = array(
+
+    		$comments[] = array(
     				'comment_id'           	=> $comment->id,
     				'facebook_user_id'      => $comment->from->id,
     				'fanpage_id'            => $this->fanpage->fanpage_id,
@@ -332,79 +334,151 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     				'comment_likes_count'   => isset($comment->likes) ? $comment->likes : 0
     		);
     		
-    		$comments[] = $row;
-    		
-    		$cols = array('comment_id', 'fanpage_id', 'comment_post_id', 'facebook_user_id', 'comment_message', 'created_time', 'comment_likes_count');
-    		$update = array('comment_message', 'comment_likes_count');
-    		$comments_model->insertMultiple($comments, $cols, $update);
-    		
     		if($comment->likes > 1){
     			Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', $direction, $timestamp, $comment->id));
     		}
     	}
+    	
+    	$cols = array('comment_id', 'fanpage_id', 'comment_post_id', 'facebook_user_id', 'comment_message', 'created_time', 'comment_likes_count');
+    	$update = array('comment_message', 'comment_likes_count');
+    	$comments_model->insertMultiple($comments, $cols, $update);
     }
     
     private function storeLikes($likes)
     {
     	$likes_model = new Model_Likes;
-    	 die("here");
+    	 //die(print_r($likes));
     	foreach($likes as $like) {
     		$temp		= explode('_',$this->post_id);
-    		$type 		= count($temp);
+    		$type 		= count($temp); // 1-album or photo, 2-post, 3-comment
     	
-    		$row = array(
+    		$likes[] = array(
     				'facebook_user_id'      => $like->id,
     				'fanpage_id'            => $this->fanpage->fanpage_id,
     				'post_id'				=> $this->post_id,
     				'post_type'				=> $type
     		);
     
-    		$likes[] = $row;
-    
-    		$cols = array('fanpage_id', 'post_id', 'facebook_user_id', 'post_type');
-    		$update = array('post_type');
-    		$likes_model->insertMultiple($likes, $cols, $update);
     	}
+    	
+    	$cols = array('fanpage_id', 'post_id', 'facebook_user_id', 'post_type');
+    	$update = array('post_type');
+    	$likes_model->insertMultiple($likes, $cols, $update);
     }
     
     private function storeAlbums($albums)
     {
         $direction  = $this->_getParam(2, 'since');
         $timestamp  = $this->_getParam(3, 0);
-
+		
         foreach ($albums as $album) {
 
-
+        	$created = new Zend_Date($album->created_time);
+        	$updated = new Zend_Date($album->updated_time);
+        	
+        	$rows[] = array(
+        			'album_id'				=> $album->id,
+        			'fanpage_id'			=> $this->fanpage->fanpage_id,
+        			'facebook_user_id'		=> $album->from->id,
+        			'album_name'			=> $album->id,
+        			'album_desription'		=> isset($album->description) ? $album->description : '',
+        			'album_location'		=> isset($album->location) ? $album->location : '',
+        			'album_link'			=> $album->link,
+        			'album_cover_photo_id'	=> isset($album->cover_photo) ? $album->cover_photo : '',
+        			'album_photo_count'		=> isset($album->count) ? $album->count : 0,
+        			'album_type'			=> $album->type,
+        			'updated_time'			=> $updated->toString(Zend_Date::ISO_8601),
+        			'created_time'			=> $created->toString(Zend_Date::ISO_8601)		
+        	);
 
             Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'photos', $direction, $timestamp, $album->id));
+            /* DOESN'T WORK
+            if(isset($album->likes->data)){
+            
+            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', $direction, $timestamp, $album->id));
+            }
+
+            if(isset($album->comments->data)){
+            	
+            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', $direction, $timestamp, $album->id));
+            }
+            */
         }
+        
+        $cols = array('album_id', 'fanpage_id', 'facebook_user_id', 'album_name', 'album_description', 'album_location', 'album_link', 'album_cover_photo_id', 'album_photo_count', 'album_type', 'updated_time', 'created_time');
+        $update = array('album_name', 'album_description', 'album_cover_photo_id', 'album_photo_count', 'updated_time');
+        
+        $albums_model = new Model_Albums;
+        $albums_model->insertMultiple($rows, $cols, $update);
     }
 
     private function storePhotos($photos)
     {
         //currenty not storing place, tags
-        $created = new Zend_Date($photo->created_time);
-        $updated = new Zend_Date($photo->updated_time);
 
         foreach($photos as $photo) {
+        	
+        	$created = new Zend_Date($photo->created_time);
+        	$updated = new Zend_Date($photo->updated_time);
+        	
             $rows[] = array(
                 'photo_id'          => $photo->id,
                 'fanpage_id'        => $this->fanpage->fanpage_id,
+            	'facebook_user_id'	=> $photo->from->id,
                 'photo_album_id'    => $this->album_id,
                 'photo_source'      => $photo->source,
                 'photo_caption'     => isset($photo->name) ? $photo->name : '',
+            	'photo_picture'		=> $photo->picture,
+            	'photo_position'	=> $photo->position,
                 'photo_width'       => $photo->width,
                 'photo_height'      => $photo->height,
                 'updated_time'      => $created->toString(Zend_Date::ISO_8601),
-                'created_time'      => $updated->toString(Zend_Date::ISO_8601),
+                'created_time'      => $updated->toString(Zend_Date::ISO_8601)
             );
+            
+            if(isset($photo->tags->data)){
+            	
+            	foreach($photo->tags->data as $tag) {
+            		//$fans[] = $tag->id;
+            		$created = new Zend_Date($tag->created_time);
+            		
+            		$tags[] = array(
+            				'fanpage_id'        => $this->fanpage->fanpage_id,
+            				'facebook_user_id'	=> isset($tag->id) ? $tag->id : '',
+            				'facebook_user_name'	=> $tag->name,
+            				'photo_id'				=> $photo->id,
+            				'tag_position_x'		=> $tag->x,
+            				'tag_position_y'		=> $tag->y,
+            				'created_time'			=> $created->toString(Zend_Date::ISO_8601)
+            		);
+            	}
+            }
+           /* DOESN'T WORK 
+         	
+         	if(isset($photo->likes->data)){
+            	//die("here");
+            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', $direction, $timestamp, $photo->id));
+            }
+            if(isset($photo->comments->data)){
+            	
+            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', $direction, $timestamp, $photo->id));
+            }*/
+            
         }  
 
-        $cols = array('photo_id', 'fanpage_id', 'album_id', 'source', 'caption', 'width', 'height', 'updated_time', 'created_time');
+        $cols = array('photo_id', 'fanpage_id', 'photo_album_id', 'photo_source', 'photo_caption', 'photo_width', 'photo_height', 'updated_time', 'created_time');
         $update = array('photo_source', 'photo_caption', 'updated_time');
 
         $photos_model = new Model_Photos;
         $photos_model->insertMultiple($rows, $cols, $update);
+        
+        if (isset($tags)) {
+        	$cols = array('fanpage_id','facebook_user_id', 'facebook_user_name', 'photo_id', 'tag_position_x', 'tag_position_y', 'created_time');
+        	$update = array('tag_position_x', 'tag_position_y');
+        
+        	$tags_model = new Model_Tags;
+        	$tags_model->insertMultiple($tags, $cols, $update);
+        }
     }
 
     private function storeFans($fans)
