@@ -11,7 +11,7 @@ $(document).ready(function(){
         $(panel).animate({height: 80 * count});
         $(this).text("+ More");
         $(panel).removeClass('down').addClass('up');
-      } else {
+      } else if(count > 2) {
         $(panel).animate({height: 80});
         $(this).text("- Close");
         $(panel).addClass('down').removeClass('up');
@@ -25,7 +25,7 @@ $(document).ready(function(){
         $(panel).animate({height: 80 * count});
         $(this).text("+ More");
         $(panel).removeClass('down').addClass('up');
-      } else {
+      } else if(count > 2){
         $(panel).animate({height: 80});
         $(this).text("- Close");
         $(panel).removeClass('up').addClass('down');
