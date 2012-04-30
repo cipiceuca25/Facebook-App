@@ -3251,7 +3251,8 @@ input[type="submit"].btn.btn-mini {
 .modal-open .popover {
   z-index: 2060;
 }
-.modal-open .tooltip {
+.modal-open .
+ {
   z-index: 2070;
 }
 .modal-backdrop {

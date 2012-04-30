@@ -1,21 +1,106 @@
-
-<style>
-
-.wrapper { width:810px; margin:0 auto; background:blue; }
-
-.lgrey { background: #EEE; }
-.dgrey { background: #CCC; }
-
-
-</style>
-
-<div id="content">
-
-	<div id="ranking">
+<script type="text/javascript"> 
 	
-		<div id="top_fans">
+	$(document).ready(function(){
 		
-			<div class="tooltip"><a title="You are awesome and nobody can touch you!<br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
+		/************ SLIDING PANELS *************/
+		
+			$(".flip1").toggle(function() {
+				
+				$(".panel1").slideToggle("slow");
+				$(this).text("+ More");
+			
+			}, function() {
+				
+				$(".panel1").slideToggle("slow");
+				$(this).text("- Close");
+			
+			});
+			
+			$(".flip2").toggle(function() {
+				
+				$(".panel2").slideToggle("slow");
+				$(this).text("- Close");
+			
+			}, function() {
+				
+				$(".panel2").slideToggle("slow");
+				$(this).text("+ More");
+			
+			});
+			
+			$(".flip3").toggle(function() {
+				
+				$(".panel3").slideToggle("slow");
+				$(this).text("- Close");
+			
+			}, function() {
+				
+				$(".panel3").slideToggle("slow");
+				$(this).text("+ More");
+			
+			});
+			
+			$(".flip4").toggle(function() {
+				
+				$(".panel4").slideToggle("slow");
+				$(this).text("- Close");
+			
+			}, function() {
+				
+				$(".panel4").slideToggle("slow");
+				$(this).text("+ More");
+			
+			});		
+		
+		/************ TOOL TIP *************/
+		
+		$('a[title]').tooltip({
+			placement: 'left'
+		});
+		
+	});
+</script>
+
+<script>
+  var paragraphs_added = 0;
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId : '272147032839990', //Your facebook APP here
+      cookie : true, // enable cookies to allow the server to access the session
+    });
+  }
+
+  window.onload = function() {
+    FB.Canvas.setAutoGrow(91);
+    setTimeout('autoGrowTimer();', 1000); //This is for demonstration
+  };
+
+  function autoGrowTimer() { //Can be removed.
+    paragraphs_added++; //Increase the count
+    autoGrowDiv = document.getElementById('autoGrow');
+    //autoGrowDiv.innerHTML = autoGrowDiv.innerHTML + "<p>This is making the iframe taller.</p>";
+    //Stop after 50 paragraphs aded
+    if (paragraphs_added > 50) return;
+
+    setTimeout('autoGrowTimer();', 1000);
+  }
+</script>
+
+<div id="wrapper">
+
+	<div id="header">
+    
+    	<div id="logo"></div>
+        
+    </div><!--/end header -->
+    
+    <div id="content">
+    
+        <div id="ranking">
+        
+			<div id="top_fans">
+		
+			<div class="tip"><a title="You are awesome and nobody can touch you!<br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
 			
 			<h2>Top Fan <span>|&nbsp;&nbsp;Most Active Fan</span></h2>
 			
@@ -23,7 +108,7 @@
 			
 				<div class="border">
 				
-					<div class="rank"><h3>1</h3></div>
+					<div class="rank"><h2>1</h2></div>
 					
 					<div class="photo">
 					
@@ -37,100 +122,464 @@
 					
 					<div class="clearfix"></div>
 				
-				</div>
+				</div><!--end border -->
 				
-			</div>
+			</div><!--end first -->
 			
-			<div class="panel panel1"></div>
+			<div class="panel panel1">
 			
-			<div class="shadow"></div>
+				<div class="border">
+					
+					<div class="rank"><h2>2</h2></div>
+					
+					<div class="photo">
+					
+						<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+					
+					</div>
+					
+					<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+					
+					<div class="points"><p>204<span>Points<br />this Week</span></p></div>
+					
+					<div class="clearfix"></div>
+				
+				</div><!--end border -->
+	   	      
+	   	      	<div class="border">
+					
+					<div class="rank"><h2>2</h2></div>
+					
+					<div class="photo">
+					
+						<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+					
+					</div>
+					
+					<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+					
+					<div class="points"><p>204<span>Points<br />this Week</span></p></div>
+					
+					<div class="clearfix"></div>
+				
+				</div><!--end border -->
+				
+				<div class="border">
+					
+					<div class="rank"><h2>3</h2></div>
+					
+					<div class="photo">
+					
+						<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+					
+					</div>
+					
+					<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+					
+					<div class="points"><p>204<span>Points<br />this Week</span></p></div>
+					
+					<div class="clearfix"></div>
+				
+				</div><!--end border -->
+				
+				<div class="border">
+					
+					<div class="rank"><h2>5</h2></div>
+					
+					<div class="photo">
+					
+						<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+					
+					</div>
+					
+					<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+					
+					<div class="points"><p>204<span>Points<br />this Week</span></p></div>
+					
+					<div class="clearfix"></div>
+				
+				</div><!--end border -->
+			
+			</div><!--end panel -->
+			
+			<div class="shadow"><p class="toggle flip1">+ More</p></div>
 		
-		</div>
+		</div><!--end top_fans -->
 		
-		<div id="top_favorite">
 		
-			<div class="tooltip"><a title="People like you. Your mom was right!<br /><br />But <i>seriously</i>, your contribution is well regarded within the community. People like your posts and interact with you a lot.<br /><br />Keep up the good work!">?</a></div>
-			
-			<h2></h2>
-			
-			<div class="first"></div>
-			
-			<div class="panel panel2"></div>
-			
-			<div class="shadow"></div>
 		
-		</div>
 		
-		<div id="top_talker">
 		
-			<div class="tooltip"><a title="Loud and proud! You don't care what time of the night it is, you keep barking!<br /><br />But <i>seriously</i>, your posts and comments help shape the conversations.<br /><br />Keep it loud. Keep it proud.">?</a></div>
-			
-			<h2></h2>
-			
-			<div class="first"></div>
-			
-			<div class="panel panel3"></div>
-			
-			<div class="shadow"></div>
 		
-		</div>
 		
-		<div id="top_clicker">
 		
-			<div class="tooltip"><a title="Is there anything you don't like? Even Lindsey Lohan has standards --insert chuckle--.<br /><br />But <i>seriously</i>, we're glad you take interest in your peers.<br /><br />Happy clicking!.">?</a></div>
-			
-			<h2></h2>
-			
-			<div class="first"></div>
-			
-			<div class="panel panel4"></div>
-			
-			<div class="shadow"></div>
 		
-		</div>
+			<div id="fan_favorite">
+			
+				<div class="tip"><a title="People like you. Your mom was right!<br /><br />But <i>seriously</i>, your contribution is well regarded within the community. People like your posts and interact with you a lot.<br /><br />Keep up the good work!">?</a></div>
+			
+				<h2>Fan Favorite <span>|&nbsp;&nbsp;Received most likes</span></h2>
+				
+				<div class="first">
+			
+					<div class="border">
+					
+						<div class="rank"><h2>1</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Got Liked<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+				  
+			  	</div><!--/end first -->
+				
+		  		<div class="panel panel2">	
+		  		
+		  			<div class="border">
+				
+						<div class="rank"><h2>2</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Got Liked<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+					
+					<div class="border">
+				
+						<div class="rank"><h2>3</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Got Liked<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+					
+					<div class="border">
+				
+						<div class="rank"><h2>4</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Got Liked<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+					
+					<div class="border">
+				
+						<div class="rank"><h2>5</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Got Liked<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+			
+				</div><!--end panel -->
+			
+				<div class="shadow"><p class="toggle flip2">+ More</p></div>
+			
+			</div><!--/end fans favorite -->
 	
-	</div>
 	
-	<div class="clearfix"></div>
+	
+	
+		
+			
+			<div id="top_talker">
+				
+				<div class="tip"><a title="Loud and proud! You don't care what time of the night it is, you keep barking!<br /><br />But <i>seriously</i>, your posts and comments help shape the conversations.<br /><br />Keep it loud. Keep it proud.">?</a></div>
+				
+				<h2>Top Talker <span>|&nbsp;&nbsp;Most Comments</span></h2>
+				
+				<div class="first">
+				
+					<div class="border">
+					
+						<div class="rank"><h2>1</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Posts<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+				
+				</div><!--end first -->
+				
+				<div class="panel panel3">
+				
+					<div class="border">
+					
+						<div class="rank"><h2>2</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Posts<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+					
+					<div class="border">
+					
+						<div class="rank"><h2>3</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Posts<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+					
+					<div class="border">
+					
+						<div class="rank"><h2>4</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Posts<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+					
+					<div class="border">
+					
+						<div class="rank"><h2>5</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Posts<br />this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+				
+				</div><!--end panel -->
+				
+				<div class="shadow"><p class="toggle flip3">+ More</p></div>
+				
+			</div><!--end top_talker -->
+		
+			<div id="top_clicker">
+			
+				<div class="tip"><a title="Is there anything you don't like? Even Lindsey Lohan has standards --insert chuckle--.<br /><br />But <i>seriously</i>, we're glad you take interest in your peers.<br /><br />Happy clicking!.">?</a></div>
+				
+				<h2>Top Clicker <span>|&nbsp;&nbsp;Liked most items</span></h2>
+				
+				<div class="first">
+				
+					<div class="border">
+					
+						<div class="rank"><h2>1</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Likes<br /></span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+				
+				</div><!--end first -->
+				
+				<div class="panel panel4">
+				
+					<div class="border">
+					
+						<div class="rank"><h2>2</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Likes<br /></span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+					
+					<div class="border">
+					
+						<div class="rank"><h2>3</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Likes<br /></span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+					
+					<div class="border">
+					
+						<div class="rank"><h2>4</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Likes<br /></span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+					
+					<div class="border">
+					
+						<div class="rank"><h2>5</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/1079484908"><img class="face" width="50" height="50" src="https://graph.facebook.com/1079484908/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/1079484908">Danielle Marie</a></div>
+						
+						<div class="points"><p>204<span>Likes<br /></span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+				
+				</div><!--end panel -->
+				
+				<div class="shadow"><p class="toggle flip4">+ More</p></div>
+			
+			</div><!--end top_clicker -->
+                
+        </div><!--/end ranking -->
+        
+        <div class="clear"></div>
+        
+    </div><!--/end content -->
 
-</div>
+</div><!--/end wrapper -->
+
 
 <!--
 
-<div class="row-fluid">
 
-	<div class="span4 dgrey"</div>
-    
-	<div class="span8 dgrey">This is a  8 column area</div>
-
-</div>
-
-<div class="row-fluid">
-
-	<div class="span1 lgrey">span 1</div>
-	
-	<div class="span11 lgrey">span 11
-	
-		<div class="row-fluid">
-		
-			<div class="span6 dgrey">six</div>
-			
-			<div class="span6 dgrey">six</div>
-		
-		</div>
-	
-	</div>
-
-</div>
--->
+<hr />
 
 
 <p>top talkers</p>
-<?= print_r($this->top_talkers) ?>
-<p>top clickers</p>
-<?= print_r($this->top_clickers) ?>
-<p>top fans</p>
-<?= print_r($this->top_fans) ?>
-<p>most popular</p>
-<?= print_r($this->most_popular) ?>
 
+<pre>
+<?= print_r($this->top_talkers) ?>
+</pre>
+
+<p>top clickers</p>
+
+<pre>
+<?= print_r($this->top_clickers) ?>
+</pre>
+
+<p>top fans</p>
+
+<pre>
+<?= print_r($this->top_fans) ?>
+</pre>
+
+<p>most popular</p>
+
+<pre>
+<?= print_r($this->most_popular) ?>
+</pre>
+
+-->

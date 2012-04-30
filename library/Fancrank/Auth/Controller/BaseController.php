@@ -180,10 +180,12 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
 
         switch (count($user)) {
             case 0:
+           
                 //add the fan if it doesnt exist
                 $fans_model = new Model_Fans;
                 $select = $fans_model->select();
-                $select->where($fans_model->getAdapter()->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data->user_id, $this->_getParam('id')));
+                $select->where($fans_model->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data->user_id, $this->_getParam('id')));
+
                 $fan = $fans_model->fetchAll($select);
 
                 if (!count($fan)) {
