@@ -32,7 +32,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         Log::Info('Initializing Fanpage: "%s"', $this->fanpage->fanpage_id);
 
         foreach ($this->types as $callback => $type) {
-            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, $callback, 'since', $this->fanpage->latest_timestamp));
+            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, $callback, 'since'));
         }
 
         // schedule the next auto update
@@ -44,7 +44,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         Log::Info('Updating Fanpage: "%s"', $this->fanpage->fanpage_id);
 
         foreach ($this->types as $callback => $type) {
-            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, $callback, 'since', $this->fanpage->latest_timestamp));
+            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, $callback, 'since'));
         }
 
         // schedule the next auto update
@@ -57,8 +57,6 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $direction  = $this->_getParam(2, 'since');
         $timestamp  = $this->_getParam(3, 0);
         $extra      = $this->_getParam(4, false);
-        
-        //$token		= 'AAACgL1Ty5ggBAMH9LGdNEp9SSRWCC2CGIrgwjyuAL8jQlC3PtHksaWIoxAqTCv6qQ8FloIWVgA4T3hHusKErw7F2U88mogqMFf6A2QZDZD';
 
         $url = 'https://graph.facebook.com/' . $this->fanpage->fanpage_id . '/' . $type;// . '?access_token=' . $token;
 
@@ -121,10 +119,6 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             'fields' => implode(',', $fields)
         ));
 
-        if ($direction == 'since' and $timestamp != 0) {
-            $client->setParameterGet('__previous', 1);
-        }
-
         try {
             $response = $client->request();
         } catch (Exception $e) {
@@ -137,7 +131,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         }
 
         $json = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-		//die(print_r($json));
+
         if (property_exists($json, 'error')) {
             // try again
             Collector::Queue('5 minutes', 'facebook', 'fetch', array($this->fanpage->fanpage_id, $type, $direction, $timestamp));
@@ -155,23 +149,14 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 // should we keep going?
                 if (isset($json->paging)) {
                     // go back in history
-                    if ($timestamp == 0 or $direction == 'until' ) {
+                    if ($timestamp == 0 or $direction == 'since' ) {
                         $query = str_replace($url . '?', null, $json->paging->next);
                         parse_str($query, $params);
 
-                        if (isset($params['until']) && $params['until'] != $timestamp) {
-                            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, $type, 'until', $params['until']));
-                        }
-                    // go forward in history
-                    } else {
-                        $query = str_replace($url . '?', null, $json->paging->previous);
-
-                        parse_str($query, $params);
-
-                        if ($params['since'] != $timestamp) {
+                        if (isset($params['since']) && $params['since'] != $timestamp) {
                             Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, $type, 'since', $params['since']));
                         }
-                    }
+                    } 
                 }
             } else {
                 Log::Info('no new %s found', $type);
@@ -247,7 +232,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                     'post_picture'      => isset($post->picture) ? $post->picture : '',
                     'post_link'         => isset($post->link) ? $post->link : '',
                     'post_source'       => isset($post->source) ? $post->source : '',
-                    'post_name'         => $post->name,
+                    'post_name'         => isset($post->name) ? $post->name : '',
                     'post_caption'      => isset($post->caption) ? $post->caption : '',
                     'post_description'  => isset($post->description) ? $post->description : '',
                     'post_icon'         => $post->icon
@@ -308,8 +293,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             $likes_model->insertMultiple($likes, $cols, $update);
         }
 
-//ie(print_r($fans));
         $unique_fans = array_unique($fans);
+
         $this->storeFans($unique_fans);
     }
 
@@ -367,10 +352,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     private function storeAlbums($albums)
-    {
-        $direction  = $this->_getParam(2, 'since');
-        $timestamp  = $this->_getParam(3, 0);
-		
+    {	
         foreach ($albums as $album) {
 
         	$created = new Zend_Date($album->created_time);
@@ -380,7 +362,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         			'album_id'				=> $album->id,
         			'fanpage_id'			=> $this->fanpage->fanpage_id,
         			'facebook_user_id'		=> $album->from->id,
-        			'album_name'			=> $album->id,
+        			'album_name'			=> $album->name,
         			'album_desription'		=> isset($album->description) ? $album->description : '',
         			'album_location'		=> isset($album->location) ? $album->location : '',
         			'album_link'			=> $album->link,
@@ -391,20 +373,20 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         			'created_time'			=> $created->toString(Zend_Date::ISO_8601)		
         	);
 
-            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'photos', $direction, $timestamp, $album->id));
+            Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'photos', 'since', 0, $album->id));
             /* DOESN'T WORK
             if(isset($album->likes->data)){
             
-            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', $direction, $timestamp, $album->id));
+            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', 'since' , 0, $album->id));
             }
 
             if(isset($album->comments->data)){
             	
-            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', $direction, $timestamp, $album->id));
+            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', 'since'r, 0, $album->id));
             }
             */
         }
-        
+
         $cols = array('album_id', 'fanpage_id', 'facebook_user_id', 'album_name', 'album_description', 'album_location', 'album_link', 'album_cover_photo_id', 'album_photo_count', 'album_type', 'updated_time', 'created_time');
         $update = array('album_name', 'album_description', 'album_cover_photo_id', 'album_photo_count', 'updated_time');
         
