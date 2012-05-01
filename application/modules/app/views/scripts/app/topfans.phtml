@@ -56,7 +56,7 @@
 			
 				<h2>Fan Favorite <span>|&nbsp;&nbsp;Received most likes</span></h2>
 				
-		  		<div class="panel down">	
+		  		<div class="panel up">	
 
 		  			<?php if (!count($this->most_popular)): ?>
 		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
@@ -67,6 +67,7 @@
 		  			<?php $count = 0; ?>
 
 		  			<?php foreach($this->most_popular as $popular): ?>
+
 		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
 
 	  						<div class="rank"><h2><?= $count + 1 ?></h2></div>
@@ -79,7 +80,7 @@
 							
 							<div class="name"><a target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><?= $popular['fan_name'] ?></a></div>
 							
-							<div class="points"><p><?= $popular['num_likes'] ?><span>Got Liked<br />this Week</span></p></div>
+							<div class="points"><p><?= $popular['count'] ?><span>Got Liked<br />this Week</span></p></div>
 							
 							<div class="clearfix"></div>
 
@@ -98,7 +99,7 @@
 				
 				<h2>Top Talker <span>|&nbsp;&nbsp;Most Comments</span></h2>
 				
-				<div class="panel">
+				<div class="panel up">
 					
 					<?php if (!count($this->top_talker)): ?>
 		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
@@ -121,7 +122,7 @@
 							
 							<div class="name"><a target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><?= $talker['fan_name'] ?></a></div>
 							
-							<div class="points"><p><?= $talker['num_likes'] ?><span>Got Liked<br />this Week</span></p></div>
+							<div class="points"><p><?= $talker['number_of_posts'] ?><span>Got Liked<br />this Week</span></p></div>
 							
 							<div class="clearfix"></div>
 
@@ -141,7 +142,7 @@
 				
 				<h2>Top Clicker <span>|&nbsp;&nbsp;Liked most items</span></h2>
 				
-				<div class="panel">
+				<div class="panel up">
 				
 					<?php if (!count($this->top_clicker)): ?>
 		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
