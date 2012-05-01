@@ -11,8 +11,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         if($this->_auth->hasIdentity()) {
             //bring the user into the app if he is already logged in
             $this->_identity = $this->_auth->getIdentity();
-            //die('here');
-            $this->_helper->redirector('index', 'app', 'app', array($this->_getParam("id") => ""));   
+            $this->_helper->redirector('index', 'app', 'app', array($this->_getParam('id') => ''));   
         }
     }
 

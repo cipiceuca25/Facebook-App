@@ -14,7 +14,7 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
         //do some checks with the data
 
         if(!$this->_auth->hasIdentity()) {
-            $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ""));  
+            $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));  
         } else {
             $this->_identity = $this->_auth->getIdentity();
             $this->view->user = $this->_identity;
