@@ -1,6 +1,10 @@
 
 [controller='app'] {
 
+	[role="main"] {
+		margin-top: 0;
+	}
+
 	&[action='topfans'] {
 	
 		div#header {
@@ -179,12 +183,13 @@
 		    text-align: left;
 		}
 		.panel {
-		    display: none;
-		    height: 324px;
+		    height: auto;
+		    overflow: hidden;
 		}
 		#top_fans .panel {
 		    display: block;
 		    height: 324px;
+		    overflow: hidden;
 		}
 		.shadow {
 		    background: url("../../img/bg_shadow.jpg") no-repeat scroll center top transparent;
