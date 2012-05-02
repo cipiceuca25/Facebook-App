@@ -1,7 +1,7 @@
 <?php
 
-//user by facebook to to real time subscriptions
-class Api_UserInsightsController extends Fancrank_API_Controller_BaseController
+//not sure if this is needed yet as we can recollect this data everytime a page owner logs in?
+class Api_PageSubscriptionController extends Fancrank_API_Controller_BaseController
 {
 	public function preDispatch()
 	{
@@ -13,6 +13,11 @@ class Api_UserInsightsController extends Fancrank_API_Controller_BaseController
 	public function postAction()
 	{
 		//do a switch on every type expected and handle them in private functions to be defined below
+		//currently we should have...feed, friends, activities, interests, music, books, movies, television, likes, checkins
+
+		//log $this->getAllParams() to see what object I am recieving; it is proabblyt called data
+		Log::Info('facebook data %s', $this->getAllParams());
+
 	}
 
 	//for facebook verification
@@ -23,7 +28,12 @@ class Api_UserInsightsController extends Fancrank_API_Controller_BaseController
 		//verify the token (something we generate for the user and sent to facebook when subcribed (maybe a md5 hash of the entire user? ))
 
 		//return the hub challenge back to facebook
-		return $this->_getParam('hub_challenge');
+		echo $this->_getParam('hub_challenge');
 	}
 	//this should be handeled in a way where eventually collections will happen only when users and pages are setup. Eliminating cron and freeing up resources.
+
+	private function feed()
+	{
+		//update the pages feed
+	}
 }
