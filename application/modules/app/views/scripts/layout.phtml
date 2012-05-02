@@ -27,7 +27,7 @@
 
         <?= $this->headScript(); ?>
 
-        <? if (APPLICATION_ENV != 'production'): ?>
+        <? if (APPLICATION_ENV == 'development'): ?>
             <link href="/css/style.less" rel="stylesheet/less"/>
             <script type="text/javascript">
                 env = 'development';
