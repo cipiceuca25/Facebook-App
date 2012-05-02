@@ -222,6 +222,9 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
 
                 Collector::Run('fancrank', 'init', array($source_data->user_id, 'likes'));
 
+                //set up user subscription (https://developers.facebook.com/docs/reference/api/realtime/)
+
+
                 break;
 
             case 1:
