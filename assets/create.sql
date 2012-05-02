@@ -10,11 +10,11 @@ CREATE  TABLE IF NOT EXISTS `fanpages` (
   `fanpage_id` BIGINT(100) NOT NULL ,
   `fanpage_name` VARCHAR(255) NOT NULL ,
   `fanpage_category` VARCHAR(45) NOT NULL ,
+  `fanpage_tab_id` VARCHAR(255) NULL ,
   `latest_timestamp` BIGINT(100) NULL ,
   `access_token` VARCHAR(255) NOT NULL ,
-  `tab_id` VARCHAR(255) NULL ,
   `active` TINYINT(1) NOT NULL DEFAULT FALSE ,
-  `installed` TINYINT(1) NULL DEFAULT FALSE ,
+  `installed` TINYINT(1) NOT NULL DEFAULT FALSE ,
   PRIMARY KEY (`fanpage_id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -27,16 +27,15 @@ CREATE  TABLE IF NOT EXISTS `albums` (
   `album_id` BIGINT(100) NOT NULL ,
   `fanpage_id` BIGINT(100) NOT NULL ,
   `facebook_user_id` BIGINT(100) NOT NULL ,
-  `user_category` VARCHAR(255) NULL DEFAULT NULL COMMENT '								' ,
   `album_name` VARCHAR(100) NOT NULL ,
-  `description` TEXT NULL DEFAULT NULL ,
-  `location` TEXT NULL DEFAULT NULL ,
-  `link` TEXT NULL DEFAULT NULL ,
-  `cover_photo_id` BIGINT(100) NOT NULL ,
-  `count` INT(10) NOT NULL ,
-  `type` TEXT NULL DEFAULT NULL ,
-  `created_time` BIGINT(100) NOT NULL ,
-  `updated_time` BIGINT(100) NULL DEFAULT NULL ,
+  `album_description` TEXT NULL DEFAULT NULL ,
+  `album_location` TEXT NULL DEFAULT NULL ,
+  `album_link` TEXT NULL DEFAULT NULL ,
+  `album_cover_photo_id` BIGINT(100) NOT NULL ,
+  `album_photo_count` INT(10) NOT NULL ,
+  `album_type` TEXT NULL DEFAULT NULL ,
+  `updated_time` TIMESTAMP NULL DEFAULT NULL ,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`album_id`) ,
   INDEX `ALBUMS_FANPAGES_FK` (`fanpage_id` ASC) ,
   CONSTRAINT `ALBUMS_FANPAGES_FK`
@@ -52,15 +51,14 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `comments`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `comments` (
-  `comment_id` VARCHAR(200) NOT NULL ,
+  `comment_id` VARCHAR(255) NOT NULL ,
   `fanpage_id` BIGINT(100) NOT NULL ,
-  `post_id` VARCHAR(100) NOT NULL ,
   `facebook_user_id` BIGINT(100) NOT NULL ,
-  `user_category` VARCHAR(255) NULL DEFAULT NULL ,
-  `message` TEXT NOT NULL ,
-  `created_time` BIGINT(100) NOT NULL ,
-  `likes_count` FLOAT NULL DEFAULT NULL ,
-  `type` TINYINT(4) NULL DEFAULT NULL ,
+  `comment_post_id` VARCHAR(255) NOT NULL ,
+  `comment_message` TEXT NOT NULL ,
+  `comment_likes_count` INT NULL DEFAULT NULL ,
+  `comment_type` VARCHAR(25) NULL DEFAULT NULL ,
+  `created_time` TIMESTAMP NOT NULL ,
   PRIMARY KEY (`comment_id`) ,
   INDEX `COMMENTS_FANPAGES_ID_FK` (`fanpage_id` ASC) ,
   CONSTRAINT `COMMENTS_FANPAGES_ID_FK`
@@ -78,14 +76,16 @@ DEFAULT CHARACTER SET = utf8;
 CREATE  TABLE IF NOT EXISTS `fans` (
   `facebook_user_id` BIGINT(100) NOT NULL ,
   `fanpage_id` BIGINT(100) NOT NULL ,
-  `name` VARCHAR(200) NOT NULL ,
-  `first_name` VARCHAR(100) NOT NULL ,
-  `last_name` VARCHAR(100) NOT NULL ,
-  `gender` TEXT NOT NULL ,
-  `locale` VARCHAR(10) NOT NULL ,
-  `lang` VARCHAR(5) NOT NULL ,
-  `country` VARCHAR(5) NOT NULL ,
-  PRIMARY KEY (`facebook_user_id`) ,
+  `fan_name` VARCHAR(200) NOT NULL ,
+  `fan_first_name` VARCHAR(100) NOT NULL ,
+  `fan_last_name` VARCHAR(100) NOT NULL ,
+  `fan_user_avatar` VARCHAR(255) NOT NULL ,
+  `fan_gender` ENUM('MALE','FEMALE') NOT NULL ,
+  `fan_locale` VARCHAR(10) NOT NULL ,
+  `fan_lang` VARCHAR(25) NOT NULL ,
+  `fan_country` VARCHAR(25) NOT NULL ,
+  `fan_location` VARCHAR(255) NOT NULL ,
+  PRIMARY KEY (`facebook_user_id`, `fanpage_id`) ,
   INDEX `FAN_FANPAGE_FK` (`fanpage_id` ASC) ,
   CONSTRAINT `FAN_FANPAGE_FK`
     FOREIGN KEY (`fanpage_id` )
@@ -269,13 +269,12 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `likes`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `likes` (
-  `likes_id` VARCHAR(200) NOT NULL ,
   `fanpage_id` BIGINT(100) NOT NULL ,
   `post_id` VARCHAR(100) NOT NULL ,
   `facebook_user_id` BIGINT(100) NOT NULL ,
   `post_type` TINYINT(10) NOT NULL ,
-  PRIMARY KEY (`likes_id`) ,
   INDEX `LIKES_FANPAGES_FK` (`fanpage_id` ASC) ,
+  PRIMARY KEY (`fanpage_id`, `post_id`, `facebook_user_id`) ,
   CONSTRAINT `LIKES_FANPAGES_FK`
     FOREIGN KEY (`fanpage_id` )
     REFERENCES `fanpages` (`fanpage_id` )
@@ -291,18 +290,18 @@ DEFAULT CHARACTER SET = utf8;
 CREATE  TABLE IF NOT EXISTS `photos` (
   `photo_id` BIGINT(100) NOT NULL ,
   `fanpage_id` BIGINT(100) NOT NULL ,
-  `album_id` BIGINT(100) NOT NULL ,
   `faceboook_user_id` BIGINT(100) NOT NULL ,
+  `photo_album_id` BIGINT(100) NOT NULL ,
+  `photo_caption` TEXT NULL DEFAULT NULL ,
+  `photo_picture` TEXT NOT NULL ,
+  `photo_source` TEXT NOT NULL ,
+  `photo_height` INT(50) NULL DEFAULT NULL ,
+  `photo_width` INT(50) NULL DEFAULT NULL ,
+  `photo_link` TEXT NULL DEFAULT NULL ,
+  `photo_position` INT(50) NULL DEFAULT NULL ,
+  `updated_time` TIMESTAMP NULL ,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `user_category` VARCHAR(255) NULL DEFAULT NULL ,
-  `caption` TEXT NULL DEFAULT NULL ,
-  `picture` TEXT NOT NULL ,
-  `source` TEXT NOT NULL ,
-  `height` INT(50) NULL DEFAULT NULL ,
-  `width` INT(50) NULL DEFAULT NULL ,
-  `link` TEXT NULL DEFAULT NULL ,
-  `position` INT(50) NULL DEFAULT NULL ,
-  `created_time` BIGINT(100) NOT NULL ,
-  `updated_time` BIGINT(100) NULL DEFAULT NULL ,
   PRIMARY KEY (`photo_id`) ,
   INDEX `PHOTOS_FANPAGES_FK` (`fanpage_id` ASC) ,
   CONSTRAINT `PHOTOS_FANPAGES_FK`
@@ -321,17 +320,17 @@ CREATE  TABLE IF NOT EXISTS `posts` (
   `post_id` VARCHAR(255) NOT NULL ,
   `facebook_user_id` BIGINT(100) NOT NULL ,
   `fanpage_id` BIGINT(100) NOT NULL ,
-  `user_category` VARCHAR(255) NULL DEFAULT NULL ,
-  `message` TEXT NOT NULL ,
-  `privacy_descr` VARCHAR(25) NULL DEFAULT NULL ,
-  `privacy_value` VARCHAR(25) NULL DEFAULT NULL ,
-  `type` VARCHAR(25) NULL DEFAULT NULL ,
-  `created_time` BIGINT(100) NULL DEFAULT NULL ,
-  `updated_time` BIGINT(100) NULL DEFAULT NULL ,
-  `application_name` VARCHAR(25) NULL DEFAULT NULL ,
-  `application_id` BIGINT(100) NULL DEFAULT NULL ,
-  `comments_count` FLOAT NULL DEFAULT NULL ,
-  `likes_count` FLOAT NULL DEFAULT NULL ,
+  `post_user_category` VARCHAR(255) NULL DEFAULT NULL ,
+  `post_message` TEXT NOT NULL ,
+  `post_privacy_descr` VARCHAR(25) NULL DEFAULT NULL ,
+  `post_privacy_value` VARCHAR(25) NULL DEFAULT NULL ,
+  `post_type` VARCHAR(25) NULL DEFAULT NULL ,
+  `post_application_name` VARCHAR(25) NULL DEFAULT NULL ,
+  `post_application_id` BIGINT(100) NULL DEFAULT NULL ,
+  `post_comments_count` FLOAT NULL DEFAULT NULL ,
+  `post_likes_count` FLOAT NULL DEFAULT NULL ,
+  `updated_time` TIMESTAMP NULL ,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`post_id`) ,
   INDEX `POSTS_FANPAGES_ID_FK` (`fanpage_id` ASC) ,
   CONSTRAINT `POSTS_FANPAGES_ID_FK`
@@ -344,39 +343,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `active_guests`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `active_guests` (
-  `ip` VARCHAR(15) NOT NULL ,
-  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  PRIMARY KEY (`ip`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `active_users`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `active_users` (
-  `user_id` VARCHAR(32) NOT NULL ,
-  `timestamp` VARCHAR(45) NOT NULL DEFAULT 'CURRENT_TIMESTAMP' ,
-  PRIMARY KEY (`user_id`) )
-ENGINE = MyISAM
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `banned_users`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `banned_users` (
-  `user_id` VARCHAR(32) NOT NULL ,
-  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-  PRIMARY KEY (`user_id`) )
-ENGINE = MyISAM
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
 -- Table `facebook_users`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `facebook_users` (
@@ -384,8 +350,9 @@ CREATE  TABLE IF NOT EXISTS `facebook_users` (
   `facebook_user_name` VARCHAR(32) NOT NULL ,
   `facebook_user_email` VARCHAR(255) NOT NULL ,
   `facebook_user_gender` ENUM('male','female') NOT NULL ,
-  `updated_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   `access_token` VARCHAR(255) NOT NULL ,
+  `updated_time` TIMESTAMP NULL ,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`facebook_user_id`) )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -397,8 +364,9 @@ DEFAULT CHARACTER SET = utf8;
 CREATE  TABLE IF NOT EXISTS `fancrank_users` (
   `facebook_user_id` BIGINT(100) NOT NULL ,
   `fancrank_user_email` VARCHAR(255) NOT NULL ,
-  `updated_time` BIGINT(100) NOT NULL ,
   `access_token` VARCHAR(255) NOT NULL ,
+  `updated_time` BIGINT(100) NULL ,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`facebook_user_id`) ,
   INDEX `FANCRANK_USER_FAN_FK` (`facebook_user_id` ASC) ,
   CONSTRAINT `FANCRANK_USER_FAN_FK`
@@ -421,6 +389,8 @@ CREATE  TABLE IF NOT EXISTS `users` (
   `user_avatar` VARCHAR(255) NOT NULL ,
   `user_email` VARCHAR(255) NOT NULL ,
   `user_access_token` VARCHAR(255) NOT NULL ,
+  `user_gender` VARCHAR(45) NULL ,
+  `user_locale` VARCHAR(45) NULL ,
   `user_created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`user_id`) )
 ENGINE = InnoDB
@@ -434,16 +404,11 @@ CREATE  TABLE IF NOT EXISTS `fanpage_admins` (
   `facebook_user_id` BIGINT(100) NOT NULL ,
   `fanpage_id` BIGINT(100) NOT NULL ,
   PRIMARY KEY (`facebook_user_id`, `fanpage_id`) ,
-  INDEX `FANPAGE_ADMIN_PAGE_FK` (`fanpage_id` ASC) ,
   INDEX `FANAPAGE_ADMIN_USER_FK` (`facebook_user_id` ASC) ,
-  CONSTRAINT `FANAPAGE_ADMIN_USER_FK`
+  INDEX `fk_fanpage_admins_1` (`facebook_user_id` ASC) ,
+  CONSTRAINT `fk_fanpage_admins_1`
     FOREIGN KEY (`facebook_user_id` )
     REFERENCES `users` (`user_id` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FANPAGE_ADMIN_PAGE_FK`
-    FOREIGN KEY (`fanpage_id` )
-    REFERENCES `fanpages` (`fanpage_id` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -502,6 +467,47 @@ CREATE  TABLE IF NOT EXISTS `posts_media` (
   CONSTRAINT `fk_posts_media_1`
     FOREIGN KEY (`post_id` )
     REFERENCES `posts` (`post_id` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `fancrank_user_likes`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `fancrank_user_likes` (
+  `facebook_user_id` BIGINT(100) NOT NULL ,
+  `like_id` BIGINT(100) NOT NULL ,
+  `like_category` VARCHAR(255) NOT NULL ,
+  `like_name` VARCHAR(255) NOT NULL ,
+  `created_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  PRIMARY KEY (`facebook_user_id`, `like_id`) ,
+  INDEX `fk_fancrank_user_likes_facebook_user_id` (`facebook_user_id` ASC) ,
+  UNIQUE INDEX `created_time_UNIQUE` (`created_time` ASC) ,
+  CONSTRAINT `fk_fancrank_user_likes_facebook_user_id`
+    FOREIGN KEY (`facebook_user_id` )
+    REFERENCES `fancrank_users` (`facebook_user_id` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tags`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `tags` (
+  `fanpage_id` BIGINT(100) NOT NULL ,
+  `facebook_user_id` BIGINT(100) NULL ,
+  `facebook_user_name` VARCHAR(255) NOT NULL ,
+  `photo_id` BIGINT(100) NOT NULL ,
+  `tag_position_x` INT(100) NULL ,
+  `tag_position_y` INT(100) NULL ,
+  `created_time` TIMESTAMP NULL ,
+  PRIMARY KEY (`fanpage_id`, `facebook_user_id`, `facebook_user_name`, `photo_id`) ,
+  INDEX `TAGS_PHOTOS_FK` (`photo_id` ASC) ,
+  CONSTRAINT `TAGS_PHOTOS_FK`
+    FOREIGN KEY (`photo_id` )
+    REFERENCES `photos` (`photo_id` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
