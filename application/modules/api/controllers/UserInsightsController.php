@@ -9,36 +9,21 @@ class Api_UserInsightsController extends Fancrank_API_Controller_BaseController
 		//This needs to have special secuirty steps to confirm that facebook is actually accessing this and no body else
 	}
 
-	public function subscribeAction()
+	//the object passes will come here
+	public function postAction()
 	{
-
+		//do a switch on every type expected and handle them in private functions to be defined below
 	}
 
-	public function deleteAction()
+	//for facebook verification
+	public function getAction()
 	{
-		
+		 //$_GET["hub_mode"],$_GET["hub_challenge"] and $_GET["hub_verify_token"]
+
+		//verify the token (something we generate for the user and sent to facebook when subcribed (maybe a md5 hash of the entire user? ))
+
+		//return the hub challenge back to facebook
+		return $this->_getParam('hub_challenge');
 	}
-
-	//this action is for users likes
-	public function likesAction()
-	{
-
-	}
-
-	public function  photosAction()
-	{
-
-	}
-
-	public function feedAction()
-	{
-
-	}
-
-	public function feedAction()
-	{
-
-	}
-
 	//this should be handeled in a way where eventually collections will happen only when users and pages are setup. Eliminating cron and freeing up resources.
 }
