@@ -4,6 +4,7 @@ $(document).ready(function(){
   /************ SLIDING PANELS *************/
   
     $(".flip").toggle(function() {
+
       var panel = $(this).parent().prev('.panel');
       var count = $(panel).find('.border').length
 
@@ -11,7 +12,7 @@ $(document).ready(function(){
         $(panel).animate({height: 80 * count});
         $(this).text("+ More");
         $(panel).removeClass('down').addClass('up');
-      } else if(count > 2) {
+      } else if(count > 1) {
         $(panel).animate({height: 80});
         $(this).text("- Close");
         $(panel).addClass('down').removeClass('up');
@@ -25,7 +26,7 @@ $(document).ready(function(){
         $(panel).animate({height: 80 * count});
         $(this).text("+ More");
         $(panel).removeClass('down').addClass('up');
-      } else if(count > 2){
+      } else if(count > 1){
         $(panel).animate({height: 80});
         $(this).text("- Close");
         $(panel).removeClass('up').addClass('down');
