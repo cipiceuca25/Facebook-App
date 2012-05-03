@@ -3,7 +3,7 @@
 class App_IndexController extends Fancrank_App_Controller_BaseController
 {
 	 public function preDispatch()
-    {die('here');
+    {
         //check for user authorization
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
