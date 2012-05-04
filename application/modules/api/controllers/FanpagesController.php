@@ -32,7 +32,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		
 		//security check
 		$fanpage_admin_model = new Model_FanpageAdmins;
-		$admins = $fanpage_admin_model->findByFanpageId($this->_getParam('id'))->current();
+		$admins = $fanpage_admin_model->findByFanpageId($this->_getParam('id'));
 
 		foreach($admins as $admin) {
 			$admin_ids[] = $admin->facebook_user_id;
@@ -75,9 +75,13 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		
 		//security check
 		$fanpage_admin_model = new Model_FanpageAdmins;
-		$admin = $fanpage_admin_model->findByFanpageId($this->_getParam('id'))->current();
+		$admins = $fanpage_admin_model->findByFanpageId($this->_getParam('id'));
+
+		foreach($admins as $admin) {
+			$admin_ids[] = $admin->facebook_user_id;
+		}
 		
-		if ($admin->facebook_user_id == $this->_identity->user_id && $fanpage->active && !$fanpage->installed) {
+		if (in_array($this->_identity->user_id, $admin_ids) && $fanpage->active && !$fanpage->installed) {
 
 			$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
         	$this->config = $sources->get('facebook');
@@ -109,9 +113,13 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		
 		//security check
 		$fanpage_admin_model = new Model_FanpageAdmins;
-		$admin = $fanpage_admin_model->findByFanpageId($this->_getParam('id'))->current();
+		$admins = $fanpage_admin_model->findByFanpageId($this->_getParam('id'));
+
+		foreach($admins as $admin) {
+			$admin_ids[] = $admin->facebook_user_id;
+		}
 		
-		if ($admin->facebook_user_id == $this->_identity->user_id && $fanpage->active && $fanpage->installed) {
+		if (in_array($this->_identity->user_id, $admin_ids) && $fanpage->active && $fanpage->installed) {
 
 			$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
         	$this->config = $sources->get('facebook');
