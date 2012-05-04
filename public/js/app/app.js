@@ -1,8 +1,5 @@
+jQuery(document).ready(function($){
 
-$(document).ready(function(){
-    
- 
-  
 });
 
 var paragraphs_added = 0;
