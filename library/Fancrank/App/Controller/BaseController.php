@@ -10,6 +10,7 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
 
         //check for facebook signed request
         $data = $this->getSignedRequest();
+        die(print_r($data));
 
         //do some checks with the data
 
