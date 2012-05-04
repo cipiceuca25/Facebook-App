@@ -8,9 +8,13 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		
 		//security check
 		$fanpage_admin_model = new Model_FanpageAdmins;
-		$admin = $fanpage_admin_model->findByFanpageId($this->_getParam('id'))->current();
+		$admins = $fanpage_admin_model->findByFanpageId($this->_getParam('id'));
+
+		foreach($admins as $admin) {
+			$admin_ids[] = $admin->facebook_user_id;
+		}
 		
-		if ($admin->facebook_user_id == $this->_identity->user_id && !$fanpage->active) {
+		if (in_array($this->_identity->user_id, $admin_ids) && !$fanpage->active) {
 			$fanpage->active = TRUE;
 			$fanpage->save();
 
@@ -28,9 +32,13 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		
 		//security check
 		$fanpage_admin_model = new Model_FanpageAdmins;
-		$admin = $fanpage_admin_model->findByFanpageId($this->_getParam('id'))->current();
+		$admins = $fanpage_admin_model->findByFanpageId($this->_getParam('id'))->current();
+
+		foreach($admins as $admin) {
+			$admin_ids[] = $admin->facebook_user_id;
+		}
 		
-		if ($admin->facebook_user_id == $this->_identity->user_id && $fanpage->active) {
+		if (in_array($this->_identity->user_id, $admin_ids) && $fanpage->active) {
 			$fanpage->active = FALSE;
 
 			if ($fanpage->installed) {
