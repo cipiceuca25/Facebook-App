@@ -32,10 +32,16 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         $this->view->fan_id = $this->data['user']['user_id'];
 
         $model = new Model_Rankings;
-        $this->view->top_fans = $model->getRanking($this->_getParam('id'), 'FAN');
-        $this->view->most_popular = $model->getRanking($this->_getParam('id'), 'POPULAR');
-        $this->view->top_talker = $model->getRanking($this->_getParam('id'), 'TALKER');
-        $this->view->top_clicker = $model->getRanking($this->_getParam('id'), 'CLICKER');
+        $this->view->top_fans = $model->getRanking($this->_getParam('id'), 'FAN', false, 3);
+        $this->view->most_popular = $model->getRanking($this->_getParam('id'), 'POPULAR', false, 3);
+        $this->view->top_talker = $model->getRanking($this->_getParam('id'), 'TALKER', false, 3);
+        $this->view->top_clicker = $model->getRanking($this->_getParam('id'), 'CLICKER', false, 3);
+
+        //get user ranking
+        $this->view->user_top_fans = $model->getRanking($this->_getParam('id'), 'FAN', $this->view->fan_id);
+        $this->view->user_most_popular = $model->getRanking($this->_getParam('id'), 'POPULAR', $this->view->fan_id);
+        $this->view->user_top_talker = $model->getRanking($this->_getParam('id'), 'TALKER', $this->view->fan_id);
+        $this->view->user_top_clicker = $model->getRanking($this->_getParam('id'), 'CLICKER', $this->view->fan_id);
     }
 
     public function loginAction()

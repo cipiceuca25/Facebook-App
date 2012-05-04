@@ -17,12 +17,11 @@
 				<h2>Top Fan <span>|&nbsp;&nbsp;Most Active Fan</span></h2>
 				
 
-				<?php $count = 0; $user_exists = false?> 
+				<?php $count = 0;?> 
 				
 				<div class="panel up">
 
 				<?php foreach($this->top_fans as $top_fan): ?>
-					<?php $top_fan['facebook_user_id'] == $this->fan_id ? $user_exists = true : null ?>
 
 					<div class="border<?= ($count == 0 ? ' first' : '') ?>">
 					
@@ -44,10 +43,9 @@
 					<?php $count ++; ?>
 				<?php endforeach; ?>
 
-				<?php if(!$user_exists): ?>
-					<div class="border<?= ($count == 0 ? ' first' : '') ?>">
+					<div class="border">
 					
-						<div class="rank"><h2>?</h2></div>
+						<div class="rank"><h2><?= isset($this->user_top_fans['rank']) ? $this->user_top_fans['rank'] : '?' ?></h2></div>
 						
 						<div class="photo">
 						
@@ -57,12 +55,11 @@
 						
 						<div class="name"><a target="_blank" href="https://facebook.com/<?= $this->fan_id ?>">What is your rank?</a></div>
 						
-						<div class="points"><p>?<span>Points<br>this Week</span></p></div>
+						<div class="points"><p><?= isset($this->user_top_fans['count']) ? $this->user_top_fans['count'] : '?' ?><span>Points<br>this Week</span></p></div>
 						
 						<div class="clearfix"></div>
 					
 					</div><!--end border -->
-				<?php endif; ?>
 
 				</div>
 				
@@ -107,6 +104,24 @@
 							<?php $count++; ?>
 		  				</div>
 		  			<?php endforeach; ?>
+
+	  				<div class="border">
+					
+						<div class="rank"><h2><?= isset($this->user_most_popular['rank']) ? $this->user_most_popular['rank'] : '?' ?></h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/<?= $this->fan_id ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->fan_id ?>/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/<?= $this->fan_id ?>">What is your rank?</a></div>
+						
+						<div class="points"><p><?= isset($this->user_most_popular['count']) ? $this->user_most_popular['count'] : '?' ?><span>Points<br>this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
 			
 				</div><!--end panel -->
 			
@@ -150,6 +165,24 @@
 
 		  				</div>
 		  			<?php endforeach; ?>
+
+	  				<div class="border">
+					
+						<div class="rank"><h2><?= isset($this->user_top_talker['rank']) ? $this->user_top_talker['rank'] : '?' ?></h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/<?= $this->fan_id ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->fan_id ?>/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/<?= $this->fan_id ?>">What is your rank?</a></div>
+						
+						<div class="points"><p><?= isset($this->user_top_talker['count']) ? $this->user_top_talker['count'] : '?' ?><span>Points<br>this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
 				
 				</div><!--end panel -->
 				
@@ -194,6 +227,24 @@
 
 		  				</div>
 		  			<?php endforeach; ?>
+
+		  			<div class="border">
+					
+						<div class="rank"><h2><?= isset($this->user_top_clicker['rank']) ? $this->user_top_clicker['rank'] : '?' ?></h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/<?= $this->fan_id ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->fan_id ?>/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/<?= $this->fan_id ?>">What is your rank?</a></div>
+						
+						<div class="points"><p><?= isset($this->user_top_clicker['count']) ? $this->user_top_clicker['count'] : '?' ?><span>Points<br>this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
 				
 				</div><!--end panel -->
 				
