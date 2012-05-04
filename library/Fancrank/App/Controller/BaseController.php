@@ -1,5 +1,12 @@
 <?php
 
+/*
+signed request example
+array(7) { 
+    ["algorithm"]=> string(11) "HMAC-SHA256" ["expires"]=> int(1336150800) ["issued_at"]=> int(1336145562) ["oauth_token"]=> string(114) "AAAFWUgw4ZCZB8BAGWZC3VluHKonbHJwnGfVxZCSWsYNZAXOl1tpvpGrOu9P8Ai7WAHh75LXjBzLpeKAv0klqfxndKxStJMfZATXoPmYwZAa5gZDZD" ["page"]=> array(3) { ["id"]=> string(12) "265158018597" ["liked"]=> bool(true) ["admin"]=> bool(true) } 
+    ["user"]=> array(3) { ["country"]=> string(2) "ca" ["locale"]=> string(5) "en_US" ["age"]=> array(1) { ["min"]=> int(21) } } ["user_id"]=> string(8) "48903527" }
+*/
+
 abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controller_Action
 {
     public function preDispatch()

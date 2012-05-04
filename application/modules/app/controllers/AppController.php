@@ -17,5 +17,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		$this->view->top_talker = $model->getTopTalker($this->_getParam('id'));
       $this->view->top_clicker = $model->getTopClicker($this->_getParam('id'));
   	}
+
+    public function logoutAction()
+    {
+        $this->_identity = $this->_auth->clearIdentity();
+        $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));   
+    }
 }
 
