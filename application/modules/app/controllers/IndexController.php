@@ -38,6 +38,27 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         $this->view->top_talker = $model->getRanking($this->data['page']['id'], 'TALKER', false, 3);
         $this->view->top_clicker = $model->getRanking($this->data['page']['id'], 'CLICKER', false, 3);
 
+        /*
+        $client = new Zend_Http_Client;
+        $client->setUri('https://graph.facebook.com/' . $this->view->fan_id;
+        $client->setMethod(Zend_Http_Client::GET);
+
+        try {
+            $response = $client->request();
+        } catch (Exception $e) {
+            
+        }
+
+        $json = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+
+        if (property_exists($json, 'error')) {
+            // try again
+    
+        } else {
+            $this->view->me = $json->data;
+        }
+        */
+        
         //get user ranking
         $this->view->user_top_fans = $model->getRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
         $this->view->user_most_popular = $model->getRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
