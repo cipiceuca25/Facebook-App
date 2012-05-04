@@ -18,7 +18,7 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
         if(!$this->_auth->hasIdentity()) {
             $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));  
             //set the proper navbar
-            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array());
+            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id',$this->_getParam('id')));
         } else {
             $this->_identity = $this->_auth->getIdentity();
             $this->view->user = $this->_identity;
