@@ -2,17 +2,11 @@
 
 abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controller_Action
 {
-	public function preDispatch()
+    public function preDispatch()
     {
         //check for user authorization
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
-
-        //check for facebook signed request
-        $data = $this->getSignedRequest();
-        die(print_r($data));
-
-        //do some checks with the data
 
         if(!$this->_auth->hasIdentity()) {
             $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));  
@@ -31,9 +25,9 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
         $this->_helper->layout()->action = $this->_request->getActionName();
     }
 
-    private function getSignedRequest()
+    protected function getSignedRequest($signed_request = false)
     {
-        $signed_request = $this->_getParam('signed_request', false);
+
 
         if ($signed_request) {
             $sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
