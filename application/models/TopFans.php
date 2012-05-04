@@ -17,7 +17,7 @@ class Model_TopFans extends Model_DbTable_TopFans
 		//$select->where('likes.facebook_user_id IN (SELECT facebook_user_id FROM fans)');
 		$select->where($this->getAdapter()->quoteInto('fans.fanpage_id = ?', $page_id));
 		$select->group('likes.facebook_user_id');
-		$select->order('num_likes');
+		$select->order('num_likes DESC');
 
 		if($limit !== false)
 			$select->limit($limit);
@@ -71,7 +71,7 @@ class Model_TopFans extends Model_DbTable_TopFans
 			INNER JOIN fans ON (fans.facebook_user_id = likes_count.facebook_user_id)	
 
 			GROUP BY fans.fan_name 
-			ORDER BY number_of_likes";
+			ORDER BY number_of_likes DESC";
 
 			if($limit !== false)
 				$select = $select . " DESC LIMIT $limit";
