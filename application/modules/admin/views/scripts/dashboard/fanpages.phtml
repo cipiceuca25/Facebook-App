@@ -9,8 +9,11 @@
 	</thead>
 	<tbody>
 	<?php foreach($this->pages as $page): ?>
+		<?php
+			$url = 'https://www.facebook.com/pages/' . str_replace(' ', '-', $page['fanpage_name']) . '/' . $page['fanpage_id'];
+		?>
 		<tr id="<?= $page['fanpage_id'] ?>">
-			<td class="name"><img src="http://graph.facebook.com/<?=  $page['fanpage_id'] ?>/picture"><?= $page['fanpage_name'] ?></td>
+			<td class="name"><a href="<?= $url ?>"><img src="http://graph.facebook.com/<?=  $page['fanpage_id'] ?>/picture"></a><a href="<?= $url ?>"><?= $page['fanpage_name'] ?></a></td>
 			<td class="category"><?= $page['fanpage_category'] ?></td>
 			<td class="status">
 				<?php if ($page['active']): ?>

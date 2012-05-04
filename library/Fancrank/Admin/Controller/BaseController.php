@@ -29,6 +29,7 @@ abstract class Fancrank_Admin_Controller_BaseController extends Fancrank_Control
     {
         //add the resource specific javascript file to the layout
         $this->view->headScript()->appendFile('/js/admin/'. $this->_request->getControllerName() . '.js');
+        $this->view->headScript()->appendFile('/js/admin/'. $this->_request->getControllerName() . '/' . $this->_request->getActionName() . '.js');
 
         $this->_helper->layout()->controller = $this->_request->getControllerName();
         $this->_helper->layout()->action = $this->_request->getActionName();

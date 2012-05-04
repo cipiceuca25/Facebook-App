@@ -2,7 +2,7 @@
 
 class Model_TopFans extends Model_DbTable_TopFans
 {
-	public function getTopFans($page_id)
+	public function getTopFans($page_id, $limit = 5)
 	{
 		$select = $this->getAdapter()->select();
 		$select->from(array('fans' => 'fans'),
@@ -18,14 +18,16 @@ class Model_TopFans extends Model_DbTable_TopFans
 		$select->where($this->getAdapter()->quoteInto('fans.fanpage_id = ?', $page_id));
 		$select->group('likes.facebook_user_id');
 		$select->order('num_likes');
-		$select->limit(5);
+
+		if($limit !== false)
+			$select->limit($limit);
 
 		//die(print_r($select->__toString()));
 		
 		return $this->getAdapter()->fetchAll($select);
 	}
 
-	public function getTopTalker($page_id)
+	public function getTopTalker($page_id, $limit = 5)
 	{
 		$relevant_period = new Zend_Date(time() - 15552000);
 		$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
@@ -49,13 +51,16 @@ class Model_TopFans extends Model_DbTable_TopFans
 			INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id)		
 	
 			GROUP BY fans.fan_name 
-			ORDER BY number_of_posts DESC 
-			LIMIT 5";
+			ORDER BY number_of_posts DESC"; 
+			
+			if($limit !== false)
+				$select = $select . " LIMIT $limit";
+			
 
 		return $this->getAdapter()->fetchAll($select);
 	}
 
-	public function getTopClicker($page_id)
+	public function getTopClicker($page_id, $limit = 10)
 	{
 		$select = "
 			SELECT likes_count.facebook_user_id, fans.fan_name, COUNT(fans.fan_name) AS number_of_likes 
@@ -68,18 +73,22 @@ class Model_TopFans extends Model_DbTable_TopFans
 			INNER JOIN fans ON (fans.facebook_user_id = likes_count.facebook_user_id)	
 
 			GROUP BY fans.fan_name 
-			ORDER BY number_of_likes 
-			DESC LIMIT 10";
+			ORDER BY number_of_likes";
+
+			if($limit !== false)
+				$select = $select . " DESC LIMIT $limit";
+			
 
 		return $this->getAdapter()->fetchAll($select);
 	}
 
-	public function getMostPopular($page_id)
+	public function getMostPopular($page_id, $limit = 5)
 	{
 
 		$relevant_period = new Zend_Date(time() - 15552000);
 		$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
 
+//CONVERT this to zend notation so conditionals can be done simply instead of having to create duplicates
 		$select = "
 			SELECT total_count.facebook_user_id, fans.fan_name, SUM(count) AS count 
 				FROM
@@ -120,6 +129,9 @@ class Model_TopFans extends Model_DbTable_TopFans
 
 				GROUP BY facebook_user_id 
 				ORDER BY count DESC";
+
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
 
 		return $this->getAdapter()->fetchAll($select);
 

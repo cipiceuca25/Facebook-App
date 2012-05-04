@@ -7,13 +7,13 @@
 }
 
 
-[controller='app'] {
+[controller='app'], [controller="index"] {
 
 	[role="main"] {
-		margin-top: 0;
+		// /margin-top: 0;
 	}
 
-	&[action='topfans'] {
+	&[action='topfans'], &[action="index"] {
 	
 		div#header {
 			position:relative;
