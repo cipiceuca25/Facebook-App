@@ -20,11 +20,19 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
             $this->_identity = $this->_auth->getIdentity();
             $this->_helper->redirector('topfans', 'app', 'app', array($this->data['page']['id'] => ''));   
         }
+
+        //set the proper navbar
+        $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array());   
     }
 
     public function indexAction()
     {
         $this->view->fanpage_id = $this->data['page']['id'];
+    }
+
+    public function loginAction()
+    {
+
     }
 }
 

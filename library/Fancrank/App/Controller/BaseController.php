@@ -17,9 +17,13 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
 
         if(!$this->_auth->hasIdentity()) {
             $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));  
+            //set the proper navbar
+            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array());
         } else {
             $this->_identity = $this->_auth->getIdentity();
             $this->view->user = $this->_identity;
+            //set the proper navbar
+            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedin.phtml', array());
         }
     }
 
@@ -27,6 +31,7 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
     {
         //add the resource specific javascript file to the layout
         $this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '.js');
+        $this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '/' . $this->_request->getActionName() . '.js');
 
         $this->_helper->layout()->controller = $this->_request->getControllerName();
         $this->_helper->layout()->action = $this->_request->getActionName();
