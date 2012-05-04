@@ -17,12 +17,13 @@
 				<h2>Top Fan <span>|&nbsp;&nbsp;Most Active Fan</span></h2>
 				
 
-				<?php $count = 0; ?> 
+				<?php $count = 0; $user_exists = false?> 
 				
 				<div class="panel up">
 
 				<?php foreach($this->top_fans as $top_fan): ?>
-			
+					<?php $top_fan['facebook_user_id'] == $this->fan_id ? $user_exists = true : null ?>
+
 					<div class="border<?= ($count == 0 ? ' first' : '') ?>">
 					
 						<div class="rank"><h2><?= $count + 1 ?></h2></div>
@@ -42,6 +43,26 @@
 					</div><!--end border -->
 					<?php $count ++; ?>
 				<?php endforeach; ?>
+
+				<?php if(!$user_exists): ?>
+					<div class="border<?= ($count == 0 ? ' first' : '') ?>">
+					
+						<div class="rank"><h2>?</h2></div>
+						
+						<div class="photo">
+						
+							<a target="_blank" href="https://facebook.com/<?= $this->fan_id ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->fan_id ?>/picture"></a>
+						
+						</div>
+						
+						<div class="name"><a target="_blank" href="https://facebook.com/<?= $this->fan_id ?>">What is your rank?</a></div>
+						
+						<div class="points"><p>?<span>Points<br>this Week</span></p></div>
+						
+						<div class="clearfix"></div>
+					
+					</div><!--end border -->
+				<?php endif; ?>
 
 				</div>
 				

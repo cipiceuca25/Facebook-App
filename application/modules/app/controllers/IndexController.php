@@ -29,17 +29,17 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     public function indexAction()
     {
         $this->view->fanpage_id = $this->data['page']['id'];
+        $this->view->fan_id = $this->data['user']['user_id'];
 
         $model = new Model_TopFans;
         $this->view->top_fans = $model->getTopFans($this->data['page']['id']);
-        $this->view->most_popular = $model->getMostPopular($this->data['page']['id']);
+        $this->view->most_popular = $model->getMostPopularWithAndUser($this->data['page']['id'], $this->data['user']['user_id']);
         $this->view->top_talker = $model->getTopTalker($this->data['page']['id']);
         $this->view->top_clicker = $model->getTopClicker($this->data['page']['id']);
     }
 
     public function loginAction()
     {
-        
     }
 }
 

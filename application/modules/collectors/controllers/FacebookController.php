@@ -4,7 +4,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     private $types = array(
         'fans'  => 'fans',
         'feed' => 'feed',
-        'albums' => 'photo'
+        'albums' => 'photo',
+        'rankings'  => 'rankings'
     );
 
     public function init()
@@ -93,6 +94,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 } else {
                     return;
                 }
+                break;
+            case 'rankings':
+                $this->generateRankings($this->fanpage->fanpage_id);
+                return;
                 break;
 
             default:
@@ -501,5 +506,31 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
         $fans_model = new Model_Fans;
         $fans_model->insertMultiple($rows, $cols, $update);
+    }
+
+    private function generateRankings($fanpage_id) 
+    {
+        $topfans = new Model_TopFans;
+        $rankings = new Model_Rankings;
+        
+        $top_fans = $topfans->getTopFans($fanpage_id, false);
+        $count = 0;
+
+        foreach($top_fans as $fan) {
+            $top_fans_ranked[] = array (
+                'fanpage_id'        => $fanpage_id,
+                'facebook_user_id'  => $fan['facebook_user_id'],
+                'rank'              => $count++,
+                'type'              => 'topfan'
+            );
+        }
+
+        $cols = array('fanpage_id', 'facebook_user_id', 'rank', 'type');
+        $update = array('rank');
+        $rankings->insertMultiple($top_fans_ranked, $cols, $update);
+
+        //$this->view->most_popular = $topfans->getMostPopular($fanpage_id);
+        //$this->view->top_talker = $topfans->getTopTalker($fanpage_id);
+        //$this->view->top_clicker = $topfans->getTopClicker($fanpage_id);
     }
 }

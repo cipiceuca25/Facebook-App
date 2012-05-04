@@ -2,7 +2,7 @@
 
 class Model_TopFans extends Model_DbTable_TopFans
 {
-	public function getTopFans($page_id)
+	public function getTopFans($page_id, $limit = 5)
 	{
 		$select = $this->getAdapter()->select();
 		$select->from(array('fans' => 'fans'),
@@ -18,7 +18,9 @@ class Model_TopFans extends Model_DbTable_TopFans
 		$select->where($this->getAdapter()->quoteInto('fans.fanpage_id = ?', $page_id));
 		$select->group('likes.facebook_user_id');
 		$select->order('num_likes');
-		$select->limit(5);
+
+		if($limit !== false)
+			$select->limit($limit);
 
 		//die(print_r($select->__toString()));
 		
@@ -80,6 +82,7 @@ class Model_TopFans extends Model_DbTable_TopFans
 		$relevant_period = new Zend_Date(time() - 15552000);
 		$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
 
+//CONVERT this to zend notation so conditionals can be done simply instead of having to create duplicates
 		$select = "
 			SELECT total_count.facebook_user_id, fans.fan_name, SUM(count) AS count 
 				FROM
@@ -123,5 +126,57 @@ class Model_TopFans extends Model_DbTable_TopFans
 
 		return $this->getAdapter()->fetchAll($select);
 
+	}
+
+	public function getMostPopularWithAndUser($page_id, $user_id)
+	{
+		$relevant_period = new Zend_Date(time() - 15552000);
+		$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
+
+		$select = "
+			SELECT total_count.facebook_user_id, fans.fan_name, SUM(count) AS count 
+				FROM
+				(
+					SELECT facebook_user_id, SUM(likes_count) AS count 
+					FROM 
+					(
+						SELECT facebook_user_id, SUM(post_likes_count) AS likes_count 
+						FROM posts
+						WHERE created_time > '".$relevant_period."'  
+						AND facebook_user_id != '". $page_id ."'
+						AND fanpage_id = '". $page_id ."'
+						OR facebook_user_id = '".$user_id."'
+						GROUP BY facebook_user_id 
+
+						UNION ALL 
+
+						SELECT facebook_user_id, SUM(comment_likes_count) AS likes_count 
+						FROM comments 
+						WHERE created_time > '".$relevant_period."' 
+						AND facebook_user_id != '". $page_id ."'
+						AND fanpage_id = '". $page_id ."'
+						OR facebook_user_id = '".$user_id."'
+						GROUP BY facebook_user_id
+					) AS total_likes
+
+					GROUP BY facebook_user_id 
+
+					UNION ALL
+
+					SELECT facebook_user_id, SUM(post_comments_count) AS count 
+					FROM posts 
+					WHERE created_time > '".$relevant_period."'  
+					AND facebook_user_id != '". $page_id ."'
+					AND fanpage_id = '". $page_id ."'
+					OR facebook_user_id = '".$user_id."'
+					GROUP BY facebook_user_id
+				) AS total_count
+				
+				INNER JOIN fans ON (fans.facebook_user_id = total_count.facebook_user_id)
+
+				GROUP BY facebook_user_id 
+				ORDER BY count DESC";
+
+		return $this->getAdapter()->fetchAll($select);
 	}
 }
