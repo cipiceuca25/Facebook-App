@@ -11,6 +11,10 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 
         $this->data = $this->getSignedRequest($this->_getParam('signed_request'));
 
+        if (APPLICATION_ENV != 'production') {
+            $this->data['page']['id'] = $this->_getParam('id');
+        }
+
         if($this->_auth->hasIdentity()) {
             //bring the user into the app if he is already logged in
             $this->_identity = $this->_auth->getIdentity();
