@@ -75,6 +75,22 @@ class Model_DbTable_Rankings extends Fancrank_Db_Table
             'PRIMARY' => false,
             'PRIMARY_POSITION' => null,
             'IDENTITY' => false
+            ),
+        'count' => array(
+            'SCHEMA_NAME' => null,
+            'TABLE_NAME' => 'rankings',
+            'COLUMN_NAME' => 'count',
+            'COLUMN_POSITION' => 5,
+            'DATA_TYPE' => 'int',
+            'DEFAULT' => null,
+            'NULLABLE' => false,
+            'LENGTH' => null,
+            'SCALE' => null,
+            'PRECISION' => null,
+            'UNSIGNED' => null,
+            'PRIMARY' => false,
+            'PRIMARY_POSITION' => null,
+            'IDENTITY' => false
             )
         );
 
@@ -82,7 +98,8 @@ class Model_DbTable_Rankings extends Fancrank_Db_Table
         'fanpage_id',
         'type',
         'facebook_user_id',
-        'rank'
+        'rank',
+        'count'
         );
 
     protected $_rowClass = 'Model_DbTable_Row_Rankings';
