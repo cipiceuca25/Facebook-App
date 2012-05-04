@@ -23,7 +23,7 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
             $this->_identity = $this->_auth->getIdentity();
             $this->view->user = $this->_identity;
             //set the proper navbar
-            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedin.phtml', array());
+            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedin.phtml', array('fanpage_id',$this->_getParam('id')));
         }
     }
 

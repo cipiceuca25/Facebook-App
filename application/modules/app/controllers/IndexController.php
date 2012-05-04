@@ -14,7 +14,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 
         if (APPLICATION_ENV != 'production') {
             $this->data['page']['id'] = $this->_getParam('id');
-            $this->data['user']['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
+            $this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
         }
 
         if($this->_auth->hasIdentity()) {
