@@ -29,22 +29,20 @@ class Model_TopFans extends Model_DbTable_TopFans
 
 	public function getTopTalker($page_id, $limit = 5)
 	{
-		$relevant_period = new Zend_Date(time() - 15552000);
-		$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
+		//$relevant_period = new Zend_Date(time() - 15552000);
+		//$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
 
 		$select = "
 			SELECT posts_count.facebook_user_id, fans.fan_name, COUNT(fans.fan_name) AS number_of_posts 
 				FROM 
 				(SELECT facebook_user_id 
 					FROM posts
-					WHERE created_time > '".$relevant_period."' 
-					AND facebook_user_id != '". $page_id ."'
+					WHERE facebook_user_id != '". $page_id ."'
 					AND fanpage_id = '". $page_id ."'
 						UNION ALL 
 							SELECT facebook_user_id 
 							FROM comments
-							WHERE created_time > '".$relevant_period."' 
-							AND facebook_user_id != '". $page_id ."'
+							WHERE facebook_user_id != '". $page_id ."'
 							AND fanpage_id = '". $page_id ."'
 				) AS posts_count 
 			
@@ -85,8 +83,8 @@ class Model_TopFans extends Model_DbTable_TopFans
 	public function getMostPopular($page_id, $limit = 5)
 	{
 
-		$relevant_period = new Zend_Date(time() - 15552000);
-		$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
+		//$relevant_period = new Zend_Date(time() - 15552000);
+		//$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
 
 //CONVERT this to zend notation so conditionals can be done simply instead of having to create duplicates
 		$select = "
@@ -97,9 +95,8 @@ class Model_TopFans extends Model_DbTable_TopFans
 					FROM 
 					(
 						SELECT facebook_user_id, SUM(post_likes_count) AS likes_count 
-						FROM posts
-						WHERE created_time > '".$relevant_period."'  
-						AND facebook_user_id != '". $page_id ."'
+						FROM posts 
+						WHERE facebook_user_id != '". $page_id ."'
 						AND fanpage_id = '". $page_id ."'
 						GROUP BY facebook_user_id 
 
@@ -107,8 +104,7 @@ class Model_TopFans extends Model_DbTable_TopFans
 
 						SELECT facebook_user_id, SUM(comment_likes_count) AS likes_count 
 						FROM comments 
-						WHERE created_time > '".$relevant_period."' 
-						AND facebook_user_id != '". $page_id ."'
+						WHERE facebook_user_id != '". $page_id ."'
 						AND fanpage_id = '". $page_id ."'
 						GROUP BY facebook_user_id
 					) AS total_likes
@@ -119,8 +115,7 @@ class Model_TopFans extends Model_DbTable_TopFans
 
 					SELECT facebook_user_id, SUM(post_comments_count) AS count 
 					FROM posts 
-					WHERE created_time > '".$relevant_period."'  
-					AND facebook_user_id != '". $page_id ."'
+					WHERE facebook_user_id != '". $page_id ."'
 					AND fanpage_id = '". $page_id ."'
 					GROUP BY facebook_user_id
 				) AS total_count
