@@ -6,7 +6,7 @@ $(document).ready(function(){
     $(".flip").toggle(function() {
 
       var panel = $(this).parent().prev('.panel');
-      var count = $(panel).find('.border').length
+      var count = $(panel).find('.border').length;
 
       if($(panel).hasClass('down')) {
         $(panel).animate({height: 80 * count});
@@ -20,7 +20,7 @@ $(document).ready(function(){
     
     }, function() {
       var panel = $(this).parent().prev('.panel');
-      var count = $(panel).find('.border').length
+      var count = $(panel).find('.border').length;
 
       if($(panel).hasClass('down')) {
         $(panel).animate({height: 80 * count});
@@ -41,6 +41,8 @@ $(document).ready(function(){
   });
   
 });
+
+
 
 var paragraphs_added = 0;
 window.fbAsyncInit = function() {
