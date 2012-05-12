@@ -1,4 +1,6 @@
+jQuery(document).ready(function($){
 
+<<<<<<< HEAD
 $(document).ready(function(){
     
   /************ SLIDING PANELS *************/
@@ -40,6 +42,8 @@ $(document).ready(function(){
     placement: 'left'
   });
   
+=======
+>>>>>>> upstream/master
 });
 
 

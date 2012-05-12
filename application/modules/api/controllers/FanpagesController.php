@@ -129,6 +129,15 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		}
 	}
 
+	public function previewAction()
+	{
+		$model = new Model_TopFans;
+  		$this->view->top_fans = $model->getTopFans($this->_getParam('id'));
+  		$this->view->most_popular = $model->getMostPopular($this->_getParam('id'));
+  		$this->view->top_talker = $model->getTopTalker($this->_getParam('id'));
+      	$this->view->top_clicker = $model->getTopClicker($this->_getParam('id'));
+	}
+
 	private function installTab($fanpage_id, $access_token, $app_id) 
 	{
 		//install the tab

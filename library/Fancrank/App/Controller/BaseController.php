@@ -1,23 +1,29 @@
 <?php
 
+/*
+signed request example
+array(7) { 
+    ["algorithm"]=> string(11) "HMAC-SHA256" ["expires"]=> int(1336150800) ["issued_at"]=> int(1336145562) ["oauth_token"]=> string(114) "AAAFWUgw4ZCZB8BAGWZC3VluHKonbHJwnGfVxZCSWsYNZAXOl1tpvpGrOu9P8Ai7WAHh75LXjBzLpeKAv0klqfxndKxStJMfZATXoPmYwZAa5gZDZD" ["page"]=> array(3) { ["id"]=> string(12) "265158018597" ["liked"]=> bool(true) ["admin"]=> bool(true) } 
+    ["user"]=> array(3) { ["country"]=> string(2) "ca" ["locale"]=> string(5) "en_US" ["age"]=> array(1) { ["min"]=> int(21) } } ["user_id"]=> string(8) "48903527" }
+*/
+
 abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controller_Action
 {
-	public function preDispatch()
+    public function preDispatch()
     {
         //check for user authorization
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
 
-        //check for facebook signed request
-        $data = $this->getSignedRequest();
-
-        //do some checks with the data
-
         if(!$this->_auth->hasIdentity()) {
             $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));  
+            //set the proper navbar
+            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id',$this->_getParam('id')));
         } else {
             $this->_identity = $this->_auth->getIdentity();
             $this->view->user = $this->_identity;
+            //set the proper navbar
+            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedin.phtml', array());
         }
     }
 
@@ -25,14 +31,15 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
     {
         //add the resource specific javascript file to the layout
         $this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '.js');
+        $this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '/' . $this->_request->getActionName() . '.js');
 
         $this->_helper->layout()->controller = $this->_request->getControllerName();
         $this->_helper->layout()->action = $this->_request->getActionName();
     }
 
-    private function getSignedRequest()
+    protected function getSignedRequest($signed_request = false)
     {
-        $signed_request = $this->_getParam('signed_request', false);
+
 
         if ($signed_request) {
             $sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);

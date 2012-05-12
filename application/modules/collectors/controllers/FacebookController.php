@@ -4,7 +4,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     private $types = array(
         'fans'  => 'fans',
         'feed' => 'feed',
-        'albums' => 'photo'
+        'albums' => 'photo',
+        'rankings'  => 'rankings'
     );
 
     public function init()
@@ -93,6 +94,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 } else {
                     return;
                 }
+                break;
+            case 'rankings':
+                $this->generateRankings($this->fanpage->fanpage_id);
+                return;
                 break;
 
             default:
@@ -501,5 +506,66 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
         $fans_model = new Model_Fans;
         $fans_model->insertMultiple($rows, $cols, $update);
+    }
+
+    //rough, needs refactoring
+    private function generateRankings($fanpage_id) 
+    {
+        $topfans = new Model_TopFans;
+        $rankings = new Model_Rankings;
+        
+        $top_fans = $topfans->getTopFans($fanpage_id, false);
+        $count = 0;
+
+        $cols = array('fanpage_id', 'facebook_user_id', 'rank', 'type', 'count');
+        $update = array('rank', 'type','count');
+
+        foreach($top_fans as $fan) {
+            $ranked[] = array (
+                'fanpage_id'        => $fanpage_id,
+                'facebook_user_id'  => $fan['facebook_user_id'],
+                'rank'              => $count++,
+                'type'              => 'FAN',
+                'count'             => $fan['num_likes']
+            );
+        } 
+
+        $top_talker = $topfans->getTopTalker($fanpage_id, false);
+        $count = 0;
+        foreach($top_talker as $fan) {
+            $ranked[] = array (
+                'fanpage_id'        => $fanpage_id,
+                'facebook_user_id'  => $fan['facebook_user_id'],
+                'rank'              => $count++,
+                'type'              => 'TALKER',
+                'count'             => $fan['number_of_posts']
+            );
+        }
+
+        $top_clicker = $topfans->getTopClicker($fanpage_id, false);
+        $count = 0;
+        foreach($top_clicker as $fan) {
+            $ranked[] = array (
+                'fanpage_id'        => $fanpage_id,
+                'facebook_user_id'  => $fan['facebook_user_id'],
+                'rank'              => $count++,
+                'type'              => 'CLICKER',
+                'count'             => $fan['number_of_likes']
+            );
+        }
+
+        $most_popular = $topfans->getMostPopular($fanpage_id, false);
+        $count = 0;
+        foreach($most_popular as $fan) {
+            $ranked[] = array (
+                'fanpage_id'        => $fanpage_id,
+                'facebook_user_id'  => $fan['facebook_user_id'],
+                'rank'              => $count++,
+                'type'              => 'POPULAR',
+                'count'             => $fan['count']
+            );
+        }
+
+        $rankings->insertMultiple($ranked, $cols, $update);
     }
 }
