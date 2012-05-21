@@ -261,12 +261,12 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                     );
 
                     $fans[] = $comment->from->id;
-                    /* DOESN'T WORK
+                   
                     if($post->comments->count > 2){
                     	
-                    	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', $direction, $timestamp, $post->id));
+                    	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', 'since', 0, $post->id));
                     }
-                    */
+                    
                     
                 }
             }
@@ -325,7 +325,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     		);
     		
     		if($comment->likes > 1){
-    			Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', $direction, $timestamp, $comment->id));
+    			Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', 'since', 0, $comment->id));
     		}
     	}
     	
@@ -379,7 +379,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         	);
 
             Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'photos', 'since', 0, $album->id));
-            /* DOESN'T WORK
+           
             if(isset($album->likes->data)){
             
             	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', 'since' , 0, $album->id));
@@ -387,9 +387,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
             if(isset($album->comments->data)){
             	
-            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', 'since'r, 0, $album->id));
+            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', 'since', 0, $album->id));
             }
-            */
         }
 
         $cols = array('album_id', 'fanpage_id', 'facebook_user_id', 'album_name', 'album_description', 'album_location', 'album_link', 'album_cover_photo_id', 'album_photo_count', 'album_type', 'updated_time', 'created_time');
@@ -440,16 +439,15 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             		);
             	}
             }
-           /* DOESN'T WORK 
          	
          	if(isset($photo->likes->data)){
             	//die("here");
-            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', $direction, $timestamp, $photo->id));
+            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', 'since', 0, $photo->id));
             }
             if(isset($photo->comments->data)){
             	
-            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', $direction, $timestamp, $photo->id));
-            }*/
+            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', 'since', 0, $photo->id));
+            }
             
         }  
 
@@ -510,7 +508,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 
     //rough, needs refactoring
     private function generateRankings($fanpage_id) 
-    {
+    {die("here");
         $topfans = new Model_TopFans;
         $rankings = new Model_Rankings;
         
