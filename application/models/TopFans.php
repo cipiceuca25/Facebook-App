@@ -4,6 +4,7 @@ class Model_TopFans extends Model_DbTable_TopFans
 {
 	public function getTopFans($page_id, $limit = 5)
 	{
+		/*
 		$select = $this->getAdapter()->select();
 		$select->from(array('fans' => 'fans'),
 			array(
@@ -25,6 +26,37 @@ class Model_TopFans extends Model_DbTable_TopFans
 		//die(print_r($select->__toString()));
 		
 		return $this->getAdapter()->fetchAll($select);
+		*/
+
+                $select = "
+                        SELECT posts_count.facebook_user_id, fans.fan_name, COUNT(fans.fan_name) AS number_of_posts 
+                                FROM 
+                                (SELECT facebook_user_id 
+                                        FROM posts
+                                        WHERE facebook_user_id != '". $page_id ."'
+                                        AND fanpage_id = '". $page_id ."'
+                                                UNION ALL 
+                                                        SELECT facebook_user_id 
+                                                        FROM comments
+                                                        WHERE facebook_user_id != '". $page_id ."'
+                                                        AND fanpage_id = '". $page_id ."'
+								UNION ALL 
+                                                        		SELECT facebook_user_id 
+                                                        		FROM likes
+                                                        		WHERE facebook_user_id != '". $page_id ."'
+                                                        		AND fanpage_id = '". $page_id ."'
+                                ) AS posts_count 
+                        
+                        INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id)               
+        
+                        GROUP BY fans.fan_name 
+                        ORDER BY number_of_posts DESC"; 
+                        
+                        if($limit !== false)
+                                $select = $select . " LIMIT $limit";
+                        
+
+                return $this->getAdapter()->fetchAll($select);
 	}
 
 	public function getTopTalker($page_id, $limit = 5)

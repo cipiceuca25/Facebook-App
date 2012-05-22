@@ -33,10 +33,10 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         $this->view->fan_id = $this->data['user_id'];
 
         $model = new Model_Rankings;
-        $this->view->top_fans = $model->getRanking($this->data['page']['id'], 'FAN', false, 3);
-        $this->view->most_popular = $model->getRanking($this->data['page']['id'], 'POPULAR', false, 3);
-        $this->view->top_talker = $model->getRanking($this->data['page']['id'], 'TALKER', false, 3);
-        $this->view->top_clicker = $model->getRanking($this->data['page']['id'], 'CLICKER', false, 3);
+        $this->view->top_fans = $model->getRanking($this->data['page']['id'], 'FAN', false, 5);
+        $this->view->most_popular = $model->getRanking($this->data['page']['id'], 'POPULAR', false, 5);
+        $this->view->top_talker = $model->getRanking($this->data['page']['id'], 'TALKER', false, 5);
+        $this->view->top_clicker = $model->getRanking($this->data['page']['id'], 'CLICKER', false, 5);
 
         /*
         $client = new Zend_Http_Client;
