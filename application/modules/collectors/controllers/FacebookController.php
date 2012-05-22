@@ -265,11 +265,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                     );
 
                     $fans[] = $comment->from->id;
-<<<<<<< HEAD
-                   
-=======
-                    
->>>>>>> origin/master
+
                     if($post->comments->count > 2){
                     	
                     	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', 'since', 0, $post->id));
@@ -387,11 +383,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         	);
 
             Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'photos', 'since', 0, $album->id));
-<<<<<<< HEAD
-           
-=======
-            
->>>>>>> origin/master
+
             if(isset($album->likes->data)){
             
             	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'likes', 'since' , 0, $album->id));
@@ -401,10 +393,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             	
             	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', 'since', 0, $album->id));
             }
-<<<<<<< HEAD
-=======
-            
->>>>>>> origin/master
+
         }
 
         $cols = array('album_id', 'fanpage_id', 'facebook_user_id', 'album_name', 'album_description', 'album_location', 'album_link', 'album_cover_photo_id', 'album_photo_count', 'album_type', 'updated_time', 'created_time');
@@ -455,10 +444,6 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             		);
             	}
             }
-<<<<<<< HEAD
-=======
-           
->>>>>>> origin/master
          	
          	if(isset($photo->likes->data)){
             	//die("here");
@@ -466,11 +451,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             }
             if(isset($photo->comments->data)){
             	
-<<<<<<< HEAD
             	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', 'since', 0, $photo->id));
-=======
-            	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', $direction, $timestamp, $photo->id));
->>>>>>> origin/master
             }
             
         }  
