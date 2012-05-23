@@ -10,13 +10,14 @@ class Model_Rankings extends Model_DbTable_Rankings
 		$select->join(array('fans'), 'fans.facebook_user_id = rankings.facebook_user_id');
 		$select->where($this->quoteInto('rankings.fanpage_id = ?', $page_id));
 		$select->where($this->quoteInto('type = ?', $type));
+		$select->order('rank ASC');
 
 		if($user_id) 
 			$select->where($this->quoteInto('rankings.facebook_user_id = ?', $user_id));
 
 		if($limit)
 			$select->limit($limit);
-		
+
 		return $this->fetchAll($select);
 	}
 
