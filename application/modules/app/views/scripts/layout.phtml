@@ -22,7 +22,21 @@
         <script src="/bootstrap/js/bootstrap.min.js"></script>
 
         <script src="//connect.facebook.net/en_US/all.js"></script>
-
+	    <!-- This following javascripts are used to initialize the iframe look and feel -->
+		<script>
+			FB.init({
+			 appId  : "<?= $this->layout()->appKey ?>",
+			 status : true, // check login status
+			 cookie : true, // enable cookies to allow the server to access the session
+			 xfbml  : true// parse XFBML
+			 });
+	
+			window.fbAsyncInit = function() {
+				FB.Canvas.setAutoResize(10);
+				//FB.Canvas.setSize();
+			}
+		 </script>
+	 	<!-- End of iframe initialization -->
         <script src="/js/fancrank.js"></script>
 
         <?= $this->headScript(); ?>
