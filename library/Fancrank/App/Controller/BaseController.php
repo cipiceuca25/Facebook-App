@@ -35,6 +35,11 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
 
         $this->_helper->layout()->controller = $this->_request->getControllerName();
         $this->_helper->layout()->action = $this->_request->getActionName();
+        
+        //pass facebook app key to the layout
+        $sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
+        $appKey = $sources->get('facebook')->client_id;
+        $this->_helper->layout()->appKey = $appKey;
     }
 
     protected function getSignedRequest($signed_request = false)
