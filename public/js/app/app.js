@@ -8,7 +8,7 @@ window.fbAsyncInit = function() {
     appId : '272147032839990', //Your facebook APP here
     cookie : true, // enable cookies to allow the server to access the session
   });
-}
+};
 
 window.onload = function() {
   FB.Canvas.setAutoGrow(91);

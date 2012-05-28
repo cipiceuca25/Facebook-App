@@ -54,9 +54,8 @@ class Model_TopFans extends Model_DbTable_TopFans
                         
                         if($limit !== false)
                                 $select = $select . " LIMIT $limit";
-                        
 
-                return $this->getAdapter()->fetchAll($select);
+		return $this->getAdapter()->fetchAll($select);
 	}
 
 	public function getTopTalker($page_id, $limit = 5)

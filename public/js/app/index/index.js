@@ -38,4 +38,8 @@ jQuery(document).ready(function($){
     placement: 'left'
   });
 
+  if(window.location != window.parent.location) {
+  }
+  
+
 });
