@@ -36,28 +36,27 @@ $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APP
 // init default db adapter
 $adapter = Zend_Db::factory($config->resources->db);
 Zend_Db_Table::setDefaultAdapter($adapter);
+$jobCount = $adapter->query("select count(*) as count from message")->fetchAll();
 
 $adapter = new Fancrank_Queue_Adapter($config->queue);
 $queue = new Zend_Queue($adapter, $config->queue);
 
-$messages = $queue->receive(10, 0);
-
+$messages = $queue->receive((int) $jobCount[0]['count'], 0);
 
 if (count($messages) > 0) {
-    $logger = new Zend_Log();
-    //$writer = new Zend_Log_Writer_Stream('php://output');
-    $writer = new Zend_Log_Writer_Stream('./cron_error.log');
-    $logger = new Zend_Log($writer);
-    
+	$logger = new Zend_Log();
+	//$writer = new Zend_Log_Writer_Stream('php://output');
+	$writer = new Zend_Log_Writer_Stream('./cron_error.log');
+	$logger = new Zend_Log($writer);    
     foreach ($messages as $message) {
         $job = Zend_Json::decode($message->body, Zend_Json::TYPE_OBJECT);
         // ensure the proper environment is set
         putenv('APPLICATION_ENV=' . APPLICATION_ENV);
 
         //linux env
-        //$cmd = sprintf('php %s/index.php -m %s -c %s -a %s %s > /dev/null 2>/dev/null &', PUBLIC_PATH, $job->module, $job->controller, $job->action, implode(' ', $job->params));
+        $cmd = sprintf('php %s/index.php -m %s -c %s -a %s %s > /dev/null 2>/dev/null &', PUBLIC_PATH, $job->module, $job->controller, $job->action, implode(' ', $job->params));
         //windows env
-        $cmd = sprintf('php %s/index.php -m %s -c %s -a %s %s >NUL 2>NUL &', PUBLIC_PATH, $job->module, $job->controller, $job->action, implode(' ', $job->params));
+        //$cmd = sprintf('php %s/index.php -m %s -c %s -a %s %s >NUL 2>NUL &', PUBLIC_PATH, $job->module, $job->controller, $job->action, implode(' ', $job->params));
         try {
         	$out = Fancrank_Util_Util::execute($cmd);
         	if( is_array($out) && !empty($out['stderr']) ) {
@@ -67,9 +66,9 @@ if (count($messages) > 0) {
         	try {
         		//remove error message from the queue
         		$queue->deleteMessage($message);
-        		$logger->log('Queue Failed:' .$e->getMessage(), Zend_Log::INFO);
+        		$logger->log('Queue Failed: ' .$e->getMessage(), Zend_Log::INFO);
         	} catch (Exception $e) {
-        		return;
+        		//return;
         	}
          }
         
