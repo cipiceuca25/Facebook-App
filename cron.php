@@ -18,7 +18,7 @@ defined('DATA_PATH')
 
 // Define application environment
 defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
 
 // Ensure library/ is on include_path
 set_include_path(implode(PS, array(
@@ -37,25 +37,45 @@ $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APP
 $adapter = Zend_Db::factory($config->resources->db);
 Zend_Db_Table::setDefaultAdapter($adapter);
 
-// init queue
 $adapter = new Fancrank_Queue_Adapter($config->queue);
 $queue = new Zend_Queue($adapter, $config->queue);
 
-// Get up to 10 messages from a queue
 $messages = $queue->receive(10, 0);
 
+
 if (count($messages) > 0) {
+    $logger = new Zend_Log();
+    //$writer = new Zend_Log_Writer_Stream('php://output');
+    $writer = new Zend_Log_Writer_Stream('./cron_error.log');
+    $logger = new Zend_Log($writer);
+    
     foreach ($messages as $message) {
         $job = Zend_Json::decode($message->body, Zend_Json::TYPE_OBJECT);
-
         // ensure the proper environment is set
         putenv('APPLICATION_ENV=' . APPLICATION_ENV);
 
-        $cmd = sprintf('php %s/index.php -m %s -c %s -a %s %s > /dev/null 2>/dev/null &', PUBLIC_PATH, $job->module, $job->controller, $job->action, implode(' ', $job->params));
-
-        shell_exec($cmd);
-
+        //linux env
+        //$cmd = sprintf('php %s/index.php -m %s -c %s -a %s %s > /dev/null 2>/dev/null &', PUBLIC_PATH, $job->module, $job->controller, $job->action, implode(' ', $job->params));
+        //windows env
+        $cmd = sprintf('php %s/index.php -m %s -c %s -a %s %s >NUL 2>NUL &', PUBLIC_PATH, $job->module, $job->controller, $job->action, implode(' ', $job->params));
+        try {
+        	$out = Fancrank_Util_Util::execute($cmd);
+        	if( is_array($out) && !empty($out['stderr']) ) {
+         		throw new Exception($out['stderr']);
+        	}
+        }catch (Exception $e) {
+        	try {
+        		//remove error message from the queue
+        		$queue->deleteMessage($message);
+        		$logger->log('Queue Failed:' .$e->getMessage(), Zend_Log::INFO);
+        	} catch (Exception $e) {
+        		return;
+        	}
+         }
+        
         // We have processed the message; now we remove it from the queue.
-        $queue->deleteMessage($message);
+        //Zend_Debug::dump($message);
+        //$queue->deleteMessage($message);
     }
 }
+

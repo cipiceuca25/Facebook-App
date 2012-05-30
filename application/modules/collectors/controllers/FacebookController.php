@@ -60,9 +60,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $direction  = $this->_getParam(2, 'since');
         $timestamp  = $this->_getParam(3, 0);
         $extra      = $this->_getParam(4, false);
-
+		
         $url = 'https://graph.facebook.com/' . $this->fanpage->fanpage_id . '/' . $type;// . '?access_token=' . $token;
-
+		
         switch ($type) {
             case 'feed':
                 $fields = array();
@@ -105,8 +105,13 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             default:
                 return;
         }
-
-        $this->fetchData($type, $url, $fields, $direction, $timestamp);
+  		try {
+  			$this->fetchData($type, $url, $fields, $direction, $timestamp);
+  			Log::Info('Updating User Info With URL "%s": success', $url);
+  		} catch (Exception $e) {
+  			Log::Info('Updating Fanpage: "%s"', $e->getMessage());
+  		}	
+        
     }
 
     private function fetchData($type, $url, array $fields, $direction = 'since', $timestamp = 0)
@@ -117,16 +122,16 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         $client->setUri($url);
         $client->setMethod(Zend_Http_Client::GET);
 
-	if(!($type === 'comments' || $type === 'likes')){
-        	$client->setParameterGet($direction, $timestamp);
-
-        	$client->setParameterGet('access_token', $this->fanpage->access_token);
-        	$client->setParameterGet(array(
-            		'format' => 'json',
-            		'limit' => 500,
-          		'fields' => implode(',', $fields)
-        	));
-	}
+		if(!($type === 'comments' || $type === 'likes')){
+	        	$client->setParameterGet($direction, $timestamp);
+	
+	        	$client->setParameterGet('access_token', $this->fanpage->access_token);
+	        	$client->setParameterGet(array(
+	            		'format' => 'json',
+	            		'limit' => 500,
+	          		'fields' => implode(',', $fields)
+	        	));
+		}
 
         try {
             $response = $client->request();
@@ -152,10 +157,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             $data = $json->data;
 
             if (count($data) > 0) {
-                // call specific store method
-		call_user_func(array($this, 'store' . $type), $data);
 
-                // should we keep going?
+				call_user_func(array($this, 'store' . $type), $data);
+
+				// should we keep going?
                 if (isset($json->paging)) {
                     // go back in history
                     if ($timestamp == 0 or $direction == 'since' ) {
@@ -190,10 +195,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 'post_id'               => $post->id,
                 'facebook_user_id'      => $post->from->id,
                 'fanpage_id'            => $this->fanpage->fanpage_id,
-                'post_message'          => isset($post->message) ? $post->message : '',
+                'post_message'          => isset($post->message) ? mysql_real_escape_string($post->message) : '',
                 'post_type'             => $post->type,
-                'created_time'          => $created->toString(Zend_Date::ISO_8601),
-                'updated_time'          => $updated->toString(Zend_Date::ISO_8601),
+                'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
+                'updated_time'          => $updated->toString('yyyy-MM-dd HH:mm:ss'),
                 'post_comments_count'   => $post->comments->count,
                 'post_likes_count'      => isset($post->likes) && isset($post->likes->count) ? $post->likes->count : 0
             );
@@ -207,7 +212,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             }
 
             $posts[] = $row;
-
+			//Zend_Debug::dump($row);
+			//exit();
             if (isset($post->likes->data) && isset($post->likes->count)) {
             	//die(print_r($post->likes->count));
             	if($post->likes->count > 1){
@@ -260,18 +266,16 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                         'comment_post_id'       => $post->id,
                         'facebook_user_id'      => $comment->from->id,
                         'comment_message'       => $comment->message,
-                        'created_time'          => $created->toString(Zend_Date::ISO_8601),
+                        'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
                         'comment_likes_count'   => isset($comment->likes) ? $comment->likes : 0
                     );
 
                     $fans[] = $comment->from->id;
 
                     if($post->comments->count > 2){
-                    	
                     	Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'comments', 'since', 0, $post->id));
                     }
-                    
-                    
+
                 }
             }
         }
@@ -310,7 +314,6 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     private function storeComments($comments)
     {
     	$comments_model = new Model_Comments;
-    	die("here");
     	$direction  = $this->_getParam(2, 'since');
     	$timestamp  = $this->_getParam(3, 0);
 
@@ -324,7 +327,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     				'fanpage_id'            => $this->fanpage->fanpage_id,
     				'comment_post_id'		=> $this->post_id,
     				'comment_message'       => isset($comment->message) ? $comment->message : '',
-    				'created_time'          => $created->toString(Zend_Date::ISO_8601),
+    				'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
     				'comment_likes_count'   => isset($comment->likes) ? $comment->likes : 0
     		);
     		
@@ -378,8 +381,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         			'album_cover_photo_id'	=> isset($album->cover_photo) ? $album->cover_photo : '',
         			'album_photo_count'		=> isset($album->count) ? $album->count : 0,
         			'album_type'			=> $album->type,
-        			'updated_time'			=> $updated->toString(Zend_Date::ISO_8601),
-        			'created_time'			=> $created->toString(Zend_Date::ISO_8601)		
+        			'updated_time'			=> $updated->toString('yyyy-MM-dd HH:mm:ss'),
+        			'created_time'			=> $created->toString('yyyy-MM-dd HH:mm:ss')		
         	);
 
             Collector::Run('facebook', 'fetch', array($this->fanpage->fanpage_id, 'photos', 'since', 0, $album->id));
@@ -423,8 +426,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             	'photo_position'	=> $photo->position,
                 'photo_width'       => $photo->width,
                 'photo_height'      => $photo->height,
-                'updated_time'      => $created->toString(Zend_Date::ISO_8601),
-                'created_time'      => $updated->toString(Zend_Date::ISO_8601)
+                'updated_time'      => $created->toString('yyyy-MM-dd HH:mm:ss'),
+                'created_time'      => $updated->toString('yyyy-MM-dd HH:mm:ss')
             );
             
             if(isset($photo->tags->data)){
@@ -440,7 +443,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
             				'photo_id'				=> $photo->id,
             				'tag_position_x'		=> $tag->x,
             				'tag_position_y'		=> $tag->y,
-            				'created_time'			=> $created->toString(Zend_Date::ISO_8601)
+            				'created_time'			=> $created->toString('yyyy-MM-dd HH:mm:ss')
             		);
             	}
             }
@@ -497,8 +500,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
                 'fanpage_id'            => $this->fanpage->fanpage_id,
                 'fan_name'              => $data->name,
                 'fan_user_avatar'       => isset($data->picture) ? $data->picture : sprintf('https://graph.facebook.com/%s/picture', $data->id),
-                'fan_location'          => isset($data->location) ? $data->location->name : '',
-                'fan_gender'            => isset($data->gender) ? $data->gender : '',
+                'fan_location'          => isset($data->current_location) ? $data->current_location : '',
+                'fan_gender'            => isset($data->gender) && in_array(strtolower($data->gender), array('male', 'female')) ? $data->gender : '',
                 'fan_locale'            => isset($data->locale) ? $data->locale : '',
                 'fan_lang'              => implode(',', $lang)
             );
