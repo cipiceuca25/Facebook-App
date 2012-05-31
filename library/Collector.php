@@ -1,13 +1,18 @@
 <?php
 class Collector
 {
+	
     public static function run($controller, $action, $params)
     {
         // ensure the proper environment is set
         putenv('APPLICATION_ENV=' . APPLICATION_ENV);
-
+		
+        //under linux env
         $cmd = sprintf('php %s/index.php -m collectors -c %s -a %s %s > /dev/null 2>/dev/null &', PUBLIC_PATH, $controller, $action, join(' ', $params));
-
+        //under windows env
+        //$cmd = sprintf('php %s/index.php -m collectors -c %s -a %s %s >NUL 2>NUL &', PUBLIC_PATH, $controller, $action, join(' ', $params));
+        //log all the execution commands
+        //Log::Info('Execute Action: "%s"\n%s', $cmd);
         $output = shell_exec($cmd);
     }
 

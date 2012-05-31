@@ -5,7 +5,6 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 	
     public function preDispatch()
     {
-
         //check for user authorization
         $this->_auth = Zend_Auth::getInstance();
 
