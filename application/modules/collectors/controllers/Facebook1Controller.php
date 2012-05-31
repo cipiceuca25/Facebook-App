@@ -41,10 +41,12 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     	
       	$queries = array(
     			array('method' => 'GET', 'relative_url' => $this->getRequest()->getParam('fanpage_id') .'/'),
+      			array('method' => 'GET', 'relative_url' => $this->getRequest()->getParam('fanpage_id') .'/photos'),
      			array('method' => 'GET', 'relative_url' => $this->getRequest()->getParam('fanpage_id') .'/posts?limit='.$postLimit),
     			array('method' => 'GET', 'relative_url' => $this->getRequest()->getParam('fanpage_id') .'/likes?limit='.$likesLimit)
     	);
     	
+      	     	
     	$access_token = $this->getRequest()->getParam('access_token');
     	//$arrget = 'batch=' .json_encode($queries) .'&access_token=' .$access_token .'&method=post';
     	$arrpost = 'batch=' .json_encode($queries) .'&access_token=' .$access_token;
@@ -69,9 +71,9 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		{
 				$response = json_decode($result,true);
 				//Zend_Debug::dump($response);
-				$data = $this->responseParser($response, array('me', 'posts', 'likes'));
-				Zend_Debug::dump($data);
-				
+				$data = $this->responseParser($response, array('me', 'photos', 'posts', 'likes'));
+				//Zend_Debug::dump($data);
+				Zend_Debug::dump($this->idCollector($data));
 				/*
 				foreach ($data as $k=>$v){
 					echo '<p>' .$k .' data ------------------------------------------</p>';

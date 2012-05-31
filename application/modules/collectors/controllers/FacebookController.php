@@ -15,6 +15,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         parent::init();
         
         // get the fanpage object
+        /*
         $this->fanpages = new Model_Fanpages;
         $fanpage = $this->fanpages->findRow($this->_getParam(0));
 
@@ -28,6 +29,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         } else {
             $this->fanpage = $fanpage;
         }
+        */
     }
 
     public function initAction()
@@ -114,6 +116,13 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         
     }
 
+    /*
+     * Fetch multi facebook user objects in single http request
+     */
+    public function batchfetchAction(){
+    	echo 'patch fetch start';
+    }
+    
     private function fetchData($type, $url, array $fields, $direction = 'since', $timestamp = 0)
     {
         Log::Info('Fetching %s from Fanpage: "%s" %s: "%d" with URL: "%s"', $type, $this->fanpage->fanpage_id, $direction, $timestamp, $url);
