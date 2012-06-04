@@ -225,4 +225,27 @@ class Fancrank_Db_Table extends Zend_Db_Table_Abstract
 
         return $result;
     }
+    
+    public function isValid() {
+    	if($this->_primary) {
+    		return true;
+    	}
+    	
+    	return false;
+    }
+    
+    /*
+     * save and update model talbe by giving id
+     */
+    public function saveAndUpdateById($model, $id=array('id_field_name'=>'')) {
+    	if( is_array($id) && empty($id['id_field_name'])) {
+    		return;
+    	}
+    	
+    	if($this->findRow($model[$id['id_field_name']])) {
+    		$this->update($model,  $this->getAdapter()->quoteInto($id['id_field_name'] .' = ?', $model[$id['id_field_name']]));
+    	}else {
+    		$this->insert($model);
+    	}
+    }
 }

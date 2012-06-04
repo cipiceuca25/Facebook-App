@@ -16,7 +16,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 'table' => array(
                     'namespace' => 'Model_DbTable',
                     'path'      => 'models/DbTable',
-                )
+                ),
+
+            	'service' => array(
+            			'namespace' => 'Service',
+            			'path'      => 'services',
+            	),            		
             )
         ));
     }

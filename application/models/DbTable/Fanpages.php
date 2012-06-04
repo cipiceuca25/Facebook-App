@@ -6,7 +6,7 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
     protected $_name = 'fanpages';
 
     protected $_primary = array('fanpage_id');
-
+/*
     protected $_metadata = array(
         'fanpage_id' => array(
             'SCHEMA_NAME' => null,
@@ -164,7 +164,7 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
         'Model_Posts',
         'Model_Rankings'
         );
-
+*/
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {
         return $this->fetchAll($where, $order, $count, $offset);
@@ -185,6 +185,14 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
         return $this->fetchRow($this->select()->from($this->_name, array('fanpage_id', 'num'=> 'COUNT(*)'))->where('fanpage_id = ?', $value))->num;
     }
 
+    // save or update the fanpages
+    public function saveAndUpdate($fanpageData) {
+    	if($this->findRow($fanpageData['fanpage_id'])){
+    		$this->update($fanpageData,  $this->getAdapter()->quoteInto('fanpage_id = ?', $fanpageData['fanpage_id']));
+    	}else {
+    		$this->insert($fanpageData);
+    	}
+    }
 
 }
 

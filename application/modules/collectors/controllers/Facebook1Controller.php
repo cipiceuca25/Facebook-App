@@ -33,30 +33,23 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     }
 
     public function batchfetchAction() {
-    	echo 'This request will fetch client profile, 50 likes, 50 posts and 50 comments within each post';
-    	$url = 'https://graph.facebook.com/';// . '?access_token=' . $token;
-    	$postLimit = 50;
-    	$commentLimit = 50;
-    	$likesLimit = 50;
-    	
-      	$queries = array(
-    			array('method' => 'GET', 'relative_url' => $this->getRequest()->getParam('fanpage_id') .'/'),
-      			array('method' => 'GET', 'relative_url' => $this->getRequest()->getParam('fanpage_id') .'/photos'),
-     			array('method' => 'GET', 'relative_url' => $this->getRequest()->getParam('fanpage_id') .'/posts?limit='.$postLimit),
-    			array('method' => 'GET', 'relative_url' => $this->getRequest()->getParam('fanpage_id') .'/likes?limit='.$likesLimit)
-    	);
-    	
-      	     	
-    	$access_token = $this->getRequest()->getParam('access_token');
-    	//$arrget = 'batch=' .json_encode($queries) .'&access_token=' .$access_token .'&method=post';
-    	$arrpost = 'batch=' .json_encode($queries) .'&access_token=' .$access_token;
-    	//Zend_Debug::dump($arrpost);
-    	
-    	//echo $url . '?' .$arrpost;
-    	//exit();
-		$result = $this->requestFacebookAPI_POST($url, $arrpost);
-		try {
+    	$start = time();
+   		//$collectorLogger = Zend_Registry::get('collectorLogger');
+   		//$collectorLogger->log('test log', Zend_Log::ERR);
 
+   		echo 'This request will fetch client profile, 50 likes, 50 posts and 50 comments within each post';
+    	$url = 'https://graph.facebook.com/';
+  
+    	$friends = array('paramName'=>'friends', 'method'=>'GET');
+    	$fanpage = array('paramName'=>'fanpage', 'method'=>'GET', 'fanpage_id'=> $this->getRequest()->getParam('fanpage_id'));
+    	//$queryType = array('me', 'albums', 'friends', 'likes', 'notes', 'photos', 'posts', 'videos');
+    	//$queryType = array('me', 'albums', $friends, 'likes', 'notes', 'photos', 'posts', 'videos');
+    	$queryType = array('me', $fanpage, 'albums', $friends, 'likes', 'notes');
+    	$access_token = $this->getRequest()->getParam('access_token');    	
+    	$batchQueries = $this->batchQueryBuilder($queryType, $access_token);
+    	//Zend_Debug::dump($batchQueries); exit();
+		try {
+				$result = $this->requestFacebookAPI_POST($url, $batchQueries);
 		} catch (Exception $e) {
 			echo $e->getMessage();
 			return;
@@ -65,39 +58,67 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		
 		if ($result === FALSE)
 		{
-			// Redirect to error page
+			// Log or Redirect to error page
+			return;
 		}
 		else
 		{
 				$response = json_decode($result,true);
-				//Zend_Debug::dump($response);
-				$data = $this->responseParser($response, array('me', 'photos', 'posts', 'likes'));
+				//Zend_Debug::dump($response); exit();
+				//$typeName = array('me', 'fanpage', 'albums', 'friends');
+				$data = $this->responseParser($response, $queryType);
 				//Zend_Debug::dump($data);
-				Zend_Debug::dump($this->idCollector($data));
-				/*
-				foreach ($data as $k=>$v){
-					echo '<p>' .$k .' data ------------------------------------------</p>';
-					Zend_Debug::dump(json_decode($v, true));
-					echo '</br>';
-				}*/
+				//Zend_Debug::dump($this->idCollector($data));
+				
+				echo '<p>Who is ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
+				//Zend_Debug::dump(json_decode($data['me']));
+
+				$fancrankDb = new Service_FancrankDBService();
+				
+				if($fancrankDb->saveFanpageProfile($data, $access_token) === false) {
+					//$cLog->log('fail to save', Zend_Log::DEBUG);
+					//throw new Exception('cant save');
 					
-				//Zend_Debug::dump(json_decode($data['posts'], true));
+				}
 				
-				//echo likes
-				//echo facebook user general profile
-				echo '<p>Who is ' .$this->getRequest()->getParam('fanpage_id') .': </p>';
-				Zend_Debug::dump(json_decode($data['me'], true));
-				
-				
+				exit();
+				//echo facebook user Albums
+				echo '<p>Albums: ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
+				Zend_Debug::dump(json_decode($data['albums'], true));
+
+				//echo facebook user friends
+				echo '<p>Friend list: ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
+				Zend_Debug::dump(json_decode($data['friends'], true));
+
+				//echo facebook user likes
 				echo '<p>' .$this->getRequest()->getParam('fanpage_id') .' likes following: </p>';
 				Zend_Debug::dump(json_decode($data['likes'], true));
 				
+				//echo facebook user notes
+				echo '<p> Note: ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
+				Zend_Debug::dump(json_decode($data['notes'], true));
+				
+				//echo facebook user notes
+				echo '<p> photos: ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
+				Zend_Debug::dump(json_decode($data['photos'], true));
+
+				//echo facebook user notes
+				echo '<p> posts: ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
+				Zend_Debug::dump(json_decode($data['posts'], true));
+				
+				//echo facebook user notes
+				echo '<p> videos: ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
+				Zend_Debug::dump(json_decode($data['videos'], true));
+
+				exit();
 				$posts = json_decode($data['posts'], true);
 				//Zend_Debug::dump($posts);
 				//exit();
 				$commentArray = array();
-				foreach($posts['data'] as $post) {
-					$commentArray[] = array('method' => 'GET', 'relative_url' => $post['id'] .'?limit='.$commentLimit);	
+				if(!empty($posts['daya'])) {
+					foreach($posts['data'] as $post) {
+						$commentArray[] = array('method' => 'GET', 'relative_url' => $post['id'] .'?limit='.$commentLimit);
+					}
 				}
 				
 				//Zend_Debug::dump(json_encode($commentArray));
@@ -121,7 +142,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 						
 						Zend_Debug::dump($post);
 					}
-					$timeTaken = time() - $_SERVER['REQUEST_TIME'];
+					$timeTaken = time() - $start;
 					
 					echo "Total execution time: " .$timeTaken;
 				}
@@ -173,15 +194,27 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     	
     }
     
-    private function responseParser($response, $keyName = array()) {
-    	if(count($response) != count($keyName)) {
-    		return;
+    /*
+     * @return retrun an array of json objects 
+     */
+    private function responseParser($response, $queryType = array()) {
+    	$tempKey = array();
+    	foreach($queryType as $k => $value) {
+    		if(is_array($value) && !empty($value['paramName'])) {
+    			$tempKey[$k] = $value['paramName'];
+    		}else {
+    			$tempKey[$k] = $value;
+    		}
+    	}
+    	
+    	if(count($response) != count($tempKey)) {
+    		throw new Exception('unmatch query type');
     	}
     	
     	$arr = array();
     	foreach ($response as $key => $res){
-			if($res['code'] === 200) {
-				$arr[$keyName[$key]] = $res['body'];
+			if($res['code'] === 200 && !empty($res['body'])) {
+				$arr["$tempKey[$key]"] = $res['body'];
 			}
     	}
     	
@@ -199,7 +232,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     	return $idArray;
     }
 
-    function search_key_r($array, $key, &$results)
+    private function search_key_r($array, $key, &$results)
     {
     	if (!is_array($array))
     		return;
@@ -211,7 +244,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     		$this->search_key_r($subarray, $key, $results);
     }
     
-    function searchByKey($key, $array)
+    private function searchByKey($key, $array)
     {
     	$results = array();
     
@@ -220,5 +253,54 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     	return $results;
     }
     
+    /*
+     * A function to encode a batch query in a single url
+     * 
+     * $param $userId user id
+     * @param $arr params after usesr id in url. Example: https://graph.facebook.com/userId/param
+     * @param $defaultOption an array of additional default params
+     */
+    private function batchQueryBuilder($arr, $access_token, $defaultOption=array()) {
+    	if(empty($access_token)) {
+    		return array();
+    	}
+    	$method = 'GET';
+    	$limit = 0;
+    	$since = null;
+    	$until = null;
+    	$result = array();
+    	foreach ($arr as $key => $value) {
+    		if(is_array($value) && !empty($value)) {
+    			$tmp = array('method'=>'GET', 'relative_url'=> '/me?');
+    			foreach ($value as $k => $v) {
+    				switch ($k){
+    					case 'paramName':
+    						if( $v === 'fanpage' ) {
+    							$tmp['relative_url'] = '/' .$value['fanpage_id'] .'?';
+    						}else {
+    							$tmp['relative_url'] = '/me/' .$v .'?';
+    						}
+    						break;
+       					case 'method': $tmp['method'] = $v; break;
+    					case 'relative_url': $tmp['relative_url'] = $v; break;
+    					case 'limit': $tmp['relative_url'] .= '&' .'limit=' .$v; break; 
+    					case 'since': $tmp['relative_url'] .= '&' .'since=' .$v; break;
+    					case 'until': $tmp['relative_url'] .= '&' .'until=' .$v; break;		
+    					default: break;
+    				}
+    			}
+    			$result[] = $tmp;
+    		}else if(is_string($value)) {
+    			if( $value === 'me') {
+    				$result[] = array('method' => 'GET', 'relative_url' => '/me');
+    			}else {
+    				$result[] = array('method' => 'GET', 'relative_url' => '/me/' .$value);
+    			}
+    		}
+    	}
+    	
+    	//$arrpost = 'batch=' .json_encode($result) .'&access_token=' .$access_token;
+    	return 'batch=' .json_encode($result) .'&access_token=' .$access_token;
+    }
     
 }

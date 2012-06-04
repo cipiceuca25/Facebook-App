@@ -7,6 +7,7 @@ class Model_DbTable_FancrankUsers extends Fancrank_Db_Table
 
     protected $_primary = array('facebook_user_id');
 
+    /*
     protected $_metadata = array(
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
@@ -102,6 +103,7 @@ class Model_DbTable_FancrankUsers extends Fancrank_Db_Table
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_FancrankUsers';
 
+	*/
     protected $_referenceMap = array('FANCRANK_USER_FAN_FK' => array(
             'columns' => 'facebook_user_id',
             'refTableClass' => 'Model_Fans',

@@ -1,0 +1,4 @@
+2012-06-03T01:18:26+00:00 ERR (3): 
+2012-06-03T01:19:38+00:00 ERR (3): Unable to save fanpage 178384541065 to database. Error Message: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'locale' in 'field list':> 
+2012-06-03T01:22:39+00:00 ERR (3): Unable to save fanpage 178384541065 to database. Error Message: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'locale' in 'field list':> 
+2012-06-03T01:25:33+00:00 ERR (3): Unable to save fanpage 178384541065 to database. Error Message: SQLSTATE[22007]: Invalid datetime format: 1292 Incorrect datetime value: '' for column 'updated_time' at row 1:> 

@@ -10,7 +10,7 @@ class Model_DbTable_Rankings extends Fancrank_Db_Table
         'type',
         'facebook_user_id'
         );
-
+/*
     protected $_metadata = array(
         'fanpage_id' => array(
             'SCHEMA_NAME' => null,
@@ -105,7 +105,7 @@ class Model_DbTable_Rankings extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_Rankings';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_Rankings';
-
+*/
     protected $_referenceMap = array('fk_rankings_1' => array(
             'columns' => 'fanpage_id',
             'refTableClass' => 'Model_Fanpages',

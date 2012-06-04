@@ -6,7 +6,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
     protected $_name = 'photos';
 
     protected $_primary = array('photo_id');
-
+/*
     protected $_metadata = array(
         'photo_id' => array(
             'SCHEMA_NAME' => null,
@@ -254,7 +254,7 @@ class Model_DbTable_Photos extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_Photos';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_Photos';
-
+*/
     protected $_referenceMap = array('PHOTOS_FANPAGES_FK' => array(
             'columns' => 'fanpage_id',
             'refTableClass' => 'Model_Fanpages',

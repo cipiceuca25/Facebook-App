@@ -6,7 +6,7 @@ class Model_DbTable_FanpageUsers extends Zend_Db_Table
     protected $_name = 'fanpage_users';
 
     protected $_primary = array('facebook_user_id');
-
+/*
     protected $_metadata = array(
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
@@ -65,7 +65,8 @@ class Model_DbTable_FanpageUsers extends Zend_Db_Table
         );
 
     protected $_dependentTables = array();
-
+*/
+    
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {
         return $this->fetchAll($where, $order, $count, $offset);

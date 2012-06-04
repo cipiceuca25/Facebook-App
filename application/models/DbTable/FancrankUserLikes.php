@@ -10,6 +10,7 @@ class Model_DbTable_FancrankUserLikes extends Fancrank_Db_Table
         'like_id'
         );
 
+    /*
     protected $_metadata = array(
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
@@ -105,6 +106,7 @@ class Model_DbTable_FancrankUserLikes extends Fancrank_Db_Table
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_FancrankUserLikes';
 
+	*/
     protected $_referenceMap = array('fk_fancrank_user_likes_facebook_user_id' => array(
             'columns' => 'facebook_user_id',
             'refTableClass' => 'Model_FancrankUsers',

@@ -7,6 +7,7 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
 
     protected $_primary = array('comment_id');
 
+    /*
     protected $_metadata = array(
         'comment_id' => array(
             'SCHEMA_NAME' => null,
@@ -152,7 +153,8 @@ class Model_DbTable_Comments extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_Comments';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_Comments';
-
+	
+	*/
     protected $_referenceMap = array('COMMENTS_FANPAGES_ID_FK' => array(
             'columns' => 'fanpage_id',
             'refTableClass' => 'Model_Fanpages',

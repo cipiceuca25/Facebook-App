@@ -11,7 +11,7 @@ class Model_DbTable_Tags extends Fancrank_Db_Table
         'facebook_user_name',
         'photo_id'
         );
-
+/*
     protected $_metadata = array(
         'fanpage_id' => array(
             'SCHEMA_NAME' => null,
@@ -140,7 +140,7 @@ class Model_DbTable_Tags extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_Tags';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_Tags';
-
+*/
     protected $_referenceMap = array('TAGS_PHOTOS_FK' => array(
             'columns' => 'photo_id',
             'refTableClass' => 'Model_Photos',

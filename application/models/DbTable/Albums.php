@@ -7,6 +7,7 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
 
     protected $_primary = array('album_id');
 
+    /*
     protected $_metadata = array(
         'album_id' => array(
             'SCHEMA_NAME' => null,
@@ -221,6 +222,7 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_Albums';
 
+	*/
     protected $_referenceMap = array('ALBUMS_FANPAGES_FK' => array(
             'columns' => 'fanpage_id',
             'refTableClass' => 'Model_Fanpages',
@@ -228,7 +230,7 @@ class Model_DbTable_Albums extends Fancrank_Db_Table
             ));
 
     protected $_dependentTables = array();
-
+	
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {
         return $this->fetchAll($where, $order, $count, $offset);

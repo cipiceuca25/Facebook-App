@@ -9,7 +9,7 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
         'facebook_user_id',
         'fanpage_id'
         );
-
+/*
     protected $_metadata = array(
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
@@ -53,7 +53,8 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_FanpageAdmins';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_FanpageAdmins';
-
+*/
+    
     protected $_referenceMap = array('fk_fanpage_admins_1' => array(
             'columns' => 'facebook_user_id',
             'refTableClass' => 'Model_Users',

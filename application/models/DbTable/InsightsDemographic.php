@@ -6,7 +6,7 @@ class Model_DbTable_InsightsDemographic extends Fancrank_Db_Table
     protected $_name = 'Insights_Demographic';
 
     protected $_primary = array('insights_id');
-
+/*
     protected $_metadata = array(
         'insights_id' => array(
             'SCHEMA_NAME' => null,
@@ -628,7 +628,7 @@ class Model_DbTable_InsightsDemographic extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_InsightsDemographic';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_InsightsDemographic';
-
+*/
     protected $_referenceMap = array();
 
     protected $_dependentTables = array();

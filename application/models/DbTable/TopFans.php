@@ -6,7 +6,7 @@ class Model_DbTable_TopFans extends Fancrank_Db_Table
     protected $_name = 'top_fans';
 
     protected $_primary = array('fanpage_id');
-
+/*
     protected $_metadata = array(
         'fanpage_id' => array(
             'SCHEMA_NAME' => null,
@@ -50,7 +50,7 @@ class Model_DbTable_TopFans extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_TopFans';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_TopFans';
-
+*/
     protected $_referenceMap = array(
         'TOP_FAN_FB_PAGE' => array(
             'columns' => 'fanpage_id',

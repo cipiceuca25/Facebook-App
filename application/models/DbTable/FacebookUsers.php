@@ -7,6 +7,7 @@ class Model_DbTable_FacebookUsers extends Fancrank_Db_Table
 
     protected $_primary = array('facebook_user_id');
 
+    /*
     protected $_metadata = array(
         'facebook_user_id' => array(
             'SCHEMA_NAME' => null,
@@ -136,6 +137,7 @@ class Model_DbTable_FacebookUsers extends Fancrank_Db_Table
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_FacebookUsers';
 
+	*/
     protected $_referenceMap = array();
 
     protected $_dependentTables = array();
@@ -160,6 +162,13 @@ class Model_DbTable_FacebookUsers extends Fancrank_Db_Table
         return $this->fetchRow($this->select()->from($this->_name, array('facebook_user_id', 'num'=> 'COUNT(*)'))->where('facebook_user_id = ?', $value))->num;
     }
 
-
+    // save or update the facebook user
+    public function saveAndUpdate($facebookUserData) {
+    	if($this->findRow($facebookUserData['facebook_user_id'])){
+    		$this->update($facebookUserData,  $this->getAdapter()->quoteInto('facebook_user_id = ?', $facebookUserData['facebook_user_id']));
+    	}else {
+    		$this->insert($facebookUserData);
+    	}
+    }
 }
 
