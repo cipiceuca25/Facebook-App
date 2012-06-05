@@ -57,6 +57,7 @@ class Model_Posts extends Model_DbTable_Posts
 		$insert = $this->getAdapter()->insert(array('posts' => 'posts'), $data);
 	
 	}
+	
 
 }
 

@@ -39,14 +39,16 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 
    		echo 'This request will fetch client profile, 50 likes, 50 posts and 50 comments within each post';
     	$url = 'https://graph.facebook.com/';
-  
-    	$friends = array('paramName'=>'friends', 'method'=>'GET');
-    	$fanpage = array('paramName'=>'fanpage', 'method'=>'GET', 'fanpage_id'=> $this->getRequest()->getParam('fanpage_id'));
+    	
+    	//$friends = array('paramName'=>'friends', 'method'=>'GET');
+    	//$fanpage = array('paramName'=>'fanpage', 'method'=>'GET', 'fanpage_id'=> $this->getRequest()->getParam('fanpage_id'));
     	//$queryType = array('me', 'albums', 'friends', 'likes', 'notes', 'photos', 'posts', 'videos');
     	//$queryType = array('me', 'albums', $friends, 'likes', 'notes', 'photos', 'posts', 'videos');
-    	$queryType = array('me', $fanpage, 'albums', $friends, 'likes', 'notes');
-    	$access_token = $this->getRequest()->getParam('access_token');    	
-    	$batchQueries = $this->batchQueryBuilder($queryType, $access_token);
+    	$queryType = array('me', 'albums', 'feed', 'posts', 'photos');
+    	$access_token = $this->getRequest()->getParam('access_token');
+
+    	$batchQueries = $this->batchFanpageQueryBuilder($this->getRequest()->getParam('fanpage_id'), $queryType, $access_token);
+    	//$batchQueries = $this->batchQueryBuilder($queryType, $access_token);
     	//Zend_Debug::dump($batchQueries); exit();
 		try {
 				$result = $this->requestFacebookAPI_POST($url, $batchQueries);
@@ -63,7 +65,9 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		}
 		else
 		{
+				
 				$response = json_decode($result,true);
+
 				//Zend_Debug::dump($response); exit();
 				//$typeName = array('me', 'fanpage', 'albums', 'friends');
 				$data = $this->responseParser($response, $queryType);
@@ -75,12 +79,15 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 
 				$fancrankDb = new Service_FancrankDBService();
 				
-				if($fancrankDb->saveFanpageProfile($data, $access_token) === false) {
+				if($fancrankDb->saveFanpageProfile($url, $data, $access_token) === false) {
 					//$cLog->log('fail to save', Zend_Log::DEBUG);
 					//throw new Exception('cant save');
 					
 				}
 				
+				$timeTaken = time() - $start;
+					
+				echo "Total execution time: " .$timeTaken;
 				exit();
 				//echo facebook user Albums
 				echo '<p>Albums: ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
@@ -190,10 +197,6 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     
     }
     
-    private function feedParser($feed) {
-    	
-    }
-    
     /*
      * @return retrun an array of json objects 
      */
@@ -255,11 +258,63 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     
     /*
      * A function to encode a batch query in a single url
+    *
+    * @param $fanpageId fanpage id
+    * @param $arr params after usesr id in url. Example: https://graph.facebook.com/userId/param
+    * @param $access_token an access token
+    * @param $defaultOption an array of additional default params
+    */
+    private function batchFanpageQueryBuilder($fanageId, $arr, $access_token, $defaultOption=array()) {
+    	if(empty($access_token)) {
+    		return array();
+    	}
+    	$method = 'GET';
+    	$limit = 0;
+    	$since = null;
+    	$until = null;
+    	$result = array();
+    	foreach ($arr as $key => $value) {
+    		if(is_array($value) && !empty($value)) {
+    			$tmp = array('method'=>'GET', 'relative_url'=> '/' .$fanageId. '?');
+    			foreach ($value as $k => $v) {
+    				switch ($k){
+    					case 'paramName':
+    						if( $v === 'me' ) {
+    							$tmp['relative_url'] = '/me?';
+    						}else {
+    							$tmp['relative_url'] = '/' .$fanageId .'/' .$v .'?';
+    						}
+    						break;
+    					case 'method': $tmp['method'] = $v; break;
+    					case 'relative_url': $tmp['relative_url'] = $v; break;
+    					case 'limit': $tmp['relative_url'] .= '&' .'limit=' .$v; break;
+    					case 'since': $tmp['relative_url'] .= '&' .'since=' .$v; break;
+    					case 'until': $tmp['relative_url'] .= '&' .'until=' .$v; break;
+    					default: break;
+    				}
+    			}
+    			$result[] = $tmp;
+    		}else if(is_string($value)) {
+    			if( $value === 'me') {
+    				$result[] = array('method' => 'GET', 'relative_url' => '/' .$fanageId);
+    			}else {
+    				$result[] = array('method' => 'GET', 'relative_url' => '/' .$fanageId .'/' .$value);
+    			}
+    		}
+    	}
+    	 
+    	//$arrpost = 'batch=' .json_encode($result) .'&access_token=' .$access_token;
+    	return 'batch=' .json_encode($result) .'&access_token=' .$access_token;
+    }
+    
+    /*
+     * A function to encode a batch query in a single url
      * 
      * $param $userId user id
      * @param $arr params after usesr id in url. Example: https://graph.facebook.com/userId/param
      * @param $defaultOption an array of additional default params
      */
+    /*
     private function batchQueryBuilder($arr, $access_token, $defaultOption=array()) {
     	if(empty($access_token)) {
     		return array();
@@ -302,5 +357,5 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     	//$arrpost = 'batch=' .json_encode($result) .'&access_token=' .$access_token;
     	return 'batch=' .json_encode($result) .'&access_token=' .$access_token;
     }
-    
+    */
 }

@@ -241,7 +241,7 @@ class Fancrank_Db_Table extends Zend_Db_Table_Abstract
     	if( is_array($id) && empty($id['id_field_name'])) {
     		return;
     	}
-    	
+
     	if($this->findRow($model[$id['id_field_name']])) {
     		$this->update($model,  $this->getAdapter()->quoteInto($id['id_field_name'] .' = ?', $model[$id['id_field_name']]));
     	}else {
