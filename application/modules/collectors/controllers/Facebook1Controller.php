@@ -1,4 +1,6 @@
 <?php
+require_once APPLICATION_PATH .'/../library/Facebook/facebook.php';
+
 class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_BaseController
 {
     private $types = array(
@@ -292,6 +294,33 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     	 
     	//$arrpost = 'batch=' .json_encode($result) .'&access_token=' .$access_token;
     	return 'batch=' .json_encode($result) .'&access_token=' .$access_token;
+    }
+    
+    public function appinfoAction() {
+    	echo 'app info start: ';
+    	$app_id = "359633657407080";
+    	$app_secret = "438dd417f5a3f67f27dd97606d01e83c";
+    	$facebook = new Facebook(array(
+		      'appId'  => $app_id,
+		      'secret' => $app_secret,
+		      'cookie' => true,
+    	));
+    	$user = $facebook->getUser();
+    	Zend_Debug::dump($user);
+    	
+    	if ($user) {
+    		try {
+    			// Proceed knowing you have a logged in user who's authenticated.
+    			$user_profile = $facebook->api('/me/likes');
+    			Zend_Debug::dump($user_profile);
+    			$access_token = $facebook->getAccessToken();
+    			Zend_Debug::dump($access_token);
+    		} catch (FacebookApiException $e) {
+    			//you should use error_log($e); instead of printing the info on browser
+    			d($e);  // d is a debug function defined at the end of this file
+    			$user = null;
+    		}
+    	}
     }
     
 }

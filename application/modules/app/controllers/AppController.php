@@ -35,6 +35,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
 		}
 		$this->_auth = Zend_Auth::getInstance();
+		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
 		$this->_facebook_user = $this->_auth->getIdentity();
 	}
 	
@@ -127,7 +128,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
-     	//Zend_Debug::dump($this->view->facebook_user);
     }
     
     protected function getFeed($access_token) {
