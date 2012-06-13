@@ -19,7 +19,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		$collectorLogger = Zend_Registry::get('collectorLogger');
 		
 		//save facebook user
-		$facebookUserId = $this->saveFacebookUser(json_decode($data['me']), $access_token, $db);
+		//$facebookUserId = $this->saveFacebookUser(json_decode($data['me']), $access_token, $db);
 
 		//save fanpage
 		$fanpageId = $this->saveFanpage(json_decode($data['me']), $access_token, $db);
@@ -27,8 +27,6 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		//save album
 		$albums = json_decode($data['albums']);
 		//Zend_Debug::dump($albums->data);
-		
-					
 		$albumRows = $this->saveAlbums($albums, $db, $fanpageId, $facebookUserId);
 		//Zend_Debug::dump($albumRows); exit();
 
@@ -61,8 +59,11 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	 * @return a string representation of a giving date in following format: yyyy-MM-dd HH:mm:ss 
 	 */
 	private function dateToStringForMysql($date) {
-		$date = new Zend_Date($date);
-		return $date->toString('yyyy-MM-dd HH:mm:ss');
+		if(!empty ($date)) {
+			$date = new Zend_Date($date);
+			return $date->toString('yyyy-MM-dd HH:mm:ss');
+		}
+		return null;
 	}
 	
 	/*
@@ -71,23 +72,27 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	 * @param $db current default database
 	 * @return facebook user id
 	 */
-	public function saveFacebookUser($facebookUserProfile, $access_token=null, $db) {
-		if(empty ($facebookUserProfile)) {
+	public function saveFacebookUser($data, $access_token=null, $db) {
+		if(empty ($data) || (empty($data->id))) {
 			return false;
 		}
 
 		$facebookUserData = array(
-				'facebook_user_id' 		=> $facebookUserProfile->id,
-				'facebook_user_name' 	=> !empty($facebookUserProfile->username) ? $facebookUserProfile->username : '',
-				'facebook_user_email' 	=> !empty($facebookUserProfile->email) ? $facebookUserProfile->email : '',
-				'facebook_user_gender' 	=> !empty($facebookUserProfile->gender) ? $facebookUserProfile->gender : '',
-				'access_token' 			=> $access_token,
-				'updated_time' 			=> !empty($facebookUserProfile->updated_time) ?
-				$this->dateToStringForMysql($facebookUserProfile->update_date) : null,
-				'locale' 				=> !empty($facebookUserProfile->locale) ? $facebookUserProfile->locale : '',
-				'hometown' 				=> !empty($facebookUserProfile->hometown) ? $facebookUserProfile->hometown : '',
-				'current_location' 		=> !empty($facebookUserProfile->current_location) ? $facebookUserProfile->current_location : '',
-				'bio' 					=> !empty($facebookUserProfile->bio) ? $facebookUserProfile->bio : ''
+				'facebook_user_id' 			=> $data->id,
+				'facebook_user_name' 		=> !empty($data->username) ? $data->username : '',
+				'facebook_user_first_name' 	=> !empty($data->user_first_name) ? $data->user_first_name : '',
+				'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
+				'facebook_user_email' 		=> !empty($data->email) ? $email : '',
+				'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
+				'facebook_user_avatar'    	=> sprintf('https://graph.facebook.com/%s/picture', $data->id),
+				'facebook_user_lang'        => implode(',', $lang),
+				'facebook_user_birthday'    => Fancrank_Util_Util::dateToStringForMysql(!empty($data->birthday)),
+				'facebook_user_access_token'=> $access_token,
+				'updated_time' 				=> Fancrank_Util_Util::dateToStringForMysql(!empty($data->updated_time)),
+				'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
+				'hometown' 					=> !empty($data->hometown) ? $data->hometown : '',
+				'current_location' 			=> !empty($data->current_location) ? $data->current_location : '',
+				'bio' 						=> !empty($data->bio) ? $data->bio : ''
 		);
 		
 		try {
@@ -95,7 +100,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			$facebookUser = new Model_FacebookUsers();
 			$facebookUser->saveAndUpdate($facebookUserData);
 		
-			echo('user saved\n');
+			//echo('user saved\n');
 			return $facebookUserProfile->id;
 		} catch (Exception $e) {
 			print $e->getMessage();

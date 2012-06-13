@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
 	//responsive menu
 	$(".collapse").collapse();
 	//tooltip class
-	$('[rel=tooltip]').tooltip()
+	$('[rel=tooltip]').tooltip();
 
 });
 

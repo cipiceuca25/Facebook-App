@@ -170,7 +170,18 @@ class Fancrank_Util_Util
 		 
 		return $arr;
 	}
+	
+	/*
+	 * @param $date a date string
+	 * @return a string representation of a giving date in following format: yyyy-MM-dd HH:mm:ss 
+	 */
+	public static function dateToStringForMysql($date) {
+		if(!empty ($date)) {
+			$date = new Zend_Date($date);
+			return $date->toString('yyyy-MM-dd HH:mm:ss');
+		}
+		return null;
+	}
+	
 }
-
-
 ?>

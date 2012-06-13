@@ -206,7 +206,7 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_Fans';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_Fans';
-*/
+
     protected $_referenceMap = array('FAN_FANPAGE_FK' => array(
             'columns' => 'fanpage_id',
             'refTableClass' => 'Model_Fanpages',
@@ -215,6 +215,7 @@ class Model_DbTable_Fans extends Fancrank_Db_Table
 
     protected $_dependentTables = array('Model_FancrankUsers');
 
+*/
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {
         return $this->fetchAll($where, $order, $count, $offset);

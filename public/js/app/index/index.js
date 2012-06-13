@@ -38,8 +38,9 @@ jQuery(document).ready(function($){
     placement: 'left'
   });
 
+  //trick to indentify parent container
   if(window.location != window.parent.location) {
+	  //TODO
   }
   
-
 });

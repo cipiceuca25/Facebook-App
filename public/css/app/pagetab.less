@@ -1,0 +1,73 @@
+//global variable
+@global-color: #333333;
+@container-width: 810px;
+
+.global-rounded-corners(@radius: 30px 15px 30px 15px) {
+  border-radius: @radius;
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+}
+
+.pageTab-background(@degree: 60deg, @radius: 50px, @pageTabColor: #fee) {
+	background: -moz-linear-gradient(@degree, transparent @radius, @pageTabColor @radius);
+    background: -webkit-linear-gradient(@degree, transparent @radius, @pageTabColor @radius);
+    background: -ms-linear-gradient(@degree, transparent @radius, @pageTabColor @radius);
+    background: -o-linear-gradient(@degree, transparent @radius, @pageTabColor @radius);
+    background: linear-gradient(@degree, transparent @radius, @pageTabColor @radius);
+}
+
+#myTabs {
+	margin: 0px auto;
+	height: 60px;
+	padding: 0px;
+	border: 0px;
+	width: @container-width;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15), 0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+	background: none;
+}
+
+#myTabs nav ul, #myTabs nav ul li {
+	background: #fff;
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+#myTabs nav ul {
+	list-style: none;
+	margin-left: 200px;
+}
+
+#myTabs nav ul li a {
+	float: left;
+	margin-right: 5px;
+	text-decoration:none;
+	font-family: "Arial Black", Gadge, sans-serif;
+	color: #333333;
+	border: 1px solid #000;
+	border-bottom: none;
+	padding: 20px;
+	width: 75px;
+	text-align: center;
+	text-shadow: 0 1px 0 rgba(0,0,0,.25);
+	display: block;
+	.global-rounded-corners;
+	.pageTab-background;
+}
+
+#myTabs nav ul li a:hover {
+	background:#f90;
+	color: #fff;
+	text-shadow: 1px 1px 1px #000;
+}
+
+#myTabs nav ul li a#currentPageTab {
+	background: #fff;
+	color: #9D261D;
+	border-bottom: 1px 1px 1px #fff;
+}
+
+#myTabs div {
+	postion: float;
+	width: 100%;
+}

@@ -20,19 +20,19 @@ class Collectors_Bootstrap extends Zend_Application_Module_Bootstrap
         $logFilename = '';
         switch(strtolower($collectorsLogConfig->partitionFrequency)) {
             case 'daily':
-                $logFilename = $baseFilename.'_'.date('Y_m_d');
+                $logFilename = $baseFilename.'_'.date('Y_m_d') .'.log';
                 break;
 
             case 'weekly':
-                $logFilename = $baseFilename.'_'.date('Y_W');
+                $logFilename = $baseFilename.'_'.date('Y_W') .'.log';
                 break;
 
             case 'monthly':
-                $logFilename = $baseFilename.'_'.date('Y_m');
+                $logFilename = $baseFilename.'_'.date('Y_m') .'.log';
                 break;
 
             case 'yearly':
-                $logFilename = $baseFilename.'_'.date('Y');
+                $logFilename = $baseFilename.'_'.date('Y') .'.log';
                 break;
 
             default:

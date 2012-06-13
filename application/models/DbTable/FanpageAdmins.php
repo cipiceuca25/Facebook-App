@@ -53,7 +53,7 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_FanpageAdmins';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_FanpageAdmins';
-*/
+
     
     protected $_referenceMap = array('fk_fanpage_admins_1' => array(
             'columns' => 'facebook_user_id',
@@ -63,14 +63,15 @@ class Model_DbTable_FanpageAdmins extends Fancrank_Db_Table
 
     protected $_dependentTables = array();
 
+*/
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {
         return $this->fetchAll($where, $order, $count, $offset);
     }
 
-    public function findRow($key)
+    public function findRow($key1, $key2)
     {
-        return $this->find($key)->current();
+        return $this->find($key1, $key2)->current();
     }
 
     public function findByFacebookUserId($value, $order = null, $count = null, $offset = null)

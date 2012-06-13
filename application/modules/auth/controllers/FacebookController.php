@@ -1,6 +1,20 @@
 <?php
 class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
 {
+	public function preDispatch()
+	{
+		$this->_auth = Zend_Auth::getInstance();
+		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
+		//$fanpageId = $this->_request->getParam('id');
+		
+		if($this->_auth->hasIdentity()) {
+			$this->_helper->redirector('index', 'app', 'app', array($this->data['page']['id'] => null));
+		}
+		
+		parent::preDispatch();
+	}
+	
+	/*
 	protected function getErrorInfo($code, $responseBody)
     {
         $body = Zend_Json::decode($responseBody, Zend_Json::TYPE_OBJECT);
@@ -32,11 +46,11 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
 
         $date = new Zend_Date($data->birthday);
 
-        $email = $data->email;
+        $email = null;
 
         // reject stupid emails
-        if (substr($email, -22) == 'proxymail.facebook.com') {
-            $email = null;
+        if (!empty($data->email) || substr($data->email, -22) != 'proxymail.facebook.com') {
+            $email = $data->email;
         }
 
         if (isset($data->languages)) {
@@ -47,18 +61,26 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
             $lang = array();
         }
 
-        return (object) array(
-            'user_id'               => $data->id,
-            'user_handle'           => isset($data->username) ? $data->username : $data->first_name . ' ' . $data->last_name,
-            'user_first_name'       => $data->first_name,
-            'user_last_name'        => $data->last_name,
-            'user_access_token'     => $access_token,
-            'user_email'            => $email,
-            'user_locale'           => $data->locale,
-            'user_gender'           => $data->gender,
-            'user_avatar'           => sprintf('https://graph.facebook.com/%s/picture', $data->id),
-            'user_lang'             => implode(',', $lang)
+        if(empty($data->id)) {
+        	return null;
+        }
+        return(object) array(
+        		'facebook_user_id' 			=> $data->id,
+        		'facebook_user_name' 		=> !empty($data->username) ? $data->username : '',
+        		'facebook_user_first_name' 	=> !empty($data->user_first_name) ? $data->user_first_name : '',
+        		'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
+        		'facebook_user_email' 		=> !empty($data->email) ? $email : '',
+        		'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
+        		'facebook_user_avatar'    	=> sprintf('https://graph.facebook.com/%s/picture', $data->id),
+        		'facebook_user_lang'        => implode(',', $lang),
+        		'facebook_user_access_token'=> $access_token,
+        		'updated_time' 				=> Fancrank_Util_Util::dateToStringForMysql($data->updated_time),
+        		'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
+        		'hometown' 					=> !empty($data->hometown) ? $data->hometown : '',
+        		'current_location' 			=> !empty($data->current_location) ? $data->current_location : '',
+        		'bio' 						=> !empty($data->bio) ? $data->bio : ''
         );
+        
     }
 
     protected function addFanPages($source) 
@@ -93,4 +115,5 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
 
         return $rows;
     }
+    */
 }

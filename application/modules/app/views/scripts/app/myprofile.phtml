@@ -1,0 +1,20 @@
+<div id="profileFormWrapper" style="width:500px">
+<form class="form-horizontal">
+	<fieldset>
+		<legend>Client Profile</legend>
+		<?php if (!empty($this->facebook_user)) foreach($this->facebook_user as $k => $value): ?>
+		<div class="control-group">
+			<label class="control-label" for="input_<?= $k ?>"><?= $k ?></label>
+			<div class="controls">
+				<input type="text" class="input-xlarge" id="input_<?= $value ?>" value="<?= $value ?>" />
+			</div>
+		</div>
+		<?php endforeach; ?>
+		
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Save changes</button>
+			<button class="btn">Cancel</button>
+		</div>
+	</fieldset>
+</form>
+</div>

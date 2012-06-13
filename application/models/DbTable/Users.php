@@ -7,6 +7,7 @@ class Model_DbTable_Users extends Fancrank_Db_Table
 
     protected $_primary = array('user_id');
 
+    /*
     protected $_metadata = array(
         'user_id' => array(
             'SCHEMA_NAME' => null,
@@ -186,10 +187,11 @@ class Model_DbTable_Users extends Fancrank_Db_Table
     protected $_rowClass = 'Model_DbTable_Row_Users';
 
     protected $_rowsetClass = 'Model_DbTable_Rowset_Users';
-
+	
     protected $_referenceMap = array();
 
     protected $_dependentTables = array('Model_FanpageAdmins');
+    */
 
     public function findAll($where = null, $order = null, $count = null, $offset = null)
     {
