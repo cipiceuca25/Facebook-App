@@ -28,15 +28,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	*/
 	
 	public function preDispatch() {
-		parent::preDispatch();
 		if (APPLICATION_ENV != 'production') {
 			$this->data['page']['id'] = '178384541065';
 			//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
 			$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
 		}
-		$this->_auth = Zend_Auth::getInstance();
-		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
-		$this->_facebook_user = $this->_auth->getIdentity();
+		parent::preDispatch();
 	}
 	
     public function indexAction()

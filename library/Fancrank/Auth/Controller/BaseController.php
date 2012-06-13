@@ -184,7 +184,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
 
         //$fanpages = $this->addFanpages($source_data);
         
-        return $user;
+        return $source_data;
     }
 
     private function authenticateFan($source_data)
@@ -270,7 +270,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 return false;
         }
 
-        return $user;
+        return $source_data;
     }
     
     protected function getErrorInfo($code, $responseBody)
