@@ -5,7 +5,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 	protected $_config;
 	
 	public function init() {
-		//override existing enviroment
+		//override existing enviroment configuration
 		if(APPLICATION_ENV !== 'production') {
 			$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', 'production');
 			$this->_config = $sources->get('facebook');
@@ -21,11 +21,15 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		$fanpage_admin_model = new Model_FanpageAdmins;
 		$admins = $fanpage_admin_model->findByFanpageId($this->_getParam('id'));
 		
+		$adminUserFound = false;
 		foreach($admins as $admin) {
-			$admin_ids[] = $admin->facebook_user_id;
+			if ($this->_identity->facebook_user_id === $admin->facebook_user_id) {
+				$adminUserFound = true;
+				break;
+			}
 		}
 
-		if (! in_array($this->_identity->facebook_user_id, $admin_ids) ) {
+		if (!$adminUserFound) {
 			$this->_response->setHttpResponseCode(403);
 		}
 	}
