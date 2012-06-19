@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:fb="http://ogp.me/ns/fb#">
+<html lang="en">
     <head>
         <meta charset="UTF-8"/>
 
@@ -23,18 +23,13 @@
     	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
     	
     	<script src="/js/app/index.js"></script>
-    	<script src="/js/app/pagetab.js"></script>
     	
         <script src="/bootstrap/js/bootstrap.min.js"></script>
 		<script src="//connect.facebook.net/en_US/all.js"></script>
  	    <!-- This following javascripts are used to initialize the iframe look and feel -->
-		<script type="text/javascript">
-			// assign a global access variable for the base url 
-			var baseAppUrl = "<?= $this->serverUrl() .'/app/app/' ?>";
-			var appId = <?= $this->layout()->appKey ?>;
-
+		<script>
 			FB.init({
-			 appId  : appId,
+			 appId  : "<?= $this->layout()->appKey ?>",
 			 status : true, // check login status
 			 cookie : true, // enable cookies to allow the server to access the session
 			 xfbml  : true// parse XFBML
@@ -75,7 +70,6 @@
     	<link type="text/css" rel="stylesheet" href="/css/jquery/reset.css"/>
     	<link type="text/css" rel="stylesheet" href="/css/jquery/base.css"/>
         <link type="text/css" rel="stylesheet" href="/css/app/newsfeed.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/app/pagetab.css"/>
 
         <style>
             .container, .navbar-fixed-top .container {
@@ -86,27 +80,38 @@
     </head>
 
     <body controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
-    	<div id="fb-root"></div>
         <div class="navbar navbar-fixed-top">
             <?= $this->layout()->navbar ?>
         </div>
 
 
-		<div id="myTabs">
-			<nav>
-				<ul>
-					<li><a id="currentPageTab" href="#newsfeed" title=">"><span>newsfeed</span></a></li>
-					<li><a href="#topfans"><span>topfans</span></a></li>
-					<li><a href="#myprofile"><span>profile</span></a></li>
-					<li><a href="#awards"><span>awards</span></a></li>
-				</ul>
-			</nav>
-			<div id="newsfeed">
-       			<?= $this->layout()->content ?>
-			</div>
-			<div id="topfans"></div>
-			<div id="myprofile"></div>
-			<div id="awards"></div>
-		</div>
+	<div id="tabs">
+		<nav>
+            <ul>
+                <li id="tabs-newsfeed"><a href="<?= $this->url(array('module' => 'app','controller'=>'app','action'=>'newsfeed'), null, FALSE) ?>">News Feed</a></li>
+                <li id="tabs-topfans"><a href="<?= $this->url(array('module' => 'app','controller'=>'app','action'=>'topfans'), null, FALSE) ?>">Top Fans</a></li>
+                <li id="tabs-profile"><a href="<?= $this->url(array('module' => 'app','controller'=>'app','action'=>'myprofile'), null, FALSE) ?>">My Profile</a></li>
+                <li id="tabs-awards" class="tab-last"><a href="<?= $this->url(array('module' => 'app','controller'=>'app','action'=>'awards'), null, FALSE) ?>">Awards</a></li>
+            </ul>
+        </nav>
+        
+			<div id="tabs-panels">
+        
+	            <div id="ui-tabs-1">
+	            </div><!--/end #ui-tabs-1 -->
+	            
+	            <div id="ui-tabs-2">
+	            </div><!--/end #ui-tabs-2 -->
+	            
+	            <div id="ui-tabs-3">
+	            </div><!--/end #ui-tabs-3 -->
+	            
+	            <div id="ui-tabs-4">
+            	</div><!--/end #ui-tabs-4 -->
+        
+        	</div><!--/end #tabs-panels -->
+	</div>
+	
+	<div id="fb-root"></div>
     </body>
 </html>

@@ -41,6 +41,19 @@ jQuery(document).ready(function($){
   //trick to indentify parent container
   if(window.location != window.parent.location) {
 	  //TODO
+	  //alert(window.parent.location.href);
+  }else {
+	  //alert(window.location.href);
+	  /*
+	  $('<input>').attr({
+		    type: 'hidden',
+		    id: 'fanpageId',
+		    name: 'fanpageId',
+		    value: window.location.pathname.split('/')[1],
+		}).appendTo('body');
+	  	FB.api('/eslyonline', function(response) {
+		  alert('Your name is ' + response.id);
+		});
+		*/
   }
-  
 });

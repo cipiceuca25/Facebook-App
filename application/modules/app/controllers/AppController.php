@@ -2,36 +2,18 @@
 
 class App_AppController extends Fancrank_App_Controller_BaseController
 {
-	/*
-	public function preDispatch() {
-		//check for user authorization
-		$this->_auth = Zend_Auth::getInstance();
-		
-		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
-		$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
-		
-		if (APPLICATION_ENV != 'production') {
-			$this->data['page']['id'] = $this->_getParam('id');
-			//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
-			$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
-		}
-		
-		if($this->_auth->hasIdentity()) {
-			//bring the user into the app if he is already logged in
-			$this->_identity = $this->_auth->getIdentity();
-			$this->_helper->redirector('topfans', 'app', 'app', array($this->data['page']['id'] => ''));
-		}
-		
-		//set the proper navbar
-		$this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
-	}
-	*/
-	
 	public function preDispatch() {
 		if (APPLICATION_ENV != 'production') {
 			$this->data['page']['id'] = '178384541065';
 			//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
 			$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
+		}
+		try {
+			$fanpageId = Zend_Registry::get('fanpageId');
+			echo 'fanpageId: ' .$fanpageId;
+			$this->data['page']['id'] = $fanpageId;
+		} catch (Exception $e) {
+			$fanpageId = $this->_getParam('id');
 		}
 		parent::preDispatch();
 	}
@@ -149,8 +131,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if($this->_auth->hasIdentity()) {
     		$this->_identity = $this->_auth->clearIdentity();
     	}
+    	
     	//$this->_helper->redirector('login', $this->getRequest()->getControllerName(), $this->getRequest()->getModuleName(), array($this->_getParam('id') => null));
-    	$this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => null));
+    	$this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));
     }
 }
 

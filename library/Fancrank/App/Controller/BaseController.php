@@ -15,9 +15,11 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
         //check for user authorization
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
+        //
+        $this->data = $this->getSignedRequest($this->_getParam('signed_request'));
 		
         if(!$this->_auth->hasIdentity()) {
-            $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));  
+            $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => null));  
             //set the proper navbar
             $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->_getParam('id')));
         } else {
@@ -46,8 +48,6 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
 
     protected function getSignedRequest($signed_request = false)
     {
-
-
         if ($signed_request) {
             $sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
             $secret = $sources->get('facebook')->client_secret;

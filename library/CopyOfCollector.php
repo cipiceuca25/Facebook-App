@@ -2,11 +2,22 @@
 class Collector
 {
 	
-    public static function run($actionUrl, $method, $params)
+    public static function run($url, $action, $params)
     {
-    	//Zend_Debug::dump($url .$action .'?' .http_build_query($params)); exit();
-		$result = self::httpCurl($actionUrl, $method, $params);
-		return $result;
+		$result = $this->httpCurl($url .'/' .$action, $params, 'get');
+		Zend_Debug::dump($result);
+    	/*
+        // ensure the proper environment is set
+        putenv('APPLICATION_ENV=' . APPLICATION_ENV);
+		
+        //under linux env
+        $cmd = sprintf('php %s/index.php -m collectors -c %s -a %s %s > /dev/null 2>/dev/null &', PUBLIC_PATH, $controller, $action, join(' ', $params));
+        //under windows env
+        //$cmd = sprintf('php %s/index.php -m collectors -c %s -a %s %s >NUL 2>NUL &', PUBLIC_PATH, $controller, $action, join(' ', $params));
+        //log all the execution commands
+        //Log::Info('Execute Action: "%s"\n%s', $cmd);
+        $output = shell_exec($cmd);
+        */
     }
 
     public static function queue($timeout_str, $controller, $action, $params)
@@ -33,7 +44,7 @@ class Collector
         Log::Info('new job sceduled after %s', $timeout_str);
     }
     
-    private static function httpCurl($url, $method, $params) {
+    private function httpCurl($url, $params, $method) {
     	$ch = curl_init();
     	switch (strtolower($method)) {
     		case 'get':
@@ -41,7 +52,7 @@ class Collector
 		    	curl_setopt($ch, CURLOPT_POST, false);
     			break;
     		case 'post':
-    			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+    			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
     			curl_setopt($ch, CURLOPT_POST, true);
     			break;
     		default: 

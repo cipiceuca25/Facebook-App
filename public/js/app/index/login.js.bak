@@ -1,22 +1,39 @@
 jQuery(document).ready(function($){
 
 	$('.fancrank_login').click(function(event){
-		var url = '/auth/facebook/authorize/' + event.target.href.split('login/')[1].replace(/\/.*/, '');
+		
 		event.preventDefault();
-		confirmFunction(url);
-	});	
+		//window.open('/auth/facebook/authorize/' + $(event.target).attr('data-id'), 'auth', null, true);
+		
+		var message = 'Authorization Policy: blablabla';
+		var title = 'Policy Message';
+		var buttonLabel = '<input type="button" name="login" value="agree" id="agree" onClick="FB.Dialog.remove(this);confirmFunction();"><input type="button" name="disagree" value="Disagree" id="disagree" onClick="FB.Dialog.remove(this);">';
+
+		var dialog = FB.Dialog.create({
+			content: '<div id="window_container"><div id="title_bar">' +title+ '</div><p id="message">' + message + '</p><div id="bottom_bar">' +buttonLabel+ '</div></div>',
+			closeIcon: true,
+			onClose: function() {
+				FB.Dialog.remove(this);
+			},
+			visible: true
+		});
+		dialog.style.width='250px';
+		dialog.style.height='150px';
+		
+	});
+
 });
 
-function confirmFunction(url) {
+function confirmFunction() {
 	//alert($('#fancrank_fanpage_id').val());
-	//alert(getFanpageId()); return;
+	
 	$.oauthpopup({
-        path: url,
+        path: '/auth/facebook/authorize/' + $('#fancrank_fanpage_id').val(),
         callback: function(){
             window.location.reload();
         }
     });
-};
+}
 
 (function($){
     //  inspired by DISQUS

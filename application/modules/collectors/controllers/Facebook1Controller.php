@@ -68,9 +68,9 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		}
 		else
 		{
-			Zend_Debug::dump($result);
 			try {
 				$response = json_decode($result);
+				//Zend_Debug::dump($response); exit();
 				if(!empty($response->error) && !empty($response->error->message)) {
 					$msg = sprintf("url: %s \n Error Message: %s \t Error Type: %s \t Erorr Code: %s", $requestUrl, $response->error->message, $response->error->type, $response->error->code);
 					$collectorLogger->log($msg, Zend_Log::ERR);
@@ -81,17 +81,20 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 				return;
 			}
 				
-			exit();
+			//exit();
 			$response = json_decode($result,true);
 
 			//Zend_Debug::dump($response); exit();
 			//$typeName = array('me', 'fanpage', 'albums', 'friends');
 			$data = $this->responseParser($response, $queryType);
-			//Zend_Debug::dump($data);
-			//Zend_Debug::dump($this->idCollector($data));
+			//Zend_Debug::dump($data); exit();
+			//terminate the collector if error found					
+			if(empty($data)) {
+				return;
+			}
 			
 			echo '<p>Who is ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
-			//Zend_Debug::dump(json_decode($data['me']));
+			//Zend_Debug::dump(json_decode($data['me'])); exit();
 
 			$fancrankDb = new Service_FancrankDBService();
 			
@@ -190,23 +193,10 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
      * @return retrun an array of json objects 
      */
     private function responseParser($response, $queryType = array()) {
-    	$tempKey = array();
-    	foreach($queryType as $k => $value) {
-    		if(is_array($value) && !empty($value['paramName'])) {
-    			$tempKey[$k] = $value['paramName'];
-    		}else {
-    			$tempKey[$k] = $value;
-    		}
-    	}
-    	
-    	if(count($response) != count($tempKey)) {
-    		throw new Exception('unmatch query type');
-    	}
-    	
     	$arr = array();
     	foreach ($response as $key => $res){
 			if($res['code'] === 200 && !empty($res['body'])) {
-				$arr["$tempKey[$key]"] = $res['body'];
+				$arr["$queryType[$key]"] = $res['body'];
 			}
     	}
     	
@@ -298,29 +288,102 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     
     public function appinfoAction() {
     	echo 'app info start: ';
-    	$app_id = "359633657407080";
-    	$app_secret = "438dd417f5a3f67f27dd97606d01e83c";
-    	$facebook = new Facebook(array(
-		      'appId'  => $app_id,
-		      'secret' => $app_secret,
-		      'cookie' => true,
-    	));
-    	$user = $facebook->getUser();
-    	Zend_Debug::dump($user);
-    	
-    	if ($user) {
+    	Facebook::$CURL_OPTS[CURLOPT_SSL_VERIFYPEER] = false;
+    	$config = array(
+    			'appId'  => '376385369079791',
+    			'secret' => '21f20fe69b53f7aebd13fee7488da3a7',
+    			'cookie' => true,
+    	);
+    	$facebook = new Service_FancrankFBService($config);
+    	$facebook->setAccessToken($this->_getParam('access_token'));
+    	$user_profile = $facebook->api('/me');
+
+    	Zend_Debug::dump($user_profile);
     		try {
-    			// Proceed knowing you have a logged in user who's authenticated.
-    			$user_profile = $facebook->api('/me/likes');
-    			Zend_Debug::dump($user_profile);
-    			$access_token = $facebook->getAccessToken();
-    			Zend_Debug::dump($access_token);
-    		} catch (FacebookApiException $e) {
-    			//you should use error_log($e); instead of printing the info on browser
-    			d($e);  // d is a debug function defined at the end of this file
-    			$user = null;
-    		}
+    			/*
+   				$facebook->api('/me/feed','POST',
+   							array(
+   								'message' => 'This is a test message from' .$user,
+   								'link' => 'http://www.fancrank.local/app/app/post'
+   							)S
+   						);
+   				*/
+    			$uid = $user_profile['id'];
+
+    			$pages = $facebook->api(array('method' => 'fql.query','query' => 'SELECT page_id FROM page_admin WHERE uid = '.$uid.''));
+				Zend_Debug::dump($pages);
+				echo 'end';
+       			}catch(FacebookApiException $e) {
+    				$result = $e->getResult();
+    				Zend_Debug::dump($result);
+    				error_log(json_encode($result));
+    				$user = null;
+    			}
+    }
+    
+    public function getpagesAction() {
+    	Facebook::$CURL_OPTS[CURLOPT_SSL_VERIFYPEER] = false;
+    	$uid = $this->_getParam('id');
+    	$facebook = new Service_FancrankFBService();
+    	$pages = $facebook->api(array('method' => 'fql.query','query' => 'SELECT page_id FROM page_admin WHERE uid = '.$uid.''));
+    	foreach($pages as $k=>$v) {
+    		echo 'page id#:'.$v['page_id'].'<br/>';
     	}
     }
     
+    public function testrunAction() {
+    	$params=array('fanpage_id'=>'178384541065', 'access_token'=>'AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD', 'limit'=>5);
+    	//$result = $this->requestFacebookAPI_GET('http://www.fancrank.local/collectors/facebook1/batchfetch', http_build_query($params));
+    	//Zend_Debug::dump($result);
+    	//$this->httpCurl('http://www.fancrank.local/collectors/facebook1/batchfetch', $params, 'post');
+		$result = Collector::run('http://www.fancrank.local/collectors/facebook1/batchfetch', $params, 'get');
+		Zend_Debug::dump($result);
+    }
+    
+    public function addtabAction() {
+    	//install the tab
+    	Facebook::$CURL_OPTS[CURLOPT_SSL_VERIFYPEER] = false;
+    	$facebook = new Service_FancrankFBService();
+    	$fanpage_id = '283104988451477';
+    	$access_token = 'AAAFHFbxmJmgBACY4evXMsLuuKyilosy0ZArHAQXJZA27VnBVR2uDX6RXLnYuZAOsUn7hUwrVrB4l2QLSJMlAzwLhOjUyOklRfCg0TDfQwBssk8VqzQU';
+    	/*
+    	$client = new Zend_Http_Client;
+    	$client->setUri('https://graph.facebook.com/' . $fanpage_id . '/tabs');
+    	$client->setMethod(Zend_Http_Client::DELETE);
+    	$client->setParameterPost('access_token', $access_token);
+    	$client->setParameterPost('app_id', '359633657407080');
+    	
+    	$response = $client->request();
+    	*/
+    	try {
+    		$result = $facebook->api("/283104988451477/tabs/app_376385369079791","delete", array('custom_name' => 'fancrank', 'access_token' => $access_token,  'app_id' => '376385369079791') );
+    		Zend_Debug::dump($result);
+    	} catch (Exception $e) {
+    		$result = $e->getResult();
+    		Zend_Debug::dump($result);
+    	}
+    }
+    
+    private function httpCurl($url, $params, $method) {
+    	$ch = curl_init();
+    	switch (strtolower($method)) {
+    		case 'get':
+    			curl_setopt($ch, CURLOPT_URL, $url . "?" . http_build_query($params));
+    			curl_setopt($ch, CURLOPT_POST, false);
+    			break;
+    		case 'post':
+    			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+    			curl_setopt($ch, CURLOPT_POST, true);
+    			break;
+    		default:
+    			return;
+    	}
+    	curl_setopt($ch, CURLOPT_HEADER, 0);
+    	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    	$result = curl_exec($ch);
+    	curl_close($ch);
+    	return $result;
+    }
 }

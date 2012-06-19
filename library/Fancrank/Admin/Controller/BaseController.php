@@ -10,7 +10,7 @@ abstract class Fancrank_Admin_Controller_BaseController extends Fancrank_Control
         //check for user authorization
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_Admin'));
-
+		
         if(!$this->_auth->hasIdentity()) {
             $this->_helper->redirector('index', 'index');   
 
@@ -23,6 +23,7 @@ abstract class Fancrank_Admin_Controller_BaseController extends Fancrank_Control
             //set the proper navbar
             $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedin.phtml', array());
         }
+
     }
 
     public function init() 

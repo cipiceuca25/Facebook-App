@@ -14,12 +14,12 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	 */
 	public function saveFanpageProfile($url, $data, $access_token=null) {
 		
-		$db = $this->getAdapter();
+		$db = $this->getDefaultAdapter();
 		$db->beginTransaction();
 		$collectorLogger = Zend_Registry::get('collectorLogger');
 		
 		//save facebook user
-		//$facebookUserId = $this->saveFacebookUser(json_decode($data['me']), $access_token, $db);
+		$facebookUserId = $this->saveFacebookUser(json_decode($data['me']), $access_token, $db);
 
 		//save fanpage
 		$fanpageId = $this->saveFanpage(json_decode($data['me']), $access_token, $db);
@@ -27,7 +27,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		//save album
 		$albums = json_decode($data['albums']);
 		//Zend_Debug::dump($albums->data);
-		$albumRows = $this->saveAlbums($albums, $db, $fanpageId, $facebookUserId);
+		$albumRows = $this->saveAlbums($albums, $db, $fanpageId, $fanpageId);
 		//Zend_Debug::dump($albumRows); exit();
 
 		//save photos from all albums
@@ -77,6 +77,14 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			return false;
 		}
 
+		if (isset($data->languages)) {
+			foreach($data->languages as $language) {
+				$lang[] = $language->name;
+			}
+		} else {
+			$lang = array();
+		}
+		
 		$facebookUserData = array(
 				'facebook_user_id' 			=> $data->id,
 				'facebook_user_name' 		=> !empty($data->username) ? $data->username : '',
@@ -101,11 +109,11 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			$facebookUser->saveAndUpdate($facebookUserData);
 		
 			//echo('user saved\n');
-			return $facebookUserProfile->id;
+			return $data->id;
 		} catch (Exception $e) {
 			print $e->getMessage();
 			$collectorLogger = Zend_Registry::get('collectorLogger');
-			$collectorLogger->log(sprintf('Unable to save facebook user %s to database. Error Message: %s ', $fanpageProfile->id, $e->getMessage()), Zend_log::ERR);
+			$collectorLogger->log(sprintf('Unable to save facebook user %s to database. Error Message: %s ', $facebookUser->id, $e->getMessage()), Zend_log::ERR);
 			$db->rollBack();
 		}
 	}

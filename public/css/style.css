@@ -195,7 +195,6 @@ table td img {
   position: absolute;
   right: 10px;
   top: 28px;
-  background: green;
 }
 [controller="dashboard"][action="preview"] .tip a {
   background: none repeat scroll 0 0 #FFF;

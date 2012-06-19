@@ -5,6 +5,10 @@ jQuery(document).ready(function($){
 		$.ajax({
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
 			'type': 'ACTIVATE',
+			'error': function(xhr) {
+				//errors handle here
+				alert(xhr.responseText);
+			},
 			'success': function(xhr) {
 				//update the button class and html
 				$(this).attr('class', 'btn btn-danger deactivate').html('Deactivate');
@@ -22,6 +26,10 @@ jQuery(document).ready(function($){
 		$.ajax({
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
 			'type': 'DEACTIVATE',
+			'error': function(xhr) {
+				//errors handle here
+				alert(xhr.responseText);
+			},			
 			'success': function(xhr) {
 				//update the button class and html
 				$(this).attr('class', 'btn btn-success activate').html('Activate');
