@@ -107,7 +107,6 @@ class Service_FancrankDB1Service extends Fancrank_Db_Table {
 			print $e->getMessage();
 			$collectorLogger = Zend_Registry::get('collectorLogger');
 			$collectorLogger->log(sprintf('Unable to save facebook user %s to database. Error Message: %s ', $facebookUser->id, $e->getMessage()), Zend_log::ERR);
-			$db->rollBack();
 		}
 	}
 
@@ -334,8 +333,55 @@ class Service_FancrankDB1Service extends Fancrank_Db_Table {
 		
 	}
 	
-	public function saveFans($fanIds) {
+	public function saveFans($fansList, $fanpageId) {
+		$result = array();
+		$facebookUserModel = new Model_FacebookUsers();
+		$fansModel = new Model_Fans();
+		foreach ($fansList as $data) {
+			$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null);
+			
+			try {
+				$facebookUserData = array(
+						'facebook_user_id' 			=> $data->id,
+						'facebook_user_name' 		=> !empty($data->username) ? $data->username : '',
+						'facebook_user_first_name' 	=> !empty($data->first_name) ? $data->first_name : '',
+						'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
+						'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
+						'updated_time' 				=> $updated->toString ( 'yyyy-MM-dd HH:mm:ss' ),
+						'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
+				);
+				
+				//save facebook user's relative information into facebook_users table
+				$facebookUserModel->saveAndUpdateById($facebookUserData, array('id_field_name'=>'facebook_user_id'));
+				
+				$fansData = array(
+						'facebook_user_id'  => $facebookUserData['facebook_user_id'],
+						'fanpage_id'        => $fanpageId,
+						'fan_name'			=> $facebookUserData['facebook_user_name'],
+						'fan_first_name'	=> $facebookUserData['facebook_user_first_name'],
+						'fan_last_name'		=> $facebookUserData['facebook_user_last_name'],
+						'fan_gender'		=> $facebookUserData['facebook_user_gender'],
+				);
+				
+				//add the fan if it doesnt exist
+				$select = $fansModel->select();
+				$select->where($fansModel->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $facebookUserData['facebook_user_id'], $fanpageId));
+				$fan = $fansModel->fetchRow($select);
+				
+				if (empty($fan)) {
+					$fansModel->insert($fansData);
+				}
+				
+				$result[] = $fansData;
+			} catch (Exception $e) {
+				print $e->getMessage();
+				$collectorLogger = Zend_Registry::get('collectorLogger');
+				$collectorLogger->log(sprintf('Unable to save fan user %s fanpage %s to database. Error Message: %s ', $data->id, $fanpageId, $e->getMessage()), Zend_log::ERR);
+			}
+
+		}
 		
+		return $result;
 	}
 	
 }

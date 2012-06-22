@@ -44,6 +44,17 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		//$fancrankFB->collectFanpageInfo($fanpageId, $accessToken);
     }
     
+    public function testgetAction() {
+    	$fanpageId = '178384541065';
+    	$fansIdsList = array('100000238528080','100000536039022','5705293','100000815659824','100003096353963');
+    	$access_token='AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD';
+    	$facebookUsers = $this->getFansList($fansIdsList, $access_token);
+    	
+    	$fb1 = new Service_FancrankDB1Service();
+    	$result = $fb1->saveFans($facebookUsers, $fanpageId);
+    	Zend_Debug::dump($result);
+    }
+    
 	public function collectAction() {
 		$start = time();
 		$fanpageId = $this->_request->getParam('fanpage_id');
@@ -68,7 +79,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		//get all posts from feed
 		$posts = array();
 		echo '<br/>Posts from feed---------------------------------------------------------------';
-		$this->getPostsRecursive($url, 5, $posts);
+		$this->getPostsRecursive($url, 3, $posts);
 		Zend_Debug::dump($posts);
 
 		
@@ -92,7 +103,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		$url = 'https://graph.facebook.com/' .$fanpageId .'/albums?access_token=' .$access_token;
 		echo '<br/>All albums from fanpage---------------------------------------------------------------';
 		$albumsList = array();
-		$this->getFromUrlRecursive($url, 5, $albumsList);
+		$this->getFromUrlRecursive($url, 3, $albumsList);
 		Zend_Debug::dump($albumsList);
 		
 		//get all photos recursively
@@ -116,10 +127,8 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		echo '<br/>total likes for ' .count($photoList) . ' photos ' .count($photoLikesList);
 		$allLikesList = array_merge($postLikeList, $commentLikeList, $albumLikesList, $photoLikesList);
 		echo '<br/>Total likes : ' .count($allLikesList);
-		$stop = time() - $start;
-		echo '<br />total execution time: ' .$stop;
-		
-		echo '<br/>start to save into database: ';
+
+
 		$db->beginTransaction();
 		$fb1->savePosts($posts, $fanpageId, $db);
 		
@@ -130,8 +139,21 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		$fb1->saveComments($commentsList, $fanpageId, $db);
 		
 		$fb1->saveLikes($allLikesList, $fanpageId, $db);
+
+		echo '<br/>All Fans Info--------------------------------------------------';
+		$fansIdsList = $this->fansIdCollector($posts, $commentsList,  $allLikesList);
+		//Zend_Debug::dump($fansIdsList);
 		
+		$facebookUsers = $this->getFansList($fansIdsList, $access_token);
+		
+		$result = $fb1->saveFans($facebookUsers, $fanpageId);
+		Zend_Debug::dump($result);
 		$db->commit();
+		
+		$stop = time() - $start;
+		echo '<br />total execution time: ' .$stop;
+		
+		echo '<br/>start to save into database: ';
 		//save posts
 	}
 	
@@ -150,7 +172,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		$level = $level - 1;
 		$query = explode('?', $url);
 		parse_str($query[1], $params);
-		$params['limit'] = 500;
+		$params['limit'] = 200;
 		//echo 'level: ' .$level .'url: ' .$query[0] .'?' .http_build_query($params) .'\n'; exit();
 		$curlReturn = $this->httpCurl($query[0], $params, 'get');
 		try {
@@ -221,9 +243,11 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 			foreach(json_decode($result) as $key=>$values) {
 				if($values->code === 200 && !empty($values->body)) {
 					$values = json_decode($values->body);
-					foreach ($values->data as $value) {
-						//echo $value->id .' ' .$queryType .'postId: '.$postIdsGroup[$groupKey][$key] .'<br />';
-						$resultList[] = $value;
+					if(!empty ($values->data)) {
+						foreach ($values->data as $value) {
+							//echo $value->id .' ' .$queryType .'postId: '.$postIdsGroup[$groupKey][$key] .'<br />';
+							$resultList[] = $value;
+						}
 					}
 				}
 			}
@@ -289,9 +313,11 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 			foreach(json_decode($result) as $key=>$values) {
 				if($values->code === 200 && !empty($values->body)) {
 					$values = json_decode($values->body);
-					foreach ($values->data as $value) {
-						echo $value->id .' ' .$queryType .'postId: '.$postIdsGroup[$groupKey][$key] .'<br />';
-						$resultList[] = $value;
+					if(!empty($values->data)) {
+						foreach ($values->data as $value) {
+							echo $value->id .' ' .$queryType .'postId: '.$postIdsGroup[$groupKey][$key] .'<br />';
+							$resultList[] = $value;
+						}
 					}
 				}
 			}
@@ -317,8 +343,8 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 			}
 		}
 		
-		echo 'Extra post id has more than 25 likes';
-		Zend_Debug::dump($extraLikesOnPostIds);
+		//echo 'Extra post id has more than 25 likes';
+		//Zend_Debug::dump($extraLikesOnPostIds);
 		//use bruteforce method 
 		//Zend_Debug::dump($this->bruteForceLoopQuery($postIds, $fanpageId, $access_token));
 		//return;
@@ -593,7 +619,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		$level = $level - 1;
 		$query = explode('?', $url);
 		parse_str($query[1], $params);
-		$params['limit'] = 500;
+		$params['limit'] = 200;
 		//echo 'level: ' .$level .'url: ' .$query[0] .'?' .http_build_query($params) .'\n';
 		$curlReturn = $this->httpCurl($query[0], $params, 'get');
 		try {
@@ -608,10 +634,9 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		}
 	}
 	
-	private function batchQueryBuilder($postIds, $fields = array('id','likes')) {
-		$fields = 'fields=' .implode(',', $fields);
-		$params = 'ids=' .implode(',', $postIds);
-		return 'https://graph.facebook.com/?' .$params .'&' .$fields;
+	private function batchQueryBuilder($ids, $access_token) {
+		$params = 'ids=' .implode(',', $ids);
+		return 'https://graph.facebook.com/?' .$params .'&access_token=' .$access_token;
 	}
 	
     private function requestFacebookAPI_GET($url, $arpost) {
@@ -668,16 +693,41 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     }
     
     //$data is array of json objects
-    private function idCollector($data) {
-    	$idArray = array();
-    	foreach($data as $k => $v){
-    		$result = $this->searchByKey('id', json_decode($v, true));
-    		$idArray = array_merge($idArray, $result);
+    private function fansIdCollector() {
+    	$fansIdList = array();
+    	foreach(func_get_args() as $data) {
+    		foreach($data as $k => $v){
+    			if(!empty($v->from->id)) {
+    				$fansIdList[] = $v->from->id;
+    			}else if (!empty($v->facebook_user_id)) {
+    				$fansIdList[] = $v->facebook_user_id;
+    			}
+    		}    		
     	}
     	
-    	return $idArray;
+    	return array_unique($fansIdList);
     }
 
+    private function getFansList($fansIdsList, $access_token) {
+    	$results = array();
+    	$fansIdsGroup = $this->arrayToGroups($fansIdsList, 500);
+    	Zend_Debug::dump($fansIdsGroup);
+    	try {
+    		$results = array();
+    		foreach ($fansIdsGroup as $fansIds) {
+    			$batchQuery = $this->batchQueryBuilder($fansIds, $access_token);
+    			foreach (json_decode($this->httpCurl($batchQuery)) as $fans) {
+    				if(empty($fans->first_name) || empty($fans->id)) continue;
+    				$results[] = $fans;
+    			}
+    		}
+    		return $results;
+    	} catch (Exception $e) {
+    		echo $e->getMessage();
+    		return;
+    	}
+    }
+    
     private function search_key_r($array, $key, &$results)
     {
     	if (!is_array($array))
@@ -769,7 +819,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
    							array(
    								'message' => 'This is a test message from' .$user,
    								'link' => 'http://www.fancrank.local/app/app/post'
-   							)S
+   							)
    						);
    				*/
     			$uid = $user_profile['id'];
@@ -831,7 +881,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     	}
     }
     
-    private function httpCurl($url, $params, $method) {
+    private function httpCurl($url, $params=null, $method=null) {
     	$ch = curl_init();
     	switch (strtolower($method)) {
     		case 'get':
@@ -843,7 +893,9 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     			curl_setopt($ch, CURLOPT_POST, true);
     			break;
     		default:
-    			return;
+    			curl_setopt($ch, CURLOPT_URL, $url);
+    			curl_setopt($ch, CURLOPT_POST, false);
+    			break;
     	}
     	curl_setopt($ch, CURLOPT_HEADER, 0);
     	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
