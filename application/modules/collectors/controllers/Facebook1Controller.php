@@ -63,7 +63,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		//Zend_Debug::dump(json_decode($pageProfile)); exit();
 		
 		
-		$url = 'https://graph.facebook.com/' .$fanpageId .'/feed?access_token=AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD';
+		$url = 'https://graph.facebook.com/' .$fanpageId .'/feed?access_token=' .$access_token;
 		//$url= 'https://graph.facebook.com/178384541065_264991040242303/likes?value=1&limit=25';
 		//get all posts from feed
 		$posts = array();
@@ -89,7 +89,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		Zend_Debug::dump($commentsList);
 		
 		//get all albums recursively
-		$url = 'https://graph.facebook.com/178384541065/albums?access_token=AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD&Since=1199167200';
+		$url = 'https://graph.facebook.com/' .$fanpageId .'/albums?access_token=' .$access_token;
 		echo '<br/>All albums from fanpage---------------------------------------------------------------';
 		$albumsList = array();
 		$this->getFromUrlRecursive($url, 5, $albumsList);
