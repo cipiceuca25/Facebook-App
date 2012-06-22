@@ -53,6 +53,7 @@ class Fancrank_Util_Util
 							case 'method': $tmp['method'] = $v; break;
 							case 'relative_url': $tmp['relative_url'] = $v; break;
 							case 'limit': $tmp['relative_url'] .= '&' .'limit=' .$v; break;
+							case 'offset': $tmp['relative_url'] .= '&' .'offset=' .$v; break;
 							case 'since': $tmp['relative_url'] .= '&' .'since=' .$v; break;
 							case 'until': $tmp['relative_url'] .= '&' .'until=' .$v; break;
 							default: break;
@@ -84,6 +85,7 @@ class Fancrank_Util_Util
 								case 'method': $tmp['method'] = $v; break;
 								case 'relative_url': $tmp['relative_url'] = $v; break;
 								case 'limit': $tmp['relative_url'] .= '&' .'limit=' .$v; break;
+								case 'offset': $tmp['relative_url'] .= '&' .'offset=' .$v; break;
 								case 'since': $tmp['relative_url'] .= '&' .'since=' .$v; break;
 								case 'until': $tmp['relative_url'] .= '&' .'until=' .$v; break;
 								default: break;

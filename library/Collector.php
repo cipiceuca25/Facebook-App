@@ -9,19 +9,18 @@ class Collector
 		return $result;
     }
 
-    public static function queue($timeout_str, $controller, $action, $params)
+    public static function queue($timeout_str, $url, $type, $fanpageId)
     {
         $timeout = strtotime($timeout_str);
 
         if ($timeout - time() == 0) {
-            return $this->run($controller, $action, $params);
+            return $this->run($url, 'get', array('limit'=>100));
         }
 
         $message = array(
-            'module' => 'collectors',
-            'controller' => $controller,
-            'action' => $action,
-            'params' => $params
+            'url' => $url,
+            'type' => $type,
+            'fanpage_id' => $fanpageId,
         );
 
         $options = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('Config')->get('queue');

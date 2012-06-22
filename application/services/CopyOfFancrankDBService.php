@@ -19,7 +19,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		$collectorLogger = Zend_Registry::get('collectorLogger');
 		
 		//save facebook user
-		//$facebookUserId = $this->saveFacebookUser(json_decode($data['me']), $access_token, $db);
+		$facebookUserId = $this->saveFacebookUser(json_decode($data['me']), $access_token, $db);
 
 		//save fanpage
 		$fanpageId = $this->saveFanpage(json_decode($data['me']), $access_token, $db);
@@ -27,20 +27,27 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		//save album
 		$albums = json_decode($data['albums']);
 		//Zend_Debug::dump($albums->data);
-		$albumRows = $this->saveAlbums($albums, $db, $fanpageId);
+		$albumRows = $this->saveAlbums($albums, $db, $fanpageId, $fanpageId);
 		//Zend_Debug::dump($albumRows); exit();
 
 		//save photos from all albums
-		$photosRows = $this->savePhotos($url, $albumRows, $access_token, $db, $fanpageId);
+		$photosRows = $this->savePhotos($url, $albumRows, $access_token, $db, $fanpageId, $facebookUserId);
+
+		//save posts
+		$posts = json_decode($data['posts']);
+		//Zend_Debug::dump($posts); exit();
+		$postsRow = $this->savePosts($posts, $db, $fanpageId, $facebookUserId);
+		//Zend_Debug::dump($postsRow['fans_id_list']);
+		//Zend_Debug::dump($posts->data);
+		//exit();
 
 		//save feed post
 		$feed = json_decode($data['feed']);
-		$feedRow = $this->savePosts($feed, $db, $fanpageId);
+		$feedRow = $this->savePosts($feed, $db, $fanpageId, $facebookUserId);
 		//Zend_Debug::dump($feedRow['fans_id_list']); exit();
-		//Zend_Debug::dump($feed->paging->next); exit();
-		if(!empty($feed->paging->next)) {
-			Collector::queue('1 min', $url, 'feed', $fanpageId);
-		}
+		//Zend_Debug::dump($feed); exit();
+		
+
 		//save comments
 		
 		//commit save
@@ -83,7 +90,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				'facebook_user_name' 		=> !empty($data->username) ? $data->username : '',
 				'facebook_user_first_name' 	=> !empty($data->user_first_name) ? $data->user_first_name : '',
 				'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
-				'facebook_user_email' 		=> !empty($data->email) ? $data->email : '',
+				'facebook_user_email' 		=> !empty($data->email) ? $email : '',
 				'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
 				'facebook_user_avatar'    	=> sprintf('https://graph.facebook.com/%s/picture', $data->id),
 				'facebook_user_lang'        => implode(',', $lang),
@@ -158,7 +165,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	/*
 	 * @return return an array of album id that were saved to database successfully
 	 */
-	public function saveAlbums($albums, $db, $fanpageId , $facebookUserId = null) {
+	public function saveAlbums($albums, $db, $fanpageId , $facebookUserId) {
 		$rows = array();
 		if( !empty($albums->data) ) {
 			$albumModel = new Model_Albums();
@@ -205,7 +212,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		return $rows;
 	}
 	
-	public function savePhotos($url, $albumRows, $access_token=null, $db, $fanpageId) {
+	public function savePhotos($url, $albumRows, $access_token=null, $db, $fanpageId, $facebookUserId) {
 		if( empty($access_token) || empty($albumRows)) {
 			return;
 		}
@@ -264,7 +271,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 								$photoModel->saveAndUpdateById($row, array('id_field_name'=>'photo_id'));
 								
 								if(property_exists($photo, 'comments')) {
-									$this->saveComments($photo->comments, $db, $photo->id, $fanpageId);
+									$this->saveComments($photo->comments, $db, $photo->id, $fanpageId, $facebookUserId);
 								}
 								//Zend_Debug::dump($row);
 								//echo sprintf('album %s saved\n', $album->id);
@@ -286,7 +293,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	/*
 	 * @return return an array of post's id that were saved to the database
 	*/
-	public function savePosts($posts, $db, $fanpageId) {
+	public function savePosts($posts, $db, $fanpageId, $facebookUserId) {
 		$rows = array();
 		$fansId = array();
 		if( !empty($posts->data) ) {
@@ -324,7 +331,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					$postModel->saveAndUpdateById($row, array('id_field_name'=>'post_id'));
 						
 					if(property_exists($post, 'comments')) {
-						$this->saveComments($post->comments, $db, $post->id, $fanpageId);
+						$this->saveComments($post->comments, $db, $post->id, $fanpageId, $facebookUserId);
 					}
 						
 				} catch (Exception $e) {
@@ -339,7 +346,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		return $rows;
 	}
 	
-	public function saveComments($postComments, $db, $parentId, $fanpageId) {
+	public function saveComments($postComments, $db, $parentId, $fanpageId, $facebookUserId) {
 		$rows = array();
 		$fansId = array();
 		if(property_exists($postComments, 'data'))

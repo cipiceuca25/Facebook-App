@@ -43,9 +43,8 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		if ( !$fanpage->active ) {
 			$fanpage->active = (int) TRUE;
 			$fanpage->save();
-			//init collection note: need to replace with new collector
-			
-			Collector::run('http://www.fancrank.local/collectors/facebook1/batchfetch', 'get', array('fanpage_id'=>$this->_getParam('id'), 'access_token'=>$fanpage->access_token));
+			//Note: need to change the url later.
+			//Collector::run('http://www.fancrank.local/collectors/facebook1/batchfetch', 'get', array('fanpage_id'=>$this->_getParam('id'), 'access_token'=>$fanpage->access_token));
 		}
 	}
 

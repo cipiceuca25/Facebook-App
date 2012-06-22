@@ -5,12 +5,13 @@ jQuery(document).ready(function($){
 		$.ajax({
 			'url': '/api/fanpages/' + $(this).attr('data-id'),
 			'type': 'ACTIVATE',
+			beforeSend: function() {
+				//$(this).css('background-image', "url(/img/loading.gif)");
+	    	},
 			'error': function(xhr) {
-				//errors handle here
-				alert(xhr.responseText);
+				$('.tooltip-inner').html(xhr.responseText);
 			},
 			'success': function(xhr) {
-				//update the button class and html
 				$(this).attr('class', 'btn btn-danger deactivate').html('Deactivate');
 				$(this).attr('data-original-title', 'Turn off data collection for this page');
 				$('.tooltip-inner').html('Turn off data collection for this page');
@@ -28,7 +29,6 @@ jQuery(document).ready(function($){
 			'type': 'DEACTIVATE',
 			'error': function(xhr) {
 				//errors handle here
-				alert(xhr.responseText);
 			},			
 			'success': function(xhr) {
 				//update the button class and html
@@ -109,6 +109,7 @@ jQuery(document).ready(function($){
 	});
 
 });
+
 
 function addPreviewButton(btn, id) 
 {

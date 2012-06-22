@@ -4,7 +4,7 @@ class Api_UsersController extends Fancrank_API_Controller_BaseController
 {
 	public function preDispatch() 
 	{
-		parent:preDispatch();
+		parent::preDispatch();
 
 		//lets validate the data ^_^ (maybe make validation in an ini file with inheritence structure that will validate in a predispatch at a lower level?)
 

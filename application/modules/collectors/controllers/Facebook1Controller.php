@@ -35,121 +35,585 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     }
 
     public function batchfetchAction() {
-    	$start = time();
-    	$collectorLogger = Zend_Registry::get('collectorLogger');
-    	//$collectorLogger->log('test log', Zend_Log::ERR);
-    	   
-   		echo 'This request will fetch client profile, 50 likes, 50 posts and 50 comments within each post';
-    	$url = 'https://graph.facebook.com/';
-    	$requestUrl = $this->getRequest()->getHttpHost() .$this->getRequest()->getRequestUri();
-    	//$friends = array('paramName'=>'friends', 'method'=>'GET');
-    	//$fanpage = array('paramName'=>'fanpage', 'method'=>'GET', 'fanpage_id'=> $this->getRequest()->getParam('fanpage_id'));
-    	//$queryType = array('me', 'albums', 'friends', 'likes', 'notes', 'photos', 'posts', 'videos');
-    	//$queryType = array('me', 'albums', $friends, 'likes', 'notes', 'photos', 'posts', 'videos');
-    	$queryType = array('me', 'albums', 'feed', 'posts', 'photos');
-    	$access_token = $this->getRequest()->getParam('access_token');
+    	$type = '_request';
+		$fanpageId = $this->$type->getParam('fanpage_id');
+		echo $fanpageId;
+		//$accessToken = $this->_request->getParam('access_token');
+		//$fancrankFB = new Service_FancrankFBService();
+		//echo http_build_query(array());
+		//$fancrankFB->collectFanpageInfo($fanpageId, $accessToken);
+    }
+    
+	public function collectAction() {
+		$start = time();
+		$fanpageId = $this->_request->getParam('fanpage_id');
+		if(empty($fanpageId)) {
+			die('miss fanpage_id');
+		}
+		$access_token='AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD';
+		$meUrl = 'https://graph.facebook.com/' .$fanpageId;
+		$pageProfile = $this->httpCurl($meUrl, array('access_token'=>$access_token), 'get');
+		
+		$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
+		// init default db adapter
+		$db = Zend_Db::factory($config->resources->db);
+		$db->beginTransaction();
+		$fb1 = new Service_FancrankDB1Service();
+		$fb1->saveFanpage(json_decode($pageProfile), $access_token, $db);
+		//Zend_Debug::dump(json_decode($pageProfile)); exit();
+		
+		
+		$url = 'https://graph.facebook.com/' .$fanpageId .'/feed?access_token=AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD';
+		//$url= 'https://graph.facebook.com/178384541065_264991040242303/likes?value=1&limit=25';
+		//get all posts from feed
+		$posts = array();
+		echo '<br/>Posts from feed---------------------------------------------------------------';
+		$this->getPostsRecursive($url, 5, $posts);
+		Zend_Debug::dump($posts);
 
-    	$batchQueries = $this->batchFanpageQueryBuilder($this->getRequest()->getParam('fanpage_id'), $queryType, $access_token);
-    	//$batchQueries = $this->batchQueryBuilder($queryType, $access_token);
-    	//Zend_Debug::dump($batchQueries); exit();
+		
+		if(empty($posts)) {
+			return;
+		}
+		//get all the likes from all posts in the feed
+		echo '<br/>Likes from all posts---------------------------------------------------------------';
+		$postLikeList = array();
+		$this->getLikesFromMyPostRecursive($posts, $fanpageId, $access_token, 0, $postLikeList);
+		Zend_Debug::dump($postLikeList);
+		
+		//get all comments recursively
+		echo '<br/>All comments from feed---------------------------------------------------------------';		
+		$commentsList = array();
+		$this->getQueryRecursive($posts, 'comments', $fanpageId, $access_token, 0, $commentsList);
+		//get all the likes from all comments
+		Zend_Debug::dump($commentsList);
+		
+		//get all albums recursively
+		$url = 'https://graph.facebook.com/178384541065/albums?access_token=AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD&Since=1199167200';
+		echo '<br/>All albums from fanpage---------------------------------------------------------------';
+		$albumsList = array();
+		$this->getFromUrlRecursive($url, 5, $albumsList);
+		Zend_Debug::dump($albumsList);
+		
+		//get all photos recursively
+		echo '<br/>All photos from fanpage---------------------------------------------------------------';
+		$photoList = array();
+		$this->getQueryRecursive($albumsList, 'photos', $fanpageId, $access_token, 0, $photoList);
+		Zend_Debug::dump($photoList);
+		
+		$likeList = array();
+		$albumLikesList = $this->getLikesFromMyPhotos($albumsList, $fanpageId);
+		$photoLikesList = $this->getLikesFromMyPhotos($photoList, $fanpageId);
+
+		$commentsList = array_merge($commentsList, $this->getCommentsFromPhotos($albumsList, $fanpageId), $this->getCommentsFromPhotos($photoList, $fanpageId));
+		//get all the likes from all comments
+		$commentLikeList = array();
+		$this->getLikesFromCommentsRecursive($commentsList, $fanpageId, $access_token, 0, $commentLikeList);
+		
+		echo '<br/>total likes for ' .count($posts) . ' posts: ' .count($postLikeList);
+		echo '<br/>total likes for ' .count($commentsList) . ' comments: ' .count($commentLikeList);
+		echo '<br/>total likes for ' .count($albumsList) . ' albums ' .count($albumLikesList);
+		echo '<br/>total likes for ' .count($photoList) . ' photos ' .count($photoLikesList);
+		$allLikesList = array_merge($postLikeList, $commentLikeList, $albumLikesList, $photoLikesList);
+		echo '<br/>Total likes : ' .count($allLikesList);
+		$stop = time() - $start;
+		echo '<br />total execution time: ' .$stop;
+		
+		echo '<br/>start to save into database: ';
+		$db->beginTransaction();
+		$fb1->savePosts($posts, $fanpageId, $db);
+		
+		$fb1->saveAlbums($albumsList, $fanpageId, $db);
+		
+		$fb1->savePhotos($photoList, $fanpageId, $db);
+		
+		$fb1->saveComments($commentsList, $fanpageId, $db);
+		
+		$fb1->saveLikes($allLikesList, $fanpageId, $db);
+		
+		$db->commit();
+		//save posts
+	}
+	
+	/*
+	 * This method will retrieve all posts from giving url recursively 
+	 * 
+	 * @param string $url a next page url
+	 * @param int numbers of recursive call
+	 * @param mixed $result a callback result
+	 * @return mixed return an array 
+	 */
+	private function getPostsRecursive($url, $level=2, &$result) {
+		if(empty($url) || $level == 0) {
+			return array();
+		}
+		$level = $level - 1;
+		$query = explode('?', $url);
+		parse_str($query[1], $params);
+		$params['limit'] = 500;
+		//echo 'level: ' .$level .'url: ' .$query[0] .'?' .http_build_query($params) .'\n'; exit();
+		$curlReturn = $this->httpCurl($query[0], $params, 'get');
 		try {
-				$result = $this->requestFacebookAPI_POST($url, $batchQueries);
+			$response = json_decode($curlReturn);
+			$url = !empty($response->paging->next) ? $response->paging->next : null;
+			if(! empty($response->data)) {
+				$result = array_merge((array)$result, (array)$response->data);
+			}
+			$this->getPostsRecursive($url, $level, $result);
+		} catch (Exception $e) {
+			return array();
+		}	
+	}
+	
+	private function getQueryRecursive($posts, $queryType, $fanpageId, $access_token, $offset=0, &$resultList) {
+		if(empty($posts) || $offset > 100) {
+			return null;
+		}
+		$postIds = array();
+		$extraPosts = array();
+		$extraPostIds = array();
+		foreach ($posts as $post) {
+			//if(!empty($post->likes->count) && $post->likes->count >= 1 && preg_match("/{$post->from->id}_/", $post->id)) {
+			if(!empty($post->$queryType->count) && $post->$queryType->count >= 1 ||
+					$queryType === 'photos' && !empty($post->count) && $post->count >= 1) {
+				//Zend_Debug::dump($post->comments);
+				//$result[] = $post->likes->data;
+				$postIds[] = $post->id;
+				if($queryType === 'photos' && $post->count > 25 + $offset || $queryType !== 'photos' && $post->$queryType->count > 25 + $offset) {
+					$extraPostIds[] = $post->id;
+					$extraPosts [] = $post;
+				}
+			}
+		}
+	
+		//echo 'Extra post id has more than '. $offset+25 . $queryType;
+		//Zend_Debug::dump($extraPostIds);
+		//Zend_Debug::dump($extraLikesPosts);
+		//use bruteforce method
+		//Zend_Debug::dump($this->bruteForceLoopQuery($postIds, $fanpageId, $access_token));
+		//return;
+		//echo $this->batchQueryBuilder($postIds); exit();
+	
+		$postIdsGroup = $this->arrayToGroups($postIds, 50);
+		//echo 'post id group';
+		Zend_Debug::dump($postIdsGroup);
+	
+		//$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array(array('paramName'=>$queryType, 'limit'=>50)), $access_token);
+		//Zend_Debug::dump($batchQueries); exit();
+	
+		try {
+			$results = array();
+			//note: we could implement this loop with multi thread for optimization later on.
+			foreach ($postIdsGroup as $postIds) {
+				$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array('paramName'=>$queryType, 'offset'=>$offset), $access_token);
+				$results[] = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
+			}
+				
+			//$result = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
 		} catch (Exception $e) {
 			echo $e->getMessage();
 			return;
 		}
-  
-		
-		if ($result === FALSE)
-		{
-			// Log or Redirect to error page
-			$collectorLogger->log('Connection Error: ' .$requestUrl, Zend_Log::ERR);
+	
+		//$posts = json_decode($result);
+		//Zend_Debug::dump($results); exit();
+		foreach ($results as $groupKey => $result) {
+			foreach(json_decode($result) as $key=>$values) {
+				if($values->code === 200 && !empty($values->body)) {
+					$values = json_decode($values->body);
+					foreach ($values->data as $value) {
+						//echo $value->id .' ' .$queryType .'postId: '.$postIdsGroup[$groupKey][$key] .'<br />';
+						$resultList[] = $value;
+					}
+				}
+			}
+		}
+	
+		//echo 'total' .$queryType .'count : ' .count($resultList);
+		//echo '<br />next recursion--------------------------------<br/>';
+		$this->getQueryRecursive($extraPosts, $queryType, $fanpageId, $access_token, $offset+25, $resultList);
+	}
+	
+	private function getPhotosRecursive($posts, $queryType, $fanpageId, $access_token, $offset=0, &$resultList) {
+		if(empty($posts) || $offset > 100) {
+			return null;
+		}
+		$postIds = array();
+		$extraPosts = array();
+		$extraPostIds = array();
+		foreach ($posts as $post) {
+			//if(!empty($post->likes->count) && $post->likes->count >= 1 && preg_match("/{$post->from->id}_/", $post->id)) {
+			if(!empty($post->count) && $post->count >= 1) {
+				//Zend_Debug::dump($post->comments);
+				//$result[] = $post->likes->data;
+				$postIds[] = $post->id;
+				if( $post->$queryType->count > 25 + $offset ) {
+					$extraPostIds[] = $post->id;
+					$extraPosts [] = $post;
+				}
+			}
+		}
+	
+		echo 'Extra post id has more than '. $offset+25 . $queryType;
+		Zend_Debug::dump($extraPostIds);
+		//Zend_Debug::dump($extraLikesPosts);
+		//use bruteforce method
+		//Zend_Debug::dump($this->bruteForceLoopQuery($postIds, $fanpageId, $access_token));
+		//return;
+		//echo $this->batchQueryBuilder($postIds); exit();
+	
+		$postIdsGroup = $this->arrayToGroups($postIds, 50);
+		echo 'post id group';
+		Zend_Debug::dump($postIdsGroup);
+	
+		$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array(array('paramName'=>'photos', 'limit'=>50)), $access_token);
+		//Zend_Debug::dump($batchQueries); exit();
+	
+		try {
+			$results = array();
+			//note: we could implement this loop with multi thread for optimization later on.
+			foreach ($postIdsGroup as $postIds) {
+				$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array('paramName'=>$queryType, 'offset'=>$offset), $access_token);
+				$results[] = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
+			}
+	
+			//$result = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
+		} catch (Exception $e) {
+			echo $e->getMessage();
 			return;
 		}
-		else
-		{
-			try {
-				$response = json_decode($result);
-				//Zend_Debug::dump($response); exit();
-				if(!empty($response->error) && !empty($response->error->message)) {
-					$msg = sprintf("url: %s \n Error Message: %s \t Error Type: %s \t Erorr Code: %s", $requestUrl, $response->error->message, $response->error->type, $response->error->code);
-					$collectorLogger->log($msg, Zend_Log::ERR);
-					return;
-				}
-			} catch (Exception $e) {
-				$collectorLogger->log($e->getMessage(), Zend_Log::ERR);
-				return;
-			}
-				
-			//exit();
-			$response = json_decode($result,true);
-
-			//Zend_Debug::dump($response); exit();
-			//$typeName = array('me', 'fanpage', 'albums', 'friends');
-			$data = $this->responseParser($response, $queryType);
-			//Zend_Debug::dump($data); exit();
-			//terminate the collector if error found					
-			if(empty($data)) {
-				return;
-			}
-			
-			echo '<p>Who is ' .$this->getRequest()->getParam('fanpage_id') .' </p>';
-			//Zend_Debug::dump(json_decode($data['me'])); exit();
-
-			$fancrankDb = new Service_FancrankDBService();
-			
-			if($fancrankDb->saveFanpageProfile($url, $data, $access_token) === false) {
-				//$cLog->log('fail to save', Zend_Log::DEBUG);
-				//throw new Exception('cant save');
-				
-			}
-			
-			$timeTaken = time() - $start;
-				
-			echo "Total execution time: " .$timeTaken;
-			exit();
-			//echo facebook user Albums
-
-			$posts = json_decode($data['posts'], true);
-			//Zend_Debug::dump($posts);
-			//exit();
-			$commentArray = array();
-			if(!empty($posts['daya'])) {
-				foreach($posts['data'] as $post) {
-					$commentArray[] = array('method' => 'GET', 'relative_url' => $post['id'] .'?limit='.$commentLimit);
+	
+		//$posts = json_decode($result);
+		//Zend_Debug::dump($results); exit();
+		foreach ($results as $groupKey => $result) {
+			foreach(json_decode($result) as $key=>$values) {
+				if($values->code === 200 && !empty($values->body)) {
+					$values = json_decode($values->body);
+					foreach ($values->data as $value) {
+						echo $value->id .' ' .$queryType .'postId: '.$postIdsGroup[$groupKey][$key] .'<br />';
+						$resultList[] = $value;
+					}
 				}
 			}
-			
-			//Zend_Debug::dump(json_encode($commentArray));
-			$commentQueries = json_encode($commentArray);
-			
-			$arrpost = 'batch=' .$commentQueries .'&access_token=' .$access_token;
-			//Zend_Debug::dump($arrpost);
-			//exit();
-			
-			$result = $this->requestFacebookAPI_POST($url, $arrpost);
-			
-			if ($result === FALSE)
-			{
-				// Redirect to error page
-			}else {
-				//Zend_Debug::dump(json_decode($result, true));
-				$posts = json_decode($result, true);
-				foreach ($posts as $data) {
-					$post = json_decode($data['body'], true);
-					echo '<p>' .$post['id'] .' post: </p>';
-					
-					Zend_Debug::dump($post);
-				}
-				$timeTaken = time() - $start;
-				
-				echo "Total execution time: " .$timeTaken;
-			}
-				
 		}
-    }
-    
+	
+		echo 'total' .$queryType .'count : ' .count($resultList);
+		echo '<br />next recursion--------------------------------<br/>';
+		$this->getQueryRecursive($extraPosts, $queryType, $fanpageId, $access_token, $offset+25, $resultList);
+	}
+	
+	private function getLikesFromMyPost($posts, $fanpageId, $access_token) {
+		$postIds = array();
+		$extraLikesOnPostIds = array();
+		foreach ($posts as $post) {
+			//if(!empty($post->likes->count) && $post->likes->count >= 1 && preg_match("/{$post->from->id}_/", $post->id)) {
+			if(!empty($post->likes->count) && $post->likes->count >= 1) {
+				//Zend_Debug::dump($post->comments);
+				//$result[] = $post->likes->data;
+				$postIds[] = $post->id;
+				if( $post->likes->count > 25 ) {
+					$extraLikesOnPostIds[] = $post->id;
+				}
+			}
+		}
+		
+		echo 'Extra post id has more than 25 likes';
+		Zend_Debug::dump($extraLikesOnPostIds);
+		//use bruteforce method 
+		//Zend_Debug::dump($this->bruteForceLoopQuery($postIds, $fanpageId, $access_token));
+		//return;
+		//echo $this->batchQueryBuilder($postIds); exit();
 
+		$postIdsGroup = $this->arrayToGroups($postIds, 50);
+		//Zend_Debug::dump($postIdsGroup);
+		
+		$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array(array('paramName'=>'likes', 'limit'=>50)), $access_token);
+		//Zend_Debug::dump($batchQueries); exit();
+		
+		try {
+			$results = array();
+			foreach ($postIdsGroup as $postIds) {
+				$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array('likes'), $access_token);
+				$results[] = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
+			}
+			
+			//$result = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
+		} catch (Exception $e) {
+			echo $e->getMessage();
+			return;
+		}
+		
+		//$posts = json_decode($result);
+		//Zend_Debug::dump($results); exit();
+		foreach ($results as $groupKey => $result) {
+			foreach(json_decode($result) as $key=>$likes) {
+				if($likes->code === 200 && !empty($likes->body)) {
+					$likes = json_decode($likes->body);
+					foreach ($likes->data as $like) {
+						//echo $like->id .' ' .$like->name . 'likes ' .$postIdsGroup[$groupKey][$key] .'<br />';
+						$likesList[] = array(
+								'fanpage_id'        => $fanpageId,
+								'post_id'           => $postIdsGroup[$groupKey][$key],
+								'facebook_user_id'  => $like->id,
+								'post_type'         => 'post'
+						);
+					}
+				}
+			}
+		}
+		
+		echo 'total like count : ' .count($likesList);
+		Zend_Debug::dump($likesList);
+// 		foreach(json_decode($result) as $key=>$likes) {
+// 			if($likes->code === 200 && !empty($likes->body)) {
+// 				$likes = json_decode($likes->body);
+// 				foreach ($likes->data as $like) {
+// 					echo $like->id .' ' .$like->name . 'likes ' .$postIds[$key] .'<br />';
+// 					$likesList[] = array(
+// 							'fanpage_id'        => $fanpageId,
+// 							'post_id'           => $postIds[$key],
+// 							'facebook_user_id'  => $like->id,
+// 							'post_type'         => 'post'
+// 					);
+// 				}
+// 			}
+// 		}
+		//Zend_Debug::dump(json_decode($result));
+	}
+	
+	private function getLikesFromMyPhotos($photos, $fanpageId) {
+		$likesList = array();
+		foreach ($photos as $photo) {
+			if(! empty($photo->likes->data) ) {
+				foreach ($photo->likes->data as $like) {
+					$likesList[] = array(
+							'fanpage_id'        => $fanpageId,
+							'post_id'           => $photo->id,
+							'facebook_user_id'  => $like->id,
+							'post_type'         => 'photo'
+					);
+				}				
+			}
+		}
+		
+		return $likesList;
+	}
+	
+	private function getCommentsFromPhotos($photos, $fanpageId) {
+		$commentsList = array();
+		foreach ($photos as $photo) {
+			if(! empty($photo->comments) ) {
+				foreach ($photo->comments->data as $comment) {
+					$commentsList[] = $comment;
+				}
+			}
+		}
+		
+		return $commentsList;
+	}
+	
+	private function getLikesFromMyPostRecursive($posts, $fanpageId, $access_token, $offset=0, &$likesList) {
+		if(empty($posts) || $offset > 100) {
+			return null;
+		}
+		$postIds = array();
+		$extraLikesPosts = array();
+		$extraLikesOnPostIds = array();
+		foreach ($posts as $post) {
+			//if(!empty($post->likes->count) && $post->likes->count >= 1 && preg_match("/{$post->from->id}_/", $post->id)) {
+			if(!empty($post->likes->count) && $post->likes->count >= 1) {
+				//Zend_Debug::dump($post);
+				//$result[] = $post->likes->data;
+				$postIds[] = $post->id;
+				if( $post->likes->count > 25 + $offset ) {
+					$extraLikesOnPostIds[] = $post->id;
+					$extraLikesPosts [] = $post;
+				}
+			}
+		}
+	
+		//echo 'Extra post id has more than '. $offset+25 .' likes ';
+		Zend_Debug::dump($extraLikesOnPostIds);
+		//Zend_Debug::dump($extraLikesPosts);
+		//use bruteforce method
+		//Zend_Debug::dump($this->bruteForceLoopQuery($postIds, $fanpageId, $access_token));
+		//return;
+		//echo $this->batchQueryBuilder($postIds); exit();
+	
+		$postIdsGroup = $this->arrayToGroups($postIds, 50);
+		//echo 'post id group';
+		Zend_Debug::dump($postIdsGroup);
+	
+		//$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array(array('paramName'=>'likes', 'limit'=>50)), $access_token);
+		//Zend_Debug::dump($batchQueries); exit();
+	
+		try {
+			$results = array();
+			foreach ($postIdsGroup as $postIds) {
+				$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array('paramName'=>'likes', 'offset'=>$offset), $access_token);
+				$results[] = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
+			}
+				
+			//$result = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
+		} catch (Exception $e) {
+			echo $e->getMessage();
+			return;
+		}
+	
+		//$posts = json_decode($result);
+		//Zend_Debug::dump($results); exit();
+		foreach ($results as $groupKey => $result) {
+			foreach(json_decode($result) as $key=>$likes) {
+				if($likes->code === 200 && !empty($likes->body)) {
+					$likes = json_decode($likes->body);
+					foreach ($likes->data as $like) {
+						//echo $like->id .' ' .$like->name . 'likes ' .$postIdsGroup[$groupKey][$key] .'<br />';
+						$likesList[] = array(
+								'fanpage_id'        => $fanpageId,
+								'post_id'           => $postIdsGroup[$groupKey][$key],
+								'facebook_user_id'  => $like->id,
+								'post_type'         => 'post'
+						);
+					}
+				}
+			}
+		}
+	
+		//echo 'total like count : ' .count($likesList);
+		//echo '<br />next recursion--------------------------------<br/>';
+		$this->getLikesFromMyPostRecursive($extraLikesPosts, $fanpageId, $access_token, $offset+25, $likesList);
+	}
+	
+	private function getLikesFromCommentsRecursive($posts, $fanpageId, $access_token, $offset=0, &$likesList) {
+		if(empty($posts) || $offset > 100) {
+			return null;
+		}
+		$postIds = array();
+		$extraPosts = array();
+		$extraPostIds = array();
+		foreach ($posts as $post) {
+			//if(!empty($post->likes->count) && $post->likes->count >= 1 && preg_match("/{$post->from->id}_/", $post->id)) {
+			if(!empty($post->like_count) && $post->like_count >= 1) {
+				//Zend_Debug::dump($post->comments);
+				//$result[] = $post->likes->data;
+				$postIds[] = $post->id;
+				if($post->like_count > 25 + $offset) {
+					$extraPostIds[] = $post->id;
+					$extraPosts [] = $post;
+				}
+			}
+		}
+		
+		//echo 'Extra comment id has more than '. $offset+25 .'likes <br/>';
+		//Zend_Debug::dump($extraPostIds);
+		//Zend_Debug::dump($extraLikesPosts);
+		//use bruteforce method
+		//Zend_Debug::dump($this->bruteForceLoopQuery($postIds, $fanpageId, $access_token));
+		//return;
+		//echo $this->batchQueryBuilder($postIds); exit();
+		
+		$postIdsGroup = $this->arrayToGroups($postIds, 50);
+		//echo 'comment id group';
+		Zend_Debug::dump($postIdsGroup);
+		
+		//$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array(array('paramName'=>'likes', 'limit'=>50)), $access_token);
+		//Zend_Debug::dump($batchQueries); exit();
+		
+		try {
+			$results = array();
+			//note: we could implement this loop with multi thread for optimization later on.
+			foreach ($postIdsGroup as $postIds) {
+				$batchQueries = Fancrank_Util_Util::batchQueryBuilder($postIds, array('paramName'=>'likes', 'offset'=>$offset), $access_token);
+				$results[] = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
+			}
+		
+			//$result = Fancrank_Util_Util::requestFacebookAPI_POST('https://graph.facebook.com/', $batchQueries);
+		} catch (Exception $e) {
+			echo $e->getMessage();
+			return;
+		}
+		
+		//$posts = json_decode($result);
+		//Zend_Debug::dump($results); exit();
+		foreach ($results as $groupKey => $result) {
+			foreach(json_decode($result) as $key=>$likes) {
+				if($likes->code === 200 && !empty($likes->body)) {
+					$likes = json_decode($likes->body);
+					foreach ($likes->data as $like) {
+						//echo $like->id .' ' .$like->name . 'likes ' .$postIdsGroup[$groupKey][$key] .'<br />';
+						$post_type = 'post';
+						if(substr_count($postIdsGroup[$groupKey][$key], '_') === 2) {
+							$post_type = 'comments';
+						}
+						$likesList[] = array(
+								'fanpage_id'        => $fanpageId,
+								'post_id'           => $postIdsGroup[$groupKey][$key],
+								'facebook_user_id'  => $like->id,
+								'post_type'         => 'comment'
+						);
+					}
+				}
+			}
+		}
+		//echo 'total like count : ' .count($likesList);
+		//echo '<br />next recursion--------------------------------<br/>';
+		$this->getLikesFromCommentsRecursive($extraPosts, $fanpageId, $access_token, $offset+25, $likesList);
+	}
+	
+	private function bruteForceLoopQuery($postsIds, $fanpageId, $access_token) {
+		$baseUrl = 'https://graph.facebook.com/';
+		$results = array();
+		foreach ($postsIds as $postId) {
+			$result = array();
+			$url = $baseUrl .'/' .$postId .'/likes?access_token=' .$access_token;
+			$this->getFromUrlRecursive($url, 2, $result);
+			foreach ($result as $arr) {
+				$results[] = array('post_id'=>$postId, '$fanpage_id'=>$fanpageId, 'type'=>'post', 'id'=>$arr->id, 'name'=>$arr->name);
+			}
+			
+			//echo $url .'<br />';
+		}
+		return $results;
+	}
+	
+	private function  arrayToGroups($source, $pergroup) {
+		$grouped = array ();
+		$groupCount = ceil ( count ( $source ) / $pergroup );
+		$queue = $source;
+		for($r = 0; $r < $groupCount; $r ++) {
+			array_push ( $grouped, array_splice ( $queue, 0, $pergroup ) );
+		}
+		return $grouped;
+	}
+	
+	private function getFromUrlRecursive($url, $level = 5, &$result) {
+		if(empty($url) || $level == 0) {
+			return array();
+		}
+		$level = $level - 1;
+		$query = explode('?', $url);
+		parse_str($query[1], $params);
+		$params['limit'] = 500;
+		//echo 'level: ' .$level .'url: ' .$query[0] .'?' .http_build_query($params) .'\n';
+		$curlReturn = $this->httpCurl($query[0], $params, 'get');
+		try {
+			$response = json_decode($curlReturn);
+			$url = !empty($response->paging->next) ? $response->paging->next : null;
+			if(! empty($response->data)) {
+				$result = array_merge((array)$result, (array)$response->data);
+			}			
+			$this->getPostsRecursive($url, $level, $result);
+		} catch (Exception $e) {
+			return array();
+		}
+	}
+	
+	private function batchQueryBuilder($postIds, $fields = array('id','likes')) {
+		$fields = 'fields=' .implode(',', $fields);
+		$params = 'ids=' .implode(',', $postIds);
+		return 'https://graph.facebook.com/?' .$params .'&' .$fields;
+	}
+	
     private function requestFacebookAPI_GET($url, $arpost) {
 
     	$ch = curl_init();
@@ -331,13 +795,16 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     	}
     }
     
-    public function testrunAction() {
+    public function getpagelikesAction() {
     	$params=array('fanpage_id'=>'178384541065', 'access_token'=>'AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD', 'limit'=>5);
-    	//$result = $this->requestFacebookAPI_GET('http://www.fancrank.local/collectors/facebook1/batchfetch', http_build_query($params));
-    	//Zend_Debug::dump($result);
-    	//$this->httpCurl('http://www.fancrank.local/collectors/facebook1/batchfetch', $params, 'post');
-		$result = Collector::run('http://www.fancrank.local/collectors/facebook1/batchfetch', $params, 'get');
-		Zend_Debug::dump($result);
+    	$facebook = new Service_FancrankFBService();
+    	$facebook->setAccessToken('AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD');
+		$likeID = $facebook->api(
+				array( 'method' => 'fql.query', 'query' =>
+				"select uid from page_fan where page_id = 178384541065" )
+		);
+		
+		Zend_Debug::dump($likeID);
     }
     
     public function addtabAction() {
