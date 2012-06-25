@@ -47,7 +47,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
     public function testgetAction() {
     	$fanpageId = '178384541065';
     	$fansIdsList = array('100000238528080','100000536039022','5705293','100000815659824','100003096353963');
-    	$access_token='AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD';
+    	$access_token='AAAFHFbxmJmgBAO6Ehl9pDUu21UeBIutNwBPBGDtzOZBSPXnQTiLYWb9YTmRuuHovZAZAtj9n4dnLFIDEkBPIchhWodNHla0PfBZCUpZAiVwZDZD';
     	$facebookUsers = $this->getFansList($fansIdsList, $access_token);
     	
     	$fb1 = new Service_FancrankDB1Service();
@@ -61,7 +61,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		if(empty($fanpageId)) {
 			die('miss fanpage_id');
 		}
-		$access_token='AAAFWUgw4ZCZB8BAO8ZCgMOINWwydm4xmEdqrN0ukBW2zJWi6JrNtG1d8iyADBEEBz6TZA36K4QTbaIAHQPZANFIQYbgAce88RwZATuV1M4swZDZD';
+		$access_token='AAAFHFbxmJmgBAO6Ehl9pDUu21UeBIutNwBPBGDtzOZBSPXnQTiLYWb9YTmRuuHovZAZAtj9n4dnLFIDEkBPIchhWodNHla0PfBZCUpZAiVwZDZD';
 		$meUrl = 'https://graph.facebook.com/' .$fanpageId;
 		$pageProfile = $this->httpCurl($meUrl, array('access_token'=>$access_token), 'get');
 		
@@ -71,6 +71,7 @@ class Collectors_Facebook1Controller extends Fancrank_Collectors_Controller_Base
 		$db->beginTransaction();
 		$fb1 = new Service_FancrankDB1Service();
 		$fb1->saveFanpage(json_decode($pageProfile), $access_token, $db);
+		$db->commit();
 		//Zend_Debug::dump(json_decode($pageProfile)); exit();
 		
 		

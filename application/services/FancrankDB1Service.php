@@ -117,7 +117,7 @@ class Service_FancrankDB1Service extends Fancrank_Db_Table {
 	 * @return fanpage id
 	 */
 	public function saveFanpage($fanpageProfile, $access_token=null, $db) {
-		if(empty ($fanpageProfile)) {
+		if(empty ($fanpageProfile) || empty($fanpageProfile->id)) {
 			return false;
 		}
 		
@@ -142,13 +142,11 @@ class Service_FancrankDB1Service extends Fancrank_Db_Table {
 			$fanpages = new Model_Fanpages();
 			$fanpages->saveAndUpdateById($fanpageData, array('id_field_name'=>'fanpage_id'));
 				
-			$db->commit();
 			return $fanpageProfile->id;
 		} catch (Exception $e) {
 			print $e->getMessage();
 			$collectorLogger = Zend_Registry::get('collectorLogger');
 			$collectorLogger->log(sprintf('Unable to save fanpage %s to database. Error Message: %s ', $fanpageProfile->id, $e->getMessage()), Zend_log::ERR);
-			$db->rollBack();
 		}
 	}
 	
@@ -187,7 +185,6 @@ class Service_FancrankDB1Service extends Fancrank_Db_Table {
 				print $e->getMessage();
 				$collectorLogger = Zend_Registry::get('collectorLogger');
 				$collectorLogger->log(sprintf('Unable to save album %s from fanpage %s to database. Error Message: %s ', $album->id, $fanpageId, $e->getMessage()), Zend_log::ERR);
-				$db->rollBack();
 			}
 		}
 		//return array('post_id_list'=>$rows, 'fans_id_list'=> '');
@@ -343,9 +340,9 @@ class Service_FancrankDB1Service extends Fancrank_Db_Table {
 			try {
 				$facebookUserData = array(
 						'facebook_user_id' 			=> $data->id,
-						'facebook_user_name' 		=> !empty($data->username) ? $data->username : '',
 						'facebook_user_first_name' 	=> !empty($data->first_name) ? $data->first_name : '',
 						'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
+						'facebook_user_name'		=> !empty($data->name) ? $data->name : $facebookUserData['facebook_user_first_name'] .' ' .$facebookUserData['facebook_user_last_name'],
 						'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
 						'updated_time' 				=> $updated->toString ( 'yyyy-MM-dd HH:mm:ss' ),
 						'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
@@ -370,6 +367,9 @@ class Service_FancrankDB1Service extends Fancrank_Db_Table {
 				
 				if (empty($fan)) {
 					$fansModel->insert($fansData);
+				}else {
+					$fansModel->fan_name = $facebookUserData['facebook_user_name'];
+					$fan->save();
 				}
 				
 				$result[] = $fansData;

@@ -42,31 +42,19 @@ class Model_Rankings extends Model_DbTable_Rankings
 
 	public function getTopFans($page_id, $limit = 5)
 	{
-	
 		$select = "
-                        SELECT posts_count.facebook_user_id, fans.fan_name, COUNT(fans.fan_name) AS number_of_posts
-                                FROM
-                                (SELECT facebook_user_id
-                                        FROM posts
-                                        WHERE facebook_user_id != '". $page_id ."'
-                                        AND fanpage_id = '". $page_id ."'
-                                                UNION ALL
-                                                        SELECT facebook_user_id
-                                                        FROM comments
-                                                        WHERE facebook_user_id != '". $page_id ."'
-                                                        AND fanpage_id = '". $page_id ."'
-								UNION ALL
-                                                        		SELECT facebook_user_id
-                                                        		FROM likes
-                                                        		WHERE facebook_user_id != '". $page_id ."'
-                                                        		AND fanpage_id = '". $page_id ."'
-                                ) AS posts_count
-	
-                        INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id)
-	
-                        GROUP BY fans.fan_name
-                        ORDER BY number_of_posts DESC";
-	
+					SELECT fans.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS number_of_posts
+					FROM
+                    (SELECT l.facebook_user_id FROM posts p INNER JOIN LIKES l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id = p.fanpage_id
+					UNION ALL
+                    SELECT l.facebook_user_id FROM comments c INNER JOIN LIKES l ON (c.comment_id = l.post_id) WHERE l.fanpage_id = '". $page_id ."' AND c.facebook_user_id = c.fanpage_id
+                    UNION ALL
+                    SELECT l.facebook_user_id FROM likes l WHERE l.post_type = 'photo' AND l.fanpage_id = '". $page_id ."'		
+                   	) AS topfans
+					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id)
+					GROUP BY fans.facebook_user_id
+					ORDER BY number_of_posts DESC";
+		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
 	
@@ -79,22 +67,20 @@ class Model_Rankings extends Model_DbTable_Rankings
 		//$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
 	
 		$select = "
-			SELECT posts_count.facebook_user_id, fans.fan_name, COUNT(fans.fan_name) AS number_of_posts
-				FROM
-				(SELECT facebook_user_id
-					FROM posts
-					WHERE facebook_user_id != '". $page_id ."'
-					AND fanpage_id = '". $page_id ."'
-						UNION ALL
-							SELECT facebook_user_id
-							FROM comments
-							WHERE facebook_user_id != '". $page_id ."'
-							AND fanpage_id = '". $page_id ."'
-				) AS posts_count
-		
+			SELECT posts_count.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS number_of_posts
+			FROM
+			(SELECT facebook_user_id
+				FROM posts
+				WHERE facebook_user_id != '". $page_id ."'
+				AND fanpage_id = '". $page_id ."'
+			UNION ALL
+			SELECT facebook_user_id
+				FROM comments
+				WHERE facebook_user_id != '". $page_id ."'
+				AND fanpage_id = '". $page_id ."'
+			) AS posts_count
 			INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id)
-	
-			GROUP BY fans.fan_name
+			GROUP BY fans.facebook_user_id
 			ORDER BY number_of_posts DESC";
 			
 		if($limit !== false)
@@ -107,16 +93,14 @@ class Model_Rankings extends Model_DbTable_Rankings
 	public function getTopClicker($page_id, $limit = 10)
 	{
 		$select = "
-			SELECT likes_count.facebook_user_id, fans.fan_name, COUNT(fans.fan_name) AS number_of_likes
-				FROM (
-					SELECT facebook_user_id FROM likes
-					WHERE facebook_user_id != '". $page_id ."'
-					AND fanpage_id = '". $page_id ."'
-				) AS likes_count
-	
+			SELECT likes_count.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS number_of_likes
+			FROM (
+				SELECT facebook_user_id FROM likes
+				WHERE facebook_user_id != '". $page_id ."'
+				AND fanpage_id = '". $page_id ."'
+			) AS likes_count
 			INNER JOIN fans ON (fans.facebook_user_id = likes_count.facebook_user_id)
-	
-			GROUP BY fans.fan_name
+			GROUP BY fans.facebook_user_id
 			ORDER BY number_of_likes DESC";
 	
 		if($limit !== false)
@@ -128,49 +112,19 @@ class Model_Rankings extends Model_DbTable_Rankings
 	
 	public function getMostPopular($page_id, $limit = 5)
 	{
-	
-		//$relevant_period = new Zend_Date(time() - 15552000);
-		//$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
-	
-		//CONVERT this to zend notation so conditionals can be done simply instead of having to create duplicates
 		$select = "
-			SELECT total_count.facebook_user_id, fans.fan_name, SUM(count) AS count
-				FROM
-				(
-					SELECT facebook_user_id, SUM(likes_count) AS count
+					SELECT fans.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS count
 					FROM
-					(
-						SELECT facebook_user_id, SUM(post_likes_count) AS likes_count
-						FROM posts
-						WHERE facebook_user_id != '". $page_id ."'
-						AND fanpage_id = '". $page_id ."'
-						GROUP BY facebook_user_id
-	
-						UNION ALL
-	
-						SELECT facebook_user_id, SUM(comment_likes_count) AS likes_count
-						FROM comments
-						WHERE facebook_user_id != '". $page_id ."'
-						AND fanpage_id = '". $page_id ."'
-						GROUP BY facebook_user_id
-					) AS total_likes
-	
-					GROUP BY facebook_user_id
-	
+                    (SELECT facebook_user_id FROM posts p WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id != p.fanpage_id
 					UNION ALL
-	
-					SELECT facebook_user_id, SUM(post_comments_count) AS count
-					FROM posts
-					WHERE facebook_user_id != '". $page_id ."'
-					AND fanpage_id = '". $page_id ."'
-					GROUP BY facebook_user_id
-				) AS total_count
-	
-				INNER JOIN fans ON (fans.facebook_user_id = total_count.facebook_user_id)
-	
-				GROUP BY facebook_user_id
-				ORDER BY count DESC";
-	
+                    SELECT facebook_user_id FROM comments c WHERE c.fanpage_id = '". $page_id ."' AND c.facebook_user_id != c.fanpage_id
+                    UNION ALL
+                    SELECT facebook_user_id FROM likes l WHERE l.fanpage_id = '". $page_id ."' AND l.facebook_user_id != l.fanpage_id		
+                   	) AS topfans
+					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id)
+					GROUP BY fans.facebook_user_id
+					ORDER BY count DESC";
+		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
 	
