@@ -39,37 +39,28 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		$this->view->fanpage_id = $this->data['page']['id'];
 
   		$model = new Model_Rankings;
-
-  		$this->view->top_fans = $model->getRanking($this->data['page']['id'], 'FAN', false, 5);
-  		$this->view->most_popular = $model->getRanking($this->data['page']['id'], 'POPULAR', false, 5);
-  		$this->view->top_talker = $model->getRanking($this->data['page']['id'], 'TALKER', false, 5);
-  		$this->view->top_clicker = $model->getRanking($this->data['page']['id'], 'CLICKER', false, 5);
-
-  		/*
-  		 $client = new Zend_Http_Client;
-  		$client->setUri('https://graph.facebook.com/' . $this->view->fan_id;
-  				$client->setMethod(Zend_Http_Client::GET);
-
-  				try {
-  				$response = $client->request();
-  				} catch (Exception $e) {
-
-  				}
-
-  				$json = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-
-  				if (property_exists($json, 'error')) {
-  				// try again
-
-  				} else {
-  				$this->view->me = $json->data;
-  				}
-  				*/
-
-  		$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
-  		$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
-  		$this->view->user_top_talker = $model->getUserRanking($this->data['page']['id'], 'TALKER', $this->view->fan_id);
-  		$this->view->user_top_clicker = $model->getUserRanking($this->data['page']['id'], 'CLICKER', $this->view->fan_id);
+   		$topFans = $model->getTopFans($this->data['page']['id'], 5);
+    	//Zend_Debug::dump($topFans);
+    	 
+    	$mostPopular = $model->getMostPopular($this->data['page']['id'], 5);
+    	//Zend_Debug::dump($mostPopular);
+    	 
+    	$topTalker = $model->getTopTalker($this->data['page']['id'], 5);
+    	//Zend_Debug::dump($topTalker);
+    	 
+    	$topClicker = $model->getTopClicker($this->data['page']['id'], 5);
+    	//Zend_Debug::dump($topClicker);
+    	
+    	//exit();
+    	$this->view->top_fans = $topFans;
+    	$this->view->most_popular = $mostPopular;
+    	$this->view->top_talker = $topTalker;
+    	$this->view->top_clicker = $topClicker;
+    	
+    	$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
+    	$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
+    	$this->view->user_top_talker = $model->getUserRanking($this->data['page']['id'], 'TALKER', $this->view->fan_id);
+    	$this->view->user_top_clicker = $model->getUserRanking($this->data['page']['id'], 'CLICKER', $this->view->fan_id);
   	}
 
     public function newsfeedAction() 
