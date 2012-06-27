@@ -29,6 +29,8 @@ jQuery(document).ready(function($){
 			'type': 'DEACTIVATE',
 			'error': function(xhr) {
 				//errors handle here
+				$('.tooltip-inner').html(xhr.responseText);
+				//alert(xhr.responseText);
 			},			
 			'success': function(xhr) {
 				//update the button class and html

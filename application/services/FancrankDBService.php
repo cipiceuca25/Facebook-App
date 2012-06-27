@@ -266,7 +266,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		$rows = array();
 		$commentModel = new Model_Comments ();
 		foreach ( $commentsList as $k => $comment ) {
-			if (empty ( $comment->id ) || empty ( $comment->created_time ))	continue;
+			if (empty ( $comment->id ) || empty ( $comment->created_time ) || empty($comment->from->id))	continue;
 
 			$created = new Zend_Date ( ! empty ( $comment->created_time ) ? $comment->created_time : null );
 			

@@ -179,7 +179,7 @@ class Service_FancrankCollectorService {
 		//Zend_Debug::dump($results); exit();
 		foreach ($results as $groupKey => $result) {
 			foreach(json_decode($result) as $key=>$likes) {
-				if($likes->code === 200 && !empty($likes->body)) {
+				if(!empty($likes->code) && $likes->code === 200 && !empty($likes->body)) {
 					$likes = json_decode($likes->body);
 					foreach ($likes->data as $like) {
 						//echo $like->id .' ' .$like->name . 'likes ' .$postIdsGroup[$groupKey][$key] .'<br />';
@@ -235,7 +235,7 @@ class Service_FancrankCollectorService {
 	
 		foreach ($results as $groupKey => $result) {
 			foreach(json_decode($result) as $key=>$likes) {
-				if($likes->code === 200 && !empty($likes->body)) {
+				if(!empty($likes->code) && $likes->code === 200 && !empty($likes->body)) {
 					$likes = json_decode($likes->body);
 					foreach ($likes->data as $like) {
 						//echo $like->id .' ' .$like->name . 'likes ' .$postIdsGroup[$groupKey][$key] .'<br />';
@@ -290,7 +290,7 @@ class Service_FancrankCollectorService {
 		//Zend_Debug::dump($results); exit();
 		foreach ($results as $groupKey => $result) {
 			foreach(json_decode($result) as $key=>$values) {
-				if($values->code === 200 && !empty($values->body)) {
+				if(!empty($values->code) && $values->code === 200 && !empty($values->body)) {
 					$values = json_decode($values->body);
 					if(!empty ($values->data)) {
 						foreach ($values->data as $value) {
