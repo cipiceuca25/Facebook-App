@@ -38,6 +38,11 @@ $application = new Zend_Application(
 
 $application->bootstrap();
 
+require_once 'Zend/Loader/Autoloader.php';
+
+$loader = Zend_Loader_Autoloader::getInstance();
+$loader->registerNamespace('Fancrank_');
+
 $config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
 
 // init default db adapter
@@ -49,23 +54,25 @@ $adapter = new Fancrank_Queue_Adapter($config->queue);
 $queue = new Zend_Queue($adapter, $config->queue);
 
 $messages = $queue->receive((int) $jobCount[0]['count'], 0);
-//$messages = $queue->receive(1);
-//Zend_Debug::dump(count($messages));
 
 if (count($messages) > 0) {
 	$logger = new Zend_Log();
 	//$writer = new Zend_Log_Writer_Stream('php://output');
 	$writer = new Zend_Log_Writer_Stream('./cron_error.log');
-	$logger = new Zend_Log($writer);
- 
+	$logger = new Zend_Log($writer);    
     foreach ($messages as $message) {
         $job = Zend_Json::decode($message->body, Zend_Json::TYPE_OBJECT);
+        // ensure the proper environment is set
+        putenv('APPLICATION_ENV=' . APPLICATION_ENV);
 
+        //linux env
+        //$cmd = sprintf('php %s/index.php -m %s -c %s -a %s %s > /dev/null 2>/dev/null &', PUBLIC_PATH, $job->module, $job->controller, $job->action, implode(' ', $job->params));
+        //windows env
+        //$cmd = sprintf('php %s/index.php -m %s -c %s -a %s %s >NUL 2>NUL &', PUBLIC_PATH, $job->module, $job->controller, $job->action, implode(' ', $job->params));
         try {
-        	Collector::run($job->url, $job->fanpage_id, $job->access_token, $job->type);
-        	// We have processed the message; now we remove it from the queue.
-        	$queue->deleteMessage($message);
-         }catch (Exception $e) {
+        	Zend_Debug::dump($job);
+        	//$queue->deleteMessage($message);
+        }catch (Exception $e) {
         	try {
         		//remove error message from the queue
         		$queue->deleteMessage($message);
@@ -74,8 +81,10 @@ if (count($messages) > 0) {
         		//return;
         	}
          }
+        
+        // We have processed the message; now we remove it from the queue.
+        //Zend_Debug::dump($message);
+        //$queue->deleteMessage($message);
     }
-    
-    echo 'job done';
 }
 

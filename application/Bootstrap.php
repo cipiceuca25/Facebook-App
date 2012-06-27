@@ -37,9 +37,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         if (php_sapi_name() == 'cli') {
             // special conditions for command line important for collectors
-            $frontController->setRouter(new Fancrank_Controller_Router_Cli);
-            $frontController->setRequest(new Zend_Controller_Request_Http);
-            $frontController->setResponse(new Zend_Controller_Response_Cli);
+// 	           //$frontController->setRouter(new Fancrank_Controller_Router_Cli);
+ 			   $frontController->setRequest(new Zend_Controller_Request_Http);
+ 	           $frontController->setResponse(new Zend_Controller_Response_Cli);
         } else {
             // set custom request object
             $frontController->setRequest(new REST_Controller_Request_Http);

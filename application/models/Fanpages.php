@@ -25,7 +25,7 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 	
 	public function getFans($fanpage_id)
 	{
-		$fanpage = $this-findRow($fanpage_id);
+		$fanpage = $this->findRow($fanpage_id);
 		
 		//cycle through all posts, comments, likes to retrieve list of fans
 	}

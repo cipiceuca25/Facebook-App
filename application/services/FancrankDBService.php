@@ -1,9 +1,27 @@
 <?php
 /*
- * A dabase service which provides customized CRUD methods for encapsulating complex database operation
+ * A collector service
  */
 class Service_FancrankDBService extends Fancrank_Db_Table {
 	
+	protected $_fanpageId;
+	protected $_accessToken;
+
+	public function __construct() {
+		$args = func_get_args();
+        $argsCount = func_num_args();
+        if (method_exists($this, $constructor ='__construct' .$argsCount)) {
+            call_user_func_array(array($this, $constructor), $args);
+        }else {
+        	throw new Exception('NO CONSTRUCTOR: ' . get_class() . $constructor, NULL, NULL); 
+        } 
+	}
+	
+	function __construct2($fanpage_id, $access_token)
+	{
+		$this->_fanpageId = $fanpage_id;
+		$this->_accessToken = $access_token;
+	}
 	
 	/*
 	 * save fanpage profile to database
@@ -13,38 +31,6 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	 * @return true if success, else return false
 	 */
 	public function saveFanpageProfile($url, $data, $access_token=null) {
-		
-		$db = $this->getDefaultAdapter();
-		$db->beginTransaction();
-		$collectorLogger = Zend_Registry::get('collectorLogger');
-		
-		//save facebook user
-		//$facebookUserId = $this->saveFacebookUser(json_decode($data['me']), $access_token, $db);
-
-		//save fanpage
-		$fanpageId = $this->saveFanpage(json_decode($data['me']), $access_token, $db);
-		
-		//save album
-		$albums = json_decode($data['albums']);
-		//Zend_Debug::dump($albums->data);
-		$albumRows = $this->saveAlbums($albums, $db, $fanpageId);
-		//Zend_Debug::dump($albumRows); exit();
-
-		//save photos from all albums
-		$photosRows = $this->savePhotos($url, $albumRows, $access_token, $db, $fanpageId);
-
-		//save feed post
-		$feed = json_decode($data['feed']);
-		$feedRow = $this->savePosts($feed, $db, $fanpageId);
-		//Zend_Debug::dump($feedRow['fans_id_list']); exit();
-		//Zend_Debug::dump($feed->paging->next); exit();
-		if(!empty($feed->paging->next)) {
-			Collector::queue('1 min', $url, 'feed', $fanpageId);
-		}
-		//save comments
-		
-		//commit save
-		$db->commit();
 		
 	}
 	
@@ -65,7 +51,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	 * @param $db current default database
 	 * @return facebook user id
 	 */
-	public function saveFacebookUser($data, $access_token=null, $db) {
+	public function saveFacebookUser($data) {
 		if(empty ($data) || (empty($data->id))) {
 			return false;
 		}
@@ -87,9 +73,9 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
 				'facebook_user_avatar'    	=> sprintf('https://graph.facebook.com/%s/picture', $data->id),
 				'facebook_user_lang'        => implode(',', $lang),
-				'facebook_user_birthday'    => Fancrank_Util_Util::dateToStringForMysql(!empty($data->birthday)),
-				'facebook_user_access_token'=> $access_token,
-				'updated_time' 				=> Fancrank_Util_Util::dateToStringForMysql(!empty($data->updated_time)),
+				'facebook_user_birthday'    => Fancrank_Util_Util::dateToStringForMysql(!empty($data->birthday) ? $data->birthday : null),
+				'facebook_user_access_token'=> $this->_accessToken,
+				'updated_time' 				=> Fancrank_Util_Util::dateToStringForMysql(!empty($data->updated_time) ? $data->updated_time : null),
 				'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
 				'hometown' 					=> !empty($data->hometown) ? $data->hometown : '',
 				'current_location' 			=> !empty($data->current_location) ? $data->current_location : '',
@@ -107,7 +93,6 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			print $e->getMessage();
 			$collectorLogger = Zend_Registry::get('collectorLogger');
 			$collectorLogger->log(sprintf('Unable to save facebook user %s to database. Error Message: %s ', $facebookUser->id, $e->getMessage()), Zend_log::ERR);
-			$db->rollBack();
 		}
 	}
 
@@ -117,10 +102,11 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	 * @param $db current default database
 	 * @return fanpage id
 	 */
-	public function saveFanpage($fanpageProfile, $access_token=null, $db) {
-		if(empty ($fanpageProfile)) {
+	public function saveFanpage($fanpageProfile) {
+		if(empty ($fanpageProfile) || empty($fanpageProfile->id)) {
 			return false;
 		}
+		
 		//Zend_Debug::dump($fanpageProfile); exit();
 		$fanpageData = array(
 				'fanpage_id'            => $fanpageProfile->id,
@@ -133,7 +119,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				'fanpage_genre'   		=> !empty($fanpageProfile->genre) ? $fanpageProfile->genre : '',
 				'fanpage_can_post'      => !empty($fanpageProfile->can_post) ? $fanpageProfile->can_post : null,
 				'has_added_app'			=> !empty($fanpageProfile->has_added_app) ? $fanpageProfile->has_added_app : null,
-				'access_token' 			=> $access_token,
+				'access_token' 			=> $this->_accessToken,
 		);
 		
 		//Zend_Debug::dump($fanpageData); exit();
@@ -141,251 +127,245 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			//save fanpage fanpage's relative information into facebook_users table
 			$fanpages = new Model_Fanpages();
 			$fanpages->saveAndUpdateById($fanpageData, array('id_field_name'=>'fanpage_id'));
-				
-				
-			echo('fanpage saved</br>');
-			//$db->commit();
 			return $fanpageProfile->id;
 		} catch (Exception $e) {
 			print $e->getMessage();
 			$collectorLogger = Zend_Registry::get('collectorLogger');
 			$collectorLogger->log(sprintf('Unable to save fanpage %s to database. Error Message: %s ', $fanpageProfile->id, $e->getMessage()), Zend_log::ERR);
-			$db->rollBack();
 		}
-		
 	}
 	
 	/*
 	 * @return return an array of album id that were saved to database successfully
 	 */
-	public function saveAlbums($albums, $db, $fanpageId , $facebookUserId = null) {
+	public function saveAlbums($albums, $facebookUserId = null) {
 		$rows = array();
-		if( !empty($albums->data) ) {
-			$albumModel = new Model_Albums();
-			$commentModel = new Model_Comments();
-			foreach($albums->data as $k => $album) {
-				if( empty($album->id) ) continue;
-				$created = new Zend_Date(!empty($album->created_time) ? $album->created_time : null);
-				$updated = new Zend_Date(!empty($album->updated_time) ? $album->updated_time : null);
-		
-				$row = array(
-						'album_id'				=> $album->id,
-						'fanpage_id'			=> $fanpageId,
-						'facebook_user_id'		=> $facebookUserId,
-						'album_name'			=> !empty($album->name) ? $album->name : '',
-						'album_description'		=> !empty($album->description) ? $album->description : '',
-						'album_location'		=> !empty($album->location) ? $album->location : '',
-						'album_link'			=> !empty($album->link) ? $album->link : '',
-						'album_cover_photo_id'	=> !empty($album->cover_photo) ? $album->cover_photo : null,
-						'album_photo_count'		=> !empty($album->count) ? $album->count : 0,
-						'album_type'			=> !empty($album->type) ? $album->type : '',
-						'updated_time'			=> $updated->toString('yyyy-MM-dd HH:mm:ss'),
-						'created_time'			=> $created->toString('yyyy-MM-dd HH:mm:ss')
-				);
-		
-				$rows[] = $row['album_id'];
-				try {
-					//save fanpage's album's relative information into facebook_users table
-					$albumModel->saveAndUpdateById($row, array('id_field_name'=>'album_id'));
-					
-					//print_r($album->comments->data);
-					if(property_exists($album, 'comments')) {
-						$fansId = $this->saveComments($album->comments, $db, $album->id, $fanpageId, $facebookUserId);
-					}
-					//echo sprintf('album %s saved\n', $album->id);
-				} catch (Exception $e) {
-					print $e->getMessage();
-					$collectorLogger = Zend_Registry::get('collectorLogger');
-					$collectorLogger->log(sprintf('Unable to save album %s from fanpage %s to database. Error Message: %s ', $album->id, $fanpageId, $e->getMessage()), Zend_log::ERR);
-					$db->rollBack();
-				}
+		$albumModel = new Model_Albums();
+		foreach($albums as $k => $album) {
+			if( empty($album->id) ) continue;
+			$created = new Zend_Date(!empty($album->created_time) ? $album->created_time : null);
+			$updated = new Zend_Date(!empty($album->updated_time) ? $album->updated_time : null);
+	
+			$row = array(
+					'album_id'				=> $album->id,
+					'fanpage_id'			=> $this->_fanpageId,
+					'facebook_user_id'		=> $facebookUserId,
+					'album_name'			=> !empty($album->name) ? $album->name : '',
+					'album_description'		=> !empty($album->description) ? $album->description : '',
+					'album_location'		=> !empty($album->location) ? $album->location : '',
+					'album_link'			=> !empty($album->link) ? $album->link : '',
+					'album_cover_photo_id'	=> !empty($album->cover_photo) ? $album->cover_photo : null,
+					'album_photo_count'		=> !empty($album->count) ? $album->count : 0,
+					'album_type'			=> !empty($album->type) ? $album->type : '',
+					'updated_time'			=> $updated->toString('yyyy-MM-dd HH:mm:ss'),
+					'created_time'			=> $created->toString('yyyy-MM-dd HH:mm:ss')
+			);
+	
+			$rows[] = $row['album_id'];
+			try {
+				//save fanpage's album's relative information into facebook_users table
+				$albumModel->saveAndUpdateById($row, array('id_field_name'=>'album_id'));
+				//echo sprintf('album %s saved\n', $album->id);
+			} catch (Exception $e) {
+				print $e->getMessage();
+				$collectorLogger = Zend_Registry::get('collectorLogger');
+				$collectorLogger->log(sprintf('Unable to save album %s from fanpage %s to database. Error Message: %s ', $album->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
 			}
 		}
 		//return array('post_id_list'=>$rows, 'fans_id_list'=> '');
 		return $rows;
 	}
 	
-	public function savePhotos($url, $albumRows, $access_token=null, $db, $fanpageId) {
-		if( empty($access_token) || empty($albumRows)) {
-			return;
-		}
+	public function savePhotos($photos) {
+		$rows = array();
+		$photoModel = new Model_Photos();
+		foreach($photos as $photo) {
+			if( empty($photo->id) ) continue;
+			try {
+				$created = new Zend_Date(!empty($photo->created_time) ? $photo->created_time : null);
+				$updated = new Zend_Date(!empty($photo->updated_time) ? $photo->updated_time : null);
+				$row = array(
+						'photo_id'          => $photo->id,
+						'fanpage_id'        => $this->_fanpageId,
+						'facebook_user_id'	=> $photo->from->id,
+						'photo_album_id'    => $photo->id,
+						'photo_source'      => !empty($photo->source) ? $photo->source : null,
+						'photo_caption'     => isset($photo->name) ? $photo->name : '',
+						'photo_picture'		=> !empty($photo->picture) ? $photo->picture : null,
+						'photo_position'	=> !empty($photo->position) ? $photo->position : null,
+						'photo_width'       => !empty($photo->width) ? $photo->width : null,
+						'photo_height'      => !empty($photo->height) ? $photo->height : null,
+						'updated_time'      => $created->toString('yyyy-MM-dd HH:mm:ss'),
+						'created_time'      => $updated->toString('yyyy-MM-dd HH:mm:ss')
+				);
 		
-		$batchQueries = Fancrank_Util_Util::batchQueryBuilder($albumRows, array('photos'), $access_token);
-		//Zend_Debug::dump($batchQueries); exit();
-		
-		
-		try {
-			$result = Fancrank_Util_Util::requestFacebookAPI_POST($url, $batchQueries);
-		} catch (Exception $e) {
-			echo $e->getMessage();
-			return;
-		}
-		
-		if ($result === FALSE)
-		{
-			// Log or Redirect to error page
-			return;
-		}
-		else
-		{
-			$response = json_decode($result,true);
-			$rows = array();
-			$fanIds = array();
-			foreach ($response as $key => $res){
-				if($res['code'] === 200 && !empty($res['body'])) {
-					$photos = json_decode($res['body']);
-					//Zend_Debug::dump($photos->data);
-					if( !empty($photos->data) ) {
-						$photoModel = new Model_Photos();
-						foreach($photos->data as $photo) {
-							if( empty($photo->id) ) continue;
-							try {
-									
-								$created = new Zend_Date(!empty($photo->created_time) ? $photo->created_time : null);
-								$updated = new Zend_Date(!empty($photo->updated_time) ? $photo->updated_time : null);
-								$row = array(
-										'photo_id'          => $photo->id,
-										'fanpage_id'        => $fanpageId,
-										'facebook_user_id'	=> $photo->from->id,
-										'photo_album_id'    => $albumRows[$key],
-										'photo_source'      => $photo->source,
-										'photo_caption'     => isset($photo->name) ? $photo->name : '',
-										'photo_picture'		=> $photo->picture,
-										'photo_position'	=> $photo->position,
-										'photo_width'       => $photo->width,
-										'photo_height'      => $photo->height,
-										'updated_time'      => $created->toString('yyyy-MM-dd HH:mm:ss'),
-										'created_time'      => $updated->toString('yyyy-MM-dd HH:mm:ss')
-								);
-								
-								$rows[] = $row['photo_id'];
-								 
-								//save fanpage's album's relative information into facebook_users table
-								$photoModel->saveAndUpdateById($row, array('id_field_name'=>'photo_id'));
-								
-								if(property_exists($photo, 'comments')) {
-									$this->saveComments($photo->comments, $db, $photo->id, $fanpageId);
-								}
-								//Zend_Debug::dump($row);
-								//echo sprintf('album %s saved\n', $album->id);
-							} catch (Exception $e) {
-								print $e->getMessage();
-								$collectorLogger = Zend_Registry::get('collectorLogger');
-								$collectorLogger->log(sprintf('Unable to save photo %s from album %s fanpage %s to database. Error Message: %s ', $photo->id, $albumRows[$key], $fanpageId, $e->getMessage()), Zend_log::ERR);
-								$db->rollBack();
-							}
-						}
-					}
-				}
+				$rows[] = $row['photo_id'];
+				//save fanpage's album's relative information into facebook_users table
+				$photoModel->saveAndUpdateById($row, array('id_field_name'=>'photo_id'));
+				//Zend_Debug::dump($row);
+			} catch (Exception $e) {
+				print $e->getMessage();
+				$collectorLogger = Zend_Registry::get('collectorLogger');
+				$collectorLogger->log(sprintf('Unable to save photo %s from fanpage %s to database. Error Message: %s ', $photo->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
+				return;
 			}
-			return $rows;
-			//Zend_Debug::dump($rows); exit();
 		}
+		
+		return $rows;
+		//Zend_Debug::dump($rows); exit();
 	}
 
 	/*
 	 * @return return an array of post's id that were saved to the database
 	*/
-	public function savePosts($posts, $db, $fanpageId) {
+	public function savePosts($posts) {
 		$rows = array();
-		$fansId = array();
-		if( !empty($posts->data) ) {
-			$postModel = new Model_Posts();
-			foreach($posts->data as $k => $post) {
-				if( empty($post->id) ) continue;
-				$created = new Zend_Date(!empty($post->created_time) ? $post->created_time : null);
-				$updated = new Zend_Date(!empty($post->updated_time) ? $post->updated_time : null);
-	
-				$row = array(
-						'post_id'               => $post->id,
-						'facebook_user_id'      => $post->from->id,
-						'fanpage_id'            => $fanpageId,
-						'post_message'          => isset($post->message) ? $post->message : '',
-						'post_type'             => $post->type,
-						'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
-						'updated_time'          => $updated->toString('yyyy-MM-dd HH:mm:ss'),
-						'post_comments_count'   => $post->comments->count,
-						'post_likes_count'      => isset($post->likes) && isset($post->likes->count) ? $post->likes->count : 0
-				);
-	
-				if (property_exists($post, 'application') && isset($post->application_id)) {
-					$row['post_application_id'] = $post->application->application_id;
-					$row['post_application_name'] = $post->application->application_name;
-				} else {
-					$row['post_application_id'] = null;
-					$row['post_application_name'] = null;
-				}
-	
-				$rows[] = $row['post_id'];
-				$fansId[] = $post->from->id;
-				try {
-					//save fanpage's post's relative information into post table
-					//Zend_Debug::dump($row);
-					$postModel->saveAndUpdateById($row, array('id_field_name'=>'post_id'));
-						
-					if(property_exists($post, 'comments')) {
-						$this->saveComments($post->comments, $db, $post->id, $fanpageId);
-					}
-						
-				} catch (Exception $e) {
-					print $e->getMessage();
-					$collectorLogger = Zend_Registry::get('collectorLogger');
-					$collectorLogger->log(sprintf('Unable to save post %s from fanpage %s to database. Error Message: %s ', $post->id, $fanpageId, $e->getMessage()), Zend_log::ERR);
-					$db->rollBack();
-				}
+		$postModel = new Model_Posts();
+		foreach($posts as $k => $post) {
+			if( empty($post->id) ) continue;
+			$created = new Zend_Date(!empty($post->created_time) ? $post->created_time : null);
+			$updated = new Zend_Date(!empty($post->updated_time) ? $post->updated_time : null);
+
+			$row = array(
+					'post_id'               => $post->id,
+					'facebook_user_id'      => $post->from->id,
+					'fanpage_id'            => $this->_fanpageId,
+					'post_message'          => isset($post->message) ? $post->message : '',
+					'post_type'             => !empty($post->type) ? $post->type : '',
+					'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
+					'updated_time'          => $updated->toString('yyyy-MM-dd HH:mm:ss'),
+					'post_comments_count'   => !empty($post->comments->count) ? $post->comments->count : null,
+					'post_likes_count'      => isset($post->likes) && isset($post->likes->count) ? $post->likes->count : 0
+			);
+
+			if (property_exists($post, 'application') && isset($post->application_id)) {
+				$row['post_application_id'] = $post->application->application_id;
+				$row['post_application_name'] = $post->application->application_name;
+			} else {
+				$row['post_application_id'] = null;
+				$row['post_application_name'] = null;
+			}
+
+			$rows[] = $row['post_id'];
+			try {
+				//save fanpage's post's relative information into post table
+				//Zend_Debug::dump($row);
+				$postModel->saveAndUpdateById($row, array('id_field_name'=>'post_id'));
+			} catch (Exception $e) {
+				print $e->getMessage();
+				$collectorLogger = Zend_Registry::get('collectorLogger');
+				$collectorLogger->log(sprintf('Unable to save post %s from fanpage %s to database. Error Message: %s ', $post->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
+				return;
 			}
 		}
 		//return array('post_id_list'=>$rows, 'fans_id_list'=> $fansId);
 		return $rows;
 	}
 	
-	public function saveComments($postComments, $db, $parentId, $fanpageId) {
+	public function saveComments($commentsList) {
 		$rows = array();
-		$fansId = array();
-		if(property_exists($postComments, 'data'))
-			$comments = $postComments->data;
-		
-		if( !empty($comments) ) {
-			$commentModel = new Model_Comments();
-			foreach($comments as $k => $comment) {
-				if( empty($comment->id) || empty($comment->created_time)) continue;
-				$created = new Zend_Date(!empty($comment->created_time) ? $comment->created_time : null);
+		$commentModel = new Model_Comments ();
+		foreach ( $commentsList as $k => $comment ) {
+			if (empty ( $comment->id ) || empty ( $comment->created_time ))	continue;
 
-                $row = array(
-                        'comment_id'            => $comment->id,
-                        'fanpage_id'            => $fanpageId,
-                        'comment_post_id'       => $parentId,
-                        'facebook_user_id'      => $comment->from->id,
-                        'comment_message'       => $comment->message,
-                        'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
-                        'comment_likes_count'   => isset($comment->likes) ? $comment->likes : 0
-                );
-		
-				$rows[] = $row['comment_id'];
-				//$fansId[] = $comment->from->id;
-				try {
-					//save fanpage's post's relative information into post table
-					//Zend_Debug::dump($row);
-					$commentModel->saveAndUpdateById($row, array('id_field_name'=>'comment_id'));
-						
-				} catch (Exception $e) {
-					print $e->getMessage();
-					$collectorLogger = Zend_Registry::get('collectorLogger');
-					$collectorLogger->log(sprintf('Unable to save comment %s from parent %s fanpage %s to database. Error Message: %s ', $comment->id, $parentId, $fanpageId, $e->getMessage()), Zend_log::ERR);
-					$db->rollBack();
-				}
+			$created = new Zend_Date ( ! empty ( $comment->created_time ) ? $comment->created_time : null );
+			
+			$parentid = $comment->id;
+			if(strrpos($comment->id, '_') > 0) {
+				$parentid = substr($comment->id, 0, strrpos($comment->id, '_'));
+			}
+			
+			$row = array (
+					'comment_id' => $comment->id,
+					'fanpage_id' => $this->_fanpageId,
+					'comment_post_id' => $parentid,
+					'facebook_user_id' => $comment->from->id,
+					'comment_message' => $comment->message,
+					'created_time' => $created->toString ( 'yyyy-MM-dd HH:mm:ss' ),
+					'comment_likes_count' => isset ( $comment->likes ) ? $comment->likes : 0 
+			);
+			
+			$rows [] = $row ['comment_id'];
+			// $fansId[] = $comment->from->id;
+			try {
+				// save fanpage's post's relative information into post table
+				// Zend_Debug::dump($row);
+				$commentModel->saveAndUpdateById ($row, array('id_field_name' =>'comment_id'));
+			} catch ( Exception $e ) {
+				print $e->getMessage ();
+				$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
+				$collectorLogger->log ( sprintf ( 'Unable to save comment %s fanpage %s to database. Error Message: %s ', $comment->id, $this->_fanpageId, $e->getMessage () ), Zend_log::ERR );
+				return;
 			}
 		}
+
 		//return array('comment_id_list'=>$rows, 'fans_id_list'=> $fansId);
 		return $rows;
 	}
 
-	public function saveLikes() {
-		
+	public function saveLikes($likesList) {
+		$likes_model = new Model_Likes;
+		$cols = array('fanpage_id', 'post_id', 'facebook_user_id', 'post_type');
+		$update = array('post_type');
+		try {
+			$likes_model->insertMultiple($likesList, $cols, $update);
+		} catch (Exception $e) {
+			$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
+			$collectorLogger->log ( sprintf ( 'Unable to save likes %s',  $e->getMessage ()), Zend_log::ERR);
+		}
 	}
 	
-	public function saveFans($fanIds) {
+	public function saveFans($fansList) {
+		$result = array();
+		$facebookUserModel = new Model_FacebookUsers();
+		$fansModel = new Model_Fans();
+		foreach ($fansList as $data) {
+			$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null);
+			
+			try {
+				$facebookUserData = array(
+						'facebook_user_id' 			=> $data->id,
+						'facebook_user_first_name' 	=> !empty($data->first_name) ? $data->first_name : '',
+						'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
+						'facebook_user_name'		=> !empty($data->name) ? $data->name : $facebookUserData['facebook_user_first_name'] .' ' .$facebookUserData['facebook_user_last_name'],
+						'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
+						'updated_time' 				=> $updated->toString ( 'yyyy-MM-dd HH:mm:ss' ),
+						'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
+				);
+				
+				//save facebook user's relative information into facebook_users table
+				$facebookUserModel->saveAndUpdateById($facebookUserData, array('id_field_name'=>'facebook_user_id'));
+				
+				$fansData = array(
+						'facebook_user_id'  => $facebookUserData['facebook_user_id'],
+						'fanpage_id'        => $this->_fanpageId,
+						'fan_name'			=> $facebookUserData['facebook_user_name'],
+						'fan_first_name'	=> $facebookUserData['facebook_user_first_name'],
+						'fan_last_name'		=> $facebookUserData['facebook_user_last_name'],
+						'fan_gender'		=> $facebookUserData['facebook_user_gender'],
+				);
+				
+				//add the fan if it doesnt exist
+				$select = $fansModel->select();
+				$select->where($fansModel->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $facebookUserData['facebook_user_id'], $this->_fanpageId));
+				$fan = $fansModel->fetchRow($select);
+				
+				if (empty($fan)) {
+					$fansModel->insert($fansData);
+				}else {
+					$fansModel->fan_name = $facebookUserData['facebook_user_name'];
+					$fan->save();
+				}
+				
+				$result[] = $fansData;
+			} catch (Exception $e) {
+				print $e->getMessage();
+				$collectorLogger = Zend_Registry::get('collectorLogger');
+				$collectorLogger->log(sprintf('Unable to save fan user %s fanpage %s to database. Error Message: %s ', $data->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
+			}
+		}
 		
+		return $result;
 	}
 	
 }

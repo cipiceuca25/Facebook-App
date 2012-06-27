@@ -39,12 +39,15 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		$fanpage = $this->model->findByFanpageId($this->_getParam('id'))->current();
 		
 		//security check
-		
-		if ( !$fanpage->active ) {
-			$fanpage->active = (int) TRUE;
-			$fanpage->save();
-			//Note: need to change the url later.
-			//Collector::run('http://www.fancrank.local/collectors/facebook1/batchfetch', 'get', array('fanpage_id'=>$this->_getParam('id'), 'access_token'=>$fanpage->access_token));
+		try {
+			if ( !$fanpage->active ) {
+				$fanpage->active = (int) TRUE;
+				$fanpage->save();
+				Collector::run(null, $this->_getParam('id'), $fanpage->access_token, 'init');
+			}
+			return;			
+		} catch (Exception $e) {
+			$this->_response->setHttpResponseCode(400);
 		}
 	}
 
@@ -89,10 +92,6 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		
 		if ($fanpage->active && !$fanpage->installed) {
 
-			//$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
-        	//$this->config = $sources->get('facebook');
-
-	        //return success or not
 	        $response = $this->installTab($this->_getParam('id'), $fanpage->access_token, $this->_config->client_id);
 
 	        $body = $response->getBody();

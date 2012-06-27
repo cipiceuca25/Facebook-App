@@ -46,12 +46,20 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         $this->view->installed = $fanpage->installed;
         $this->view->page_id = $this->_getParam('id');
 
-        //maybe we should be asking for a relavant time from the api user and pass it as a parameter in the queries
-        $topfans = new Model_Rankings();
-        $this->view->top_fans = $topfans->getTopFans($this->_getParam('id'));
-        $this->view->most_popular = $topfans->getMostPopular($this->_getParam('id'));
-        $this->view->top_talker = $topfans->getTopTalker($this->_getParam('id'));
-        $this->view->top_clicker = $topfans->getTopClicker($this->_getParam('id'));
+        if ($fanpage->active) {
+        	//maybe we should be asking for a relavant time from the api user and pass it as a parameter in the queries
+        	$topfans = new Model_Rankings();
+        	$this->view->top_fans = $topfans->getTopFans($this->_getParam('id'));
+        	$this->view->most_popular = $topfans->getMostPopular($this->_getParam('id'));
+        	$this->view->top_talker = $topfans->getTopTalker($this->_getParam('id'));
+        	$this->view->top_clicker = $topfans->getTopClicker($this->_getParam('id'));        	
+        }else {
+        	$this->view->top_fans = array();
+        	$this->view->most_popular = array();
+        	$this->view->top_talker = array();
+        	$this->view->top_clicker = array();
+        }
+
     }
 
     /*

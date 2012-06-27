@@ -45,9 +45,9 @@ class Model_Rankings extends Model_DbTable_Rankings
 		$select = "
 					SELECT fans.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS number_of_posts
 					FROM
-                    (SELECT l.facebook_user_id FROM posts p INNER JOIN LIKES l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id = p.fanpage_id
+                    (SELECT l.facebook_user_id FROM posts p INNER JOIN likes l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id = p.fanpage_id
 					UNION ALL
-                    SELECT l.facebook_user_id FROM comments c INNER JOIN LIKES l ON (c.comment_id = l.post_id) WHERE l.fanpage_id = '". $page_id ."' AND c.facebook_user_id = c.fanpage_id
+                    SELECT l.facebook_user_id FROM comments c INNER JOIN likes l ON (c.comment_id = l.post_id) WHERE l.fanpage_id = '". $page_id ."' AND c.facebook_user_id = c.fanpage_id
                     UNION ALL
                     SELECT l.facebook_user_id FROM likes l WHERE l.post_type = 'photo' AND l.fanpage_id = '". $page_id ."'		
                    	) AS topfans

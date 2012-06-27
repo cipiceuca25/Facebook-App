@@ -1,26 +1,37 @@
 <?php
 class Collector
 {
-	
-    public static function run($actionUrl, $method, $params)
+    public static function run($url, $fanpageId, $accessToken, $type)
     {
-    	//Zend_Debug::dump($url .$action .'?' .http_build_query($params)); exit();
-		$result = self::httpCurl($actionUrl, $method, $params);
-		return $result;
+    	$collector = new Service_FancrankCollectorService($url, $fanpageId, $accessToken, $type);
+    	switch ($type) {
+    		case 'init' :
+    			$collector->collectFanpageInitInfo();
+    			self::queue('5 second', $url, $fanpageId, $accessToken, 'fetch');
+    			break;
+    		case 'fetch' :
+    			$collector->fetchFanpageInfo();
+    			break;	
+    		case 'update' :
+    			break;
+    		default:
+    			break;		
+    	}
     }
 
-    public static function queue($timeout_str, $url, $type, $fanpageId)
+    public static function queue($timeout_str, $url, $fanpageId, $accessToken, $type)
     {
         $timeout = strtotime($timeout_str);
 
         if ($timeout - time() == 0) {
-            return $this->run($url, 'get', array('limit'=>100));
+            return self::run($url, $fanpageId, $accessToken, $type);
         }
 
         $message = array(
             'url' => $url,
             'type' => $type,
             'fanpage_id' => $fanpageId,
+        	'access_token' => $accessToken,
         );
 
         $options = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('Config')->get('queue');
@@ -32,26 +43,7 @@ class Collector
         Log::Info('new job sceduled after %s', $timeout_str);
     }
     
-    private static function httpCurl($url, $method, $params) {
-    	$ch = curl_init();
-    	switch (strtolower($method)) {
-    		case 'get':
-		    	curl_setopt($ch, CURLOPT_URL, $url . "?" . http_build_query($params));
-		    	curl_setopt($ch, CURLOPT_POST, false);
-    			break;
-    		case 'post':
-    			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-    			curl_setopt($ch, CURLOPT_POST, true);
-    			break;
-    		default: 
-    			return;
-    	}
-    	curl_setopt($ch, CURLOPT_HEADER, 0);
-    	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-    	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-    	$result = curl_exec($ch);
-    	curl_close($ch);
-    	return $result;
+    public static function removeQueue() {
+    	
     }
 }
