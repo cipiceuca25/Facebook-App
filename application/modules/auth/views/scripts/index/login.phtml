@@ -21,7 +21,6 @@
 
         if (window.opener != null) {
             <? if (property_exists($this, 'source')): ?>
-                //because jquery sucks ass. thats why.
                 window.opener.location.reload();
             <? endif ?>
            
