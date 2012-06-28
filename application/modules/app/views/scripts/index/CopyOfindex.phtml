@@ -35,7 +35,7 @@
 						
 						<div class="name"><a target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><?= $top_fan['fan_first_name'] ?></a></div>
 						
-						<div class="points"><p><?= $top_fan['number_of_posts'] ?><span>Points<br>this Week</span></p></div>
+						<div class="points"><p><?= $top_fan['number_of_posts'] ?><span>Points<br /></span></p></div>
 						
 						<div class="clearfix"></div>
 					
@@ -80,7 +80,7 @@
 							
 							<div class="name"><a target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><?= $popular['fan_first_name'] ?></a></div>
 							
-							<div class="points"><p><?= $popular['count'] ?><span>Got Liked<br />this Week</span></p></div>
+							<div class="points"><p><?= $popular['count'] ?><span>Points<br />From Community</span></p></div>
 							
 							<div class="clearfix"></div>
 							<?php $count++; ?>
@@ -122,7 +122,7 @@
 							
 							<div class="name"><a target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><?= $talker['fan_first_name'] ?></a></div>
 							
-							<div class="points"><p><?= $talker['number_of_posts'] ?><span>Got Liked<br />this Week</span></p></div>
+							<div class="points"><p><?= $talker['number_of_posts'] ?><span>Points<br /> From Talking</span></p></div>
 							
 							<div class="clearfix"></div>
 							<?php $count++; ?>
@@ -147,7 +147,7 @@
 				
 					<?php if (!count($this->top_clicker)): ?>
 		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-							<div class="name">NO TALKER</div>
+							<div class="name">NO CLICKER</div>
 		  				</div>
 		  			<?php endif; ?>
 
@@ -166,7 +166,7 @@
 							
 							<div class="name"><a target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><?= $clicker['fan_first_name'] ?></a></div>
 							
-							<div class="points"><p><?= $clicker['number_of_likes'] ?><span>Got Liked<br />this Week</span></p></div>
+							<div class="points"><p><?= $clicker['number_of_likes'] ?><span>Points<br />From Liking<br />this Week</span></p></div>
 							
 							<div class="clearfix"></div>
 							<?php $count++; ?>
@@ -187,3 +187,53 @@
 	</div><!--/end content -->
 
 </div><!--/end wrapper -->
+
+
+<!--
+
+
+<hr />
+
+
+<p>top talkers</p>
+
+<pre>
+<?= print_r($this->top_talkers) ?>
+</pre>
+
+<p>top clickers</p>
+
+<pre>
+<?= print_r($this->top_clickers) ?>
+</pre>
+
+<p>top fans</p>
+
+<pre>
+<?= print_r($this->top_fans) ?>
+</pre>
+
+<p>most popular</p>
+
+<pre>
+<?= print_r($this->most_popular) ?>
+</pre>
+
+-->
+
+<script src="text/javascript">
+window.onload = function() {
+	  FB.Canvas.setAutoGrow(91);
+	  setTimeout('autoGrowTimer();', 1000); //This is for demonstration
+	};
+
+function autoGrowTimer() { //Can be removed.
+  paragraphs_added++; //Increase the count
+  autoGrowDiv = document.getElementById('autoGrow');
+  //autoGrowDiv.innerHTML = autoGrowDiv.innerHTML + "<p>This is making the iframe taller.</p>";
+  //Stop after 50 paragraphs aded
+  if (paragraphs_added > 50) return;
+
+  setTimeout('autoGrowTimer();', 1000);
+}
+</script>

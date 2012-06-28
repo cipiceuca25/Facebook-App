@@ -6,10 +6,9 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 	
 	public function init() {
 		//override existing enviroment configuration
-		if(APPLICATION_ENV !== 'production') {
-			$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', 'production');
-			$this->_config = $sources->get('facebook');
-		}
+		$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', 'production');
+		$this->_config = $sources->get('facebook');
+		
 		parent::init();
 	}
 	

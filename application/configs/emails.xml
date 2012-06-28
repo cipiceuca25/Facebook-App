@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emails>
+	<cron_mail>
+		<email>
+			<name>stephen</name>
+			<address>stephen@fancrank.com</address>
+		</email>
+		<email>
+			<name>dan</name>
+			<address>dan@fancrank.com</address>
+		</email>
+	</cron_mail>
+</emails>

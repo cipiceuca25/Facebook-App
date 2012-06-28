@@ -7,13 +7,16 @@ class Collector
     	switch ($type) {
     		case 'init' :
     			$collector->collectFanpageInitInfo();
-    			self::queue('5 second', $url, $fanpageId, $accessToken, 'fetch');
+    			self::queue('5 second', $url, $fanpageId, $accessToken, 'full');
     			break;
     		case 'fetch' :
     			$collector->fetchFanpageInfo();
     			break;	
     		case 'update' :
     			break;
+    		case 'full' : 
+    			$collector->fullScanFanpage();
+    			break;	
     		default:
     			break;		
     	}

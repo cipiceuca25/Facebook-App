@@ -90,7 +90,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
-	public function getTopClicker($page_id, $limit = 10)
+	public function getTopClicker($page_id, $limit = 5)
 	{
 		$select = "
 			SELECT likes_count.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS number_of_likes

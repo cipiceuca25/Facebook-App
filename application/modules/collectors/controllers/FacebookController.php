@@ -26,12 +26,36 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
 
     public function testAction() {
-    	$fanpageId = '178384541065';
-    	$accessToken='AAAFHFbxmJmgBAHAUrdHTEPg3QmRadXpphOSIFEwZAPTdDYjPlrDLPabnsl5nM7cnN8Xm58j9U0myb8tXZCJBDGQZAXobOmT6xuIYBQMfwZDZD';
+    	$fanpageId = "65558608937";
+    	$accessToken="AAAFWUgw4ZCZB8BAC8poutSZBFRW3RGpy4hMm61xT4yVhBMMO5gFk1RNA8CZCmr01QhsTpnTlPMp2qSnk3uZBruW6GjczomssAPKpaHL8BS1OfNde44VBe";
     	//$result = Collector::run(null, $fanpageId, $accessToken, 'update');
-    	Collector::queue('30 second', null, $fanpageId, $accessToken, 'fetch');
+    	Collector::run(null, $fanpageId, $accessToken, 'full');
     }
-        
+
+    public function testmailAction() {
+    	echo 'mail test'; exit();
+		$fmail = new Service_FancrankMailService();
+		$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
+		
+		// init default db adapter
+		$adapter = Zend_Db::factory($config->resources->db);
+		Zend_Db_Table::setDefaultAdapter($adapter);
+		$jobCount = $adapter->query("select count(*) as count from message")->fetchAll();
+		
+		$adapter = new Fancrank_Queue_Adapter($config->queue);
+		$queue = new Zend_Queue($adapter, $config->queue);
+		
+		$messages = $queue->receive((int) $jobCount[0]['count'], 0);
+		
+		foreach ($messages as $message) {
+			$job = Zend_Json::decode($message->body, Zend_Json::TYPE_OBJECT);
+			break;
+		}	
+		
+		$errMsg = sprintf('Error on job: %s <br/>fanpage_id: %s <br/>access_token: %s<br/> type: %s<br/>', $job->url, $job->fanpage_id, $job->access_token, $job->type);
+		$fmail->sendErrorMail($errMsg .'End of Report');    	
+    }
+    
     private function httpCurl($url, $params=null, $method=null) {
     	$ch = curl_init();
     	switch (strtolower($method)) {

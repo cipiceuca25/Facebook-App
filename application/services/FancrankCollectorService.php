@@ -41,6 +41,100 @@ class Service_FancrankCollectorService {
 		//Zend_Debug::dump($result);
 	}
 	
+	public function fullScanFanpage() {
+		$start = time();
+		$this->collectFanpageInitInfo();
+		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/feed?limit=1000&access_token=' .$this->_accessToken .'&' .$since=0;
+		$posts = array();
+		
+		$this->getPostsRecursive($url, 10, 1000, $posts);
+		//Zend_Debug::dump($posts);
+		
+		if(empty($posts)) {
+			return;
+		}
+		
+// 		$postLikeList = array();
+// 		//$this->getLikesFromMyPostRecursive($posts, $this->_fanpageId, $this->_accessToken, 0, $postLikeList);
+ 		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
+// 		Zend_Debug::dump($postLikeList);
+		
+// 		$commentsList = array();
+// 		//$this->getQueryRecursive($posts, 'comments', $this->_fanpageId, $this->_accessToken, 0, $commentsList);
+ 		$commentsList = $this->getCommentsFromPost($posts, 5, 1000);
+// 		Zend_Debug::dump($commentsList);
+		
+		//get all albums recursively
+		$url = 'https://graph.facebook.com/' .$this->_fanpageId .'/albums?access_token=' .$this->_accessToken;
+		$albumsList = array();
+		$this->getFromUrlRecursive($url, 2, 1000, $albumsList);
+		//Zend_Debug::dump($albumsList);
+		
+		$photoList = array();
+		$photoList = $this->getPhotosFromAlbum($albumsList, 2, 1000);
+		//Zend_Debug::dump($photoList);
+		
+		$albumLikesList = $this->getLikesFromMyAlbums($albumsList);
+		//Zend_Debug::dump($albumLikesList);
+		$photoLikesList = $this->getLikesFromMyAlbums($photoList);
+		//Zend_Debug::dump($photoLikesList);
+		
+		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList);
+		//Zend_Debug::dump($albumCommentList);
+		$photoCommentList = $this->getCommentsFromMyAlbum($photoList);
+		//Zend_Debug::dump($photoCommentList);
+		
+		$commentsList = array_merge($commentsList, $albumCommentList, $photoCommentList);
+		//Zend_Debug::dump($commentsList);
+		
+		$commentLikeList = $this->getLikesFromMyComment($commentsList);
+		
+		$allLikesList = array_merge($postLikeList, $commentLikeList, $albumLikesList, $photoLikesList);
+		
+		$fdb = new Service_FancrankDBService($this->_fanpageId, $this->_accessToken);
+		
+		$db = $fdb->getDefaultAdapter();
+		//$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
+		//$db = Zend_Db::factory($config->resources->db);
+		
+		echo '<br/>total likes for ' .count($posts) . ' posts: ' .count($postLikeList);
+		echo '<br/>total likes for ' .count($commentsList) . ' comments: ' .count($commentLikeList);
+		echo '<br/>total likes for ' .count($albumsList) . ' albums ' .count($albumLikesList);
+		echo '<br/>total likes for ' .count($photoList) . ' photos ' .count($photoLikesList);
+		echo '<br/>Total likes : ' .count($allLikesList);
+		
+		$db->beginTransaction();
+		
+		try {
+			$fdb->savePosts($posts);
+			
+			$fdb->saveAlbums($albumsList);
+			
+			$fdb->savePhotos($photoList);
+			
+			$fdb->saveComments($commentsList);
+			
+			$fdb->saveLikes($allLikesList);
+			
+			$fansIdsList = $this->fansIdCollector($posts, $commentsList,  $allLikesList);
+			//Zend_Debug::dump($fansIdsList);
+			
+			$facebookUsers = $this->getFansList($fansIdsList, $this->_accessToken);
+			$result = $fdb->saveFans($facebookUsers);
+			//Zend_Debug::dump($result);
+			
+			$db->commit();
+			$stop = time() - $start;
+			echo '<br />total execution time: ' .$stop;
+	
+		} catch (Exception $e) {
+			$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
+			$collectorLogger->log ( sprintf ( 'Full Scan fail: %s',  $e->getMessage ()), Zend_log::ERR);
+			$db->rollBack();
+		}
+		
+	}
+	
 	public function fetchFanpageInfo($since=0) {
 		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/feed?access_token=' .$this->_accessToken;
 		$posts = array();
@@ -78,7 +172,8 @@ class Service_FancrankCollectorService {
 		$commentsList = array_merge($commentsList, $this->getCommentsFromPhotos($albumsList, $this->_fanpageId), $this->getCommentsFromPhotos($photoList, $this->_fanpageId));
 		//get all the likes from all comments
 		$commentLikeList = array();
-		$this->getLikesFromCommentsRecursive($commentsList, $this->_fanpageId, $this->_accessToken, 0, $commentLikeList);
+		//$this->getLikesFromCommentsRecursive($commentsList, $this->_fanpageId, $this->_accessToken, 0, $commentLikeList);
+		$commentLikeList = $this->getLikesFromMyComment($commentsList);
 		
 		$allLikesList = array_merge($postLikeList, $commentLikeList, $albumLikesList, $photoLikesList);
 		
@@ -145,6 +240,35 @@ class Service_FancrankCollectorService {
 		}
 	}
 
+	private function getCommentsFromPost($posts, $level, $limit=1000) {
+		//Zend_Debug::dump($posts);
+		$results = array();
+		foreach ($posts as $post) {
+			$commentCount = 1;
+			$hasMore = false;
+			if(!empty($post->comments->data)) {
+				$commentCount = count($post->comments->data);
+			}
+			if(!empty($post->comments->count) && $post->comments->count > $commentCount) {
+				$result = array();
+				$url = $this->_facebookGraphAPIUrl . $post->id .'/comments?access_token=' .$this->_accessToken;
+				$this->getFromUrlRecursive($url, $level, $limit, $result);
+		
+				foreach ($result as $comment) {
+					$results[] = $comment;
+				}
+				$hasMore = true;
+			}
+			if(! $hasMore && !empty($post->comments->data)) {
+				foreach ($post->comments->data as $comment) {
+					$results[] = $comment;
+				}
+			}
+				
+		}
+		return $results;
+	}
+	
 	private function getLikesFromCommentsRecursive($posts, $fanpageId, $access_token, $offset=0, &$likesList) {
 		if(empty($posts) || $offset > 100) {
 			return null;
@@ -218,9 +342,9 @@ class Service_FancrankCollectorService {
 			}
 		}
 	
-		//Zend_Debug::dump($extraLikesOnPostIds);
+		Zend_Debug::dump($extraLikesOnPostIds);
 		$postIdsGroup = $this->arrayToGroups($postIds, 50);
-		//Zend_Debug::dump($postIdsGroup);
+		Zend_Debug::dump($postIdsGroup);
 	
 		try {
 			$results = array();
@@ -253,8 +377,57 @@ class Service_FancrankCollectorService {
 		$this->getLikesFromMyPostRecursive($extraLikesPosts, $fanpageId, $access_token, $offset+25, $likesList);
 	}
 	
+	private function getLikesFromMyPost($posts, $level=5, $limit=1000) {
+		//Zend_Debug::dump($posts);
+		$results = array();
+		foreach ($posts as $post) {
+			$likeCount = 1;
+			$hasMoreLike = false;
+			if(!empty($post->likes->data)) {
+				$likeCount = count($post->likes->data);
+			}
+			if(!empty($post->likes->count) && $post->likes->count > $likeCount) {
+				$result = array();
+				$url = $this->_facebookGraphAPIUrl . $post->id .'/likes?access_token=' .$this->_accessToken;
+				$this->getFromUrlRecursive($url, $level, $limit, $result);
+				
+				foreach ($result as $like) {
+					$results[] = array('fanpage_id'=>$this->_fanpageId,
+										'post_id'=>$post->id,
+										'facebook_user_id'=>$like->id,
+										'post_type'=>'post');					
+				}
+				$hasMoreLike = true;
+			}
+			if(! $hasMoreLike && !empty($post->likes->data)) {
+				foreach ($post->likes->data as $like) {
+					$results[] = array('fanpage_id'=>$this->_fanpageId,
+										'post_id'=>$post->id,
+										'facebook_user_id'=>$like->id,
+										'post_type'=>'post');
+				}
+			}
+			
+		}
+		return $results;
+	}
+	
+	private function getPhotosFromAlbum($albums, $level=5, $limit=1000) {
+		$results = array();
+		foreach ($albums as $album) {
+			$result = array();
+			$url = $this->_facebookGraphAPIUrl . $album->id .'/photos?access_token=' .$this->_accessToken;
+			$this->getFromUrlRecursive($url, $level, $limit, $result);
+			foreach ($result as $photo) {
+				$results[] = $photo;
+			}
+			$hasMoreLike = true;
+		}
+		return $results;
+	}
+	
 	private function getQueryRecursive($posts, $queryType, $fanpageId, $access_token, $offset=0, &$resultList) {
-		if(empty($posts) || $offset > 100) {
+		if(empty($posts) || count($posts) === 1 || $offset > 100) {
 			return null;
 		}
 		$postIds = array();
@@ -272,7 +445,7 @@ class Service_FancrankCollectorService {
 			}
 		}
 		$postIdsGroup = $this->arrayToGroups($postIds, 50);
-		//Zend_Debug::dump($postIdsGroup);
+		Zend_Debug::dump($postIdsGroup);
 	
 		try {
 			$results = array();
@@ -306,7 +479,7 @@ class Service_FancrankCollectorService {
 	}
 	
 	private function getFromUrlRecursive($url, $level = 5, $limit=5, &$result) {
-		if(empty($url) || $level == 0) {
+		if(empty($url) || $level === 0) {
 			return array();
 		}
 		$level = $level - 1;
@@ -320,6 +493,7 @@ class Service_FancrankCollectorService {
 			$url = !empty($response->paging->next) ? $response->paging->next : null;
 			if(! empty($response->data)) {
 				$result = array_merge((array)$result, (array)$response->data);
+				//$this->getPostsRecursive($url, $level, $limit, $result);
 			}
 			$this->getPostsRecursive($url, $level, $limit, $result);
 		} catch (Exception $e) {
@@ -356,6 +530,86 @@ class Service_FancrankCollectorService {
 		}
 	
 		return $likesList;
+	}
+	
+	private function getLikesFromMyAlbums($albums) {
+		$likesList = array();
+		foreach ($albums as $album) {
+			if(! empty($album->likes->data) ) {
+				
+				foreach ($album->likes->data as $like) {
+					$likesList[] = array(
+							'fanpage_id'        => $this->_fanpageId,
+							'post_id'           => $album->id,
+							'facebook_user_id'  => $like->id,
+							'post_type'         => 'photo'
+					);
+				}
+				
+				if(count($album->likes->data) >= 25 && !empty($album->likes->paging->next)) {
+					$result = array();
+					$url = $album->likes->paging->next;
+					$this->getFromUrlRecursive($url, 1, 1000, $result);
+					foreach ($result as $like) {
+						$likesList[] = array(
+								'fanpage_id'        => $this->_fanpageId,
+								'post_id'           => $album->id,
+								'facebook_user_id'  => $like->id,
+								'post_type'         => 'photo'
+						);
+					}
+				}
+			}
+		}
+	
+		return $likesList;
+	}
+	
+	private function getLikesFromMyComment($commentList) {
+		$likesList = array();
+		foreach ($commentList as $comment) {
+			$post_type = 'photo';
+			if(substr_count($comment->id, '_') === 2) {
+				$post_type = 'comments';
+			}
+			if(!empty($comment->like_count) && $comment->like_count >= 1) {
+				$result = array();
+				$url = $this->_facebookGraphAPIUrl . $comment->id .'/likes?access_token=' .$this->_accessToken;
+				$this->getFromUrlRecursive($url, 1, 1000, $result);
+				foreach ($result as $like) {
+					$likesList[] = array(
+							'fanpage_id'        => $this->_fanpageId,
+							'post_id'           => $comment->id,
+							'facebook_user_id'  => $like->id,
+							'post_type'         => $post_type
+					);
+				}
+			}
+		}
+		return $likesList;
+	}
+	
+	private function getCommentsFromMyAlbum($albums) {
+		$commentList = array();
+		foreach ($albums as $album) {
+			if(! empty($album->comments->data) ) {
+		
+				foreach ($album->comments->data as $comment) {
+					$commentList[] = $comment;
+				}
+		
+				if(count($album->comments->data) >= 25 && !empty($album->comments->paging->next)) {
+					$result = array();
+					$url = $album->comments->paging->next;
+					$this->getFromUrlRecursive($url, 1, 1000, $result);
+					foreach ($result as $comment) {
+						$commentList[] = $comment;
+					}
+				}
+			}
+		}
+		
+		return $commentList;
 	}
 	
 	private function arrayToGroups($source, $pergroup) {
