@@ -230,7 +230,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					'post_id'               => $post->id,
 					'facebook_user_id'      => $post->from->id,
 					'fanpage_id'            => $this->_fanpageId,
-					'post_message'          => isset($post->message) ? mysql_real_escape_string($post->message) : '',
+					'post_message'          => isset($post->message) ? $post->message : '',
 					'post_type'             => !empty($post->type) ? $post->type : '',
 					'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
 					'updated_time'          => $updated->toString('yyyy-MM-dd HH:mm:ss'),
@@ -280,7 +280,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					'fanpage_id' => $this->_fanpageId,
 					'comment_post_id' => $parentid,
 					'facebook_user_id' => $comment->from->id,
-					'comment_message' => mysql_real_escape_string($comment->message),
+					'comment_message' => $comment->message,
 					'created_time' => $created->toString ( 'yyyy-MM-dd HH:mm:ss' ),
 					'comment_likes_count' => isset ( $comment->likes ) ? $comment->likes : 0 
 			);

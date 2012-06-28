@@ -33,22 +33,16 @@
 			var baseAppUrl = "<?= $this->serverUrl() .'/app/app/' ?>";
 			var appId = <?= $this->layout()->appKey ?>;
 
-			FB.init({
-			 appId  : appId,
-			 status : true, // check login status
-			 cookie : true, // enable cookies to allow the server to access the session
-			 xfbml  : true// parse XFBML
-			 });
 			window.fbAsyncInit = function() {
+				FB.init({
+					 appId  : appId,
+					 status : true, // check login status
+					 cookie : true, // enable cookies to allow the server to access the session
+					 xfbml  : true// parse XFBML
+				});
 				FB.Canvas.setAutoResize(10);
 				//FB.Canvas.setSize();
 			};
-			(function() {
-		        var e = document.createElement('script'); e.async = true;
-		        e.src = document.location.protocol
-		            + '//connect.facebook.net/en_US/all.js';
-		        document.getElementById('fb-root').appendChild(e);
-		    }());
 		 </script>
 	 	<!-- End of iframe initialization -->
         <script src="/js/fancrank.js"></script>
@@ -85,7 +79,7 @@
         
     </head>
 
-    <body controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
+    <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
     	<div id="fb-root"></div>
         <div class="navbar navbar-fixed-top">
             <?= $this->layout()->navbar ?>
