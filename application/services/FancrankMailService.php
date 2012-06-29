@@ -22,17 +22,19 @@ class Service_FancrankMailService {
 		$mail->setBodyHtml($err);
 		$mail->setFrom($this->_server, 'fancrank');
 		
-		if(count($this->_mailList) === 1) {
+		if(count($this->_mailList->email) === 1) {
 			$mailTo = $this->_mailList->email;
 			$mail->addTo($mailTo->address, $mailTo->name);
-		}else if(count($this->_mailList) > 1) {
+		}else if(count($this->_mailList->email) > 1) {
 			foreach ($this->_mailList->email as $mailTo) {
 				$mail->addTo($mailTo->address, $mailTo->name);
-			}			
+			}
+		}else {
+			return;
 		}
 
 		$date = Zend_Date::now();
-		$mail->setSubject('Cron Job Error Notifiation: ' .$date->getDate().PHP_EOL);
+		$mail->setSubject('Cron Job Error Notifiation: ' .$date->toString(Zend_date::ISO_8601).PHP_EOL);
 		try {
 			$mail->send($this->_smtpConnection);
 		} catch (Exception $e) {

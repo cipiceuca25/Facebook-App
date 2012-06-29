@@ -44,10 +44,10 @@ class Service_FancrankCollectorService {
 	public function fullScanFanpage() {
 		$start = time();
 		$this->collectFanpageInitInfo();
-		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/feed?limit=1000&access_token=' .$this->_accessToken .'&' .$since=0;
+		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/feed?access_token=' .$this->_accessToken .'&' .$since=0;
 		$posts = array();
 		
-		$this->getPostsRecursive($url, 10, 1000, $posts);
+		$this->getPostsRecursive($url, 5, 1000, $posts);
 		//Zend_Debug::dump($posts);
 		
 		if(empty($posts)) {
@@ -230,13 +230,17 @@ class Service_FancrankCollectorService {
 		$curlReturn = $this->httpCurl($query[0], $params, 'get');
 		try {
 			$response = json_decode($curlReturn);
+			if(!empty($response->error)) throw new Exception($response->error->message);
 			$url = !empty($response->paging->next) ? $response->paging->next : null;
 			if(! empty($response->data)) {
 				$result = array_merge((array)$result, (array)$response->data);
 			}
 			$this->getPostsRecursive($url, $level, $limit, $result);
 		} catch (Exception $e) {
-			return array();
+			$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
+			$msg = sprintf('Unable to fetch feed from fanpage %s. Error Message: %s ', $this->_fanpageId, $e->getMessage ());
+			$collectorLogger->log($msg , Zend_log::ERR );
+			throw new Exception($msg);
 		}
 	}
 

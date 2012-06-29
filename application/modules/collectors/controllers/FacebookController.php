@@ -26,7 +26,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
 
     public function testAction() {
-    	$fanpageId = "65558608937";
+    	$fanpageId = "216821905014540";
     	$accessToken="AAAFWUgw4ZCZB8BAC8poutSZBFRW3RGpy4hMm61xT4yVhBMMO5gFk1RNA8CZCmr01QhsTpnTlPMp2qSnk3uZBruW6GjczomssAPKpaHL8BS1OfNde44VBe";
     	//$result = Collector::run(null, $fanpageId, $accessToken, 'update');
     	Collector::run(null, $fanpageId, $accessToken, 'full');

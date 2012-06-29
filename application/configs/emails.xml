@@ -9,5 +9,9 @@
 			<name>dan</name>
 			<address>dan@fancrank.com</address>
 		</email>
+		<email>
+			<name>lyon</name>
+			<address>lyon@fancrank.com</address>
+		</email>
 	</cron_mail>
 </emails>

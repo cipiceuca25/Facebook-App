@@ -60,7 +60,7 @@ if (count($messages) > 0) {
  
     foreach ($messages as $message) {
         $job = Zend_Json::decode($message->body, Zend_Json::TYPE_OBJECT);
-
+		Zend_Debug::dump($job);
         try {
         	Collector::run($job->url, $job->fanpage_id, $job->access_token, $job->type);
         	// We have processed the message; now we remove it from the queue.
@@ -71,9 +71,10 @@ if (count($messages) > 0) {
         		$queue->deleteMessage($message);
         		$fmail = new Service_FancrankMailService();
         		$errMsg = sprintf('Error on job: %s <br/>fanpage_id: %s <br/>access_token: %s<br/> type: %s<br/>', $job->url, $job->fanpage_id, $job->access_token, $job->type); 
-        		$fmail->sendErrorMail($errMsg .'system message: ' .$e->getMessage());
+        		$fmail->sendErrorMail($errMsg .'System message: ' .$e->getMessage());
         		$logger->log('Queue Failed: ' .$e->getMessage(), Zend_Log::INFO);
         	} catch (Exception $e) {
+        		print $e->getMessage();
         		//return;
         	}
          }
