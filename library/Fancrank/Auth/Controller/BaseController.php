@@ -62,10 +62,6 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         }
     } 
     
-    public function renewtokenAction() {
-    	$user = $this->oauth2(false, false);
-    }
-
     private function oauth2($authenticate = false, $user_id = false)
     {
     	$code = $this->_getParam('code', false);
@@ -127,8 +123,8 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         } else {
             // redirect the user to facebook login
             $extra_parameters = http_build_query($this->config->extra_parameters->redirect->toArray());
-            //$this->redirect(0, sprintf('%s?client_id=%s&redirect_uri=%s&%s', $this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
-            $this->redirect(0, sprintf('%s?signed_request=%s&client_id=%s&redirect_uri=%s&%s',isset($_REQUEST['signed_request'])?$_REQUEST['signed_request']:'',$this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
+            $this->redirect(0, sprintf('%s?client_id=%s&redirect_uri=%s&%s', $this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
+            //$this->redirect(0, sprintf('%s?signed_request=%s&client_id=%s&redirect_uri=%s&%s',isset($_REQUEST['signed_request'])?$_REQUEST['signed_request']:'',$this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
         }
     }
 

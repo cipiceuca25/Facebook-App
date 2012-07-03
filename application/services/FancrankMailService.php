@@ -21,8 +21,8 @@ class Service_FancrankMailService {
 		//$mail->setBodyText($err);
 		$mail->setBodyHtml($err);
 		$mail->setFrom($this->_server, 'fancrank');
-		
-		if(count($this->_mailList->email) === 1) {
+
+		if(! $this->is_multi_array($this->_mailList->email->toArray())) {
 			$mailTo = $this->_mailList->email;
 			$mail->addTo($mailTo->address, $mailTo->name);
 		}else if(count($this->_mailList->email) > 1) {
@@ -39,8 +39,16 @@ class Service_FancrankMailService {
 			$mail->send($this->_smtpConnection);
 		} catch (Exception $e) {
 			//Log Fail Mail
-			echo $e->getMessage();
+			throw new Exception($e->getMessage());
 		}
 	}
+	
+	private function is_multi_array($a) {
+	    foreach ($a as $v) {
+	        if (is_array($v)) return true;
+	    }
+	    return false;
+	}
+	
 }
 ?>

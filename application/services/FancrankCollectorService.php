@@ -150,7 +150,7 @@ class Service_FancrankCollectorService {
 		$this->getLikesFromMyPostRecursive($posts, $this->_fanpageId, $this->_accessToken, 0, $postLikeList);
 
 		$commentsList = array();
-		$this->getQueryRecursive($posts, 'comments', $this->_fanpageId, $this->_accessToken, 0, $commentsList);
+		$this->getQueryRecursive($posts, 'comment', $this->_fanpageId, $this->_accessToken, 0, $commentsList);
 		//get all the likes from all comments
 		//Zend_Debug::dump($commentsList);
 		
@@ -313,7 +313,7 @@ class Service_FancrankCollectorService {
 						//echo $like->id .' ' .$like->name . 'likes ' .$postIdsGroup[$groupKey][$key] .'<br />';
 						$post_type = 'post';
 						if(substr_count($postIdsGroup[$groupKey][$key], '_') === 2) {
-							$post_type = 'comments';
+							$post_type = 'comment';
 						}
 						$likesList[] = array(
 								'fanpage_id'        => $fanpageId,
@@ -574,7 +574,7 @@ class Service_FancrankCollectorService {
 		foreach ($commentList as $comment) {
 			$post_type = 'photo';
 			if(substr_count($comment->id, '_') === 2) {
-				$post_type = 'comments';
+				$post_type = 'comment';
 			}
 			if(!empty($comment->like_count) && $comment->like_count >= 1) {
 				$result = array();

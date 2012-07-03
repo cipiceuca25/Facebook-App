@@ -26,12 +26,26 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
 
     public function testAction() {
-    	$fanpageId = "216821905014540";
+    	$fanpageId = "65558608937";
     	$accessToken="AAAFWUgw4ZCZB8BAC8poutSZBFRW3RGpy4hMm61xT4yVhBMMO5gFk1RNA8CZCmr01QhsTpnTlPMp2qSnk3uZBruW6GjczomssAPKpaHL8BS1OfNde44VBe";
     	//$result = Collector::run(null, $fanpageId, $accessToken, 'update');
-    	Collector::run(null, $fanpageId, $accessToken, 'full');
+    	//Collector::run(null, $fanpageId, $accessToken, 'full');
+    	$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
+    	$db = Zend_Db::factory($config->resources->db);
+    	$result = $db->query("SELECT * FROM message m WHERE m.body LIKE '%\"$fanpageId\"%'")->fetchAll();
+    	Zend_Debug::dump($result);
     }
 
+    public function extendAction() {
+    	$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', 'production');
+    	$this->config = $sources->get('facebook');
+    	$token = 'AAAFWUgw4ZCZB8BAABe72sQZBMqLKI8uOGVf8akenwLjo7ZC0kjgIgQGS4ZCvj2spTKoOcSUSTTZBZBgwXxLljEZAqgDX7WalTYZAZCt7ZCMlW9BMQZDZD';
+    	$token_url = "https://graph.facebook.com/oauth/access_token?client_id=".$this->config->client_id."&client_secret=".$this->config->client_secret."&grant_type=fb_exchange_token&fb_exchange_token=".$token;
+    	
+    	echo $token_url;
+   	
+    }
+    
     public function testmailAction() {
     	echo 'mail test'; exit();
 		$fmail = new Service_FancrankMailService();
