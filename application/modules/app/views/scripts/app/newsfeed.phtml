@@ -1,0 +1,29 @@
+<div id="intro">
+	<div class="portrait"><img src="<?= $this->facebook_user->facebook_user_avatar ?>" /></div>
+    <div class="title c1"><span><?= $this->facebook_user->facebook_user_first_name ?>'s News Feed </span></div>
+</div>
+
+<div id="myposts">
+	<div class="fb-comments" data-href="http://www.fancrank.local/app/app/post" data-num-posts="5" data-width="550" data-height="450"></div>
+</div>
+
+<div id="top-posts" style="float:left; width: 250px; height: 350px;">
+	<div class="subtitle c1">
+    	<img src="/img/news-feed/icon-star.png" /> Top Posts this Week <img src="/img/news-feed/icon-star.png" />
+    </div>
+</div>
+
+<div id="fancrank-feed" style="float: left; width: 450px; height: 350px;">
+	<div class="subtitle c1">
+    	<img src="/img/news-feed/icon-star.png" /> Fancrank Feed <img src="/img/news-feed/icon-star.png" />
+    </div>
+    <div class="fb-activity" data-site="www.fancrank.local" data-app-id="359633657407080" data-width="450" data-height="300" data-header="true" data-recommendations="false"></div>
+</div>
+
+
+<div class="fb-like" data-send="true" data-width="350" data-show-faces="true"></div>
+
+<script src="/js/app/app/newsfeed.js">
+var user_id = "<?= $this->facebook_user->facebook_user_id ?>";
+var pageaccessToken = "<?= $this->facebook_user->facebook_user_access_token ?>";
+</script>

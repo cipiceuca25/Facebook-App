@@ -1,0 +1,44 @@
+<h2>Fanpages</h2>
+<table class="table-striped">
+	<thead>
+		<th>Name</th>
+		<th>Category</th>
+		<th></th>
+		<th></th>
+		<th></th>
+	</thead>
+	<tbody>
+	<?php foreach($this->pages as $page): ?>
+		<?php
+			$url = 'https://www.facebook.com/pages/' . str_replace(' ', '-', $page['fanpage_name']) . '/' . $page['fanpage_id'];
+		?>
+		<tr id="<?= $page['fanpage_id'] ?>">
+			<td class="name"><a href="<?= $url ?>"><img src="http://graph.facebook.com/<?=  $page['fanpage_id'] ?>/picture"></a><a href="<?= $url ?>"><?= $page['fanpage_name'] ?></a></td>
+			<td class="category">
+				<?php if ( !empty($page['category']) ): ?>
+					<span><?= $page['category'] ?></span>
+				<?php endif; ?>
+			</td>
+			<td class="status">
+				<?php if ( !empty($page['active']) ): ?>
+					<button class="deactivate btn btn-danger" rel="tooltip" title="Turn off data collection for this page" data-id="<?= $page['fanpage_id'] ?>">Deactivate</button>
+				<?php else: ?>
+					<button class="activate btn btn-success" rel="tooltip" title="Turn on data collection for this page" data-id="<?= $page['fanpage_id'] ?>">Activate</button>
+				<?php endif; ?>
+			</td>
+			<td class="tab">
+				<?php if ( !empty($page['installed']) ): ?>
+					<button class="install-tab btn btn-success disabled" rel="tooltip" title="Fancrank is already installed" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
+				<?php elseif( !empty($page['active']) ): ?>
+					<button class="install-tab btn btn-success" rel="tooltip" title="Install the fancrank app on you page" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
+				<?php endif; ?>
+			</td>
+			<td class="preview">
+				<?php if ( !empty($page['active']) ): ?>
+					<button class="app btn btn-success" rel="tooltip" title="See fancrank working with your data" data-id="<?= $page['fanpage_id'] ?>">Preview</button>
+				<?php endif; ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+	</tbody>	
+</table>

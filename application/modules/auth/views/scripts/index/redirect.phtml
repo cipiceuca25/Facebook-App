@@ -1,0 +1,26 @@
+<div class="center redirect">
+    <div>
+        <p>Redirecting you to the application. This may take a few moments.</p>
+        <p>If your browser doesn't redirect you please click <a href="<?= $this->url ?>">here</a> to continue</p>
+        <br/>
+        <center><img src="/images/elements/loading.gif"/></center>
+    </div>
+</div>
+<script type="text/javascript">
+
+    jQuery(document).ready(function($){
+
+        $('a').click(function(event){
+            event.preventDefault();
+            self.close();
+
+         if (!document.referrer) {
+            this.focus();
+            self.close();
+        }
+        
+        (function(){ window.location.href = "<?= $this->url ?>" }).delay(<?= $this->delay * 1000 ?>);
+        
+    });
+    
+</script>

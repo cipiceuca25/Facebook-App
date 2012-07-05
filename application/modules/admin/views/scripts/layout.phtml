@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="imagetoolbar" content="no"/>
+
+        <meta http-equiv="Content-Language" content="en"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <meta name="description" content="Fancrank Inc."/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+        <meta name="author" content="FanCrank" />
+        <meta name="generator" content="" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+        <script src="/js/libs/jquery.min.js"></script>
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+
+        <script src="/js/libs/Jaml.js"></script>
+        <script src="/js/libs/Node.js"></script>
+        <script src="/js/libs/Template.js"></script>
+
+        <script src="//connect.facebook.net/en_US/all.js"></script>
+
+        <script src="/js/fancrank.js"></script>
+
+        <?= $this->headScript(); ?>
+        
+        <? if (APPLICATION_ENV == 'development'): ?>
+            <link href="/css/style.less" rel="stylesheet/less"/>
+            <script src="/js/libs/less-1.3.0.min.js"></script>
+            <script type="text/javascript">
+                env = 'development';
+
+                less = {};
+                less.env = 'development';
+
+            </script>
+            <script src="/js/libs/less-1.3.0.min.js"></script>
+        <? else: ?>
+            <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+        <? endif ?>
+
+        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+
+    <body controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>">
+        <div class="navbar navbar-fixed-top">
+            <?= $this->layout()->navbar ?>
+        </div>
+
+        <div class="container" role="main">
+                <?= APPLICATION_ENV ?>
+                <?= $this->layout()->content ?>
+        </div>
+
+        <div id="fb-root"></div>
+    </body>
+</html>

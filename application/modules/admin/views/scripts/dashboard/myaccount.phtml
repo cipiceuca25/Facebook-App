@@ -1,0 +1,20 @@
+
+<form class="form-horizontal" name="account" method="/api/users/<?= $this->user_id  ?>">
+  <fieldset>
+    <legend><?= $this->user_first_name ?> <?= $this->user_last_name ?>'s Settings</legend>
+
+    <div class="control-group">
+      <label class="control-label" for="user_email">Email</label>
+      <div class="controls">
+        <input type="user_email" class="input-xlarge" name="user_email" value="<?= $this->user_email ?>">
+        <p class="help-block">Change your email</p>
+      </div>
+    </div>
+
+    <div class="control-group">
+    	<div class="controls">
+    		<button type="submit" class="btn btn-success user-save" >Save</button>
+    	</div>
+    </div>
+  </fieldset>
+</form>
