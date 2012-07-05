@@ -36,7 +36,8 @@ class Model_Posts extends Model_DbTable_Posts
 	
 	public function insertPost($fanpage_id, $post)
 	{
-		
+
+		//$filter = new Zend_Filter_Input($filterRules, $validatorRules);
 		$data = array(
 				'post_id'			=>	$post['activityid'],
 				'facebook_user_id'	=>	$post['fromid'],
@@ -57,7 +58,6 @@ class Model_Posts extends Model_DbTable_Posts
 		$insert = $this->getAdapter()->insert(array('posts' => 'posts'), $data);
 	
 	}
-	
 
 }
 

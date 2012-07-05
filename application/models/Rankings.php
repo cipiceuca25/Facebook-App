@@ -53,6 +53,7 @@ class Model_Rankings extends Model_DbTable_Rankings
                    	) AS topfans
 					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id)
 					GROUP BY fans.facebook_user_id
+					HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')                    		
 					ORDER BY number_of_posts DESC";
 		
 		if($limit !== false)
@@ -81,6 +82,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 			) AS posts_count
 			INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id)
 			GROUP BY fans.facebook_user_id
+			HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')			
 			ORDER BY number_of_posts DESC";
 			
 		if($limit !== false)
@@ -101,6 +103,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 			) AS likes_count
 			INNER JOIN fans ON (fans.facebook_user_id = likes_count.facebook_user_id)
 			GROUP BY fans.facebook_user_id
+			HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')						
 			ORDER BY number_of_likes DESC";
 	
 		if($limit !== false)
@@ -123,6 +126,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 					) AS favorite
 					INNER JOIN fans ON (fans.facebook_user_id = favorite.facebook_user_id)
 					GROUP BY favorite.facebook_user_id
+					HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')
 					ORDER BY count DESC";
 		
 		if($limit !== false)
@@ -131,5 +135,16 @@ class Model_Rankings extends Model_DbTable_Rankings
 		return $this->getAdapter()->fetchAll($select);
 	
 	}
+	
+	public function getTopPosts($page_id, $limit=5) {
+		$select = "SELECT p.*, count(*) AS count FROM likes l INNER JOIN posts p ON(l.post_id = p.post_id)
+				WHERE p.facebook_user_id != l.fanpage_id AND l.fanpage_id = '". $page_id ."' GROUP BY p.post_id ORDER BY count DESC";
+		
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+		
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
 }
 

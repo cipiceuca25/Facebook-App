@@ -7,15 +7,20 @@ class Api_UsersController extends Fancrank_API_Controller_BaseController
 		parent::preDispatch();
 
 		//lets validate the data ^_^ (maybe make validation in an ini file with inheritence structure that will validate in a predispatch at a lower level?)
-
 	}
 
+	
 	public function init()
 	{
 		parent::init();
 		
-		$this->user = $this->model->findRow($this->_getParam('id'));
+		//$this->user = $this->model->findRow($this->_getParam('id'));
 	}
+	
+	public function indexAction() {
+			
+	}
+	
 	public function updateAction()
 	{	
 		if ($this->user->user_id == $this->_getParam('id')) {
@@ -34,4 +39,12 @@ class Api_UsersController extends Fancrank_API_Controller_BaseController
 			$this->_response->setHttpResponseCode(403);
 		}
 	}
+	
+	public function followAction() {
+		$subcriber = new Model_Subscribes();
+		$result = $subcriber->fetchAll();
+		Zend_Debug::dump($result);
+		echo 'follow';
+	}
+	
 }

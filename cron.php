@@ -68,7 +68,7 @@ if (count($messages) > 0) {
          }catch (Exception $e) {
         	try {
         		//remove error message from the queue
-        		$queue->deleteMessage($message);
+        		//$queue->deleteMessage($message);
         		$fmail = new Service_FancrankMailService();
         		$errMsg = sprintf('Error on job: %s <br/>fanpage_id: %s <br/>access_token: %s<br/> type: %s<br/>', $job->url, $job->fanpage_id, $job->access_token, $job->type); 
         		$fmail->sendErrorMail($errMsg .'System message: ' .$e->getMessage());

@@ -298,7 +298,14 @@ class Model_DbTable_Posts extends Fancrank_Db_Table
     {
         return $this->findParentRow(new Model_DbTable_Fanpages(), null, $select);
     }
+    
+    public function findByUserIdAndFanpageId($userId, $fanpageId) {
+    	if(empty($userId) || empty($fanpageId)) {
+    		return array();
+    	}
 
-
+    	$where = $this->getAdapter()->quoteInto('fanpage_id = ?', $fanpageId) .' AND ' .$this->getAdapter()->quoteInto('facebook_user_id = ?', $userId);
+    	return $this->fetchAll($where);
+    }
 }
 

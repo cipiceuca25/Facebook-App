@@ -10,12 +10,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		}
 		try {
 			$fanpageId = Zend_Registry::get('fanpageId');
-			echo 'fanpageId: ' .$fanpageId;
+			//echo 'fanpageId: ' .$fanpageId;
 			$this->data['page']['id'] = $fanpageId;
 		} catch (Exception $e) {
 			$fanpageId = $this->_getParam('id');
 		}
-		parent::preDispatch();
+		//parent::preDispatch();
 	}
 	
     public function indexAction()
@@ -112,6 +112,20 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$data = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
     	 
     	return $data;
+    }
+    
+    public function toppostAction() {
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$result = array();
+    	try {
+    		$topPosts = new Model_Rankings();
+    		$result = $topPosts->getTopPosts($this->data['page']['id']);
+    		Zend_Debug::dump($result);
+    		return $result;
+    	} catch (Exception $e) {
+    		return array();
+    	}
     }
     
     public function logoutAction()
