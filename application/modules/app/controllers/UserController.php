@@ -23,6 +23,14 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 
 	}
 	
+	public function profileAction() {
+		$user = new Model_FacebookUsers();
+		$user = $user->find($this->_getParam('id'))->current();
+		if($user) {
+			$this->_helper->json($user->toArray());
+		}
+	}
+	
 	public function postAction() {
 		//TODO
 		Zend_Debug::dump($this->_request->getParams());
