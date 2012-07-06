@@ -11,9 +11,7 @@
     <div id="content">
     
     	<div class="container">
-    		<div id="stylechange">Color Set 1</div>
-    		<div id="stylechange2">Color Set 2</div>
-    		<div id="stylechange3">Color Set 3</div>
+    	
 			<div class="tabbable">
 					
 				<ul class="nav nav-tabs">
@@ -770,24 +768,7 @@ function autoGrowTimer() { //Can be removed.
 
 <script>
 		
-		$("#stylechange").click(function() {
-				document.getElementById('stylesheet').href='/css/loadstyle1.less';
-				less.env = "development";
-				less.watch();
-		});
-		
-		
-		$("#stylechange2").click(function() {
-			document.getElementById('stylesheet').href='/css/loadstyle2.less';
-			less.env = "development";
-			less.watch();
-		});
-
-		$("#stylechange3").click(function() {
-			document.getElementById('stylesheet').href='/css/loadstyle3.less';
-			less.env = "development";
-			less.watch();
-		});
+	
 		
 		
 		$('#news-feed a').click(function (e) {
