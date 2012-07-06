@@ -4,7 +4,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 {
 	public function preDispatch() {
 		if (APPLICATION_ENV != 'production') {
-			$this->data['page']['id'] = '178384541065';
+			$this->data['page']['id'] = '65558608937';
 			//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
 			$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
 		}

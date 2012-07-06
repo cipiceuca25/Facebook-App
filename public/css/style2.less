@@ -1,0 +1,584 @@
+@import url('/bootstrap/css/bootstrap.css');
+
+@color-dark-green:#006600;
+@color-light-green:#669934;
+@color-olive: #DFEBD5;
+@color-pink:#ff3366;
+@color-dark-cyan:#267675;
+@color-cyan:#3398cc;
+@color-light-gray:#eeeeee;
+@color-dark-gray:#cccccc;
+@color-orange:#ff6600;
+@color-purple:#993365;
+@color-strong-pink:#fe0032;
+@color-text-gray:#333;
+
+.icon-star{
+	vertical-align:middle;
+	line-height:40px;
+}
+
+ul, ol { 
+	list-style-type:none;
+	margin:0; 
+	padding:0; 
+}
+
+/* NAVIGATOR */
+
+/*==================================================*/
+
+.nav-tabs{
+	border-bottom:1px solid @color-dark-green;
+}
+
+.nav-tabs .active  a, .nav-tabs .active a:hover{
+	border:1px solid @color-dark-green;
+	border-bottom-color:transparent;
+}
+
+.nav-tabs li a{
+	background-color:@color-light-green;
+	color:white;
+}
+
+.nav-tabs li a:hover{
+	color:@color-light-green;
+}
+
+
+/* TITLES */
+
+/*==================================================*/
+
+.title, 
+.subtitle,
+.subtitle-dark{
+	height:80px;
+	background-color:white;
+	
+}
+
+.title .photo{
+	z-index:2;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	background-color:white;
+	position:absolute;
+	border: 5px solid @color-dark-green;
+}
+
+
+.title .photo img{
+	border: 5px solid @color-pink;
+	width:60px;
+	height:60px;
+}
+
+.title-header,
+.title-header-dark
+{
+	display:inline-block;
+	background-color:@color-light-green;
+	width:100%;
+	height:40px;
+	margin-top:20px;
+	margin-bottom:30px;
+}
+
+.title-header-dark{
+	background-color:@color-dark-green;
+}
+
+.title h2, 
+.subtitle h2{
+	margin-left:95px;
+	color:white;
+	line-height:40px;
+}
+
+.subtitle h2{
+	margin-left:10px;
+}
+
+/* TOP POSTS BUBBLES */
+
+/*==================================================*/
+
+/***** Common Classes ******/
+
+.bubble {
+	margin-left:0px;
+	margin-top:10px;
+	font:12px Arial, Helvetica, sans-serif;
+
+}
+
+.bubble li {
+	padding-top:20px;
+	margin-bottom:10px;
+	background:url(../img/news-feed/bg-bubble-top.png) top center no-repeat;
+	background-size:300px;
+}
+
+.bubble .post {
+	padding:0 20px;
+	color:#FFF;	
+}
+
+.bubble .post a {
+	display:block;
+	color:#FFF;
+
+}
+
+.bubble .post .date {
+	font-size:11px;	
+}
+
+.bubble .post a:hover {
+	color:#EEE;
+	text-decoration:none;
+}
+
+.bubble .info {
+	position:relative;
+	font-weight:bold;
+	
+}
+
+.bubble .likes {
+	font-weight:normal;	
+}
+
+.bubble .photo {
+	position:absolute;
+}
+
+.bubble .photo img {
+	width:30px;
+	height:30px;	
+}
+
+
+
+/***** Chat Right Bubbles ******/
+
+.bubble .chat-right {
+	background-color:@color-dark-cyan; /* DYNAMIC */
+}
+
+.bubble .chat-right .info {
+	background:url(../img/news-feed/bg-bubble-bottom-right.png) top center no-repeat;
+	background-size:300px;
+}
+
+.bubble .chat-right .name {
+	padding:27px 73px 0 0;
+	text-align:right;
+}
+
+.bubble .chat-right .photo {
+	top:30px;
+	right:40px;
+}
+
+/***** Chat Left Bubbles ******/
+
+.bubble .chat-left {
+	background-color:@color-cyan; /* DYNAMIC */
+}
+
+.bubble .chat-left .info {
+	background:url(../img/news-feed/bg-bubble-bottom-left.png) top center no-repeat;
+	background-size:300px;	
+}
+
+.bubble .chat-left .name {
+	padding:27px 0 0 73px;
+	text-align:left;
+
+}
+
+.bubble .chat-left .photo {
+	top:30px;
+	left:40px;
+}
+
+.grey-light {
+
+	background:@color-light-gray;	
+
+}
+
+.grey-dark {
+
+	background:@color-dark-gray;	
+
+}
+
+/* POST LISTINGS */
+
+/*==================================================*/
+
+.post-list {
+	padding-top:10px;	
+}
+
+.post-list li {
+	padding:10px;
+
+}
+
+.post-list .photo {
+	float:left;
+}
+
+.post-list .photo img {
+	width:32px;
+	height:32px;	
+}
+
+.post-list .post {
+	float:left;	
+	width:450px;
+	margin-left:10px;
+}
+
+.post-list .post img {
+	width:100%;
+	display:block;	
+}
+
+.post-list .post a {
+	display:block;	
+}
+
+.post-list .post a:hover {
+	text-decoration:none;
+}
+
+.post-list .name {
+	font-weight:bold;	
+}
+
+
+
+.post-list .social {
+	clear:both;
+	padding:5px 0 0 40px;
+}
+
+.post-list .likes {
+	margin-left:10px;	
+}
+
+.post-list .comment {
+	margin:0 10px;	
+}
+
+/* TOP LISTS */
+/*==================================================*/
+
+.top-list{
+	position:relative;
+	top:10px;
+	min-height:0px;
+	border-left: 1px solid @color-light-gray;
+	border-right: 1px solid @color-light-gray;
+	
+}
+
+.top-list .in{
+	border-top: 0px;
+
+}
+
+.top-list li{
+	padding: 0px;
+}
+
+.top-list .border-light,
+.top-list .border-dark{
+	border-top: 1px solid @color-light-gray;
+	width:620px;
+}
+
+.top-list .border-light{
+	background-color:white
+}
+
+.top-list .border-dark{
+	background-color:@color-light-gray;
+}
+
+.top-list .rank{
+	display:inline-block;
+	width:83px;
+	height:80px;
+	background-color:@color-light-green;
+}
+
+.top-list .rank.first{
+	background-color:@color-dark-green;
+}
+
+.top-list .rank h1{
+	background:url(../img/icon_pound.png) top left no-repeat;
+	color: white;
+	font: bold 50px/100% Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:80px;
+}
+
+
+
+.top-list .photo{
+	display:inline-block;
+	margin-left:10px;
+	border: 5px solid @color-text-gray;
+}
+
+.top-list .name{
+	margin-left:10px;
+	display:inline-block;
+	
+	vertical-align:middle;
+}
+
+
+.top-list .name a:hover{
+	color: @color-dark-green;
+}
+
+.top-list .name a{
+	font: bold 18px/100% Arial, Helvetica, sans-serif;
+	color: @color-light-green;
+}
+
+.top-list .name a.first{
+	font: bold 25px/100% Arial, Helvetica, sans-serif;
+}
+
+.top-list .points{
+	float:right;
+	position:relative;
+	right:10px;
+	top:22px;
+	color:@color-text-gray;
+
+}
+
+.top-list .points h2{
+	display:inline-block;
+	font-size:35px;
+}
+
+.top-list .points span{
+	
+	display:inline-block;
+	line-height:15px;
+}
+
+.shadow{
+	border-top: 1px solid @color-light-gray;
+	height:50px;
+	background:url(../img/bg_shadow.jpg) top center no-repeat;
+	text-align:center;
+	
+}
+
+#top-fans .shadow{
+	margin-top:10px;
+}
+
+.badge-follow{
+	background-color:@color-cyan;
+}
+
+.badge-following{
+	background-color:@color-orange;
+}
+
+.badge-friends{
+	background-color:@color-strong-pink;
+}
+.badge-follower{
+	background-color:@color-purple;
+}
+
+/*tips*/
+.tip {
+  position: relative;
+  z-index:2;
+  float:right;
+  top:-33px;
+  right:10px;
+  
+}
+ .tip a {
+  background: none repeat scroll 0 0 @color-dark-green;
+  border: 1px solid #333;
+  color: white;
+  cursor: pointer;
+  display: block;
+  font: bold 16px/100% Arial, Helvetica, sans-serif;
+  height: 20px;
+  padding: 3px 5px 0;
+  text-decoration: none;
+  width: 10px;
+}
+ .tip a:hover {
+  background: none repeat scroll 0 0 @color-olive;
+  border: 1px solid @color-dark-green;
+  color: #000;
+}
+
+
+/* my profile */
+/*==================================================*/
+
+.profile-block{
+
+	height:80px;
+}
+
+.profile-block.following{
+	float:left;
+	background-color:@color-orange;
+	width:160px;
+	margin-left:20px;
+}
+
+.profile-block.followers{
+	float:left;
+	background-color:@color-purple;
+	width:160px;
+}
+
+.profile-block.friends{
+	float:left;
+	background-color:@color-strong-pink;
+	width:158px;
+}
+
+
+.profile-block.fan-point .progress{
+	width:90%;
+	height:30px;
+
+}
+.profile-block.fan-point .progress .bar{
+	height:30px;
+	background-color: @color-dark-green;
+	background-image :none;
+}
+
+.profile-block .progress .bar{
+
+	background-color: @color-light-green;
+	background-image :none;
+}
+
+
+
+.span6.left{
+	width:478px;
+	background-color:@color-light-gray;
+	border-top: 1px solid @color-dark-gray;
+	border-bottom: 1px solid @color-dark-gray;
+	border-left:1px solid @color-dark-gray;
+	margin-top:10px;
+}
+
+.span6.right{
+	margin-left:0px;
+	border-top: 1px solid @color-dark-gray;
+	border-bottom: 1px solid @color-dark-gray;
+	border-right: 1px solid @color-dark-gray;
+	margin-top:10px;
+	background-color:@color-dark-gray;
+}
+
+.row.border{
+	border-top: 1px solid @color-dark-gray;
+	border-bottom: 1px solid @color-dark-gray;
+	margin-top:10px;
+	
+
+}
+
+.text-title{
+	margin-top:10px;
+	font: bold 14px/100% Arial, Helvetica, sans-serif;
+	color: @color-dark-green;
+}
+
+.text-title.gray{
+	color: @color-text-gray;
+}
+
+
+/*---BADGES---*/
+/*============================================*/
+
+.badges-list {
+	margin-top:10px;
+	border-left: 1px solid @color-light-gray;
+	border-right: 1px solid @color-light-gray;
+	border-top: 1px solid @color-light-gray;
+}
+
+.badges-list li{
+	border-bottom: 1px solid @color-light-gray;
+}
+
+.badges-list .percentage{
+	display:inline-block;
+	padding-left:10px;
+	
+}
+
+.badges-list .photo{
+	display:inline-block;
+	padding-left:10px;
+	
+}	
+.badges-list .stats{
+	display:inline-block;
+	padding-left:10px;
+	
+}	
+
+.badges{
+	z-index:2;
+	position:absolute;
+	
+}
+
+.badges-list .progress .bar{
+	height:50px;
+	background-color: @color-olive;
+	background-image :none;
+	
+}
+.badges-list .progress{
+	height:50px;
+	margin-bottom:0px;
+}
+
+
+
+/* awards */
+
+/*==================================================*/
+
+.awards-pic{
+	height:300px;
+}
+
+.awards{
+	height:80px;
+	background-color:@color-light-gray;
+}

@@ -20,10 +20,11 @@
 
         <script src="/js/libs/jquery-1.7.2.min.js"></script>
 		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
         <script src="/bootstrap/js/bootstrap.min.js"></script>
-    
         <script src="//connect.facebook.net/en_US/all.js"></script>
+        
 	    <!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
 			var baseAppUrl = "<?= $this->url() ?>";
@@ -47,7 +48,7 @@
         <?= $this->headScript(); ?>
 
         <? if (APPLICATION_ENV == 'development'): ?>
-            <link href="/css/style.less" rel="stylesheet/less"/>
+            <link href="/css/style2.less" rel="stylesheet/less"/>
             <script type="text/javascript">
                 env = 'development';
 
@@ -57,24 +58,25 @@
             </script>
             <script src="/js/libs/less-1.3.0.min.js"></script>
         <? else: ?>
-            <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+              <link href="/css/style.css" rel="stylesheet" type="text/css"/>
         <? endif ?>
 
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+      
         <style>
             .container, .navbar-fixed-top .container {
-                width: 810px;
+                width: 940px;
             }
         </style>
+       
     </head>
 
-    <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
+    <body style="overflow:auto;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
 
+    	<!-- 
         <div class="navbar navbar-fixed-top">
             <?= $this->layout()->navbar ?>
         </div>
-
+		-->
 		<div class="container" role="main">          
         	<?= $this->layout()->content ?>
         </div>

@@ -8,182 +8,778 @@
     
     <div id="content">
     
-        <div id="ranking">
-        
-			<div id="top_fans">
-		
-				<div class="tip"><a title="You are awesome and nobody can touch you!<br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
-				
-				<h2>Top Fan <span>|&nbsp;&nbsp;Most Active Fan</span></h2>
-				
-
-				<?php $count = 0; ?> 
-				
-				<div class="panel up">
-
-				<?php foreach($this->top_fans as $top_fan): ?>
-			
-					<div class="border<?= ($count == 0 ? ' first' : '') ?>">
+    	<div class="container">
+			<div class="tabbable">
 					
-						<div class="rank"><h2><?= $count + 1 ?></h2></div>
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#news-feed" data-toggle="tab">News Feed</a></li>
+					<li><a href="#top-fans" data-toggle="tab">Top Fans</a></li>
+					<li><a href="#profile" data-toggle="tab">My Profile</a></li>
+					<li><a href="#achievements" data-toggle="tab">Achievements</a></li>
+				</ul>
+    			<div class="tab-content">
+    				<div class="tab-pane active" id="news-feed">
+					
+						<div class="row">
+							<div class="span12">
+								<div class="title">
+									<div class="photo"> </div>
+									<div class="title-header"> <h2><i class="icon-star icon-white"></i> New's Feed <i class="icon-star icon-white"></i></h2> </div>
+								</div>
+							</div>
+						</div>
+					
+						<div class="row">
+							<div class="span4">
+									<div class="subtitle">
+										<div class="title-header-dark"> <h2><i class="icon-star icon-white"></i> Top Post This Week <i class="icon-star icon-white"></i></h2> </div>
+									</div>
+									
+										<ul class="bubble">
+											<?php $count = 0?>
+											<?php foreach($this->top_post as $topPost): ?>
+											
+											<?php if ($count % 2 == 0){?>
+											<li class="chat-right">
+											<?php }else{?>
+											<li class="chat-left">
+											<?php }?>
+												
+												<div class="post">
+													<a href=""><?= $topPost['post_message'] ?><br /><span class="date"><?= $topPost['updated_time']?></span></a>
+           
+												</div>
+													
+													<div class="info">
+														<div class="name"><a href=""><?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?></a><br /><img src="/img/news-feed/icon-likes.png" /> <?= $topPost['post_likes_count']?> <a href="" class="likes"> Like</a></div>
+														<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id'] ?>/picture"></a></div>
+														
+													</div>
+												
+											</li>
+
+											<?php $count ++;?>
+											<?php endforeach; ?>
+											
+										</ul>
+									
+							</div>
+							<div class="span8">
+									<div class="subtitle">
+										<div class="title-header"> <h2><i class="icon-star icon-white"></i> Fancrank Feed <i class="icon-star icon-white"></i></h2> </div>
+									</div>
+								
+									<ul class="post-list">
+										<li class="grey-light">
+											<div class="photo">photo</div>
+											<div class="post">message</div>
+											<div class="social"> social</div>
+										</li>
+										
+										<li class="grey-dark">
+											<div class="photo">photo</div>
+											<div class="post">message</div>
+											<div class="social"> social</div>
+										</li>
+									</ul>
+							</div>
+						</div>
+					</div>
+    			
+    				<div class="tab-pane" id="top-fans">
+						<div class="row">
+							<div class="span8">
+								<div class="top-fan">
+									<div class="title">
+										<div class="photo"> <img src="/img/news-feed/top-fan-icon.jpg" /> </div>
+										<div class="title-header"> <h2><i class="icon-star icon-white"></i> Top Fans <i class="icon-star icon-white"></i></h2>
+											<div class="tip"><a title="You are awesome and nobody can touch you!<br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
+										 </div>
+									</div>
+									<?php $count = 0; ?> 
+									<?php foreach($this->top_fans as $top_fan): ?>
+									
+									<?php if ($count == 0){?>
+								
+										<ul class="top-list">
+											<li>
+												<div class="border-dark">
+												
+														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+															<h1><?= $count + 1 ?></h1>
+														</div>
+														<div class="photo">
+															<a   target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
+														</div>
+														<div class="name">
+															<a class="first" target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><?= $top_fan['fan_first_name'] ?></a>
+															<br/>
+															<span class="badge badge-follow">Follow</span>
+														</div>
+														<div class="points">
+															<h2><?= $top_fan['number_of_posts'] ?></h2> <span>Points <br/>This Week</span>
+														</div>
+													</div>
+											</li>
+											
+										</ul>
+									<?php }else{ ?>
+										<?php if ($count == 1){?>
+											<ul  id="top-fans-collapse" class="top-list in">
+										<?php }?>
+											<li>
+											<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1><?= $count + 1 ?></h1>
+													</div>
+													<div class="photo">
+														<a   target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
+													</div>
+													<div class="name">
+														<a  <?php if ($count == 0){?>class='first')<?php }?> target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><?= $top_fan['fan_first_name'] ?></a>
+														<br/>
+														<span class="badge badge-follow">Follow</span>
+													</div>
+													<div class="points">
+														<h2><?= $top_fan['number_of_posts'] ?> </h2> <span>Points <br/>This Week</span>
+													</div>
+												</div>
+											</li>
+											
+									<?php }?>
+									<?php $count ++; ?>
+									<?php endforeach; ?>
+									</ul>
+									
+									<div class="shadow">
+										<button class="btn" id="top-fans-btn" data-toggle="collapse" data-target="#top-fans-collapse">
+												close
+										</button>
+									</div>
+								</div>
+								
+								<div class="fan-favorite">
+									<div class="title">
+										<div class="photo"> <img src="/img/news-feed/fan-fav-icon.jpg" /> </div>
+										<div class="title-header"> <h2><i class="icon-star icon-white"></i> Fan Favorite <i class="icon-star icon-white"></i></h2>
+											<div class="tip"><a title="People like you. Your mom was right!<br /><br />But <i>seriously</i>, your contribution is well regarded within the community. People like your posts and interact with you a lot.<br /><br />Keep up the good work!">?</a></div>
+										</div>
+									</div>
+									<?php $count = 0; ?> 
+									<?php foreach($this->most_popular as $popular): ?>
+									<?php if ($count == 0){?>
+									<ul class="top-list">
+											<li>
+												<div class="border-dark">
+												
+														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+															<h1><?= $count + 1 ?></h1>
+														</div>
+														<div class="photo">
+															<a   target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
+														</div>
+														<div class="name">
+															<a class="first" target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><?= $popular['fan_first_name'] ?></a>
+															<br/>
+															<span class="badge badge-follow">Follow</span>
+														</div>
+														<div class="points">
+															<h2><?= $popular['count'] ?> </h2> <span>Points <br/>This Week</span>
+														</div>
+													</div>
+											</li>
+											
+										</ul>
+									<?php }else{ ?>
+										<?php if ($count == 1){?>
+											<ul  id="fan-favorite-collapse" class="top-list in">
+										<?php }?>
+											<li>
+											<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1><?= $count + 1 ?></h1>
+													</div>
+													<div class="photo">
+														<a   target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
+													</div>
+													<div class="name">
+														<a  <?php if ($count == 0){?>class='first')<?php }?> target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><?= $popular['fan_first_name'] ?></a>
+														<br/>
+														<span class="badge badge-follow">Follow</span>
+													</div>
+													<div class="points">
+														<h2><?= $popular['count'] ?> </h2> <span>Points <br/>This Week</span>
+													</div>
+												</div>
+											</li>
+											
+									<?php }?>
+									<?php $count ++; ?>
+									<?php endforeach; ?>
+									</ul>
+																
+								
+									<div class="shadow">
+										<button class="btn" id="fan-favorite-member-btn" data-toggle="collapse" data-target="#fan-favorite-collapse">
+												close
+										</button>
+									</div>
+								</div>
+							
+								<div class="top-talker">
+									<div class="title">
+										<div class="photo"> <img src="/img/news-feed/top-talker-icon.jpg" /> </div>
+										<div class="title-header"> <h2><i class="icon-star icon-white"></i> Top Talker <i class="icon-star icon-white"></i></h2> 
+											<div class="tip"><a title="Loud and proud! You don't care what time of the night it is, you keep barking!<br /><br />But <i>seriously</i>, your posts and comments help shape the conversations.<br /><br />Keep it loud. Keep it proud.">?</a></div>
+										</div>
+									</div>
+									<?php $count = 0; ?> 
+									<?php foreach($this->top_talker as $talker): ?>
+									<?php if ($count == 0){?>
+									<ul class="top-list">
+											<li>
+												<div class="border-dark">
+												
+														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+															<h1><?= $count + 1 ?></h1>
+														</div>
+														<div class="photo">
+															<a   target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
+														</div>
+														<div class="name">
+															<a class="first" target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><?= $talker['fan_first_name'] ?></a>
+															<br/>
+															<span class="badge badge-following">Following</span>
+														</div>
+														<div class="points">
+															<h2><?= $talker['number_of_posts'] ?> </h2> <span>Points <br/>This Week</span>
+														</div>
+													</div>
+											</li>
+											
+										</ul>
+									<?php }else{ ?>
+										<?php if ($count == 1){?>
+											<ul  id="top-talker-collapse" class="top-list in">
+										<?php }?>
+											<li>
+											<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1><?= $count + 1 ?></h1>
+													</div>
+													<div class="photo">
+														<a   target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
+													</div>
+													<div class="name">
+														<a  <?php if ($count == 0){?>class='first')<?php }?> target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><?= $talker['fan_first_name'] ?></a>
+														<br/>
+														<span class="badge badge-friends">Friends</span>
+													</div>
+													<div class="points">
+														<h2><?= $talker['number_of_posts'] ?> </h2> <span>Points <br/>This Week</span>
+													</div>
+												</div>
+											</li>
+											
+									<?php }?>
+									<?php $count ++; ?>
+									<?php endforeach; ?>
+									</ul>
+									<div class="shadow">
+										<button class="btn" id="top-talker-btn" data-toggle="collapse" data-target="#top-talker-collapse">
+												close
+										</button>
+									</div>
+								</div>
+							
+								<div class="top clicker">
+										<div class="title">
+											<div class="photo"> <img src="/img/news-feed/top-clicker-icon.jpg" /> </div>
+											<div class="title-header"> <h2><i class="icon-star icon-white"></i> Top Clicker <i class="icon-star icon-white"></i></h2> 
+												<div class="tip"><a title="Is there anything you don't like? Even Lindsey Lohan has standards --insert chuckle--.<br /><br />But <i>seriously</i>, we're glad you take interest in your peers.<br /><br />Happy clicking!.">?</a></div>
+											</div>
+										</div>
+										
+										<?php $count = 0; ?> 
+									<?php foreach($this->top_clicker as $clicker): ?>
+									<?php if ($count == 0){?>
+									<ul class="top-list">
+											<li>
+												<div class="border-dark">
+												
+														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+															<h1><?= $count + 1 ?></h1>
+														</div>
+														<div class="photo">
+															<a   target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
+														</div>
+														<div class="name">
+															<a class="first" target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><?= $clicker['fan_first_name'] ?></a>
+															<br/>
+															<span class="badge badge-follow">Follow</span>
+														</div>
+														<div class="points">
+															<h2><?= $clicker['number_of_likes'] ?></h2> <span>Points <br/>This Week</span>
+														</div>
+													</div>
+											</li>
+											
+										</ul>
+									<?php }else{ ?>
+										<?php if ($count == 1){?>
+											<ul  id="top-clicker-collapse" class="top-list in">
+										<?php }?>
+											<li>
+											<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1><?= $count + 1 ?></h1>
+													</div>
+													<div class="photo">
+														<a   target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
+													</div>
+													<div class="name">
+														<a  <?php if ($count == 0){?>class='first')<?php }?> target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><?= $clicker['fan_first_name'] ?></a>
+														<br/>
+														<span class="badge badge-follower">Follower</span>
+													</div>
+													<div class="points">
+														<h2><?= $clicker['number_of_likes'] ?> </h2> <span>Points <br/>This Week</span>
+													</div>
+												</div>
+											</li>
+											
+									<?php }?>
+									<?php $count ++; ?>
+									<?php endforeach; ?>
+									</ul>
+										
+									 
+										<div class="shadow">
+											<button class="btn" id="top-fans-btn" data-toggle="collapse" data-target="#top-clicker-collapse">
+													close
+											</button>
+										</div>
+									</div>
+								
+							</div>
 						
-						<div class="photo">
-						
-							<a target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>
+							<div class="span4">
+									<div class="subtitle">
+											<div class="title-header-dark"> <h2><i class="icon-star icon-white"></i> Last Top Box <i class="icon-star icon-white"></i></h2> </div>
+									</div>
+									<ul class="bubble">
+											<?php $count = 0?>
+											<?php foreach($this->latest_post as $latestPost): ?>
+											
+											<?php if ($count % 2 == 0){?>
+											<li class="chat-right">
+											<?php }else{?>
+											<li class="chat-left">
+											<?php }?>
+												
+												<div class="post">
+													<a href=""><?= $latestPost['post_message'] ?><br /><span class="date"><?= $latestPost['updated_time']?></span></a>
+           
+												</div>
+													
+													<div class="info">
+														<div class="name"><a href=""><?= $latestPost['fan_first_name'] ?> <?= $latestPost['fan_last_name'] ?></a><br /><img src="/img/news-feed/icon-likes.png" /> <?= $latestPost['post_likes_count']?> <a href="" class="likes"> Like</a></div>
+														<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $latestPost['facebook_user_id'] ?>/picture"></a></div>
+														
+													</div>
+												
+											</li>
+
+											<?php $count ++;?>
+											<?php endforeach; ?>
+											
+										</ul>
+							</div>
 						
 						</div>
+
+					</div>
+				
+					<div class="tab-pane" id="profile">
+						<div class="row">
+							<div class="span12">
+								<div class="title">
+										<div class="photo"> photo </div>
+										<div class="title-header"> <h2><i class="icon-star icon-white"></i>my profile<i class="icon-star icon-white"></i></h2> </div>
+								</div>
+							</div>
+						</div>
 						
-						<div class="name"><a target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><?= $top_fan['fan_first_name'] ?></a></div>
+						<div class="row">
 						
-						<div class="points"><p><?= $top_fan['number_of_posts'] ?><span>Points<br>this Week</span></p></div>
+							<div class="span6 left">
+								
+								<div class="row ">
+									<div class="span2">
+										<div class="profile-block">
+											Level
+											<h2>18</h2>
+										</div>
+										
+									</div>
+									<div class="span4">
+										<div class="profile-block fan-point">
+											fan point
+											<div class="progress">
+												<div class="bar" style="width: 60%;">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row ">
+									<div class="span2">
+										<div class="profile-block">
+										rank
+										</div>
+									</div>
+									<div class="span2">
+										<div class="profile-block">
+										fan since
+										</div>
+									</div>
+									<div class="span2">
+										<div class="profile-block">
+										city
+										</div>
+									</div>
+								</div>		
+								<div class="row ">
+									
+										<div class="profile-block following">
+										following
+										</div>
+									
+									
+										<div class="profile-block followers">
+										followers
+										</div>
+									
+									
+										<div class="profile-block friends">
+										friends
+										</div>
+								
+								</div>
+								
+							</div>
+							
+							<div class="span6 right">
+								<div class="row">
+									<div class="span3">
+										<div class="profile-block">
+										overall achievement
+										<div class="progress">
+											<div class="bar" style="width: 60%;">
+											</div>
+										</div>
+										</div>
+									</div>
+								
+								</div>
+								<div class="row">
+									
+											<div class="span3">
+												<div class="profile-block">
+													personal achievement
+													<div class="progress">
+														<div class="bar" style="width: 60%;"></div>
+													</div>
+												</div>
+											</div>
+											
+											<div class="span3">
+												<div class="profile-block">
+													social achievement
+													<div class="progress">
+														<div class="bar" style="width: 60%;"></div>
+													</div>
+												</div>
+											</div>
+									
+								</div>
+								<div class="row">
+									<div class="profile-block">
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+									</div>
+								</div>	
+									
+							</div>
+							
+							
+							
+							
+						</div>
 						
-						<div class="clearfix"></div>
+						<div class="row">
+							<div class="span8">
+								<div class="subtitle">
+									<div class="title-header"> <h2><i class="icon-star icon-white"></i>Most Recent Activity<i class="icon-star icon-white"></i></h2> </div>
+								</div>
+								
+								<ul class="post-list">
+										<li class="grey-light">
+											<div class="photo">photo</div>
+											<div class="post">message</div>
+											<div class="social"> social</div>
+										</li>
+										
+										<li class="grey-dark">
+											<div class="photo">photo</div>
+											<div class="post">message</div>
+											<div class="social"> social</div>
+										</li>
+								</ul>
+								
+							</div>
+							
+							<div class="span4">
+								<div class="subtitle">
+									<div class="title-header"> <h2><i class="icon-star icon-white"></i>upcoming badges<i class="icon-star icon-white"></i></h2> </div>
+								</div>
+								
+								<div class="text-title">Completion</div>
+								
+								<ul class="badges-list">
+									<li>
+										<div class="badges">
+											<div class="percentage">100%</div>
+											<div class="photo">icon</div>
+											<div class="stats">test 100/100</div>
+										</div>
+										<div class="progress">
+											<div class="bar" style="width: 100%;">
+												
+											</div>
+										</div>
+										
+									</li>
+									<li>
+										<div class="badges">
+											<div class="percentage">50%</div>
+											<div class="photo">icon</div>
+											<div class="stats">test 50/100</div>
+										</div>
+										<div class="progress">
+											<div class="bar" style="width: 50%;"></div>
+										</div>
+									</li>
+									<li>
+										<div class="badges">
+											<div class="percentage">20%</div>
+											<div class="photo">icon</div>
+											<div class="stats">test 20/100</div>
+										</div>
+										<div class="progress">
+											
+											<div class="bar" style="width: 20%;">
+												
+											</div>
+										</div>
+									</li>
+								
+								</ul>
+							</div>
+							
+						</div>
+					</div>
 					
-					</div><!--end border -->
-					<?php $count ++; ?>
-				<?php endforeach; ?>
+					<div class="tab-pane" id="achievements">
+						<div class="row">
+							<div class="span12">
+								<div class="title">
+									<div class="photo"> photo </div>
+									<div class="title-header"> <h2><i class="icon-star icon-white"></i>user's awards<i class="icon-star icon-white"></i></h2> </div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="span12">
+								<div class="awards-pic">user's awards pic</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="span12">
+								<div class="awards">
+									<div>overall awards</div>
+									<div class="progress">
+										<div class="bar" style="width: 60%;">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							
+								<div class="span12">
+									<div class="awards">
+										<div class="row">
+											<div class="span4">
+												
+													<div>Achievements</div>
+													<div class="progress">
+														<div class="bar" style="width: 60%;">
+														</div>
+													</div>
+												
+											</div>
+											<div class="span4">
+												<div>metals</div>
+												<div class="progress">
+													<div class="bar" style="width: 60%;">
+													</div>
+												</div>
+											</div>
+											<div class="span4">
+												<div>ribbons</div>
+												<div class="progress">
+													<div class="bar" style="width: 60%;">
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+						</div>
+						
+						<div class="shadow"></div>
+						
+						
+						<div class="row">
+							<div class="span6">
+								<div class="text-title gray">Metals ?/?</div>
+								<div>
+									hello
+								</div>
+							</div>
+							
+							<div class="span6">
+								<div class="text-title gray">Ribbons ?/?</div>
+								<div>
+									hello
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				
 
 				</div>
-				
-				<div class="shadow"><p class="toggle flip">+ More</p></div>
-			
-			</div><!--end top_fans -->
-			
-			
-			<div id="fan_favorite">
-			
-				<div class="tip"><a title="People like you. Your mom was right!<br /><br />But <i>seriously</i>, your contribution is well regarded within the community. People like your posts and interact with you a lot.<br /><br />Keep up the good work!">?</a></div>
-			
-				<h2>Fan Favorite <span>|&nbsp;&nbsp;Received most likes</span></h2>
-				
-		  		<div class="panel up">	
+    		</div>
+   		</div>
+   		
+    
+    	
+     
+        
 
-		  			<?php if (!count($this->most_popular)): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-							<div class="name">NO FANS</div>
-		  				</div>
-		  			<?php endif; ?>
 
-		  			<?php $count = 0; ?>
+<!--
 
-		  			<?php foreach($this->most_popular as $popular): ?>
 
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
+<hr />
 
-	  						<div class="rank"><h2><?= $count + 1 ?></h2></div>
 
-	  						<div class="photo">
-							
-								<a target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>
-							
-							</div>
-							
-							<div class="name"><a target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><?= $popular['fan_first_name'] ?></a></div>
-							
-							<div class="points"><p><?= $popular['count'] ?><span>Got Liked<br />this Week</span></p></div>
-							
-							<div class="clearfix"></div>
-							<?php $count++; ?>
-		  				</div>
-		  			<?php endforeach; ?>
-			
-				</div><!--end panel -->
-			
-				<div class="shadow"><p class="toggle flip">+ More</p></div>
-			
-			</div><!--/end fans favorite -->
+<p>top talkers</p>
+
+<pre>
+<?= print_r($this->top_talkers) ?>
+</pre>
+
+<p>top clickers</p>
+
+<pre>
+<?= print_r($this->top_clickers) ?>
+</pre>
+
+<p>top fans</p>
+
+<pre>
+<?= print_r($this->top_fans) ?>
+</pre>
+
+<p>most popular</p>
+
+<pre>
+<?= print_r($this->most_popular) ?>
+</pre>
+
+-->
+
+<script src="text/javascript">
+window.onload = function() {
+	  FB.Canvas.setAutoGrow(91);
+	  setTimeout('autoGrowTimer();', 1000); //This is for demonstration
+	};
+
+function autoGrowTimer() { //Can be removed.
+  paragraphs_added++; //Increase the count
+  autoGrowDiv = document.getElementById('autoGrow');
+  //autoGrowDiv.innerHTML = autoGrowDiv.innerHTML + "<p>This is making the iframe taller.</p>";
+  //Stop after 50 paragraphs aded
+  if (paragraphs_added > 50) return;
+
+  setTimeout('autoGrowTimer();', 1000);
+}
+</script>
+
+<script>
+
+		$('#news-feed a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+		})
+
+		$('#fan-favorite a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+		})
 		
-			<div id="top_talker">
-				
-				<div class="tip"><a title="Loud and proud! You don't care what time of the night it is, you keep barking!<br /><br />But <i>seriously</i>, your posts and comments help shape the conversations.<br /><br />Keep it loud. Keep it proud.">?</a></div>
-				
-				<h2>Top Talker <span>|&nbsp;&nbsp;Most Comments</span></h2>
-				
-				<div class="panel up">
-					
-					<?php if (!count($this->top_talker)): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-							<div class="name">NO TALKER</div>
-		  				</div>
-		  			<?php endif; ?>
-
-		  			<?php $count = 0; ?>
-
-		  			<?php foreach($this->top_talker as $talker): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-
-	  						<div class="rank"><h2><?= $count + 1 ?></h2></div>
-
-	  						<div class="photo">
-							
-								<a target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>
-							
-							</div>
-							
-							<div class="name"><a target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><?= $talker['fan_first_name'] ?></a></div>
-							
-							<div class="points"><p><?= $talker['number_of_posts'] ?><span>Got Liked<br />this Week</span></p></div>
-							
-							<div class="clearfix"></div>
-							<?php $count++; ?>
-
-		  				</div>
-		  			<?php endforeach; ?>
-				
-				</div><!--end panel -->
-				
-				<div class="shadow"><p class="toggle flip">+ More</p></div>
-				
-			</div><!--end top_talker -->
-
-			
-			<div id="top_clicker">
-			
-				<div class="tip"><a title="Is there anything you don't like? Even Lindsey Lohan has standards --insert chuckle--.<br /><br />But <i>seriously</i>, we're glad you take interest in your peers.<br /><br />Happy clicking!.">?</a></div>
-				
-				<h2>Top Clicker <span>|&nbsp;&nbsp;Liked most items</span></h2>
-				
-				<div class="panel up">
-				
-					<?php if (!count($this->top_clicker)): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-							<div class="name">NO TALKER</div>
-		  				</div>
-		  			<?php endif; ?>
-
-		  			<?php $count = 0; ?>
-
-		  			<?php foreach($this->top_clicker as $clicker): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-
-	  						<div class="rank"><h2><?= $count + 1 ?></h2></div>
-
-	  						<div class="photo">
-							
-								<a target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>
-							
-							</div>
-							
-							<div class="name"><a target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><?= $clicker['fan_first_name'] ?></a></div>
-							
-							<div class="points"><p><?= $clicker['number_of_likes'] ?><span>Got Liked<br />this Week</span></p></div>
-							
-							<div class="clearfix"></div>
-							<?php $count++; ?>
-
-		  				</div>
-		  			<?php endforeach; ?>
-				
-				</div><!--end panel -->
-				
-				<div class="shadow"><p class="toggle flip">+ More</p></div>
-			
-			</div><!--end top_clicker -->
-	                
-	    </div><!--/end ranking -->
-	        
-	    <div class="clear"></div>
-	        
-	</div><!--/end content -->
-
-</div><!--/end wrapper -->
+		$('#profile a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+		})
+		
+		$('#achievements a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+		})
+</script>
