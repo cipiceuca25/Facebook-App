@@ -1,17 +1,36 @@
 @import url('/bootstrap/css/bootstrap.css');
 
-@color-dark-green:#006600;
-@color-light-green:#669934;
-@color-olive: #DFEBD5;
-@color-pink:#ff3366;
-@color-dark-cyan:#267675;
-@color-cyan:#3398cc;
-@color-light-gray:#eeeeee;
-@color-dark-gray:#cccccc;
-@color-orange:#ff6600;
-@color-purple:#993365;
-@color-strong-pink:#fe0032;
-@color-text-gray:#333;
+
+@color-base:@color-light-green;
+@color-dark:@color-dark-green;
+
+@color-title-border:@color-pink;
+@color-top-list-border: @color-text-gray;
+@color-hover:@color-dark-green;
+
+@color-background:@color-white;
+
+@color-bubble1: @color-cyan;
+@color-bubble2: @color-dark-cyan;
+
+@color-follow: @color-cyan;
+@color-follower: @color-purple;
+@color-following:@color-orange;
+@color-friends:@color-strong-pink;
+
+@color-feed:@color-light-gray;
+@color-feed2:@color-dark-gray;
+
+@color-title-text:@color-white;
+@color-text:@color-white;
+@color-text2:@color-text-gray;
+
+@color-badges:@color-olive;
+
+
+body{
+	background-color:@color-background;
+}
 
 .icon-star{
 	vertical-align:middle;
@@ -29,21 +48,23 @@ ul, ol {
 /*==================================================*/
 
 .nav-tabs{
-	border-bottom:1px solid @color-dark-green;
+	border-bottom:1px solid @color-dark;
 }
 
 .nav-tabs .active  a, .nav-tabs .active a:hover{
-	border:1px solid @color-dark-green;
+	border:1px solid @color-dark;
 	border-bottom-color:transparent;
+	color:@color-dark;
 }
 
 .nav-tabs li a{
-	background-color:@color-light-green;
 	color:white;
+	border-bottom:1px solid @color-dark;
+	background-color:@color-base;
 }
 
 .nav-tabs li a:hover{
-	color:@color-light-green;
+	color:@color-base;
 }
 
 
@@ -55,7 +76,7 @@ ul, ol {
 .subtitle,
 .subtitle-dark{
 	height:80px;
-	background-color:white;
+	background-color:@color-background;
 	
 }
 
@@ -66,12 +87,12 @@ ul, ol {
 	height:70px;
 	background-color:white;
 	position:absolute;
-	border: 5px solid @color-dark-green;
+	border: 5px solid @color-dark;
 }
 
 
 .title .photo img{
-	border: 5px solid @color-pink;
+	border: 5px solid @color-title-border;
 	width:60px;
 	height:60px;
 }
@@ -80,7 +101,7 @@ ul, ol {
 .title-header-dark
 {
 	display:inline-block;
-	background-color:@color-light-green;
+	background-color:@color-base;
 	width:100%;
 	height:40px;
 	margin-top:20px;
@@ -88,13 +109,13 @@ ul, ol {
 }
 
 .title-header-dark{
-	background-color:@color-dark-green;
+	background-color:@color-dark;
 }
 
 .title h2, 
 .subtitle h2{
 	margin-left:95px;
-	color:white;
+	color:@color-text;
 	line-height:40px;
 }
 
@@ -124,12 +145,12 @@ ul, ol {
 
 .bubble .post {
 	padding:0 20px;
-	color:#FFF;	
+	color:@color-text;	
 }
 
 .bubble .post a {
 	display:block;
-	color:#FFF;
+	color:@color-text;
 
 }
 
@@ -138,7 +159,7 @@ ul, ol {
 }
 
 .bubble .post a:hover {
-	color:#EEE;
+	color:@color-text;
 	text-decoration:none;
 }
 
@@ -166,7 +187,7 @@ ul, ol {
 /***** Chat Right Bubbles ******/
 
 .bubble .chat-right {
-	background-color:@color-dark-cyan; /* DYNAMIC */
+	background-color:@color-bubble1; /* DYNAMIC */
 }
 
 .bubble .chat-right .info {
@@ -187,7 +208,7 @@ ul, ol {
 /***** Chat Left Bubbles ******/
 
 .bubble .chat-left {
-	background-color:@color-cyan; /* DYNAMIC */
+	background-color:@color-bubble2; /* DYNAMIC */
 }
 
 .bubble .chat-left .info {
@@ -208,13 +229,13 @@ ul, ol {
 
 .grey-light {
 
-	background:@color-light-gray;	
+	background:@color-feed;	
 
 }
 
 .grey-dark {
 
-	background:@color-dark-gray;	
+	background:@color-feed2;	
 
 }
 
@@ -285,8 +306,8 @@ ul, ol {
 	position:relative;
 	top:10px;
 	min-height:0px;
-	border-left: 1px solid @color-light-gray;
-	border-right: 1px solid @color-light-gray;
+	border-left: 1px solid @color-feed;
+	border-right: 1px solid @color-feed;
 	
 }
 
@@ -301,27 +322,27 @@ ul, ol {
 
 .top-list .border-light,
 .top-list .border-dark{
-	border-top: 1px solid @color-light-gray;
+	border-top: 1px solid @color-feed;
 	width:620px;
 }
 
 .top-list .border-light{
-	background-color:white
+	background-color:@color-background
 }
 
 .top-list .border-dark{
-	background-color:@color-light-gray;
+	background-color:@color-feed;
 }
 
 .top-list .rank{
 	display:inline-block;
 	width:83px;
 	height:80px;
-	background-color:@color-light-green;
+	background-color:@color-base;
 }
 
 .top-list .rank.first{
-	background-color:@color-dark-green;
+	background-color:@color-dark;
 }
 
 .top-list .rank h1{
@@ -337,7 +358,7 @@ ul, ol {
 .top-list .photo{
 	display:inline-block;
 	margin-left:10px;
-	border: 5px solid @color-text-gray;
+	border: 5px solid @color-feed;
 }
 
 .top-list .name{
@@ -349,12 +370,12 @@ ul, ol {
 
 
 .top-list .name a:hover{
-	color: @color-dark-green;
+	color: @color-dark;
 }
 
 .top-list .name a{
 	font: bold 18px/100% Arial, Helvetica, sans-serif;
-	color: @color-light-green;
+	color: @color-base;
 }
 
 .top-list .name a.first{
@@ -366,7 +387,7 @@ ul, ol {
 	position:relative;
 	right:10px;
 	top:22px;
-	color:@color-text-gray;
+	color:@color-text2;
 
 }
 
@@ -382,7 +403,7 @@ ul, ol {
 }
 
 .shadow{
-	border-top: 1px solid @color-light-gray;
+
 	height:50px;
 	background:url(../img/bg_shadow.jpg) top center no-repeat;
 	text-align:center;
@@ -394,18 +415,18 @@ ul, ol {
 }
 
 .badge-follow{
-	background-color:@color-cyan;
+	background-color:@color-follow;
 }
 
 .badge-following{
-	background-color:@color-orange;
+	background-color:@color-following;
 }
 
 .badge-friends{
-	background-color:@color-strong-pink;
+	background-color:@color-friends;
 }
 .badge-follower{
-	background-color:@color-purple;
+	background-color:@color-follower;
 }
 
 /*tips*/
@@ -418,8 +439,8 @@ ul, ol {
   
 }
  .tip a {
-  background: none repeat scroll 0 0 @color-dark-green;
-  border: 1px solid #333;
+  background: none repeat scroll 0 0 @color-dark;
+  border: 1px solid @color-background;
   color: white;
   cursor: pointer;
   display: block;
@@ -430,8 +451,8 @@ ul, ol {
   width: 10px;
 }
  .tip a:hover {
-  background: none repeat scroll 0 0 @color-olive;
-  border: 1px solid @color-dark-green;
+  background: none repeat scroll 0 0 @color-badges;
+  border: 1px solid @color-dark;
   color: #000;
 }
 
@@ -446,20 +467,20 @@ ul, ol {
 
 .profile-block.following{
 	float:left;
-	background-color:@color-orange;
+	background-color:@color-following;
 	width:160px;
 	margin-left:20px;
 }
 
 .profile-block.followers{
 	float:left;
-	background-color:@color-purple;
+	background-color:@color-follower;
 	width:160px;
 }
 
 .profile-block.friends{
 	float:left;
-	background-color:@color-strong-pink;
+	background-color:@color-friends;
 	width:158px;
 }
 
@@ -471,13 +492,13 @@ ul, ol {
 }
 .profile-block.fan-point .progress .bar{
 	height:30px;
-	background-color: @color-dark-green;
+	background-color: @color-dark;
 	background-image :none;
 }
 
 .profile-block .progress .bar{
 
-	background-color: @color-light-green;
+	background-color: @color-base;
 	background-image :none;
 }
 
@@ -485,25 +506,25 @@ ul, ol {
 
 .span6.left{
 	width:478px;
-	background-color:@color-light-gray;
-	border-top: 1px solid @color-dark-gray;
-	border-bottom: 1px solid @color-dark-gray;
-	border-left:1px solid @color-dark-gray;
+	background-color:@color-feed;
+	border-top: 1px solid @color-feed2;
+	border-bottom: 1px solid @color-feed2;
+	border-left:1px solid @color-feed2;
 	margin-top:10px;
 }
 
 .span6.right{
 	margin-left:0px;
-	border-top: 1px solid @color-dark-gray;
-	border-bottom: 1px solid @color-dark-gray;
-	border-right: 1px solid @color-dark-gray;
+	border-top: 1px solid @color-feed2;
+	border-bottom: 1px solid @color-feed2;
+	border-right: 1px solid @color-feed2;
 	margin-top:10px;
-	background-color:@color-dark-gray;
+	background-color:@color-feed2;
 }
 
 .row.border{
-	border-top: 1px solid @color-dark-gray;
-	border-bottom: 1px solid @color-dark-gray;
+	border-top: 1px solid @color-feed2;
+	border-bottom: 1px solid @color-feed2;
 	margin-top:10px;
 	
 
@@ -512,11 +533,11 @@ ul, ol {
 .text-title{
 	margin-top:10px;
 	font: bold 14px/100% Arial, Helvetica, sans-serif;
-	color: @color-dark-green;
+	color: @color-dark;
 }
 
 .text-title.gray{
-	color: @color-text-gray;
+	color: @color-text2;
 }
 
 
@@ -525,13 +546,13 @@ ul, ol {
 
 .badges-list {
 	margin-top:10px;
-	border-left: 1px solid @color-light-gray;
-	border-right: 1px solid @color-light-gray;
-	border-top: 1px solid @color-light-gray;
+	border-left: 1px solid @color-feed;
+	border-right: 1px solid @color-feed;
+	border-top: 1px solid @color-feed;
 }
 
 .badges-list li{
-	border-bottom: 1px solid @color-light-gray;
+	border-bottom: 1px solid @color-feed;
 }
 
 .badges-list .percentage{
@@ -559,7 +580,7 @@ ul, ol {
 
 .badges-list .progress .bar{
 	height:50px;
-	background-color: @color-olive;
+	background-color: @color-badges;
 	background-image :none;
 	
 }
@@ -580,5 +601,5 @@ ul, ol {
 
 .awards{
 	height:80px;
-	background-color:@color-light-gray;
+	background-color:@color-feed;
 }

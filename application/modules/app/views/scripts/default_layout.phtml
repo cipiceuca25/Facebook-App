@@ -48,7 +48,15 @@
         <?= $this->headScript(); ?>
 
         <? if (APPLICATION_ENV == 'development'): ?>
-            <link href="/css/style2.less" rel="stylesheet/less"/>
+       				<? foreach($this->color_choice as $color):?>
+				<?$color_choice=$color['color_choice']?>
+				<?php endforeach; ?>
+				
+			<?php if ($color_choice == 2) {?>
+            <link href="/css/loadstyle1.less" rel="stylesheet/less" id="stylesheet"/>
+            <?}else{?>
+             <link href="/css/loadstyle2.less" rel="stylesheet/less" id="stylesheet"/>
+            <? }?>
             <script type="text/javascript">
                 env = 'development';
 
@@ -58,7 +66,7 @@
             </script>
             <script src="/js/libs/less-1.3.0.min.js"></script>
         <? else: ?>
-              <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+             <link href="/css/style.css" rel="stylesheet" type="text/css"/>
         <? endif ?>
 
       
@@ -77,6 +85,7 @@
             <?= $this->layout()->navbar ?>
         </div>
 		-->
+
 		<div class="container" role="main">          
         	<?= $this->layout()->content ?>
         </div>
