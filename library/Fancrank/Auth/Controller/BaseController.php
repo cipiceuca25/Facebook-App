@@ -41,7 +41,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
 
     public function authorizeAction()
     {
-    	$this->_forward('index','index', 'app'); return;
+    	//$this->_forward('index','index', 'app'); return;
     	$fanpageId = $this->_request->getParam('id');
     	if (empty($fanpageId)) {
 			$this->_helper->viewRenderer->setRender('index/failure', null, true);

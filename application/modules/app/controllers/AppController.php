@@ -15,7 +15,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		} catch (Exception $e) {
 			$fanpageId = $this->_getParam('id');
 		}
-		//parent::preDispatch();
+		parent::preDispatch();
 	}
 	
     public function indexAction()
@@ -120,7 +120,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$result = array();
     	try {
     		$topPosts = new Model_Rankings();
-    		$result = $topPosts->getTopPosts($this->data['page']['id']);
+    		$result = $topPosts->getTopPosts($this->_getParam('fanpage_id'));
     		Zend_Debug::dump($result);
     		return $result;
     	} catch (Exception $e) {

@@ -1,13 +1,20 @@
 <div class="navbar-inner">
     <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    	 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-        </a>
-          
-		<a class="brand" href="/app/index/index/<?= $this->fanpage_id ?>"><img src="/img/logo.png"></a>
+          </a>
+
+        <a class="brand" href="/app/<?= $this->fanpage_id ?>"><img src="/img/logo.png"></a>
         <ul class="nav pull-right">
+        	<li><a style="display:block" class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">Login</a></li>
         </ul>
+
+       <div class="nav-collapse">
+            <ul class="nav">
+                <li><a style="display:block" class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">Login</a></li> 
+            </ul>
+        </div>
     </div>
 </div>
