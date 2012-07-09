@@ -52,6 +52,16 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 				//echo 'nothing to save';
 			}
 			
+			//Zend_Debug::dump($color->getColorChoice(1));
+		}
+	
+	}
+	
+	public function profileAction() {
+		$user = new Model_FacebookUsers();
+		$user = $user->find($this->_getParam('id'))->current();
+		if($user) {
+			$this->_helper->json($user->toArray());
 		}
 	}
 	
@@ -75,14 +85,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			} catch (Exception $e) {
 				//TO LOG
 			}
-		}
-	}
-	
-	public function profileAction() {
-		$user = new Model_FacebookUsers();
-		$user = $user->find($this->_getParam('id'))->current();
-		if($user) {
-			$this->_helper->json($user->toArray());
 		}
 	}
 	

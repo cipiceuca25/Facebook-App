@@ -137,7 +137,12 @@ class Model_Rankings extends Model_DbTable_Rankings
 	}
 	
 	public function getTopPosts($page_id, $limit=5) {
-		$select = "SELECT p.*, count(*) AS count FROM likes l INNER JOIN posts p ON(l.post_id = p.post_id)
+		$select = "SELECT p.*, f.fan_first_name, f.fan_last_name, count(*) AS count 
+				FROM likes l
+				 INNER JOIN 
+				posts p ON(l.post_id = p.post_id) 
+				INNER JOIN
+				fans f ON(p.facebook_user_id = f.facebook_user_id)
 				WHERE p.facebook_user_id != l.fanpage_id AND l.fanpage_id = '". $page_id ."' GROUP BY p.post_id ORDER BY count DESC";
 		
 		if($limit !== false)

@@ -4,7 +4,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 {
 	public function preDispatch() {
 		if (APPLICATION_ENV != 'production') {
-			$this->data['page']['id'] = '178384541065';
+			$this->data['page']['id'] = '65558608937';
 			//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
 			$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
 		}
@@ -30,7 +30,16 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
+    	
+    	
+    	$colorChoice = new Model_UsersColorChoice;
+    	$c = $this->_request->getParam('colorChange');
+    	if(!is_null($c)){
+    		$colorChoice ->change(1, $c );
+    	}
+    	$color = $colorChoice ->getColorChoice(1);
     	$this->render('newsfeed');
+    	
     }
 
   	public function topfansAction()

@@ -1,0 +1,605 @@
+@import url('/bootstrap/css/bootstrap.css');
+
+
+@color-base:@color-light-green;
+@color-dark:@color-dark-green;
+
+@color-title-border:@color-pink;
+@color-top-list-border: @color-text-gray;
+@color-hover:@color-dark-green;
+
+@color-background:@color-white;
+
+@color-bubble1: @color-cyan;
+@color-bubble2: @color-dark-cyan;
+
+@color-follow: @color-cyan;
+@color-follower: @color-purple;
+@color-following:@color-orange;
+@color-friends:@color-strong-pink;
+
+@color-feed:@color-light-gray;
+@color-feed2:@color-dark-gray;
+
+@color-title-text:@color-white;
+@color-text:@color-white;
+@color-text2:@color-text-gray;
+
+@color-badges:@color-olive;
+
+
+body{
+	background-color:@color-background;
+}
+
+.icon-star{
+	vertical-align:middle;
+	line-height:40px;
+}
+
+ul, ol { 
+	list-style-type:none;
+	margin:0; 
+	padding:0; 
+}
+
+/* NAVIGATOR */
+
+/*==================================================*/
+
+.nav-tabs{
+	border-bottom:1px solid @color-dark;
+}
+
+.nav-tabs .active  a, .nav-tabs .active a:hover{
+	border:1px solid @color-dark;
+	border-bottom-color:transparent;
+	color:@color-dark;
+}
+
+.nav-tabs li a{
+	color:white;
+	border-bottom:1px solid @color-dark;
+	background-color:@color-base;
+}
+
+.nav-tabs li a:hover{
+	color:@color-base;
+}
+
+
+/* TITLES */
+
+/*==================================================*/
+
+.title, 
+.subtitle,
+.subtitle-dark{
+	height:80px;
+	background-color:@color-background;
+	
+}
+
+.title .photo{
+	z-index:2;
+	display:inline-block;
+	width:70px;
+	height:70px;
+	background-color:white;
+	position:absolute;
+	border: 5px solid @color-dark;
+}
+
+
+.title .photo img{
+	border: 5px solid @color-title-border;
+	width:60px;
+	height:60px;
+}
+
+.title-header,
+.title-header-dark
+{
+	display:inline-block;
+	background-color:@color-base;
+	width:100%;
+	height:40px;
+	margin-top:20px;
+	margin-bottom:30px;
+}
+
+.title-header-dark{
+	background-color:@color-dark;
+}
+
+.title h2, 
+.subtitle h2{
+	margin-left:95px;
+	color:@color-text;
+	line-height:40px;
+}
+
+.subtitle h2{
+	margin-left:10px;
+}
+
+/* TOP POSTS BUBBLES */
+
+/*==================================================*/
+
+/***** Common Classes ******/
+
+.bubble {
+	margin-left:0px;
+	margin-top:10px;
+	font:12px Arial, Helvetica, sans-serif;
+
+}
+
+.bubble li {
+	padding-top:20px;
+	margin-bottom:10px;
+	background:url(../img/news-feed/bg-bubble-top.png) top center no-repeat;
+	background-size:300px;
+}
+
+.bubble .post {
+	padding:0 20px;
+	color:@color-text;	
+}
+
+.bubble .post a {
+	display:block;
+	color:@color-text;
+
+}
+
+.bubble .post .date {
+	font-size:11px;	
+}
+
+.bubble .post a:hover {
+	color:@color-text;
+	text-decoration:none;
+}
+
+.bubble .info {
+	position:relative;
+	font-weight:bold;
+	
+}
+
+.bubble .likes {
+	font-weight:normal;	
+}
+
+.bubble .photo {
+	position:absolute;
+}
+
+.bubble .photo img {
+	width:30px;
+	height:30px;	
+}
+
+
+
+/***** Chat Right Bubbles ******/
+
+.bubble .chat-right {
+	background-color:@color-bubble1; /* DYNAMIC */
+}
+
+.bubble .chat-right .info {
+	background:url(../img/news-feed/bg-bubble-bottom-right.png) top center no-repeat;
+	background-size:300px;
+}
+
+.bubble .chat-right .name {
+	padding:27px 73px 0 0;
+	text-align:right;
+}
+
+.bubble .chat-right .photo {
+	top:30px;
+	right:40px;
+}
+
+/***** Chat Left Bubbles ******/
+
+.bubble .chat-left {
+	background-color:@color-bubble2; /* DYNAMIC */
+}
+
+.bubble .chat-left .info {
+	background:url(../img/news-feed/bg-bubble-bottom-left.png) top center no-repeat;
+	background-size:300px;	
+}
+
+.bubble .chat-left .name {
+	padding:27px 0 0 73px;
+	text-align:left;
+
+}
+
+.bubble .chat-left .photo {
+	top:30px;
+	left:40px;
+}
+
+.grey-light {
+
+	background:@color-feed;	
+
+}
+
+.grey-dark {
+
+	background:@color-feed2;	
+
+}
+
+/* POST LISTINGS */
+
+/*==================================================*/
+
+.post-list {
+	padding-top:10px;	
+}
+
+.post-list li {
+	padding:10px;
+
+}
+
+.post-list .photo {
+	float:left;
+}
+
+.post-list .photo img {
+	width:32px;
+	height:32px;	
+}
+
+.post-list .post {
+	float:left;	
+	width:450px;
+	margin-left:10px;
+}
+
+.post-list .post img {
+	width:100%;
+	display:block;	
+}
+
+.post-list .post a {
+	display:block;	
+}
+
+.post-list .post a:hover {
+	text-decoration:none;
+}
+
+.post-list .name {
+	font-weight:bold;	
+}
+
+
+
+.post-list .social {
+	clear:both;
+	padding:5px 0 0 40px;
+}
+
+.post-list .likes {
+	margin-left:10px;	
+}
+
+.post-list .comment {
+	margin:0 10px;	
+}
+
+/* TOP LISTS */
+/*==================================================*/
+
+.top-list{
+	position:relative;
+	top:10px;
+	min-height:0px;
+	border-left: 1px solid @color-feed;
+	border-right: 1px solid @color-feed;
+	
+}
+
+.top-list .in{
+	border-top: 0px;
+
+}
+
+.top-list li{
+	padding: 0px;
+}
+
+.top-list .border-light,
+.top-list .border-dark{
+	border-top: 1px solid @color-feed;
+	width:620px;
+}
+
+.top-list .border-light{
+	background-color:@color-background
+}
+
+.top-list .border-dark{
+	background-color:@color-feed;
+}
+
+.top-list .rank{
+	display:inline-block;
+	width:83px;
+	height:80px;
+	background-color:@color-base;
+}
+
+.top-list .rank.first{
+	background-color:@color-dark;
+}
+
+.top-list .rank h1{
+	background:url(../img/icon_pound.png) top left no-repeat;
+	color: white;
+	font: bold 50px/100% Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:80px;
+}
+
+
+
+.top-list .photo{
+	display:inline-block;
+	margin-left:10px;
+	border: 5px solid @color-feed;
+}
+
+.top-list .name{
+	margin-left:10px;
+	display:inline-block;
+	
+	vertical-align:middle;
+}
+
+
+.top-list .name a:hover{
+	color: @color-dark;
+}
+
+.top-list .name a{
+	font: bold 18px/100% Arial, Helvetica, sans-serif;
+	color: @color-base;
+}
+
+.top-list .name a.first{
+	font: bold 25px/100% Arial, Helvetica, sans-serif;
+}
+
+.top-list .points{
+	float:right;
+	position:relative;
+	right:10px;
+	top:22px;
+	color:@color-text2;
+
+}
+
+.top-list .points h2{
+	display:inline-block;
+	font-size:35px;
+}
+
+.top-list .points span{
+	
+	display:inline-block;
+	line-height:15px;
+}
+
+.shadow{
+
+	height:50px;
+	background:url(../img/bg_shadow.jpg) top center no-repeat;
+	text-align:center;
+	
+}
+
+#top-fans .shadow{
+	margin-top:10px;
+}
+
+.badge-follow{
+	background-color:@color-follow;
+}
+
+.badge-following{
+	background-color:@color-following;
+}
+
+.badge-friends{
+	background-color:@color-friends;
+}
+.badge-follower{
+	background-color:@color-follower;
+}
+
+/*tips*/
+.tip {
+  position: relative;
+  z-index:2;
+  float:right;
+  top:-33px;
+  right:10px;
+  
+}
+ .tip a {
+  background: none repeat scroll 0 0 @color-dark;
+  border: 1px solid @color-background;
+  color: white;
+  cursor: pointer;
+  display: block;
+  font: bold 16px/100% Arial, Helvetica, sans-serif;
+  height: 20px;
+  padding: 3px 5px 0;
+  text-decoration: none;
+  width: 10px;
+}
+ .tip a:hover {
+  background: none repeat scroll 0 0 @color-badges;
+  border: 1px solid @color-dark;
+  color: #000;
+}
+
+
+/* my profile */
+/*==================================================*/
+
+.profile-block{
+
+	height:80px;
+}
+
+.profile-block.following{
+	float:left;
+	background-color:@color-following;
+	width:160px;
+	margin-left:20px;
+}
+
+.profile-block.followers{
+	float:left;
+	background-color:@color-follower;
+	width:160px;
+}
+
+.profile-block.friends{
+	float:left;
+	background-color:@color-friends;
+	width:158px;
+}
+
+
+.profile-block.fan-point .progress{
+	width:90%;
+	height:30px;
+
+}
+.profile-block.fan-point .progress .bar{
+	height:30px;
+	background-color: @color-dark;
+	background-image :none;
+}
+
+.profile-block .progress .bar{
+
+	background-color: @color-base;
+	background-image :none;
+}
+
+
+
+.span6.left{
+	width:478px;
+	background-color:@color-feed;
+	border-top: 1px solid @color-feed2;
+	border-bottom: 1px solid @color-feed2;
+	border-left:1px solid @color-feed2;
+	margin-top:10px;
+}
+
+.span6.right{
+	margin-left:0px;
+	border-top: 1px solid @color-feed2;
+	border-bottom: 1px solid @color-feed2;
+	border-right: 1px solid @color-feed2;
+	margin-top:10px;
+	background-color:@color-feed2;
+}
+
+.row.border{
+	border-top: 1px solid @color-feed2;
+	border-bottom: 1px solid @color-feed2;
+	margin-top:10px;
+	
+
+}
+
+.text-title{
+	margin-top:10px;
+	font: bold 14px/100% Arial, Helvetica, sans-serif;
+	color: @color-dark;
+}
+
+.text-title.gray{
+	color: @color-text2;
+}
+
+
+/*---BADGES---*/
+/*============================================*/
+
+.badges-list {
+	margin-top:10px;
+	border-left: 1px solid @color-feed;
+	border-right: 1px solid @color-feed;
+	border-top: 1px solid @color-feed;
+}
+
+.badges-list li{
+	border-bottom: 1px solid @color-feed;
+}
+
+.badges-list .percentage{
+	display:inline-block;
+	padding-left:10px;
+	
+}
+
+.badges-list .photo{
+	display:inline-block;
+	padding-left:10px;
+	
+}	
+.badges-list .stats{
+	display:inline-block;
+	padding-left:10px;
+	
+}	
+
+.badges{
+	z-index:2;
+	position:absolute;
+	
+}
+
+.badges-list .progress .bar{
+	height:50px;
+	background-color: @color-badges;
+	background-image :none;
+	
+}
+.badges-list .progress{
+	height:50px;
+	margin-bottom:0px;
+}
+
+
+
+/* awards */
+
+/*==================================================*/
+
+.awards-pic{
+	height:300px;
+}
+
+.awards{
+	height:80px;
+	background-color:@color-feed;
+}
