@@ -9,7 +9,7 @@
     </div><!--/end header -->
     
     <div id="content">
-    
+
     	<div class="container">
     	
 			<div class="tabbable">
@@ -160,7 +160,7 @@
 									
 									<div class="shadow">
 										<button class="btn" id="top-fans-btn" data-toggle="collapse" data-target="#top-fans-collapse">
-												close
+												- Close
 										</button>
 									</div>
 								</div>
@@ -196,7 +196,7 @@
 													</div>
 											</li>
 											
-										</ul>
+									</ul>
 									<?php }else{ ?>
 										<?php if ($count == 1){?>
 											<ul  id="fan-favorite-collapse" class="top-list in">
@@ -231,8 +231,8 @@
 																
 								
 									<div class="shadow">
-										<button class="btn" id="fan-favorite-member-btn" data-toggle="collapse" data-target="#fan-favorite-collapse">
-												close
+										<button class="btn" id="fan-favorite-btn" data-toggle="collapse" data-target="#fan-favorite-collapse">
+												- Close
 										</button>
 									</div>
 								</div>
@@ -302,7 +302,7 @@
 									</ul>
 									<div class="shadow">
 										<button class="btn" id="top-talker-btn" data-toggle="collapse" data-target="#top-talker-collapse">
-												close
+												 - Close
 										</button>
 									</div>
 								</div>
@@ -374,8 +374,8 @@
 										
 									 
 										<div class="shadow">
-											<button class="btn" id="top-fans-btn" data-toggle="collapse" data-target="#top-clicker-collapse">
-													close
+											<button class="btn" id="top-clicker-btn" data-toggle="collapse" data-target="#top-clicker-collapse">
+													- Close
 											</button>
 										</div>
 									</div>
@@ -767,10 +767,10 @@ function autoGrowTimer() { //Can be removed.
 </script>
 
 <script>
-		
-	
-		
-		
+		$tfb = false;
+		$ffb = false;
+		$ttb = false;
+		$tcb = false;
 		$('#news-feed a').click(function (e) {
 		  e.preventDefault();
 		  $(this).tab('show');
@@ -789,5 +789,38 @@ function autoGrowTimer() { //Can be removed.
 		$('#achievements a').click(function (e) {
 		  e.preventDefault();
 		  $(this).tab('show');
+		})
+	
+		$('#top-fans-btn').click(function() {
+			if (($tfb)==true){
+			$('#top-fans-btn').text(' - Close');
+			}else{
+				$('#top-fans-btn').text("+ More");
+			}
+			$tfb = !$tfb;
+		})
+		$('#fan-favorite-btn').click(function() {
+			if (($ffb)==true){
+			$('#fan-favorite-btn').text(' - Close');
+			}else{
+				$('#fan-favorite-btn').text("+ More");
+			}
+			$ffb = !$ffb;
+		})
+		$('#top-talker-btn').click(function() {
+			if (($ttb)==true){
+			$('#top-talker-btn').text(' - Close');
+			}else{
+				$('#top-talker-btn').text("+ More");
+			}
+			$ttb = !$ttb;
+		})
+		$('#top-clicker-btn').click(function() {
+			if (($tcb)==true){
+			$('#top-clicker-btn').text(' - Close');
+			}else{
+				$('#top-clicker-btn').text("+ More");
+			}
+			$tcb = !$tcb;
 		})
 </script>

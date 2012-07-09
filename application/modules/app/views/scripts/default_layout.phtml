@@ -52,10 +52,12 @@
 				<?$color_choice=$color['color_choice']?>
 				<?php endforeach; ?>
 				
-			<?php if ($color_choice == 2) {?>
+			<?php if ($color_choice == 1) {?>
             <link href="/css/loadstyle1.less" rel="stylesheet/less" id="stylesheet"/>
-            <?}else{?>
+            <?}elseif($color_choice == 2){?>
              <link href="/css/loadstyle2.less" rel="stylesheet/less" id="stylesheet"/>
+            <? } else {?>
+            <link href="/css/loadstyle3.less" rel="stylesheet/less" id="stylesheet"/>
             <? }?>
             <script type="text/javascript">
                 env = 'development';

@@ -1,8 +1,8 @@
 <?php
-class Model_DbTable_UsersColorChoice extends Zend_Db_Table
+class Model_DbTable_UsersColorChoice extends Fancrank_Db_Table
 {
 	
-	protected $_color = 'color_choice';
+	protected $_name = 'users_color_choice';
 	
 	protected $_primary = array('user_id');
 	

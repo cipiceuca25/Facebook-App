@@ -20,7 +20,10 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	}
 
 	public function followAction() {
-
+		$color = new Model_UsersColorChoice();
+		$abc = $color ->getColorChoice(1);
+		echo 'color: '. $abc->color_choice ;
+		//Zend_Debug::dump($color->getColorChoice(1));
 	}
 	
 	public function profileAction() {

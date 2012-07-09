@@ -22,6 +22,7 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     			$fb = new Service_FancrankFBService();
     			$fanpageId = $fb->getFanPageId();
     			Zend_Registry::set('fanpageId', $fanpageId);
+    			
     			//Zend_Debug::dump($fb->getSignedData());
     		}
     	} catch (Exception $e) {

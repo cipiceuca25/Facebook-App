@@ -30,7 +30,16 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
+    	
+    	
+    	$colorChoice = new Model_UsersColorChoice;
+    	$c = $this->_request->getParam('colorChange');
+    	if(!is_null($c)){
+    		$colorChoice ->change(1, $c );
+    	}
+    	$color = $colorChoice ->getColorChoice(1);
     	$this->render('newsfeed');
+    	
     }
 
   	public function topfansAction()

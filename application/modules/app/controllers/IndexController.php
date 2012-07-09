@@ -11,6 +11,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 
         try {
         	$this->data['page']['id'] = Zend_Registry::get('fanpageId');
+        
         } catch (Exception $e) {
         	//TOLOG
         	$this->data['page']['id'] = $this->_getParam('id');
@@ -55,7 +56,10 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
     	
     	$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-    	
+    	$c = $this->_request->getParam('colorChange');
+    	if(!is_null($c)){
+    		$colorChoice ->change(1, $c );
+    	}
     	$color = $colorChoice ->getColorChoice(1);
     	
     	//exit();
@@ -66,6 +70,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$this->view->top_post = $topPosts;
     	$this->view->latest_post = $latestPost;
     	$this->view->color_choice = $color;
+    	
+    	
     	
     	$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
     	$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
