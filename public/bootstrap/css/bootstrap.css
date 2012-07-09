@@ -147,7 +147,7 @@ a:hover {
   text-decoration: underline;
 }
 .row {
-  margin-left: -20px;
+  margin-left: -19px;
   *zoom: 1;
 }
 .row:before,
@@ -160,48 +160,48 @@ a:hover {
 }
 [class*="span"] {
   float: left;
-  margin-left: 20px;
+  margin-left: 19px;
 }
 .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+  width: 810px;
 }
 .span12 {
-  width: 940px;
+  width: 810px;
 }
 .span11 {
-  width: 860px;
+  width: 740px;
 }
 .span10 {
-  width: 780px;
+  width: 671px;
 }
 .span9 {
-  width: 700px;
+  width: 602px;
 }
 .span8 {
-  width: 620px;
+  width: 533px;
 }
 .span7 {
-  width: 540px;
+  width: 464px;
 }
 .span6 {
-  width: 460px;
+  width: 395px;
 }
 .span5 {
-  width: 380px;
+  width: 326px;
 }
 .span4 {
-  width: 300px;
+  width: 256px;
 }
 .span3 {
-  width: 220px;
+  width: 187px;
 }
 .span2 {
-  width: 140px;
+  width: 119px;
 }
 .span1 {
-  width: 60px;
+  width: 50px;
 }
 .offset12 {
   margin-left: 980px;

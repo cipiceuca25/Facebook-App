@@ -58,8 +58,21 @@ class Model_Posts extends Model_DbTable_Posts
 		$insert = $this->getAdapter()->insert(array('posts' => 'posts'), $data);
 	
 	}
-
-public function getLatestPost($page_id, $limit=5) {
+	
+	public function getUserPost($user_id, $limit=10) {
+		$select = "SELECT p.*, f.facebook_user_name
+				FROM posts p, facebook_users f
+				WHERE (p.facebook_user_id = f.facebook_user_id)
+				GROUP BY p.post_id ORDER BY p.updated_time DESC";
+		
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+	
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
+	
+	public function getLatestPost($page_id, $limit=5) {
 		$select = "SELECT p.*, f.fan_first_name, f.fan_last_name 
 				FROM posts p, fans f 
 				WHERE (p.fanpage_id = '". $page_id ." ') AND (p.facebook_user_id = f.facebook_user_id)
@@ -70,5 +83,9 @@ public function getLatestPost($page_id, $limit=5) {
 		
 		return $this->getAdapter()->fetchAll($select);
 	}
+
+	
+
+
 }
 

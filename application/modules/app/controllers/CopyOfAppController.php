@@ -2,8 +2,7 @@
 
 class App_AppController extends Fancrank_App_Controller_BaseController
 {
-	
-    public function preDispatch()
+	public function preDispatch()
     {
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
@@ -33,16 +32,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
         //set the proper navbar
         $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
     }
-
+	
     public function indexAction()
     {
-    	$this->_helper->layout->setLayout('default_layout');
-    	$model = new Model_Rankings;
-    	$post = new Model_Posts;
-    	$colorChoice = new Model_UsersColorChoice;
-    	
-    	
-    	$user = new Model_FacebookUsers();
+    	//$this->_forward('newsfeed');
+    $user = new Model_FacebookUsers();
   
     	
    		
@@ -57,74 +51,21 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	
     	
-    	$topFans = $model->getTopFans($this->data['page']['id'], 5);
-    	//Zend_Debug::dump($topFans);
-    	 
-    	$mostPopular = $model->getMostPopular($this->data['page']['id'], 5);
-    	//Zend_Debug::dump($mostPopular);
-    	 
-    	$topTalker = $model->getTopTalker($this->data['page']['id'], 5);
-    	//Zend_Debug::dump($topTalker);
-    	 
-    	$topClicker = $model->getTopClicker($this->data['page']['id'], 5);
-    	//Zend_Debug::dump($topClicker);
-    	
-    	$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    	
-    	$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-    	
-    	
+    	$colorChoice = new Model_UsersColorChoice;
     	$c = $this->_request->getParam('colorChange');
     	if(!is_null($c)){
     		$colorChoice ->change(1, $c );
     	}
     	$color = $colorChoice ->getColorChoice(1);
-    	
-    	//exit();
-    	$this->view->top_fans = $topFans;
-    	$this->view->most_popular = $mostPopular;
-    	$this->view->top_talker = $topTalker;
-    	$this->view->top_clicker = $topClicker;
-    	$this->view->top_post = $topPosts;
-    	$this->view->latest_post = $latestPost;
-    	
-    
-    	
-    	$this->view->color_choice = $color;
-    	
-    	
-    	
-    	$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
-    	$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
-    	$this->view->user_top_talker = $model->getUserRanking($this->data['page']['id'], 'TALKER', $this->view->fan_id);
-    	$this->view->user_top_clicker = $model->getUserRanking($this->data['page']['id'], 'CLICKER', $this->view->fan_id);
-    	
-    	/*
-    	$this->view->top_fans = $model->getRanking($this->data['page']['id'], 'FAN', false, 5);
-    	$this->view->most_popular = $model->getRanking($this->data['page']['id'], 'POPULAR', false, 5);
-    	$this->view->top_talker = $model->getRanking($this->data['page']['id'], 'TALKER', false, 5);
-    	$this->view->top_clicker = $model->getRanking($this->data['page']['id'], 'CLICKER', false, 5);
-
-    	$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
-    	$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
-    	$this->view->user_top_talker = $model->getUserRanking($this->data['page']['id'], 'TALKER', $this->view->fan_id);
-    	$this->view->user_top_clicker = $model->getUserRanking($this->data['page']['id'], 'CLICKER', $this->view->fan_id);
-    	*/
-		//$this->_helper->redirector('login', 'index', 'app', array($this->data['page']['id'] => ''));
-		
     	$this->render('newsfeed');
+    	
     }
-    
-
-
-
 
   	public function topfansAction()
-  	{	$user = new Model_FacebookUsers();
-  		$user = $user->find($this->_getParam('facebook_user_id'))->current();
+  	{
   		$this->_helper->layout->disableLayout();
   		$this->view->fanpage_id = $this->data['page']['id'];
-
+  		$post = new Model_Posts;
   		$model = new Model_Rankings;
    		$topFans = $model->getTopFans($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topFans);
@@ -137,12 +78,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	 
     	$topClicker = $model->getTopClicker($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topClicker);
-    	
+    	$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     	//exit();
     	$this->view->top_fans = $topFans;
     	$this->view->most_popular = $mostPopular;
     	$this->view->top_talker = $topTalker;
     	$this->view->top_clicker = $topClicker;
+    	$this->view->latest_post = $latestPost;
+    	
     	
     	$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
     	$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
@@ -151,39 +94,34 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   	}
 
     public function newsfeedAction() 
-    {	$user = new Model_FacebookUsers();
-    	$user = $user->find($this->_getParam('facebook_user_id'))->current();
+    {
     	$this->_helper->layout->disableLayout();
-    	 
-    	$user = new Model_FacebookUsers();
-    	$user = $user->find($this->_facebook_user->facebook_user_id)->current();
-    	if($user) {
-    		$this->view->facebook_user = $user;
-    		$access_token = $this->_facebook_user->facebook_user_access_token;
-    		$this->view->feed = $this->getFeed($access_token);
-    	}else {
-    		$this->view->facebook_user = null;
-    	}
-    	$post = new Model_Posts;
-    	$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
+    
+    	$model = new Model_Rankings;
+    	
+   		
+    	
+    	
+    
+    	$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
     	//Zend_Debug::dump($user); exit();
+    	$this->view->top_post = $topPosts;
     	$this->render("newsfeed");
     }
     
     public function awardsAction() {
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
-    	Zend_Debug::dump($this->_facebook_user);
+    	Zend_Debug::dump($this->facebook_user);
     	$this->view->facebook_user = $this->_facebook_user;
     	$this->render("awards");
     }
     
     public function myprofileAction() {
-
     	$this->_helper->layout->disableLayout();
     	//check for user authorization
     	$user = new Model_FacebookUsers();
-    	$user = $user->find($this->_getParam('facebook_user_id'))->current();
+    	$user = $user->find($this->_facebook_user->facebook_user_id)->current();
     	if($user) {
     		$this->view->facebook_user = $user;
     	}else {

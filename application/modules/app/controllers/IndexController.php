@@ -41,6 +41,22 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$post = new Model_Posts;
     	$colorChoice = new Model_UsersColorChoice;
     	
+    	
+    	$user = new Model_FacebookUsers();
+  
+    	
+   		
+    	$user = $user->find($this->data['user_id'])->current();
+    	//Zend_Debug::dump($user);
+    	if($user) {
+    		$this->view->facebook_user = $user;
+    		//$access_token = $this->facebook_user->facebook_user_access_token;
+    		//$this->view->feed = $this->getFeed($access_token);
+    	}else {
+    		$this->view->facebook_user = null;
+    	}
+    	
+    	
     	$topFans = $model->getTopFans($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topFans);
     	 
@@ -56,6 +72,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
     	
     	$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
+    	
+    	
     	$c = $this->_request->getParam('colorChange');
     	if(!is_null($c)){
     		$colorChoice ->change(1, $c );
@@ -69,6 +87,9 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$this->view->top_clicker = $topClicker;
     	$this->view->top_post = $topPosts;
     	$this->view->latest_post = $latestPost;
+    	
+    
+    	
     	$this->view->color_choice = $color;
     	
     	
