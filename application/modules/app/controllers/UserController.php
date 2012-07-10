@@ -119,8 +119,11 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['access_token'] = $this->_getParam('access_token');
 		
 		$fancrankFB = new Service_FancrankFBService();
-		$fancrankFB->setAccessToken($data['access_token']);
-		$result = $fancrankFB->api('/' .$data['facebook_user_id'] .'/feed&limit=2');
+		$params =  array(
+				'access_token' => $data['access_token'],
+				'limit' => 2,
+		);
+		$result = $fancrankFB->api('/' .$data['facebook_user_id'] .'/feed', 'GET', $params);
 		//Zend_Debug::dump($result);
 		if(empty($result['data'])) {
 			$msg = array('response'=>'error');

@@ -15,7 +15,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		} catch (Exception $e) {
 			$fanpageId = $this->_getParam('id');
 		}
-		parent::preDispatch();
+		//parent::preDispatch();
 	}
 	
     public function indexAction()
@@ -135,6 +135,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	} catch (Exception $e) {
     		return array();
     	}
+    }
+    
+    public function fancrankfeedAction() {
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$feed = new Model_FancrankActivities();
+    	//we should implement with memcache here 
+    	Zend_Debug::dump($feed->getFeed(5));	
     }
     
     public function logoutAction()
