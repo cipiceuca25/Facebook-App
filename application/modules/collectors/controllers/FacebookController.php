@@ -46,6 +46,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
    	
     }
     
+    public function viewAction() {
+    	echo 'graph';	
+    }
+    
     public function testmailAction() {
     	echo 'mail test'; exit();
 		$fmail = new Service_FancrankMailService();

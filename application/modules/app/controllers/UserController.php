@@ -27,7 +27,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['follow_enable'] = TRUE;
 		$data['facebook_user_id'] = $this->_getParam('id');
 		
-		//Zend_Debug::dump($data);
+		Zend_Debug::dump($data);
 		$subscribe = $subscribe_Model->findById($data['facebook_user_id'], $data['facebook_user_id_subscribe_to'], $data['subscribe_ref_id']);
 
 		if($subscribe) {
@@ -41,12 +41,14 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			}
 			
 		}else {
-			if($subscribe->isDataValid($data)) {
+			
+			if($subscribe_Model->isDataValid($data)) {
 				try {
-					$result = $subscribe->insert($data);
-					//Zend_Debug::dump($result);
+					$result = $subscribe_Model->insert($data);
+					Zend_Debug::dump($result);
 				} catch (Exception $e) {
 					//TO LOG
+					echo $e->getMessage();
 				}
 			}else {
 				//echo 'nothing to save';
@@ -212,6 +214,15 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$fancrankFB->api("/$postId/comments", 'POST', $params);
 	}
 	
+	public function closestcommentAction() {
+		$comment = new Model_Comments();
+		$commentId = $this->_getParam('comment_id');
+		$result = $comment->getClosestCommentsByTimestamp($commentId, 3);
+		
+		foreach ($result as $comment) {
+			Zend_Debug::dump($comment);
+		}
+	}
 }
 
 ?>
