@@ -1,8 +1,11 @@
-<div class="row">
+	
+				
+					
+						<div class="row">
 							<div class="span12">
 								<div class="title">
-									<div class="photo"> </div>
-									<div class="title-header"> <h2><i class="icon-star icon-white"></i> New's Feed <i class="icon-star icon-white"></i></h2> </div>
+									<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a> </div>
+									<div class="title-header"> <h2><i class="icon-star icon-white"></i><?= $this->facebook_user->facebook_user_name ?>'s News Feed <i class="icon-star icon-white"></i></h2> </div>
 								</div>
 							</div>
 						</div>
@@ -10,7 +13,7 @@
 						<div class="row">
 							<div class="span4">
 									<div class="subtitle">
-										<div class="title-header-dark"> <h2><i class="icon-star icon-white"></i> Top Post This Week <i class="icon-star icon-white"></i></h2> </div>
+										<div class="title-header-dark"> <h2><i class="icon-star icon-white"></i> Top Post  <i class="icon-star icon-white"></i></h2> </div>
 									</div>
 									
 										<ul class="bubble">
@@ -24,7 +27,7 @@
 											<?php }?>
 												
 												<div class="post">
-													<a href=""><?= $topPost['post_message'] ?><br /><span class="date"><?= $topPost['updated_time']?></span></a>
+													<a href=""><?= $topPost['post_message'] ?><br /><span class="date"><?= date("F d Y", strtotime($topPost['updated_time']))?></span></a>
            
 												</div>
 													
@@ -49,50 +52,61 @@
 								
 									<ul class="post-list">
 										<li class="grey-light">
-											<div class="photo">photo</div>
-											<div class="post">message</div>
-											<div class="social"> social</div>
+										
+											<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a></div>
+											<div class="post"><div class="name"><a href=""><?= $this->facebook_user->facebook_user_name?></a></div>
+														Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus viverra sodales vulputate. Etiam eget purus tellus. Mauris neque sapien, placerat sit amet accumsan pulvinar, venenatis sed dolor. Ut sit amet ante id magna egestas tincidunt et sed purus. Sed sem tellus, feugiat eu lobortis sit amet, accumsan quis ipsum. Mauris vehicula malesuada justo, non hendrerit sem lacinia at. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus luctus erat et erat suscipit nec interdum risus blandit. Vestibulum est nunc, lobortis ut elementum et, interdum sit amet risus. Phasellus urna lacus, egestas id posuere egestas, vehicula eget libero.</div>
+											<div class="social"> <img src="/img/news-feed/icon-likes.png" />  <a href="" class="likes"> Like</a>  <a href="" class="comment"> Comment</a> <span class="date"></span></div>
 										</li>
 										
 										<li class="grey-dark">
-											<div class="photo">photo</div>
-											<div class="post">message</div>
-											<div class="social"> social</div>
+											<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a></div>
+											<div class="post"><div class="name"><a href=""><?= $this->facebook_user->facebook_user_name ?></a></div>
+														Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus viverra sodales vulputate. Etiam eget purus tellus. Mauris neque sapien, placerat sit amet accumsan pulvinar, venenatis sed dolor. Ut sit amet ante id magna egestas tincidunt et sed purus. Sed sem tellus, feugiat eu lobortis sit amet, accumsan quis ipsum. Mauris vehicula malesuada justo, non hendrerit sem lacinia at. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus luctus erat et erat suscipit nec interdum risus blandit. Vestibulum est nunc, lobortis ut elementum et, interdum sit amet risus. Phasellus urna lacus, egestas id posuere egestas, vehicula eget libero.</div>
+											<div class="social"> <img src="/img/news-feed/icon-likes.png" />  <a href="" class="likes"> Like</a>  <a href="" class="comment"> Comment</a><span class="date"></span></div>
 										</li>
-									</ul>
+								</ul>
 							</div>
 						</div>
+				
+    			
+    				
 
-<!--  
-
-<div id="intro">
-	<div class="portrait"><img src="<?//= $this->facebook_user->facebook_user_avatar ?>" /></div>
-    <div class="title c1"><span><?//= $this->facebook_user->facebook_user_first_name ?>'s News Feed </span></div>
-</div>
-
-<div id="myposts">
-	<div class="fb-comments" data-href="http://www.fancrank.local/app/app/post" data-num-posts="5" data-width="550" data-height="450"></div>
-</div>
-
-<div id="top-posts" style="float:left; width: 250px; height: 350px;">
-	<div class="subtitle c1">
-    	<img src="/img/news-feed/icon-star.png" /> Top Posts this Week <img src="/img/news-feed/icon-star.png" />
-    </div>
-</div>
-
-<div id="fancrank-feed" style="float: left; width: 450px; height: 350px;">
-	<div class="subtitle c1">
-    	<img src="/img/news-feed/icon-star.png" /> Fancrank Feed <img src="/img/news-feed/icon-star.png" />
-    </div>
-    <div class="fb-activity" data-site="www.fancrank.local" data-app-id="359633657407080" data-width="450" data-height="300" data-header="true" data-recommendations="false"></div>
-</div>
+    
+    	
+     
+        
 
 
-<div class="fb-like" data-send="true" data-width="350" data-show-faces="true"></div>
+<!--
 
-<script src="/js/app/app/newsfeed.js">
-var user_id = "<?//= $this->facebook_user->facebook_user_id ?>";
-var pageaccessToken = "<?//= $this->facebook_user->facebook_user_access_token ?>";
-</script>
+
+<hr />
+
+
+<p>top talkers</p>
+
+<pre>
+<?= print_r($this->top_talkers) ?>
+</pre>
+
+<p>top clickers</p>
+
+<pre>
+<?= print_r($this->top_clickers) ?>
+</pre>
+
+<p>top fans</p>
+
+<pre>
+<?= print_r($this->top_fans) ?>
+</pre>
+
+<p>most popular</p>
+
+<pre>
+<?= print_r($this->most_popular) ?>
+</pre>
 
 -->
+

@@ -1,3 +1,6 @@
+/*
+
+>>>>>>> mannix/master
 jQuery(document).ready(function($){
 
 	getUserfeed(userId, accessToken);
@@ -39,4 +42,9 @@ function getUserfeed(userId, accessToken) {
 			console.log(xhr.statusText, errorMessage);
 		}
 	});
+<<<<<<< HEAD
 }
+=======
+}
+
+*/

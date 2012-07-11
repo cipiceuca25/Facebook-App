@@ -1,5 +1,6 @@
 @import url('/bootstrap/css/bootstrap.css');
-
+@gridColumnWidth:50px;
+@gridGutterWidth:15px;
 
 @color-base:@color-light-green;
 @color-dark:@color-dark-green;
@@ -26,6 +27,7 @@
 @color-text2:@color-text-gray;
 
 @color-badges:@color-olive;
+
 
 
 body{
@@ -140,7 +142,7 @@ ul, ol {
 	padding-top:20px;
 	margin-bottom:10px;
 	background:url(../img/news-feed/bg-bubble-top.png) top center no-repeat;
-	background-size:300px;
+	background-size:257px;
 }
 
 .bubble .post {
@@ -192,7 +194,7 @@ ul, ol {
 
 .bubble .chat-right .info {
 	background:url(../img/news-feed/bg-bubble-bottom-right.png) top center no-repeat;
-	background-size:300px;
+	background-size:257px;
 }
 
 .bubble .chat-right .name {
@@ -213,7 +215,7 @@ ul, ol {
 
 .bubble .chat-left .info {
 	background:url(../img/news-feed/bg-bubble-bottom-left.png) top center no-repeat;
-	background-size:300px;	
+	background-size:257px;	
 }
 
 .bubble .chat-left .name {
@@ -323,7 +325,7 @@ ul, ol {
 .top-list .border-light,
 .top-list .border-dark{
 	border-top: 1px solid @color-feed;
-	width:620px;
+	width:533px;
 }
 
 .top-list .border-light{
@@ -414,18 +416,18 @@ ul, ol {
 	margin-top:10px;
 }
 
-.badge-follow{
+.badge-Follow{
 	background-color:@color-follow;
 }
 
-.badge-following{
+.badge-Following{
 	background-color:@color-following;
 }
 
-.badge-friends{
+.badge-Friends{
 	background-color:@color-friends;
 }
-.badge-follower{
+.badge-Follower{
 	background-color:@color-follower;
 }
 
@@ -461,37 +463,60 @@ ul, ol {
 /*==================================================*/
 
 .profile-block{
-
 	height:80px;
+}
+
+.profile-block h1{
+	text-align:center;
+	font-size:40px;
+	color:@color-title-border;
+}
+
+.profile-block h5 , .profile-block h4{
+	text-align:center;
+	width:100%;
+}
+
+
+.profile-block h4{
+	padding-top:6px;
 }
 
 .profile-block.following{
 	float:left;
 	background-color:@color-following;
-	width:160px;
-	margin-left:20px;
+	width:137px;
+	margin-left:19px;
+	color:white;
+
 }
 
 .profile-block.followers{
 	float:left;
 	background-color:@color-follower;
-	width:160px;
+	width:137px;
+	color:white;
+
 }
 
 .profile-block.friends{
 	float:left;
 	background-color:@color-friends;
-	width:158px;
+	width:138px;
+	color:white;
+
+
 }
 
 
 .profile-block.fan-point .progress{
 	width:90%;
-	height:30px;
+	height:25px;
+	margin-bottom:5px;
 
 }
 .profile-block.fan-point .progress .bar{
-	height:30px;
+	height:25px;
 	background-color: @color-dark;
 	background-image :none;
 }
@@ -505,7 +530,7 @@ ul, ol {
 
 
 .span6.left{
-	width:478px;
+	width:412px;
 	background-color:@color-feed;
 	border-top: 1px solid @color-feed2;
 	border-bottom: 1px solid @color-feed2;
@@ -602,4 +627,59 @@ ul, ol {
 .awards{
 	height:80px;
 	background-color:@color-feed;
+}
+
+
+/* OTHER USER PROFILE LIGHT BOX */
+/*==================================================*/
+
+.user-profile{
+	z-index:50;
+	position:absolute;
+	display:block;
+	width:671px;
+	height:700px;
+
+	margin-left:60px;
+	margin-right:60px;
+	margin-top:60px;
+}
+
+.top-border{
+	position:relative;
+	top:0;
+	width:671px;
+	height:350px;
+	background-color:@color-base;
+}
+
+.bottom-border{
+	position:relative;
+	bottom:0;
+	width:671px;
+	height:350px;
+	background-color:@color-base;
+}
+	
+
+.profile-content{
+	z-index:51;
+	width:651px;
+	height:680px;
+	position:absolute;
+	top:10px;
+	left:10px;
+	background-color:@color-background;
+	
+}
+
+.light-box{
+	display:block;
+	position:absolute;
+	top:0;
+	left:0;
+	background-color:rgba(0,0,0,0.7);
+	z-index :25;
+	width:100%;
+	min-height:100%;
 }

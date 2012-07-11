@@ -41,14 +41,13 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			}
 			
 		}else {
-			
+
 			if($subscribe_Model->isDataValid($data)) {
 				try {
 					$result = $subscribe_Model->insert($data);
-					Zend_Debug::dump($result);
+					//Zend_Debug::dump($result);
 				} catch (Exception $e) {
 					//TO LOG
-					echo $e->getMessage();
 				}
 			}else {
 				//echo 'nothing to save';
@@ -214,14 +213,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$fancrankFB->api("/$postId/comments", 'POST', $params);
 	}
 	
-	public function closestcommentAction() {
-		$comment = new Model_Comments();
-		$commentId = $this->_getParam('comment_id');
-		$result = $comment->getClosestCommentsByTimestamp($commentId, 3);
-		
-		foreach ($result as $comment) {
-			Zend_Debug::dump($comment);
-		}
+	public function relationAction(){
+		$follow = new Model_Subscribes();
+		$user= $this->_getParam('id');
+		$target = $this->_getParam('target_id');
+		echo $user.' '.$target;
+		echo $follow->getRelation($user, $target);
 	}
 }
 

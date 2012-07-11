@@ -60,6 +60,18 @@ class Model_Posts extends Model_DbTable_Posts
 	
 	}
 	
+	public function getUserPost($user_id, $limit=10) {
+		$select = "SELECT p.*, f.facebook_user_name
+				FROM posts p, facebook_users f
+				WHERE (p.facebook_user_id = f.facebook_user_id)
+				GROUP BY p.post_id ORDER BY p.updated_time DESC";
+		
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+	
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
 	public function isDataValid($data) {
 		if(empty($data)) {
 			return false;
@@ -91,5 +103,6 @@ class Model_Posts extends Model_DbTable_Posts
 		
 		return $this->getAdapter()->fetchAll($select);
 	}
+
 }
 
