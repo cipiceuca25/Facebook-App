@@ -100,6 +100,7 @@
 			    
 			    <div id="content">
 				<div class="user-profile">
+								<a class="close" href="" onclick=></a>
 	        					<div class="top-border">  </div>
 	        					<div class="bottom-border"> </div>
 	        					<div class="profile-content">
@@ -144,9 +145,14 @@
     </body>
     
     <script >
-	$('.light-box').click(function(){
-		$('.light-box').css('display','none');
+
+    function closeProfile(){
+    	$('.light-box').css('display','none');
 		$('.user-profile').css('display', 'none');
+    }
+    
+	$('.light-box').click(function(){
+		closeProfile();
 	});
 
 	$('#newsfeed-tab').click(function(){
@@ -170,6 +176,26 @@
 		getUserProfile('.profile-content', user);
 		$('.light-box').css('display','block');
 		$('.user-profile').css('display', 'block');
+		$('.top-border').animate({
+		    height: 'toggle',
+			top: '0px'
+		  }, 1000, function() {
+		    // Animation complete.
+		  });
+	
+		$('.bottom-border').animate({
+		    height: 'toggle',
+		    top: '0px'
+		  }, 1000, function() {
+		    // Animation complete.
+		  });
+		$('.profile-content').animate({
+			height:'toggle',
+			top:'10px'
+		   },1000, function(){
+			   
+		});
+		
 	}
   /*  $(document).ready(function() {
 
