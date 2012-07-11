@@ -1,20 +1,221 @@
-<div id="profileFormWrapper" style="width:500px">
-<form class="form-horizontal">
-	<fieldset>
-		<legend>Client Profile</legend>
-		<?php if (!empty($this->facebook_user)) foreach($this->facebook_user as $k => $value): ?>
-		<div class="control-group">
-			<label class="control-label" for="input_<?= $k ?>"><?= $k ?></label>
-			<div class="controls">
-				<input type="text" class="input-xlarge" id="input_<?= $value ?>" value="<?= $value ?>" />
-			</div>
-		</div>
-		<?php endforeach; ?>
-		
-		<div class="form-actions">
-			<button type="submit" class="btn btn-primary">Save changes</button>
-			<button class="btn">Cancel</button>
-		</div>
-	</fieldset>
-</form>
-</div>
+
+						<div class="row">
+							<div class="span12">
+								<div class="title">
+										<div class="photo"> <a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a></div>
+										<div class="title-header"> <h2><i class="icon-star icon-white"></i><?= $this->facebook_user->facebook_user_name?>'s Profile<i class="icon-star icon-white"></i></h2> </div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+						
+							<div class="span6 left">
+								
+								<div class="row ">
+									<div class="span2">
+										<div class="profile-block">
+											<h2>Level</h2>
+											<h1>18</h1>
+										</div>
+										
+									</div>
+									<div class="span4">
+										<div class="profile-block fan-point">
+											<h2>FAN POINT</h2>
+											
+											<div class="progress">
+												
+												<div class="bar" style="width: 60%;">
+												
+												</div>
+												
+											</div>
+											<h5>2000/3000 1000 Until Next Level</h5>
+										</div>
+									</div>
+								</div>
+								<div class="row ">
+									<div class="span2">
+										<div class="profile-block">
+										<h3>RANK</h3>
+										<h4>12345/67890</h4>
+										</div>
+									</div>
+									<div class="span2">
+										<div class="profile-block">
+										<h3>FAN SINCE</h3>
+										<h4><?= date("F d Y", strtotime($this->facebook_user->created_time))?></h4>
+										</div>
+									</div>
+									<div class="span2">
+										<div class="profile-block">
+										<h3>CITY</h3>
+										<h4><?= $this->facebook_user->hometown?></h4>
+										</div>
+									</div>
+								</div>		
+								<div class="row ">
+									
+										<div class="profile-block following">
+										<h4>FOLLOWING <br/> <?= $this->following['0']['Following']?>
+									
+										</h4>
+										</div>
+									
+									
+										<div class="profile-block followers">
+										<h4>FOLLOWERS  <br/> <?= $this->follower['0']['Follower']?>
+										</h4>
+										</div>
+									
+									
+										<div class="profile-block friends">
+										<h4> FRIENDS  <br/>  <?= $this->friends['0']['friends']?></h4>
+										</div>
+								
+								</div>
+								
+							</div>
+							
+							<div class="span6 right">
+								<div class="row">
+									<div class="span3">
+										<div class="profile-block">
+										<h4>OVERALL ACHIEVEMENT</h4>
+										<div class="progress">
+											<div class="bar" style="width: 60%;">
+											</div>
+										</div>
+										</div>
+									</div>
+								
+								</div>
+								<div class="row">
+									
+											<div class="span3">
+												<div class="profile-block">
+													<h4>PERSONAL ACHIEVEMENT</h4>
+													<div class="progress">
+														<div class="bar" style="width: 60%;"></div>
+													</div>
+												</div>
+											</div>
+											
+											<div class="span3">
+												<div class="profile-block">
+													<h4>SOCIAL ACHIEVEMENT</h4>
+													<div class="progress">
+														<div class="bar" style="width: 60%;"></div>
+													</div>
+												</div>
+											</div>
+									
+								</div>
+								<div class="row">
+									<div class="profile-block">
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+										<div class="span1">
+											badge
+										</div>
+									</div>
+								</div>	
+									
+							</div>
+							
+							
+							
+							
+						</div>
+						
+						<div class="row">
+							<div class="span8">
+								<div class="subtitle">
+									<div class="title-header"> <h2><i class="icon-star icon-white"></i>Most Recent Activity<i class="icon-star icon-white"></i></h2> </div>
+								</div>
+							
+								<ul class="post-list">
+										<li class="grey-light">
+										
+											<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a></div>
+											<div class="post"><div class="name"><a href=""><?= $this->facebook_user->facebook_user_name?></a></div>
+														Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus viverra sodales vulputate. Etiam eget purus tellus. Mauris neque sapien, placerat sit amet accumsan pulvinar, venenatis sed dolor. Ut sit amet ante id magna egestas tincidunt et sed purus. Sed sem tellus, feugiat eu lobortis sit amet, accumsan quis ipsum. Mauris vehicula malesuada justo, non hendrerit sem lacinia at. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus luctus erat et erat suscipit nec interdum risus blandit. Vestibulum est nunc, lobortis ut elementum et, interdum sit amet risus. Phasellus urna lacus, egestas id posuere egestas, vehicula eget libero.</div>
+											<div class="social"> <img src="/img/news-feed/icon-likes.png" /><a href="" class="likes"> Like</a>  <a href="" class="comment"> Comment</a></div>
+										</li>
+										
+										<li class="grey-dark">
+											<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a></div>
+											<div class="post"><div class="name"><a href=""><?= $this->facebook_user->facebook_user_name ?></a></div>
+														Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus viverra sodales vulputate. Etiam eget purus tellus. Mauris neque sapien, placerat sit amet accumsan pulvinar, venenatis sed dolor. Ut sit amet ante id magna egestas tincidunt et sed purus. Sed sem tellus, feugiat eu lobortis sit amet, accumsan quis ipsum. Mauris vehicula malesuada justo, non hendrerit sem lacinia at. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus luctus erat et erat suscipit nec interdum risus blandit. Vestibulum est nunc, lobortis ut elementum et, interdum sit amet risus. Phasellus urna lacus, egestas id posuere egestas, vehicula eget libero.</div>
+											<div class="social"> <img src="/img/news-feed/icon-likes.png" />  <a href="" class="likes"> Like</a>  <a href="" class="comment"> Comment</a></div>
+										</li>
+								</ul>
+								
+							</div>
+							
+							<div class="span4">
+								<div class="subtitle">
+									<div class="title-header"> <h2><i class="icon-star icon-white"></i>upcoming badges<i class="icon-star icon-white"></i></h2> </div>
+								</div>
+								
+								<div class="text-title">Completion</div>
+								
+								<ul class="badges-list">
+									<li>
+										<div class="badges">
+											<div class="percentage">100%</div>
+											<div class="photo">icon</div>
+											<div class="stats">test 100/100</div>
+										</div>
+										<div class="progress">
+											<div class="bar" style="width: 100%;">
+												
+											</div>
+										</div>
+										
+									</li>
+									<li>
+										<div class="badges">
+											<div class="percentage">50%</div>
+											<div class="photo">icon</div>
+											<div class="stats">test 50/100</div>
+										</div>
+										<div class="progress">
+											<div class="bar" style="width: 50%;"></div>
+										</div>
+									</li>
+									<li>
+										<div class="badges">
+											<div class="percentage">20%</div>
+											<div class="photo">icon</div>
+											<div class="stats">test 20/100</div>
+										</div>
+										<div class="progress">
+											
+											<div class="bar" style="width: 20%;">
+												
+											</div>
+										</div>
+									</li>
+								
+								</ul>
+							</div>
+							
+						</div>
+			
+					
+					

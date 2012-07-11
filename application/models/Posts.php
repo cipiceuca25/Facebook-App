@@ -39,26 +39,28 @@ class Model_Posts extends Model_DbTable_Posts
 
 		//$filter = new Zend_Filter_Input($filterRules, $validatorRules);
 		$data = array(
-				'post_id'			=>	$post['activityid'],
-				'facebook_user_id'	=>	$post['fromid'],
-				'fanpage_id'		=>	$fanpage_id,
-				'user_cateogry'		=>	$post['activityuser_category'],
-				'message'			=>	$post['activitymessage'],
-				'privacy_descr'		=>	$post['privacydescription'],
-				'privacy_value'		=>	$post['privacyvalue'],
-				'type'				=>	$post['activitytype'],
-				'created_time'		=>	$post['activitycreated_time'],
-				'updated_time' 		=>	$post['activityupdated_time'],
-				'application_name'	=>	$post['applicationname'],
-				'application_id'	=>	$post['applicationid'],
-				'comments_count'	=>	$post['commentscount'],
-				'likes_count'		=>	$post['likescount']
+				'post_id'				=>	$post['post_id'],
+				'facebook_user_id'		=>	$post['fromid'],
+				'fanpage_id'			=>	$fanpage_id,
+				'post_user_cateogry'	=>	$post['post_user_cateogry'],
+				'post_message'			=>	$post['post_message'],
+				'post_privacy_descr'	=>	$post['post_privacy_descr'],
+				'post_privacy_value'	=>	$post['post_privacy_value'],
+				'post_type'				=>	$post['post_type'],
+				'created_time'			=>	$post['created_time'],
+				'updated_time' 			=>	$post['updated_time'],
+				'post_application_name'	=>	$post['post_application_name'],
+				'post_application_id'	=>	$post['post_application_id'],
+				'comments_count'		=>	$post['comments_count'],
+				'likes_count'			=>	$post['likes_count']
 		);
 	
+		
 		$insert = $this->getAdapter()->insert(array('posts' => 'posts'), $data);
 	
 	}
 	
+
 	public function getUserPost($user_id, $limit=10) {
 		$select = "SELECT p.*, f.facebook_user_name
 				FROM posts p, facebook_users f
@@ -72,6 +74,28 @@ class Model_Posts extends Model_DbTable_Posts
 	}
 	
 	
+
+	public function isDataValid($data) {
+		if(empty($data)) {
+			return false;
+		}
+		
+		$valid = true;
+		
+		$validator = new Zend_Validate_Sitemap_Lastmod();
+		
+		if(!empty($data['created_time'])) {
+			$valid = $validator->isValid($data['created_time']);
+		}
+		
+		if(!empty($data['updated_time'])) {
+			$valid = $validator->isValid($data['created_time']);
+		}
+		
+		return $valid && $this->isIdFieldsValid($data);
+	}
+
+
 	public function getLatestPost($page_id, $limit=5) {
 		$select = "SELECT p.*, f.fan_first_name, f.fan_last_name 
 				FROM posts p, fans f 

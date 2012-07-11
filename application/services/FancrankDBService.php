@@ -90,7 +90,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			//echo('user saved\n');
 			return $data->id;
 		} catch (Exception $e) {
-			print $e->getMessage();
+			//print $e->getMessage();
 			$collectorLogger = Zend_Registry::get('collectorLogger');
 			$collectorLogger->log(sprintf('Unable to save facebook user %s to database. Error Message: %s ', $facebookUser->id, $e->getMessage()), Zend_log::ERR);
 		}
@@ -129,7 +129,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			$fanpages->saveAndUpdateById($fanpageData, array('id_field_name'=>'fanpage_id'));
 			return $fanpageProfile->id;
 		} catch (Exception $e) {
-			print $e->getMessage();
+			//print $e->getMessage();
 			$collectorLogger = Zend_Registry::get('collectorLogger');
 			$collectorLogger->log(sprintf('Unable to save fanpage %s to database. Error Message: %s ', $fanpageProfile->id, $e->getMessage()), Zend_log::ERR);
 		}

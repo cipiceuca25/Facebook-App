@@ -1,17 +1,21 @@
-<div class="row">
+<div class="panel">
+						<div class="row">
 							<div class="span8">
 								<div class="top-fan">
 									<div class="title">
 										<div class="photo"> <img src="/img/news-feed/top-fan-icon.jpg" /> </div>
 										<div class="title-header"> <h2><i class="icon-star icon-white"></i> Top Fans <i class="icon-star icon-white"></i></h2>
-											<div class="tip"><a title="You are awesome and nobody can touch you!<br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
+											<div class="tip"><a title="You are awesome and nobody can touch you! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
 										 </div>
 									</div>
+									
+								
+									
 									<?php $count = 0; ?> 
 									<?php foreach($this->top_fans as $top_fan): ?>
 									
 									<?php if ($count == 0){?>
-								
+									
 										<ul class="top-list">
 											<li>
 												<div class="border-dark">
@@ -20,12 +24,12 @@
 															<h1><?= $count + 1 ?></h1>
 														</div>
 														<div class="photo">
-															<a   target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
+															<a href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
 														</div>
 														<div class="name">
-															<a class="first" target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><?= $top_fan['fan_first_name'] ?></a>
+															<a class="first" href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 															<br/>
-															<span class="badge badge-follow">Follow</span>
+															<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
 														</div>
 														<div class="points">
 															<h2><?= $top_fan['number_of_posts'] ?></h2> <span>Points <br/>This Week</span>
@@ -48,12 +52,12 @@
 														<h1><?= $count + 1 ?></h1>
 													</div>
 													<div class="photo">
-														<a   target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
+														<a href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
 													</div>
 													<div class="name">
-														<a  <?php if ($count == 0){?>class='first')<?php }?> target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><?= $top_fan['fan_first_name'] ?></a>
+														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 														<br/>
-														<span class="badge badge-follow">Follow</span>
+														<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
 													</div>
 													<div class="points">
 														<h2><?= $top_fan['number_of_posts'] ?> </h2> <span>Points <br/>This Week</span>
@@ -91,12 +95,12 @@
 															<h1><?= $count + 1 ?></h1>
 														</div>
 														<div class="photo">
-															<a   target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
+															<a   href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
 														</div>
 														<div class="name">
-															<a class="first" target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><?= $popular['fan_first_name'] ?></a>
+															<a class="first" href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 															<br/>
-															<span class="badge badge-follow">Follow</span>
+															<span class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></span>
 														</div>
 														<div class="points">
 															<h2><?= $popular['count'] ?> </h2> <span>Points <br/>This Week</span>
@@ -119,12 +123,12 @@
 														<h1><?= $count + 1 ?></h1>
 													</div>
 													<div class="photo">
-														<a   target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
+														<a   href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
 													</div>
 													<div class="name">
-														<a  <?php if ($count == 0){?>class='first')<?php }?> target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><?= $popular['fan_first_name'] ?></a>
+														<a class="first" href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 														<br/>
-														<span class="badge badge-follow">Follow</span>
+														<span class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></span>
 													</div>
 													<div class="points">
 														<h2><?= $popular['count'] ?> </h2> <span>Points <br/>This Week</span>
@@ -163,12 +167,12 @@
 															<h1><?= $count + 1 ?></h1>
 														</div>
 														<div class="photo">
-															<a   target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
+															<a href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
 														</div>
 														<div class="name">
-															<a class="first" target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><?= $talker['fan_first_name'] ?></a>
+															<a class="first" href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 															<br/>
-															<span class="badge badge-following">Following</span>
+															<span class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></span>
 														</div>
 														<div class="points">
 															<h2><?= $talker['number_of_posts'] ?> </h2> <span>Points <br/>This Week</span>
@@ -191,12 +195,12 @@
 														<h1><?= $count + 1 ?></h1>
 													</div>
 													<div class="photo">
-														<a   target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
+														<a href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
 													</div>
 													<div class="name">
-														<a  <?php if ($count == 0){?>class='first')<?php }?> target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><?= $talker['fan_first_name'] ?></a>
+														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 														<br/>
-														<span class="badge badge-friends">Friends</span>
+														<span class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></span>
 													</div>
 													<div class="points">
 														<h2><?= $talker['number_of_posts'] ?> </h2> <span>Points <br/>This Week</span>
@@ -234,12 +238,12 @@
 															<h1><?= $count + 1 ?></h1>
 														</div>
 														<div class="photo">
-															<a   target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
+															<a  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
 														</div>
 														<div class="name">
-															<a class="first" target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><?= $clicker['fan_first_name'] ?></a>
+															<a class="first" href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 															<br/>
-															<span class="badge badge-follow">Follow</span>
+															<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span>
 														</div>
 														<div class="points">
 															<h2><?= $clicker['number_of_likes'] ?></h2> <span>Points <br/>This Week</span>
@@ -262,12 +266,12 @@
 														<h1><?= $count + 1 ?></h1>
 													</div>
 													<div class="photo">
-														<a   target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
+														<a  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
 													</div>
 													<div class="name">
-														<a  <?php if ($count == 0){?>class='first')<?php }?> target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><?= $clicker['fan_first_name'] ?></a>
+														<a  <?php if ($count == 0){?>class='first'<?php }?>  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 														<br/>
-														<span class="badge badge-follower">Follower</span>
+														<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span>
 													</div>
 													<div class="points">
 														<h2><?= $clicker['number_of_likes'] ?> </h2> <span>Points <br/>This Week</span>
@@ -322,52 +326,9 @@
 											
 										</ul>
 							</div>
+						
+						</div>
 
-<!--
-
-
-<hr />
-
-
-<p>top talkers</p>
-
-<pre>
-<?= print_r($this->top_talkers) ?>
-</pre>
-
-<p>top clickers</p>
-
-<pre>
-<?= print_r($this->top_clickers) ?>
-</pre>
-
-<p>top fans</p>
-
-<pre>
-<?= print_r($this->top_fans) ?>
-</pre>
-
-<p>most popular</p>
-
-<pre>
-<?= print_r($this->most_popular) ?>
-</pre>
-
--->
-
-<script src="text/javascript">
-window.onload = function() {
-	  FB.Canvas.setAutoGrow(91);
-	  setTimeout('autoGrowTimer();', 1000); //This is for demonstration
-	};
-
-function autoGrowTimer() { //Can be removed.
-  paragraphs_added++; //Increase the count
-  autoGrowDiv = document.getElementById('autoGrow');
-  //autoGrowDiv.innerHTML = autoGrowDiv.innerHTML + "<p>This is making the iframe taller.</p>";
-  //Stop after 50 paragraphs aded
-  if (paragraphs_added > 50) return;
-
-  setTimeout('autoGrowTimer();', 1000);
-}
-</script>
+				
+				
+</div>					

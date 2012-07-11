@@ -141,7 +141,5 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
     {
         return $this->findParentRow(new Model_DbTable_Fanpages(), null, $select);
     }
-
-
 }
 

@@ -1,5 +1,8 @@
-jQuery(document).ready(function($){
  /************ SLIDING PANELS *************/
+/**
+
+jQuery(document).ready(function($){
+
   
     $(".flip").toggle(function() {
 
@@ -32,10 +35,11 @@ jQuery(document).ready(function($){
     
     });
   
-  /************ TOOL TIP *************/
+ 
   
   $('a[title]').tooltip({
     placement: 'left'
   });
 
 });
+*/ /************ TOOL TIP *************/

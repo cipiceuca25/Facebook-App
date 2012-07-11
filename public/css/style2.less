@@ -416,18 +416,18 @@ ul, ol {
 	margin-top:10px;
 }
 
-.badge-follow{
+.badge-Follow{
 	background-color:@color-follow;
 }
 
-.badge-following{
+.badge-Following{
 	background-color:@color-following;
 }
 
-.badge-friends{
+.badge-Friends{
 	background-color:@color-friends;
 }
-.badge-follower{
+.badge-Follower{
 	background-color:@color-follower;
 }
 
@@ -627,4 +627,59 @@ ul, ol {
 .awards{
 	height:80px;
 	background-color:@color-feed;
+}
+
+
+/* OTHER USER PROFILE LIGHT BOX */
+/*==================================================*/
+
+.user-profile{
+	z-index:50;
+	position:absolute;
+	display:block;
+	width:671px;
+	height:700px;
+
+	margin-left:60px;
+	margin-right:60px;
+	margin-top:60px;
+}
+
+.top-border{
+	position:relative;
+	top:0;
+	width:671px;
+	height:350px;
+	background-color:@color-base;
+}
+
+.bottom-border{
+	position:relative;
+	bottom:0;
+	width:671px;
+	height:350px;
+	background-color:@color-base;
+}
+	
+
+.profile-content{
+	z-index:51;
+	width:651px;
+	height:680px;
+	position:absolute;
+	top:10px;
+	left:10px;
+	background-color:@color-background;
+	
+}
+
+.light-box{
+	display:block;
+	position:absolute;
+	top:0;
+	left:0;
+	background-color:rgba(0,0,0,0.7);
+	z-index :25;
+	width:100%;
+	min-height:100%;
 }

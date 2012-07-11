@@ -3,7 +3,7 @@ jQuery(document).ready(function($){
 	$('.fancrank_login').click(function(event){
 		var url = '/auth/facebook/authorize/' + event.target.href.split('login/')[1].replace(/\/.*/, '');
 		event.preventDefault();
-		//confirmFunction(url);
+		confirmFunction(url);
 	});	
 });
 

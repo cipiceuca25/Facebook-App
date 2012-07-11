@@ -18,10 +18,12 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         }
         
         if (APPLICATION_ENV != 'production') {
-        	$this->data['page']['id'] = $this->_request->getParam('fanpage_id');
-        	$this->view->fanpage_id = $this->_request->getParam('fanpage_id');
+        	$this->data['page']['id'] = $this->_request->getParam('id');
+        	$this->view->fanpage_id = $this->_request->getParam('id');
         	//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
         	$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
+        	$this->view->user_id = $this->_getParam('facebook_user_id');
+        	$this->view->access_token = $this->_getParam('access_token');
         }
         
         if($this->_auth->hasIdentity()) {
@@ -80,17 +82,17 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}
     	$color = $colorChoice ->getColorChoice(1);
     	
-    	//exit();
+   	
+    	//Zend_Debug::dump($color); exit();
     	$this->view->top_fans = $topFans;
     	$this->view->most_popular = $mostPopular;
     	$this->view->top_talker = $topTalker;
     	$this->view->top_clicker = $topClicker;
     	$this->view->top_post = $topPosts;
     	$this->view->latest_post = $latestPost;
-    	
-    
-    	
-    	$this->view->color_choice = $color;
+
+    	$this->view->color_choice = $color->color_choice;
+
     	
     	
     	
