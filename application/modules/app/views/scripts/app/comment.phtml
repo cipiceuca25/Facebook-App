@@ -61,6 +61,10 @@
 														<?//= $this->post->post_message?>
 														 </div>
 											<div class="social"> <img src="/img/news-feed/icon-likes.png" />   <?//= $this->post->post_likes_count?>  <span id="post_like"></span><a href="#" class="likes" > Like</a>   <a href="" class="comment"> Comment</a> Posted on <span class="date" id="post_date"> <?//= date("F d Y", strtotime($this->post->updated_time))?></span></div>
+											<div class="comment-box">
+												
+												<textfield name="textarea" id="textarea" value="" style="overflow:visible">this is the comment box</textfield>
+											</div>
 										</li>
 										<br/>
 										

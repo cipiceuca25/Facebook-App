@@ -1,0 +1,37 @@
+<?php $count = 0?>
+
+<?php foreach ($this->post as $post):?>		
+
+	<?php if ($count % 2 == 0){?>			
+	<li class="grey-light">
+	<?php }else{?>
+	<li class="grey-dark">
+	<?php }?>
+
+
+	<div class="photo"><a href="#"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
+	<div class="post"><div class="name"><a href=""><?=  $post->from->name?></a></div>
+	<?=  $post->message?></div>
+	<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
+	<? try{ echo $post->likes->count; } catch (Exception $e){ echo '0'; }?> <a href="" class="likes"> Like</a> 
+	 <a href="" class="comment"> Comment</a> 
+	 
+	 <?php try{ 
+	 		$comment = $post->comments->count; 
+	 	} catch (Exception $e){ 
+			echo '0'; 
+		}
+	 
+	 
+	 
+	 ?> 
+	
+	 <span class="date"><?=  date("F d Y",strtotime($post->created_time))?></span></div>
+	</li>
+										
+<?php $count ++;?>
+<?php endforeach; ?>
+				
+						
+						
+			

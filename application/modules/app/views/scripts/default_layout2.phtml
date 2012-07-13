@@ -228,19 +228,33 @@ $tcb = false;
 
 	$('#newsfeed-tab').click(function(){
 		getNewsfeed('#news-feed');
+		$('#top-fans').html('');
+		$('#profile').html('');
+		$('#achievements').html('');
+		 getFancrankfeed('all');
 	});
 	
 	$('#topfans-tab').click(function(){
 		getTopfans('#top-fans');
+		$('#profile').html('');
+		$('#achievements').html('');
+		$('#newsfeed').html('');
 	});
     
 	$('#profile-tab').click(function(){
 	
-		 getMyProfile('#profile')
+		 getMyProfile('#profile');
+		 $('#top-fans').html('');
+		 $('#achievements').html('');
+		 $('#newsfeed').html('');
 	});
 
 	$('#achievements-tab').click(function(){
 		getAwards('#achievements') 
+		$('#top-fans').html('');
+		$('#profile').html('');
+		$('#newsfeed').html('');
+		
 	});
 	
 	
@@ -314,14 +328,23 @@ $tcb = false;
 			 if (!response || response.error) {
 			 	
 		 	 }else{
-			 	 	
+			 	 	try{
 			 	 	var x = -1*(parseInt(response.cover.offset_y) + 50);
+			 	 	}catch(err){
+					var x = 0;
+			 	 	}
 			 	 	//alert(x);
 			 		$('#logo').html('<img src =" ' + response.cover.source + '"style=" top:'+ x +'px" />' );
 			 		
 			 }
-		 	 
+
+
+
+		 
 	 	});
+
+		 getFancrankfeed('all');
+		 
 	 });
 
 	 
@@ -492,6 +515,23 @@ $tcb = false;
 		});
 	}
 
+	function getFancrankfeed(view){
+		ui = '#fancrankfeed';
+		//alert(baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view);
+		$.ajax({
+			type: "GET",
+			url: baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view, 
+			dataType: "html",
+			cache: false,
+			success: function( data ) {
+				$(ui).html('');
+				$(ui).html(data);
+			},	
+			error: function( xhr, errorMessage, thrownErro ) {
+				console.log(xhr.statusText, errorMessage);
+			}
+		});
+	}
 	
     function getTopfans(ui) {
      
@@ -510,6 +550,7 @@ $tcb = false;
     		}
     	});
     }
+    
     function getMyProfile(ui) {
     	$.ajax({
     		type: "GET",
