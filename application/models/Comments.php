@@ -46,5 +46,14 @@ class Model_Comments extends Model_DbTable_Comments
 			return $this->getAdapter()->fetchAll($select);
 		}
 	}
+	
+	public function getCommentsByPostId($postId) {
+		$select = $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART);
+		$select->setIntegrityCheck(false);
+		$select->join(array('facebook_users'), 'facebook_users.facebook_user_id = comments.facebook_user_id');
+		$select->where($this->quoteInto('comment_post_id = ?', $postId));
+		
+		return $this->fetchAll($select); 
+	}
 }
 

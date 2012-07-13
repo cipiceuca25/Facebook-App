@@ -47,7 +47,36 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function viewAction() {
-    	echo 'graph';	
+    	$time = time();
+    	$range = 7776000;
+    	$since = $time - $range;
+		$until = $time;
+		 
+    	$fanpageId = $this->_getParam('fanpage_id');
+    	$type = $this->_getParam('type');
+    	$accessToken = 'AAAFHFbxmJmgBAP9PzJi7VDqsx1tP3CLbpoZABeFytBeEvFutkvLdZAVQgzdzyZCO3GxzjTYEZBWzHWy7T4Y3CImLEZBxZCa8Avi7lrNW6CCgZDZD';
+//      	$url = "https://graph.facebook.com/eslyonline/insights";
+//      	$param = array('access_token'=>'AAAFHFbxmJmgBAP9PzJi7VDqsx1tP3CLbpoZABeFytBeEvFutkvLdZAVQgzdzyZCO3GxzjTYEZBWzHWy7T4Y3CImLEZBxZCa8Avi7lrNW6CCgZDZD',
+//      					'since'=>$since,
+//      					'until'=>$until);
+//      	$result = $this->httpCurl($url, $param, 'get');
+//      	Zend_Debug::dump($result);
+    	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'insights');
+    	$result = $collector->collectFanpageInsight(5, $type);
+    	$likeStats = array();
+    	foreach ($result as $data) {
+    		foreach($data->values as $value) {
+    			$time = explode('T', $value->end_time);
+    			$newTime = str_replace('-', '/', $time[0]);
+    			$value->end_time = $newTime;
+    			$likeStats[] = $value;
+    		}
+    	}
+    	
+    	//Zend_Debug::dump($likeStats); exit();
+    	//asort($likeStats);
+    	//Zend_Debug::dump($likeStats);
+    	$this->_helper->json($likeStats);
     }
     
     public function testmailAction() {
@@ -82,6 +111,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     			curl_setopt($ch, CURLOPT_POST, false);
     			break;
     		case 'post':
+    			curl_setopt($ch, CURLOPT_URL, $url);
     			curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
     			curl_setopt($ch, CURLOPT_POST, true);
     			break;
