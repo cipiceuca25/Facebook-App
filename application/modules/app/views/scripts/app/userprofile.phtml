@@ -2,24 +2,24 @@
 							<div class="span9">
 								<div class="title">
 										<div class="photo"> <img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></div>
-										<div class="title-header"> <h2><i class="icon-star icon-white"></i><?= $this->facebook_user->facebook_user_name?>'s Profile<i class="icon-star icon-white"></i></h2> </div>
+										<div class="title-header"> <h2><i class="icon-star icon-white"></i> <?= $this->facebook_user->facebook_user_name?>'s Profile <i class="icon-star icon-white"></i></h2> </div>
 								</div>
 							</div>
 						</div>
 						
 						<div class="row">
 						
-							<div class="span6 left">
+							<div class="span9 left">
 								
 								<div class="row ">
-									<div class="span1">
+									<div class="span3">
 										<div class="profile-block">
 											<h2>Level</h2>
 											<h1>18</h1>
 										</div>
 										
 									</div>
-									<div class="span4">
+									<div class="span6">
 										<div class="profile-block fan-point">
 											<h2>FAN POINT</h2>
 											
@@ -35,19 +35,19 @@
 									</div>
 								</div>
 								<div class="row ">
-									<div class="span2">
+									<div class="span3">
 										<div class="profile-block">
 										<h3>RANK</h3>
 										<h4>12345/67890</h4>
 										</div>
 									</div>
-									<div class="span1">
+									<div class="span3">
 										<div class="profile-block">
 										<h3>FAN SINCE</h3>
 										<h4><?= date("F d Y", strtotime($this->facebook_user->created_time))?></h4>
 										</div>
 									</div>
-									<div class="span1">
+									<div class="span3">
 										<div class="profile-block">
 										<h3>CITY</h3>
 										<h4><?= $this->facebook_user->hometown?></h4>
@@ -72,7 +72,16 @@
 										<div class="profile-block friends">
 										<h4> FRIENDS  <br/>  <?= $this->friends['0']['friends']?></h4>
 										</div>
-								
+										
+									
+										<div class="span2">
+											<a href="#" onclick="follow(<?= $this->facebook_user->facebook_user_id ?>)"><span class="badge badge-<?= $this->relation?> big"><?= $this->relation?></span></a>
+											<br/>
+											<br/>
+											<?php if(!($this->relation == 'Follow')){?>
+												<a href="#" onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?>)"><span class="badge badge-unfollow big">Unfollow</span></a>
+											<?}?>
+										</div>
 								</div>
 								
 							</div>

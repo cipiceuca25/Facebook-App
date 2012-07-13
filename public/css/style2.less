@@ -2,33 +2,38 @@
 @gridColumnWidth:50px;
 @gridGutterWidth:15px;
 
-@color-base:@color-light-green;
-@color-dark:@color-dark-green;
+@color-base:@color-base-original;
+@color-dark:@color-dark-original;
 
-@color-title-border:@color-pink;
-@color-top-list-border: @color-text-gray;
-@color-hover:@color-dark-green;
+@color-title-border:@color-title-border-original;
+@color-top-list-border: @color-top-list-border-original;
+@color-hover:@color-dark-original;
 
 @color-background:@color-white;
 
-@color-bubble1: @color-cyan;
-@color-bubble2: @color-dark-cyan;
+@color-bubble1: @color-bubble1-original;
+@color-bubble2: @color-bubble2-original;
 
-@color-follow: @color-cyan;
-@color-follower: @color-purple;
-@color-following:@color-orange;
-@color-friends:@color-strong-pink;
+@color-follow: @color-bubble1-original;
+@color-follower: @color-follower-original;
+@color-following:@color-following-original;
+@color-friends:@color-friends-original;
 
-@color-feed:@color-light-gray;
-@color-feed2:@color-dark-gray;
+@color-feed:@color-feed-original;
+@color-feed2:@color-feed2-original;
 
 @color-title-text:@color-white;
 @color-text:@color-white;
-@color-text2:@color-text-gray;
+@color-text2:@color-top-list-border-original;
 
-@color-badges:@color-olive;
+@color-badges:@color-badges-original;
 
-
+a, a:visited{
+	color:@color-base;
+}
+a:hover{
+	color:@color-dark;
+}
 
 body{
 	background-color:@color-background;
@@ -142,7 +147,7 @@ ul, ol {
 	padding-top:20px;
 	margin-bottom:10px;
 	background:url(../img/news-feed/bg-bubble-top.png) top center no-repeat;
-	background-size:257px;
+	background-size:100%;
 }
 
 .bubble .post {
@@ -194,7 +199,7 @@ ul, ol {
 
 .bubble .chat-right .info {
 	background:url(../img/news-feed/bg-bubble-bottom-right.png) top center no-repeat;
-	background-size:257px;
+	background-size:100%;
 }
 
 .bubble .chat-right .name {
@@ -215,7 +220,7 @@ ul, ol {
 
 .bubble .chat-left .info {
 	background:url(../img/news-feed/bg-bubble-bottom-left.png) top center no-repeat;
-	background-size:257px;	
+	background-size:100%;	
 }
 
 .bubble .chat-left .name {
@@ -265,7 +270,7 @@ ul, ol {
 
 .post-list .post {
 	float:left;	
-	width:450px;
+	width:85%;
 	margin-left:10px;
 }
 
@@ -294,7 +299,7 @@ ul, ol {
 }
 
 .post-list .likes {
-	margin-left:10px;	
+	margin-left:2px;	
 }
 
 .post-list .comment {
@@ -416,6 +421,14 @@ ul, ol {
 	margin-top:10px;
 }
 
+
+.big{
+		position:relative;
+		top:5px;
+		line-height:23px;
+		font-size:23px;
+}
+
 .badge-Follow{
 	background-color:@color-follow;
 }
@@ -430,6 +443,8 @@ ul, ol {
 .badge-Follower{
 	background-color:@color-follower;
 }
+
+
 
 /*tips*/
 .tip {
@@ -640,49 +655,54 @@ ul, ol {
 	width:671px;
 	height:700px;
 
-	margin-left:60px;
+	margin-left:85px;
 	margin-right:60px;
-	margin-top:60px;
+	margin-top:20px;
 	display:none;
 }
 
+/*
 .top-border{
 	position:relative;
 	top:350px;
-	width:671px;
+	width:642px;
 	height:350px;
+
 	background-color:@color-base;
 	display:none;
-
 }
 
 .bottom-border{
 	position:relative;
 	top:350px;
-	width:671px;
+	width:642px;
 	height:350px;
 	background-color:@color-base;
 	display:none;
 }
-	
+*/
 
 .profile-content{
+	border: 10px solid @color-base;
 	z-index:51;
-	width:651px;
-	height:680px;
+	padding:5px;
+	width:602px;
+
+	height:660px;
 	position:absolute;
 	top:350px;
-	
 	left:10px;
 	background-color:@color-background;
 	display:none;
 }
 
+
 .light-box{
 	display:block;
-	position:absolute;
-	top:0;
+	position:fixed;
+
 	left:0;
+	bottom:0;
 	background-color:rgba(0,0,0,0.7);
 	z-index :25;
 	width:100%;
@@ -690,10 +710,32 @@ ul, ol {
 	display:none;
 }
 
-.close{
+.closeProfile{
+	position:absolute;
+	right:2px;
+	top:2px;
 	background:url(../img/close.png) top left no-repeat;
 	height:20px;
 	width:20px;
 	display:block;
 	z-index:100;
+}
+
+
+#moreComments{
+	text-align:center;
+	
+}
+
+#logo{
+	display:block;
+	height:300px;
+	width:810px;
+	
+	overflow:hidden;
+}
+
+#logo img{
+	width:810px;
+	position:relative;
 }

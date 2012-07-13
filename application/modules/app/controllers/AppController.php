@@ -73,10 +73,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     	
     	
-    	$c = $this->_request->getParam('colorChange');
-    	if(!is_null($c)){
-    		$colorChoice ->change(1, $c );
-    	}
+    	
     	$color = $colorChoice ->getColorChoice(1);
     	
     	//exit();
@@ -248,6 +245,63 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("newsfeed");
     }
     
+    public function commentAction()
+    {
+    	$this->_helper->layout->disableLayout();
+    	   	/*
+    	$user = new Model_FacebookUsers();
+    	$target = new Model_FacebookUsers();
+    	$post = new Model_Posts() ;
+    	$comment = new Model_Comments() ;
+    	
+    	$user = $user->find($this->data['user_id'])->current();
+    	//Zend_Debug::dump($user);
+    	if($user) {
+    		$this->view->facebook_user = $user;
+    		//$access_token = $this->facebook_user->facebook_user_access_token;
+    		//$this->view->feed = $this->getFeed($access_token);
+    	}else {
+    		$this->view->facebook_user = null;
+    	}
+    	
+    	$target = $target->find( $this->_request->getParam('target'))->current();
+    	//Zend_Debug::dump($user);
+    	if($target) {
+    		$this->view->target = $target;
+    		//$access_token = $this->facebook_user->facebook_user_access_token;
+    		//$this->view->feed = $this->getFeed($access_token);
+    	}else {
+    		$this->view->target = null;
+    	}
+    	
+    	$comment = $comment->getCommentsByPostId($this->_request->getParam('post_id') , 5);
+    	
+    	$post = $post->find( $this->_request->getParam('post_id'))->current();
+    	*/
+    	/*
+    	 $user = $user->find($this->_facebook_user->facebook_user_id)->current();
+    	if($user) {
+    	$this->view->facebook_user = $user;
+    	$access_token = $this->_facebook_user->facebook_user_access_token;
+    	$this->view->feed = $this->getFeed($access_token);
+    	}else {
+    	$this->view->facebook_user = null;
+    	}
+    	*/
+    
+    	
+    	//$model = new Model_Rankings;
+    	//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
+    	//Zend_Debug::dump($user); exit();
+    	//$this->view->post = $post;
+    	//$this->view->comment = $comment;
+    	
+    	
+    	
+    	
+    	$this->render("comment");
+    }
+    
     public function awardsAction() {
     	$this->_helper->layout->disableLayout();
     	//$this->_helper->viewRenderer->setNoRender(true);
@@ -303,8 +357,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
     	$this->_helper->layout->disableLayout();
     	//check for user authorization
-    	$user = new Model_FacebookUsers();
-    	 
+    	$user = new Model_FacebookUsers(); // the person the user is looking at
+    	$user2 = new Model_FacebookUsers(); // the actual user
+    	
     	$user = $user->find( $this->_request->getParam('target'))->current();
     	//Zend_Debug::dump($user);
     	if($user) {
@@ -314,17 +369,28 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
-    
+    	
+    	$user2 = $user2->find( $this->_request->getParam('facebook_user_id'))->current();
+    	//Zend_Debug::dump($user);
+    	if($user2) {
+    		$this->view->facebook_user2 = $user2;
+    		//$access_token = $this->facebook_user->facebook_user_access_token;
+    		//$this->view->feed = $this->getFeed($access_token);
+    	}else {
+    		$this->view->facebook_user2 = null;
+    	}
     	
     	$follow = new Model_Subscribes();
+    	
     	$follower = $follow->getFollowers($user->facebook_user_id);
     	$following = $follow->getFollowing($user->facebook_user_id);
     	$friends = $follow->getFriends($user->facebook_user_id);
-    	 
+    	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id);
     
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	$this->view->friends = $friends;
+    	$this->view->relation = $relation;
     	 
     	$this->render("userprofile");
     }

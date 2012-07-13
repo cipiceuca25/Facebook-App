@@ -37,14 +37,27 @@ class Model_Comments extends Model_DbTable_Comments
 	
 	public function getClosestCommentsByTimestamp($commentId, $limit) {
 		$comment = $this->find($commentId)->current();
+		$limit2 = $limit++;
 		if(! empty($comment->comment_post_id) && ! empty($comment->created_time)) {
 
 			$select = "(SELECT * from comments where comment_post_id = '" .$comment->comment_post_id ."' and created_time >= '" .$comment->created_time ."' order by created_time limit $limit)
 						union all
-						(SELECT * from comments where comment_post_id = '" .$comment->comment_post_id ."' and created_time <= '" .$comment->created_time ."' order by created_time limit $limit)
-						";	
+						(SELECT * from comments where comment_post_id = '" .$comment->comment_post_id ."' and created_time < '" .$comment->created_time ."' order by created_time limit $limit2)
+						ORDER BY created_time";	
 			return $this->getAdapter()->fetchAll($select);
 		}
 	}
+	
+	public function getCommentsByPostId($postId, $limit) {
+		
+		$select = "	SELECT * from facebook_users, comments where facebook_users.facebook_user_id = comments.facebook_user_id && comments.comment_post_id ='" . $postId ."'";
+		
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+		
+		return $this->getAdapter()->fetchAll($select);
+				
+    }
+	
 }
 

@@ -5,15 +5,15 @@
 							<div class="span12">
 								<div class="title">
 									<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a> </div>
-									<div class="title-header"> <h2><i class="icon-star icon-white"></i><?= $this->facebook_user->facebook_user_name ?>'s News Feed <i class="icon-star icon-white"></i></h2> </div>
+									<div class="title-header"> <h2><i class="icon-star icon-white"></i> <?= $this->facebook_user->facebook_user_name ?>'s News Feed <i class="icon-star icon-white"></i></h2> </div>
 								</div>
 							</div>
 						</div>
 					
-						<div class="row">
+						<div class="row" >
 							<div class="span4">
 									<div class="subtitle">
-										<div class="title-header-dark"> <h2><i class="icon-star icon-white"></i> Top Post  <i class="icon-star icon-white"></i></h2> </div>
+										<div class="title-header-dark"> <h2><i class="icon-star icon-white"></i> Top Posts  <i class="icon-star icon-white"></i></h2> </div>
 									</div>
 									
 										<ul class="bubble">
@@ -27,8 +27,8 @@
 											<?php }?>
 												
 												<div class="post">
-													<a href=""><?= $topPost['post_message'] ?><br /><span class="date"><?= date("F d Y", strtotime($topPost['updated_time']))?></span></a>
-           
+													<a href="" onclick="comment('<?= $topPost['post_id']?>', '<?= $topPost['facebook_user_id']?>', 5)"><?= $topPost['post_message'] ?><br /><span class="date"><?= date("F d Y", strtotime($topPost['updated_time']))?></span></a>
+          
 												</div>
 													
 													<div class="info">
