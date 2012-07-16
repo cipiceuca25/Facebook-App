@@ -34,7 +34,7 @@
 			var userId = "<?= $this->user_id ?>";
 			var accessToken = "<?= $this->access_token ?>";
 			var fanpageId = "<?= $this->fanpage_id?>"	;	
-			
+			//alert( accessToken);
 			window.fbAsyncInit = function() {
 				FB.init({
 					 appId  : appId,
@@ -89,10 +89,6 @@
 
     <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
 
-        <div class="navbar navbar-fixed-top">
-            <?= $this->layout()->navbar ?>
-        </div>
-
 		<div class="container" role="main"> 
 			<div id="wrapper">
 	
@@ -121,6 +117,9 @@
 	        	</div>
 			    	<div class="container">
 			    	module version
+			    	    	<div id="logoutBtn" style="width:810;text-align:right;" >
+								<a href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a>
+    						</div>
 			    		
 						<div class="tabbable">   
 						    <ul class="nav nav-tabs" id="pageTabs">
@@ -210,9 +209,17 @@ $tcb = false;
 		$('.profile-content').css('display','none');
 		$('.profile-content').css('height','660px');
 
+
+		if($('#news-feed').hasClass('active')){
+			getTopPost();
+			getFancrankfeed('all');
+			
+			//alert("top class reload");
+		}
+		
 		if($('#top-fans').hasClass('active')){
 			getTopfans('#top-fans');
-			
+			getLatestPost();
 			
 			//alert("top class reload");
 		}
@@ -231,15 +238,16 @@ $tcb = false;
 		$('#top-fans').html('');
 		$('#profile').html('');
 		$('#achievements').html('');
-		getFancrankfeed('all');
+		
+	
 		//alert('getting top posts');
-		getTopPost();
+	
 		
 	});
 	
 	$('#topfans-tab').click(function(){
 		getTopfans('#top-fans');
-		getLatestPost();
+	
 		$('#profile').html('');
 		$('#achievements').html('');
 		$('#newsfeed').html('');
@@ -354,9 +362,8 @@ $tcb = false;
 		 
 	 	});
 		//alert('getting top posts');
-		 getNewsfeed('#news-feed');
-		getFancrankfeed('all');
-		getTopPost();
+		getNewsfeed('#news-feed');
+		
 	 });
 
 	 
@@ -539,8 +546,11 @@ $tcb = false;
 			url: 'http://' +serverUrl +'/app/app/newsfeed/'+ fanpageId +'?facebook_user_id=' + userId,
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
 				$(ui).html(data);
+				getFancrankfeed('all');
+				getTopPost();
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -557,8 +567,9 @@ $tcb = false;
 			url: 'http://' +  serverUrl +'/app/app/gettoppost/'+ fanpageId , 
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
-				//$(ui).html('');
+		
 				$(ui).html(data);
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
@@ -575,14 +586,16 @@ $tcb = false;
 			url:  'http://' + serverUrl +'/app/app/getlatestpost/'+ fanpageId,  
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
-				//$(ui).html('');
+				
 				$(ui).html(data);
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
 			}
 		});
+		
 	}
 	
 	function getFancrankfeed(view){
@@ -590,12 +603,14 @@ $tcb = false;
 		//alert(baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view);
 		$.ajax({
 			type: "GET",
-			url: 'http://' + serverUrl +'/app/app/fancrankfeed/'+ fanpageId +'?facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view, 
+			url: 'http://' + serverUrl +'/app/app/fancrankfeed/'+ fanpageId + '?viewAs=' +view, 
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
-				$(ui).html('');
+			
 				$(ui).html(data);
+				
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -610,8 +625,10 @@ $tcb = false;
     		url: 'http://' + serverUrl +'/app/app/topfans/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
+    		async: false,
     		success: function( data ) {
     			$(ui).html(data);
+    			getLatestPost();
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
         		alert(url);
@@ -627,6 +644,7 @@ $tcb = false;
     		url:  'http://' + serverUrl +'/app/app/myprofile/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
+    		async: false,
     		success: function( data ) {
     			$(ui).html(data);
     		},	
@@ -644,6 +662,7 @@ $tcb = false;
     		url:  'http://' + serverUrl +'/app/app/awards/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
+    		async: false,
     		success: function( data ) {
     			$(ui).html(data);
     		},	
@@ -662,7 +681,7 @@ $tcb = false;
     		success: function( data ) {
 				//alert("target followed")
 				getUserProfile('.profile-content', $target);
-    			//$(ui).html(data);
+    			
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -679,7 +698,7 @@ $tcb = false;
     		success: function( data ) {
 				//alert("target unfollowed")
 				getUserProfile('.profile-content', $target);
-    			//$(ui).html(data);
+    		
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);

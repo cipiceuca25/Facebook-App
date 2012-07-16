@@ -4,7 +4,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 {
 	protected $_fanpageId;
 	protected $_userId;
-	
+	protected $_accessToken;
 
 	public function preDispatch() {
 		parent::preDispatch();
@@ -22,6 +22,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				$this->_fanpageId = $this->_getParam('id');
 			}
 		}
+		
+		if(!empty($this->_fanpageId)) {
+			$token = new Model_Fanpages();
+			$token = $token->find($this->_fanpageId)->current();
+			//Zend_Debug::dump($token);
+			$this->_accessToken = $token ->access_token;			
+		}
+		//echo $token ->access_token;
+		$this->view->access_token = $this->_accessToken;
 		$this->view->fanpage_id = $this->_fanpageId;
 		$this->view->user_id = $this->_userId;
 	}
@@ -422,24 +431,20 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$viewAs = $this->_request->getParam('viewAs');
     	$result = array();
-    	
-		$fanpage = new Model_Fanpages();
-		$fanpage = $fanpage->findRow($this->_fanpageId);
-		$accessToken = $fanpage->access_token;
-		
-    	$result = $this->getFeed($this->_fanpageId, $accessToken, 8, $viewAs);
+    	$result = $this->getFeed(8, $viewAs);
     	//$result = json_encode($result);
     	//Zend_Debug::dump($result);
     	$this->view->post = $result;
     	$this->render("fancrankfeed");
     }
     
-	protected function getFeed($fanpageId, $access_token, $limit, $view) {
+	protected function getFeed($limit, $view) {
 
+		;
     	$client = new Zend_Http_Client;
-    	$client->setUri("https://graph.facebook.com/$fanpageId/feed");
+    	$client->setUri("https://graph.facebook.com/". $this->_fanpageId ."/feed");
     	$client->setMethod(Zend_Http_Client::GET);
-    	$client->setParameterGet('access_token', $access_token);
+    	$client->setParameterGet('access_token', $this->_accessToken);
     	$client->setParameterGet('limit', $limit);
     	 
     	$response = $client->request();
@@ -452,23 +457,23 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     		switch ($view){
     			case 'admin':
-    				$client->setUri("https://graph.facebook.com/$fanpageId/posts");
-    				$client->setParameterGet('access_token', $access_token);
-    				$client->setParameterGet('limit', $limit);
-    				
-    				$response = $client->request();
-    				
+    				$client->setUri("https://graph.facebook.com/". $this->_fanpageId ."/posts");
+     				$response = $client->request();
     				$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-    				return $this->feedFilterByAdmin($result->data, $fanpageId);
+    				//Zend_Debug::dump($result->data);
+    				return $this->feedFilterByAdmin($result->data, $this->_fanpageId);
+    			case 'all':
+    					return $result->data;
     			case 'user':
-    				return $this->feedFilterByUser($result->data, $fanpageId);
+    				return $this->feedFilterByUser($result->data, $this->_fanpageId);
+    			
     			default:
     				return $result->data;
     		}
 
 
 
-    		return $this->feedFilterByAdmin($result->data, $fanpageId);
+    		return $result->data;
 
     	}
 
