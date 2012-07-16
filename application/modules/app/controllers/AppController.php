@@ -321,7 +321,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
     public function gettoppostAction(){
     	$this->_helper->layout->disableLayout();
-    	$this->_helper->viewRenderer->setNoRender(true);
+    	//$this->_helper->viewRenderer->setNoRender(true);
     	$model = new Model_Rankings;
     	$topPosts = $model->getTopPosts($this->_fanpageId, 5);
     	//Zend_Debug::dump($user); exit();
@@ -332,7 +332,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     public function getlatestpostAction(){
     	
     	$this->_helper->layout->disableLayout();
-    	$this->_helper->viewRenderer->setNoRender(true);
+    	//$this->_helper->viewRenderer->setNoRender(true);
    		$post = new Model_Posts;
     	$latestPost = $post ->getLatestPost($this->_fanpageId,5);
     	$this->view->latest_post = $latestPost;

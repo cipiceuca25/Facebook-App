@@ -103,7 +103,7 @@
 			    </div><!--/end header -->
 			    
 			    <div id="content">
-			    <?= $_SERVER['SERVER_ADDR'] ;?>
+			   
 			    <a href="#" onclick="colorChange(1)">Grayscale</a>
 			    <a href="#" onclick="colorChange(2)">Bubblegum</a>
 			    <a href="#" onclick="colorChange(3)">Original</a>
@@ -241,15 +241,15 @@ $tcb = false;
 		$('#profile').html('');
 		$('#achievements').html('');
 		
-		getFancrankfeed('all');
+	
 		//alert('getting top posts');
-		getTopPost();
+	
 		
 	});
 	
 	$('#topfans-tab').click(function(){
 		getTopfans('#top-fans');
-		getLatestPost();
+	
 		$('#profile').html('');
 		$('#achievements').html('');
 		$('#newsfeed').html('');
@@ -365,9 +365,7 @@ $tcb = false;
 	 	});
 		//alert('getting top posts');
 		getNewsfeed('#news-feed');
-		getFancrankfeed('all');
 		
-		getTopPost();
 	 });
 
 	 
@@ -550,8 +548,11 @@ $tcb = false;
 			url: 'http://' +serverUrl +'/app/app/newsfeed/'+ fanpageId +'?facebook_user_id=' + userId,
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
 				$(ui).html(data);
+				getFancrankfeed('all');
+				getTopPost();
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -568,6 +569,7 @@ $tcb = false;
 			url: 'http://' +  serverUrl +'/app/app/gettoppost/'+ fanpageId , 
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
 		
 				$(ui).html(data);
@@ -586,6 +588,7 @@ $tcb = false;
 			url:  'http://' + serverUrl +'/app/app/getlatestpost/'+ fanpageId,  
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
 				
 				$(ui).html(data);
@@ -594,6 +597,7 @@ $tcb = false;
 				console.log(xhr.statusText, errorMessage);
 			}
 		});
+		
 	}
 	
 	function getFancrankfeed(view){
@@ -604,9 +608,11 @@ $tcb = false;
 			url: 'http://' + serverUrl +'/app/app/fancrankfeed/'+ fanpageId + '?viewAs=' +view, 
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
 			
 				$(ui).html(data);
+				
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -621,8 +627,10 @@ $tcb = false;
     		url: 'http://' + serverUrl +'/app/app/topfans/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
+    		async: false,
     		success: function( data ) {
     			$(ui).html(data);
+    			getLatestPost();
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
         		alert(url);
@@ -638,6 +646,7 @@ $tcb = false;
     		url:  'http://' + serverUrl +'/app/app/myprofile/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
+    		async: false,
     		success: function( data ) {
     			$(ui).html(data);
     		},	
@@ -655,6 +664,7 @@ $tcb = false;
     		url:  'http://' + serverUrl +'/app/app/awards/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
+    		async: false,
     		success: function( data ) {
     			$(ui).html(data);
     		},	
