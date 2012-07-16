@@ -1,5 +1,12 @@
 <?php $count = 0?>
 
+<?php if(empty($this->post)){
+
+	echo "not an array??";
+}?>
+
+
+
 <?php foreach ($this->post as $post):?>		
 
 	<?php if ($count % 2 == 0){?>			

@@ -34,7 +34,7 @@
 			var userId = "<?= $this->user_id ?>";
 			var accessToken = "<?= $this->access_token ?>";
 			var fanpageId = "<?= $this->fanpage_id?>"	;	
-			
+			//alert( accessToken);
 			window.fbAsyncInit = function() {
 				FB.init({
 					 appId  : appId,
@@ -211,9 +211,17 @@ $tcb = false;
 		$('.profile-content').css('display','none');
 		$('.profile-content').css('height','660px');
 
+
+		if($('#news-feed').hasClass('active')){
+			getTopPost();
+			getFancrankfeed('all');
+			
+			//alert("top class reload");
+		}
+		
 		if($('#top-fans').hasClass('active')){
 			getTopfans('#top-fans');
-			
+			getLatestPost();
 			
 			//alert("top class reload");
 		}
@@ -232,6 +240,7 @@ $tcb = false;
 		$('#top-fans').html('');
 		$('#profile').html('');
 		$('#achievements').html('');
+		
 		getFancrankfeed('all');
 		//alert('getting top posts');
 		getTopPost();
@@ -355,8 +364,9 @@ $tcb = false;
 		 
 	 	});
 		//alert('getting top posts');
-		 getNewsfeed('#news-feed');
+		getNewsfeed('#news-feed');
 		getFancrankfeed('all');
+		
 		getTopPost();
 	 });
 
@@ -559,7 +569,7 @@ $tcb = false;
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
-				//$(ui).html('');
+		
 				$(ui).html(data);
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
@@ -577,7 +587,7 @@ $tcb = false;
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
-				//$(ui).html('');
+				
 				$(ui).html(data);
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
@@ -591,11 +601,11 @@ $tcb = false;
 		//alert(baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view);
 		$.ajax({
 			type: "GET",
-			url: 'http://' + serverUrl +'/app/app/fancrankfeed/'+ fanpageId +'?facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view, 
+			url: 'http://' + serverUrl +'/app/app/fancrankfeed/'+ fanpageId + '?viewAs=' +view, 
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
-				$(ui).html('');
+			
 				$(ui).html(data);
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
@@ -663,7 +673,7 @@ $tcb = false;
     		success: function( data ) {
 				//alert("target followed")
 				getUserProfile('.profile-content', $target);
-    			//$(ui).html(data);
+    			
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -680,7 +690,7 @@ $tcb = false;
     		success: function( data ) {
 				//alert("target unfollowed")
 				getUserProfile('.profile-content', $target);
-    			//$(ui).html(data);
+    		
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
