@@ -48,6 +48,7 @@ class Model_Comments extends Model_DbTable_Comments
 		}
 	}
 	
+/*
 	public function getCommentsByPostId($postId, $limit) {
 		
 		$select = "	SELECT * from facebook_users, comments where facebook_users.facebook_user_id = comments.facebook_user_id && comments.comment_post_id ='" . $postId ."'";
@@ -58,6 +59,19 @@ class Model_Comments extends Model_DbTable_Comments
 		return $this->getAdapter()->fetchAll($select);
 				
     }
+	*/
+
 	
+	public function getCommentsByPostId($postId, $limit) {
+		$select = $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART);
+		$select->setIntegrityCheck(false);
+		$select->join(array('facebook_users'), 'facebook_users.facebook_user_id = comments.facebook_user_id');
+		$select->where($this->quoteInto('comment_post_id = ?', $postId));
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+		return $this->fetchAll($select); 
+	}
+
+
 }
 

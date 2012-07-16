@@ -23,8 +23,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 		$colorChoice = new Model_UsersColorChoice;
 		$c = $this->_request->getParam('choice');
+		$f = $this->_request->getParam('fanpage_id');
 		if(!is_null($c)){
-			$colorChoice ->change(1, $c );
+			$colorChoice ->change($f, $c );
 		}
 	}
 	
@@ -151,9 +152,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	
 	public function likesAction() {
 		//TODO
-		$objectId = $this->_getParam('object_id');
+		//$objectId = $this->_getParam('object_id');
 		$likeModel = new Model_Likes();
-		$data['facebook_user_id'] = $this->_getParam('id');
+		$data['facebook_user_id'] = $this->_getParam('facebook_user_id');
 		$data['post_id'] = $this->_getParam('post_id');
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['post_type'] = $this->_getParam('post_type');
@@ -173,7 +174,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 				$params =  array(
 						'access_token' => $data['access_token']
 				);
-				$fancrankFB->api("/$postId/likes", 'POST', $params);
+				//$fancrankFB->api("/$postId/likes", 'POST', $params);
 				
 				//save object likes to fancrank database
 				$likeModel->insert($data);					
@@ -187,13 +188,18 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	public function dislikeAction() {
 		try {
 			$data['post_id'] = $this->_getParam('post_id');
+			$data['facebook_user_id'] = $this->_getParam('facebook_user_id');
+			$data['fanpage_id'] = $this->_getParam('fanpage_id');
+			$data['post_type'] = $this->_getParam('post_type');
 			$postId = $data['post_id'];
 			$fancrankFB = new Service_FancrankFBService();
 			$params =  array(
 					'access_token' => $data['access_token']
 			);
-			$fancrankFB->api("/$postId/likes", 'DELETE', $params);
-		
+			$likeModel = new Model_Likes();
+			//  $likeModel->delete($data);
+			//  $fancrankFB->api("/$postId/likes", 'DELETE', $params);
+			
 			//delete object likes from fancrank database or turn object likes flag to zero
 			//TODO
 		} catch (Exception $e) {

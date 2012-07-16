@@ -3,9 +3,9 @@
 <?php foreach ($this->post as $post):?>		
 
 	<?php if ($count % 2 == 0){?>			
-	<li class="grey-light">
+	<li class="grey-light" id="post_<?=$post->id?>">
 	<?php }else{?>
-	<li class="grey-dark">
+	<li class="grey-dark" id="post_<?=$post->id?>" >
 	<?php }?>
 
 
@@ -13,17 +13,16 @@
 	<div class="post"><div class="name"><a href=""><?=  $post->from->name?></a></div>
 	<?=  $post->message?></div>
 	<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
-	<? try{ echo $post->likes->count; } catch (Exception $e){ echo '0'; }?> <a href="" class="likes"> Like</a> 
-	 <a href="" class="comment"> Comment</a> 
+	<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?> <a href="" class="likes"> Like</a> 
+	 <a href="#" class="comment"> Comment  </a> 
 	 
-	 <?php try{ 
-	 		$comment = $post->comments->count; 
-	 	} catch (Exception $e){ 
+	 <?php 
+	 		if(isset($post->comments->count)){
+				echo $post->comments->count; //echo  $post->comments->count;
+	 	} else {
 			echo '0'; 
 		}
-	 
-	 
-	 
+
 	 ?> 
 	
 	 <span class="date"><?=  date("F d Y",strtotime($post->created_time))?></span></div>
