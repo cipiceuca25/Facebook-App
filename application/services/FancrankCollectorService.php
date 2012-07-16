@@ -209,6 +209,60 @@ class Service_FancrankCollectorService {
 
 	}
 	
+	public function collectFanpageInsight($level=1, $type=null) {
+		$start = time();
+		$range = 7776000;
+		$since = $start - $range;
+		$until = $start;
+
+		$params = array('access_token' => $this->_accessToken,
+						'since' => $since,
+						'until' => $until
+				);
+		
+		$url = null;
+		$baseUrl = $this->_facebookGraphAPIUrl . $this->_fanpageId;
+		switch ($type) {
+			case 'likes' 	: $url =  $baseUrl .'/insights/page_fans/lifetime' . '?' .http_build_query($params); break;
+			case 'comments' : $url =  $baseUrl .'/insights/page_like_adds/day' . '?' .http_build_query($params); break;
+			case 'posts' 	: $url =  $baseUrl .'/insights/page_discussions/day' . '?' .http_build_query($params); break;
+			case 'story'    : $url =  $baseUrl .'/insights/page_story_adds/day' . '?' .http_build_query($params); break;
+			default			: break;
+		}
+		
+		$insights = array();		
+		$this->getInsightsRecursive($url, $level, null, $insights);
+		return $insights;
+	}
+	
+	private function getInsightsRecursive($url, $level, $limit=null, &$result) {
+		if(empty($url) || $level == 0) {
+			return array();
+		}
+		$level = $level - 1;
+		$query = explode('?', $url);
+		parse_str($query[1], $params);
+		if($limit) {
+			$params['limit'] = $limit;			
+		}
+		//echo 'level: ' .$level .'url: ' .$query[0] .'?' .http_build_query($params) .'\n'; exit();
+		$curlReturn = $this->httpCurl($query[0], $params, 'get');
+		try {
+			$response = json_decode($curlReturn);
+			if(!empty($response->error)) throw new Exception($response->error->message);
+			$url = !empty($response->paging->previous) ? $response->paging->previous : null;
+			if(! empty($response->data)) {
+				$result = array_merge((array)$response->data, (array)$result);
+			}
+			$this->getInsightsRecursive($url, $level, $limit, $result);
+		} catch (Exception $e) {
+			$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
+			$msg = sprintf('Unable to fetch feed from fanpage %s. Error Message: %s ', $this->_fanpageId, $e->getMessage ());
+			$collectorLogger->log($msg , Zend_log::ERR );
+			throw new Exception($msg);
+		}
+	}
+	
 	/*
 	 * This method will retrieve all posts from giving url recursively
 	*
@@ -218,7 +272,7 @@ class Service_FancrankCollectorService {
 	* @param mixed $result a callback result
 	* 
 	*/
-	private function getPostsRecursive($url, $level=2, $limit, &$result) {
+	public function getPostsRecursive($url, $level=2, $limit, &$result) {
 		if(empty($url) || $level == 0) {
 			return array();
 		}
@@ -243,7 +297,7 @@ class Service_FancrankCollectorService {
 			throw new Exception($msg);
 		}
 	}
-
+	
 	private function getCommentsFromPost($posts, $level, $limit=1000) {
 		//Zend_Debug::dump($posts);
 		$results = array();
@@ -675,6 +729,7 @@ class Service_FancrankCollectorService {
 				curl_setopt($ch, CURLOPT_POST, false);
 				break;
 			case 'post':
+				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 				curl_setopt($ch, CURLOPT_POST, true);
 				break;

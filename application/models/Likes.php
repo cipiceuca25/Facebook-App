@@ -3,13 +3,14 @@
 class Model_Likes extends Model_DbTable_Likes
 {
 
-	public function insertLikes($fanpage_id, $post_id, $likes)
+	
+	//this isnt even used.
+	public function insertLikes($fanpage_id, $post_id, $facebook_user_id, $post_type)
 	{
 	
-		$data = array(
+		$data = array( 'fanpage_id'=> $fanpage_id, 'post_id'=>$post_id, 'post_type'=>$post_id
 	
 		);
-	
 		$insert = $this->getAdapter()->insert(array('likes' => 'likes'), $data);
 	
 	}
