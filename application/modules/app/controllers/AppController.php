@@ -2,44 +2,6 @@
 
 class App_AppController extends Fancrank_App_Controller_BaseController
 {
-
-/*
-    public function preDispatch()
-    {
-        $this->_auth = Zend_Auth::getInstance();
-        $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
-        //$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
-        $view = new Zend_View;
-        $view->addHelperPath(APPLICATION_PATH.'/modules/app/views/helper','Helper');
-        try {
-        	$this->data['page']['id'] = Zend_Registry::get('fanpageId');
-        
-        } catch (Exception $e) {
-        	//TOLOG
-        	$this->data['page']['id'] = $this->_getParam('id');
-        }
-        
-        if (APPLICATION_ENV != 'production') {
-        	$this->data['page']['id'] = $this->_request->getParam('fanpage_id');
-        	$this->view->fanpage_id = $this->_request->getParam('fanpage_id');
-        	//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
-        	$this-><data></data>['user_id'] = $this->_getParam('facebook_user_id'); //set test user id from url
-        	$this->data['access_token'] = $this->_getParam('access_token');
-        	$this->view->access_token = $this->_getParam('access_token');
-        }
-        
-        if($this->_auth->hasIdentity()) {
-            //bring the user into the app if he is already logged in
-            $this->_identity = $this->_auth->getIdentity();
-            $this->_helper->redirector('index', 'app', 'app', array($this->data['page']['id'] => ''));   
-        }
-	
-        //set the proper navbar
-        $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
-    }
-*/
-
-
 	protected $_fanpageId;
 	protected $_userId;
 	
@@ -63,46 +25,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$this->view->fanpage_id = $this->_fanpageId;
 		$this->view->user_id = $this->_userId;
 	}
-
-	/*
-	public function preDispatch()
-	{
-		$this->_auth = Zend_Auth::getInstance();
-		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
-		//$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
-		$view = new Zend_View;
-		$view->addHelperPath(APPLICATION_PATH.'/modules/app/views/helper','Helper');
-		try {
-			$this->data['page']['id'] = Zend_Registry::get('fanpageId');
-			 
-		} catch (Exception $e) {
-			//TOLOG
-			$this->data['page']['id'] = $this->_getParam('id');
-		}
-		 
-		if (APPLICATION_ENV != 'production') {
-			$this->data['page']['id'] = $this->_request->getParam('fanpage_id');
-			$this->view->fanpage_id = $this->_request->getParam('fanpage_id');
-			//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
-			$this->data['user_id'] = $this->_getParam('facebook_user_id'); //set test user id from url
-			$this->data['access_token'] = $this->_getParam('access_token');
-			$this->view->access_token = $this->_getParam('access_token');
-		}
-		 
-// 		if($this->_auth->hasIdentity()) {
-// 			//bring the user into the app if he is already logged in
-// 			$this->_identity = $this->_auth->getIdentity();
-// 			$this->_helper->redirector('index', 'app', 'app', array($this->data['page']['id'] => ''));
-// 		}
-		 
-		//set the proper navbar
-		$this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
-	}
-
-*/
-
-	
-	
 
     public function indexAction()
     {
@@ -285,8 +207,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     {	
     	$this->_helper->layout->disableLayout();
     	
-    	
-    	
+    		
+    	/*
    		$user = new Model_FacebookUsers();
     	
     	$user = $user->find($this->_userId)->current();
@@ -298,7 +220,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
-    	/*
     	$user = $user->find($this->_facebook_user->facebook_user_id)->current();
     	if($user) {
     		$this->view->facebook_user = $user;
@@ -503,7 +424,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$result = array();
     	
 		$fanpage = new Model_Fanpages();
-		$fanpage->findRow($this->_fanpageId);
+		$fanpage = $fanpage->findRow($this->_fanpageId);
 		$accessToken = $fanpage->access_token;
 		
     	$result = $this->getFeed($this->_fanpageId, $accessToken, 8, $viewAs);
@@ -532,7 +453,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		switch ($view){
     			case 'admin':
     				$client->setUri("https://graph.facebook.com/$fanpageId/posts");
-    			
+    				$client->setParameterGet('access_token', $access_token);
+    				$client->setParameterGet('limit', $limit);
     				
     				$response = $client->request();
     				
@@ -649,7 +571,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	//$this->_helper->redirector('login', $this->getRequest()->getControllerName(), $this->getRequest()->getModuleName(), array($this->_getParam('id') => null));
     	//$this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));
-    	$this->_helper->redirector('index', 'index', 'app', array($this->fanpage_id => $this->_fanpageId));
+    	$this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));
     }
     
     public function insightsAction() 
