@@ -347,9 +347,9 @@ $tcb = false;
 			 	
 		 	 }else{
 			 	 	try{
-			 	 	var x = -1*(parseInt(response.cover.offset_y) + 50);
+			 	 		var x = -1*(parseInt(response.cover.offset_y) + 50);
 			 	 	}catch(err){
-					var x = 0;
+						var x = 0;
 			 	 	}
 			 	 	//alert(x);
 			 	 	try{
@@ -479,7 +479,7 @@ $tcb = false;
 			 	});
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
-				console.log(xhr.statusText, errorMessage);
+				//console.log(xhr.statusText, errorMessage);
 			}
 		});
 	}

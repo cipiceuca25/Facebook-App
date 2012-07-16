@@ -62,10 +62,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		}
 		$token = new Model_Fanpages();
 		$token = $token->find($this->_fanpageId)->current();
-		//Zend_Debug::dump($token);
-		$this->_accessToken = $token ->access_token;
+		//Zend_Debug::dump($token->access_token);
+		$this->_accessToken = $token->access_token;
+		
 		//echo $token ->access_token;
-		$this->view->access_token = $token ->access_token;
+		$this->view->access_token = $this->_accessToken;
 		$this->view->fanpage_id = $this->_fanpageId;
 		$this->view->user_id = $this->_userId;
 	}
