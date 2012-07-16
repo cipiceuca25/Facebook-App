@@ -19,13 +19,23 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 	}
 
+	public function colorAction(){
+		
+		$colorChoice = new Model_UsersColorChoice;
+		$c = $this->_request->getParam('choice');
+		if(!is_null($c)){
+			$colorChoice ->change(1, $c );
+		}
+	}
+	
+	
 	public function followAction() {
 		$subscribe_Model = new Model_Subscribes;
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['subscribe_ref_id'] = $this->_getParam('subscribe_ref_id');
 		$data['facebook_user_id_subscribe_to'] = $this->_getParam('subscribe_to');
 		$data['follow_enable'] = TRUE;
-		$data['facebook_user_id'] = $this->_getParam('id');
+		$data['facebook_user_id'] = $this->_getParam('facebook_user_id');
 		
 		Zend_Debug::dump($data);
 		$subscribe = $subscribe_Model->findById($data['facebook_user_id'], $data['facebook_user_id_subscribe_to'], $data['subscribe_ref_id']);
@@ -211,6 +221,15 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		);
 		
 		$fancrankFB->api("/$postId/comments", 'POST', $params);
+	}
+	
+	
+	public function commenttestAction(){
+		$comment = new Model_Comments();
+		$wootwoot = $comment -> getClosestCommentsByTimestamp($this->_getParam('comment'), $this->_getParam('limit'));
+
+		Zend_Debug::dump($wootwoot);
+		
 	}
 	
 	public function relationAction(){

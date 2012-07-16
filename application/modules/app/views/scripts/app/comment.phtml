@@ -1,0 +1,85 @@
+						<!--  
+						<div class="row">
+							<div class="span9">
+								<div class="title">
+										<div class="photo"> <img class="face" width="30" height="30" src="https://graph.facebook.com/<?//= $this->facebook_user->facebook_user_id ?>/picture"></div>
+										<div class="title-header"> <h2><i class="icon-star icon-white"></i> <?//= $this->facebook_user->facebook_user_name?>'s Profile <i class="icon-star icon-white"></i></h2> </div>
+								</div>
+							</div>
+						</div>
+						-->
+						<div class="row">
+						
+							
+							<!--
+							<div class="span3">
+									<div class="subtitle">
+										<div class="title-header-dark"> <h2><i class="icon-star icon-white"></i> Top Post  <i class="icon-star icon-white"></i></h2> </div>
+									</div>
+									
+										<ul class="bubble">
+											<?php // $count = 0?>
+											<?php// foreach($this->top_post as $topPost): ?>
+											
+											<?php// if ($count % 2 == 0){?>
+											<li class="chat-right">
+											<?php //}else{?>
+											<li class="chat-left">
+											<?php //}?>
+												
+												<div class="post">
+													<a href=""><?//= $topPost['post_message'] ?><br /><span class="date"><?//= date("F d Y", strtotime($topPost['updated_time']))?></span></a>
+           
+												</div>
+													
+													<div class="info">
+														<div class="name"><a href=""><?//= $topPost['fan_first_name'] ?> <?//= $topPost['fan_last_name'] ?></a><br /><img src="/img/news-feed/icon-likes.png" /> <?//= $topPost['post_likes_count']?> <a href="" class="likes"> Like</a></div>
+														<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?//= $topPost['facebook_user_id'] ?>/picture"></a></div>
+														
+													</div>
+												
+											</li>
+
+											<?php// $count ++;?>
+											<?php// endforeach; ?>
+											
+										</ul>
+									
+							</div>
+							
+							-->
+							<div class="span9">
+									<div class="subtitle">
+										<div class="title-header" id="boss"> <h2><i class="icon-star icon-white"></i> Top Posts <i class="icon-star icon-white"></i></h2> </div>
+									</div>
+								
+									<ul class="post-list" id="post-list">
+										<li class="grey-dark" >
+										
+											<div class="photo" ><a href="" id="post_img" ></a></div>
+											<div class="post" id="post_message"><div class="name"><a href=""><?//= $this->target->facebook_user_name?></a></div>
+														<?//= $this->post->post_message?>
+														 </div>
+											<div class="social"> <img src="/img/news-feed/icon-likes.png" />   <?//= $this->post->post_likes_count?>  <span id="post_like"></span><a href="#" class="likes" > Like</a>   <a href="" class="comment"> Comment</a> Posted on <span class="date" id="post_date"> <?//= date("F d Y", strtotime($this->post->updated_time))?></span></div>
+											<div class="comment-box">
+												
+												<textfield name="textarea" id="textarea" value="" style="overflow:visible">this is the comment box</textfield>
+											</div>
+										</li>
+										<br/>
+										
+									</ul>
+									
+									
+									<div id="moreComments"></div>
+							</div>
+						</div>
+					
+		<script>
+		
+
+
+		</script>					
+						
+						
+			

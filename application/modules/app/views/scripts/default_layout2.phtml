@@ -42,12 +42,12 @@
 					 xfbml  : true// parse XFBML
 				});
 				FB.Canvas.setAutoResize(10);
+			
 				//FB.Canvas.setSize();
 			};
 		 </script>
 	 	<!-- End of iframe initialization -->
         <script src="/js/fancrank.js"></script>
-        <script src="/js/app/index/login.js"></script>
 
         <?= $this->headScript(); ?>
 
@@ -57,8 +57,13 @@
             <link href="/css/loadstyle1.less" rel="stylesheet/less" id="stylesheet"/>
             <?}elseif($this->color_choice == 2){?>
              <link href="/css/loadstyle2.less" rel="stylesheet/less" id="stylesheet"/>
+               <?}elseif($this->color_choice == 4){?>
+             <link href="/css/loadstyle4.less" rel="stylesheet/less" id="stylesheet"/>
+               <?}elseif($this->color_choice == 5){?>
+             <link href="/css/loadstyle5.less" rel="stylesheet/less" id="stylesheet"/>
             <? } else {?>
             <link href="/css/loadstyle3.less" rel="stylesheet/less" id="stylesheet"/>
+            
             <? }?>
             <script type="text/javascript">
                 env = 'development';
@@ -81,13 +86,11 @@
        
     </head>
 
-    <body style="overflow:auto;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
+    <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
 
-    	<!-- 
         <div class="navbar navbar-fixed-top">
             <?= $this->layout()->navbar ?>
         </div>
-		-->
 
 		<div class="container" role="main"> 
 			<div id="wrapper">
@@ -99,13 +102,19 @@
 			    </div><!--/end header -->
 			    
 			    <div id="content">
+			    
+			    <a href="#" onclick="colorChange(1)">Grayscale</a>
+			    <a href="#" onclick="colorChange(2)">Bubblegum</a>
+			    <a href="#" onclick="colorChange(3)">Original</a>
+			     <a href="#" onclick="colorChange(4)">Autumn</a>
+			     <a href="#" onclick="colorChange(5)">Ocean</a>
 				<div class="user-profile">
-								<a class="close" href="" onclick=></a>
-	        					<div class="top-border">  </div>
+								
+	        					<div class="top-border"> <a class="closeProfile" href="#" onclick="closeProfile()"></a> </div>
 	        					<div class="bottom-border"> </div>
 	        					<div class="profile-content">
 	        						
-	        						Actually content
+	        					
 	        					
 	        					</div>
 	        	</div>
@@ -143,12 +152,71 @@
          <div class="light-box"></div>
         <div id="fb-root"></div>
     </body>
-    
-    <script >
+    <script>
 
+$tfb = false;
+$ffb = false;
+$ttb = false;
+$tcb = false;
+
+	$('#top-fans-btn').live('click', function() {
+		
+		if (($tfb)==true){
+		$('#top-fans-btn').text('- Close');
+		}else{
+			$('#top-fans-btn').text("+ More");
+		}
+		$tfb = !$tfb;
+	})
+	
+	$('#fan-favorite-btn').live( 'click', function() {
+		if (($ffb)==true){
+		$('#fan-favorite-btn').text('- Close');
+		}else{
+			$('#fan-favorite-btn').text("+ More");
+		}
+		$ffb = !$ffb;
+	})
+	
+	$('#top-talker-btn').live( 'click', function() {
+		if (($ttb)==true){
+		$('#top-talker-btn').text('- Close');
+		}else{
+			$('#top-talker-btn').text("+ More");
+		}
+		$ttb = !$ttb;
+	})
+	
+	$('#top-clicker-btn').live( 'click', function() {
+		if (($tcb)==true){
+		$('#top-clicker-btn').text('- Close');
+		}else{
+			$('#top-clicker-btn').text("+ More");
+		}
+		$tcb = !$tcb;
+	})
+
+
+    
     function closeProfile(){
     	$('.light-box').css('display','none');
 		$('.user-profile').css('display', 'none');
+		//$('.top-border').css('top','350px');
+		//$('.bottom-border').css('top','350px');
+		$('.profile-content').css('top','350px');
+		//$('.top-border').css('display','none');
+		//$('.bottom-border').css('display','none');
+		$('.profile-content').css('display','none');
+		$('.profile-content').css('height','660px');
+
+		if($('#top-fans').hasClass('active')){
+			getTopfans('#top-fans');
+			//alert("top class reload");
+		}
+    	$('.profile-content').html('');
+    	$('#moreComment').removeAttr('postid');
+    	
+		
     }
     
 	$('.light-box').click(function(){
@@ -157,25 +225,43 @@
 
 	$('#newsfeed-tab').click(function(){
 		getNewsfeed('#news-feed');
+		$('#top-fans').html('');
+		$('#profile').html('');
+		$('#achievements').html('');
+		 getFancrankfeed('all');
 	});
 	
 	$('#topfans-tab').click(function(){
 		getTopfans('#top-fans');
+		$('#profile').html('');
+		$('#achievements').html('');
+		$('#newsfeed').html('');
 	});
     
 	$('#profile-tab').click(function(){
 	
-		 getMyProfile('#profile')
+		 getMyProfile('#profile');
+		 $('#top-fans').html('');
+		 $('#achievements').html('');
+		 $('#newsfeed').html('');
 	});
 
 	$('#achievements-tab').click(function(){
 		getAwards('#achievements') 
+		$('#top-fans').html('');
+		$('#profile').html('');
+		$('#newsfeed').html('');
+		
 	});
-    
+	
+	
+	
 	function userProfile(user){
 		getUserProfile('.profile-content', user);
+		setTimeout(function() {
 		$('.light-box').css('display','block');
 		$('.user-profile').css('display', 'block');
+			/*
 		$('.top-border').animate({
 		    height: 'toggle',
 			top: '0px'
@@ -189,14 +275,76 @@
 		  }, 1000, function() {
 		    // Animation complete.
 		  });
+		  */
+		
+		
+		  
 		$('.profile-content').animate({
 			height:'toggle',
-			top:'10px'
+			top:'20px'
+		   },1500, function(){
+			   
+		});
+		},500);
+	}
+
+	function comment(post_id, target, limiter){
+		
+		getComment('.profile-content', post_id, target, limiter);
+		$('.light-box').css('display','block');
+		$('.user-profile').css('display', 'block');
+	
+		/*$('.top-border').animate({
+		    height: 'toggle',
+			top: '0px'
+		  }, 1000, function() {
+		    // Animation complete.
+		  });
+	
+		$('.bottom-border').animate({
+		    height: 'toggle',
+		    top: '0px'
+		  }, 1000, function() {
+		    // Animation complete.
+		  });*/
+			$('.profile-content').css('height', 'auto');
+		//$('.profile-content').css('height', '1100px');
+		$('.profile-content').animate({
+			height:'toggle',
+			top:'20px'
 		   },1000, function(){
 			   
 		});
+
+		
 		
 	}
+	
+	 $(document).ready(function() {
+		 FB.api(fanpageId , function(response){
+			 if (!response || response.error) {
+			 	
+		 	 }else{
+			 	 	try{
+			 	 	var x = -1*(parseInt(response.cover.offset_y) + 50);
+			 	 	}catch(err){
+					var x = 0;
+			 	 	}
+			 	 	//alert(x);
+			 		$('#logo').html('<img src =" ' + response.cover.source + '"style=" top:'+ x +'px" />' );
+			 		
+			 }
+
+
+
+		 
+	 	});
+
+		 getFancrankfeed('all');
+		 
+	 });
+
+	 
   /*  $(document).ready(function() {
 
     	var tabs = $( "#pageTabs" ).tabs({
@@ -219,13 +367,15 @@
     		});
     	});*/
 
+	
 	function getUserProfile(ui, target) {
 		$.ajax({
 			type: "GET",
-			url: baseAppUrl+'/userprofile?fanpage_id='+ fanpageId + '&target=' + target,
+			url: baseAppUrl+'/userprofile?fanpage_id='+ fanpageId + '&target=' + target + '&facebook_user_id='+ userId,
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
+		
 				$(ui).html(data);
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
@@ -233,6 +383,119 @@
 			}
 		});
 	}
+	
+	function getComment(ui, post_id, target, limiter) {
+		      
+		$.ajax({
+			type: "GET",
+			url: baseAppUrl+'/comment' ,
+			dataType: "html",
+			cache: false,
+			success: function( data ) {
+				$(ui).html(data);
+				
+				 FB.api(post_id ,{ limit: 1 },  function(response){
+			    	   if (!response || response.error) {
+			    		    //alert('Error occured');
+			    		  } else {
+			    		    //alert(response.from.id);
+				    		
+			    			$('#post_img').html("<img id='post_img' class='face' width='30' height='30' src='https://graph.facebook.com/" + response.from.id + "/picture' />");
+			    			$('#post_message').html('<div class="name"><a href="">' + response.from.name + '</a></div>' + response.message);
+								
+							var like;
+							try {
+								like = response.likes.count;
+								
+							}catch(err){
+								like=0;
+							}
+							
+							$('#post_like').html(like);
+							
+							var d = new Date(Date.parse(response.created_time));
+							//alert(d);
+							$('#post_date').html(d.toDateString());	
+							var limit = response.comments.data.length;
+						//	alert(limit);
+							if(limiter < limit){
+								limit = limiter;
+							}
+							//alert(limit);
+							//alert(limiter);
+							for (i=0;i<limit; i++){	
+								//alert(i);
+								d = new Date(Date.parse(response.comments.data[i].created_time));
+								//alert(d);
+								//alert(html);
+								$('#post-list').append(
+									'<li class="grey-light"><div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/' 
+									+ response.comments.data[i].from.id+ '/picture"></a></div><div class="post"><div class="name"><a href="">' 
+									+ response.comments.data[i].from.name + '</a></div>' + response.comments.data[i].message + 
+									'</div><div class="social">' + '<a href="#" class="likes">Like</a>  Posted on <span class="date"> '
+									+ d.toDateString() + '</span></div></li><br/>' 
+									);			
+							}
+
+							if (limiter < response.comments.data.length){
+								$('#moreComments').html('More +');
+								$('#moreComments').attr('postid', post_id );
+								$('#moreComments').attr('loaded', 5);
+							}
+			    		  }
+			 	});
+			},	
+			error: function( xhr, errorMessage, thrownErro ) {
+				console.log(xhr.statusText, errorMessage);
+			}
+		});
+	}
+
+
+	$('#moreComments').live('hover',function(){
+		FB.api( $('#moreComments').attr('postid')+'/comments?limit=10&offset=' + $('#moreComments').attr('loaded') ,  function(response){
+	    	   if (!response || response.error) {
+	    		    alert('Error occured');
+	    		  } else {
+	    		    //alert(response.from.id);
+		    		
+	    			var limiter=10;
+					var limit = response.data.length;
+				//	alert(limit);
+					if(limiter < limit){
+						limit = limiter;
+					}
+					//alert(limit);
+					//alert(limiter);
+					for (i=0;i<limit; i++){	
+						//alert(i);
+						d = new Date(Date.parse(response.data[i].created_time));
+						//alert(d);
+						//alert(html);
+						$('#post-list').append(
+							'<li class="grey-light"><div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/' 
+							+ response.data[i].from.id+ '/picture"></a></div><div class="post"><div class="name"><a href="">' 
+							+ response.data[i].from.name + '</a></div>' + response.data[i].message + 
+							'</div><div class="social">' + '<a href="#" class="likes">Like</a>  Posted on <span class="date"> '
+							+ d.toDateString() + '</span></div></li><br/>' 
+							);			
+					}
+
+					var x = parseInt($('#moreComments').attr('loaded')) + 10;
+					$('#moreComment').removeAttr('loaded');
+					$('#moreComments').attr('loaded', x );
+					//alert(response.data.length);
+					//alert(limiter);
+					if (limiter < response.data.length){
+						$('#moreComments').html('More +');
+						$('#moreComments').attr('postid', post_id );						
+					}else{
+						$('#moreComments').html('');
+					}
+	    		  }
+	 	});
+	});	
+	
 	
 	function getNewsfeed(ui) {
 		$.ajax({
@@ -248,6 +511,25 @@
 			}
 		});
 	}
+
+	function getFancrankfeed(view){
+		ui = '#fancrankfeed';
+		//alert(baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view);
+		$.ajax({
+			type: "GET",
+			url: baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view, 
+			dataType: "html",
+			cache: false,
+			success: function( data ) {
+				$(ui).html('');
+				$(ui).html(data);
+			},	
+			error: function( xhr, errorMessage, thrownErro ) {
+				console.log(xhr.statusText, errorMessage);
+			}
+		});
+	}
+	
     function getTopfans(ui) {
      
     	$.ajax({
@@ -265,6 +547,7 @@
     		}
     	});
     }
+    
     function getMyProfile(ui) {
     	$.ajax({
     		type: "GET",
@@ -280,6 +563,8 @@
     	});
     }
 
+	
+    
     function getAwards(ui) {
     	$.ajax({
     		type: "GET",
@@ -298,12 +583,12 @@
 	function follow($target){
 		$.ajax({
     		type: "GET",
-    		url: '/app/user/'+ userId + '/follow/?subscribe_to=' + $target + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
+    		url: '/app/user/'+ userId + '/follow/?subscribe_to=' + $target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
-				alert("target followed")
-
+				//alert("target followed")
+				getUserProfile('.profile-content', $target);
     			//$(ui).html(data);
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
@@ -312,9 +597,42 @@
     	});
     }	
 
+	function unfollow($target){
+		$.ajax({
+    		type: "GET",
+    		url: '/app/user/'+ userId + '/unfollow/?subscribe_to=' + $target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+				//alert("target unfollowed")
+				getUserProfile('.profile-content', $target);
+    			//$(ui).html(data);
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+    }	
+	function colorChange($choice){
+		$.ajax({
+    		type: "GET",
+    		url: '/app/user/'+ userId + '/color/?choice=' + $choice + '&facebook_user_id=' + userId,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+    			window.location.reload()
+				
+    			//$(ui).html(data);
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
 
 
-    </script>
+	}
+	
+</script>
     
     
     
@@ -338,11 +656,9 @@
 	
 	</script>
 
-<script>
-		$tfb = false;
-		$ffb = false;
-		$ttb = false;
-		$tcb = false;
+<script >
+	
+		
 		$('#news-feed a').click(function (e) {
 		  e.preventDefault();
 		  $(this).tab('show');
@@ -362,38 +678,6 @@
 		  e.preventDefault();
 		  $(this).tab('show');
 		})
-	
-		$('#top-fans-btn').click(function() {
-			if (($tfb)==true){
-			$('#top-fans-btn').text(' - Close');
-			}else{
-				$('#top-fans-btn').text("+ More");
-			}
-			$tfb = !$tfb;
-		})
-		$('#fan-favorite-btn').click(function() {
-			if (($ffb)==true){
-			$('#fan-favorite-btn').text(' - Close');
-			}else{
-				$('#fan-favorite-btn').text("+ More");
-			}
-			$ffb = !$ffb;
-		})
-		$('#top-talker-btn').click(function() {
-			if (($ttb)==true){
-			$('#top-talker-btn').text(' - Close');
-			}else{
-				$('#top-talker-btn').text("+ More");
-			}
-			$ttb = !$ttb;
-		})
-		$('#top-clicker-btn').click(function() {
-			if (($tcb)==true){
-			$('#top-clicker-btn').text(' - Close');
-			}else{
-				$('#top-clicker-btn').text("+ More");
-			}
-			$tcb = !$tcb;
-		})
-</script>
+</script>	
+		
 </html>

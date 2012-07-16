@@ -16,10 +16,10 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
         //
-        $this->data = $this->getSignedRequest($this->_getParam('signed_request'));
+        //$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
 		
         if(!$this->_auth->hasIdentity()) {
-            $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => null));  
+            $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));  
             //set the proper navbar
             $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->_getParam('id')));
         } else {

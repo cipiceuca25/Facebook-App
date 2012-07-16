@@ -81,7 +81,7 @@
 									<div class="title">
 										<div class="photo"> <img src="/img/news-feed/fan-fav-icon.jpg" /> </div>
 										<div class="title-header"> <h2><i class="icon-star icon-white"></i> Fan Favorite <i class="icon-star icon-white"></i></h2>
-											<div class="tip"><a title="People like you. Your mom was right!<br /><br />But <i>seriously</i>, your contribution is well regarded within the community. People like your posts and interact with you a lot.<br /><br />Keep up the good work!">?</a></div>
+											<div class="tip"><a data-original-title="People like you. Your mom was right!<br /><br />But <i>seriously</i>, your contribution is well regarded within the community. People like your posts and interact with you a lot.<br /><br />Keep up the good work!">?</a></div>
 										</div>
 									</div>
 									<?php $count = 0; ?> 
@@ -126,7 +126,7 @@
 														<a   href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
 													</div>
 													<div class="name">
-														<a class="first" href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
+														<a  href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 														<br/>
 														<span class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></span>
 													</div>
@@ -296,7 +296,7 @@
 						
 							<div class="span4">
 									<div class="subtitle">
-											<div class="title-header-dark"> <h2><i class="icon-star icon-white"></i> Last Top Box <i class="icon-star icon-white"></i></h2> </div>
+											<div class="title-header-dark"> <h2><i class="icon-star icon-white"></i> Latest Post <i class="icon-star icon-white"></i></h2> </div>
 									</div>
 									<ul class="bubble">
 											<?php $count = 0?>
@@ -309,7 +309,7 @@
 											<?php }?>
 												
 												<div class="post">
-													<a href=""><?= $latestPost['post_message'] ?><br /><span class="date"><?=date("F d Y", strtotime( $latestPost['updated_time']))?></span></a>
+													<a href="#" onclick="comment('<?= $latestPost['post_id']?>','<?= $latestPost['facebook_user_id']?>', 5)"><?= $latestPost['post_message'] ?><br /><span class="date"><?=date("F d Y", strtotime( $latestPost['updated_time']))?></span></a>
            
 												</div>
 													
@@ -331,4 +331,6 @@
 
 				
 				
-</div>					
+</div>		
+
+
