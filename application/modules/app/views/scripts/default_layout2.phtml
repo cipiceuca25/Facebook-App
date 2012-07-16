@@ -29,8 +29,9 @@
 	    <!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
 			var baseAppUrl = "<?= $this->url() ?>";
+			var serverUrl = "<?= $_SERVER['HTTP_HOST'] ;?>"
 			var appId = "<?= $this->layout()->appKey ?>";
-			var userId = "<?= $this->facebook_user->facebook_user_id ?>";
+			var userId = "<?= $this->user_id ?>";
 			var accessToken = "<?= $this->access_token ?>";
 			var fanpageId = "<?= $this->fanpage_id?>"	;	
 			
@@ -48,7 +49,6 @@
 		 </script>
 	 	<!-- End of iframe initialization -->
         <script src="/js/fancrank.js"></script>
-        <script src="/js/app/index/login.js"></script>
 
         <?= $this->headScript(); ?>
 
@@ -87,13 +87,11 @@
        
     </head>
 
-    <body style="overflow:auto;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
+    <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
 
-    	<!-- 
         <div class="navbar navbar-fixed-top">
             <?= $this->layout()->navbar ?>
         </div>
-		-->
 
 		<div class="container" role="main"> 
 			<div id="wrapper">
@@ -105,7 +103,7 @@
 			    </div><!--/end header -->
 			    
 			    <div id="content">
-			    
+			    <?= $_SERVER['SERVER_ADDR'] ;?>
 			    <a href="#" onclick="colorChange(1)">Grayscale</a>
 			    <a href="#" onclick="colorChange(2)">Bubblegum</a>
 			    <a href="#" onclick="colorChange(3)">Original</a>
@@ -135,7 +133,7 @@
 							
 				    		<div class="tab-content">
 				    				<div class="tab-pane active" id="news-feed">
-	        							<?= $this->layout()->content ?>
+	        							
 	        						</div>
 	        						<div class="tab-pane" id="top-fans">
 	        						</div>
@@ -216,7 +214,7 @@ $tcb = false;
 		if($('#top-fans').hasClass('active')){
 			getTopfans('#top-fans');
 			
-			getLatestPost();
+			
 			//alert("top class reload");
 		}
     	$('.profile-content').html('');
@@ -345,8 +343,11 @@ $tcb = false;
 					var x = 0;
 			 	 	}
 			 	 	//alert(x);
+			 	 	try{
 			 		$('#logo').html('<img src =" ' + response.cover.source + '"style=" top:'+ x +'px" />' );
-			 		
+			 	 	}catch(err){
+						
+				 	}
 			 }
 
 
@@ -354,6 +355,7 @@ $tcb = false;
 		 
 	 	});
 		//alert('getting top posts');
+		 getNewsfeed('#news-feed');
 		getFancrankfeed('all');
 		getTopPost();
 	 });
@@ -385,7 +387,7 @@ $tcb = false;
 	function getUserProfile(ui, target) {
 		$.ajax({
 			type: "GET",
-			url: baseAppUrl+'/userprofile?fanpage_id='+ fanpageId + '&target=' + target + '&facebook_user_id='+ userId,
+			url: 'http://' + serverUrl +'/app/app/userprofile/'+ fanpageId +'/?target=' + target + '&facebook_user_id='+ userId,
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
@@ -402,7 +404,7 @@ $tcb = false;
 		      
 		$.ajax({
 			type: "GET",
-			url: baseAppUrl+'/comment' ,
+			url: 'http://' + serverUrl +'/app/app/comment' ,
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
@@ -535,7 +537,7 @@ $tcb = false;
 	function getNewsfeed(ui) {
 		$.ajax({
 			type: "GET",
-			url: baseAppUrl+'/newsfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId,
+			url: 'http://' +serverUrl +'/app/app/newsfeed/'+ fanpageId +'?facebook_user_id=' + userId,
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
@@ -550,9 +552,10 @@ $tcb = false;
 	function getTopPost(){
 		//alert('getting top postsss');
 		ui = '#toppost';
+		
 		$.ajax({
 			type: "GET",
-			url: baseAppUrl+'/gettoppost?fanpage_id=' + fanpageId, 
+			url: 'http://' +  serverUrl +'/app/app/gettoppost/'+ fanpageId , 
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
@@ -570,7 +573,7 @@ $tcb = false;
 		ui = '#latestpost';
 		$.ajax({
 			type: "GET",
-			url: baseAppUrl+'/getlatestpost?fanpage_id=' + fanpageId, 
+			url:  'http://' + serverUrl +'/app/app/getlatestpost/'+ fanpageId,  
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
@@ -588,7 +591,7 @@ $tcb = false;
 		//alert(baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view);
 		$.ajax({
 			type: "GET",
-			url: baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view, 
+			url: 'http://' + serverUrl +'/app/app/fancrankfeed/'+ fanpageId +'?facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view, 
 			dataType: "html",
 			cache: false,
 			success: function( data ) {
@@ -605,7 +608,7 @@ $tcb = false;
      
     	$.ajax({
     		type: "GET",
-    		url: baseAppUrl+'/topfans?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId,
+    		url: 'http://' + serverUrl +'/app/app/topfans/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -622,7 +625,7 @@ $tcb = false;
     function getMyProfile(ui) {
     	$.ajax({
     		type: "GET",
-    		url: baseAppUrl+'/myprofile?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId,
+    		url:  'http://' + serverUrl +'/app/app/myprofile/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -639,7 +642,7 @@ $tcb = false;
     function getAwards(ui) {
     	$.ajax({
     		type: "GET",
-    		url: baseAppUrl+'/awards?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId,
+    		url:  'http://' + serverUrl +'/app/app/awards/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -654,7 +657,7 @@ $tcb = false;
 	function follow($target){
 		$.ajax({
     		type: "GET",
-    		url: '/app/user/'+ userId + '/follow/?subscribe_to=' + $target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
+    		url: 'http://' + serverUrl +'/app/user/'+ userId + '/follow/?subscribe_to=' + $target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -671,7 +674,7 @@ $tcb = false;
 	function unfollow($target){
 		$.ajax({
     		type: "GET",
-    		url: '/app/user/'+ userId + '/unfollow/?subscribe_to=' + $target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
+    		url: 'http://' + serverUrl +'/app/user/'+ userId + '/unfollow/?subscribe_to=' + $target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -688,7 +691,7 @@ $tcb = false;
 	function likes($post_id, $post_type){
 		$.ajax({
     		type: "GET",
-    		url: '/app/user/'+ userId + '/likes/?post_id=' + post_id + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&post_type=' + post_type,
+    		url: 'http://' + serverUrl +'/app/user/'+ userId + '/likes/?post_id=' + post_id + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&post_type=' + post_type,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -704,7 +707,7 @@ $tcb = false;
 	function dislike($post_id, $post_type){
 		$.ajax({
     		type: "GET",
-    		url: '/app/user/'+ userId + '/dislike/?post_id=' + post_id + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&post_type=' + post_type,
+    		url: 'http://' + serverUrl +'/app/user/'+ userId + '/dislike/?post_id=' + post_id + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&post_type=' + post_type,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -720,7 +723,7 @@ $tcb = false;
 	function colorChange($choice){
 		$.ajax({
     		type: "GET",
-    		url: '/app/user/'+ userId + '/color/?choice=' + $choice + '&fanpage_id=' + fanpageId,
+    		url: 'http://' + serverUrl +'/app/user/'+ userId + '/color/?choice=' + $choice + '&fanpage_id=' + fanpageId,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {

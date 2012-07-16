@@ -58,9 +58,10 @@ class Model_Comments extends Model_DbTable_Comments
 		
 		return $this->getAdapter()->fetchAll($select);
 				
-    }*/
-	
+    }
+	*/
 
+	
 	public function getCommentsByPostId($postId, $limit) {
 		$select = $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART);
 		$select->setIntegrityCheck(false);
@@ -70,6 +71,7 @@ class Model_Comments extends Model_DbTable_Comments
 			$select = $select . " LIMIT $limit";
 		return $this->fetchAll($select); 
 	}
+
 
 }
 

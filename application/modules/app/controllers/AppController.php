@@ -3,6 +3,7 @@
 class App_AppController extends Fancrank_App_Controller_BaseController
 {
 
+/*
     public function preDispatch()
     {
         $this->_auth = Zend_Auth::getInstance();
@@ -22,7 +23,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
         	$this->data['page']['id'] = $this->_request->getParam('fanpage_id');
         	$this->view->fanpage_id = $this->_request->getParam('fanpage_id');
         	//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
-        	$this->data['user_id'] = $this->_getParam('facebook_user_id'); //set test user id from url
+        	$this-><data></data>['user_id'] = $this->_getParam('facebook_user_id'); //set test user id from url
         	$this->data['access_token'] = $this->_getParam('access_token');
         	$this->view->access_token = $this->_getParam('access_token');
         }
@@ -36,24 +37,72 @@ class App_AppController extends Fancrank_App_Controller_BaseController
         //set the proper navbar
         $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
     }
-/*
+*/
+
+
+	protected $_fanpageId;
+	protected $_userId;
+	
 
 	public function preDispatch() {
-		if (APPLICATION_ENV != 'production') {
-			$this->data['page']['id'] = '65558608937';
-			//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
-			$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
-		}
-		try {
-			$fanpageId = Zend_Registry::get('fanpageId');
-			//echo 'fanpageId: ' .$fanpageId;
-			$this->data['page']['id'] = $fanpageId;
-		} catch (Exception $e) {
-			$fanpageId = $this->_getParam('id');
-		}
 		parent::preDispatch();
+		if (APPLICATION_ENV != 'production') {
+			$this->_fanpageId = $this->_getParam('id');
+			if(empty($this->_facebook_user->facebook_user_id)) {
+				$this->_userId = $this->_getParam('user_id'); //set test user id from url
+			}else {
+				$this->_userId = $this->_facebook_user->facebook_user_id;
+			}
+		}else {
+			try {
+				$this->_fanpageId = Zend_Registry::get('fanpageId');
+			} catch (Exception $e) {
+				$this->_fanpageId = $this->_getParam('id');
+			}
+		}
+		$this->view->fanpage_id = $this->_fanpageId;
+		$this->view->user_id = $this->_userId;
 	}
+
+	/*
+	public function preDispatch()
+	{
+		$this->_auth = Zend_Auth::getInstance();
+		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
+		//$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
+		$view = new Zend_View;
+		$view->addHelperPath(APPLICATION_PATH.'/modules/app/views/helper','Helper');
+		try {
+			$this->data['page']['id'] = Zend_Registry::get('fanpageId');
+			 
+		} catch (Exception $e) {
+			//TOLOG
+			$this->data['page']['id'] = $this->_getParam('id');
+		}
+		 
+		if (APPLICATION_ENV != 'production') {
+			$this->data['page']['id'] = $this->_request->getParam('fanpage_id');
+			$this->view->fanpage_id = $this->_request->getParam('fanpage_id');
+			//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
+			$this->data['user_id'] = $this->_getParam('facebook_user_id'); //set test user id from url
+			$this->data['access_token'] = $this->_getParam('access_token');
+			$this->view->access_token = $this->_getParam('access_token');
+		}
+		 
+// 		if($this->_auth->hasIdentity()) {
+// 			//bring the user into the app if he is already logged in
+// 			$this->_identity = $this->_auth->getIdentity();
+// 			$this->_helper->redirector('index', 'app', 'app', array($this->data['page']['id'] => ''));
+// 		}
+		 
+		//set the proper navbar
+		$this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
+	}
+
 */
+
+	
+	
 
     public function indexAction()
     {
@@ -66,7 +115,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$user = new Model_FacebookUsers();
   
-    	$user = $user->find($this->data['user_id'])->current();
+    	$user = $user->find($this->_userId)->current();
     	//Zend_Debug::dump($user);
     	if($user) {
     		$this->view->facebook_user = $user;
@@ -89,13 +138,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$topClicker = $model->getTopClicker($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topClicker);
     	
-    	$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
+    	$topPosts = $model->getTopPosts($this->_fanpageId, 5);
     	
     	//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     	
     	
     	
-    	$color = $colorChoice ->getColorChoice($this->data['page']['id']);
+    	$color = $colorChoice ->getColorChoice($this->_fanpageId);
     	
     	//exit();
     	//$this->view->top_fans = $topFans;
@@ -142,7 +191,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		$this->_helper->layout->disableLayout();
   		
   		$user = new Model_FacebookUsers();
-  		$user = $user->find($this->data['user_id'])->current();
+  		$user = $user->find($this->_userId)->current();
   		//Zend_Debug::dump($user);
   		if($user) {
   			$this->view->facebook_user = $user;
@@ -152,24 +201,25 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   			$this->view->facebook_user = null;
   		}
   		
-  		$this->view->fanpage_id = $this->data['page']['id'];
+  		$this->view->fanpage_id = $this->_fanpageId;
   		
   		$follow = new Model_Subscribes();
   		$model = new Model_Rankings;
     	
     	
-   		$topFans = $model->getTopFans($this->data['page']['id'], 5);
+   		$topFans = $model->getTopFans($this->_fanpageId, 5);
     	//Zend_Debug::dump($topFans);
     	 
-    	$mostPopular = $model->getMostPopular($this->data['page']['id'], 5);
+    	$mostPopular = $model->getMostPopular($this->_fanpageId, 5);
     	//Zend_Debug::dump($mostPopular);
     	 
-    	$topTalker = $model->getTopTalker($this->data['page']['id'], 5);
+    	$topTalker = $model->getTopTalker($this->_fanpageId, 5);
     	//Zend_Debug::dump($topTalker);
     	 
-    	$topClicker = $model->getTopClicker($this->data['page']['id'], 5);
+    	$topClicker = $model->getTopClicker($this->_fanpageId, 5);
     	//Zend_Debug::dump($topClicker);
-    	
+
+    
     	
     
     	//exit();
@@ -223,10 +273,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->talkerArray = $talkerArray ;
     	$this->view->clickerArray = $clickerArray ;
     	
-    	$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
-    	$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
-    	$this->view->user_top_talker = $model->getUserRanking($this->data['page']['id'], 'TALKER', $this->view->fan_id);
-    	$this->view->user_top_clicker = $model->getUserRanking($this->data['page']['id'], 'CLICKER', $this->view->fan_id);
+    	$this->view->user_top_fans = $model->getUserRanking($this->_fanpageId, 'FAN', $this->_userId);
+    	$this->view->user_most_popular = $model->getUserRanking($this->_fanpageId, 'POPULAR', $this->_userId);
+    	$this->view->user_top_talker = $model->getUserRanking($this->_fanpageId, 'TALKER', $this->_userId);
+    	$this->view->user_top_clicker = $model->getUserRanking($this->_fanpageId, 'CLICKER', $this->_userId);
     	$this->render("topfans");
   	}
 
@@ -237,9 +287,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	
     	
-    	$user = new Model_FacebookUsers();
+   		$user = new Model_FacebookUsers();
     	
-    	$user = $user->find($this->data['user_id'])->current();
+    	$user = $user->find($this->_userId)->current();
     	//Zend_Debug::dump($user);
     	if($user) {
     		$this->view->facebook_user = $user;
@@ -267,7 +317,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$model = new Model_Rankings;
-    	$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
+    	$topPosts = $model->getTopPosts($this->_fanpageId, 5);
     	//Zend_Debug::dump($user); exit();
     	$this->view->top_post = $topPosts;
     	$this->render("gettoppost");
@@ -278,7 +328,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	//$this->_helper->viewRenderer->setNoRender(true);
    		$post = new Model_Posts;
-    	$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
+    	$latestPost = $post ->getLatestPost($this->_fanpageId,5);
     	$this->view->latest_post = $latestPost;
     	
     	$this->render("getlatestpost");
@@ -351,7 +401,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$user = new Model_FacebookUsers();
     	
-    	$user = $user->find($this->data['user_id'])->current();
+    	$user = $user->find($this->_userId)->current();
     	//Zend_Debug::dump($user);
     	if($user) {
     		$this->view->facebook_user = $user;
@@ -371,8 +421,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//check for user authorization
     	$user = new Model_FacebookUsers();	
    		
-    	$user = $user->find($this->data['user_id'])->current();
-    	//Zend_Debug::dump($user);
+    	$user = $user->find($this->_userId)->current();
+    	//Zend_Debug::dump($this->_userId);
     	if($user) {
     		$this->view->facebook_user = $user;
     		//$access_token = $this->facebook_user->facebook_user_access_token;
@@ -381,7 +431,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->view->facebook_user = null;
     	}
 
-    	
     	$follow = new Model_Subscribes();
     	$follower = $follow->getFollowers($user->facebook_user_id);
     	$following = $follow->getFollowing($user->facebook_user_id);
@@ -436,15 +485,36 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("userprofile");
     }
     
+
  
 
     
 
- 	protected function getFeed($fanpageId, $access_token, $limit, $view) {
+ 	//protected function getFeed($fanpageId, $access_token, $limit, $view) {
 
    
 
     	
+
+    public function fancrankfeedAction() {
+    	$this->_helper->layout->disableLayout();
+    	//$this->_helper->viewRenderer->setNoRender(true);
+    	$viewAs = $this->_request->getParam('viewAs');
+    	$result = array();
+    	
+		$fanpage = new Model_Fanpages();
+		$fanpage->findRow($this->_fanpageId);
+		$accessToken = $fanpage->access_token;
+		
+    	$result = $this->getFeed($this->_fanpageId, $accessToken, 8, $viewAs);
+    	//$result = json_encode($result);
+    	//Zend_Debug::dump($result);
+    	$this->view->post = $result;
+    	$this->render("fancrankfeed");
+    }
+    
+	protected function getFeed($fanpageId, $access_token, $limit, $view) {
+
     	$client = new Zend_Http_Client;
     	$client->setUri("https://graph.facebook.com/$fanpageId/feed");
     	$client->setMethod(Zend_Http_Client::GET);
@@ -456,6 +526,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
     	
     	if(!empty ($result->data)) {
+
+
 
     		switch ($view){
     			case 'admin':
@@ -471,12 +543,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			default:
     				return $result->data;
     		}
-    		
+
+
 
     		return $this->feedFilterByAdmin($result->data, $fanpageId);
 
     	}
-    	return array();
+
     }
     
     protected function feedFilterByAdmin($data, $fanpageId) {
@@ -505,12 +578,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$result = array();
     	try {
     		$topPosts = new Model_Rankings();
-    		$result = $topPosts->getTopPosts($this->_getParam('fanpage_id'));
+    		$result = $topPosts->getTopPosts($this->_fanpageId);
     		Zend_Debug::dump($result);
     		return $result;
     	} catch (Exception $e) {
     		return array();
     	}
+
     }
  
     /**
@@ -537,6 +611,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     $this->view->post = $result;
     $this->render("fancrankfeed");
     }*/
+
+    
+    /*
+
     public function fancrankfeedAction() {
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
@@ -547,9 +625,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->post = $result;
     	$this->render("fancrankfeed");
 	}
+    */
     
 	
-	
+
     public function adminfeedAction() {
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
@@ -557,19 +636,20 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$this->_helper->json($result);
     }
-    
 
     public function logoutAction()
     {
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
     	$this->_auth = Zend_Auth::getInstance();
+
     	if($this->_auth->hasIdentity()) {
     		$this->_identity = $this->_auth->clearIdentity();
     	}
     	
     	//$this->_helper->redirector('login', $this->getRequest()->getControllerName(), $this->getRequest()->getModuleName(), array($this->_getParam('id') => null));
-    	$this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));
+    	//$this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));
+    	$this->_helper->redirector('index', 'index', 'app', array($this->fanpage_id => $this->_fanpageId));
     }
     
     public function insightsAction() 
