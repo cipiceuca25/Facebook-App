@@ -4,31 +4,37 @@ class Model_Likes extends Model_DbTable_Likes
 {
 
 	
-	//this isnt even used.
-	public function insertLikes($fanpage_id, $post_id, $facebook_user_id, $post_type)
-	{
-	
-		$data = array( 'fanpage_id'=> $fanpage_id, 'post_id'=>$post_id, 'post_type'=>$post_id
-	
-		);
-		$insert = $this->getAdapter()->insert(array('likes' => 'likes'), $data);
-	
-	}
+
+    public function insertNewLikes($fanpage_id, $post_id, $facebook_user_id, $post_type)
+       {
+               $found = $this->find($fanpage_id, $post_id, $facebook_user_id)->current();
+               if (empty($found)) {
+                       $data = array( 'fanpage_id'=> $fanpage_id, 'post_id'=>$post_id, 'facebook_user_id'=>$facebook_user_id, 'post_type'=>$post_type, 'likes'=>1);
+
+                       $this->insert($data);
+               }else {
+                       echo 'data exist';
+               }
+       }
 	
 	public function isDataValid($data) {
 		if(empty($data)) {
 			return false;
 		}
-		
+		//echo 'data not empty';
 		foreach ($data as $key => $field) {
 			if(empty($field)) {
 				return false;
 			}
-			if($key === 'post_type' && ! in_array($field, array('photo', 'comment', 'post', 'album', 'video'))) {
+			
+			
+			if($key === 'post_type' && ! in_array($field, array('status', 'photo', 'comment', 'post', 'album', 'video'))) {
 				return false;
 			}
+			
 		}
 		
+		//echo 'data past';
 		return $this->isIdFieldsValid($data);
 	}
 	
@@ -40,11 +46,12 @@ class Model_Likes extends Model_DbTable_Likes
 				return false;
 			}
 		}
-	
+		
+		//echo 'key past';
 		if($data['facebook_user_id'] === $data['fanpage_id']) {
 			return false;
 		}
-	
+		
 		return true;
 	}
 }

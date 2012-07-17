@@ -34,6 +34,7 @@
 			var userId = "<?= $this->user_id ?>";
 			var accessToken = "<?= $this->access_token ?>";
 			var fanpageId = "<?= $this->fanpage_id?>"	;	
+			var userAccessToken = "<?= $this->facebook_user_access_token?>";
 			//alert( accessToken);
 			window.fbAsyncInit = function() {
 				FB.init({
@@ -89,10 +90,6 @@
 
     <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
 
-        <div class="navbar navbar-fixed-top">
-            <?= $this->layout()->navbar ?>
-        </div>
-
 		<div class="container" role="main"> 
 			<div id="wrapper">
 	
@@ -122,6 +119,9 @@
 	        	</div>
 			    	<div class="container">
 			    	module version
+			    	    <div id="logoutBtn">
+								<a href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a>
+    					</div>
 			    		
 						<div class="tabbable">   
 						    <ul class="nav nav-tabs" id="pageTabs">
@@ -143,7 +143,7 @@
 	        						</div>
 	        						
 	        				</div>
-	        				
+	        				 <div id="powered"><br/> POWERED BY <br/><img src ="/img/logo3.png" /> </div>
 	        			</div>
 	        			
 	        		</div>
@@ -152,6 +152,7 @@
         	</div>
          </div>
          <div class="light-box"></div>
+        
         <div id="fb-root"></div>
     </body>
     <script>
@@ -309,9 +310,9 @@ $tcb = false;
 		},500);
 	}
 
-	function comment(post_id, target, limiter){
+	function comment_bubble(post_id, limiter){
 		
-		getComment('.profile-content', post_id, target, limiter);
+		getBubbleComment('.profile-content', post_id, limiter);
 		$('.light-box').css('display','block');
 		$('.user-profile').css('display', 'block');
 	
@@ -336,11 +337,31 @@ $tcb = false;
 		   },1000, function(){
 			   
 		});
-
-		
+	}
+	function comment_feed(post_id, limiter){
+		ui = '#post_' + post_id;
+		//alert(ui);
+		getFeedComment( ui, post_id,limiter);
+		//$('.light-box').css('display','block');
+		//$('.user-profile').css('display', 'block');
+	
+		/*$('.top-border').animate({
+		    height: 'toggle',
+			top: '0px'
+		  }, 1000, function() {
+		    // Animation complete.
+		  });
+	
+		$('.bottom-border').animate({
+		    height: 'toggle',
+		    top: '0px'
+		  }, 1000, function() {
+		    // Animation complete.
+		  });*/
 		
 	}
 	
+
 	 $(document).ready(function() {
 		 FB.api(fanpageId , function(response){
 			 if (!response || response.error) {
@@ -407,8 +428,36 @@ $tcb = false;
 			}
 		});
 	}
+
+	function getFeedComment(ui, post_id, limiter){
+		$.ajax({
+			type: "GET",
+			url: 'http://' + serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&access_token=' + accessToken,
+			dataType: "html",
+			cache: false,
+			async: false,
+			success: function( data ) {
+			
+				$(ui).html(data);
+				
+			},	
+			error: function( xhr, errorMessage, thrownErro ) {
+				console.log(xhr.statusText, errorMessage);
+			}
+		});
+		$(ui).animate({
+		    height: 'toggle',
+		
+		  }, 1000, 'swing', function() {
+		    // Animation complete.
+		  });
+		
+		
+	}
+
 	
-	function getComment(ui, post_id, target, limiter) {
+		
+	function getBubbleComment(ui, post_id,limiter) {
 		      
 		$.ajax({
 			type: "GET",
@@ -598,6 +647,23 @@ $tcb = false;
 			}
 		});
 		
+	}
+
+	function like(post_id, post_type){
+		$.ajax({
+    		type: "GET",
+    		url: 'http://' + serverUrl + '/app/user/' + userId + '/likes/?post_id=' + post_id + '&fanpage_id='+ fanpageId + '&post_type=' + post_type + '&access_token=' + userAccessToken,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+				//alert("target followed")
+				//alert(post_id + 'liked');
+    			alert(userAccessToken);
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});		
 	}
 	
 	function getFancrankfeed(view){

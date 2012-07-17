@@ -8,7 +8,7 @@
 											<?php }?>
 												
 												<div class="post">
-													<a href="#" onclick="comment('<?= $latestPost['post_id']?>','<?= $latestPost['facebook_user_id']?>', 5)"><?= $latestPost['post_message'] ?><br /><span class="date"><?=date("F d Y", strtotime( $latestPost['updated_time']))?></span></a>
+													<a href="#" onclick="comment_bubble('<?= $latestPost['post_id']?>' , 5)"><?= $latestPost['post_message'] ?><br /><span class="date"><?=date("F d Y", strtotime( $latestPost['updated_time']))?></span></a>
            
 												</div>
 													
