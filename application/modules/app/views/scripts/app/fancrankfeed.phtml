@@ -23,10 +23,14 @@
 	<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
 	<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?> 
 	
-
 	
-	<a href="#" onclick="like('<?= $post->id?>', '<?= $post->type?>')" class="likes"> Like</a> 
-	 <a href="#" class="comment" onclick=" comment_feed('<?= $post->id ?>', 2)"> Comment  </a> 
+	<?php if ($this->likes[$count] == 0) {?>
+		<a href="#" onclick="like('<?= $post->id?>', '<?= $post->type?>')" class="likes"> Like</a> 
+	<?}else{?>
+		<a href="#" onclick="unlike('<?= $post->id?>', '<?= $post->type?>')" class="likes"> Unlike</a> 
+	<?php }?>
+	
+	 <a href="#" class="comment" onclick=" comment_feed('<?= $post->id ?>', 5)"> Comment  </a> 
 	
 	 <?php 
 	 		if(isset($post->comments->count)){

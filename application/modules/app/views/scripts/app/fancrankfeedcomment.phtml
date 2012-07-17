@@ -1,11 +1,12 @@
-<!--   not required -->
+
 
 <?php $count = 0?>
 
 <?php if(empty($this->comments)){
 
-	echo "Missing Access Token";
-}?>
+	//echo "Missing Access Token";
+	
+}else{?>
 
 
 
@@ -22,25 +23,31 @@
 	<div class="post"><div class="name"><a href=""><?=  $post->from->name?></a></div>
 	<?=  $post->message?></div>
 	<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
-	<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?> <a href="#" onclick="like('<?= $post->id?>', '<?= $post->type?>')" class="likes"> Like</a> 
-	 <a href="#" class="comment" onclick=" comment_feed('<?= $post->id ?>', 2)"> Comment  </a> 
+	<? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?> 
 	
-	 <?php 
-	 		if(isset($post->comments->count)){
-				echo $post->comments->count; //echo  $post->comments->count;
-	 	} else {
-			echo '0'; 
-		}
+	
+	<?php if ($this->likes[$count] == 0) {?>
+		<a href="#" onclick="like('<?= $post->id?>', 'comment')" class="likes"> Like</a> 
+	<?}else{?>
+		<a href="#" onclick="unlike('<?= $post->id?>', 'comment')" class="likes"> Unlike</a> 
+	<?php }?>
+	 
 
-	 ?> 
 	
 	 <span class="date"><?=  date("F d Y",strtotime($post->created_time))?></span></div>
-	<ul class="comments" id="post_<?=$post->id?>" ></ul>
+	
 	</li>
 										
 <?php $count ++;?>
-<?php endforeach; ?>
-				
+<?php endforeach; }?>
+
+	<li>
+		<form action="#">
+			<textarea class="comment_box" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
+			<input type=button value="Submit" onclick="commentSubmit('<?= $this->postId ?>','comment_<?= $this->postId ?>')">
+		</form>
+	
+	</li>
 						
 						
 			

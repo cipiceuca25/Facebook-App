@@ -13,9 +13,22 @@ class Model_Likes extends Model_DbTable_Likes
 
                        $this->insert($data);
                }else {
-                       echo 'data exist';
+                       //echo 'data exist';
                }
        }
+       
+       
+    public function getLikes($fanpage_id, $post_id, $facebook_user_id){
+
+    		$found = $this->find($fanpage_id, $post_id, $facebook_user_id)->current();
+    		//echo $found['likes'];
+               if ( empty($found) || $found['likes'] == 0) {
+                      return 0;
+               }else {
+                      return 1;
+               }
+    
+    }
 	
 	public function isDataValid($data) {
 		if(empty($data)) {

@@ -107,6 +107,9 @@
 			    <a href="#" onclick="colorChange(4)">Autumn</a>
 			    <a href="#" onclick="colorChange(5)">Ocean</a>
 			    <a href="#" onclick="colorChange(6)">Red</a>
+			    
+			
+			    
 				<div class="user-profile">
 								
 	        					<div class="top-border"> <a class="closeProfile" href="#" onclick="closeProfile()"></a> </div>
@@ -475,7 +478,10 @@ $tcb = false;
 				    		
 			    			$('#post_img').html("<img id='post_img' class='face' width='30' height='30' src='https://graph.facebook.com/" + response.from.id + "/picture' />");
 			    			$('#post_message').html('<div class="name"><a href="">' + response.from.name + '</a></div>' + response.message);
-								
+
+							$('#comment_').attr('id', 'comment_' + response.id );
+							$('#popup_comment_button').attr('onclick', 'commentSubmit("' + response.id + '", "comment_' + response.id + '")' );
+
 							var like;
 							try {
 								like = response.likes.count;
@@ -483,8 +489,18 @@ $tcb = false;
 							}catch(err){
 								like=0;
 							}
-							
+							$('#first_like').attr('onclick', 'like('+response.id+', '+response.type+')' );
 							$('#post_like').html(like);
+							i=0;
+							if (like != 0){
+								for(i=0; i< response.likes.data.length; i++){
+									if (response.likes.data[i].id == userId){
+										$('#first_like').html('Unlike');
+										$('#first_like').attr('onclick', 'unlike('+response.id+', '+response.type+')' );
+									}
+								}
+
+							}
 							
 							var d = new Date(Date.parse(response.created_time));
 							//alert(d);
@@ -506,11 +522,19 @@ $tcb = false;
 								d = new Date(Date.parse(response.comments.data[i].created_time));
 								//alert(d);
 								//alert(html);
+								var likeC = response.comments.data[i].likes;
+
+								if (likeC==undefined){
+									likeC=0;
+								}
+								
+								//alert(likeC);
+								
 								$('#post-list').append(
 									'<li class="grey-light"><div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/' 
 									+ response.comments.data[i].from.id+ '/picture"></a></div><div class="post"><div class="name"><a href="">' 
 									+ response.comments.data[i].from.name + '</a></div>' + response.comments.data[i].message + 
-									'</div><div class="social">' + '<a href="#" class="likes">Like</a>  Posted on <span class="date"> '
+									'</div><div class="social">' + likeC + '<a href="#" class="likes">Like</a>  Posted on <span class="date"> '
 									+ d.toDateString() + '</span></div></li><br/>' 
 									);			
 							}
@@ -658,7 +682,7 @@ $tcb = false;
     		success: function( data ) {
 				//alert("target followed")
 				//alert(post_id + 'liked');
-    			alert(userAccessToken);
+    			alert('liked');
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -823,6 +847,25 @@ $tcb = false;
     	});
 
 
+	}
+
+	function commentSubmit(postid, message){
+		var m = '#'+message;
+	
+		//alert(userAccessToken);
+		FB.api('/'+ postid + '/comments' , 'post' , { 'message': $(m).val() , 'access_token' : userAccessToken},  function(response) {
+			if (!response || response.error) {
+				alert(response.error.message);
+				} else {
+				//alert('Post ID: ' + response.id);
+				$(m).val('');
+					}
+				});
+	}
+	
+	function resizeCommentBox(o){
+		o.style.height = "1px";
+	    o.style.height = (10+o.scrollHeight)+"px";
 	}
 	
 </script>

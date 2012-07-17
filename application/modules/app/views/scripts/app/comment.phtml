@@ -63,16 +63,19 @@
 											<div class="post" id="post_message"><div class="name"><a href=""><?//= $this->target->facebook_user_name?></a></div>
 														<?//= $this->post->post_message?>
 														 </div>
-											<div class="social"> <img src="/img/news-feed/icon-likes.png" />   <?//= $this->post->post_likes_count?>  <span id="post_like"></span><a href="#" class="likes" > Like</a>   <a href="" class="comment"> Comment</a> Posted on <span class="date" id="post_date"> <?//= date("F d Y", strtotime($this->post->updated_time))?></span></div>
+											<div class="social"> <img src="/img/news-feed/icon-likes.png" />   <?//= $this->post->post_likes_count?>  <span id="post_like"></span><a href="#" class="likes" id="first_like" > Like</a>   <a href="#" class="comment"> Comment</a> Posted on <span class="date" id="post_date"> <?//= date("F d Y", strtotime($this->post->updated_time))?></span></div>
 											<div class="comment-box">
 												
-												<textfield name="textarea" id="textarea" value="" style="overflow:visible">this is the comment box</textfield>
+												
 											</div>
 										</li>
 										<br/>
 										
 									</ul>
-									
+									<form action="#">
+													<textarea class="comment_box_popup" id="comment_" onkeyup="resizeCommentBox(this)"></textarea>
+													<input type=button value="Submit" id="popup_comment_button">
+									</form>
 									
 									<div id="moreComments"></div>
 							</div>
