@@ -9,6 +9,7 @@ class Model_DbTable_Likes extends Fancrank_Db_Table
         'fanpage_id',
         'post_id',
         'facebook_user_id'
+    	
         );
 /*
     protected $_metadata = array(

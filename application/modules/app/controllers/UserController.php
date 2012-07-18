@@ -156,19 +156,26 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	}
 	
 	public function likesAction() {
-		//TODO
 		//$objectId = $this->_getParam('object_id');
 		$likeModel = new Model_Likes();
-		$data['facebook_user_id'] = $this->_getParam('facebook_user_id');
+		$data['facebook_user_id'] = $this->_getParam('id');
 		$data['post_id'] = $this->_getParam('post_id');
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['post_type'] = $this->_getParam('post_type');
+		$data['likes'] = 1;
+		
+		$data['access_token'] = $this->_getParam('access_token');
+		//echo ('function called ');
+		
+		//Zend_debug::dump($data);
 		
 		if(!$likeModel->isDataValid($data)) {
 			$msg = array('response'=>'error','message'=>'invalid input');
 			$this->_helper->json($msg);
 		}
 		
+		
+		//echo ('getting rdy to like');
 		$found = $likeModel->find($data['facebook_user_id'], $this->_getParam('post_id'), $data['fanpage_id'])->current();
 		if (empty($found)) {
 			//call facebook api and publish likes object to facebook
@@ -179,12 +186,18 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 				$params =  array(
 						'access_token' => $data['access_token']
 				);
-				//$fancrankFB->api("/$postId/likes", 'POST', $params);
+				$fancrankFB->api("/$postId/likes", 'POST', $params);
 				
 				//save object likes to fancrank database
-				$likeModel->insert($data);					
+				
+				//******* WE HAVE YET TO UPDATE THE POSTS DATABASE THRU THIS FUNCTION
+				
+				//echo 'inserting data to like.';
+				//$likeModel->insert($data);		
+				$likeModel->insertNewLikes($data['fanpage_id'], $data['post_id'], $data['facebook_user_id'], $data['post_type'] );
 			} catch (Exception $e) {
 				//TO LOG
+				
 			}
 
 		}
@@ -196,6 +209,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			$data['facebook_user_id'] = $this->_getParam('facebook_user_id');
 			$data['fanpage_id'] = $this->_getParam('fanpage_id');
 			$data['post_type'] = $this->_getParam('post_type');
+			$data['likes'] = 0;
 			$postId = $data['post_id'];
 			$fancrankFB = new Service_FancrankFBService();
 			$params =  array(
@@ -206,14 +220,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			//  $fancrankFB->api("/$postId/likes", 'DELETE', $params);
 			
 			//delete object likes from fancrank database or turn object likes flag to zero
-			//TODO
 		} catch (Exception $e) {
 			//TO LOG
 		}
 	}
 	
 	public function commentAction() {
-		//TODO
 		$data['facebook_user_id'] = $this->_getParam('id');
 		$data['access_token'] = $this->_getParam('access_token');
 		$data['post_id'] = $this->_getParam('post_id');

@@ -8,12 +8,23 @@
 											<?php }?>
 												
 												<div class="post">
-													<a href="#" onclick="comment('<?= $latestPost['post_id']?>','<?= $latestPost['facebook_user_id']?>', 5)"><?= $latestPost['post_message'] ?><br /><span class="date"><?=date("F d Y", strtotime( $latestPost['updated_time']))?></span></a>
+													<a href="#" onclick="comment_bubble('<?= $latestPost['post_id']?>' , 5)"><?= $latestPost['post_message'] ?><br /><span class="date"><?=date("F d Y", strtotime( $latestPost['updated_time']))?></span></a>
            
 												</div>
 													
 													<div class="info">
-														<div class="name"><a href=""><?= $latestPost['fan_first_name'] ?> <?= $latestPost['fan_last_name'] ?></a><br /><img src="/img/news-feed/icon-likes.png" /> <?= $latestPost['post_likes_count']?> <a href="" class="likes"> Like</a></div>
+														<div class="name"><a href=""><?= $latestPost['fan_first_name'] ?> <?= $latestPost['fan_last_name'] ?></a><br /><img src="/img/news-feed/icon-likes.png" /> <?= $latestPost['post_likes_count']?>
+														
+														 <?php if ($this->likes[$count] == 0) {?>
+																<a href="#" onclick="like('<?= $latestPost['post_id']?>', '<?= $latestPost['post_type']?>')" class="likes"> Like</a> 
+															<?}else{?>
+																<a href="#" onclick="unlike('<?= $latestPost['post_id']?>', '<?= $latestPost['post_type']?>')" class="likes"> Unlike</a> 
+															<?php }?>
+														 
+														 
+														 </div>
+														 
+														 
 														<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $latestPost['facebook_user_id'] ?>/picture"></a></div>
 														
 													</div>
