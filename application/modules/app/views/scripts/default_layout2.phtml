@@ -78,25 +78,6 @@
              <link href="/css/style.css" rel="stylesheet" type="text/css"/>
         <? endif ?>
 
-         <? if (APPLICATION_ENV == 'production'): ?>
-			
-			<?php if ($this->color_choice == 1) {?>
-            <link href="/css/loadstyle1.css" rel="stylesheet/less" id="stylesheet"/>
-            <?}elseif($this->color_choice == 2){?>
-             <link href="/css/loadstyle2.css" rel="stylesheet/less" id="stylesheet"/>
-               <?}elseif($this->color_choice == 4){?>
-             <link href="/css/loadstyle4.css" rel="stylesheet/less" id="stylesheet"/>
-               <?}elseif($this->color_choice == 5){?>
-             <link href="/css/loadstyle5.css" rel="stylesheet/less" id="stylesheet"/>
-            <? } else {?>
-            <link href="/css/loadstyle3.css" rel="stylesheet/less" id="stylesheet"/>
-            
-            <? }?>
-            <script src="/js/libs/less-1.3.0.min.js"></script>
-        <? else: ?>
-             <link href="/css/style.css" rel="stylesheet" type="text/css"/>
-        <? endif ?>
-      
         <style>
             .container, .navbar-fixed-top .container {
                 width: 810px;

@@ -2,21 +2,12 @@
 
 class App_IndexController extends Fancrank_App_Controller_BaseController
 {
-	
     public function preDispatch()
     {
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
         //$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
 
-        try {
-        	$this->data['page']['id'] = Zend_Registry::get('fanpageId');
-        
-        } catch (Exception $e) {
-        	//TOLOG
-        	$this->data['page']['id'] = $this->_getParam('id');
-        }
-        
         if (APPLICATION_ENV != 'production') {
         	$this->data['page']['id'] = $this->_request->getParam('id');
         	$this->view->fanpage_id = $this->_request->getParam('id');
@@ -24,6 +15,14 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         	$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
         	$this->view->user_id = $this->_getParam('facebook_user_id');
         	$this->view->access_token = $this->_getParam('access_token');
+        }else {
+			if (isset($_REQUEST['signed_request'])) {
+				$fb = new Service_FancrankFBService();
+				$this->_fanpageId = $fb->getFanPageId();
+				// Zend_Debug::dump($fb->getSignedData());
+			} else {
+				$this->_fanpageId = $this->_getParam('id');
+			}
         }
         
         if($this->_auth->hasIdentity()) {
@@ -42,12 +41,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$model = new Model_Rankings;
     	$post = new Model_Posts;
     	$colorChoice = new Model_UsersColorChoice;
-    	
-    	
     	$user = new Model_FacebookUsers();
-  
-    	
-   		
     	$user = $user->find($this->data['user_id'])->current();
     	//Zend_Debug::dump($user);
     	if($user) {
@@ -57,8 +51,6 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
-    	
-    	
     	$topFans = $model->getTopFans($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topFans);
     	 

@@ -2,17 +2,15 @@
 
 class Model_Likes extends Model_DbTable_Likes
 {
-
-	
-	//this isnt even used.
-	public function insertLikes($fanpage_id, $post_id, $facebook_user_id, $post_type)
+	public function insertNewLikes($fanpage_id, $post_id, $facebook_user_id, $post_type)
 	{
-	
-		$data = array( 'fanpage_id'=> $fanpage_id, 'post_id'=>$post_id, 'post_type'=>$post_id
-	
-		);
-		$insert = $this->getAdapter()->insert(array('likes' => 'likes'), $data);
-	
+		$found = $this->find($fanpage_id, $post_id, $facebook_user_id)->current();
+		if (empty($found)) {
+			$data = array( 'fanpage_id'=> $fanpage_id, 'post_id'=>$post_id, 'facebook_user_id'=>$facebook_user_id, 'post_type'=>$post_type);
+			$this->insert($data);
+		}else {
+			return array();
+		}
 	}
 	
 	public function isDataValid($data) {

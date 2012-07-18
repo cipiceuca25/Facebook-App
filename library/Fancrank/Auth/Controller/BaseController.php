@@ -42,22 +42,23 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     public function authorizeAction()
     {
     	//$this->_forward('index','index', 'app'); return;
-    	$fanpageId = $this->_request->getParam('id');
+    	$fanpageId = $this->_getParam('id');
     	if (empty($fanpageId)) {
-			$this->_helper->viewRenderer->setRender('index/failure', null, true);
+			//$this->_helper->viewRenderer->setRender('index/failure', null, true);
+			$this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));
 			return;
     	}
-    	
      	//Zend_Debug::dump($fanpageId); exit();
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
         $this->_helper->viewRenderer->setRender('index/authorize', null, true);
-            
+        
         $user = $this->oauth2(false, false);
-
+        
         if ($user) {
             //create user session
             $this->_auth->getStorage()->write($user);
+			$this->view->current_fanpage_id = $fanpageId;
             //$this->_auth->setExpirationSeconds(5259487);
         }
     } 
