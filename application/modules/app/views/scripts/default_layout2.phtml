@@ -23,7 +23,9 @@
 		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+    	
         <script src="/bootstrap/js/bootstrap.min.js"></script>
+        
         <script src="//connect.facebook.net/en_US/all.js"></script>
         
 	    <!-- This following javascripts are used to initialize the iframe look and feel -->
@@ -101,12 +103,7 @@
 			    
 			    <div id="content">
 			   
-			    <a href="#" onclick="colorChange(1)">Grayscale</a>
-			    <a href="#" onclick="colorChange(2)">Bubblegum</a>
-			    <a href="#" onclick="colorChange(3)">Original</a>
-			    <a href="#" onclick="colorChange(4)">Autumn</a>
-			    <a href="#" onclick="colorChange(5)">Ocean</a>
-			    <a href="#" onclick="colorChange(6)">Red</a>
+			
 			    
 			
 			    
@@ -121,10 +118,8 @@
 	        					</div>
 	        	</div>
 			    	<div class="container">
-			    	module version
-			    	    <div id="logoutBtn">
-								<a href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a>
-    					</div>
+			    	
+			    	   
 			    		
 						<div class="tabbable">   
 						    <ul class="nav nav-tabs" id="pageTabs">
@@ -133,7 +128,16 @@
 								<li><a href="#profile" data-toggle="tab"  id="profile-tab">My Profile</a></li>
 								<li><a href="#achievements" data-toggle="tab"  id="achievements-tab">Achievements</a></li>
 							</ul>
-							
+							    <a href="#" onclick="colorChange(1)">Grayscale</a>
+							    <a href="#" onclick="colorChange(2)">Bubblegum</a>
+							    <a href="#" onclick="colorChange(3)">Original</a>
+							    <a href="#" onclick="colorChange(4)">Autumn</a>
+							    <a href="#" onclick="colorChange(5)">Ocean</a>
+							    <a href="#" onclick="colorChange(6)">Red</a>
+							    <div id="logoutBtn">
+										<a href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a>
+				    			</div>
+				    					
 				    		<div class="tab-content">
 				    				<div class="tab-pane active" id="news-feed">
 	        							
@@ -283,7 +287,7 @@ $tcb = false;
 	
 	function userProfile(user){
 		getUserProfile('.profile-content', user);
-		setTimeout(function() {
+		
 		$('.light-box').css('display','block');
 		$('.user-profile').css('display', 'block');
 			/*
@@ -307,10 +311,10 @@ $tcb = false;
 		$('.profile-content').animate({
 			height:'toggle',
 			top:'20px'
-		   },1500, function(){
+		   },500, function(){
 			   
 		});
-		},500);
+	
 	}
 
 	function comment_bubble(post_id, limiter){
@@ -337,14 +341,14 @@ $tcb = false;
 		$('.profile-content').animate({
 			height:'toggle',
 			top:'20px'
-		   },1000, function(){
+		   },500, function(){
 			   
 		});
 	}
-	function comment_feed(post_id, limiter){
+	function comment_feed(post_id, limiter, total, toggle){
 		ui = '#post_' + post_id;
 		//alert(ui);
-		getFeedComment( ui, post_id,limiter);
+		getFeedComment( ui, post_id,limiter, total, toggle);
 		//$('.light-box').css('display','block');
 		//$('.user-profile').css('display', 'block');
 	
@@ -432,10 +436,10 @@ $tcb = false;
 		});
 	}
 
-	function getFeedComment(ui, post_id, limiter){
+	function getFeedComment(ui, post_id, limiter, total, toggle){
 		$.ajax({
 			type: "GET",
-			url: 'http://' + serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&access_token=' + accessToken,
+			url: 'http://' + serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter + '&total=' +total + '&access_token=' + accessToken,
 			dataType: "html",
 			cache: false,
 			async: false,
@@ -448,12 +452,20 @@ $tcb = false;
 				console.log(xhr.statusText, errorMessage);
 			}
 		});
-		$(ui).animate({
-		    height: 'toggle',
+
+		//alert('are we animating?' + toggle);
+		if(toggle){
+			$(ui).animate({
+			    height: 'toggle',
+			
+			  }, 1000, 'swing', function() {
+			    // Animation complete.
+			  });
+			  
+		}else{
+			//alert('hurray it didnt f-ing close');
+		}
 		
-		  }, 1000, 'swing', function() {
-		    // Animation complete.
-		  });
 		
 		
 	}
@@ -690,6 +702,23 @@ $tcb = false;
     	});		
 	}
 	
+	function unlike(post_id, post_type){
+		$.ajax({
+    		type: "GET",
+    		url: 'http://' + serverUrl + '/app/user/' + userId + '/unlike/?post_id=' + post_id + '&fanpage_id='+ fanpageId + '&post_type=' + post_type + '&access_token=' + userAccessToken,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+				//alert("target followed")
+				//alert(post_id + 'liked');
+    			alert('unliked');
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});		
+	}
+	
 	function getFancrankfeed(view){
 		ui = '#fancrankfeed';
 		//alert(baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view);
@@ -914,6 +943,7 @@ $tcb = false;
 		  e.preventDefault();
 		  $(this).tab('show');
 		})
+		
 </script>	
 		
 </html>

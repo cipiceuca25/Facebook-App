@@ -176,7 +176,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		if (empty($found)) {
 			//call facebook api and publish likes object to facebook
 			try {
-				$data['post_id'] = $this->_getParam('post_id');
+				//$data['post_id'] = $this->_getParam('post_id');
 				$postId = $data['post_id'];
 				$fancrankFB = new Service_FancrankFBService();
 				$params =  array(
@@ -199,27 +199,51 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		}
 	}
 	
-	public function dislikeAction() {
-		try {
-			$data['post_id'] = $this->_getParam('post_id');
-			$data['facebook_user_id'] = $this->_getParam('facebook_user_id');
-			$data['fanpage_id'] = $this->_getParam('fanpage_id');
-			$data['post_type'] = $this->_getParam('post_type');
-			$data['likes'] = 0;
-			$postId = $data['post_id'];
-			$fancrankFB = new Service_FancrankFBService();
-			$params =  array(
-					'access_token' => $data['access_token']
-			);
-			$likeModel = new Model_Likes();
-			//  $likeModel->delete($data);
-			//  $fancrankFB->api("/$postId/likes", 'DELETE', $params);
-			
-			//delete object likes from fancrank database or turn object likes flag to zero
-			//TODO
-		} catch (Exception $e) {
-			//TO LOG
+	public function unlikeAction() {
+		
+	$likeModel = new Model_Likes();
+		$data['facebook_user_id'] = $this->_getParam('id');
+		$data['post_id'] = $this->_getParam('post_id');
+		$data['fanpage_id'] = $this->_getParam('fanpage_id');
+		$data['post_type'] = $this->_getParam('post_type');
+		$data['likes'] = 0;
+		
+		$data['access_token'] = $this->_getParam('access_token');
+		//echo ('function called ');
+		
+		//Zend_debug::dump($data);
+		
+		
+		
+		
+		//echo ('getting rdy to like');
+		$found = $likeModel->find($data['facebook_user_id'], $this->_getParam('post_id'), $data['fanpage_id'])->current();
+		if (empty($found)) {
+			//call facebook api and publish likes object to facebook
+			try {
+				//$data['post_id'] = $this->_getParam('post_id');
+				$postId = $data['post_id'];
+				$fancrankFB = new Service_FancrankFBService();
+				$params =  array(
+						'access_token' => $data['access_token']
+				);
+				$fancrankFB->api("/$postId/likes", 'DELETE', $params);
+				
+				//save object likes to fancrank database
+				echo " trying to unlike";
+				//******* WE HAVE YET TO UPDATE THE POSTS DATABASE THRU THIS FUNCTION
+				
+				//echo 'inserting data to like.';
+				//$likeModel->insert($data);		
+				$likeModel->unlike($data['fanpage_id'], $data['post_id'], $data['facebook_user_id'], $data['post_type'] );
+				
+				echo "unliked";
+			} catch (Exception $e) {
+				//TO LOG
+				echo "error mthfker".$e;
+			}
 		}
+		
 	}
 	
 	public function commentAction() {
@@ -243,7 +267,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 		$fancrankFB->api("/$postId/comments", 'POST', $params);
 	}
-	
 	
 	public function commenttestAction(){
 		$comment = new Model_Comments();

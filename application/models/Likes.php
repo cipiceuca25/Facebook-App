@@ -13,8 +13,20 @@ class Model_Likes extends Model_DbTable_Likes
 
                        $this->insert($data);
                }else {
-                       //echo 'data exist';
+              	 	$found->likes = 1;
+               		$found->save();
                }
+       }
+
+    public function unlike($fanpage_id, $post_id, $facebook_user_id, $post_type)
+       {
+       	$found = $this->find($fanpage_id, $post_id, $facebook_user_id)->current();
+       	
+       	if (!empty($found)) {
+
+       		$found->likes = 0;
+       		$found->save();
+       	}
        }
        
        

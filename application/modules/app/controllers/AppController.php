@@ -240,7 +240,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     {	
     	$this->_helper->layout->disableLayout();
     	
-    		
+    	$user = new Model_FacebookUsers();
+    	 
+    	$user = $user->find($this->_userId)->current();
+    	//Zend_Debug::dump($this->_userId);
+    	if($user) {
+    		$this->view->facebook_user = $user;
+    		//$access_token = $this->facebook_user->facebook_user_access_token;
+    		//$this->view->feed = $this->getFeed($access_token);
+    	}else {
+    		$this->view->facebook_user = null;
+    	}	
     	/*
    		$user = new Model_FacebookUsers();
     	
@@ -509,8 +519,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$postId = $this->_request->getParam('post_id');
+    	$limit = $this->_request->getParam('limit');
+    	$total = $this->_request->getParam('total');
     	$result = array();
-    	$result = $this->getFeedComment($postId, 5);
+    	$result = $this->getFeedComment($postId, $limit);
     	//$result = json_encode($result);
     	//Zend_Debug::dump($result);
     	
@@ -526,8 +538,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	 
     	$this->view->likes = $likes;
     	
+    	$this->view->total = $total;
+    	$this->view->limit = $limit;
     	$this->view->comments = $result;
     	$this->view->postId = $postId;
+    	//Zend_Debug::dump($result);
     	$this->render("fancrankfeedcomment");
     }
     

@@ -84,7 +84,7 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 	
 	public function getRelation($user, $target){
 		if($user == $target){
-			return "self";
+			return "You";
 		}
 		
 		$isfollowing = $this->isFollowing($user, $target);
