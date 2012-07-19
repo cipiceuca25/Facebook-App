@@ -9,10 +9,13 @@ class Model_Likes extends Model_DbTable_Likes
     public function insertNewLikes($fanpage_id, $post_id, $facebook_user_id, $post_type)
        {
                $found = $this->find($fanpage_id, $post_id, $facebook_user_id)->current();
+               //zend_debug::dump($found);
                if (empty($found)) {
                        $data = array( 'fanpage_id'=> $fanpage_id, 'post_id'=>$post_id, 'facebook_user_id'=>$facebook_user_id, 'post_type'=>$post_type, 'likes'=>1);
-
-                       $this->insert($data);
+                       zend_debug::dump($data);
+                       echo hello;
+                      $x = $this->insert($data);
+                      zend_debug::dump($x);
                }else {
               	 	$found->likes = 1;
                		$found->save();
@@ -49,6 +52,7 @@ class Model_Likes extends Model_DbTable_Likes
 			return false;
 		}
 		//echo 'data not empty';
+		Zend_debug::dump($data);
 		foreach ($data as $key => $field) {
 			if(empty($field)) {
 				return false;
