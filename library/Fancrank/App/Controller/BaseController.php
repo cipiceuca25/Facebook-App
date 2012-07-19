@@ -34,8 +34,8 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
     public function init() 
     {
         //add the resource specific javascript file to the layout
-        $this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '.js');
-        $this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '/' . $this->_request->getActionName() . '.js');
+        //$this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '.js');
+        //$this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '/' . $this->_request->getActionName() . '.js');
 
         $this->_helper->layout()->controller = $this->_request->getControllerName();
         $this->_helper->layout()->action = $this->_request->getActionName();

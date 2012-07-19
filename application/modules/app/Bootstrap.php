@@ -34,6 +34,14 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     }
     */
     
+    protected function _initAppLogTraffic() {
+		$log = new Zend_Log();
+		$log = Zend_Registry::get('appLogger');
+		$request = implode(",", $_REQUEST);
+    	$info = $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"] .' extra request params: ' .$request;
+    	$log->log($info, Zend_Log::NOTICE, 'traffic info');
+    }
+    
     protected function _initViewHelper()
     {
     	$view = new Zend_View();

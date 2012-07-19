@@ -14,6 +14,7 @@ function confirmFunction(url) {
         path: url,
         callback: function(){
         	//alert(window.location.href);
+        	window.location.reload();
         }
     });
 };

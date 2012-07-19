@@ -6,21 +6,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    window.addEvent('domready', function() {
-        this.focus();
-
-        document.getElement('a').addEvent('click', function(event) {
-            event.preventDefault();
-            self.close();
-        });
-
-        if (window.opener != null) {
-            // tell the opener window that we're done
-            window.opener.document.fireEvent('authFailure');
-            self.close.delay(7000);
-        }
-    });
-
     jQuery(document).ready(function($){
 
         $('a').click(function(event){

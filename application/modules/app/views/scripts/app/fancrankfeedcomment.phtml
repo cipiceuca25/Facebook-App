@@ -11,13 +11,12 @@
 
 
 <?php foreach ($this->comments as $post):?>		
-	<br/>
+
 	<?php if ($count % 2 == 0){?>			
 	<li class="grey-light" >
 	<?php }else{?>
 	<li class="grey-dark" >
 	<?php }?>
-
 
 	<div class="photo"><a href="#"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
 	<div class="post"><div class="name"><a href=""><?=  $post->from->name?></a></div>
@@ -41,7 +40,12 @@
 <?php $count ++;?>
 <?php endforeach; }?>
 
-	<li>
+	
+	<?if ($this->total > $this->limit){ ?>
+		<div class="feed_moreComments" onclick="comment_feed('<?= $this->postId ?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</div>
+	<?}?>
+	<li class="comment_container">
+
 		<form action="#">
 			<textarea class="comment_box" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
 			<input type=button value="Submit" onclick="commentSubmit('<?= $this->postId ?>','comment_<?= $this->postId ?>')">
