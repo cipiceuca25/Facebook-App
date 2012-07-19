@@ -29,7 +29,7 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" onclick="follow(<?=$top_fan['facebook_user_id']?>)">
+															<a href="#" onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')">
 															<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span></a>
 														</div>
 														<div class="points">
@@ -58,7 +58,7 @@
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" onclick="follow(<?=$top_fan['facebook_user_id']?>)">
+														<a href="#" onclick="follow(<?=$top_fan['facebook_user_id']?>, '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>'?>)">
 														<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span></a>
 													</div>
 													<div class="points">
@@ -102,7 +102,7 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" onclick="follow(<?=$popular['facebook_user_id']?>)">
+															<a href="#" onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>')">
 															<span class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></span></a>
 														</div>
 														<div class="points">
@@ -131,7 +131,7 @@
 													<div class="name">
 														<a  href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" onclick="follow(<?=$popular['facebook_user_id']?>)">
+														<a href="#" onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>')">
 														<span class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></span></a>
 													</div>
 													<div class="points">
@@ -179,7 +179,7 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" onclick="follow(<?=$talker['facebook_user_id']?>)">
+															<a href="#" onclick="follow(<?=$talker['facebook_user_id'] ?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')">
 															<span class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></span></a>
 														</div>
 														<div class="points">
@@ -208,7 +208,7 @@
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" onclick="follow(<?=$talker['facebook_user_id']?>)">
+														<a href="#" onclick="follow(<?=$talker['facebook_user_id']?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>)">
 														<span class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></span></a>
 													</div>
 													<div class="points">
@@ -252,7 +252,7 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" onclick="follow(<?=$clicker['facebook_user_id']?>)">
+															<a href="#" onclick="follow(<?=$clicker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>)">
 															<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span></a>
 														</div>
 														<div class="points">
@@ -281,7 +281,7 @@
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?>  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" onclick="follow(<?=$talker['facebook_user_id']?>)">
+														<a href="#" onclick="follow(<?=$talker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>)">
 														<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span></a>
 													</div>
 													<div class="points">

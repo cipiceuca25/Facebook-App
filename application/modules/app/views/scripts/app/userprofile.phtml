@@ -75,11 +75,11 @@
 										
 									
 										<div class="span2">
-											<a href="#" onclick="follow(<?= $this->facebook_user->facebook_user_id ?>)"><span class="badge badge-<?= $this->relation?> big"><?= $this->relation?></span></a>
+											<a href="#" onclick="follow(<?= $this->facebook_user->facebook_user_id ?> , '<?= $this->facebook_user->facebook_user_name ?>')"><span class="badge badge-<?= $this->relation?> big"><?= $this->relation?></span></a>
 											<br/>
 											<br/>
 											<?php if(!($this->relation == 'Follow') && !($this->relation == 'You')){?>
-												<a href="#" onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?>)"><span class="badge badge-unfollow big">Unfollow</span></a>
+												<a href="#" onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?>, '<?= $this->facebook_user->facebook_user_name ?>')"><span class="badge badge-unfollow big">Unfollow</span></a>
 											<?}?>
 										</div>
 								</div>

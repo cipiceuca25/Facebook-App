@@ -691,7 +691,7 @@ $tcb = false;
 		
 	}
 
-	function like(post_id, post_type){
+	function like(post_id, post_type, target_id, target_name){
 		$.ajax({
     		type: "GET",
     		url: serverUrl + '/app/user/' + userId + '/likes/?post_id=' + post_id + '&fanpage_id='+ fanpageId + '&post_type=' + post_type + '&access_token=' + userAccessToken,
@@ -701,7 +701,7 @@ $tcb = false;
 				//alert("target followed")
 				//alert(post_id + 'liked');
     			alert('liked');
-    			addActivities('like-'+post_type, post_id );
+    			addActivities('like-'+post_type, post_id, target_id, target_name );
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -710,7 +710,7 @@ $tcb = false;
 	}
 
 	
-	function unlike(post_id, post_type){
+	function unlike(post_id, post_type, target_id, target_name){
 		$.ajax({
     		type: "GET",
     		url: serverUrl + '/app/user/' + userId + '/unlike/?post_id=' + post_id + '&fanpage_id='+ fanpageId + '&post_type=' + post_type + '&access_token=' + userAccessToken,
@@ -720,7 +720,7 @@ $tcb = false;
 				//alert("target followed")
 				//alert(post_id + 'liked');
     			alert('unliked');
-    			addActivities('unlike-'+post_type, post_id );
+    			addActivities('unlike-'+post_type, post_id, target_id, target_name);
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -822,7 +822,7 @@ $tcb = false;
 	}
 
     
-	function follow(target){
+	function follow(target, name){
 		$.ajax({
     		type: "GET",
     		url: serverUrl +'/app/user/'+ userId + '/follow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
@@ -830,6 +830,7 @@ $tcb = false;
     		cache: false,
     		success: function( data ) {
 				//alert("target followed")
+    			addActivities('follow', target, target, name );
 				getUserProfile('.profile-content', target);
     			
     		},	
@@ -839,7 +840,7 @@ $tcb = false;
     	});
     }	
 	
-	function unfollow(target){
+	function unfollow(target, name){
 		$.ajax({
     		type: "GET",
     		url: serverUrl +'/app/user/'+ userId + '/unfollow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
@@ -847,6 +848,7 @@ $tcb = false;
     		cache: false,
     		success: function( data ) {
 				//alert("target unfollowed")
+    			addActivities('unfollow', target, target, name );
 				getUserProfile('.profile-content', target);
     		
     		},	
@@ -858,10 +860,10 @@ $tcb = false;
 
 
 
-	function addActivities(act_type, event){
+	function addActivities(act_type, event, target_id, target_name){
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/user/'+ userId + '/addactivity/?activity_type=' + act_type + '&event='+event+ '&fanpage_id=' + fanpageId,
+    		url: serverUrl +'/app/user/'+ userId + '/addactivity/?activity_type=' + act_type + '&event='+event+ '&fanpage_id=' + fanpageId + '&target_id=' + target_id + '&target_name=' + target_name,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {

@@ -25,9 +25,9 @@
 	
 	
 	<?php if ($this->likes[$count] == 0) {?>
-		<a href="#" onclick="like('<?= $post->id?>', '<?= $post->type?>')" class="likes"> Like</a> 
+		<a href="#" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" class="likes"> Like</a> 
 	<?}else{?>
-		<a href="#" onclick="unlike('<?= $post->id?>', '<?= $post->type?>')" class="likes"> Unlike</a> 
+		<a href="#" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')" class="likes"> Unlike</a> 
 	<?php }?>
 	
 

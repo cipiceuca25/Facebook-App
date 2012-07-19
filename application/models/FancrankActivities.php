@@ -34,7 +34,6 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 		$order = 'created_time';
 		$count = $limit;
 		$offset= 0;
-		
 		$found = $this -> findAll($where,$order, $count, $offset);
 		return $found;
 	}
