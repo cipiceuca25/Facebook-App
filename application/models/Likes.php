@@ -3,6 +3,7 @@
 class Model_Likes extends Model_DbTable_Likes
 {
 
+
 	
 
     public function insertNewLikes($fanpage_id, $post_id, $facebook_user_id, $post_type)
@@ -41,6 +42,7 @@ class Model_Likes extends Model_DbTable_Likes
                }
     
     }
+
 	
 	public function isDataValid($data) {
 		if(empty($data)) {
@@ -51,14 +53,11 @@ class Model_Likes extends Model_DbTable_Likes
 			if(empty($field)) {
 				return false;
 			}
-			
-			
 			if($key === 'post_type' && ! in_array($field, array('status', 'photo', 'comment', 'post', 'album', 'video'))) {
 				return false;
 			}
 			
 		}
-		
 		//echo 'data past';
 		return $this->isIdFieldsValid($data);
 	}
@@ -71,7 +70,7 @@ class Model_Likes extends Model_DbTable_Likes
 				return false;
 			}
 		}
-		
+
 		//echo 'key past';
 		if($data['facebook_user_id'] === $data['fanpage_id']) {
 			return false;

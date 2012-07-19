@@ -1,4 +1,15 @@
 <?php
+/**
+ * Francrank
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Fancrank OEM license
+ *
+ * @category    service
+ * @copyright   Copyright (c) 2012 Francrank
+ * @license
+ */
 class Service_FancrankCollectorService {
 	protected $_facebookGraphAPIUrl;
 	protected $_fanpageId;
@@ -54,15 +65,11 @@ class Service_FancrankCollectorService {
 			return;
 		}
 		
-// 		$postLikeList = array();
-// 		//$this->getLikesFromMyPostRecursive($posts, $this->_fanpageId, $this->_accessToken, 0, $postLikeList);
  		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
-// 		Zend_Debug::dump($postLikeList);
+ 		//Zend_Debug::dump($postLikeList);
 		
-// 		$commentsList = array();
-// 		//$this->getQueryRecursive($posts, 'comments', $this->_fanpageId, $this->_accessToken, 0, $commentsList);
  		$commentsList = $this->getCommentsFromPost($posts, 5, 1000);
-// 		Zend_Debug::dump($commentsList);
+ 		//Zend_Debug::dump($commentsList);
 		
 		//get all albums recursively
 		$url = 'https://graph.facebook.com/' .$this->_fanpageId .'/albums?access_token=' .$this->_accessToken;
@@ -73,29 +80,23 @@ class Service_FancrankCollectorService {
 		$photoList = array();
 		$photoList = $this->getPhotosFromAlbum($albumsList, 2, 1000);
 		//Zend_Debug::dump($photoList);
-		
 		$albumLikesList = $this->getLikesFromMyAlbums($albumsList);
 		//Zend_Debug::dump($albumLikesList);
 		$photoLikesList = $this->getLikesFromMyAlbums($photoList);
 		//Zend_Debug::dump($photoLikesList);
-		
 		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList);
 		//Zend_Debug::dump($albumCommentList);
 		$photoCommentList = $this->getCommentsFromMyAlbum($photoList);
 		//Zend_Debug::dump($photoCommentList);
-		
 		$commentsList = array_merge($commentsList, $albumCommentList, $photoCommentList);
 		//Zend_Debug::dump($commentsList);
-		
 		$commentLikeList = $this->getLikesFromMyComment($commentsList);
-		
+
 		$allLikesList = array_merge($postLikeList, $commentLikeList, $albumLikesList, $photoLikesList);
 		
 		$fdb = new Service_FancrankDBService($this->_fanpageId, $this->_accessToken);
 		
 		$db = $fdb->getDefaultAdapter();
-		//$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
-		//$db = Zend_Db::factory($config->resources->db);
 		
 		echo '<br/>total likes for ' .count($posts) . ' posts: ' .count($postLikeList);
 		echo '<br/>total likes for ' .count($commentsList) . ' comments: ' .count($commentLikeList);
@@ -117,11 +118,9 @@ class Service_FancrankCollectorService {
 			$fdb->saveLikes($allLikesList);
 			
 			$fansIdsList = $this->fansIdCollector($posts, $commentsList,  $allLikesList);
-			//Zend_Debug::dump($fansIdsList);
 			
 			$facebookUsers = $this->getFansList($fansIdsList, $this->_accessToken);
 			$result = $fdb->saveFans($facebookUsers);
-			//Zend_Debug::dump($result);
 			
 			$db->commit();
 			$stop = time() - $start;
@@ -132,7 +131,6 @@ class Service_FancrankCollectorService {
 			$collectorLogger->log ( sprintf ( 'Full Scan fail: %s',  $e->getMessage ()), Zend_log::ERR);
 			$db->rollBack();
 		}
-		
 	}
 	
 	public function fetchFanpageInfo($since=0) {
@@ -206,7 +204,6 @@ class Service_FancrankCollectorService {
 		} catch (Exception $e) {
 			$db->rollBack();
 		}
-
 	}
 	
 	public function collectFanpageInsight($level=1, $type=null) {
@@ -218,8 +215,7 @@ class Service_FancrankCollectorService {
 		$params = array('access_token' => $this->_accessToken,
 						'since' => $since,
 						'until' => $until
-				);
-		
+						);
 		$url = null;
 		$baseUrl = $this->_facebookGraphAPIUrl . $this->_fanpageId;
 		switch ($type) {
@@ -263,15 +259,6 @@ class Service_FancrankCollectorService {
 		}
 	}
 	
-	/*
-	 * This method will retrieve all posts from giving url recursively
-	*
-	* @param string $url a next page url
-	* @param int numbers of recursive call
-	* @param int numbers of limit posts per recursion level
-	* @param mixed $result a callback result
-	* 
-	*/
 	public function getPostsRecursive($url, $level=2, $limit, &$result) {
 		if(empty($url) || $level == 0) {
 			return array();
@@ -322,7 +309,6 @@ class Service_FancrankCollectorService {
 					$results[] = $comment;
 				}
 			}
-				
 		}
 		return $results;
 	}
@@ -711,7 +697,7 @@ class Service_FancrankCollectorService {
 			}
 			return $results;
 		} catch (Exception $e) {
-			echo $e->getMessage();
+			//echo $e->getMessage();
 			return;
 		}
 	}

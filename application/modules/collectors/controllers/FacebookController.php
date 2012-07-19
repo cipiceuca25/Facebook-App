@@ -46,6 +46,17 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
    	
     }
     
+    public function testlikesAction() {
+    	$likes = new Model_Likes();
+    	$fanpage_id = '178384541065';
+    	$post_id = '178384541065_194193687292337';
+    	$facebook_user_id = '1425696291';
+    	$post_type = 'post';
+    	
+		$likes->insertNewLikes($fanpage_id, $post_id, $facebook_user_id, $post_type);
+
+    }
+    
     public function viewAction() {
     	$time = time();
     	$range = 7776000;

@@ -1,5 +1,16 @@
 <?php
-
+/**
+ * Francrank
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Fancrank OEM license
+ *
+ * @category    app
+ * @package     app
+ * @copyright   Copyright (c) 2012 Francrank
+ * @license
+ */
 class App_UserController extends Fancrank_App_Controller_BaseController
 {
 	public function preDispatch() {
@@ -16,19 +27,16 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		foreach ($result as $post) {
 			Zend_Debug::dump($post);			
 		}
-		
 	}
 
-	public function colorAction(){
-		
+	public function colorAction() {
 		$colorChoice = new Model_UsersColorChoice;
 		$c = $this->_request->getParam('choice');
 		$f = $this->_request->getParam('fanpage_id');
-		if(!is_null($c)){
-			$colorChoice ->change($f, $c );
+		if(!is_null($c)) {
+			$colorChoice ->change($f, $c);
 		}
 	}
-	
 	
 	public function followAction() {
 		$subscribe_Model = new Model_Subscribes;
@@ -49,10 +57,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			try {
 				$subscribe->save();				
 			} catch (Exception $e) {
+				//TO LOG
 			}
-			
 		}else {
-
 			if($subscribe_Model->isDataValid($data)) {
 				try {
 					$result = $subscribe_Model->insert($data);
@@ -63,10 +70,8 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			}else {
 				//echo 'nothing to save';
 			}
-			
 			//Zend_Debug::dump($color->getColorChoice(1));
 		}
-	
 	}
 	
 	public function profileAction() {
@@ -151,7 +156,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	}
 	
 	public function likesAction() {
-		//TODO
 		//$objectId = $this->_getParam('object_id');
 		$likeModel = new Model_Likes();
 		$data['facebook_user_id'] = $this->_getParam('id');
@@ -199,6 +203,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		}
 	}
 	
+
 	public function unlikeAction() {
 		
 	$likeModel = new Model_Likes();
@@ -242,12 +247,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 				//TO LOG
 				echo "error mthfker".$e;
 			}
+
 		}
 		
 	}
 	
 	public function commentAction() {
-		//TODO
 		$data['facebook_user_id'] = $this->_getParam('id');
 		$data['access_token'] = $this->_getParam('access_token');
 		$data['post_id'] = $this->_getParam('post_id');
@@ -264,16 +269,13 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 				'access_token' => $data['access_token'],
 				'message' => "$msg",
 		);
-		
 		$fancrankFB->api("/$postId/comments", 'POST', $params);
 	}
 	
 	public function commenttestAction(){
 		$comment = new Model_Comments();
 		$wootwoot = $comment -> getClosestCommentsByTimestamp($this->_getParam('comment'), $this->_getParam('limit'));
-
 		Zend_Debug::dump($wootwoot);
-		
 	}
 	
 	public function relationAction(){

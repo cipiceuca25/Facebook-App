@@ -45,13 +45,13 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 	
 	public function getFollowers($user){
 		 
-		$select = "select count(s.facebook_user_id) as Follower from subscribes s where s.follow_enable=1 && s.facebook_user_id_subscribe_to =".$user ;
+		$select = "select count(s.facebook_user_id) as Follower from subscribes s where s.follow_enable=1 AND s.facebook_user_id_subscribe_to =".$user ;
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
 	public function getFollowing($user){
 		 
-		$select = "select count(s.facebook_user_id_subscribe_to) as Following from subscribes s where s.follow_enable=1 && s.facebook_user_id =".$user ;
+		$select = "select count(s.facebook_user_id_subscribe_to) as Following from subscribes s where s.follow_enable=1 AND s.facebook_user_id =".$user ;
 
 		return $this->getAdapter()->fetchAll($select);
 	}
@@ -60,22 +60,22 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 
 		$select = "select count(a.facebook_user_id) as friends 
 					from subscribes as a, subscribes as b
-					where a.follow_enable=1 && b.follow_enable=1 &&  a.facebook_user_id = ".$user."&& 
-					b.facebook_user_id_subscribe_to =" .$user. "&& 
+					where a.follow_enable=1 AND b.follow_enable=1 AND  a.facebook_user_id = ".$user." AND 
+					b.facebook_user_id_subscribe_to =" .$user. " AND 
 					a.facebook_user_id_subscribe_to = b.facebook_user_id";
 		
 		return $this->getAdapter()->fetchAll($select);
 		
 	}
 	public function isFollowing($user, $target){
-		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1 && s.facebook_user_id=".$user."&& s.facebook_user_id_subscribe_to = ".$target;
+		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1 AND s.facebook_user_id=$user AND s.facebook_user_id_subscribe_to = $target";
 		if ($this->getAdapter()->fetchAll($select))
 			return true;
 	
 		return false;
 	}
 	public function isFollower($user, $target){
-		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1  && s.facebook_user_id=".$target."&& s.facebook_user_id_subscribe_to = ".$user ;
+		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1  AND s.facebook_user_id=$target AND s.facebook_user_id_subscribe_to = $user";
 		if ($this->getAdapter()->fetchAll($select))
 			return true;
 	

@@ -1,11 +1,26 @@
 <?php
-
+/**
+ * Francrank
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Fancrank OEM license
+ *
+ * @category    app
+ * @package     app
+ * @copyright   Copyright (c) 2012 Francrank
+ * @license     
+ */
 class App_AppController extends Fancrank_App_Controller_BaseController
 {
 	protected $_fanpageId;
 	protected $_userId;
 	protected $_accessToken;
-	protected $_userAccessToken;
+
+
+	/**
+	 * Initilized fanpage id and login user variables
+	 */
 
 	public function preDispatch() {
 		parent::preDispatch();
@@ -17,20 +32,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				$this->_userId = $this->_facebook_user->facebook_user_id;
 			}
 		}else {
-			try {
-				$this->_fanpageId = Zend_Registry::get('fanpageId');
-			} catch (Exception $e) {
+			$this->_userId = $this->_facebook_user->facebook_user_id;
+			if (isset($_REQUEST['signed_request'])) {
+				$fb = new Service_FancrankFBService();
+				$this->_fanpageId = $fb->getFanPageId();
+				// Zend_Debug::dump($fb->getSignedData());
+			} else {
 				$this->_fanpageId = $this->_getParam('id');
 			}
 		}
 
-		$token = new Model_Fanpages();
-		$token = $token->find($this->_fanpageId)->current();
-		//Zend_Debug::dump($token->access_token);
-		$this->_accessToken = $token->access_token;
-		
 
-		
 		if(!empty($this->_fanpageId)) {
 			$token = new Model_Fanpages();
 			$token = $token->find($this->_fanpageId)->current();
@@ -38,15 +50,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			$this->_accessToken = $token ->access_token;			
 		}
 		
-		//if(!empty($this->_userAccessToken)) {
-			$user_token = new Model_FacebookUsers();
-			$user_token = $user_token->find($this->_userId)->current();
-			//Zend_Debug::dump($token);
-			$this->_userAccessToken = $user_token ->facebook_user_access_token;
-		//}
-		
+
+
 		//echo $token ->access_token;
-		$this->view->facebook_user_access_token = $this->_userAccessToken;
+		$this->view->facebook_user_access_token = $this->_facebook_user->facebook_user_access_token;
+
 		$this->view->access_token = $this->_accessToken;
 		$this->view->fanpage_id = $this->_fanpageId;
 		$this->view->user_id = $this->_userId;
@@ -55,14 +63,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     public function indexAction()
     {
     	$this->_helper->layout->setLayout('default_layout2');
-    	
     	$model = new Model_Rankings;
-    	
     	$colorChoice = new Model_UsersColorChoice;
-    	
-    	
     	$user = new Model_FacebookUsers();
-  
     	$user = $user->find($this->_userId)->current();
     	//Zend_Debug::dump($user);
     	if($user) {
@@ -72,8 +75,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
-    	
-    	
     	//$topFans = $model->getTopFans($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topFans);
     	 
@@ -90,8 +91,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     	
-    	
-    	
     	$color = $colorChoice ->getColorChoice($this->_fanpageId);
     	
     	//exit();
@@ -101,11 +100,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->view->top_clicker = $topClicker;
     	$this->view->top_post = $topPosts;
     	//$this->view->latest_post = $latestPost;
-    	
-    
-    	
     	$this->view->color_choice = $color->color_choice;
-    	
+
    		$user = new Model_FacebookUsers();	
    		
     	$user = $user->find($this->_userId)->current();
@@ -138,11 +134,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		
     	$this->render('newsfeed');
     }
-    
 
-
-
-
+    /* Action to retrieve top five fans by default */
   	public function topfansAction()
   	{	
   		
@@ -164,7 +157,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		$follow = new Model_Subscribes();
   		$model = new Model_Rankings;
     	
-    	
    		$topFans = $model->getTopFans($this->_fanpageId, 5);
     	//Zend_Debug::dump($topFans);
     	 
@@ -184,7 +176,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->top_clicker = $topClicker;
     
     	//echo ($user['facebook_user_id']);
-    	 
 
     	$topArray = NULL;
     	$popularArray = NULL;
@@ -232,13 +223,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->user_most_popular = $model->getUserRanking($this->_fanpageId, 'POPULAR', $this->_userId);
     	$this->view->user_top_talker = $model->getUserRanking($this->_fanpageId, 'TALKER', $this->_userId);
     	$this->view->user_top_clicker = $model->getUserRanking($this->_fanpageId, 'CLICKER', $this->_userId);
+    	
     	$this->render("topfans");
   	}
 
-  	
+  	/* Action to show login user's wall post */
     public function newsfeedAction() 
     {	
     	$this->_helper->layout->disableLayout();
+
     	
     	$user = new Model_FacebookUsers();
     	 
@@ -251,6 +244,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}	
+
     	/*
    		$user = new Model_FacebookUsers();
     	
@@ -272,7 +266,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->view->facebook_user = null;
     	}
     	*/
-    
     	
     	$this->render("newsfeed");
     }
@@ -294,9 +287,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     	}
     	
-    	
+
     	$this->view->likes = $likes;
     	$this->view->top_post = $topPosts;
+
     	$this->render("gettoppost");
     }
     
@@ -318,16 +312,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     	}
     	 
+
     	 
     	$this->view->likes = $likes;
-    	
-    	
+
+
     	$this->view->latest_post = $latestPost;
     	
     	$this->render("getlatestpost");
-    	
     }
-    
     
     public function commentAction()
     {
@@ -380,9 +373,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->view->post = $post;
     	//$this->view->comment = $comment;
     	
-    	
-    	
-    	
     	$this->render("comment");
     }
     
@@ -403,7 +393,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
-    	 
     	
     	$this->render("awards");
     }
@@ -477,17 +466,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	 
     	$this->render("userprofile");
     }
-    
-
- 
-
-    
-
- 	//protected function getFeed($fanpageId, $access_token, $limit, $view) {
-
-   
-
-    	
 
     public function fancrankfeedAction() {
     	$this->_helper->layout->disableLayout();
@@ -519,21 +497,26 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$postId = $this->_request->getParam('post_id');
+
     	$limit = $this->_request->getParam('limit');
     	$total = $this->_request->getParam('total');
     	$result = array();
     	$result = $this->getFeedComment($postId, $limit);
     	//$result = json_encode($result);
     	//Zend_Debug::dump($result);
+
     	
     	$likesModel = new Model_Likes();
     	$likes = array();
     	$count=0;
+
+		if(!empty($result)) {
     	foreach ($result as $posts){
     		//echo $top['facebook_user_id'];
     		$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
     		//echo $likes[$count];
     		$count++;
+    	}
     	}
     	 
     	$this->view->likes = $likes;
@@ -543,12 +526,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->comments = $result;
     	$this->view->postId = $postId;
     	//Zend_Debug::dump($result);
+
     	$this->render("fancrankfeedcomment");
     }
     
     protected function getFeedComment($postId, $limit) {
-    
-    	;
+
     	$client = new Zend_Http_Client;
     	$client->setUri("https://graph.facebook.com/". $postId ."/comments");
     	$client->setMethod(Zend_Http_Client::GET);
@@ -560,12 +543,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
     	 
     	if(!empty ($result->data)) {    
+
     
     		return $result->data;
     
     	}
     
     }
+    
+
     
 	protected function getFeed($limit, $view) {
 
@@ -582,8 +568,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	if(!empty ($result->data)) {
 
-
-
     		switch ($view){
     			case 'admin':
     				$client->setUri("https://graph.facebook.com/". $this->_fanpageId ."/posts");
@@ -599,13 +583,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			default:
     				return $result->data;
     		}
-
-
-
     		return $result->data;
-
     	}
-
     }
     
     protected function feedFilterByAdmin($data, $fanpageId) {
@@ -682,8 +661,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("fancrankfeed");
 	}
     */
-    
-	
 
     public function adminfeedAction() {
     	$this->_helper->layout->disableLayout();

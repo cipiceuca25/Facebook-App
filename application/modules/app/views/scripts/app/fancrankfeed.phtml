@@ -30,6 +30,7 @@
 		<a href="#" onclick="unlike('<?= $post->id?>', '<?= $post->type?>')" class="likes"> Unlike</a> 
 	<?php }?>
 	
+
 	 <a href="#" class="comment" onclick=" comment_feed('<?= $post->id ?>', 5,<?php 
 	 		if(isset($post->comments->count)){
 				echo $post->comments->count; //echo  $post->comments->count;
@@ -38,6 +39,7 @@
 		}
 
 	 ?> , true )"> Comment  </a> 
+
 	
 	 <?php 
 	 		if(isset($post->comments->count)){
@@ -50,8 +52,7 @@
 	
 	 <span class="date"><?=  date("F d Y",strtotime($post->created_time))?></span></div>
 	<ul class="comments" id="post_<?=$post->id?>" ></ul>
-	
-	
+
 	</li>
 								
 <?php $count ++;?>

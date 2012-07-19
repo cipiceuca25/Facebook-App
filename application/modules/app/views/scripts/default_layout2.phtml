@@ -81,7 +81,6 @@
              <link href="/css/style.css" rel="stylesheet" type="text/css"/>
         <? endif ?>
 
-      
         <style>
             .container, .navbar-fixed-top .container {
                 width: 810px;
@@ -102,10 +101,7 @@
 			    </div><!--/end header -->
 			    
 			    <div id="content">
-			   
-			
-			    
-			
+			   	    	
 			    
 				<div class="user-profile">
 								
@@ -118,8 +114,7 @@
 	        					</div>
 	        	</div>
 			    	<div class="container">
-			    	
-			    	   
+
 			    		
 						<div class="tabbable">   
 						    <ul class="nav nav-tabs" id="pageTabs">
@@ -345,10 +340,12 @@ $tcb = false;
 			   
 		});
 	}
+
 	function comment_feed(post_id, limiter, total, toggle){
 		ui = '#post_' + post_id;
 		//alert(ui);
 		getFeedComment( ui, post_id,limiter, total, toggle);
+
 		//$('.light-box').css('display','block');
 		//$('.user-profile').css('display', 'block');
 	
@@ -436,10 +433,12 @@ $tcb = false;
 		});
 	}
 
+
 	function getFeedComment(ui, post_id, limiter, total, toggle){
 		$.ajax({
 			type: "GET",
 			url: 'http://' + serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter + '&total=' +total + '&access_token=' + accessToken,
+
 			dataType: "html",
 			cache: false,
 			async: false,
@@ -452,6 +451,7 @@ $tcb = false;
 				console.log(xhr.statusText, errorMessage);
 			}
 		});
+
 
 		//alert('are we animating?' + toggle);
 		if(toggle){
@@ -466,6 +466,7 @@ $tcb = false;
 			//alert('hurray it didnt f-ing close');
 		}
 		
+
 		
 		
 	}
@@ -701,6 +702,7 @@ $tcb = false;
     		}
     	});		
 	}
+
 	
 	function unlike(post_id, post_type){
 		$.ajax({
@@ -718,6 +720,7 @@ $tcb = false;
     		}
     	});		
 	}
+
 	
 	function getFancrankfeed(view){
 		ui = '#fancrankfeed';

@@ -14,6 +14,7 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     	return $logger;
     }
     
+    /*
     //retrieve the fanpage Id from signed request and save it into zend registry with key 'fanpageId'.
     protected function _initFanpageID()
     {
@@ -21,14 +22,17 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     		if(isset($_REQUEST['signed_request'])) {
     			$fb = new Service_FancrankFBService();
     			$fanpageId = $fb->getFanPageId();
-    			Zend_Registry::set('fanpageId', $fanpageId);
-    			
+    			//$frontController = Zend_Controller_Front::getInstance();
+    			//$frontController->getRequest()->setParam('current_fanpage_id', $fanpageId);
+    			$session = new Zend_Session_Namespace('currentFanpage');
+    			$seesion->fanpageId = $fanpageId;
     			//Zend_Debug::dump($fb->getSignedData());
     		}
     	} catch (Exception $e) {
     		throw new ErrorException($e->getMessage());
     	}
     }
+    */
     
     protected function _initViewHelper()
     {
