@@ -1,16 +1,44 @@
 <?php if(empty($this->activities)){
-
 	echo "No Recent Activities";
 }?>
+
 	<?php $count = 0?>
 	<?php foreach ($this->activities as $act):?>	
-		<?php if ($count % 2 == 0){?>			
+		<? if ($count % 2 == 0){ ?>			
 		<li class="grey-light" >
-		<?php }else{?>
+		<? }else{ ?>
 		<li class="grey-dark" >
-		<?php }?>
-		You have <?= $act->activity_type?> <?= $act->event_object?> at <?= $act->created_time?> . 
+		<? } ?>
 		
+		<? switch($act->activity_type){ 
+		
+			case 'follow': 
+				echo 'You followed '. $act->target_user_name .' at ' . date("F d Y",strtotime($act->created_time)).'.';
+				break;
+			case 'unfollow' :
+				echo 'You unfollowed '. $act->target_user_name .' at ' . date("F d Y",strtotime($act->created_time)).'.';
+				break;
+							
+			case 'like-status':
+				echo "You liked ".$act->target_user_name."'s status post at ". date("F d Y",strtotime($act->created_time) ).'.' ;
+				break;
+			
+			case 'unlike-status':
+				echo "You unliked ".$act->target_user_name."'s status post at ". date("F d Y",strtotime($act->created_time)) .'.' ;
+				break;
+			case 'like-comment':
+				echo "You liked ".$act->target_user_name."'s comment at ". date("F d Y",strtotime($act->created_time)) .'.' ;
+				break;
+			case 'unlike-comment':
+				echo "You unliked ".$act->target_user_name."'s comment at ". date("F d Y",strtotime($act->created_time)) .'.' ;
+				break;
+			case 'post-comment':
+				echo "You post a comment on ".$act->target_user_name."'s post at ". date("F d Y",strtotime($act->created_time)) .'.' ;
+				break;
+
+			default:
+			
+		}?>
 		
 		</li>
 	<?php endforeach; ?>

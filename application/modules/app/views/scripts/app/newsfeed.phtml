@@ -18,7 +18,12 @@
 										<div class="title-header"> <h3><i class="icon-star icon-white"></i> Fancrank Feed <i class="icon-star icon-white"></i></h3>
 										 <span><a href="#" onclick="getFancrankfeed('all')"> All </a><a href="#" onclick="getFancrankfeed('admin')"> Admin </a><a href="#" onclick="getFancrankfeed('user')"> User </a></span></div>
 									</div>
-								
+									
+									<form action="#">
+													<textarea class="comment_box_popup" id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
+													<input type=button value="Submit" id="post_button">
+									</form>
+									
 									<ul class="post-list" id ="fancrankfeed">
 										
 									</ul>

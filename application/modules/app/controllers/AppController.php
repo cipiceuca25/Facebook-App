@@ -509,8 +509,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}    		
     	}
     	 
-    	$this->view->likes = $likes;
+    	//$postTop = explode('_', $postId);
+    	//$postTop = $postTop[0].'_'.$postTop[1];
     	
+    	//$this->view->postTopId = $postTop;
+    	//$this->view->postTopName =$this-> getOwnerOfPost($postTop);
+    	
+    	$this->view->likes = $likes;
+    	$this->view->postOwner = $this->getOwnerOfPost($postId);
+    	//Zend_debug::dump($this->getOwnerOfPost($postId));
     	$this->view->total = $total;
     	$this->view->limit = $limit;
     	$this->view->comments = $result;
@@ -530,6 +537,25 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//Zend_Debug::dump($activities);
     	
     	$this->render("recentactivities");
+    }
+    
+    protected function getOwnerOfPost($postId){
+    	
+    	$client = new Zend_Http_Client;
+    	$client->setUri("https://graph.facebook.com/". $postId);
+    	$client->setMethod(Zend_Http_Client::GET);
+    	$client->setParameterGet('access_token', $this->_accessToken);
+
+    	
+    	$response = $client->request();
+    	
+    	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    	
+    	if(!empty ($result)) {
+    	
+    		return array( 'user_id' => $result->from->id, 'user_name' => $result->from->name);
+    	}
+    	
     }
     
     //this grabs the comments for a specific post and returns the data to fancrankfeedcommentAction

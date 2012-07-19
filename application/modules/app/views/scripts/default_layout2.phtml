@@ -494,7 +494,7 @@ $tcb = false;
 			    			$('#post_message').html('<div class="name"><a href="">' + response.from.name + '</a></div>' + response.message);
 
 							$('#comment_').attr('id', 'comment_' + response.id );
-							$('#popup_comment_button').attr('onclick', 'commentSubmit("' + response.id + '", "comment_' + response.id + '")' );
+							$('#popup_comment_button').attr('onclick', 'commentSubmit("' + response.id + '", "comment_' + response.id + '", "'+response.from.id+'", "'+response.from.name+'")' );
 
 							var like;
 							try {
@@ -893,7 +893,7 @@ $tcb = false;
 
 	}
 
-	function commentSubmit(postid, message){
+	function commentSubmit(postid, message, target_id, target){
 		var m = '#'+message;
 	
 		//alert(userAccessToken);
@@ -903,8 +903,9 @@ $tcb = false;
 				} else {
 				//alert('Post ID: ' + response.id);
 				$(m).val('');
-					}
-				});
+				addActivities('post-comment',postid, target_id, target);
+				}
+			});
 	}
 	
 	function resizeCommentBox(o){
@@ -914,27 +915,6 @@ $tcb = false;
 	
 </script>
     
-    
-    
-    
-    <script src="text/javascript">
-		window.onload = function() {
-			  FB.Canvas.setAutoGrow(91);
-			  setTimeout('autoGrowTimer();', 1000); //This is for demonstration
-			};
-		
-		function autoGrowTimer() { //Can be removed.
-		  paragraphs_added++; //Increase the count
-		  autoGrowDiv = document.getElementById('autoGrow');
-		  //autoGrowDiv.innerHTML = autoGrowDiv.innerHTML + "<p>This is making the iframe taller.</p>";
-		  //Stop after 50 paragraphs aded
-		  if (paragraphs_added > 50) return;
-		
-		  setTimeout('autoGrowTimer();', 1000);
-		}
-		
-	
-	</script>
 
 <script >
 	

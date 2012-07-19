@@ -31,7 +31,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 	
 	public function getRecentActivities($facebook_user_id, $fanpage_id, $limit){
 		$where = array('facebook_user_id' => $facebook_user_id, 'fanpage_id'=> $fanpage_id);
-		$order = 'created_time';
+		$order = 'created_time DESC';
 		$count = $limit;
 		$offset= 0;
 		$found = $this -> findAll($where,$order, $count, $offset);

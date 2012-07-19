@@ -26,9 +26,9 @@
 	
 	
 	<?php if ($this->likes[$count] == 0) {?>
-		<a href="#" onclick="like('<?= $post->id?>', 'comment')" class="likes"> Like</a> 
+		<a href="#" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" class="likes"> Like</a> 
 	<?}else{?>
-		<a href="#" onclick="unlike('<?= $post->id?>', 'comment')" class="likes"> Unlike</a> 
+		<a href="#" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" class="likes"> Unlike</a> 
 	<?php }?>
 	 
 
@@ -48,7 +48,7 @@
 
 		<form action="#">
 			<textarea class="comment_box" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
-			<input type=button value="Submit" onclick="commentSubmit('<?= $this->postId ?>','comment_<?= $this->postId ?>')">
+			<input type=button value="Submit" onclick="commentSubmit('<?= $this->postId ?>','comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>' )">
 		</form>
 	
 	</li>
