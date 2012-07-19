@@ -287,6 +287,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("gettoppost");
     }
     
+ 
+    
+    
     public function getlatestpostAction(){
     	
     	$this->_helper->layout->disableLayout();
@@ -516,6 +519,20 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("fancrankfeedcomment");
     }
     
+    public function recentactivitiesAction(){
+    	$this->_helper->layout->disableLayout();
+    	
+    	$activities = new Model_FancrankActivities();
+    	$activities = $activities -> getRecentActivities($this->_userId, $this->_fanpageId, 10);
+    	
+    	$this->view->activities = $activities;
+    	
+    	//Zend_Debug::dump($activities);
+    	
+    	$this->render("recentactivities");
+    }
+    
+    //this grabs the comments for a specific post and returns the data to fancrankfeedcommentAction
     protected function getFeedComment($postId, $limit) {
 
     	$client = new Zend_Http_Client;
@@ -534,6 +551,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     }
     
+    //this grabs the facebook feed for the current fanpage id and returns the list to fancrankAction 
 	protected function getFeed($limit, $view) {
 
     	$client = new Zend_Http_Client;

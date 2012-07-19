@@ -1,7 +1,44 @@
 <?php
 
-class Model_FancrankActivities
+class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 {
+	public function addActivities($data){
+		
+		//$found = $this -> find($created_time, $activity_type, $event_object, )->current();
+	
+		//if (empty($found)) {
+		
+			$insert = $this->insert($data);
+		//}
+		
+	
+	}
+	
+	
+	//we shouldn't need to use this. since it would be close to impossible to pass in the created_time
+	public function getActivities($created_time, $activity_type, $event_object){
+		
+		$found = $this -> find($created_time, $activity_type, $event_object)->current();
+		
+		if (!empty($found)) {
+		
+			return $found;
+		}
+		
+		echo 'not found';
+		
+	}
+	
+	public function getRecentActivities($facebook_user_id, $fanpage_id, $limit){
+		$where = array('facebook_user_id' => $facebook_user_id, 'fanpage_id'=> $fanpage_id);
+		$order = 'created_time';
+		$count = $limit;
+		$offset= 0;
+		
+		$found = $this -> findAll($where,$order, $count, $offset);
+		return $found;
+	}
+	/*
 	public function getFeed($limit) {
 		$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
 		$db = Zend_Db::factory($config->resources->db);
@@ -27,6 +64,8 @@ class Model_FancrankActivities
 	public function feedJsonEncode() {
 		
 	}
-
+	*/
+	
+	
 }
 

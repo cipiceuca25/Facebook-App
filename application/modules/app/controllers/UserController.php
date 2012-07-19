@@ -200,7 +200,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 				
 				//******* WE HAVE YET TO UPDATE THE POSTS DATABASE THRU THIS FUNCTION
 				
-				//echo 'inserting data to like.';
+				echo 'inserting data to like.';
 				//$likeModel->insert($data);		
 				$likeModel->insertNewLikes($data['fanpage_id'], $data['post_id'], $data['facebook_user_id'], $data['post_type'] );
 			} catch (Exception $e) {
@@ -293,6 +293,20 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		echo $user.' '.$target;
 		echo $follow->getRelation($user, $target);
 	}
+	
+	public function addactivityAction(){
+		
+		$data['activity_type'] = $this -> _getParam('activity_type');
+		$data['event_object'] = $this-> _getParam('event');
+		$data['facebook_user_id'] = $this->_getParam('id');
+		$data['fanpage_id'] = $this->_getParam('fanpage_id');
+		
+		$act = new Model_FancrankActivities();
+		
+		$act -> addActivities($data);
+		
+	}
+	
 }
 
 ?>

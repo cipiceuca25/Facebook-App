@@ -46,6 +46,7 @@
 			
 				//FB.Canvas.setSize();
 			};
+
 		 </script>
 	 	<!-- End of iframe initialization -->
         <script src="/js/fancrank.js"></script>
@@ -420,14 +421,17 @@ $tcb = false;
 			url: serverUrl +'/app/app/userprofile/'+ fanpageId +'/?target=' + target + '&facebook_user_id='+ userId,
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
 		
 				$(ui).html(data);
+				
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
 			}
 		});
+	
 	}
 
 
@@ -693,6 +697,7 @@ $tcb = false;
 				//alert("target followed")
 				//alert(post_id + 'liked');
     			alert('liked');
+    			addActivities('like-'+post_type, post_id );
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -711,6 +716,7 @@ $tcb = false;
 				//alert("target followed")
 				//alert(post_id + 'liked');
     			alert('unliked');
+    			addActivities('unlike-'+post_type, post_id );
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -768,6 +774,7 @@ $tcb = false;
     		async: false,
     		success: function( data ) {
     			$(ui).html(data);
+    			getRecentActivities('#recent_activities');
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -793,15 +800,33 @@ $tcb = false;
     	});
     }	
 
-	function follow($target){
+
+	function getRecentActivities(ui){
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/user/'+ userId + '/follow/?subscribe_to=' + $target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
+    		url:  serverUrl +'/app/app/recentactivities/' + fanpageId,
+    		dataType: "html",
+    		cache: false,
+    		async: false,
+    		success: function( data ) {
+    			$(ui).html(data);
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+	}
+
+    
+	function follow(target){
+		$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/user/'+ userId + '/follow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
 				//alert("target followed")
-				getUserProfile('.profile-content', $target);
+				getUserProfile('.profile-content', target);
     			
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
@@ -810,15 +835,15 @@ $tcb = false;
     	});
     }	
 	
-	function unfollow($target){
+	function unfollow(target){
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/user/'+ userId + '/unfollow/?subscribe_to=' + $target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
+    		url: serverUrl +'/app/user/'+ userId + '/unfollow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
 				//alert("target unfollowed")
-				getUserProfile('.profile-content', $target);
+				getUserProfile('.profile-content', target);
     		
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
@@ -827,42 +852,30 @@ $tcb = false;
     	});
     }	
 
-	function likes($post_id, $post_type){
-		$.ajax({
-    		type: "GET",
-    		url: serverUrl +'/app/user/'+ userId + '/likes/?post_id=' + post_id + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&post_type=' + post_type,
-    		dataType: "html",
-    		cache: false,
-    		success: function( data ) {
-				//alert("target unfollowed")
-    			//$(ui).html(data);
-    		},	
-    		error: function( xhr, errorMessage, thrownErro ) {
-    			console.log(xhr.statusText, errorMessage);
-    		}
-    	});
-	}
 
-	function dislike($post_id, $post_type){
+
+	function addActivities(act_type, event){
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/user/'+ userId + '/dislike/?post_id=' + post_id + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&post_type=' + post_type,
+    		url: serverUrl +'/app/user/'+ userId + '/addactivity/?activity_type=' + act_type + '&event='+event+ '&fanpage_id=' + fanpageId,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
-				//alert("target unfollowed")
+    			
+    			alert('act saved');
     			//$(ui).html(data);
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
     		}
     	});
+
 	}
     
-	function colorChange($choice){
+	function colorChange(choice){
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/user/'+ userId + '/color/?choice=' + $choice + '&fanpage_id=' + fanpageId,
+    		url: serverUrl +'/app/user/'+ userId + '/color/?choice=' + choice + '&fanpage_id=' + fanpageId,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
