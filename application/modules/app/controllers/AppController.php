@@ -46,7 +46,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			//Zend_Debug::dump($token);
 			$this->_accessToken = $token ->access_token;			
 		}
-		
+
 		//echo $token ->access_token;
 		$this->view->facebook_user_access_token = $this->_facebook_user->facebook_user_access_token;
 		$this->view->access_token = $this->_accessToken;

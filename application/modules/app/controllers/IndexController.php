@@ -18,21 +18,21 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         }else {
 			if (isset($_REQUEST['signed_request'])) {
 				$fb = new Service_FancrankFBService();
-				$this->_fanpageId = $fb->getFanPageId();
+				$this->data['page']['id']= $fb->getFanPageId();
 				// Zend_Debug::dump($fb->getSignedData());
 			} else {
-				$this->_fanpageId = $this->_getParam('id');
+				$this->data['page']['id'] = $this->_getParam('id');
 			}
         }
+        
+        //set the proper navbar
+        $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
         
         if($this->_auth->hasIdentity()) {
             //bring the user into the app if he is already logged in
             $this->_identity = $this->_auth->getIdentity();
-            $this->_helper->redirector('index', 'app', 'app', array($this->data['page']['id'] => ''));   
+            $this->_forward('index', 'app', 'app', $this->_getAllParams());   
         }
-	
-        //set the proper navbar
-        $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
     }
 
     public function indexAction()

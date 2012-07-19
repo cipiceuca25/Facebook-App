@@ -29,7 +29,7 @@
 	    <!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
 			var baseAppUrl = "<?= $this->url() ?>";
-			var serverUrl = "<?= $_SERVER['HTTP_HOST'] ;?>"
+			var serverUrl = "<?= $_SERVER["SERVER_NAME"] .":" .$_SERVER['HTTP_HOST']?>";
 			var appId = "<?= $this->layout()->appKey ?>";
 			var userId = "<?= $this->user_id ?>";
 			var accessToken = "<?= $this->access_token ?>";
