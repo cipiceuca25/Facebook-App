@@ -13,7 +13,8 @@ function confirmFunction(url) {
 	$.oauthpopup({
         path: url,
         callback: function(){
-            window.location.reload();
+        	//alert(window.location.href);
+        	window.location.reload();
         }
     });
 };

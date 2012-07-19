@@ -21,18 +21,14 @@
 
         <script src="/js/libs/jquery-1.7.2.min.js"></script>
 		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
-    	
         <script src="/bootstrap/js/bootstrap.min.js"></script>
-        
         <script src="//connect.facebook.net/en_US/all.js"></script>
         
 	    <!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
 			var baseAppUrl = "<?= $this->url() ?>";
-			var protocol = "<? if(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) { echo 'https://'; }else{ echo 'http://'; }?>";
-			var serverUrl = protocol + "<?= $_SERVER["SERVER_NAME"]?>";
+			var serverUrl = "<?= $this->fullServerUrl()?>";
 			var appId = "<?= $this->layout()->appKey ?>";
 			var userId = "<?= $this->user_id ?>";
 			var accessToken = "<?= $this->access_token ?>";
@@ -50,7 +46,7 @@
 			
 				//FB.Canvas.setSize();
 			};
-			//alert(serverUrl);
+
 		 </script>
 	 	<!-- End of iframe initialization -->
         <script src="/js/fancrank.js"></script>

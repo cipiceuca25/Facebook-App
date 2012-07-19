@@ -19,9 +19,9 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
         //$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
 		
         if(!$this->_auth->hasIdentity()) {
-            $this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));  
+        	$this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->_getParam('id')));
+            $this->_redirect('/app/index/index/'.$this->_getParam('id'));  
             //set the proper navbar
-            $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->_getParam('id')));
         } else {
             //$this->_identity = $this->_auth->getIdentity();
             $this->_facebook_user = $this->_auth->getIdentity();
@@ -34,8 +34,8 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
     public function init() 
     {
         //add the resource specific javascript file to the layout
-        $this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '.js');
-        $this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '/' . $this->_request->getActionName() . '.js');
+        //$this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '.js');
+        //$this->view->headScript()->appendFile('/js/app/'. $this->_request->getControllerName() . '/' . $this->_request->getActionName() . '.js');
 
         $this->_helper->layout()->controller = $this->_request->getControllerName();
         $this->_helper->layout()->action = $this->_request->getActionName();

@@ -8,7 +8,7 @@ class Auth_FacebookController extends Fancrank_Auth_Controller_BaseController
 		//$this->data['page']['id'] = $this->_getParam('id');
 		
 		if($this->_auth->hasIdentity()) {
-			$this->_helper->redirector('index', 'app', 'app', array($this->_getParam('id') => ''));
+			$this->_redirect('/app/app/index/' .$this->_getParam('id')); 
 		}
 		
 		parent::preDispatch();
