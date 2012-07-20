@@ -1,7 +1,7 @@
 jQuery(document).ready(function($){
 
 	$('.fancrank_login').click(function(event){
-		var url = '/auth/facebook/authorize/' + event.target.href.split('login/')[1].replace(/\/.*/, '');
+		var url = '/auth/facebook/authorize/' + fanpageId;
 		event.preventDefault();
 		confirmFunction(url);
 	});	
@@ -14,7 +14,7 @@ function confirmFunction(url) {
         path: url,
         callback: function(){
         	//alert(window.location.href);
-        	window.location.reload();
+        	window.location.href = '/app/app/index/'+fanpageId;
         }
     });
 };

@@ -27,7 +27,8 @@
 	    <!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
 			var baseAppUrl = "<?= $this->url() ?>";
-			var appId = <?= $this->layout()->appKey ?>;
+			var appId = "<?= $this->layout()->appKey ?>";
+			var fanpageId = "<?= $this->fanpage_id ?>";
 			
 			window.fbAsyncInit = function() {
 				FB.init({
@@ -36,8 +37,8 @@
 					 cookie : true, // enable cookies to allow the server to access the session
 					 xfbml  : true// parse XFBML
 				});
-				FB.Canvas.setAutoResize(10);
-				//FB.Canvas.setSize();
+				//FB.Canvas.setAutoResize(10);
+				FB.Canvas.setAutoGrow(91);
 			};
 		 </script>
 	 	<!-- End of iframe initialization -->
