@@ -27,12 +27,17 @@
 	
 	
 	<?php if ($this->likes[$count] == 0) {?>
-		<a href="#" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" class="likes"> Like</a> 
+		<a href="#" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" class="likes"> Like</a>   
 	<?}else{?>
-		<a href="#" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')" class="likes"> Unlike</a> 
+		<a href="#" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')" class="likes"> Unlike</a>   
 	<?php }?>
 	
-
+	<?php if(isset($post->comments->count)){
+			echo $post->comments->count; //echo  $post->comments->count;
+	 	} else {
+			echo '0'; 
+		}?>
+		
 	 <a href="#" class="comment" onclick=" comment_feed('<?= $post->id ?>', 5,<?php 
 	 		if(isset($post->comments->count)){
 				echo $post->comments->count; //echo  $post->comments->count;
@@ -40,19 +45,12 @@
 			echo '0'; 
 		}
 
-	 ?> , true )"> Comment  </a> 
+	 ?> , true )">Comment</a> 
 
 	
-	 <?php 
-	 		if(isset($post->comments->count)){
-				echo $post->comments->count; //echo  $post->comments->count;
-	 	} else {
-			echo '0'; 
-		}
-
-	 ?> 
+	 
 	
-	 <span class="date"><?=  date("F d Y",strtotime($post->created_time))?></span></div>
+	 <span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span></div>
 	<ul class="comments" id="post_<?=$post->id?>" ></ul>
 
 	</li>

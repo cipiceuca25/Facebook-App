@@ -21,7 +21,7 @@
 									
 									<form action="#">
 													<textarea class="comment_box_popup" id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
-													<input type=button value="Submit" id="post_button">
+													<input type=button value="Submit" id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
 									</form>
 									
 									<ul class="post-list" id ="fancrankfeed">

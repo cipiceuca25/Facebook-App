@@ -125,7 +125,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->user_top_clicker = $model->getUserRanking($this->data['page']['id'], 'CLICKER', $this->view->fan_id);
     	*/
 		//$this->_helper->redirector('login', 'index', 'app', array($this->data['page']['id'] => ''));
-		
+    
     	$this->render('newsfeed');
     }
 
@@ -239,6 +239,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->view->facebook_user = null;
     	}	
 
+    	
+    	$fanpage = new Model_Fanpages();
+    	$fanpage = $fanpage-> find($this->_fanpageId)->current();
+   
     	/*
    		$user = new Model_FacebookUsers();
     	
@@ -260,7 +264,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->view->facebook_user = null;
     	}
     	*/
-    	
+    	$fanpage = new Model_Fanpages();
+    	$fanpage = $fanpage-> find($this->_fanpageId)->current();
+    	//Zend_Debug::dump($fanpage);
+    	$this->view->fanpage_name = $fanpage->fanpage_name;
+    	$this->view->fanpage_id = $this->_fanpageId;
     	$this->render("newsfeed");
     }
     

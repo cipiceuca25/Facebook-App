@@ -572,7 +572,7 @@ $tcb = false;
 	}
 
 
-	$('#moreComments').live('hover',function(){
+	$('#moreComments').live('click',function(){
 		FB.api( $('#moreComments').attr('postid')+'/comments?limit=10&offset=' + $('#moreComments').attr('loaded') ,  function(response){
 	    	   if (!response || response.error) {
 	    		    alert('Error occured');
@@ -893,6 +893,20 @@ $tcb = false;
 
 	}
 
+	function post(target_id, target){
+	
+		FB.api('/'+ fanpageId+'/feed' , 'post' , { 'message': $('#post_box').val() , 'access_token' : userAccessToken},  function(response) {
+			if (!response || response.error) {
+				alert(response.error.message);
+				} else {
+				//alert('Post ID: ' + response.id);
+				$('#post_box').val('');
+				addActivities('post',fanpageId, target_id, target);
+				}
+			});
+
+	}
+	
 	function commentSubmit(postid, message, target_id, target){
 		var m = '#'+message;
 	
