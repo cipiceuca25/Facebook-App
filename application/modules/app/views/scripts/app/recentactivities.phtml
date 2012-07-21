@@ -8,9 +8,9 @@
 		<li class="grey-light" >
 		<? }else{ ?>
 		<li class="grey-dark" >
-		<? }
-
-		 switch($act->activity_type){ 
+		<? } ?>
+		<br/>
+		<?switch($act->activity_type){ 
 		
 			case 'follow': ?>
 				You followed <a href="#" onclick="userProfile('<?=$act->event_object?>')"><?=$act->target_user_name?></a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
@@ -39,7 +39,7 @@
 			default:
 			
 		}?>
-		
+		 <br/><br/>
 		</li>
 	<?endforeach; ?>
 

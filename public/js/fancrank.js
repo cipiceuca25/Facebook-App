@@ -13,7 +13,11 @@ jQuery(document).ready(function($){
 	$(".collapse").collapse();
 	//tooltip class
 	$('[rel=tooltip]').tooltip();
-
+	
+	$('a[title]').tooltip({
+		    placement: 'left'
+	});
+		  
 });
 
 $.fn.serializeObject = function()

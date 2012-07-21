@@ -282,6 +282,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$likesModel = new Model_Likes();
     	$likes = array();
     	$count=0;
+    	
     	foreach ($topPosts as $posts){
     		//echo $top['facebook_user_id'];
     		$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts['post_id'], $this->_userId );

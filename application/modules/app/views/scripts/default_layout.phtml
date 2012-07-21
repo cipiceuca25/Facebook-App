@@ -1,3 +1,4 @@
+<!--  THIS LAYOUT IS FOR THE MULTIPLE PAGES-->
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -22,13 +23,18 @@
 		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
     	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
         <script src="/bootstrap/js/bootstrap.min.js"></script>
-    
         <script src="//connect.facebook.net/en_US/all.js"></script>
+        
 	    <!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
 			var baseAppUrl = "<?= $this->url() ?>";
-			var appId = <?= $this->layout()->appKey ?>;
-			
+			var serverUrl = "<?= $this->fullServerUrl()?>";
+			var appId = "<?= $this->layout()->appKey ?>";
+			var userId = "<?= $this->user_id ?>";
+			var accessToken = "<?= $this->access_token ?>";
+			var fanpageId = "<?= $this->fanpage_id?>"	;	
+			//var userAccessToken = "<?= $this->facebook_user_access_token?>";
+			//alert( accessToken);
 			window.fbAsyncInit = function() {
 				FB.init({
 					 appId  : appId,
@@ -37,17 +43,21 @@
 					 xfbml  : true// parse XFBML
 				});
 				FB.Canvas.setAutoResize(10);
+			
 				//FB.Canvas.setSize();
 			};
+	
 		 </script>
 	 	<!-- End of iframe initialization -->
-        <script src="/js/fancrank.js"></script>
-        <script src="/js/app/index/login.js"></script>
-
+       
+		  <script src="/js/app/index/login.js"></script>
         <?= $this->headScript(); ?>
 
         <? if (APPLICATION_ENV == 'development'): ?>
-            <link href="/css/style.less" rel="stylesheet/less"/>
+			
+	
+            <link href="/css/loadstyle5.less" rel="stylesheet/less" id="stylesheet"/>
+          
             <script type="text/javascript">
                 env = 'development';
 
@@ -57,28 +67,123 @@
             </script>
             <script src="/js/libs/less-1.3.0.min.js"></script>
         <? else: ?>
-            <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+             <link href="/css/style.css" rel="stylesheet" type="text/css"/>
         <? endif ?>
 
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
         <style>
             .container, .navbar-fixed-top .container {
                 width: 810px;
             }
         </style>
+       
     </head>
 
     <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
 
-        <div class="navbar navbar-fixed-top">
-            <?= $this->layout()->navbar ?>
-        </div>
-
-		<div class="container" role="main">          
-        	<?= $this->layout()->content ?>
-        </div>
-                
+		<div class="container" role="main"> 
+			<div id="wrapper">
+	
+				<div id="header">
+			    
+			    	<div id="logo"></div>
+			        
+			    </div><!--/end header -->
+			    <div id="content">
+				    <div class="login">
+				    	<ul class="nav nav-tabs" id="log-in-out">
+							<li ><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">Login</a></li>
+						</ul>
+	        		</div>
+				   <div id="top-fans">
+				   	    	      
+						<?= $this->layout()->content ?>
+					
+		        		<div id="powered"><br/> POWERED BY <br/><img src ="/img/logo3.png" /> </div>
+	        		</div>
+	        	</div>
+        		
+        	</div>
+         </div>
+         <div class="light-box"></div>
+        
         <div id="fb-root"></div>
     </body>
+    <script>
+    $(document).ready(function() {
+   	 	$('a[title]').tooltip({
+		    placement: 'left'
+		});
+    	FB.api(fanpageId , function(response){
+			 if (!response || response.error) {
+			 	
+		 	 }else{
+			 	 	try{
+			 	 		var x = -1*(parseInt(response.cover.offset_y) + 50);
+			 	 	}catch(err){
+						var x = 0;
+			 	 	}
+			 	 	//alert(x);
+			 	 	try{
+			 		$('#logo').html('<img src =" ' + response.cover.source + '"style=" top:'+ x +'px" />' );
+			 	 	}catch(err){
+						
+				 	}
+			 }
+
+
+
+		 
+	 	});
+		
+		
+	});
+
+	
+	$tfb = false;
+	$ffb = false;
+	$ttb = false;
+	$tcb = false;
+
+	$('#top-fans-btn').live('click', function() {
+		
+		if (($tfb)==true){
+		$('#top-fans-btn').text('- Close');
+		}else{
+			$('#top-fans-btn').text("+ More");
+		}
+		$tfb = !$tfb;
+	})
+	
+	$('#fan-favorite-btn').live( 'click', function() {
+		if (($ffb)==true){
+		$('#fan-favorite-btn').text('- Close');
+		}else{
+			$('#fan-favorite-btn').text("+ More");
+		}
+		$ffb = !$ffb;
+	})
+	
+	$('#top-talker-btn').live( 'click', function() {
+		if (($ttb)==true){
+		$('#top-talker-btn').text('- Close');
+		}else{
+			$('#top-talker-btn').text("+ More");
+		}
+		$ttb = !$ttb;
+	})
+	
+	$('#top-clicker-btn').live( 'click', function() {
+		if (($tcb)==true){
+		$('#top-clicker-btn').text('- Close');
+		}else{
+			$('#top-clicker-btn').text("+ More");
+		}
+		$tcb = !$tcb;
+	})
+	
+	
+</script>
+    
+
+		
 </html>

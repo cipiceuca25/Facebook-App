@@ -8,7 +8,7 @@
 	<?php }?>
 												
 	<div class="post">
-		<a href="#" onclick="comment_bubble('<?= $topPost['post_id']?>', 5)"><?= $topPost['post_message'] ?><br /><span class="date"><?= date("F d Y", strtotime($topPost['updated_time']))?></span></a>  
+		<a href="#" onclick="comment_bubble('<?= $topPost['post_id']?>', 5)"><?= $topPost['post_message'] ?><br /><span class="date"><?= date("F d Y", strtotime($topPost['created_time']))?></span></a>  
 	</div>
 													
 	<div class="info">

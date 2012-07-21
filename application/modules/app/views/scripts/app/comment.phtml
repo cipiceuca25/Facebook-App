@@ -53,13 +53,13 @@
 							
 							<div class="span9">
 									<div class="subtitle">
-										<div class="title-header" id="boss"> <h3><i class="icon-star icon-white"></i> Top Posts <i class="icon-star icon-white"></i></h3> </div>
+										<div class="title-header" id="boss"> <h3>Top Posts</h3> </div>
 									</div>
 								
 									<ul class="post-list" id="post-list">
 										<li class="grey-dark" >
 										
-											<div class="photo" ><a href="" id="post_img" ></a></div>
+											<div class="photo" ><a href="#" id="post_img" ></a></div>
 											<div class="post" id="post_message"><div class="name"><a href=""><?//= $this->target->facebook_user_name?></a></div>
 														<?//= $this->post->post_message?>
 														 </div>
@@ -68,13 +68,16 @@
 												
 												
 											</div>
+											<ul id="popup-comments">
+								
+											</ul>
 										</li>
-										<br/>
+										
 										
 									</ul>
 									<form action="#">
 													<textarea class="comment_box_popup" id="comment_" onkeyup="resizeCommentBox(this)"></textarea>
-													<input type=button value="Submit" id="popup_comment_button">
+													<input class="btn-submit" type=button value="Submit" id="popup_comment_button">
 									</form>
 									
 									<div id="moreComments"></div>

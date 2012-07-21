@@ -18,8 +18,8 @@
 	<?php }?>
 
 
-	<div class="photo"><a href="#"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
-	<div class="post"><div class="name"><a href=""><?=  $post->from->name?></a></div>
+	<div class="photo"><a href="#" onclick="userProfile('<?=$post->from->id?>')"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
+	<div class="post"><div class="name"><a href="#" onclick="userProfile('<?=$post->from->id?>')"><?=  $post->from->name?></a></div>
 	<? if(isset($post->message)){echo $post->message;}?>
 	<img src = '<? if(isset($post->picture) && ($post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $post->picture)) ;}?> '/></div>
 	<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
@@ -51,6 +51,7 @@
 	 
 	
 	 <span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span></div>
+
 	<ul class="comments" id="post_<?=$post->id?>" ></ul>
 
 	</li>

@@ -13,16 +13,21 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         	$this->view->fanpage_id = $this->_request->getParam('id');
         	//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
         	$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
-        	$this->view->user_id = $this->_getParam('facebook_user_id');
+        	$this->view->user_id = $this->data['user_id'];
         	$this->view->access_token = $this->_getParam('access_token');
+        	//Zend_debug::dump($this->data['user_id']);
         }else {
 			if (isset($_REQUEST['signed_request'])) {
 				$fb = new Service_FancrankFBService();
 				$this->data['page']['id']= $fb->getFanPageId();
+				$this->data['user_id']=$fb->getFanPageUserId();
+				$this->view->user_id = $this->data['user_id'];
 				// Zend_Debug::dump($fb->getSignedData());
 			} else {
 				$this->data['page']['id'] = $this->_getParam('id');
 			}
+			
+			$this->view->user_id = $this->data['user_id'];
 			$this->view->fanpage_id = $this->data['page']['id'];
         }
         
@@ -51,6 +56,9 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
+    	
+    
+    	
     	$topFans = $model->getTopFans($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topFans);
     	 
@@ -66,23 +74,16 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
     	
     	$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-    	
-    	
-    	$c = $this->_request->getParam('colorChange');
-    	if(!is_null($c)){
-    		$colorChoice ->change(1, $c );
-    	}
-    	$color = $colorChoice ->getColorChoice(1);
-    	
-   	
+
+   		
     	//Zend_Debug::dump($color); exit();
+    	//$this->view->user_name= $this->getUserName();
     	$this->view->top_fans = $topFans;
     	$this->view->most_popular = $mostPopular;
     	$this->view->top_talker = $topTalker;
     	$this->view->top_clicker = $topClicker;
     	$this->view->top_post = $topPosts;
     	$this->view->latest_post = $latestPost;
-    	$this->view->color_choice = $color->color_choice;
     	
     	$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
     	$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
@@ -102,6 +103,24 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	*/
 		//$this->_helper->redirector('login', 'index', 'app', array($this->data['page']['id'] => ''));
 		
+    	
+    }
+    
+    protected function getUserName(){
+    	$client = new Zend_Http_Client;
+    	$client->setUri("https://graph.facebook.com/". $this->data['user_id']);
+    	$client->setMethod(Zend_Http_Client::GET);
+ 		
+    	
+    	$response = $client->request();
+    	
+    	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    	
+    	if(!empty ($result)) {
+    		
+    		return $result->first_name;
+    	}
+    	
     	
     }
     

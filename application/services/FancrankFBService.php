@@ -57,7 +57,7 @@ class Service_FancrankFBService extends Facebook {
 		} else {
 			$data = $this->getSignedData();
 		}
-		
+	
 		return isset($data['page']['id']) ? $data['page']['id'] : false;
 	}
 	
