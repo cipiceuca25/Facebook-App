@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <!--  THIS LAYOUT IS FOR THE MULTIPLE PAGES-->
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +25,7 @@
     	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
         <script src="/bootstrap/js/bootstrap.min.js"></script>
         <script src="//connect.facebook.net/en_US/all.js"></script>
-        
+        <script src="/js/cranker.js"></script>
 	    <!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
 			var baseAppUrl = "<?= $this->url() ?>";
@@ -109,169 +109,9 @@
         
         <div id="fb-root"></div>
     </body>
-    <script>
-    $(document).ready(function() {
-   	 	$('a[title]').tooltip({
-		    placement: 'left'
-		});
-    	FB.api(fanpageId , function(response){
-			 if (!response || response.error) {
-			 	
-		 	 }else{
-			 	 	try{
-			 	 		var x = -1*(parseInt(response.cover.offset_y) + 50);
-			 	 	}catch(err){
-						var x = 0;
-			 	 	}
-			 	 	//alert(x);
-			 	 	try{
-			 		$('#logo').html('<img src =" ' + response.cover.source + '"style=" top:'+ x +'px" />' );
-			 	 	}catch(err){
-						
-				 	}
-			 }
 
-
-
-		 
-	 	});
-		
-		
-	});
-
-	
-	$tfb = false;
-	$ffb = false;
-	$ttb = false;
-	$tcb = false;
-
-	$('#top-fans-btn').live('click', function() {
-		
-		if (($tfb)==true){
-		$('#top-fans-btn').text('- Close');
-		}else{
-			$('#top-fans-btn').text("+ More");
-		}
-		$tfb = !$tfb;
-	})
-	
-	$('#fan-favorite-btn').live( 'click', function() {
-		if (($ffb)==true){
-		$('#fan-favorite-btn').text('- Close');
-		}else{
-			$('#fan-favorite-btn').text("+ More");
-		}
-		$ffb = !$ffb;
-	})
-	
-	$('#top-talker-btn').live( 'click', function() {
-		if (($ttb)==true){
-		$('#top-talker-btn').text('- Close');
-		}else{
-			$('#top-talker-btn').text("+ More");
-		}
-		$ttb = !$ttb;
-	})
-	
-	$('#top-clicker-btn').live( 'click', function() {
-		if (($tcb)==true){
-		$('#top-clicker-btn').text('- Close');
-		}else{
-			$('#top-clicker-btn').text("+ More");
-		}
-		$tcb = !$tcb;
-	})
-	
-	
-</script>
     
 
 		
 </html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8"/>
 
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-        <meta http-equiv="imagetoolbar" content="no"/>
-
-        <meta http-equiv="Content-Language" content="en"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-
-        <meta name="description" content="Fancrank Inc."/>
-        <meta name="viewport" content="width=device-width,initial-scale=1"/>
-
-        <meta name="author" content="FanCrank" />
-        <meta name="generator" content="" />
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-
-        <script src="/js/libs/jquery-1.7.2.min.js"></script>
-		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
-    	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
-        <script src="/bootstrap/js/bootstrap.min.js"></script>
-    
-        <script src="//connect.facebook.net/en_US/all.js"></script>
-	    <!-- This following javascripts are used to initialize the iframe look and feel -->
-		<script>
-			var baseAppUrl = "<?= $this->url() ?>";
-			var appId = "<?= $this->layout()->appKey ?>";
-			var fanpageId = "<?= $this->fanpage_id ?>";
-			
-			window.fbAsyncInit = function() {
-				FB.init({
-					 appId  : appId,
-					 status : true, // check login status
-					 cookie : true, // enable cookies to allow the server to access the session
-					 xfbml  : true// parse XFBML
-				});
-				//FB.Canvas.setAutoResize(10);
-				FB.Canvas.setAutoGrow(91);
-			};
-		 </script>
-	 	<!-- End of iframe initialization -->
-        <script src="/js/fancrank.js"></script>
-        <script src="/js/app/index/login.js"></script>
-
-        <?= $this->headScript(); ?>
-
-        <? if (APPLICATION_ENV == 'development'): ?>
-            <link href="/css/style.less" rel="stylesheet/less"/>
-            <script type="text/javascript">
-                env = 'development';
-
-                less = {};
-                less.env = 'development';
-
-            </script>
-            <script src="/js/libs/less-1.3.0.min.js"></script>
-        <? else: ?>
-            <link href="/css/style.css" rel="stylesheet" type="text/css"/>
-        <? endif ?>
-
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-        <style>
-            .container, .navbar-fixed-top .container {
-                width: 810px;
-            }
-        </style>
-    </head>
-
-    <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
-
-        <div class="navbar navbar-fixed-top">
-            <?= $this->layout()->navbar ?>
-        </div>
-
-		<div class="container" role="main">          
-        	<?= $this->layout()->content ?>
-        </div>
-                
-        <div id="fb-root"></div>
-    </body>
-</html>
->>>>>>> stephen/master
