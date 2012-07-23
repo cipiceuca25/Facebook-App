@@ -689,12 +689,14 @@
 				//alert('Post ID: ' + response.id);
 				$('#post_box').val('');
 				addActivities('post',fanpageId, target_id, target);
+				setFeed=0;
+				getFancrankfeed(setFeed);
 				}
 			});
 
 	}
 	
-	function commentSubmit(postid, message, target_id, target){
+	function commentSubmit(postid, message, target_id, target, postcommentcount){
 		var m = '#'+message;
 	
 		//alert(userAccessToken);
@@ -705,6 +707,7 @@
 				//alert('Post ID: ' + response.id);
 				$(m).val('');
 				addActivities('post-comment',postid, target_id, target);
+				comment_feed(postid, 5, postcommentcount +1, false);
 				}
 			});
 	}
