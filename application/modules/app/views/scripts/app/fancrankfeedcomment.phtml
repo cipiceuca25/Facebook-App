@@ -18,21 +18,37 @@
 	<li class="grey-dark" >
 	<?php }?>
 
-	<div class="photo"><a href="#" onclick="userProfile('<?=$post->from->id?>')"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
-	<div class="post"><div class="name"><a href="#" onclick="userProfile('<?=$post->from->id?>')"><?=  $post->from->name?></a></div>
-	<?=  $post->message?></div>
+	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
+	<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a>
+	
+	<? if (!($this->relation[$count] == 'Fanpage')){?>
+		<? if (!($this->relation[$count] == 'Following')){?>
+			<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
+		<?}else{?>
+			<a href="#" onclick="userProfile('<?=$post->from->id?>')">
+		<?}?>
+		
+		<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+	<?}?>
+	</div>
+	<div class="post">
+	<? if(isset($post->message)){echo $post->message;}?>
+	<img src = '<? if(isset($post->picture) && ($post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $post->picture)) ;}?> '/></div>
+	
 	<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
+	
+	<span class="likes">
 	<? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?> 
 	
 	
 	<?php if ($this->likes[$count] == 0) {?>
-		<a href="#" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" class="likes"> Like</a> 
+		<a href="#" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Like</a> 
 	<?}else{?>
-		<a href="#" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" class="likes"> Unlike</a> 
+		<a href="#" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
 	<?php }?>
-	 
+	 </span>
 
-	
+	<br/>
 	 <span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span></div>
 	
 	</li>
@@ -42,7 +58,7 @@
 
 	
 	<?if ($this->total > $this->limit){ ?>
-		<div class="feed_moreComments" onclick="comment_feed('<?= $this->postId ?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</div>
+		<button class="btn-top" onclick="comment_feed('<?= $this->postId ?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
 	<?}?>
 	<li class="comment_container">
 
@@ -52,6 +68,6 @@
 		</form>
 	
 	</li>
-						
+		
 						
 			

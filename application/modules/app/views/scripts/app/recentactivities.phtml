@@ -19,19 +19,19 @@
 				You unfollowed <a href="#" onclick="userProfile('<?=$act->event_object?>')"><?=$act->target_user_name?></a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
 				<?break;	
 			case 'like-status':?>
-				You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5)">status</a> post on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+				You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status</a> post on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
 				<?break;
 			case 'unlike-status':?>
-				You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5)">status</a> post on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+				You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">status</a> post on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
 				<?break;
 			case 'like-comment':?>
-				You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+				You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
 				<?break;
 			case 'unlike-comment':?>
-				You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+				You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
 				<?break;
 			case 'post-comment':?>
-				You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5)">post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+				You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
 				<?break;
 			case 'post':?>
 				You made a post on <?=$act->target_user_name?>'s Fanpage on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.

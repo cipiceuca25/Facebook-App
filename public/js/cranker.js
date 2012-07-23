@@ -23,54 +23,55 @@
 		getNewsfeed('#news-feed');
 		
 	});
-	$tfb = true;
-	$ffb = true;
-	$ttb = true;
-	$tcb = true;
+	
+	setFeed='All';
+	feedLimit = 0;
+	tfb = true;
+	ffb = true;
+	ttb = true;
+	tcb = true;
 
 	$('a[title]').live("mouseover", function(){
-		$(this).tooltip({ 	placement: 'left'});	
+		$(this).tooltip({ placement: 'left'});	
 	});
 	
 	$('#top-fans-btn').live('click', function() {
 		
-		if (($tfb)==true){
+		if ((tfb)==true){
 		$('#top-fans-btn').text('- Close');
 		}else{
 			$('#top-fans-btn').text("+ More");
 		}
-		$tfb = !$tfb;
+		tfb = !tfb;
 	})
 	
 	$('#fan-favorite-btn').live( 'click', function() {
-		if (($ffb)==true){
+		if ((ffb)==true){
 		$('#fan-favorite-btn').text('- Close');
 		}else{
 			$('#fan-favorite-btn').text("+ More");
 		}
-		$ffb = !$ffb;
+		ffb = !ffb;
 	})
 	
 	$('#top-talker-btn').live( 'click', function() {
-		if (($ttb)==true){
+		if ((ttb)==true){
 		$('#top-talker-btn').text('- Close');
 		}else{
 			$('#top-talker-btn').text("+ More");
 		}
-		$ttb = !$ttb;
+		ttb = !ttb;
 	})
 	
 	$('#top-clicker-btn').live( 'click', function() {
-		if (($tcb)==true){
+		if ((tcb)==true){
 		$('#top-clicker-btn').text('- Close');
 		}else{
 			$('#top-clicker-btn').text("+ More");
 		}
-		$tcb = !$tcb;
+		tcb = !tcb;
 	})
 
-
-    
     function closeProfile(){
     	$('.light-box').css('display','none');
 		$('.user-profile').css('display', 'none');
@@ -82,27 +83,22 @@
 		$('.profile-content').css('display','none');
 		$('.profile-content').css('height','660px');
 
-
 		if($('#news-feed').hasClass('active')){
-			getTopPost();
-			getFancrankfeed('all');
 			
+			//getNewsfeed('#news-feed');
+			//getFancrankfeed('all');getTopPost();
 			//alert("top class reload");
 		}
-		
 		if($('#top-fans').hasClass('active')){
 			getTopfans('#top-fans');
-			getLatestPost();
-			
+			//getLatestPost();
 			//alert("top class reload");
 		}
     	$('.profile-content').html('');
     	$('#moreComment').removeAttr('postid');
-    	
-		
     }
     
-	$('.light-box').click(function(){
+	$('.light-box').live('click',function(){
 		closeProfile();
 	});
 	
@@ -127,7 +123,9 @@
 	})
 	
 	$('#newsfeed-tab').live('click',function(){
+		feedLimit = 0;
 		getNewsfeed('#news-feed');
+		
 		$('#top-fans').html('');
 		$('#profile').html('');
 		$('#achievements').html('');
@@ -137,7 +135,7 @@
 	
 	$('#topfans-tab').live('click',function(){
 		getTopfans('#top-fans');
-	
+		
 		$('#profile').html('');
 		$('#achievements').html('');
 		$('#newsfeed').html('');
@@ -184,7 +182,7 @@
 		  });
 		  */
 		
-		
+		$('.profile-content').css('height', 'auto');
 		  
 		$('.profile-content').animate({
 			height:'toggle',
@@ -195,35 +193,39 @@
 	
 	}
 
-	function comment_bubble(post_id, limiter){
-		
+	function comment_bubble(post_id, limiter, open){
+		//alert(open);
 		getBubbleComment('.profile-content', post_id, limiter);
-		$('.light-box').css('display','block');
-		$('.user-profile').css('display', 'block');
-	
-		/*$('.top-border').animate({
-		    height: 'toggle',
-			top: '0px'
-		  }, 1000, function() {
-		    // Animation complete.
-		  });
-	
-		$('.bottom-border').animate({
-		    height: 'toggle',
-		    top: '0px'
-		  }, 1000, function() {
-		    // Animation complete.
-		  });*/
-		$('.profile-content').css('height', 'auto');
-		//$('.profile-content').css('height', '1100px');
-		$('.profile-content').animate({
-			height:'toggle',
-			top:'20px'
-		   },500, function(){
-			   
-		});
+		
+		if(open){
+			$('.light-box').css('display','block');
+			$('.user-profile').css('display', 'block');
+		
+			/*$('.top-border').animate({
+			    height: 'toggle',
+				top: '0px'
+			  }, 1000, function() {
+			    // Animation complete.
+			  });
+		
+			$('.bottom-border').animate({
+			    height: 'toggle',
+			    top: '0px'
+			  }, 1000, function() {
+			    // Animation complete.
+			  });*/
+			$('.profile-content').css('height', 'auto');
+			//$('.profile-content').css('height', '1100px');
+			$('.profile-content').animate({
+				height:'toggle',
+				top:'20px'
+			   },500, function(){
+				   
+			});
+		}
 	}
 
+	
 	function comment_feed(post_id, limiter, total, toggle){
 		ui = '#post_' + post_id;
 		//alert(ui);
@@ -281,7 +283,7 @@
 			url: serverUrl +'/app/app/userprofile/'+ fanpageId +'/?target=' + target + '&facebook_user_id='+ userId,
 			dataType: "html",
 			cache: false,
-			async: false,
+			async: true,
 			success: function( data ) {
 		
 				$(ui).html(data);
@@ -338,96 +340,18 @@
 		      
 		$.ajax({
 			type: "GET",
-			url: serverUrl +'/app/app/comment' ,
+			url: serverUrl +'/app/app/comment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter +'&access_token=' + accessToken,
+
 			dataType: "html",
 			cache: false,
+			async: false,
 			success: function( data ) {
+			
 				$(ui).html(data);
 				
-				 FB.api(post_id ,  function(response){
-			    	   if (!response || response.error) {
-			    		    //alert('Error occured');
-			    		  } else {
-			    		    //alert(response.from.id);
-				    		
-			    			$('#post_img').html("<img id='post_img' class='face' width='30' height='30' src='https://graph.facebook.com/" + response.from.id + "/picture' />");
-			    			$('#post_message').html('<div class="name"><a href="">' + response.from.name + '</a></div>' + response.message);
-
-							$('#comment_').attr('id', 'comment_' + response.id );
-							$('#popup_comment_button').attr('onclick', 'commentSubmit("' + response.id + '", "comment_' + response.id + '", "'+response.from.id+'", "'+response.from.name+'")' );
-
-							var like;
-							try {
-								like = response.likes.count;
-								
-							}catch(err){
-								like=0;
-							}
-							$('#first_like').attr('onclick', 'like('+response.id+', '+response.type+')' );
-							$('#post_like').html(like);
-							i=0;
-							if (like != 0){
-								for(i=0; i< response.likes.data.length; i++){
-									if (response.likes.data[i].id == userId){
-										$('#first_like').html('Unlike');
-										$('#first_like').attr('onclick', 'unlike('+response.id+', '+response.type+')' );
-									}
-								}
-
-							}
-							
-							var d = new Date(Date.parse(response.created_time));
-							//alert(d);
-							$('#post_date').html(d.toDateString());	
-							//alert(response.comments.data.length);
-							try{
-								var limit = response.comments.data.length;
-							}catch(err){
-								var limit = 0;
-							}
-						//	alert(limit);
-							if(limiter < limit){
-								limit = limiter;
-							}
-							//alert(limit);
-							//alert(limiter);
-							for (i=0;i<limit; i++){	
-								//alert(i);
-								d = new Date(Date.parse(response.comments.data[i].created_time));
-								//alert(d);
-								//alert(html);
-								var likeC = response.comments.data[i].likes;
-
-								if (likeC==undefined){
-									likeC=0;
-								}
-								
-								//alert(likeC);
-								
-								$('#popup-comments').append(
-									'<li class="grey-light"><div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/' 
-									+ response.comments.data[i].from.id+ '/picture"></a></div><div class="post"><div class="name"><a href="">' 
-									+ response.comments.data[i].from.name + '</a></div>' + response.comments.data[i].message + 
-									'</div><div class="social">' + likeC + '<a href="#" class="likes">Like</a>  Posted on <span class="date"> '
-									+ d.toDateString() + '</span></div></li><br/>' 
-									);			
-							}
-							try{
-								var limit = response.comments.data.length;
-							}catch(err){
-								var limit = 0;
-							}
-							if (limiter < limit){
-								$('#moreComments').html('More +');
-								$('#moreComments').attr('postid', post_id );
-								$('#moreComments').attr('loaded', 5);
-							}
-			    		  }
-			    		  
-			 	});
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
-				//console.log(xhr.statusText, errorMessage);
+				console.log(xhr.statusText, errorMessage);
 			}
 		});
 	}
@@ -496,10 +420,10 @@
 			url: serverUrl +'/app/app/newsfeed/'+ fanpageId +'?facebook_user_id=' + userId,
 			dataType: "html",
 			cache: false,
-			async: false,
+			async: true,
 			success: function( data ) {
 				$(ui).html(data);
-				getFancrankfeed('all');
+				getFancrankfeed(setFeed);
 				getTopPost();
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
@@ -588,10 +512,12 @@
 	
 	function getFancrankfeed(view){
 		ui = '#fancrankfeed';
+		feedLimit +=10;
+		setFeed=view;
 		//alert(baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view);
 		$.ajax({
 			type: "GET",
-			url: serverUrl +'/app/app/fancrankfeed/'+ fanpageId + '?viewAs=' +view, 
+			url: serverUrl +'/app/app/fancrankfeed/'+ fanpageId + '?viewAs=' +view + '&limit=' + feedLimit, 
 			dataType: "html",
 			cache: false,
 			async: false,
@@ -613,7 +539,7 @@
     		url: serverUrl +'/app/app/topfans/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
-    		async: false,
+    		async: true,
     		success: function( data ) {
     			$(ui).html(data);
     			getLatestPost();
@@ -632,7 +558,7 @@
     		url:  serverUrl +'/app/app/myprofile/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
-    		async: false,
+    		async: true,
     		success: function( data ) {
     			$(ui).html(data);
     			getRecentActivities('#recent_activities');
@@ -651,7 +577,7 @@
     		url:  serverUrl +'/app/app/awards/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
-    		async: false,
+    		async: true,
     		success: function( data ) {
     			$(ui).html(data);
     		},	

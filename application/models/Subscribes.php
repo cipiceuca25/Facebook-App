@@ -82,13 +82,27 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 		return false;
 	}
 	
+	public function isFanpage($user, $target){
+		$select = "select f.facebook_user_id from fans f where f.facebook_user_id=$user AND f.fanpage_id=$target";
+		if ($this->getAdapter()->fetchAll($select)){
+		
+			return true;
+		}
+		return false;
+	}
+	
 	public function getRelation($user, $target){
 		if($user == $target){
 			return "You";
 		}
+		$isFanpage = $this->isFanpage($user, $target);
+		if($isFanpage){	
+			return "Fanpage";
+		}
 		
 		$isfollowing = $this->isFollowing($user, $target);
 		$isfollower =  $this->isFollower($user, $target);
+		
 		if ($isfollowing && $isfollower){
 			return "Friends";
 		}else if ($isfollowing){

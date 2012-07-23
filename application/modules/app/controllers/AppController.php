@@ -296,9 +296,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("gettoppost");
     }
     
- 
-    
-    
     public function getlatestpostAction(){
     	
     	$this->_helper->layout->disableLayout();
@@ -326,53 +323,51 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     public function commentAction()
     {
     	$this->_helper->layout->disableLayout();
-    	   	/*
-    	$user = new Model_FacebookUsers();
-    	$target = new Model_FacebookUsers();
-    	$post = new Model_Posts() ;
-    	$comment = new Model_Comments() ;
+    	$postId = $this->_request->getParam('post_id');
     	
-    	$user = $user->find($this->data['user_id'])->current();
-    	//Zend_Debug::dump($user);
-    	if($user) {
-    		$this->view->facebook_user = $user;
-    		//$access_token = $this->facebook_user->facebook_user_access_token;
-    		//$this->view->feed = $this->getFeed($access_token);
-    	}else {
-    		$this->view->facebook_user = null;
+    	$limit = $this->_request->getParam('limit');
+    	//$total = $this->_request->getParam('total');
+    	
+    	//$originalPost = $this->getPost($postId);
+    	$post= $this->getPost($postId);
+    	
+    	$result = array();
+    	$result = $this->getFeedComment($postId, $limit);
+    	//$result = json_encode($result);
+    	
+    	$follow = new Model_Subscribes();
+    	$likesModel = new Model_Likes();
+    	$likes = array();
+    	$relation = array();
+    	$count=0;
+    	$likes[$count]=null;
+    	$relation[$count] =$follow->getRelation($this->_userId, $post->from->id);
+    	
+    	$count=1;
+    	if(!empty($result)) {
+    		foreach ($result as $posts){
+    			//echo $top['facebook_user_id'];
+    			$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id);
+    			//echo $likes[$count];
+    			$count++;
+    		}
     	}
     	
-    	$target = $target->find( $this->_request->getParam('target'))->current();
-    	//Zend_Debug::dump($user);
-    	if($target) {
-    		$this->view->target = $target;
-    		//$access_token = $this->facebook_user->facebook_user_access_token;
-    		//$this->view->feed = $this->getFeed($access_token);
-    	}else {
-    		$this->view->target = null;
-    	}
-    	
-    	$comment = $comment->getCommentsByPostId($this->_request->getParam('post_id') , 5);
-    	
-    	$post = $post->find( $this->_request->getParam('post_id'))->current();
-    	*/
-    	/*
-    	 $user = $user->find($this->_facebook_user->facebook_user_id)->current();
-    	if($user) {
-    	$this->view->facebook_user = $user;
-    	$access_token = $this->_facebook_user->facebook_user_access_token;
-    	$this->view->feed = $this->getFeed($access_token);
-    	}else {
-    	$this->view->facebook_user = null;
-    	}
-    	*/
-    
-    	
-    	//$model = new Model_Rankings;
-    	//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    	//Zend_Debug::dump($user); exit();
-    	//$this->view->post = $post;
-    	//$this->view->comment = $comment;
+    	//$postTop = explode('_', $postId);
+    	//$postTop = $postTop[0].'_'.$postTop[1];
+    	 
+    	//$this->view->postTopId = $postTop;
+    	//$this->view->postTopName =$this-> getOwnerOfPost($postTop);
+    	$this->view->post = $post;
+    	$this->view->relation = $relation;
+    	$this->view->likes = $likes;
+    	//$this->view->postOwner = $this->getOwnerOfPost($postId);
+    	//Zend_debug::dump($this->getOwnerOfPost($postId));
+    	//$this->view->total = $post->'comments'->'count';
+    	$this->view->limit = $limit;
+    	$this->view->comments = $result;
+    	//$this->view->postId = $postId;    	
     	
     	$this->render("comment");
     }
@@ -440,8 +435,30 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//$access_token = $this->facebook_user->facebook_user_access_token;
     		//$this->view->feed = $this->getFeed($access_token);
     	}else {
-    		$this->view->facebook_user = null;
+    		$client = new Zend_Http_Client;
+    		$client->setUri("https://graph.facebook.com/". $this->_request->getParam('target') );
+    		$client->setMethod(Zend_Http_Client::GET);
+    		//$client->setParameterGet('access_token', $this->_accessToken);
+    		
+    		$response = $client->request();
+    		 
+    		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    		 
+    		if(!empty ($result)) {
+    		
+    			$user = array('facebook_user_id' => $result->id,
+    							'facebook_user_first_name'=> $result->first_name, 
+    							'facebook_user_last_name'=>$result->last_name,
+    							'created_time'=> 'notuser',
+    							'hometown' => 'Not Avaliable'
+    						);
+    			$user = (object)$user;
+    		}
+    		//Zend_Debug::dump($user);
+    		$this->view->facebook_user = $user;
+    		//$this->view->facebook_user = null;
     	}
+    	
     	
     	$user2 = $user2->find( $this->_request->getParam('facebook_user_id'))->current();
     	//Zend_Debug::dump($user);
@@ -454,6 +471,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	
     	$follow = new Model_Subscribes();
+    	
+    	//echo $user->facebook_user_id;
+    	//echo $user['facebook_user_id'];
+    	
     	
     	$follower = $follow->getFollowers($user->facebook_user_id);
     	$following = $follow->getFollowing($user->facebook_user_id);
@@ -472,21 +493,31 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$viewAs = $this->_request->getParam('viewAs');
+    	$limit = $this->_request->getParam('limit');
     	$result = array();
-    	$result = $this->getFeed(8, $viewAs);
+    	$result = $this->getFeed($limit, $viewAs);
     	//$result = json_encode($result);
     	//Zend_Debug::dump($result);
     	
     	$likesModel = new Model_Likes();
+		$follow = new Model_Subscribes();
     	$likes = array();
+		$relation = array();
     	$count=0;
+		//Zend_Debug::dump($result);
     	foreach ($result as $posts){
     		//echo $top['facebook_user_id'];
     		$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id);
     		//echo $likes[$count];
     		$count++;
     	} 
     	
+		
+		
+	
+
+		$this->view->relation = $relation;
     	$this->view->likes = $likes;
     	$this->view->post = $result;
     	
@@ -504,15 +535,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$result = array();
     	$result = $this->getFeedComment($postId, $limit);
     	//$result = json_encode($result);
-
+    	
+    	$follow = new Model_Subscribes();
     	$likesModel = new Model_Likes();
     	$likes = array();
+    	$relation = array();
     	$count=0;
-
+		
     	if(!empty($result)) {
     		foreach ($result as $posts){
     			//echo $top['facebook_user_id'];
     			$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id);
     			//echo $likes[$count];
     			$count++;
     		}    		
@@ -524,6 +558,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->view->postTopId = $postTop;
     	//$this->view->postTopName =$this-> getOwnerOfPost($postTop);
     	
+    	$this->view->relation = $relation;
     	$this->view->likes = $likes;
     	$this->view->postOwner = $this->getOwnerOfPost($postId);
     	//Zend_debug::dump($this->getOwnerOfPost($postId));
@@ -583,6 +618,25 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty ($result->data)) {    
 
     		return $result->data;
+    	}
+    }
+    
+    protected function getPost($postId){
+    	$client = new Zend_Http_Client;
+    	$client->setUri("https://graph.facebook.com/". $postId);
+    	$client->setMethod(Zend_Http_Client::GET);
+    	$client->setParameterGet('access_token', $this->_accessToken);
+    
+    	
+    	$response = $client->request();
+    	
+    	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    	
+    	//Zend_debug::dump($result);
+    	
+    	if(!empty ($result)) {
+    	
+    		return $result;
     	}
     }
     

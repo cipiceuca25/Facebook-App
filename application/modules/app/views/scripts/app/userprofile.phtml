@@ -44,7 +44,12 @@
 									<div class="span3">
 										<div class="profile-block">
 										<h3>FAN SINCE</h3>
-										<h4><?= date("F d Y", strtotime($this->facebook_user->created_time))?></h4>
+										<h4><?if ($this->facebook_user->created_time=='notuser'){ ?>
+												<?echo "This user does not use Fancrank"?>
+											<?}else{?>
+												<?= date("F d Y", strtotime($this->facebook_user->created_time))?>
+											<?}?>
+											</h4>
 										</div>
 									</div>
 									<div class="span3">
@@ -75,7 +80,7 @@
 										
 									
 										<div class="span2">
-											<a href="#" onclick="follow(<?= $this->facebook_user->facebook_user_id ?> , '<?= $this->facebook_user->facebook_user_name ?>')"><span class="badge badge-<?= $this->relation?> big"><?= $this->relation?></span></a>
+											<a href="#" <?if (($this->relation) == "Following") {?>onclick="follow(<?= $this->facebook_user->facebook_user_id ?> , '<?= $this->facebook_user->facebook_user_name ?>')" <?}?>><span class="badge badge-<?= $this->relation?> big"><?= $this->relation?></span></a>
 											<br/>
 											<br/>
 											<?php if(!($this->relation == 'Follow') && !($this->relation == 'You')){?>

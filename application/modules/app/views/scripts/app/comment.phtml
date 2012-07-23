@@ -1,94 +1,126 @@
-						<!--  
-						<div class="row">
-							<div class="span9">
-								<div class="title">
-										<div class="photo"> <img class="face" width="30" height="30" src="https://graph.facebook.com/<?//= $this->facebook_user->facebook_user_id ?>/picture"></div>
-										<div class="title-header"> <h3><i class="icon-star icon-white"></i> <?//= $this->facebook_user->facebook_user_name?>'s Profile <i class="icon-star icon-white"></i></h3> </div>
-								</div>
-							</div>
-						</div>
-						-->
-						<div class="row">
-						
-							
-							<!--
-							<div class="span3">
-									<div class="subtitle">
-										<div class="title-header-dark"> <h3><i class="icon-star icon-white"></i> Top Post  <i class="icon-star icon-white"></i></h3> </div>
-									</div>
-									
-										<ul class="bubble">
-											<?php // $count = 0?>
-											<?php// foreach($this->top_post as $topPost): ?>
-											
-											<?php// if ($count % 2 == 0){?>
-											<li class="chat-right">
-											<?php //}else{?>
-											<li class="chat-left">
-											<?php //}?>
-												
-												<div class="post">
-													<a href=""><?//= $topPost['post_message'] ?><br /><span class="date"><?//= date("F d Y", strtotime($topPost['updated_time']))?></span></a>
-           
-												</div>
-													
-													<div class="info">
-														<div class="name"><a href=""><?//= $topPost['fan_first_name'] ?> <?//= $topPost['fan_last_name'] ?></a><br /><img src="/img/news-feed/icon-likes.png" /> <?//= $topPost['post_likes_count']?> <a href="" class="likes"> Like</a></div>
-														<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?//= $topPost['facebook_user_id'] ?>/picture"></a></div>
-														
-													</div>
-												
-											</li>
+<?php $count = 0?>
+<ul class="post-list">
+<li class="grey-dark" >
+	
 
-											<?php// $count ++;?>
-											<?php// endforeach; ?>
-											
-										</ul>
-									
-							</div>
-							
-							-->
-							
-							
-							
-							<div class="span9">
-									<div class="subtitle">
-										<div class="title-header" id="boss"> <h3>Top Posts</h3> </div>
-									</div>
-								
-									<ul class="post-list" id="post-list">
-										<li class="grey-dark" >
-										
-											<div class="photo" ><a href="#" id="post_img" ></a></div>
-											<div class="post" id="post_message"><div class="name"><a href=""><?//= $this->target->facebook_user_name?></a></div>
-														<?//= $this->post->post_message?>
-														 </div>
-											<div class="social"> <img src="/img/news-feed/icon-likes.png" />   <?//= $this->post->post_likes_count?>  <span id="post_like"></span><a href="#" class="likes" id="first_like" > Like</a>   <a href="#" class="comment"> Comment</a> Posted on <span class="date" id="post_date"> <?//= date("F d Y", strtotime($this->post->updated_time))?></span></div>
-											<div class="comment-box">
-												
-												
-											</div>
-											<ul id="popup-comments">
-								
-											</ul>
-										</li>
-										
-										
-									</ul>
-									<form action="#">
-													<textarea class="comment_box_popup" id="comment_" onkeyup="resizeCommentBox(this)"></textarea>
-													<input class="btn-submit" type=button value="Submit" id="popup_comment_button">
-									</form>
-									
-									<div id="moreComments"></div>
-							</div>
-						</div>
-					
-		<script>
+						
+	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$this->post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->post->from->id ?>/picture"></a></div>
+	<div class="name">
+		<a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$this->post->from->id?>')"<?}?>><?=  $this->post->from->name?></a> 
+	
+		<? if (!($this->relation[$count] == 'Fanpage')){?>
 		
+			<? if (!($this->relation[$count] == 'Following')){?>
+				<a href="#" onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>')">
+			<?}else{?>
+				<a href="#" onclick="userProfile('<?=$this->post->from->id?>')">
+			<?}?>
+			
+			<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+		<?}?>
+	
+	</div>
+	
+	<div class="post">
+	<? if(isset($this->post->message)){echo $this->post->message;}?>
+	<img src = '<? if(isset($this->post->picture) && ($this->post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $this->post->picture)) ;}?> '/></div>
+	
+	<div class="social"> 
+	
+		<span class="likes">
+		<img src="/img/news-feed/icon-likes.png" />
+		<? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>
+		<?php if ($this->likes[$count] == 0) {?>
+			<a href="#" onclick="like('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>' )" >Like</a>   
+		<?}else{?>
+			<a href="#" onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike</a>   
+		<?php }?>
+		</span>
+		<span class="comment">
+		<?php if(isset($this->post->comments->count)){
+				echo $this->post->comments->count; //echo  $post->comments->count;
+		 	} else {
+				echo '0'; 
+			}?>
+		 <a href="#"  >Comment</a>
+		</span>
+		<br/>
+		<span class="date"><?=  date("l, F d, g:i a ",strtotime($this->post->created_time))?></span>
+	</div>
 
 
-		</script>					
-						
-						
+ 
+	<?php $count = 1?>
+	
+	<?php if(empty($this->comments)){
+	
+		//echo "Missing Access Token";
+		
+	}else{?>
+	
+	
+	<ul class="popup_comments" id="popup_<?=$post->id?>" >
+	<br/>
+	<?php foreach ($this->comments as $post):?>		
+	
+		<?php if ($count % 2 == 0){?>			
+		<li class="grey-light" >
+		<?php }else{?>
+		<li class="grey-dark" >
+		<?php }?>
+	
+			<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
+			<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a>
+			
+			<? if (!($this->relation[$count] == 'Fanpage')){?>
+				<? if (!($this->relation[$count] == 'Following')){?>
+					<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
+				<?}else{?>
+					<a href="#" onclick="userProfile('<?=$post->from->id?>')">
+				<?}?>
+				
+				<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+			<?}?>
+			</div>
+			<div class="post">
+			<? if(isset($post->message)){echo $post->message;}?>
+			<img src = '<? if(isset($post->picture) && ($post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $post->picture)) ;}?> '/></div>
+			
+			<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
+			
+			<span class="likes">
+			<? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?> 
+			
+			
+			<?php if ($this->likes[$count] == 0) {?>
+				<a href="#" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Like</a> 
+			<?}else{?>
+				<a href="#" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
+			<?php }?>
+			 </span>
+		
+			<br/>
+			 <span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span></div>
+		
+		</li>
+											
+	<?php $count ++;?>
+	<?php endforeach; }?>
+	
+	
+		<?if ($this->post->comments->count > $this->limit){ ?>
+			<button class="btn-top" onclick="comment_bubble('<?= $this->post->id ?>', <?=$this->limit + 5?>, false)"> MORE +</button>
+		<?}?>
+		
+	
+		<li class="comment_container">
+	
+			<form action="#">
+				<textarea class="comment_box" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
+				<input type=button class="btn-submit" value="Submit" onclick="commentSubmit('<?= $this->postId ?>','comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>' )">
+			</form>
+		
+		</li>
+	</ul>	
+</li>					
 			
