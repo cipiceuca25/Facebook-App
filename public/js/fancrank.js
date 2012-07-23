@@ -1,3 +1,4 @@
+
 jQuery(document).ready(function($){
 
 	//set up ajax call
@@ -48,4 +49,5 @@ var Alert = new function() {
             $('#' + id).remove();
         });
     }
+
 }

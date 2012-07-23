@@ -26,14 +26,31 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
 
     public function testAction() {
-    	$fanpageId = "65558608937";
-    	$accessToken="AAAFWUgw4ZCZB8BAC8poutSZBFRW3RGpy4hMm61xT4yVhBMMO5gFk1RNA8CZCmr01QhsTpnTlPMp2qSnk3uZBruW6GjczomssAPKpaHL8BS1OfNde44VBe";
-    	//$result = Collector::run(null, $fanpageId, $accessToken, 'update');
-    	//Collector::run(null, $fanpageId, $accessToken, 'full');
-    	$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
-    	$db = Zend_Db::factory($config->resources->db);
-    	$result = $db->query("SELECT * FROM message m WHERE m.body LIKE '%\"$fanpageId\"%'")->fetchAll();
-    	Zend_Debug::dump($result);
+    	$facebook_user_id = '410985';
+    	$fanpage_id = '178384541065'; 
+    	
+		$badge = new Model_Badges();
+		//$result = $badge->fetchAll();
+		$result = $badge->findByBadgeName('first love');
+		Zend_Debug::dump($result->toArray());
+		
+		$fan = new Model_Fans();
+		$result = $fan->getFanLevel($facebook_user_id, $fanpage_id);
+		Zend_Debug::dump($result);
+		$result = $fan->getFanFields($facebook_user_id, $fanpage_id, array('fan_name'));
+		Zend_Debug::dump($result->toArray());
+		
+		$badgeEvent = new Model_BadgeEvents();
+		$day = new Zend_Date();
+		$day = $day->sub('7', Zend_Date::DAY);
+		echo $day->toString('yyyy-MM-dd HH:mm:ss');
+		$events = $badgeEvent->getRecentBadgesByFanpageIdAndFanID($fanpage_id, $facebook_user_id, $day->toString('yyyy-MM-dd HH:mm:ss'));
+		Zend_Debug::dump($events->toArray());
+		
+		$stat = new Model_FansObjectsStats();
+		$result = $stat->fetchAll();
+		Zend_Debug::dump($result->toArray());
+		
     }
 
     public function extendAction() {

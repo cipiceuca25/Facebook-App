@@ -40,11 +40,4 @@ class Api_UsersController extends Fancrank_API_Controller_BaseController
 		}
 	}
 	
-	public function followAction() {
-		$subcriber = new Model_Subscribes();
-		$result = $subcriber->fetchAll();
-		Zend_Debug::dump($result);
-		echo 'follow';
-	}
-	
 }

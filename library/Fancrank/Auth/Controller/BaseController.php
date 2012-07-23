@@ -44,9 +44,9 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     	//$this->_forward('index','index', 'app'); return;
     	$fanpageId = $this->_getParam('id');
     	if (empty($fanpageId)) {
-			$this->_helper->viewRenderer->setRender('index/failure', null, true);
-			//$this->_redirect('/app/app/index/' .$this->_getParam('id'));
-			return;
+			//$this->_helper->viewRenderer->setRender('index/failure', null, true);
+			$this->_redirect('/app/app/index/' .$this->_getParam('id'));
+			//return;
     	}
      	//Zend_Debug::dump($fanpageId); exit();
         $this->_auth = Zend_Auth::getInstance();

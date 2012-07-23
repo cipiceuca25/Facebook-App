@@ -95,7 +95,30 @@
 										<?}?>
 									<?}?>
 									</ul>
-									
+									<?php $count ++; ?>
+									<ul class="top-list">
+										<li>
+												<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1>*</h1>
+													</div>
+													<div class="photo">
+														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
+													</div>
+													<div class="name">
+														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+														<br/>
+													</div>
+													<div class="points">
+														<h3>0 </h3> <span>Points <br/>This Week</span> 
+													</div>
+												</div>
+										</li>
+									</ul>
 									<div class="shadow">
 										<button class="btn-top" id="top-fans-btn" data-toggle="collapse" data-target="#top-fans-collapse">
 												+ More
@@ -191,7 +214,30 @@
 										<?}?>
 									<?}?>
 									</ul>
-																
+									<?php $count ++; ?>
+									<ul class="top-list">
+										<li>
+												<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1>*</h1>
+													</div>
+													<div class="photo">
+														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
+													</div>
+													<div class="name">
+														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+														<br/>
+													</div>
+													<div class="points">
+														<h3>0 </h3> <span>Points <br/>This Week</span> 
+													</div>
+												</div>
+										</li>
+									</ul>							
 								
 									<div class="shadow">
 										<button class="btn-top" id="fan-favorite-btn" data-toggle="collapse" data-target="#fan-favorite-collapse">
@@ -291,6 +337,30 @@
 										<?}?>
 									<?}?>
 									</ul>
+									<?php $count ++; ?>
+									<ul class="top-list">
+										<li>
+												<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1>*</h1>
+													</div>
+													<div class="photo">
+														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
+													</div>
+													<div class="name">
+														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+														<br/>
+													</div>
+													<div class="points">
+														<h3>0 </h3> <span>Points <br/>This Week</span> 
+													</div>
+												</div>
+										</li>
+									</ul>
 									<div class="shadow">
 										<button class="btn-top" id="top-talker-btn" data-toggle="collapse" data-target="#top-talker-collapse">
 												 + More
@@ -387,7 +457,30 @@
 										<?}?>
 									<?}?>
 									</ul>
-										
+									<?php $count ++; ?>
+									<ul class="top-list">
+										<li>
+												<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1>*</h1>
+													</div>
+													<div class="photo">
+														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
+													</div>
+													<div class="name">
+														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+														<br/>
+													</div>
+													<div class="points">
+														<h3>0 </h3> <span>Points <br/>This Week</span> 
+													</div>
+												</div>
+										</li>
+									</ul>	
 									 
 										<div class="shadow">
 											<button class="btn-top" id="top-clicker-btn" data-toggle="collapse" data-target="#top-clicker-collapse">

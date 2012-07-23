@@ -253,7 +253,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 				echo "unliked";
 			} catch (Exception $e) {
 				//TO LOG
-				echo "error mthfker".$e;
+				echo "error".$e;
 			}
 
 		}
