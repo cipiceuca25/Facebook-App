@@ -307,6 +307,14 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 	}
 	
+	protected function awardBadge() {
+		
+	}
+	
+	protected function removeBadge() {
+		
+	}
+	
 }
 
 ?>

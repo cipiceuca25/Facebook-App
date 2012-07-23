@@ -137,13 +137,14 @@ class Model_Rankings extends Model_DbTable_Rankings
 	}
 	
 	public function getTopPosts($page_id, $limit=5) {
-		$select = "SELECT p.*, f.fan_first_name, f.fan_last_name, count(*) AS count 
-				FROM likes l
-				 INNER JOIN 
-				posts p ON(l.post_id = p.post_id) 
-				INNER JOIN
-				fans f ON(p.facebook_user_id = f.facebook_user_id)
-				WHERE p.facebook_user_id != l.fanpage_id AND l.fanpage_id = '". $page_id ."' GROUP BY p.post_id ORDER BY count DESC";
+		$date = new Zend_Date();
+		$date->sub('7', Zend_Date::DAY);
+
+		$select = "SELECT p.*, f.fan_first_name, f.fan_last_name, (p.post_comments_count + p.post_likes_count)/TIMESTAMPDIFF(SECOND, p.created_time, NOW()) as count 
+					FROM posts p 
+					INNER JOIN
+					fans f ON(p.facebook_user_id = f.facebook_user_id)
+					WHERE p.fanpage_id = '". $page_id ."' AND p.created_time > '". $date->toString('yyyy-MM-dd HH:mm:ss') ."' ORDER BY count DESC";
 		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
@@ -151,5 +152,27 @@ class Model_Rankings extends Model_DbTable_Rankings
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	public function getUserTopFansRanking($facebook_user_id) {
+		$select = "
+					SELECT
+					(SELECT fans.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS number_of_posts
+					FROM
+                    (SELECT l.facebook_user_id FROM posts p INNER JOIN likes l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id = p.fanpage_id
+					UNION ALL
+                    SELECT l.facebook_user_id FROM comments c INNER JOIN likes l ON (c.comment_id = l.post_id) WHERE l.fanpage_id = '". $page_id ."' AND c.facebook_user_id = c.fanpage_id
+                    UNION ALL
+                    SELECT l.facebook_user_id FROM likes l WHERE l.post_type = 'photo' AND l.fanpage_id = '". $page_id ."'		
+                   	) AS topfans
+					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id)
+					GROUP BY fans.facebook_user_id
+					HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')                    		
+					ORDER BY number_of_posts DESC
+					) as ranklist";
+		
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+		
+		return $this->getAdapter()->fetchAll($select);
+	}
 }
 

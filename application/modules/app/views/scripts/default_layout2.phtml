@@ -47,6 +47,11 @@
 				//FB.Canvas.setSize();
 			};
 
+			 $(document).ready(function() {
+				  $('a[title]').tooltip({
+					    placement: 'left'
+					  });
+			 });		  
 		 </script>
 	 	<!-- End of iframe initialization -->
         <script src="/js/fancrank.js"></script>
@@ -551,7 +556,7 @@ $tcb = false;
 	$('#moreComments').live('hover',function(){
 		FB.api( $('#moreComments').attr('postid')+'/comments?limit=10&offset=' + $('#moreComments').attr('loaded') ,  function(response){
 	    	   if (!response || response.error) {
-	    		    alert('Error occured');
+	    		    //alert('Error occured');
 	    		  } else {
 	    		    //alert(response.from.id);
 		    		
@@ -672,7 +677,7 @@ $tcb = false;
     		success: function( data ) {
 				//alert("target followed")
 				//alert(post_id + 'liked');
-    			alert('liked');
+    			//alert('liked');
     			addActivities('like-'+post_type, post_id );
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
@@ -691,7 +696,7 @@ $tcb = false;
     		success: function( data ) {
 				//alert("target followed")
 				//alert(post_id + 'liked');
-    			alert('unliked');
+    			//alert('unliked');
     			addActivities('unlike-'+post_type, post_id );
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
@@ -734,7 +739,7 @@ $tcb = false;
     			getLatestPost();
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
-        		alert(url);
+        		//alert(url);
     			console.log(xhr.statusText, errorMessage);
     			
     		}
@@ -873,7 +878,7 @@ $tcb = false;
 		//alert(userAccessToken);
 		FB.api('/'+ postid + '/comments' , 'post' , { 'message': $(m).val() , 'access_token' : userAccessToken},  function(response) {
 			if (!response || response.error) {
-				alert(response.error.message);
+				//alert(response.error.message);
 				} else {
 				//alert('Post ID: ' + response.id);
 				$(m).val('');

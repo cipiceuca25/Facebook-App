@@ -269,7 +269,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$model = new Model_Rankings;
     	$topPosts = $model->getTopPosts($this->_fanpageId, 5);
-    	//Zend_Debug::dump($user); exit();
+    	Zend_Debug::dump($topPosts); exit();
     	
     	$likesModel = new Model_Likes();
     	$likes = array();
