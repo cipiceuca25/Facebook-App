@@ -22,9 +22,14 @@
 	</div>
 	
 	<div class="post">
-	<? if(isset($this->post->message)){echo $this->post->message;}?>
-	<img src = '<? if(isset($this->post->picture) && ($this->post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $this->post->picture)) ;}?> '/></div>
-	
+		<div class="pic">
+		<? if(isset($this->post->link)) { ?> <a target="new" href="<?echo $this->escape($this->post->link)?> "> <?}?>
+			<? if (($this->post->type == 'photo') || ($this->post->type == 'video') ){ ?>
+			<img src = '<?= (str_replace('_s.jpg', '_n.jpg', $this->post->picture)) ;?> '/>
+			<?}?>
+			<? if(isset($this->post->link)) { ?> </a> <?php }?>
+			
+		</div>
 	<div class="social"> 
 	
 		<span class="likes">
@@ -59,7 +64,7 @@
 	}else{?>
 	
 	
-	<ul class="popup_comments" id="popup_<?=$post->id?>" >
+	<ul class="popup_comments" id="popup_<?=$this->post->id?>" >
 	<br/>
 	<?php foreach ($this->comments as $post):?>		
 	
@@ -83,7 +88,7 @@
 			<?}?>
 			</div>
 			<div class="post">
-			<? if(isset($post->message)){echo $post->message;}?>
+			<? if(isset($post->message)){echo $this->escape($post->message);}?>
 			<img src = '<? if(isset($post->picture) && ($post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $post->picture)) ;}?> '/></div>
 			
 			<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 

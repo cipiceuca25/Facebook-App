@@ -210,6 +210,21 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		 
     	}
     	
+    	$topFanYou = $model->getUserTopFansRank($this->_fanpageId, $user->facebook_user_id);
+    	$popularYou = $model->getUserMostPopularRank($this->_fanpageId, $user->facebook_user_id);
+    	$talkerYou = $model->getUserTopTalkerRank($this->_fanpageId, $user->facebook_user_id);
+    	$clickerYou = $model->getUserTopClickerRank($this->_fanpageId, $user->facebook_user_id);
+    	//Zend_Debug::dump($topFanYou);
+    	
+    	
+    	
+    	$this->view->topFanYou =  $topFanYou;
+    	$this->view->popularYou = $popularYou;
+    	$this->view->talkerYou = $talkerYou;
+    	$this->view->clickerYou =$clickerYou;
+    	//$this-view->talkerYou =
+    	//$this-view->clickerYou =
+    	
     	$this->view->topFanArray = $topArray ;
     	$this->view->popularArray = $popularArray ;
     	$this->view->talkerArray = $talkerArray ;
@@ -294,13 +309,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//echo $top['facebook_user_id'];
     		$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts['post_id'], $this->_userId );
     		//echo $likes[$count];
-    		$count++;
+    		
     		$pic = $this->getPost($posts['post_id']);
-    		if ($pic ->type == 'photo'){
+    		//Zend_Debug::dump($pic);
+    		if (($pic->type == 'photo') ||($pic->type == 'video')  ){
     			$picture[$count] = $pic -> picture;
     		}else{
     			$picture[$count] = null;
     		}
+    		$count++;
     	}
 		
     	

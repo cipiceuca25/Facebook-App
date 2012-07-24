@@ -36,9 +36,14 @@
 	</div>
 	
 	<div class="post">
-	<? if(isset($post->message)){echo $post->message;}?>
-	<? if(isset($post->picture) && ($post->type == 'photo')){?><img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/> <? } ?></div>
 	
+	<div class="pic">
+		<? if(isset($post->link)) { ?> <a target="new" href="<?echo $this->escape($post->link)?> "> <?}?>
+		<? if(isset($post->picture) ){?><img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/> <? } ?>
+		<? if(isset($post->link)) { ?> </a> <?php }?>
+	</div>
+	<div class="message"><? if(isset($post->message)){echo $this->escape($post->message);}?></div>
+	</div>
 	<div class="social"> 
 	
 		<span class="likes">
