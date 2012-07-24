@@ -8,4 +8,5 @@ application.ini
 app.log
 db.log
 application/data/logs/app.log
+application/configs/application.ini
 fancrank/application/data/logs/app.log
