@@ -356,62 +356,6 @@
 		});
 	}
 
-
-	$('#moreComments').live('click',function(){
-		FB.api( $('#moreComments').attr('postid')+'/comments?limit=10&offset=' + $('#moreComments').attr('loaded') ,  function(response){
-	    	   if (!response || response.error) {
-	    		    alert('Error occured');
-	    		  } else {
-	    		    //alert(response.from.id);
-		    		
-	    			var limiter=10;
-	    			try{
-						var limit = response.data.length;
-	    			}catch(err){
-						var limit = 0;
-	    			}
-
-						//	alert(limit);
-					if(limiter < limit){
-						limit = limiter;
-					}
-					//alert(limit);
-					//alert(limiter);
-					for (i=0;i<limit; i++){	
-						//alert(i);
-						d = new Date(Date.parse(response.data[i].created_time));
-						//alert(d);
-						//alert(html);
-						$('#post-list').append(
-							'<li class="grey-light"><div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/' 
-							+ response.data[i].from.id+ '/picture"></a></div><div class="post"><div class="name"><a href="">' 
-							+ response.data[i].from.name + '</a></div>' + response.data[i].message + 
-							'</div><div class="social">' + '<a href="#" class="likes">Like</a>  Posted on <span class="date"> '
-							+ d.toDateString() + '</span></div></li><br/>' 
-							);			
-					}
-
-					var x = parseInt($('#moreComments').attr('loaded')) + 10;
-					$('#moreComment').removeAttr('loaded');
-					$('#moreComments').attr('loaded', x );
-					//alert(response.data.length);
-					//alert(limiter);
-
-
-					try{
-						var limit = response.data.length;
-	    			}catch(err){
-						var limit = 0;
-	    			}
-					if (limiter < limit){
-						$('#moreComments').html('More +');
-						$('#moreComments').attr('postid', post_id );						
-					}else{
-						$('#moreComments').html('');
-					}
-	    		  }
-	 	});
-	});	
 	
 	
 	function getNewsfeed(ui) {
@@ -605,7 +549,7 @@
 	}
 
     
-	function follow(target, name){
+	function follow(target, name, refresh){
 		$.ajax({
     		type: "GET",
     		url: serverUrl +'/app/user/'+ userId + '/follow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
@@ -615,7 +559,9 @@
 				//alert("target followed")
     			addActivities('follow', target, target, name );
 				getUserProfile('.profile-content', target);
-    			
+				if (refresh){
+					getTopfans('#top-fans');
+				}
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -623,7 +569,7 @@
     	});
     }	
 	
-	function unfollow(target, name){
+	function unfollow(target, name, refresh){
 		$.ajax({
     		type: "GET",
     		url: serverUrl +'/app/user/'+ userId + '/unfollow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
@@ -633,7 +579,9 @@
 				//alert("target unfollowed")
     			addActivities('unfollow', target, target, name );
 				getUserProfile('.profile-content', target);
-    		
+				if (refresh){
+					getTopfans('#top-fans');
+				}
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);

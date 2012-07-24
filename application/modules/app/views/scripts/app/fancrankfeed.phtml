@@ -24,7 +24,7 @@
 	
 		<? if (!($this->relation[$count] == 'Fanpage')){?>
 		
-			<? if (!($this->relation[$count] == 'Following')){?>
+			<? if (($this->relation[$count] != 'Following') || ($this->relation[$count] != 'Friends')){?>
 				<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
 			<?}else{?>
 				<a href="#" onclick="userProfile('<?=$post->from->id?>')">
@@ -37,7 +37,7 @@
 	
 	<div class="post">
 	<? if(isset($post->message)){echo $post->message;}?>
-	<img src = '<? if(isset($post->picture) && ($post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $post->picture)) ;}?> '/></div>
+	<? if(isset($post->picture) && ($post->type == 'photo')){?><img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/> <? } ?></div>
 	
 	<div class="social"> 
 	

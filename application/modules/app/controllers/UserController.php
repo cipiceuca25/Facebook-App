@@ -54,7 +54,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['follow_enable'] = TRUE;
 		$data['facebook_user_id'] = $this->_getParam('facebook_user_id');
 		
-		Zend_Debug::dump($data);
+		//Zend_Debug::dump($data);
 		$subscribe = $subscribe_Model->findById($data['facebook_user_id'], $data['facebook_user_id_subscribe_to'], $data['subscribe_ref_id']);
 
 		if($subscribe) {

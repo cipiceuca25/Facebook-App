@@ -43,7 +43,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 	public function getTopFans($page_id, $limit = 5)
 	{
 		$select = "
-					SELECT fans.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS number_of_posts
+					SELECT fans.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS number_of_posts
 					FROM
                     (SELECT l.facebook_user_id FROM posts p INNER JOIN likes l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id = p.fanpage_id
 					UNION ALL
@@ -68,7 +68,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 		//$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
 	
 		$select = "
-			SELECT posts_count.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS number_of_posts
+			SELECT posts_count.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS number_of_posts
 			FROM
 			(SELECT facebook_user_id
 				FROM posts
@@ -95,7 +95,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 	public function getTopClicker($page_id, $limit = 5)
 	{
 		$select = "
-			SELECT likes_count.facebook_user_id, fans.fan_first_name, COUNT(fans.facebook_user_id) AS number_of_likes
+			SELECT likes_count.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS number_of_likes
 			FROM (
 				SELECT facebook_user_id FROM likes
 				WHERE facebook_user_id != '". $page_id ."'
@@ -115,7 +115,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 	
 	public function getMostPopular($page_id, $limit = 5)
 	{
-		$select = "SELECT fans.facebook_user_id, fans.fan_first_name, sum(favorite.num) AS count
+		$select = "SELECT fans.facebook_user_id, fans.fan_first_name, fans.fan_last_name, sum(favorite.num) AS count
 					FROM
 					(
 						SELECT p.facebook_user_id, sum(p.post_comments_count) AS num FROM posts p WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id != p.fanpage_id GROUP BY p.facebook_user_id

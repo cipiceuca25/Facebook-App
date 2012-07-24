@@ -29,7 +29,12 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')">
+															<a href="#" <?if (($this->topFanArray[$count] != 'Following') || ($this->topFanArray[$count] != 'Friends')) {?>
+																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', true)" 
+																<?}else{ ?>
+																onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"
+																<?}?>
+															>
 															<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span></a>
 														</div>
 														<div class="points">
@@ -58,7 +63,12 @@
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" onclick="follow(<?=$top_fan['facebook_user_id']?>, '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>'?>)">
+														<a href="#" <?if (($this->topFanArray[$count] != 'Following') || ($this->topFanArray[$count] != 'Friends')) {?>
+															onclick="follow(<?=$top_fan['facebook_user_id']?>, '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', true)"
+														<?}else{ ?>
+															onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"
+														<?}?>
+														>
 														<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span></a>
 													</div>
 													<div class="points">
@@ -68,12 +78,16 @@
 											</li>
 											
 									<?php }?>
+									
 									<?php $count ++; ?>
 									<?php endforeach; ?>
 										
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="top-fans-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
@@ -95,6 +109,7 @@
 										<?}?>
 									<?}?>
 									</ul>
+									
 									<?php $count ++; ?>
 									<ul class="top-list">
 										<li>
@@ -103,14 +118,14 @@
 												<?php  }else{  ?>
 													<div class="border-light">
 												<?php }?>
-													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+													<div class="rank">
 														<h1>*</h1>
 													</div>
 													<div class="photo">
 														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
 													</div>
 													<div class="name">
-														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+														<a href="#" >YOU</a>
 														<br/>
 													</div>
 													<div class="points">
@@ -149,7 +164,12 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>')">
+															<a href="#" <?if (($this->popularArray[$count] != 'Following') || ($this->popularArray[$count] != 'Friends')) {?>
+																	onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>', true)" 
+																<?}else{ ?>
+																	onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"
+																<?}?>
+															>
 															<span class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></span></a>
 														</div>
 														<div class="points">
@@ -178,7 +198,12 @@
 													<div class="name">
 														<a  href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>')">
+														<a href="#" <?if (($this->popularArray[$count] != 'Following') || ($this->popularArray[$count] != 'Friends')) {?>
+															 onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>', true)" 
+														<?}else{ ?>
+															onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"
+														<?}?>
+														>
 														<span class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></span></a>
 													</div>
 													<div class="points">
@@ -193,6 +218,9 @@
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="top-favorite-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
@@ -272,7 +300,12 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" onclick="follow(<?=$talker['facebook_user_id'] ?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')">
+															<a href="#" <?if (($this->talkerArray[$count] != 'Following') || ($this->talkerArray[$count] != 'Friends')) {?>
+																onclick="follow(<?=$talker['facebook_user_id'] ?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>', true)" 
+																<?}else{ ?>
+																onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"
+																<?}?>
+															>
 															<span class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></span></a>
 														</div>
 														<div class="points">
@@ -301,7 +334,15 @@
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" onclick="follow(<?=$talker['facebook_user_id']?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>)">
+														<a href="#" <?if (($this->talkerArray[$count] != 'Following') || ($this->talkerArray[$count] != 'Friends')) {?>
+															onclick="follow(<?=$talker['facebook_user_id']?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>', true)" 
+														<?}else{ ?>
+															onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"
+														<?}?>
+														
+														>
+														
+														
 														<span class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></span></a>
 													</div>
 													<div class="points">
@@ -316,6 +357,9 @@
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="top-talker-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
@@ -392,7 +436,13 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" onclick="follow(<?=$clicker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>)">
+															<a href="#" <?if (($this->clickerArray[$count] != 'Following') || ($this->clickerArray[$count] != 'Friends')) {?>
+																onclick="follow(<?=$clicker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>', true)" 
+															<?}else{ ?>
+																onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"
+															<?}?>
+															
+															>
 															<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span></a>
 														</div>
 														<div class="points">
@@ -403,7 +453,7 @@
 											
 										</ul>
 									<?php }else{ ?>
-										<?php if ($count == 1){?>
+										<?php if ($count == 1) {?>
 											<ul  id="top-clicker-collapse" class="top-list collapse">
 										<?php }?>
 											<li>
@@ -421,7 +471,13 @@
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?>  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" onclick="follow(<?=$talker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>)">
+														<a href="#" <?if (($this->clickerArray[$count] != 'Following') || ($this->clickerArray[$count] != 'Friends')) {?>
+															 	onclick="follow(<?=$clicker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>', true)" 
+															<?}else{ ?>
+																onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"
+															<?}?>
+															
+														>
 														<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span></a>
 													</div>
 													<div class="points">
@@ -434,7 +490,9 @@
 									<?php $count ++; ?>
 									<?php endforeach; ?>
 									<?php if ($count < 5){?>
-										
+										<?php if ($count == 1){?>
+												<ul  id="top-clicker-collapse" class="top-list collapse">
+											<?php }?>
 										<?php for ( ;$count<5; $count++){ ?>
 											<li>
 											<?php if ($count % 2 == 0) {?>

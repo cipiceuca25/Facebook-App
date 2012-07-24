@@ -70,6 +70,9 @@
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<ul  id="top-fans-collapse" class="top-list collapse">
+										<?php }?>
+											<li>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
@@ -187,6 +190,9 @@
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="top-favorite-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
@@ -306,6 +312,9 @@
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="top-talker-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
@@ -422,6 +431,9 @@
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="top-clicker-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
