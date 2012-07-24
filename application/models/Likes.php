@@ -53,7 +53,7 @@ class Model_Likes extends Model_DbTable_Likes
 			if(empty($field)) {
 				return false;
 			}
-			if($key === 'post_type' && ! in_array($field, array('status', 'photo', 'comment', 'post', 'album', 'video'))) {
+			if($key === 'post_type' && ! in_array($field, array('status', 'photo', 'comment', 'post', 'album', 'video', 'link'))) {
 				return false;
 			}
 			

@@ -127,7 +127,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 	
 		if (! empty ( $found )) {
 			$dateObject = new Zend_Date();
-			$found->fan_got_posts_comment_count ++;
+			
 			$found->fan_got_comment_total ++;
 			$found->updated_time= $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
 			$found->save ();
@@ -247,7 +247,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 		if (! empty ( $found )) {
 			$dateObject = new Zend_Date();
-			$found->fan_got_posts_comment_count --;
+			
 			$found->fan_got_comment_total --;
 			$found->updated_time= $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
 			$found->save ();

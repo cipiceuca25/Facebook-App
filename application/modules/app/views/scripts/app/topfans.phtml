@@ -78,12 +78,16 @@
 											</li>
 											
 									<?php }?>
+									
 									<?php $count ++; ?>
 									<?php endforeach; ?>
 										
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="top-fans-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
@@ -105,6 +109,7 @@
 										<?}?>
 									<?}?>
 									</ul>
+									
 									<?php $count ++; ?>
 									<ul class="top-list">
 										<li>
@@ -113,14 +118,14 @@
 												<?php  }else{  ?>
 													<div class="border-light">
 												<?php }?>
-													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+													<div class="rank">
 														<h1>*</h1>
 													</div>
 													<div class="photo">
 														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
 													</div>
 													<div class="name">
-														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+														<a href="#" >YOU</a>
 														<br/>
 													</div>
 													<div class="points">
@@ -213,6 +218,9 @@
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="top-favorite-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
@@ -349,6 +357,9 @@
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="top-talker-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
 													<div class="border-dark">
@@ -442,7 +453,7 @@
 											
 										</ul>
 									<?php }else{ ?>
-										<?php if ($count == 1){?>
+										<?php if ($count == 1) {?>
 											<ul  id="top-clicker-collapse" class="top-list collapse">
 										<?php }?>
 											<li>
@@ -479,7 +490,9 @@
 									<?php $count ++; ?>
 									<?php endforeach; ?>
 									<?php if ($count < 5){?>
-										
+										<?php if ($count == 1){?>
+												<ul  id="top-clicker-collapse" class="top-list collapse">
+											<?php }?>
 										<?php for ( ;$count<5; $count++){ ?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
