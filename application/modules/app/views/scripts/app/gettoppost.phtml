@@ -12,9 +12,10 @@
 		<? if($topPost['post_message']){
 			echo $topPost['post_message'];
 		}?>
+		
 		<br />
 		<? if(isset($topPost['type'])){ ?>
-		<img src = '<?= (str_replace('_s.jpg', '_n.jpg', $topPost['picture'])) ;?> '/>
+		<img src = '<?= (str_replace('_s.jpg', '_n.jpg', $this->picture[$count])) ;?> '/>
 		<br />
 		<?}?>
 		<span class="date"><?= date("F d Y", strtotime($topPost['created_time']))?></span></a>  

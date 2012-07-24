@@ -287,6 +287,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$likesModel = new Model_Likes();
     	$likes = array();
+    	$picture = array();
     	$count=0;
 
     	foreach ($topPosts as $posts){
@@ -294,8 +295,19 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts['post_id'], $this->_userId );
     		//echo $likes[$count];
     		$count++;
+    		$pic = $this->getPost($posts['post_id']);
+    		if ($pic ->type == 'photo'){
+    			$picture[$count] = $pic -> picture;
+    		}else{
+    			$picture[$count] = null;
+    		}
     	}
-
+		
+    	
+    	
+    	
+    	
+    	$this->view->picture = $picture;
     	$this->view->likes = $likes;
     	$this->view->top_post = $topPosts;
 
@@ -644,7 +656,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     }
     
-
+	
     protected function getPost($postId){
     	$client = new Zend_Http_Client;
     	$client->setUri("https://graph.facebook.com/". $postId);
