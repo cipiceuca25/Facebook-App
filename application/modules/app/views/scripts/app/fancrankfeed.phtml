@@ -24,7 +24,7 @@
 	
 		<? if (!($this->relation[$count] == 'Fanpage')){?>
 		
-			<? if (!($this->relation[$count] == 'Following')){?>
+			<? if (($this->relation[$count] != 'Following') || ($this->relation[$count] != 'Friends')){?>
 				<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
 			<?}else{?>
 				<a href="#" onclick="userProfile('<?=$post->from->id?>')">
