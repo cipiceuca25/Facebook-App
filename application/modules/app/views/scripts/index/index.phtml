@@ -70,8 +70,9 @@
 									<?php if ($count < 5){?>
 										
 										<?php for ( ;$count<5; $count++){ ?>
-											<ul  id="top-fans-collapse" class="top-list collapse">
-										<?php }?>
+											<?php if ($count == 1){?>
+												<ul  id="top-fans-collapse" class="top-list collapse">
+											<?php }?>
 											<li>
 											<li>
 											<?php if ($count % 2 == 0) {?>
