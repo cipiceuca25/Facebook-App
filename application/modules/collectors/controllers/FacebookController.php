@@ -43,31 +43,24 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function testAction() {
-    	$facebook_user_id = '410985';
+    	$facebook_user_id = '578800322';
     	$fanpage_id = '178384541065'; 
     	
 		$badge = new Model_Badges();
 		//$result = $badge->fetchAll();
-		$result = $badge->findByBadgeName('first love');
-		Zend_Debug::dump($result->toArray());
 		
-		$fan = new Model_Fans();
-		$result = $fan->getFanLevel($facebook_user_id, $fanpage_id);
+		$top = new Model_Rankings();
+		$result = $top->getUserTopFansRank($fanpage_id, $facebook_user_id);
 		Zend_Debug::dump($result);
-		$result = $fan->getFanFields($facebook_user_id, $fanpage_id, array('fan_name'));
-		Zend_Debug::dump($result->toArray());
 		
-		$badgeEvent = new Model_BadgeEvents();
-		$day = new Zend_Date();
-		$day = $day->sub('7', Zend_Date::DAY);
-		echo $day->toString('yyyy-MM-dd HH:mm:ss');
-		$events = $badgeEvent->getRecentBadgesByFanpageIdAndFanID($fanpage_id, $facebook_user_id, $day->toString('yyyy-MM-dd HH:mm:ss'));
-		Zend_Debug::dump($events->toArray());
+		$result = $top->getUserTopTalkerRank($fanpage_id, $facebook_user_id);
+		Zend_Debug::dump($result);
 		
-		$stat = new Model_FansObjectsStats();
-		$result = $stat->fetchAll();
-		Zend_Debug::dump($result->toArray());
+		$result = $top->getUserTopClickerRank($fanpage_id, $facebook_user_id);
+		Zend_Debug::dump($result);
 		
+		$result = $top->getUserMostPopularRank($fanpage_id, $facebook_user_id);
+		Zend_Debug::dump($result);
     }
 
     public function extendAction() {
@@ -80,15 +73,26 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
    	
     }
     
-    public function testlikesAction() {
-    	$likes = new Model_Likes();
-    	$fanpage_id = '178384541065';
-    	$post_id = '178384541065_194193687292337';
-    	$facebook_user_id = '1425696291';
-    	$post_type = 'post';
-    	
-		$likes->insertNewLikes($fanpage_id, $post_id, $facebook_user_id, $post_type);
+    public function test1Action() {
+		$fb = new Service_FancrankFBService();
+		$result = $fb->getAppAccessToken();
+		
+		$user_id = '100004098439774';
+		$data = 'test';
+		$msg = 'test request';
+		$name = 'first badge';
+		$link = 'http://www.facebook.com/' .$user_id;
 
+		$attachment =  array(
+				'access_token' => $result,
+				'message' => "$msg",
+				'name' => "$name",
+				'link' => "$link",
+				'description' => "test post"
+		);
+		
+		$fb->api('/'.$user_id.'/feed', 'POST', $attachment);
+		
     }
     
     public function viewAction() {

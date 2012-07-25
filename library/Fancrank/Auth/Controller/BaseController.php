@@ -114,17 +114,24 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 
                 if ($authenticate) {
                     $source = $this->authenticateSource($source_data);
+                	$this->view->adminSource = $source;
+                    
                 } else {
                     $source = $this->authenticateFan($source_data);
+                    $this->view->source = $source;
                 }
-
-                $this->view->source = $source;
 
                 return $source;
             }
         } else {
             // redirect the user to facebook login
-            $extra_parameters = http_build_query($this->config->extra_parameters->redirect->toArray());
+        	if ($authenticate) {
+        		$extra_parameters = http_build_query($this->config->extra_parameters->redirect->toArray());
+        	} else {
+        		$extra_parameters = http_build_query($this->config->user_extra_parameters->redirect->toArray());
+        	}
+        	
+            //$extra_parameters = http_build_query($this->config->extra_parameters->redirect->toArray());
             $this->redirect(0, sprintf('%s?client_id=%s&redirect_uri=%s&%s', $this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
             //$this->redirect(0, sprintf('%s?signed_request=%s&client_id=%s&redirect_uri=%s&%s',isset($_REQUEST['signed_request'])?$_REQUEST['signed_request']:'',$this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
         }

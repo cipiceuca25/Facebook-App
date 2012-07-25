@@ -21,10 +21,16 @@
                 "redirect": {
                     "display": "popup",
                     "response_type": "code",
-                    "scope": "read_insights,manage_pages,publish_stream,email,user_about_me,user_activities,user_birthday,user_checkins,user_education_history,user_events,user_hometown,user_location,user_likes,user_notes,user_photos,user_relationship_details,user_relationships,user_status,user_videos,user_work_history,offline_access"
+                    "scope": "read_insights,manage_pages,publish_stream,email,user_about_me,user_birthday,user_checkins,user_hometown,user_location,user_likes,user_status,offline_access"
                 }
             },
-
+            "user_extra_parameters": {
+                "redirect": {
+                    "display": "popup",
+                    "response_type": "code",
+                    "scope": "publish_stream,email,user_about_me,user_birthday,user_checkins,user_hometown,user_location,user_likes,user_status"
+                }
+            },
             "popup": {
                 "desktop": {
                     "width": "592",

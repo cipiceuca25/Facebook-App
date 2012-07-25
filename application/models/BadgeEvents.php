@@ -12,5 +12,13 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		return $this->fetchAll($query);
 	}
 	
+	public function getAllBadgesEvents($since) {
+		$query = $this->select()
+					->from($this)
+					->where('created_time > ?', $since)
+					->order('facebook_user_id');
+		
+		return $this->fetchAll($query);
+	}
 }
 
