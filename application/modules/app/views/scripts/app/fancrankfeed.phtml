@@ -38,10 +38,39 @@
 	<div class="post">
 	
 	<div class="pic">
-		<? if(isset($post->link)) { ?> <a target="new" href="<?echo $this->escape($post->link)?> "> <?}?>
-		<? if(isset($post->picture) ){?><img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/> <? } ?>
-		<? if(isset($post->link)) { ?> </a> <?php }?>
+	
+		<? if(isset($post->link)) { ?> 
+			<?php if($post->type == 'link') {?>
+				<div class="link-left"> 
+			<?php }?> 
+			<a target="new" href="<?echo $this->escape($post->link)?> "> 
+		<?}?>
+		
+		<? if(isset($post->picture) ){?>
+			<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
+		 <? } ?>
+		 
+		<? if((isset($post->link)) && ($post->type == 'link')) { ?> 
+			</a> </div>
+			
+			
+			<?php if (isset($post->picture)){?><div class="link-right"><?php }?>
+				<a target="new" href="<?echo $this->escape($post->link)?> "><?= $this->escape($post->name)?></a>
+				</br>
+				<?= $this->escape($post->caption)?>: 
+				<br/>
+				<br/>
+				<?=$this->escape($post->description)?>
+			<?php if (isset($post->picture)){?></div> <?php }?>
+			
+		<?}elseif(isset($post->link)){ ?>
+			</a>
+		<?php }?>
+		
+		<br/>
 	</div>
+	
+	
 	<div class="message"><? if(isset($post->message)){echo $this->escape($post->message);}?></div>
 	</div>
 	<div class="social"> 

@@ -22,6 +22,7 @@
 	</div>
 	
 	<div class="post">
+		<!-- 
 		<div class="pic">
 		<? if(isset($this->post->link)) { ?> <a target="new" href="<?echo $this->escape($this->post->link)?> "> <?}?>
 			<? if (($this->post->type == 'photo') || ($this->post->type == 'video') ){ ?>
@@ -30,6 +31,43 @@
 			<? if(isset($this->post->link)) { ?> </a> <?php }?>
 			
 		</div>
+		-->
+		<div class="pic">
+	
+		<? if(isset($this->post->link)) { ?> 
+			<?php if($this->post->type == 'link') {?>
+				<div class="link-left"> 
+			<?php }?> 
+			<a target="new" href="<?echo $this->escape($this->post->link)?> "> 
+		<?}?>
+		
+		<? if((isset($this->post->picture)) ||($this->post->type =='video') ){?>
+			<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $this->post->picture))?> '/>
+		 <? } ?>
+		 
+		<? if((isset($this->post->link)) && ($this->post->type == 'link')) { ?> 
+			</a> </div>
+			
+			
+			<?php if (isset($this->post->picture)){?><div class="link-right"><?php }?>
+				<a target="new" href="<?echo $this->escape($this->post->link)?> "><?= $this->escape($this->post->name)?></a>
+				</br>
+				<?= $this->escape($this->post->caption)?>: 
+				<br/>
+				<br/>
+				<?=$this->escape($this->post->description)?>
+			<?php if (isset($this->post->picture)){?></div> <?php }?>
+			
+		<?}elseif(isset($this->post->link)){ ?>
+			</a>
+		<?php }?>
+		
+		<br/>
+		</div>
+		
+		<div class="message"><? if(isset($this->post->message)){echo $this->escape($this->post->message);}?></div>
+	</div>	
+		
 	<div class="social"> 
 	
 		<span class="likes">

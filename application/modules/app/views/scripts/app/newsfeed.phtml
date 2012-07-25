@@ -1,6 +1,6 @@
 	
 				
-					
+						<!-- 
 						<div class="row">
 							<div class="span12">
 								<div class="title">
@@ -11,34 +11,52 @@
 								</div>
 							</div>
 						</div>
-					
-						<div class="row" >
-						<div class="span8">
-									<div class="subtitle">
-										<div class="title-header"> <h3>Fancrank Feed</h3>
-										 <span>[<a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span></div>
+						-->
+					<div class="row line_hider">
+				
+				
+							<div class="span7 line">
+								<div class="title">
+									<div class="photo">
+										<a href=""><img class="face" width="30" height="30" src="">
+										</a> 
 									</div>
-									
-									<form action="#" class="submit_box">
-													<textarea id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
-													<input type=button class="btn-submit" value="Submit" id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
-									</form>
-									
-									<ul class="post-list" id ="fancrankfeed">
+
+									<div class="title-header"> <h3>Fancrank Feed</h3> </div>
+
+								</div>
+											<span>[<a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span>
 										
-									</ul>
-									<div class="shadow">
-											<button class="btn-top" onclick="getFancrankfeed(setFeed)">
-													+ More
-											</button>
-									</div>
+											<form action="#" class="submit_box">
+															<textarea id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
+															<input type=button class="btn-submit" value="Submit" id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
+											</form>
+											
+											<ul class="post-list" id ="fancrankfeed">
+												
+											</ul>
+											<div class="shadow">
+													<button class="btn-top" onclick="getFancrankfeed(setFeed)">
+															+ More
+													</button>
+											</div>
+								
+							</div>
+							
+							<div class="span1 re">
+								
+							&nbsp;
 							</div>
 							<div class="span4">
-									<div class="subtitle">
-										<div class="title-header-dark"> <h3> Top Posts</h3> </div>
-									</div>
+								<div class="subtitle">
+								
+
+									<div class="title-header reverse"> <h3>Top Posts</h3> </div>
+
+								</div>
+
 									
-										<ul class="bubble" id="toppost">
+										<ul class="top_post" id="toppost">
 											
 											
 										</ul>
@@ -46,7 +64,9 @@
 							</div>
 							
 						</div>
-				
+						<div class="row">
+							&nbsp;
+						</div>
     			
     				
 

@@ -2,45 +2,69 @@
 <?php foreach($this->top_post as $topPost): ?>
 											
 	<?php if ($count % 2 == 0){?>
-		<li class="chat-right">
+		<li class="top_post" >
 	<?php }else{?>
-		<li class="chat-left">
+		<li class="top_post"  >
 	<?php }?>
-												
-	<div class="post">
-		<a href="#" onclick="comment_bubble('<?= $topPost['post_id']?>', 5, true)">
-		<? if (($topPost['post_type']=='picture') || ($topPost['post_type']=='video') ){ ?>
-		<img src = '<?= (str_replace('_s.jpg', '_n.jpg', $this->picture[$count])) ;?> '/>
-		<?}?>
-		<br />
-		<? if($topPost['post_message']){
-			echo $this->escape($topPost['post_message']);
-		}?>
 		
+			<div class="info">
+				<div class="name"><a href="#"><?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?></a>
+				<br />
+				<span class="date"><?= date("F d Y", strtotime($topPost['created_time']))?></span> 
+				</div>
+				<div class="photo"><a href="#"><img class="face"  width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id'] ?>/picture"></a></div>
+					
+				
+			</div>
 		
-		
-		<br />
-		
-		<span class="date"><?= date("F d Y", strtotime($topPost['created_time']))?></span></a>  
-	</div>
-	
+			<div class="post">
+				
+				
+			
 											
-	<div class="info">
-	<div class="name"><a href=""><?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?></a><br /><img src="/img/news-feed/icon-likes.png" /> <?= $topPost['post_likes_count']?> 
-	
-	<?php if ($this->likes[$count] == 0) {?>
-	
-		<a href="#" onclick="like('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>')" class="likes"> Like</a> 
-	<?}else{?>
-		<a href="#" onclick="unlike('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>')" class="likes"> Unlike</a> 
-	<?php }?>
-	
-	
-	</div>
-	<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id'] ?>/picture"></a></div>
-														
-	</div>
-												
+				<div class="image">
+						 <a href="#" onclick="comment_bubble('<?= $topPost['post_id']?>', 5, true)" >
+						<? if (($topPost['post_type']=='picture') || ($topPost['post_type']=='video') ){ ?>
+						<img src = '<?= (str_replace('_s.jpg', '_n.jpg', $this->picture[$count])) ;?> '/>
+						<?}?>
+						</a>
+				</div>
+			
+				
+				<div class="message">
+				<? if($topPost['post_message']){
+					echo $this->escape($topPost['post_message']);
+				}?>
+				</div>
+				
+				
+				 
+				
+			 
+				<div class="social">
+						<img src="/img/news-feed/icon-likes.png" /> <?= $topPost['post_likes_count']?> 
+					<?php if ($this->likes[$count] == 0) {?>
+					
+						<a href="#" onclick="like('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>')" class="likes"> Like</a> 
+					<?}else{?>
+						<a href="#" onclick="unlike('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>')" class="likes"> Unlike</a> 
+					<?php }?>
+					
+					
+					<?php if(isset($topPost['post_comments_count'])){
+						echo $topPost['post_comments_count']; //echo  $post->comments->count;
+				 	} else {
+						echo '0'; 
+					}?>
+					 <a href="#" onclick="comment_bubble('<?= $topPost['post_id']?>', 5, true)" >Comment</a> 
+							
+				</div>
+			
+				
+			</div>
+			
+											
+										
 	</li>
 
 <?php $count ++;?>
