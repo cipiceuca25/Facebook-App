@@ -63,21 +63,21 @@
 										<h4>FOLLOWING 
 									
 										</h4><br/>
-										<h2> <?= $this->following['0']['Following']?></h2>
+										<h2> <a href="#" onclick="getFollowingList()"><?= $this->following['0']['Following']?></a></h2>
 										</div>
 									
 									
 										<div class="profile-block followers">
 										<h4>FOLLOWERS  
 										</h4><br/>
-										<h2> <?= $this->follower['0']['Follower']?></h2>
+										<h2> <a href="#" onclick="getFollowersList()"><?= $this->follower['0']['Follower']?></a></h2>
 										</div>
 									
 									
 										<div class="profile-block friends">
 										<h4> FRIENDS  </h4>
 										<br/>  
-										<h2><?= $this->friends['0']['friends']?></h2>
+										<h2><a href="#" onclick="getFriendsList()"><?= $this->friends['0']['friends']?></a></h2>
 										</div>
 								
 								</div>

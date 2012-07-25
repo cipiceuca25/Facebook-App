@@ -1,0 +1,18 @@
+<ul class="popup_comments">
+<?php $count=0;?>
+<?php foreach ($this->result as $user):?>	
+	
+	<?php if ($count % 2 == 0){?>			
+		<li class="grey-light" >
+	<?php }else{?>
+		<li class="grey-dark" >
+	<?php }?>
+		<div class="photo"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $user['id'] ?>/picture"></div>
+		<div class="name"><?= $user['facebook_user_name']?></div>
+			
+	</li>
+<?php $count++;?>
+<?php endforeach; ?>
+
+
+</ul>

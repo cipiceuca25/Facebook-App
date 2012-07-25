@@ -166,7 +166,17 @@
 		
 		$('.light-box').css('display','block');
 		$('.user-profile').css('display', 'block');
-			/*
+			
+		
+		$('.profile-content').css('height', 'auto');
+		  
+		$('.profile-content').animate({
+			height:'toggle',
+			top:'20px'
+		   },500, function(){
+			   
+		});
+		/*
 		$('.top-border').animate({
 		    height: 'toggle',
 			top: '0px'
@@ -181,16 +191,6 @@
 		    // Animation complete.
 		  });
 		  */
-		
-		$('.profile-content').css('height', 'auto');
-		  
-		$('.profile-content').animate({
-			height:'toggle',
-			top:'20px'
-		   },500, function(){
-			   
-		});
-	
 	}
 
 	function comment_bubble(post_id, limiter, open){
@@ -660,6 +660,94 @@
 			});
 	}
 	
+	function getFollowingList(){
+		ui = '.profile-content';
+		$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/app/getfollowing/'+ fanpageId,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+    			
+    			$(ui).html(data);
+    			$('.light-box').css('display','block');
+    			$('.user-profile').css('display', 'block');
+    				
+    			
+    			$('.profile-content').css('height', 'auto');
+    			  
+    			$('.profile-content').animate({
+    				height:'toggle',
+    				top:'20px'
+    			   },500, function(){
+    				   
+    			});
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+	
+	}
+	function getFollowersList(){
+		
+		ui = '.profile-content';
+		$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/app/getfollowers/'+ fanpageId,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+    			
+    			$(ui).html(data);
+    			$('.light-box').css('display','block');
+    			$('.user-profile').css('display', 'block');
+    				
+    			
+    			$('.profile-content').css('height', 'auto');
+    			  
+    			$('.profile-content').animate({
+    				height:'toggle',
+    				top:'20px'
+    			   },500, function(){
+    				   
+    			});
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+		
+	}
+	function getFriendsList(){
+		ui = '.profile-content';
+		$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/app/getfriends/'+ fanpageId,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+    			
+    			$(ui).html(data);
+    			$('.light-box').css('display','block');
+    			$('.user-profile').css('display', 'block');
+    				
+    			
+    			$('.profile-content').css('height', 'auto');
+    			  
+    			$('.profile-content').animate({
+    				height:'toggle',
+    				top:'20px'
+    			   },500, function(){
+    				   
+    			});
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+		
+	}
 	function resizeCommentBox(o){
 		o.style.height = "1px";
 	    o.style.height = (10+o.scrollHeight)+"px";

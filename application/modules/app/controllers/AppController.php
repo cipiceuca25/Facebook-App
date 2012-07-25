@@ -815,7 +815,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     public function getfollowersAction(){
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
-    	$target = $this->_request->getParam('target');
+
     	$follow = new Model_Subscribes();
     	
     	$result = $follow->getFollowersList($this->_userId);
@@ -830,7 +830,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     public function getfriendsAction(){
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
-    	$target= $this->_request->getParam('target');
+
     	$follow = new Model_Subscribes();
     	
     	$result= $follow->getFriendsList($this->_userId);
@@ -842,7 +842,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     public function getfollowingAction(){    	
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
-    	$target = $this->_request->getParam('target');
+    
     	$follow = new Model_Subscribes();
     	
     	$result = $follow->getFollowingList($this->_userId);

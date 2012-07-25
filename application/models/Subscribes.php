@@ -44,23 +44,24 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 	}
 	
 	public function getFollowersList($user){
-		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1 AND s.facebook_user_id_subscribe_to =".$user ;
+		$select = "select f.facebook_user_name, s.facebook_user_id AS id from subscribes s, facebook_users f where s.follow_enable=1 AND f.facebook_user_id=s.facebook_user_id_subscribe_to AND s.facebook_user_id_subscribe_to =".$user ;
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
 	public function getFollowingList($user){
-		$select = "select s.facebook_user_id_subscribe_to as Following from subscribes s where s.follow_enable=1 AND s.facebook_user_id =".$user ;
+		$select = "select f.facebook_user_name, s.facebook_user_id_subscribe_to AS id from subscribes s, facebook_users f where s.follow_enable=1  AND f.facebook_user_id =s.facebook_user_id_subscribe_to AND s.facebook_user_id =".$user ;
 		
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
 	public function getFriendsList($user){
-		$select = "select a.facebook_user_id
-					from subscribes as a, subscribes as b
-					where a.follow_enable=1 AND b.follow_enable=1 AND  a.facebook_user_id = ".$user." AND
+		$select = "select f.facebook_user_name,  a.facebook_user_id AS id 
+					from subscribes a, subscribes b, facebook_users f
+					where a.follow_enable=1 AND b.follow_enable=1 AND  a.facebook_user_id =".$user." AND
 					b.facebook_user_id_subscribe_to =" .$user. " AND
-					a.facebook_user_id_subscribe_to = b.facebook_user_id";
+					a.facebook_user_id_subscribe_to = b.facebook_user_id AND f.facebook_user_id = b.facebook_user_id_subscribe_to";
 		
+		//echo $select;
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
@@ -80,7 +81,7 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 	public function getFriends($user){
 
 		$select = "select count(a.facebook_user_id) as friends 
-					from subscribes as a, subscribes as b
+					from subscribes a, subscribes b
 					where a.follow_enable=1 AND b.follow_enable=1 AND  a.facebook_user_id = ".$user." AND 
 					b.facebook_user_id_subscribe_to =" .$user. " AND 
 					a.facebook_user_id_subscribe_to = b.facebook_user_id";
