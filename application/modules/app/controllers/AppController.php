@@ -210,6 +210,21 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		 
     	}
     	
+    	$topFanYou = $model->getUserTopFansRank($this->_fanpageId, $user->facebook_user_id);
+    	$popularYou = $model->getUserMostPopularRank($this->_fanpageId, $user->facebook_user_id);
+    	$talkerYou = $model->getUserTopTalkerRank($this->_fanpageId, $user->facebook_user_id);
+    	$clickerYou = $model->getUserTopClickerRank($this->_fanpageId, $user->facebook_user_id);
+    	//Zend_Debug::dump($topFanYou);
+    	
+    	
+    	
+    	$this->view->topFanYou =  $topFanYou;
+    	$this->view->popularYou = $popularYou;
+    	$this->view->talkerYou = $talkerYou;
+    	$this->view->clickerYou =$clickerYou;
+    	//$this-view->talkerYou =
+    	//$this-view->clickerYou =
+    	
     	$this->view->topFanArray = $topArray ;
     	$this->view->popularArray = $popularArray ;
     	$this->view->talkerArray = $talkerArray ;
@@ -287,15 +302,29 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$likesModel = new Model_Likes();
     	$likes = array();
+    	$picture = array();
     	$count=0;
 
     	foreach ($topPosts as $posts){
     		//echo $top['facebook_user_id'];
     		$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts['post_id'], $this->_userId );
     		//echo $likes[$count];
+    		
+    		$pic = $this->getPost($posts['post_id']);
+    		//Zend_Debug::dump($pic);
+    		if (($pic->type == 'photo') ||($pic->type == 'video')  ){
+    			$picture[$count] = $pic -> picture;
+    		}else{
+    			$picture[$count] = null;
+    		}
     		$count++;
     	}
-
+		
+    	
+    	
+    	
+    	
+    	$this->view->picture = $picture;
     	$this->view->likes = $likes;
     	$this->view->top_post = $topPosts;
 
@@ -417,12 +446,21 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
-
+		
     	$follow = new Model_Subscribes();
     	$follower = $follow->getFollowers($user->facebook_user_id);
     	$following = $follow->getFollowing($user->facebook_user_id);
     	$friends = $follow->getFriends($user->facebook_user_id);
     	
+    	$fan = new Model_Fans();
+    	$fan_level = $fan->getFanLevel($user->facebook_user_id, $this->_fanpageId);
+    	$fan_since = $fan->getFanSince($user->facebook_user_id, $this->_fanpageId);
+    	$fan_country = $fan->getFanFields($user->facebook_user_id, $this->_fanpageId, 'fan_country')->current();
+    	//Zend_Debug::dump($fan_level);
+    	
+    	$this->view->fan_level = $fan_level;
+    	$this->view->fan_since = $fan_since;
+    	$this->view->fan_country = $fan_country->fan_country;
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	$this->view->friends = $friends;
@@ -644,7 +682,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     }
     
-
+	
     protected function getPost($postId){
     	$client = new Zend_Http_Client;
     	$client->setUri("https://graph.facebook.com/". $postId);
@@ -731,7 +769,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	} catch (Exception $e) {
     		return array();
     	}
-
     }
  
     /**
@@ -774,6 +811,48 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	}
     */
 
+    
+    public function getfollowersAction(){
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$target = $this->_request->getParam('target');
+    	$follow = new Model_Subscribes();
+    	
+    	$result = $follow->getFollowersList($this->_userId);
+    	
+    	$this->view->result = $result;
+    	
+    	Zend_Debug::dump($result);
+    	
+    	$this->render("userlist");
+    }
+    
+    public function getfriendsAction(){
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$target= $this->_request->getParam('target');
+    	$follow = new Model_Subscribes();
+    	
+    	$result= $follow->getFriendsList($this->_userId);
+    	Zend_Debug::dump($result);
+    	$this->view->result = $result;
+    	$this->render("userlist");
+    }
+    
+    public function getfollowingAction(){    	
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$target = $this->_request->getParam('target');
+    	$follow = new Model_Subscribes();
+    	
+    	$result = $follow->getFollowingList($this->_userId);
+    	Zend_Debug::dump($result);
+    	$this->view->result = $result;
+    	$this->render("userlist");
+
+    }
+    
+    
     public function adminfeedAction() {
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);

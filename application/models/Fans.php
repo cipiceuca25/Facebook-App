@@ -33,6 +33,23 @@ class Model_Fans extends Model_DbTable_Fans
 		return;
 	}
 	
+	public function getFanSince($facebook_user_id, $fanpage_id){
+		
+		$query = $this->select()
+		->from($this, array('created_time'))
+		->where('facebook_user_id = ?', $facebook_user_id)
+		->where('fanpage_id =?', $fanpage_id);
+		$result = $this->fetchAll($query)->toArray();
+		
+		//Zend_Debug::dump($result); exit();
+		if(!empty($result[0])) {
+			return $result[0]['created_time'];
+		}
+		
+		return;
+	}
+	
+	
 	public function getFanPoints($facebook_user_id, $fanpage_id) {
 		$query = $this->select()
 		->from($this, array('fan_points'))

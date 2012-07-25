@@ -24,7 +24,24 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         }
         */
     }
-
+	
+    public function testfanobjectAction(){
+    	$f = new Model_FansObjectsStats();
+    	
+    	$f->addPost('197221680326345','28117303');
+    	$f->addComment('197221680326345','28117303');
+    	$f->addPhotos('197221680326345','28117303');
+    	$f->addLikeAlbum('197221680326345','28117303');
+    	$f->addLikeComment('197221680326345','28117303');
+    	$f->addLikePhoto('197221680326345','28117303');
+    	$f->addLikePost('197221680326345','28117303');
+    	
+    	$f->addOtherLikeComments('197221680326345','28117303');
+    	$f->addOtherLikePost('197221680326345','28117303');
+    	$f->addOtherPostComment('197221680326345','28117303');
+    	
+    }
+    
     public function testAction() {
     	$facebook_user_id = '578800322';
     	$fanpage_id = '178384541065'; 

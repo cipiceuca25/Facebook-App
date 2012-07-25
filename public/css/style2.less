@@ -103,7 +103,7 @@ ul, ol {
 .subtitle-dark{
 	height:80px;
 	background-color:@color-background;
-	
+	padding-bottom:10px;
 }
 
 .title .photo{
@@ -216,6 +216,13 @@ ul, ol {
 	height:30px;	
 }
 
+.bubble .post img{
+	display:block;	
+
+	margin-left:auto; 
+	margin-right:auto; 	
+}
+
 
 
 /***** Chat Right Bubbles ******/
@@ -305,14 +312,25 @@ ul, ol {
 .post{
 	padding-top:5px;
 	padding-bottom:5px;
+
 }
 .post-list .post img {
-	width:100%;
-	display:block;	
-	
+	//max-width:100%;
+	//display:block;	
+
+	margin-left:auto; 
+	margin-right:auto; 
 }
 
+.post .message{
+	width:100%;
+	display:block;
+	word-wrap:break-word;
+}
 
+.post .pic img {
+	display:block;
+}
 
 .post-list .post a:hover {
 	text-decoration:none;
@@ -345,6 +363,16 @@ ul, ol {
 	color:lighten(@color-text2, 15%);
 	margin-right:4px;
 }
+
+.post-list .link-left{
+	float:left;
+	width:25%;
+}
+
+.post-list .link-right{
+	float:right;
+	width:75%
+}	
 
 /* TOP LISTS */
 /*==================================================*/
@@ -479,7 +507,7 @@ ul, ol {
 
 .shadow{
 
-	height:100px;
+	height:50px;
 	//background:url(../img/bg_shadow.jpg) top center no-repeat;
 	text-align:center;
 	
@@ -561,6 +589,7 @@ ul, ol {
 
 .profile-block{
 	height:80px;
+	margin-left:5px;
 }
 
 .profile-block h1{
@@ -568,16 +597,35 @@ ul, ol {
 	font-size:40px;
 	color:@color-title-border;
 }
+.ach, .recbad{
+	padding-top:10px;
+	font-size:14;
+	text-align:left;
+	font-weight:bold;
+}
 
-.profile-block h5 , .profile-block h4{
+.ach{
+
+	padding-bottom:5px;
+}
+
+.profile-block h5 , .profile-block h4, .profile-block h2, .recbad{
 	text-align:center;
 	width:100%;
 }
 
-
-.profile-block h4{
-	padding-top:6px;
+.recbad{
+	padding-top:0px;
 }
+
+.profile-block h2{
+	position:relative;
+	top:-16px;
+}
+.profile-block h4{
+	padding-top:14px;
+}
+
 
 .profile-block.following{
 	float:left;
@@ -593,7 +641,7 @@ ul, ol {
 	background-color:@color-follower;
 	width:137px;
 	color:white;
-
+	margin-left:0px;
 }
 
 .profile-block.friends{
@@ -601,7 +649,7 @@ ul, ol {
 	background-color:@color-friends;
 	width:138px;
 	color:white;
-
+	margin-left:0px;
 
 }
 
@@ -614,34 +662,49 @@ ul, ol {
 }
 .profile-block.fan-point .progress .bar{
 	height:25px;
-	background-color: @color-dark;
-	background-image :none;
+	//background-color: @color-dark;
+	//background-image :none;
+	#gradient > .horizontal(@color-base,darken(@color-base, 15%) );
+}
+
+.profile-block .progress{
+	margin-top:5px;
+	height:25px;
 }
 
 .profile-block .progress .bar{
-
-	background-color: @color-base;
-	background-image :none;
+	height:25px;
+	//background-color: @color-base;
+	#gradient > .horizontal(@color-dark, lighten(@color-dark,15%) );
 }
 
-
+.span1.rb{
+	margin-left:17px;
+	
+}
 
 .span6.left{
+	padding-top:10px;
 	width:412px;
-	background-color:@color-feed;
-	border-top: 1px solid @color-feed2;
-	border-bottom: 1px solid @color-feed2;
-	border-left:1px solid @color-feed2;
+	//background-color:@color-feed;
+	//border-top: 1px solid @color-feed2;
+	//border-bottom: 1px solid @color-feed2;
+	//border-left:1px solid @color-feed2;
 	margin-top:10px;
+	border-right: 1px solid @color-feed2;
+	#gradient > .horizontal( @color-background,@color-feed );
 }
 
 .span6.right{
+	padding-top:10px;
 	margin-left:0px;
-	border-top: 1px solid @color-feed2;
-	border-bottom: 1px solid @color-feed2;
-	border-right: 1px solid @color-feed2;
+	border-left: 1px solid @color-feed2;
+	//border-top: 1px solid @color-feed2;
+	//border-bottom: 1px solid @color-feed2;
+	//border-right: 1px solid @color-feed2;
 	margin-top:10px;
-	background-color:@color-feed2;
+	//background-color:@color-feed2;
+	#gradient > .horizontal( @color-feed, @color-background );
 }
 
 .row.border{
@@ -668,13 +731,14 @@ ul, ol {
 
 .badges-list {
 	margin-top:10px;
-	border-left: 1px solid @color-feed;
-	border-right: 1px solid @color-feed;
-	border-top: 1px solid @color-feed;
+	//border-left: 1px solid @color-feed;
+	//border-right: 1px solid @color-feed;
+	//border-top: 1px solid @color-feed;
 }
 
 .badges-list li{
-	border-bottom: 1px solid @color-feed;
+	//border-bottom: 1px solid @color-feed;
+	margin-bottom:5px;
 }
 
 .badges-list .percentage{
@@ -703,7 +767,7 @@ ul, ol {
 .badges-list .progress .bar{
 	height:50px;
 	background-color: @color-badges;
-	background-image :none;
+	#gradient > .horizontal(@color-badges, darken(@color-badges, 15%) );
 	
 }
 .badges-list .progress{
@@ -869,7 +933,7 @@ ul, ol {
 .comment_box_popup,
 .comment_box{
 
-	width:84%;
+	width:80%;
 	resize: none; 
 	overflow:hidden;
 	
@@ -881,10 +945,9 @@ ul, ol {
 }
 
 #post_box{
-	width:85%;
-	
-
+	width:80%;
 }
+
 .submit_box{
 	margin-left:5px;
 }
@@ -935,3 +998,112 @@ ul, ol {
 	top:-6px;
 	position:relative;
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+.top_post{
+	margin-top: 15px;
+	position:relative;
+	//right:-10px;
+	//left:10px;
+}
+
+.top_post .message{
+	display:block;
+	padding-top:10px;
+	padding-bottom:10px;
+
+}
+
+.top_post .image{
+	padding-top:15px;
+}
+.top_post .photo{
+	float:right;
+	display:inline-block;
+	position:relative;
+	margin-left:5px;
+	margin-top:5px;
+	margin-right:5px;
+}
+
+.top_post .photo img{
+	border: 5px solid @color-feed2;
+}
+
+.top_post .name{
+	position:relative;
+	margin-left:10px;
+	display:inline-block;
+	top:6px;
+	float:left;
+	//vertical-align:middle;
+
+}
+
+.top_post .name a{
+	font: bold 14px Arial, Helvetica, sans-serif;
+
+}
+
+.top_post .social{
+	position:relative;
+	right:0px;
+	text-align:right;
+	//display:inline-block;
+}
+
+.top_post li{
+	margin-bottom:20px;
+	display:block;
+	#gradient > .vertical(lighten(@color-feed, 5%) ,@color-background);
+	//.border-radius(10px);
+	//.rotate(-5deg);
+	padding:10px;
+	padding-right:20px;
+	//border: 2px solid @color-feed;
+	.box-shadow(3px 3px 3px  @color-badges);
+}
+
+.top_post .info{
+	position:relative;
+	display:block;
+
+	width:100%;
+	height:50px;
+	//.border-radius(5px 0 0 5px);
+	//#gradient > .horizontal(@color-base, @color-background );
+	//.rotate(5deg);
+}
+
+.top_post .date{
+	color:lighten(@color-text2, 15%);
+}
+
+.top_post .post{
+	position:relative;
+	
+	margin-top:-15px;
+	margin-right:5px;
+	text-align:right;
+	//.rotate(5deg);
+}
+
+.title-header.reverse{
+	text-align:right;
+	.border-radius(0px);
+	#gradient > .horizontal( @color-background,@color-base );
+	
+}
+.title-header.reverse h3{
+	padding-right:10px;	
+}
+.span1.re{
+	width:5px;
+}
+.span7.line{
+	border-right:2px solid @color-badges;
+	padding-right:45px;
+}
+
+
