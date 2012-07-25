@@ -3,22 +3,26 @@ require_once APPLICATION_PATH .'/../library/Facebook/facebook.php';
 
 class Service_FancrankFBService extends Facebook {
 	protected $_facebookGraphAPIUrl;
+	protected $_appId;
+	protected $_appSecret;
 	
 	public function __construct($config = false) {
 		$this->_facebookGraphAPIUrl = 'https://graph.facebook.com/';
+		$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
+		$newConfig = $sources->get('facebook');
+		$this->_appId = $newConfig->client_id;
+		$this->_appSecret = $newConfig->client_secret;
 		if($config) {
 			if(is_array($config)) {
 				parent::__construct($config);
 				return;
 			}
-			$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
-			$this->config = $sources->get('facebook');
-			$config = array(
-					'appId'  => $this->config->client_id,
-					'secret' => $this->config->client_secret,
+			$newConfig = array(
+					'appId'  => $this->_appId,
+					'secret' => $this->_appSecret,
 					'cookie' => true,
 			);
-			parent::__construct($config);
+			parent::__construct($newConfig);
 		}
 	}
 
@@ -123,7 +127,7 @@ class Service_FancrankFBService extends Facebook {
 		return base64_decode(strtr($input, '-_', '+/'));
 	}
 	
-	public function getExtendedAccessToken(){
+	public function getExtendedAccessToken() {
 		try {
 			// need to circumvent json_decode by calling _oauthRequest
 			// directly, since response isn't JSON format.
@@ -155,6 +159,27 @@ class Service_FancrankFBService extends Facebook {
 		return $response_params['access_token'];
 	}
 	
+	public function getAppAccessToken() {
+		$token_url = "https://graph.facebook.com/oauth/access_token?" .
+				"client_id=" . $this->_appId .
+				"&client_secret=" . $this->_appSecret .
+				"&grant_type=client_credentials";
+	
+		//$response = file_get_contents($token_url);
+		$client = new Zend_Http_Client;
+		$client->setUri($token_url);
+		$client->setMethod(Zend_Http_Client::GET);
+		try {
+			$response = $client->request();
+			$result = $response->getBody();
+			if(is_string($result) && preg_match('/^access_token=/i', $result)) {
+				$token = ltrim($result, 'access_token=');
+				return $token;
+			}
+		}catch (Exception $e) {
+			
+		}
+	}
 }
 
 ?>
