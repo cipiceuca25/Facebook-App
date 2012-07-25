@@ -60,8 +60,9 @@
 				<?= $this->escape($post->caption)?>: 
 				<br/>
 				<br/>
-				<?=$this->escape($post->description)?>
-			<?php if (isset($post->picture)){?></div> <?php }?>
+				
+				<?php if (isset($post->description)){?><?=$this->escape($post->description)?><?php }?>
+				<?php if (isset($post->picture)){?></div> <?php }?>
 			
 		<?}elseif(isset($post->link)){ ?>
 			</a>
@@ -79,9 +80,9 @@
 		<img src="/img/news-feed/icon-likes.png" />
 		<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
 		<?php if ($this->likes[$count] == 0) {?>
-			<a href="#" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
+			<a href="#post_<?=$post->id?>" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
 		<?}else{?>
-			<a href="#" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
+			<a href="#post_<?=$post->id?>" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
 		<?php }?>
 		</span>
 		<span class="comment">
@@ -90,7 +91,7 @@
 		 	} else {
 				echo '0'; 
 			}?>
-		 <a href="#"  onclick=" comment_feed('<?= $post->id ?>', 5,<?php 
+		 <a href="#post_<?=$post->id?>" onclick=" comment_feed('<?= $post->id ?>', 5,<?php 
 		 		if(isset($post->comments->count)){
 					echo $post->comments->count; //echo  $post->comments->count;
 		 	} else {echo '0';} ?> , true )">Comment</a>

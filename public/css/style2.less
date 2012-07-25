@@ -589,6 +589,7 @@ ul, ol {
 
 .profile-block{
 	height:80px;
+	margin-left:5px;
 }
 
 .profile-block h1{
@@ -596,16 +597,35 @@ ul, ol {
 	font-size:40px;
 	color:@color-title-border;
 }
+.ach, .recbad{
+	padding-top:10px;
+	font-size:14;
+	text-align:left;
+	font-weight:bold;
+}
 
-.profile-block h5 , .profile-block h4{
+.ach{
+
+	padding-bottom:5px;
+}
+
+.profile-block h5 , .profile-block h4, .profile-block h2, .recbad{
 	text-align:center;
 	width:100%;
 }
 
-
-.profile-block h4{
-	padding-top:6px;
+.recbad{
+	padding-top:0px;
 }
+
+.profile-block h2{
+	position:relative;
+	top:-16px;
+}
+.profile-block h4{
+	padding-top:14px;
+}
+
 
 .profile-block.following{
 	float:left;
@@ -621,7 +641,7 @@ ul, ol {
 	background-color:@color-follower;
 	width:137px;
 	color:white;
-
+	margin-left:0px;
 }
 
 .profile-block.friends{
@@ -629,7 +649,7 @@ ul, ol {
 	background-color:@color-friends;
 	width:138px;
 	color:white;
-
+	margin-left:0px;
 
 }
 
@@ -642,34 +662,49 @@ ul, ol {
 }
 .profile-block.fan-point .progress .bar{
 	height:25px;
-	background-color: @color-dark;
-	background-image :none;
+	//background-color: @color-dark;
+	//background-image :none;
+	#gradient > .horizontal(@color-base,darken(@color-base, 15%) );
+}
+
+.profile-block .progress{
+	margin-top:5px;
+	height:25px;
 }
 
 .profile-block .progress .bar{
-
-	background-color: @color-base;
-	background-image :none;
+	height:25px;
+	//background-color: @color-base;
+	#gradient > .horizontal(@color-dark, lighten(@color-dark,15%) );
 }
 
-
+.span1.rb{
+	margin-left:17px;
+	
+}
 
 .span6.left{
+	padding-top:10px;
 	width:412px;
-	background-color:@color-feed;
-	border-top: 1px solid @color-feed2;
-	border-bottom: 1px solid @color-feed2;
-	border-left:1px solid @color-feed2;
+	//background-color:@color-feed;
+	//border-top: 1px solid @color-feed2;
+	//border-bottom: 1px solid @color-feed2;
+	//border-left:1px solid @color-feed2;
 	margin-top:10px;
+	border-right: 1px solid @color-feed2;
+	#gradient > .horizontal( @color-background,@color-feed );
 }
 
 .span6.right{
+	padding-top:10px;
 	margin-left:0px;
-	border-top: 1px solid @color-feed2;
-	border-bottom: 1px solid @color-feed2;
-	border-right: 1px solid @color-feed2;
+	border-left: 1px solid @color-feed2;
+	//border-top: 1px solid @color-feed2;
+	//border-bottom: 1px solid @color-feed2;
+	//border-right: 1px solid @color-feed2;
 	margin-top:10px;
-	background-color:@color-feed2;
+	//background-color:@color-feed2;
+	#gradient > .horizontal( @color-feed, @color-background );
 }
 
 .row.border{
@@ -696,13 +731,14 @@ ul, ol {
 
 .badges-list {
 	margin-top:10px;
-	border-left: 1px solid @color-feed;
-	border-right: 1px solid @color-feed;
-	border-top: 1px solid @color-feed;
+	//border-left: 1px solid @color-feed;
+	//border-right: 1px solid @color-feed;
+	//border-top: 1px solid @color-feed;
 }
 
 .badges-list li{
-	border-bottom: 1px solid @color-feed;
+	//border-bottom: 1px solid @color-feed;
+	margin-bottom:5px;
 }
 
 .badges-list .percentage{
@@ -731,7 +767,7 @@ ul, ol {
 .badges-list .progress .bar{
 	height:50px;
 	background-color: @color-badges;
-	background-image :none;
+	#gradient > .horizontal(@color-badges, darken(@color-badges, 15%) );
 	
 }
 .badges-list .progress{

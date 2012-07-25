@@ -18,7 +18,7 @@
 									<div class="span2">
 										<div class="profile-block">
 											<h3>Level</h3>
-											<h1>18</h1>
+											<h1><?= $this->fan_level?></h1>
 										</div>
 										
 									</div>
@@ -47,33 +47,37 @@
 									<div class="span2">
 										<div class="profile-block">
 										<h3>FAN SINCE</h3>
-										<h4><?= date("F d Y", strtotime($this->facebook_user->created_time))?></h4>
+										<h4><?= date("F d Y", strtotime($this->fan_since))?></h4>
 										</div>
 									</div>
 									<div class="span2">
 										<div class="profile-block">
-										<h3>CITY</h3>
-										<h4><?= $this->facebook_user->hometown?></h4>
+										<h3>COUNTRY</h3>
+										<h4><?= $this->fan_country?></h4>
 										</div>
 									</div>
 								</div>		
 								<div class="row ">
 									
 										<div class="profile-block following">
-										<h4>FOLLOWING <br/> <?= $this->following['0']['Following']?>
+										<h4>FOLLOWING 
 									
-										</h4>
+										</h4><br/>
+										<h2> <?= $this->following['0']['Following']?></h2>
 										</div>
 									
 									
 										<div class="profile-block followers">
-										<h4>FOLLOWERS  <br/> <?= $this->follower['0']['Follower']?>
-										</h4>
+										<h4>FOLLOWERS  
+										</h4><br/>
+										<h2> <?= $this->follower['0']['Follower']?></h2>
 										</div>
 									
 									
 										<div class="profile-block friends">
-										<h4> FRIENDS  <br/>  <?= $this->friends['0']['friends']?></h4>
+										<h4> FRIENDS  </h4>
+										<br/>  
+										<h2><?= $this->friends['0']['friends']?></h2>
 										</div>
 								
 								</div>
@@ -84,7 +88,7 @@
 								<div class="row">
 									<div class="span3">
 										<div class="profile-block">
-										<h4>OVERALL ACHIEVEMENT</h4>
+										<span class="ach" >OVERALL ACHIEVEMENT</span>
 										<div class="progress">
 											<div class="bar" style="width: 60%;">
 											</div>
@@ -97,7 +101,7 @@
 									
 											<div class="span3">
 												<div class="profile-block">
-													<h4>PERSONAL ACHIEVEMENT</h4>
+													<span class="ach" >PERSONAL ACHIEVEMENT</span>
 													<div class="progress">
 														<div class="bar" style="width: 60%;"></div>
 													</div>
@@ -106,7 +110,7 @@
 											
 											<div class="span3">
 												<div class="profile-block">
-													<h4>SOCIAL ACHIEVEMENT</h4>
+													<span class="ach" >SOCIAL ACHIEVEMENT</span>
 													<div class="progress">
 														<div class="bar" style="width: 60%;"></div>
 													</div>
@@ -117,23 +121,23 @@
 								<div class="row">
 									
 									<div class="profile-block">
-										<h4>RECENT BADGES</h4>
-										<div class="span1">
+										<div class="recbad">RECENT BADGES</div>
+										<div class="span1 rb">
 											<img src="/img/badges/like_comment_1.png" />
 										</div>
-										<div class="span1">
+										<div class="span1 rb">
 											<img src="/img/badges/like_comment_5.png" />
 										</div>
-										<div class="span1">
+										<div class="span1 rb">
 											<img src="/img/badges/like_comment_10.png" />
 										</div>
-										<div class="span1">
+										<div class="span1 rb">
 											<img src="/img/badges/like_comment_1.png" />
 										</div>
-										<div class="span1">
+										<div class="span1 rb">
 											<img src="/img/badges/like_comment_5.png" />
 										</div>
-										<div class="span1">
+										<div class="span1 rb">
 											<img src="/img/badges/like_comment_10.png" />
 										</div>
 									</div>
@@ -179,6 +183,7 @@
 										</div>
 										
 									</li>
+									
 									<li>
 										<div class="badges">
 											<div class="percentage">20%</div>

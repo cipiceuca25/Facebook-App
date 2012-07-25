@@ -446,12 +446,21 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
-
+		
     	$follow = new Model_Subscribes();
     	$follower = $follow->getFollowers($user->facebook_user_id);
     	$following = $follow->getFollowing($user->facebook_user_id);
     	$friends = $follow->getFriends($user->facebook_user_id);
     	
+    	$fan = new Model_Fans();
+    	$fan_level = $fan->getFanLevel($user->facebook_user_id, $this->_fanpageId);
+    	$fan_since = $fan->getFanSince($user->facebook_user_id, $this->_fanpageId);
+    	$fan_country = $fan->getFanFields($user->facebook_user_id, $this->_fanpageId, 'fan_country')->current();
+    	//Zend_Debug::dump($fan_level);
+    	
+    	$this->view->fan_level = $fan_level;
+    	$this->view->fan_since = $fan_since;
+    	$this->view->fan_country = $fan_country->fan_country;
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	$this->view->friends = $friends;
@@ -760,7 +769,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	} catch (Exception $e) {
     		return array();
     	}
-
     }
  
     /**
@@ -803,6 +811,48 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	}
     */
 
+    
+    public function getfollowersAction(){
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$target = $this->_request->getParam('target');
+    	$follow = new Model_Subscribes();
+    	
+    	$result = $follow->getFollowersList($this->_userId);
+    	
+    	$this->view->result = $result;
+    	
+    	Zend_Debug::dump($result);
+    	
+    	$this->render("userlist");
+    }
+    
+    public function getfriendsAction(){
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$target= $this->_request->getParam('target');
+    	$follow = new Model_Subscribes();
+    	
+    	$result= $follow->getFriendsList($this->_userId);
+    	Zend_Debug::dump($result);
+    	$this->view->result = $result;
+    	$this->render("userlist");
+    }
+    
+    public function getfollowingAction(){    	
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$target = $this->_request->getParam('target');
+    	$follow = new Model_Subscribes();
+    	
+    	$result = $follow->getFollowingList($this->_userId);
+    	Zend_Debug::dump($result);
+    	$this->view->result = $result;
+    	$this->render("userlist");
+
+    }
+    
+    
     public function adminfeedAction() {
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
