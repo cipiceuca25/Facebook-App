@@ -93,6 +93,38 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		
     }
     
+    public function testmemcacheAction() {
+    	$starttime = time();
+    	echo $starttime;
+    	$model = new Model_Rankings;
+
+    	try {
+			$cache = Zend_Registry::get('memcache');
+			$cache->setLifetime(15); 
+
+			$this->_fanpageId = '178384541065';
+			$topPostsId = 'topFans_' .$this->_fanpageId;
+
+    		//Check to see if the $topStories are cached and look them up if not
+    		if(isset($cache) && !$topStories = $cache->load($topPostsId)){
+    			//Look up the $topStories
+    			echo 'look up db';
+    			$topFans = $model->getTopFans($this->_fanpageId , 100);
+    			 
+    			//Save to the cache, so we don't have to look it up next time
+    			$cache->save($topFans, $topPostsId);
+    		}else {
+    			$topFans = $cache->load($topPostsId);
+    		}    		
+    	} catch (Exception $e) {
+    		echo $e->getMessage();
+    	}
+    	Zend_Debug::dump($topFans);
+    	$stop = time();
+    	$totalTime = $stop - $starttime;
+    	echo '</br>Execution time ' . $totalTime;
+    }
+    
     public function viewAction() {
     	$time = time();
     	$range = 7776000;
