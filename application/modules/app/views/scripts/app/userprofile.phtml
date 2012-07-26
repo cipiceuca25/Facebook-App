@@ -15,7 +15,7 @@
 									<div class="span3">
 										<div class="profile-block">
 											<h3>Level</h3>
-											<h1>18</h1>
+											<h1><?= $this->fan_level?></h1>
 										</div>
 										
 									</div>
@@ -47,35 +47,39 @@
 										<h4><?if ($this->facebook_user->created_time=='notuser'){ ?>
 												<?echo "This user does not use Fancrank"?>
 											<?}else{?>
-												<?= date("F d Y", strtotime($this->facebook_user->created_time))?>
+												<?= date("F d Y", strtotime($this->fan_since))?>
 											<?}?>
 											</h4>
 										</div>
 									</div>
 									<div class="span3">
 										<div class="profile-block">
-										<h3>CITY</h3>
-										<h4><?= $this->facebook_user->hometown?></h4>
+										<h3>COUNTRY</h3>
+										<h4><?= $this->fan_country?></h4>
 										</div>
 									</div>
 								</div>		
 								<div class="row ">
 									
 										<div class="profile-block following">
-										<h4>FOLLOWING <br/> <?= $this->following['0']['Following']?>
+										<h4>FOLLOWING 
 									
-										</h4>
+										</h4><br/>
+										<h2> <a href="#" onclick="getFollowingList('<?=$this->facebook_user->facebook_user_name?>', '<?= $this->facebook_user->facebook_user_id ?>', 15, 0)"><?= $this->following['0']['Following']?></a></h2>
 										</div>
 									
 									
 										<div class="profile-block followers">
-										<h4>FOLLOWERS  <br/> <?= $this->follower['0']['Follower']?>
-										</h4>
+										<h4>FOLLOWERS  
+										</h4><br/>
+										<h2> <a href="#" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_name?>','<?= $this->facebook_user->facebook_user_id ?>', 15,0)"><?= $this->follower['0']['Follower']?></a></h2>
 										</div>
 									
 									
 										<div class="profile-block friends">
-										<h4> FRIENDS  <br/>  <?= $this->friends['0']['friends']?></h4>
+										<h4> FRIENDS  </h4>
+										<br/>  
+										<h2><a href="#" onclick="getFriendsList('<?=$this->facebook_user->facebook_user_name?>','<?= $this->facebook_user->facebook_user_id ?>' ,15,0)"><?= $this->friends['0']['friends']?></a></h2>
 										</div>
 										
 									

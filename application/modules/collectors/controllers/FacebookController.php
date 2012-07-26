@@ -101,7 +101,6 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	try {
 			$cache = Zend_Registry::get('memcache');
 			$cache->setLifetime(15); 
-
 			$this->_fanpageId = '178384541065';
 			$topPostsId = 'topFans_' .$this->_fanpageId;
 

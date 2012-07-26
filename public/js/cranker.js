@@ -43,7 +43,7 @@
 			$('#top-fans-btn').text("+ More");
 		}
 		tfb = !tfb;
-	})
+	});
 	
 	$('#fan-favorite-btn').live( 'click', function() {
 		if ((ffb)==true){
@@ -52,7 +52,7 @@
 			$('#fan-favorite-btn').text("+ More");
 		}
 		ffb = !ffb;
-	})
+	});
 	
 	$('#top-talker-btn').live( 'click', function() {
 		if ((ttb)==true){
@@ -61,7 +61,7 @@
 			$('#top-talker-btn').text("+ More");
 		}
 		ttb = !ttb;
-	})
+	});
 	
 	$('#top-clicker-btn').live( 'click', function() {
 		if ((tcb)==true){
@@ -70,7 +70,7 @@
 			$('#top-clicker-btn').text("+ More");
 		}
 		tcb = !tcb;
-	})
+	});
 
     function closeProfile(){
     	$('.light-box').css('display','none');
@@ -105,22 +105,22 @@
 	$('#news-feed a').click(function (e) {
 	  e.preventDefault();
 	  $(this).tab('show');
-	})
+	});
 
 	$('#fan-favorite a').click(function (e) {
 	  e.preventDefault();
 	  $(this).tab('show');
-	})
+	});
 	
 	$('#profile a').click(function (e) {
 	  e.preventDefault();
 	  $(this).tab('show');
-	})
+	});
 	
 	$('#achievements a').click(function (e) {
 	  e.preventDefault();
 	  $(this).tab('show');
-	})
+	});
 	
 	$('#newsfeed-tab').live('click',function(){
 		feedLimit = 0;
@@ -153,7 +153,7 @@
 	});
 	
 	$('#achievements-tab').live('click', function(){
-		getAwards('#achievements') 
+		getAwards('#achievements');
 		$('#top-fans').html('');
 		$('#profile').html('');
 		$('#newsfeed').html('');
@@ -161,12 +161,26 @@
 
 	
 	
-	function userProfile(user){
+	function userProfile(user, refresh){
+		refresh = typeof refresh !== 'undefined' ? refresh : true;
 		getUserProfile('.profile-content', user);
 		
 		$('.light-box').css('display','block');
 		$('.user-profile').css('display', 'block');
-			/*
+			
+		
+		$('.profile-content').css('height', 'auto');
+		  
+		if(refresh){
+		
+			$('.profile-content').animate({
+				height:'toggle',
+				top:'20px'
+			   },500, function(){
+				   
+			});
+		}
+		/*
 		$('.top-border').animate({
 		    height: 'toggle',
 			top: '0px'
@@ -181,16 +195,6 @@
 		    // Animation complete.
 		  });
 		  */
-		
-		$('.profile-content').css('height', 'auto');
-		  
-		$('.profile-content').animate({
-			height:'toggle',
-			top:'20px'
-		   },500, function(){
-			   
-		});
-	
 	}
 
 	function comment_bubble(post_id, limiter, open){
@@ -300,7 +304,7 @@
 	function getFeedComment(ui, post_id, limiter, total, toggle){
 		$.ajax({
 			type: "GET",
-			url: serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter + '&total=' +total + '&access_token=' + accessToken,
+			url: serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter + '&total=' +total,
 
 			dataType: "html",
 			cache: false,
@@ -340,7 +344,7 @@
 		      
 		$.ajax({
 			type: "GET",
-			url: serverUrl +'/app/app/comment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter +'&access_token=' + accessToken,
+			url: serverUrl +'/app/app/comment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter,
 
 			dataType: "html",
 			cache: false,
@@ -426,7 +430,8 @@
 				//alert("target followed")
 				//alert(post_id + 'liked');
     			alert('liked');
-    			addActivities('like-'+post_type, post_id, target_id, target_name );
+    			addActivities('like-'+post_type, userName, post_id, target_id, target_name );
+    	
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -445,7 +450,7 @@
 				//alert("target followed")
 				//alert(post_id + 'liked');
     			alert('unliked');
-    			addActivities('unlike-'+post_type, post_id, target_id, target_name);
+    			addActivities('unlike-'+post_type,userName, post_id, target_id, target_name);
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -456,7 +461,7 @@
 	
 	function getFancrankfeed(view){
 		ui = '#fancrankfeed';
-		feedLimit +=10;
+		feedLimit +=6;
 		setFeed=view;
 		//alert(baseAppUrl+'/fancrankfeed?fanpage_id='+ fanpageId + '&facebook_user_id=' + userId + '&access_token=' +accessToken + '&viewAs=' +view);
 		$.ajax({
@@ -550,23 +555,27 @@
 
     
 	function follow(target, name, refresh){
-		$.ajax({
-    		type: "GET",
-    		url: serverUrl +'/app/user/'+ userId + '/follow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
-    		dataType: "html",
-    		cache: false,
-    		success: function( data ) {
-				//alert("target followed")
-    			addActivities('follow', target, target, name );
-				getUserProfile('.profile-content', target);
-				if (refresh){
-					getTopfans('#top-fans');
-				}
-    		},	
-    		error: function( xhr, errorMessage, thrownErro ) {
-    			console.log(xhr.statusText, errorMessage);
-    		}
-    	});
+		if (target != userId){
+			
+		
+			$.ajax({
+	    		type: "GET",
+	    		url: serverUrl +'/app/user/'+ userId + '/follow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
+	    		dataType: "html",
+	    		cache: false,
+	    		success: function( data ) {
+					//alert("target followed")
+	    			addActivities('follow',userName, target, target, name );
+					getUserProfile('.profile-content', target);
+					if (refresh){
+						getTopfans('#top-fans');
+					}
+	    		},	
+	    		error: function( xhr, errorMessage, thrownErro ) {
+	    			console.log(xhr.statusText, errorMessage);
+	    		}
+	    	});
+		}
     }	
 	
 	function unfollow(target, name, refresh){
@@ -577,7 +586,7 @@
     		cache: false,
     		success: function( data ) {
 				//alert("target unfollowed")
-    			addActivities('unfollow', target, target, name );
+    			addActivities('unfollow', userName, target, target, name );
 				getUserProfile('.profile-content', target);
 				if (refresh){
 					getTopfans('#top-fans');
@@ -591,10 +600,10 @@
 
 
 
-	function addActivities(act_type, event, target_id, target_name){
+	function addActivities(act_type, owner_name,  event, target_id, target_name){
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/user/'+ userId + '/addactivity/?activity_type=' + act_type + '&event='+event+ '&fanpage_id=' + fanpageId + '&target_id=' + target_id + '&target_name=' + target_name,
+    		url: serverUrl +'/app/user/'+ userId + '/addactivity/?owner_name='+owner_name +'&activity_type=' + act_type + '&event='+event+ '&fanpage_id=' + fanpageId + '&target_id=' + target_id + '&target_name=' + target_name,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -616,7 +625,7 @@
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
-    			window.location.reload()
+    			window.location.reload();
 				
     			//$(ui).html(data);
     		},	
@@ -636,7 +645,8 @@
 				} else {
 				//alert('Post ID: ' + response.id);
 				$('#post_box').val('');
-				addActivities('post',fanpageId, target_id, target);
+				addActivities('post', userName, fanpageId, target_id, target);
+			
 				setFeed=0;
 				getFancrankfeed(setFeed);
 				}
@@ -654,12 +664,108 @@
 				} else {
 				//alert('Post ID: ' + response.id);
 				$(m).val('');
-				addActivities('post-comment',postid, target_id, target);
+				addActivities('post-comment', userName, postid, target_id, target);
+	
 				comment_feed(postid, 5, postcommentcount +1, false);
 				}
 			});
 	}
 	
+	function getFollowingList(targetname, target, limit, refresh){
+		ui = '.profile-content';
+		refresh = typeof refresh !== 'undefined' ? refresh : true;
+		$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/app/getfollowing/'+ fanpageId +'?limit='+limit + '&target=' +target + '&targetname=' +targetname,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+    			
+    			$(ui).html(data);
+    			$('.light-box').css('display','block');
+    			$('.user-profile').css('display', 'block');
+    			$('.profile-content').css('height', 'auto');
+    			 
+    			
+    			if(refresh){
+	    			$('.profile-content').animate({
+	    				height:'toggle',
+	    				top:'20px'
+	    			   },500, function(){
+	    				   
+	    			});
+    			}
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+	
+	}
+	function getFollowersList(targetname, target, limit, refresh){
+		refresh = typeof refresh !== 'undefined' ? refresh : true;
+		ui = '.profile-content';
+		$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/app/getfollowers/'+ fanpageId +'?limit='+limit + '&target=' +target + '&targetname=' +targetname,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+    			
+    			$(ui).html(data);
+    			$('.light-box').css('display','block');
+    			$('.user-profile').css('display', 'block');
+    				
+    			
+    			$('.profile-content').css('height', 'auto');
+    			  
+    			if(refresh){
+	    			$('.profile-content').animate({
+	    				height:'toggle',
+	    				top:'20px'
+	    			   },500, function(){
+	    				   
+	    			});
+    			}
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+		
+	}
+	function getFriendsList(targetname, target, limit, refresh){
+		ui = '.profile-content';
+		refresh = typeof refresh !== 'undefined' ? refresh : true;
+		$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/app/getfriends/'+ fanpageId +'?limit='+limit + '&target=' +target + '&targetname=' + targetname,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+    			
+    			$(ui).html(data);
+    			$('.light-box').css('display','block');
+    			$('.user-profile').css('display', 'block');
+    				
+    			
+    			$('.profile-content').css('height', 'auto');
+    			  
+    			if(refresh){
+	    			$('.profile-content').animate({
+	    				height:'toggle',
+	    				top:'20px'
+	    			   },500, function(){
+	    				   
+	    			});
+    			}
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+		
+	}
 	function resizeCommentBox(o){
 		o.style.height = "1px";
 	    o.style.height = (10+o.scrollHeight)+"px";

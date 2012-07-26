@@ -43,46 +43,57 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 		return true;
 	}
 	
-	public function getFollowersList($user){
-		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1 AND s.facebook_user_id_subscribe_to =".$user ;
-		return $this->getAdapter()->fetchAll($select);
-	}
-	
-	public function getFollowingList($user){
-		$select = "select s.facebook_user_id_subscribe_to as Following from subscribes s where s.follow_enable=1 AND s.facebook_user_id =".$user ;
+	public function getFollowersList($user, $fanpage, $limit){
+		$select = "select s.*,f.facebook_user_id, f.facebook_user_name, f.facebook_user_last_name, f.facebook_user_first_name from subscribes s, facebook_users f where s.follow_enable=1 AND f.facebook_user_id=s.facebook_user_id AND s.facebook_user_id_subscribe_to =".$user." AND s.fanpage_id=".$fanpage ;
+		
+		if(($limit !== false) && ($limit !=0))
+			$select = $select . " LIMIT $limit";
 		
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
-	public function getFriendsList($user){
-		$select = "select a.facebook_user_id
-					from subscribes as a, subscribes as b
-					where a.follow_enable=1 AND b.follow_enable=1 AND  a.facebook_user_id = ".$user." AND
-					b.facebook_user_id_subscribe_to =" .$user. " AND
-					a.facebook_user_id_subscribe_to = b.facebook_user_id";
+	public function getFollowingList($user, $fanpage, $limit){
+		$select = "select s.*,f.facebook_user_id, f.facebook_user_name, f.facebook_user_last_name, f.facebook_user_first_name from subscribes s, facebook_users f where s.follow_enable=1  AND f.facebook_user_id =s.facebook_user_id_subscribe_to AND s.facebook_user_id =".$user." AND s.fanpage_id=".$fanpage ;
+		
+		if(($limit !== false) && ($limit !=0))
+			$select = $select . " LIMIT $limit";
 		
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
-	public function getFollowers($user){
-		 
-		$select = "select count(s.facebook_user_id) as Follower from subscribes s where s.follow_enable=1 AND s.facebook_user_id_subscribe_to =".$user ;
+	public function getFriendsList($user, $fanpage, $limit){
+		$select = "select f.facebook_user_id, f.facebook_user_name, f.facebook_user_last_name, f.facebook_user_first_name,b.* 
+					from subscribes a, subscribes b, facebook_users f
+					where a.follow_enable=1 AND b.follow_enable=1 AND  a.facebook_user_id =".$user." AND
+					b.facebook_user_id_subscribe_to =" .$user." AND a.fanpage_id=".$fanpage." AND b.fanpage_id=".$fanpage. " AND
+					a.facebook_user_id_subscribe_to = b.facebook_user_id AND f.facebook_user_id = a.facebook_user_id_subscribe_to";
+		
+		if(($limit !== false) && ($limit !=0))
+			$select = $select . " LIMIT $limit";
+		//echo $select;
+		
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
-	public function getFollowing($user){
+	public function getFollowers($user, $fanpage){
 		 
-		$select = "select count(s.facebook_user_id_subscribe_to) as Following from subscribes s where s.follow_enable=1 AND s.facebook_user_id =".$user ;
+		$select = "select count(s.facebook_user_id) as Follower from subscribes s where s.follow_enable=1 AND s.facebook_user_id_subscribe_to =".$user." AND s.fanpage_id=".$fanpage ;
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
+	public function getFollowing($user, $fanpage){
+		 
+		$select = "select count(s.facebook_user_id_subscribe_to) as Following from subscribes s where s.follow_enable=1 AND s.facebook_user_id =".$user." AND s.fanpage_id=".$fanpage ;
 
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
-	public function getFriends($user){
+	public function getFriends($user, $fanpage){
 
 		$select = "select count(a.facebook_user_id) as friends 
-					from subscribes as a, subscribes as b
+					from subscribes a, subscribes b
 					where a.follow_enable=1 AND b.follow_enable=1 AND  a.facebook_user_id = ".$user." AND 
-					b.facebook_user_id_subscribe_to =" .$user. " AND 
+					b.facebook_user_id_subscribe_to =" .$user." AND a.fanpage_id=".$fanpage." AND b.fanpage_id=".$fanpage. " AND 
 					a.facebook_user_id_subscribe_to = b.facebook_user_id";
 		
 		return $this->getAdapter()->fetchAll($select);

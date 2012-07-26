@@ -58,7 +58,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
-	
+		
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
@@ -140,11 +140,11 @@ class Model_Rankings extends Model_DbTable_Rankings
 		$date = new Zend_Date();
 		$date->sub('7', Zend_Date::DAY);
 
-		$select = "SELECT p.*, f.fan_first_name, f.fan_last_name, (p.post_comments_count + p.post_likes_count)/TIMESTAMPDIFF(SECOND, p.created_time, NOW()) as count 
+		$select = "SELECT DISTINCT p.*, f.fan_first_name, f.fan_last_name, (p.post_comments_count + p.post_likes_count)*1000000/TIMESTAMPDIFF(SECOND, p.created_time, NOW()) as count 
 					FROM posts p 
 					INNER JOIN
 					fans f ON(p.facebook_user_id = f.facebook_user_id)
-					WHERE p.fanpage_id = '". $page_id ."' AND p.created_time > '". $date->toString('yyyy-MM-dd HH:mm:ss') ."' ORDER BY count DESC";
+					WHERE  p.fanpage_id = '".$page_id."' AND f.fanpage_id = '".$page_id ."' AND p.created_time > '". $date->toString('yyyy-MM-dd HH:mm:ss') ."' ORDER BY count DESC";
 		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
@@ -181,6 +181,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 		if(!empty($result[0])) {
 			return $result[0];
 		}
+	
 		return;
 	}
 	

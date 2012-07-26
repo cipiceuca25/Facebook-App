@@ -1,7 +1,13 @@
-<?php if(empty($this->activities)){
-	echo "No Recent Activities";
-}
+<?php if(count($this->activities)==0){?>
+	<li class="grey-light" >
+	<br/>
+	No Recent Activities for this Fanpage;
+	<br/>
+	<br/>
+	</li>
+<?php }?>
 
+	<?php
 	$count = 0;
 	foreach ($this->activities as $act):	
 		if ($count % 2 == 0){ ?>			
@@ -10,6 +16,8 @@
 		<li class="grey-dark" >
 		<? } ?>
 		<br/>
+		<?php if ($this->user_id == $act->facebook_user_id){?>
+		
 		<?switch($act->activity_type){ 
 		
 			case 'follow': ?>
@@ -39,7 +47,34 @@
 			default:
 			
 		}?>
-		 <br/><br/>
-		</li>
-	<?endforeach; ?>
+		<?}else{?>
+			<?switch($act->activity_type){ 
+				case 'follow': ?>
+				<a href="#" onclick="userProfile('<?=$act->facebook_user_id?>')"><?=$act->facebook_user_name?></a> followed You on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+				<?break;
+				case 'unfollow' :?>
+					<a href="#" onclick="userProfile('<?=$act->facebook_user_id?>')"><?=$act->facebook_user_name?></a> unfollowed You on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+					<?break;	
+				case 'like-status':?>
+					<?=$act->facebook_user_name?> liked your <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status</a> post on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+					<?break;
+				case 'unlike-status':?>
+					<?=$act->facebook_user_name?> unliked your <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">status</a> post on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+					<?break;
+				case 'like-comment':?>
+					<?=$act->facebook_user_name?> liked your <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+					<?break;
+				case 'unlike-comment':?>
+					<?=$act->facebook_user_name?> unliked your <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+					<?break;
+			
+				case 'post':?>
+					You made a post on <?=$act->target_user_name?>'s Fanpage on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+					<?break;
+				default:
+			}?>
+		<?php }?>
+			 <br/><br/>
+			</li>
+		<?endforeach; ?>
 
