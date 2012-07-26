@@ -127,36 +127,35 @@ class Service_FancrankFBService extends Facebook {
 		return base64_decode(strtr($input, '-_', '+/'));
 	}
 	
-	public function getExtendedAccessToken() {
+	public function getExtendedAccessToken($access_token) {
 		try {
-			// need to circumvent json_decode by calling _oauthRequest
-			// directly, since response isn't JSON format.
-			$access_token_response =
-			$this->_oauthRequest(
-					$this->getUrl('graph', '/oauth/access_token'), array(
-							'client_id' => $this->getAppId(),
-							'client_secret' => $this->getAppSecret(),
+			$params = array(
+							'client_id' => $this->_appId,
+							'client_secret' => $this->_appSecret,
 							'grant_type'=>'fb_exchange_token',
-							'fb_exchange_token'=>$this->getAccessToken()
-					)
-			);
-		} catch (FacebookApiException $e) {
-			// most likely that user very recently revoked authorization.
-			// In any event, we don't have an access token, so say so.
-			return false;
+							'fb_exchange_token'=>$access_token
+						);
+
+			$token_url = "https://graph.facebook.com/oauth/access_token?" .http_build_query($params);
+			//echo $token_url;
+						
+			$client = new Zend_Http_Client;
+			$client->setUri($token_url);
+			$client->setMethod(Zend_Http_Client::GET);
+			
+			$response = $client->request();
+			$responseBody = $response->getBody();
+			//Zend_Debug::dump($responseBody);
+			
+			if(is_string($responseBody) && preg_match('/^access_token=/i', $responseBody)) {
+				parse_str($responseBody, $result);
+				
+				return $result['access_token'];
+			}
+		} catch (Exception $e) {
+			//echo $e->getMessage();
+			return;
 		}
-	
-		if (empty($access_token_response)) {
-			return false;
-		}
-	
-		$response_params = array();
-		parse_str($access_token_response, $response_params);
-		if (!isset($response_params['access_token'])) {
-			return false;
-		}
-	
-		return $response_params['access_token'];
 	}
 	
 	public function getAppAccessToken() {

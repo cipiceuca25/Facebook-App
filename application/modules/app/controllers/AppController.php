@@ -873,7 +873,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	//$this->_helper->redirector('login', $this->getRequest()->getControllerName(), $this->getRequest()->getModuleName(), array($this->_getParam('id') => null));
     	//$this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));
-    	$this->_helper->redirector('index', 'index', 'app', array($this->_getParam('id') => ''));
+    	$this->_redirect('/app/index/index/' .$this->_getParam('id') .'?user_id=' .$this->_userId);
     }
     
     public function insightsAction() 

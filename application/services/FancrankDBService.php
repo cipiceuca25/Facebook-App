@@ -46,10 +46,8 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	}
 	
 	/*
-	 * @param $facebookUserProfile facebook user object
-	 * @param $access_token an access token
-	 * @param $db current default database
-	 * @return facebook user id
+	 * @param array $data facebook user object
+	 * @return integer facebook user id
 	 */
 	public function saveFacebookUser($data) {
 		if(empty ($data) || (empty($data->id))) {
@@ -64,19 +62,22 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			$lang = array();
 		}
 		
+		$birthday = new Zend_Date(!empty($data->birthday) ? $data->birthday : null);
+		$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null);
+		 
 		$facebookUserData = array(
 				'facebook_user_id' 			=> $data->id,
-				'facebook_user_name' 		=> !empty($data->username) ? $data->username : '',
-				'facebook_user_first_name' 	=> !empty($data->user_first_name) ? $data->user_first_name : '',
+				'facebook_user_name' 		=> !empty($data->name) ? $data->name : '',
+				'facebook_user_first_name' 	=> !empty($data->first_name) ? $data->first_name : '',
 				'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
 				'facebook_user_email' 		=> !empty($data->email) ? $data->email : '',
 				'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
 				'facebook_user_avatar'    	=> sprintf('https://graph.facebook.com/%s/picture', $data->id),
 				'facebook_user_lang'        => implode(',', $lang),
-				'facebook_user_birthday'    => Fancrank_Util_Util::dateToStringForMysql(!empty($data->birthday) ? $data->birthday : null),
-				'facebook_user_access_token'=> $this->_accessToken,
-				'updated_time' 				=> Fancrank_Util_Util::dateToStringForMysql(!empty($data->updated_time) ? $data->updated_time : null),
-				'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
+				'facebook_user_birthday'    => $birthday->toString('yyyy-MM-dd HH:mm:ss'),
+				'facebook_user_access_token'=> $this->_access_token,
+				'updated_time' 				=> $updated->toString('yyyy-MM-dd HH:mm:ss'),
+				'facebook_user_locale' 		=> !empty($data->locale) ? $data->locale : '',
 				'hometown' 					=> !empty($data->hometown) ? $data->hometown : '',
 				'current_location' 			=> !empty($data->current_location) ? $data->current_location : '',
 				'bio' 						=> !empty($data->bio) ? $data->bio : ''
@@ -97,10 +98,8 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	}
 
 	/*
-	 * @param $fanpageProfile fanpage object
-	 * @param $access_token an access token
-	 * @param $db current default database
-	 * @return fanpage id
+	 * @param object $fanpageProfile fanpage object
+	 * @return integer fanpage id
 	 */
 	public function saveFanpage($fanpageProfile) {
 		if(empty ($fanpageProfile) || empty($fanpageProfile->id)) {
@@ -230,11 +229,15 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					'post_id'               => $post->id,
 					'facebook_user_id'      => $post->from->id,
 					'fanpage_id'            => $this->_fanpageId,
-					'post_message'          => isset($post->message) ? $post->message : '',
+					'post_message'          => isset($post->message) ? $this->quoteInto($post->message) : '',
+					'picture'				=> !empty($post->picture) ? $post->picture : '',
+					'link'					=> !empty($post->link) ? $post->link : '',
 					'post_type'             => !empty($post->type) ? $post->type : '',
+					'post_description'		=> !empty($post->description) ? $this->quoteInto($post->description) : '',
+					'post_caption'			=> !empty($post->caption) ? $this->quoteInto($post->caption) : '',
 					'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
 					'updated_time'          => $updated->toString('yyyy-MM-dd HH:mm:ss'),
-					'post_comments_count'   => !empty($post->comments->count) ? $post->comments->count : null,
+					'post_comments_count'   => !empty($post->comments->count) ? $post->comments->count : 0,
 					'post_likes_count'      => isset($post->likes) && isset($post->likes->count) ? $post->likes->count : 0
 			);
 
@@ -280,7 +283,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					'fanpage_id' => $this->_fanpageId,
 					'comment_post_id' => $parentid,
 					'facebook_user_id' => $comment->from->id,
-					'comment_message' => $comment->message,
+					'comment_message' => $this->quoteInto($comment->message),
 					'created_time' => $created->toString ( 'yyyy-MM-dd HH:mm:ss' ),
 					'comment_likes_count' => isset ( $comment->likes ) ? $comment->likes : 0 
 			);
@@ -342,7 +345,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 						'facebook_user_id' 			=> $data->id,
 						'facebook_user_first_name' 	=> !empty($data->first_name) ? $data->first_name : '',
 						'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
-						'facebook_user_name'		=> !empty($data->name) ? $data->name : $facebookUserData['facebook_user_first_name'] .' ' .$facebookUserData['facebook_user_last_name'],
+						'facebook_user_name'		=> !empty($data->name) ? $data->name : $data->first_name .' ' .$data->last_name,
 						'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
 						'updated_time' 				=> $updated->toString ( 'yyyy-MM-dd HH:mm:ss' ),
 						'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
@@ -354,7 +357,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				$fansData = array(
 						'facebook_user_id'  => $facebookUserData['facebook_user_id'],
 						'fanpage_id'        => $this->_fanpageId,
-						'fan_name'			=> $facebookUserData['facebook_user_name'],
+						'fan_name'			=> trim($facebookUserData['facebook_user_name']),
 						'fan_first_name'	=> $facebookUserData['facebook_user_first_name'],
 						'fan_last_name'		=> $facebookUserData['facebook_user_last_name'],
 						'fan_gender'		=> $facebookUserData['facebook_user_gender'],

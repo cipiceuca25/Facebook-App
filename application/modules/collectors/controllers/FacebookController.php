@@ -74,24 +74,22 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test1Action() {
+    	$access_token="AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm";
 		$fb = new Service_FancrankFBService();
-		$result = $fb->getAppAccessToken();
-		
+		$result = $fb->getExtendedAccessToken($access_token);
+		echo 'new token =: ' .$result;
 		$user_id = '100004098439774';
-		$data = 'test';
-		$msg = 'test request';
-		$name = 'first badge';
-		$link = 'http://www.facebook.com/' .$user_id;
-
-		$attachment =  array(
-				'access_token' => $result,
-				'message' => "$msg",
-				'name' => "$name",
-				'link' => "$link",
-				'description' => "test post"
-		);
 		
-		$fb->api('/'.$user_id.'/feed', 'POST', $attachment);
+
+// 		$attachment =  array(
+// 				'access_token' => $result,
+// 				'message' => "$msg",
+// 				'name' => "$name",
+// 				'link' => "$link",
+// 				'description' => "test post"
+// 		);
+		
+// 		$fb->api('/'.$user_id.'/feed', 'POST', $attachment);
 		
     }
     

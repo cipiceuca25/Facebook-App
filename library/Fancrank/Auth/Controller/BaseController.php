@@ -51,6 +51,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
      	//Zend_Debug::dump($fanpageId); exit();
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
+        $this->_helper->viewRenderer->setRender('index/authorize', null, true);
         
         $user = $this->oauth2(false, false);
         
@@ -61,7 +62,6 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             //$this->_auth->setExpirationSeconds(5259487);
         }
         
-        $this->_helper->viewRenderer->setRender('index/authorize', null, true);
     } 
     
     private function oauth2($authenticate = false, $user_id = false)
@@ -80,11 +80,9 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 'code' => $code
             ));
 
-            if ($this->config->extra_parameters->get('token', false) !== false) {
-                $client->setParameterPost($this->config->extra_parameters->token->toArray());
-            }
-
+            //Zend_Debug::dump($code);
             $response = $client->request();
+			//Zend_Debug::dump($response);
 
             if ($response->getStatus() !== 200) {
                 $this->_helper->viewRenderer->setRender('index/failure', null, true);
@@ -92,26 +90,8 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             } else {
                 // execute source specific method
                 $source_data = $this->getSourceInfo($response->getBody());
-                //$fb = new Service_FancrankFBService();
     			//Zend_Debug::dump($source_data); exit();
 				
-                //check user type: owner or fans
-                try {
-                	$fanpageAdmin = new Model_FanpageAdmins();
-                	if($this->_getParam('id') && $source_data->facebook_user_id) {
-                		$fanpageAdminUser = $fanpageAdmin->findRow($source_data->facebook_user_id, $this->_getParam('id'));
-                	}
-                } catch (Exception $e) {
-                	//log $e
-                	//Zend_Debug::dump($source_data->facebook_user_id .' '.$this->_getParam('id') .' '.$e->getMessage()); exit();
-                	throw new Exception($e->getMessage());
-                }
-                
-                //Zend_Debug::dump($fanpageAdminUser); exit();
-                if(! empty($fanpageAdminUser)) {
-                	$authenticate = true;
-                }
-                
                 if ($authenticate) {
                     $source = $this->authenticateSource($source_data);
                 	$this->view->adminSource = $source;
@@ -120,9 +100,9 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                     $source = $this->authenticateFan($source_data);
                     $this->view->source = $source;
                 }
-
+                //Zend_Debug::dump($source); exit();
                 return $source;
-            }
+			}
         } else {
             // redirect the user to facebook login
         	if ($authenticate) {
@@ -131,9 +111,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         		$extra_parameters = http_build_query($this->config->user_extra_parameters->redirect->toArray());
         	}
         	
-            //$extra_parameters = http_build_query($this->config->extra_parameters->redirect->toArray());
             $this->redirect(0, sprintf('%s?client_id=%s&redirect_uri=%s&%s', $this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
-            //$this->redirect(0, sprintf('%s?signed_request=%s&client_id=%s&redirect_uri=%s&%s',isset($_REQUEST['signed_request'])?$_REQUEST['signed_request']:'',$this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
         }
     }
 
@@ -163,48 +141,11 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         $db = $users->getDefaultAdapter();
         $db->beginTransaction();
         
-        // check for matching records
         try {
-            $select = $users->select();
-            $select->where('facebook_user_id = ?', $source_data->facebook_user_id);
-
-            // Returns NULL if no records match selection criteria.
-            $user = $users->fetchAll($select);
-        } catch (Exception $e) {
-            die($e->getMessage());
-        }
-        switch (count($user)) {
-            case 0:
-            	/*
-                // check for duplicate user handle
-                if ($users->countByFacebookUserId($source_data->facebook_user_id) > 0) {
-                    $source_data->facebook_user_name = $source_data->facebook_user_name . substr(time(), -5);
-                }
-				*/
-                $user = $users->createRow((array)$source_data);
-                $user->save();
-
-                //Collector::Run($this->source, 'init', array($source->source_id));
-                break;
-
-            case 1:
-                //update some user data
-                $user = $users->findByFacebookUserId($source_data->facebook_user_id)->current();
-                $user->facebook_user_access_token = $source_data->facebook_user_access_token;
-                $user->facebook_user_avatar = $source_data->facebook_user_avatar;
-                $user->save();
-
-                //Collector::Run($this->source, 'update', array($source->source_id));
-                break;
-
-            default:
-                return false;
-        }
-
-        try {
+        	$users->saveAndUpdate($source_data);
         	$fanpages = $this->addFanpages($source_data);
         	$db->commit();
-        	return $source_data;
+        	return (object)$source_data;
         } catch (Exception $e) {
         	//TOLOG
         	$db->rollBack();
@@ -218,39 +159,50 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         //Zend_Debug::dump($source_data); exit();
         // check for matching records
         $select = $users->select();
-        $select->where('facebook_user_id = ?', $source_data->facebook_user_id);
+        $select->where('facebook_user_id = ?', $source_data['facebook_user_id']);
 
         // Returns NULL if no records match selection criteria.
         $user = $users->fetchAll($select);
         $db = $users->getDefaultAdapter();
         $db->beginTransaction();
+
+        $create = new Zend_Date();
+        $new_fan_row = array(
+        		'facebook_user_id'      => $source_data['facebook_user_id'],
+        		'fanpage_id'            => $this->_getParam('id'),
+        		'fan_first_name'		=> $source_data['facebook_user_first_name'],
+        		'fan_last_name'			=> $source_data['facebook_user_last_name'],
+        		'fan_gender'			=> $source_data['facebook_user_gender'],
+        		'fan_name'				=> $source_data['facebook_user_name'],
+        		'fan_user_avatar'		=> $source_data['facebook_user_avatar'],
+        		'created_time'			=> $create->toString('yyyy-MM-dd HH:mm:ss'),
+        		'last_login_time'		=> $create->toString('yyyy-MM-dd HH:mm:ss'),
+        		'fan_level'				=> 1
+        );
         
         switch (count($user)) {
         	//case for new facebook user
             case 0:
             	try {
-            		$users->insert((array)$source_data);
+            		$users->insert($source_data);
             	 
 	                //add the fan if it doesnt exist
                 	$fans_model = new Model_Fans;
                 	$select = $fans_model->select();
-                	$select->where($fans_model->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data->facebook_user_id, $this->_getParam('id')));
+                	$select->where($fans_model->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data['facebook_user_id'], $this->_getParam('id')));
 
                 	$fan = $fans_model->fetchRow($select);
 
                 	if (empty($fan)) {
-                    	$new_fan_row = array(
-                        	'facebook_user_id'      => $source_data->facebook_user_id,
-                        	'fanpage_id'            => $this->_getParam('id')
-                    	);  
-
                         $fans_model->insert($new_fan_row);
                     }
                     
                     $db->commit();
 				}catch (Exception $e) {
                     	$db->rollBack();
-                        die($e->getMessage());
+                        //die($e->getMessage());
+                        //TO LOG
+                        return;
                 }
                 //collect extra user data
                 //Collector::Run('fancrank', 'init', array($source_data->user_id, 'likes'));
@@ -263,30 +215,30 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             		//add the fan if it doesnt exist
             		$fans_model = new Model_Fans;
             		$select = $fans_model->select();
-            		$select->where($fans_model->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data->facebook_user_id, $this->_getParam('id')));
+            		$select->where($fans_model->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data['facebook_user_id'], $this->_getParam('id')));
             	
             		$fan = $fans_model->fetchRow($select);
             	
             		if (empty($fan)) {
-            			$new_fan_row = array(
-            					'facebook_user_id'      => $source_data->facebook_user_id,
-            					'fanpage_id'            => $this->_getParam('id')
-            			);
-            	
             			$fans_model->insert($new_fan_row);
+            		}else {
+            			$fan->fan_user_avatar = $source_data['facebook_user_avatar'];
+            			$fan->last_login_time = $create->toString('yyyy-MM-dd HH:mm:ss');
+            			$fan->save();
             		}
 
             		//update some user data
-            		$user = $users->findByFacebookUserId($source_data->facebook_user_id)->current();
-            		$user->facebook_user_access_token = $source_data->facebook_user_access_token;
+            		$user = $users->findByFacebookUserId($source_data['facebook_user_id'])->current();
+            		$user->facebook_user_access_token = $source_data['facebook_user_access_token'];
+            		$user->facebook_user_avatar = $source_data['facebook_user_avatar'];
             		$user->save();
-            		//collect extra user data
-            		//Collector::Run('fancrank', 'update', array($source_data->user_id, 'likes'));
             		
             		$db->commit();
             	}catch (Exception $e) {
             		$db->rollBack();
             		die($e->getMessage());
+            		//TO LOG
+            		return;
             	}
 
             	break;
@@ -294,7 +246,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
                 return false;
         }
 
-        return $source_data;
+        return (object)$source_data;
     }
     
     protected function getErrorInfo($code, $responseBody)
@@ -305,8 +257,6 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     		case 400:
     			return 'Bad Request: ' . $body->error->message;
     			break;
-    
-    
     		default:
     			return 'Oops! Something went wrong! ' . $body->error->message;
     	}
@@ -314,14 +264,19 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     
     protected function getSourceInfo($responseBody)
     {
-    	parse_str($responseBody);
+    	parse_str($responseBody, $params);
     	//Zend_Debug::dump($access_token); exit();
-    
+    	$fb = new Service_FancrankFBService();
+    	$access_token = $fb->getExtendedAccessToken($params['access_token']);
+
+    	if(empty($access_token)) {
+    		return null;
+    	}
     	$client = new Zend_Http_Client;
     	$client->setUri('https://graph.facebook.com/me');
     	$client->setMethod(Zend_Http_Client::GET);
     	$client->setParameterGet('access_token', $access_token);
-    	$client->setParameterGet('fields', 'id,username,link,first_name,last_name,email,birthday,gender,locale,languages');
+    	$client->setParameterGet('fields', 'id,username,link,first_name,last_name,email,birthday,gender,locale,languages,updated_time');
     
     	$response = $client->request();
     
@@ -346,29 +301,29 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     		return null;
     	}
     	
-    	return(object) array(
+    	$birthday = new Zend_Date(!empty($data->birthday) ? $data->birthday : null);
+    	$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null);
+    	
+    	return array(
     			'facebook_user_id' 			=> $data->id,
-    			'facebook_user_name' 		=> !empty($data->username) ? $data->username : '',
-    			'facebook_user_first_name' 	=> !empty($data->user_first_name) ? $data->user_first_name : '',
+    			'facebook_user_name' 		=> !empty($data->name) ? $data->name : '',
+    			'facebook_user_first_name' 	=> !empty($data->first_name) ? $data->first_name : '',
     			'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
     			'facebook_user_email' 		=> !empty($data->email) ? $email : '',
     			'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
     			'facebook_user_avatar'    	=> sprintf('https://graph.facebook.com/%s/picture', $data->id),
     			'facebook_user_lang'        => implode(',', $lang),
-    			'facebook_user_birthday'    => Fancrank_Util_Util::dateToStringForMysql(!empty($data->birthday)),
+    			'facebook_user_birthday'    => $birthday->toString('yyyy-MM-dd HH:mm:ss'),
     			'facebook_user_access_token'=> $access_token,
-    			'updated_time' 				=> Fancrank_Util_Util::dateToStringForMysql(!empty($data->updated_time)),
-    			'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
-    			'hometown' 					=> !empty($data->hometown) ? $data->hometown : '',
-    			'current_location' 			=> !empty($data->current_location) ? $data->current_location : '',
-    			'bio' 						=> !empty($data->bio) ? $data->bio : ''
+    			'updated_time' 				=> $updated->toString('yyyy-MM-dd HH:mm:ss'),
+    			'facebook_user_locale' 		=> !empty($data->locale) ? $data->locale : ''
     	);
     }
     
     protected function addFanPages($source)
     {
     	$fanpages_model = new Model_Fanpages;
-    	$fanpages = $fanpages_model->facebookRequest('me', $source->facebook_user_access_token, array('accounts'));
+    	$fanpages = $fanpages_model->facebookRequest('me', $source['facebook_user_access_token'], array('accounts'));
     	
     	$rows = array();
     	if( empty($fanpages->accounts->data) ) {
@@ -385,7 +340,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     			);
     
     			$admins[] = array(
-    					'facebook_user_id'  => $source->facebook_user_id,
+    					'facebook_user_id'  => $source['facebook_user_id'],
     					'fanpage_id'        => $fanpage->id
     			);
     		}
