@@ -326,6 +326,8 @@ ul, ol {
 	width:100%;
 	display:block;
 	word-wrap:break-word;
+	float:left;
+	padding-top:5px;
 }
 
 .post .pic img {
@@ -366,7 +368,8 @@ ul, ol {
 
 .post-list .link-left{
 	float:left;
-	width:25%;
+	width:20%;
+	padding-right:5px;
 }
 
 .post-list .link-right{
@@ -550,6 +553,10 @@ ul, ol {
 	background-color:@color-follower;
 }
 
+
+
+
+
 .badge-You{
 	font-size:13px;
 	background-color:@color-text2;
@@ -626,6 +633,19 @@ ul, ol {
 	padding-top:14px;
 }
 
+.profile-block.following a,
+.profile-block.followers a,
+.profile-block.friends a{
+	color:@color-background;
+}
+
+.profile-block.following a:hover,
+.profile-block.followers a:hover,
+.profile-block.friends a:hover{
+	color:@color-background;
+	text-decoration:none;
+}
+
 
 .profile-block.following{
 	float:left;
@@ -642,6 +662,7 @@ ul, ol {
 	width:137px;
 	color:white;
 	margin-left:0px;
+	
 }
 
 .profile-block.friends{
@@ -1107,4 +1128,19 @@ ul, ol {
 	padding-right:45px;
 }
 
+.top-list.user .name{
+	//position:relative;
+	top:15px;
+}
 
+.top-list.user .border-dark,
+.top-list.user .border-light{
+	padding-left:30px;
+}
+
+.top-list.user .follow{
+	float:right;
+	position:relative;
+	top:17px;
+	right:30px;
+}

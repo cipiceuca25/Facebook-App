@@ -34,7 +34,7 @@
 			var serverUrl = "<?= $this->fullServerUrl()?>";
 			var appId = "<?= $this->layout()->appKey ?>";
 			var userId = "<?= $this->user_id ?>";
-			var accessToken = "<?= $this->access_token ?>";
+			//var accessToken = "<?= $this->access_token ?>";
 			var fanpageId = "<?= $this->fanpage_id?>"	;	
 			var userAccessToken = "<?= $this->facebook_user_access_token?>";
 			//alert( accessToken);
@@ -102,14 +102,14 @@
 						<ul class="nav nav-tabs" id="log-in-out">
 							<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
 						</ul>
-						<!-- 
+					
 						<a href="#" onclick="colorChange(1)">Grayscale</a> 
 						<a href="#"	onclick="colorChange(2)">Bubblegum</a> 
 						<a href="#"	onclick="colorChange(3)">Original</a>
 						<a href="#" onclick="colorChange(4)">Autumn</a> 
 						<a href="#" onclick="colorChange(5)">Ocean</a> 
 						<a href="#"onclick="colorChange(6)">Red</a>
-					 -->
+					
 						<div class="tab-content">
 							<div class="tab-pane active" id="news-feed"></div>
 							<div class="tab-pane" id="top-fans"></div>

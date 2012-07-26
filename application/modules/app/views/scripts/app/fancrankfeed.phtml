@@ -24,7 +24,7 @@
 	
 		<? if (!($this->relation[$count] == 'Fanpage')){?>
 		
-			<? if (($this->relation[$count] != 'Following') || ($this->relation[$count] != 'Friends')){?>
+			<? if (($this->relation[$count] != 'Following') && ($this->relation[$count] != 'Friends')){?>
 				<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
 			<?}else{?>
 				<a href="#" onclick="userProfile('<?=$post->from->id?>')">
@@ -56,8 +56,8 @@
 			
 			<?php if (isset($post->picture)){?><div class="link-right"><?php }?>
 				<a target="new" href="<?echo $this->escape($post->link)?> "><?= $this->escape($post->name)?></a>
-				</br>
-				<?= $this->escape($post->caption)?>: 
+				
+				<?php  if (isset($post->caption)){?></br><?php echo $this->escape($post->caption); }?>: 
 				<br/>
 				<br/>
 				

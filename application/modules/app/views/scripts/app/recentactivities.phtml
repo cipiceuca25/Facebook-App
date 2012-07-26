@@ -1,7 +1,13 @@
-<?php if(empty($this->activities)){
-	echo "No Recent Activities";
-}
+<?php if(count($this->activities)==0){?>
+	<li class="grey-light" >
+	<br/>
+	No Recent Activities for this Fanpage;
+	<br/>
+	<br/>
+	</li>
+<?php }?>
 
+	<?php
 	$count = 0;
 	foreach ($this->activities as $act):	
 		if ($count % 2 == 0){ ?>			

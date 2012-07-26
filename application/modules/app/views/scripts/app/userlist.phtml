@@ -1,18 +1,59 @@
-<ul class="popup_comments">
+<div class="title">
+	<div class="photo">
+		<img />
+	</div>
+	<div class="title-header">
+		<h3><?= $this->title?> List</h3>
+	
+	</div>
+</div>
+
+<ul class="top-list user">
+<?php if(count($this->result)==0){?>
+	<li class="border-dark" >
+	<br/>
+	No users
+	<br/>
+	<br/>
+	</li>
+<?php }?>
+
+
 <?php $count=0;?>
 <?php foreach ($this->result as $user):?>	
 	
 	<?php if ($count % 2 == 0){?>			
-		<li class="grey-light" >
+		<li class="border-dark" >
 	<?php }else{?>
-		<li class="grey-dark" >
+		<li class="border-light" >
 	<?php }?>
-		<div class="photo"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $user['id'] ?>/picture"></div>
-		<div class="name"><?= $user['facebook_user_name']?></div>
-			
+		<div class="photo"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture"></div>
+		<div class="name">
+			<a href="#" onclick="userProfile('<?= $user['facebook_user_id']?>', false)"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
+			<br/>Since <?=  date(" F d Y",strtotime($user['created_time']))?>	
+		</div>
+		<div class="follow">
+		<?php if(!($this->title == 'Followers')){?>
+			<a href="#" title = "Click to Unfollow user" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><span class="badge badge-unfollow big">Unfollow</span></a>
+		<?}else{?>
+			<a href="#" title = "Click to Follow user and become Friends!" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><span class="badge badge-follow big">Follow</span></a>
+		<?}?>
+		</div>
 	</li>
 <?php $count++;?>
 <?php endforeach; ?>
 
 
 </ul>
+<div class="shadow">
+	<button class="btn-top" onclick="
+	<?php if ($this->title == 'Followers') { 
+		echo'getFollowersList(0, false)'; 
+	}elseif ($this->title =='Friends'){ 
+		echo 'getFriendsList(0, false)'; 
+	}else{ 
+		echo 'getFollowingList(0, false)';
+	}?>"> 
+		+ More
+	</button>
+</div>

@@ -153,7 +153,7 @@
 	});
 	
 	$('#achievements-tab').live('click', function(){
-		getAwards('#achievements') 
+		getAwards('#achievements');
 		$('#top-fans').html('');
 		$('#profile').html('');
 		$('#newsfeed').html('');
@@ -161,7 +161,8 @@
 
 	
 	
-	function userProfile(user){
+	function userProfile(user, refresh){
+		refresh = typeof refresh !== 'undefined' ? refresh : true;
 		getUserProfile('.profile-content', user);
 		
 		$('.light-box').css('display','block');
@@ -170,12 +171,15 @@
 		
 		$('.profile-content').css('height', 'auto');
 		  
-		$('.profile-content').animate({
-			height:'toggle',
-			top:'20px'
-		   },500, function(){
-			   
-		});
+		if(refresh){
+		
+			$('.profile-content').animate({
+				height:'toggle',
+				top:'20px'
+			   },500, function(){
+				   
+			});
+		}
 		/*
 		$('.top-border').animate({
 		    height: 'toggle',
@@ -300,7 +304,7 @@
 	function getFeedComment(ui, post_id, limiter, total, toggle){
 		$.ajax({
 			type: "GET",
-			url: serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter + '&total=' +total + '&access_token=' + accessToken,
+			url: serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter + '&total=' +total,
 
 			dataType: "html",
 			cache: false,
@@ -340,7 +344,7 @@
 		      
 		$.ajax({
 			type: "GET",
-			url: serverUrl +'/app/app/comment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter +'&access_token=' + accessToken,
+			url: serverUrl +'/app/app/comment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter,
 
 			dataType: "html",
 			cache: false,
@@ -660,11 +664,12 @@
 			});
 	}
 	
-	function getFollowingList(){
+	function getFollowingList(limit, refresh){
 		ui = '.profile-content';
+		refresh = typeof refresh !== 'undefined' ? refresh : true;
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/app/getfollowing/'+ fanpageId,
+    		url: serverUrl +'/app/app/getfollowing/'+ fanpageId +'?limit='+limit,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -672,16 +677,17 @@
     			$(ui).html(data);
     			$('.light-box').css('display','block');
     			$('.user-profile').css('display', 'block');
-    				
-    			
     			$('.profile-content').css('height', 'auto');
-    			  
-    			$('.profile-content').animate({
-    				height:'toggle',
-    				top:'20px'
-    			   },500, function(){
-    				   
-    			});
+    			 
+    			
+    			if(refresh){
+	    			$('.profile-content').animate({
+	    				height:'toggle',
+	    				top:'20px'
+	    			   },500, function(){
+	    				   
+	    			});
+    			}
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -689,12 +695,12 @@
     	});
 	
 	}
-	function getFollowersList(){
-		
+	function getFollowersList(limit, refresh){
+		refresh = typeof refresh !== 'undefined' ? refresh : true;
 		ui = '.profile-content';
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/app/getfollowers/'+ fanpageId,
+    		url: serverUrl +'/app/app/getfollowers/'+ fanpageId +'?limit='+limit,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -706,12 +712,14 @@
     			
     			$('.profile-content').css('height', 'auto');
     			  
-    			$('.profile-content').animate({
-    				height:'toggle',
-    				top:'20px'
-    			   },500, function(){
-    				   
-    			});
+    			if(refresh){
+	    			$('.profile-content').animate({
+	    				height:'toggle',
+	    				top:'20px'
+	    			   },500, function(){
+	    				   
+	    			});
+    			}
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -719,11 +727,12 @@
     	});
 		
 	}
-	function getFriendsList(){
+	function getFriendsList(limit, refresh){
 		ui = '.profile-content';
+		refresh = typeof refresh !== 'undefined' ? refresh : true;
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/app/getfriends/'+ fanpageId,
+    		url: serverUrl +'/app/app/getfriends/'+ fanpageId +'?limit='+limit,
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -735,12 +744,14 @@
     			
     			$('.profile-content').css('height', 'auto');
     			  
-    			$('.profile-content').animate({
-    				height:'toggle',
-    				top:'20px'
-    			   },500, function(){
-    				   
-    			});
+    			if(refresh){
+	    			$('.profile-content').animate({
+	    				height:'toggle',
+	    				top:'20px'
+	    			   },500, function(){
+	    				   
+	    			});
+    			}
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
