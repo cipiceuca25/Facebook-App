@@ -1,9 +1,9 @@
 <div class="title">
 	<div class="photo">
-		<img />
+		<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture">
 	</div>
 	<div class="title-header">
-		<h3><?= $this->title?> List</h3>
+		<h3><?=$this->user_name?>'s <?= $this->title?> List</h3>
 	
 	</div>
 </div>
@@ -33,7 +33,7 @@
 			<br/>Since <?=  date(" F d Y",strtotime($user['created_time']))?>	
 		</div>
 		<div class="follow">
-		<?php if(!($this->title == 'Followers')){?>
+		<?php if(($this->title != 'Followers') && ($this->title != 'Friends')){?>
 			<a href="#" title = "Click to Unfollow user" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><span class="badge badge-unfollow big">Unfollow</span></a>
 		<?}else{?>
 			<a href="#" title = "Click to Follow user and become Friends!" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><span class="badge badge-follow big">Follow</span></a>
@@ -48,11 +48,11 @@
 <div class="shadow">
 	<button class="btn-top" onclick="
 	<?php if ($this->title == 'Followers') { 
-		echo'getFollowersList(0, false)'; 
+		echo'getFollowersList('.$this->user_name.','.$this->user_id.',0, false)'; 
 	}elseif ($this->title =='Friends'){ 
-		echo 'getFriendsList(0, false)'; 
+		echo 'getFriendsList('.$this->user_name.','.$this->user_id.',0, false)'; 
 	}else{ 
-		echo 'getFollowingList(0, false)';
+		echo 'getFollowingList('.$this->user_name.','.$this->user_id.',0, false)';
 	}?>"> 
 		+ More
 	</button>

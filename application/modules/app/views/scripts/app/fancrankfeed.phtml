@@ -20,11 +20,11 @@
 						
 	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
 	<div class="name">
-		<a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a> 
+		<a href="#" <? if (!($this->relation[$count] == 'Fanpage') ){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a> 
 	
 		<? if (!($this->relation[$count] == 'Fanpage')){?>
 		
-			<? if (($this->relation[$count] != 'Following') && ($this->relation[$count] != 'Friends')){?>
+			<? if (($this->relation[$count] != 'Following') && ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
 				<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
 			<?}else{?>
 				<a href="#" onclick="userProfile('<?=$post->from->id?>')">

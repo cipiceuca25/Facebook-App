@@ -19,13 +19,13 @@
 		
 			<div class="post">
 				
-				
+			
 			
 											
 				<div class="image">
 						 <a href="#" onclick="comment_bubble('<?= $topPost['post_id']?>', 5, true)" >
-						<? if (($topPost['post_type']=='picture') || ($topPost['post_type']=='video') ){ ?>
-						<img src = '<?= (str_replace('_s.jpg', '_n.jpg', $this->picture[$count])) ;?> '/>
+						<? if (($topPost['post_type']=='photo') || ($topPost['post_type']=='video') ){ ?>
+						<img src = '<?= (str_replace('_s.jpg', '_n.jpg', $topPost['picture'])) ;?> '/>
 						<?}?>
 						</a>
 				</div>

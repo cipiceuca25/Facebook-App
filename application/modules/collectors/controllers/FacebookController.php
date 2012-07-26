@@ -74,25 +74,55 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test1Action() {
+    	$access_token="AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm";
 		$fb = new Service_FancrankFBService();
-		$result = $fb->getAppAccessToken();
-		
+		$result = $fb->getExtendedAccessToken($access_token);
+		echo 'new token =: ' .$result;
 		$user_id = '100004098439774';
-		$data = 'test';
-		$msg = 'test request';
-		$name = 'first badge';
-		$link = 'http://www.facebook.com/' .$user_id;
+		
 
-		$attachment =  array(
-				'access_token' => $result,
-				'message' => "$msg",
-				'name' => "$name",
-				'link' => "$link",
-				'description' => "test post"
-		);
+// 		$attachment =  array(
+// 				'access_token' => $result,
+// 				'message' => "$msg",
+// 				'name' => "$name",
+// 				'link' => "$link",
+// 				'description' => "test post"
+// 		);
 		
-		$fb->api('/'.$user_id.'/feed', 'POST', $attachment);
+// 		$fb->api('/'.$user_id.'/feed', 'POST', $attachment);
 		
+    }
+    
+    public function testmemcacheAction() {
+    	$starttime = time();
+    	echo $starttime;
+    	$model = new Model_Rankings;
+
+    	try {
+			$cache = Zend_Registry::get('memcache');
+			$cache->setLifetime(1500); 
+
+			$this->_fanpageId = '178384541065';
+			$topPostsId = 'topFans_' .$this->_fanpageId;
+
+    		//Check to see if the $topStories are cached and look them up if not
+    		if(isset($cache) && !$topStories = $cache->load($topPostsId)){
+    			//Look up the $topStories
+    			echo 'look up db';
+    			$topFans = $model->getTopFans($this->_fanpageId , 100);
+    			 
+    			//Save to the cache, so we don't have to look it up next time
+    			$cache->save($topFans, $topPostsId);
+    		}else {
+    			$topFans = $cache->load($topPostsId);
+    		}    		
+    	} catch (Exception $e) {
+    		echo $e->getMessage();
+    	}
+    	Zend_Debug::dump($topFans);
+    	$stop = time();
+    	$totalTime = $stop - $starttime;
+    	echo '</br>Execution time ' . $totalTime;
     }
     
     public function viewAction() {

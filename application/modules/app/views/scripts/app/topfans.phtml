@@ -1,3 +1,6 @@
+
+
+
 <div class="panel">
 						<div class="row">
 							<div class="span6">
@@ -8,9 +11,7 @@
 											<div class="tip"><a title="You are awesome and nobody can touch you! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
 										 </div>
 									</div>
-									
-								
-									
+
 									<?php $count = 0; ?> 
 									<?php foreach($this->top_fans as $top_fan): ?>
 									
@@ -19,7 +20,6 @@
 										<ul class="top-list">
 											<li>
 												<div class="border-dark">
-												
 														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 															<h1><?= $count + 1 ?></h1>
 														</div>
@@ -29,7 +29,7 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" <?if (($this->topFanArray[$count] != 'Following') && ($this->topFanArray[$count] != 'Friends')) {?>
+															<a href="#" <?if (($this->topFanArray[$count] != 'Following') && ($this->topFanArray[$count] != 'Friends')&& ($this->topFanArray[$count] != 'You')) {?>
 																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', true)" 
 																<?}else{ ?>
 																onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"
@@ -63,7 +63,7 @@
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" <?if (($this->topFanArray[$count] != 'Following') && ($this->topFanArray[$count] != 'Friends')) {?>
+														<a href="#" <?if (($this->topFanArray[$count] != 'Following') && ($this->topFanArray[$count] != 'Friends') && ($this->topFanArray[$count] != 'You')) {?>
 															onclick="follow(<?=$top_fan['facebook_user_id']?>, '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', true)"
 														<?}else{ ?>
 															onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"
@@ -164,7 +164,7 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" <?if (($this->popularArray[$count] != 'Following') && ($this->popularArray[$count] != 'Friends')) {?>
+															<a href="#" <?if (($this->popularArray[$count] != 'Following') && ($this->popularArray[$count] != 'Friends') && ($this->popularArray[$count] != 'You')) {?>
 																	onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>', true)" 
 																<?}else{ ?>
 																	onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"
@@ -198,7 +198,7 @@
 													<div class="name">
 														<a  href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" <?if (($this->popularArray[$count] != 'Following') && ($this->popularArray[$count] != 'Friends')) {?>
+														<a href="#" <?if (($this->popularArray[$count] != 'Following') && ($this->popularArray[$count] != 'Friends')&& ($this->popularArray[$count] != 'You')) {?>
 															 onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>', true)" 
 														<?}else{ ?>
 															onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"
@@ -300,7 +300,7 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" <?if (($this->talkerArray[$count] != 'Following') && ($this->talkerArray[$count] != 'Friends')) {?>
+															<a href="#" <?if (($this->talkerArray[$count] != 'Following') && ($this->talkerArray[$count] != 'Friends') && ($this->talkerArray[$count] != 'You')) {?>
 																onclick="follow(<?=$talker['facebook_user_id'] ?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>', true)" 
 																<?}else{ ?>
 																onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"
@@ -334,7 +334,7 @@
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" <?if (($this->talkerArray[$count] != 'Following') && ($this->talkerArray[$count] != 'Friends')) {?>
+														<a href="#" <?if (($this->talkerArray[$count] != 'Following') && ($this->talkerArray[$count] != 'Friends')&& ($this->talkerArray[$count] != 'You')) {?>
 															onclick="follow(<?=$talker['facebook_user_id']?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>', true)" 
 														<?}else{ ?>
 															onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"
@@ -436,7 +436,7 @@
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" <?if (($this->clickerArray[$count] != 'Following') && ($this->clickerArray[$count] != 'Friends')) {?>
+															<a href="#" <?if (($this->clickerArray[$count] != 'Following') && ($this->clickerArray[$count] != 'Friends')&& ($this->clickerArray[$count] != 'You')) {?>
 																onclick="follow(<?=$clicker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>', true)" 
 															<?}else{ ?>
 																onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"
@@ -471,7 +471,7 @@
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?>  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" <?if (($this->clickerArray[$count] != 'Following') && ($this->clickerArray[$count] != 'Friends')) {?>
+														<a href="#" <?if (($this->clickerArray[$count] != 'Following') && ($this->clickerArray[$count] != 'Friends')&& ($this->clickerArray[$count] != 'You')) {?>
 															 	onclick="follow(<?=$clicker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>', true)" 
 															<?}else{ ?>
 																onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"

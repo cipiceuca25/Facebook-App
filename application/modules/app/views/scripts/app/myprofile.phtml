@@ -63,21 +63,21 @@
 										<h4>FOLLOWING 
 									
 										</h4><br/>
-										<h2> <a href="#" onclick="getFollowingList(15)"><?= $this->following['0']['Following']?></a></h2>
+										<h2> <a href="#" onclick="getFollowingList('<?=$this->facebook_user->facebook_user_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)"><?= $this->following['0']['Following']?></a></h2>
 										</div>
 									
 									
 										<div class="profile-block followers">
 										<h4>FOLLOWERS  
 										</h4><br/>
-										<h2> <a href="#" onclick="getFollowersList(15)"><?= $this->follower['0']['Follower']?></a></h2>
+										<h2> <a href="#" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)"><?= $this->follower['0']['Follower']?></a></h2>
 										</div>
 									
 									
 										<div class="profile-block friends">
 										<h4> FRIENDS  </h4>
 										<br/>  
-										<h2><a href="#" onclick="getFriendsList(15)"><?= $this->friends['0']['friends']?></a></h2>
+										<h2><a href="#" onclick="getFriendsList('<?=$this->facebook_user->facebook_user_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)"><?= $this->friends['0']['friends']?></a></h2>
 										</div>
 								
 								</div>

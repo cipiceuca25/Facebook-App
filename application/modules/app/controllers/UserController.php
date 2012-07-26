@@ -299,6 +299,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['activity_type'] = $this -> _getParam('activity_type');
 		$data['event_object'] = $this-> _getParam('event');
 		$data['facebook_user_id'] = $this->_getParam('id');
+		$data['facebook_user_name'] = $this->_getParam('owner_name');
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['target_user_id'] = $this->_getParam('target_id');
 		$data['target_user_name'] = $this->_getParam('target_name');
