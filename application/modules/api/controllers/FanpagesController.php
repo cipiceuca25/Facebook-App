@@ -181,4 +181,8 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
         $response =  $client->request();
         return Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
 	}
+	
+	public function setthemeAction() {
+		
+	}
 }
