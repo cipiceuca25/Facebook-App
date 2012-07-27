@@ -20,7 +20,7 @@
 
 	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
 	<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a>
-	
+	</div>
 	<? if (!($this->relation[$count] == 'Fanpage')){?>
 		<? if (($this->relation[$count] != 'Following')|| ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
 			<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
@@ -28,9 +28,9 @@
 			<a href="#" onclick="userProfile('<?=$post->from->id?>')">
 		<?}?>
 		
-		<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+		<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
 	<?}?>
-	</div>
+	
 	<div class="post">
 	<? if(isset($post->message)){echo $this->escape($post->message);}?>
 	<img src = '<? if(isset($post->picture) && ($post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $post->picture)) ;}?> '/></div>

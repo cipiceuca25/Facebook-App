@@ -431,7 +431,7 @@
 				//alert(post_id + 'liked');
     			alert('liked');
     			addActivities('like-'+post_type, userName, post_id, target_id, target_name );
-    	
+    			
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);

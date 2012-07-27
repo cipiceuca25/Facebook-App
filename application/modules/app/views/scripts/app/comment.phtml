@@ -7,8 +7,8 @@
 	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$this->post->from->id?>', false)"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->post->from->id ?>/picture"></a></div>
 	<div class="name">
 		<a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$this->post->from->id?>', false)"<?}?>><?=  $this->post->from->name?></a> 
-	
-		<? if (!($this->relation[$count] == 'Fanpage')){?>
+	</div>
+	<? if (!($this->relation[$count] == 'Fanpage')){?>
 		
 			<? if (($this->relation[$count] != 'Following') || ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
 				<a href="#" onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>')">
@@ -16,11 +16,8 @@
 				<a href="#" onclick="userProfile('<?=$this->post->from->id?>', false)">
 			<?}?>
 			
-			<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+			<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
 		<?}?>
-	
-	</div>
-	
 	<div class="post">
 		<!-- 
 		<div class="pic">
@@ -115,6 +112,8 @@
 			<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>', false)"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
 			<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>', false)"<?}?>><?=  $post->from->name?></a>
 			
+			
+			</div>
 			<? if (!($this->relation[$count] == 'Fanpage')){?>
 				<? if (($this->relation[$count] != 'Following') && ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
 					<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
@@ -122,9 +121,9 @@
 					<a href="#" onclick="userProfile('<?=$post->from->id?>', false)">
 				<?}?>
 				
-				<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
 			<?}?>
-			</div>
+			
 			<div class="post">
 			<? if(isset($post->message)){echo $this->escape($post->message);}?>
 			<img src = '<? if(isset($post->picture) && ($post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $post->picture)) ;}?> '/></div>
@@ -159,7 +158,7 @@
 		<li class="comment_container">
 	
 			<form action="#">
-				<textarea class="comment_box" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
+				<textarea class="comment_box_popup" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
 				<input type=button class="btn-submit" value="Submit" onclick="commentSubmit('<?= $this->postId ?>','comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>' )">
 			</form>
 		
