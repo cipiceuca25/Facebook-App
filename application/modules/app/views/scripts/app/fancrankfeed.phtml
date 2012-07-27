@@ -22,7 +22,10 @@
 	<div class="name">
 		<a href="#" <? if (!($this->relation[$count] == 'Fanpage') ){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a> 
 	
-		<? if (!($this->relation[$count] == 'Fanpage')){?>
+		
+	
+	</div>
+	<? if (!($this->relation[$count] == 'Fanpage')){?>
 		
 			<? if (($this->relation[$count] != 'Following') && ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
 				<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
@@ -30,11 +33,8 @@
 				<a href="#" onclick="userProfile('<?=$post->from->id?>')">
 			<?}?>
 			
-			<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+			<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
 		<?}?>
-	
-	</div>
-	
 	<div class="post">
 	
 	<div class="pic">
@@ -100,12 +100,20 @@
 		<span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span>
 	</div>
 
-	<ul class="comments" id="post_<?=$post->id?>" ></ul>
+	<ul class="comments" id="post_<?=$post->id?>" ></ul></li>	
 
 					
 <?php $count ++;?>
+
+<li class="feed_spacer">
+
+<div class="feed_spacer_top"></div>
+
+</li>
 <?php endforeach; ?>
 				
 						
-						
+	
+
+
 			

@@ -13,7 +13,7 @@
 @color-top-list-border: @color-top-list-border-original;
 @color-hover:@color-dark-original;
 
-@color-background:@color-white;
+@color-background:@color-back;
 
 @color-bubble1: @color-bubble1-original;
 @color-bubble2: @color-bubble2-original;
@@ -26,8 +26,8 @@
 @color-feed:@color-feed-original;
 @color-feed2:@color-feed2-original;
 
-@color-title-text:@color-white;
-@color-text:@color-white;
+@color-title-text:white;
+@color-text:white;
 @color-text2:@color-top-list-border-original;
 
 @color-badges:@color-badges-original;
@@ -137,12 +137,12 @@ ul, ol {
 	margin-top:25px;
 	margin-bottom:30px;
 	.border-radius(5px 0 0 5px);
-	#gradient > .horizontal(@color-base, @color-background );
+	#gradient > .horizontal(@color-base, white);
 }
 
 .title-header-dark{
 	.border-radius(5px 0 0 5px);
-	#gradient > .horizontal(@color-base, @color-background );
+	#gradient > .horizontal(@color-base, white);
 	//background-color:@color-dark;
 }
 
@@ -269,15 +269,19 @@ ul, ol {
 }
 
 .grey-light {
-	#gradient > .vertical(lighten(@color-badges, 10%), @color-background);
-	//background:@color-feed;	
-	border-bottom: solid 2px @color-badges;
+	//#gradient > .vertical(white, @color-background);
+	background:white;//@color-feed;	
+	//border-bottom: solid 2px @color-feed;
+	padding:10px;
+	border-top: solid 2px lighten(@color-badges, 5%);
 }
 
 .grey-dark {
-	#gradient > .vertical(lighten(@color-badges, 10%), @color-background);
-	//background:@color-feed2;	
-	border-bottom: solid 2px @color-badges;
+	//#gradient > .vertical(white,  @color-background);
+	background:white;//@color-feed2;	
+	//border-bottom: solid 2px @color-feed;
+	padding:10px;
+	border-top: solid 2px lighten(@color-badges, 2%);
 }
 
 /* POST LISTINGS */
@@ -290,7 +294,7 @@ ul, ol {
 }
 
 .post-list li {
-	padding:10px;
+	//padding:10px;
 
 }
 
@@ -406,7 +410,7 @@ ul, ol {
 	border-top: 1px solid @color-feed;
 	//width:533px;
 	display:block;
-	#gradient > .horizontal(@color-feed, @color-background );
+	#gradient > .horizontal(@color-feed, white );
 	height:70px;
 }
 
@@ -532,25 +536,47 @@ ul, ol {
 		top:5px;
 		line-height:23px;
 		font-size:23px;
+		.border-radius(2px);
 }
 
 .badge-Follow{
 	font-size:13px;
 	background-color:@color-follow;
+	.border-radius(10px 0px  0px 10px);
+	line-height:29px;
+	height:29px;
+	margin-right:-10px;
+	float:right;
 }
 
 .badge-Following{
 	font-size:13px;
 	background-color:@color-following;
+	.border-radius(10px 0px  0px 10px);
+	line-height:29px;
+	height:29px;
+	margin-right:-10px;
+	float:right;
 }
 
 .badge-Friends{
 	font-size:13px;
 	background-color:@color-friends;
+
+	.border-radius(10px 0px  0px 10px);
+	line-height:29px;
+	height:29px;
+	margin-right:-10px;
+	float:right;
 }
 .badge-Follower{
 	font-size:13px;
 	background-color:@color-follower;
+	.border-radius(10px 0px  0px 10px);
+	line-height:29px;
+	height:29px;
+	margin-right:-10px;
+	float:right;
 }
 
 
@@ -560,6 +586,11 @@ ul, ol {
 .badge-You{
 	font-size:13px;
 	background-color:@color-text2;
+	.border-radius(10px 0px  0px 10px);
+	line-height:29px;
+	height:29px;
+	margin-right:-10px;
+	float:right;
 }
 
 
@@ -924,9 +955,9 @@ ul, ol {
 }
 
 .comments{
-	margin-left:30px;
+	width:100%;
 	display:none;
-	width:90%;
+
 }
 
 .popup_comments{
@@ -946,27 +977,29 @@ ul, ol {
 
 .comment_container{
 	//width:100%;
-	margin-left:-10px;
+	//margin-left:-10px;
+	margin-top:10px
 
 }
+
 
 #post_box,
 .comment_box_popup,
 .comment_box{
 
-	width:80%;
+	width:83%;
 	resize: none; 
 	overflow:hidden;
 	
 }
 
 .comment_box_popup{
-	margin-left:45px;
-	width:75%;
+	margin-left:10px;
+	width:86%;
 }
 
 #post_box{
-	width:80%;
+	width:84%;
 }
 
 .submit_box{
@@ -1078,7 +1111,7 @@ ul, ol {
 .top_post li{
 	margin-bottom:20px;
 	display:block;
-	#gradient > .vertical(lighten(@color-feed, 5%) ,@color-background);
+	#gradient > .vertical(lighten(@color-feed, 5%) ,white);
 	//.border-radius(10px);
 	//.rotate(-5deg);
 	padding:10px;
@@ -1143,4 +1176,24 @@ ul, ol {
 	position:relative;
 	top:17px;
 	right:30px;
+}
+
+.feed_spacer_bottom{
+	#gradient > .vertical( @color-badges,white );
+	display:block;
+	height:10px;
+	width:100%;
+}
+
+.feed_spacer_top{
+	#gradient > .vertical( white,@color-badges );
+	display:block;
+	height:10px;
+	width:100%;
+	border-bottom: solid 2px @color-badges;
+}
+
+.post-list li .feed_spacer{
+	padding:0px;
+	margin:0px;
 }
