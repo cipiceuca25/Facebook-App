@@ -18,41 +18,27 @@
         <meta name="keywords" content="" />
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
-        <script src="/js/libs/jquery-1.7.2.min.js"></script>
-		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
-    	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+        <script src="/js/libs/jquery.min.js"></script>
         <script src="/bootstrap/js/bootstrap.min.js"></script>
+
+        <script src="/js/libs/Jaml.js"></script>
+        <script src="/js/libs/Node.js"></script>
+        <script src="/js/libs/Template.js"></script>
+
         <script src="//connect.facebook.net/en_US/all.js"></script>
 
         <script src="/js/fancrank.js"></script>
-        <script>
-			var appId = "<?= $this->layout()->appKey ?>";
-			window.fbAsyncInit = function() {
-				FB.init({
-					 appId  : appId,
-					 status : true, // check login status
-					 cookie : true, // enable cookies to allow the server to access the session
-					 xfbml  : true// parse XFBML
-				});
-				FB.Canvas.setAutoResize(10);
-			
-				//FB.Canvas.setSize();
-			};
-        </script>
+
+        <?= $this->headScript(); ?>
+        
+        <?php $this->selectAdminTheme($this->fanpageTheme, APPLICATION_ENV); ?>
+
         <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-        
-        <?= $this->adminTheme($this->fanpageTheme, APPLICATION_ENV) ?>
-        
-		<style>
-            .container {
-                width: 840px;
-            }
-        </style>
     </head>
 
     <body controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>">
-        <div class="adminTopNavbar navbar navbar-fixed-top">
+        <div class="navbar navbar-fixed-top">
             <?= $this->layout()->navbar ?>
         </div>
 

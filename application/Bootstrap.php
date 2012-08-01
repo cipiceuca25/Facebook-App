@@ -84,15 +84,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         return $logger;
     }
     
-    protected function _initViewHelper()
-    {
-    	$view = new Zend_View();
-    	$view->addHelperPath(APPLICATION_PATH .'/modules/app/views/helpers', 'Fancrank_View_Helper');
-    	$viewRenderer = new Zend_Controller_Action_Helper_ViewRenderer();
-    	$viewRenderer->setView($view);
-    	Zend_Controller_Action_HelperBroker::addHelper($viewRenderer);
-    }
-    
     protected function _initCollectorLogger()
     {
     	$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini',APPLICATION_ENV);

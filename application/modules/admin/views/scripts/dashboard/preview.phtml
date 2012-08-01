@@ -1,3 +1,82 @@
+<div class="setting_menu">
+    <div class="color-setting btn-group">
+	    <a class="dropdown-toggle btn btn-primary" data-toggle="dropdown" href="#setting">
+	    	<i class="icon-cog icon-white"></i>Theme Settings
+			<span class="caret"></span>
+	    </a>
+	    <ul class="color-config dropdown-menu">
+		    <li><a href="#" data-id="<?= $this->page_id ?>">Grey theme</a></li>
+		    <li><a href="#" data-id="<?= $this->page_id ?>">Pink lady theme</a></li>
+			<li><a href="#" data-id="<?= $this->page_id ?>">Classic theme</a></li>
+			<li><a href="#" data-id="<?= $this->page_id ?>">Orange theme</a></li>
+		    <li><a href="#" data-id="<?= $this->page_id ?>">Ocean theme</a></li>
+		    <li class="divider"></li>
+		    <li><a href="#">Extra</a></li>
+    	</ul>
+	</div>
+	
+	<div style="padding: 10px 0;" class="well">
+        <ul class="nav nav-list">
+          <li class="nav-header">List header</li>
+          <li class="active"><a href="#"><i class="icon-white icon-home"></i> Home</a></li>
+          <li><a href="#"><i class="icon-pencil"></i> Live Applications</a></li>
+          <li class="nav-header">Another list header</li>
+          <li><a href="/admin/dashboard/myaccount"><i class="icon-user"></i> Profile</a></li>
+          <li><a class="model-btn" href="#myFanpageSettingModel"><i class="icon-cog"></i> Fanpage Settings</a></li>
+          <li class="divider"></li>
+          <li><a href="#"><i class="icon-flag"></i> Help</a></li>
+        </ul>
+	</div>
+	
+    <div class="modal" id="myFanpageSettingModel">
+	    <div class="modal-header">
+	    <button type="button" class="close model-btn-close" data-dismiss="modal">x</button>
+	    <h3>Fanpage Setting</h3>
+	    </div>
+	    <div class="modal-body">
+		<form class="form-horizontal">
+	        <fieldset>
+	          
+	          <div class="control-group">
+	            <label for="optionsCheckbox" class="control-label">Profile Image</label>
+	            <div class="controls">
+	              <label class="checkbox">
+	                <input type="checkbox" value="option1" id="optionsCheckbox">
+	                	Enable upload profile picture to replace default fanpage picture 
+	              </label>
+	            </div>
+	          </div>
+	          
+	          <div class="control-group">
+	            <label for="select01" class="control-label">View Top Post By</label>
+	            <div class="controls">
+	              <select id="select01">
+	                <option>time peroid</option>
+	                <option>day</option>
+	                <option>week</option>
+	                <option>month</option>
+	              </select>
+	            </div>
+	          </div>
+	
+			<div class="control-group upload_image">
+	    		<input type="hidden" name="MAX_FILE_SIZE" value="100000" />
+	        	<span class="control-label">Select an image</span>
+	    		<input type="file" name="datafile" />
+				<input type="button" value="upload"
+	        		onClick="fileUpload(this.form,'/api/fanpages/<?= $this->page_id  ?>','upload'); return false;" >
+				<div id="upload"></div>
+			</div>
+			
+	        </fieldset>
+      </form>
+	    </div>
+	    <div class="modal-footer">
+	    <a href="#" class="btn model-btn-close" data-dismiss="modal">Close</a>
+	    <a href="#" class="btn btn-primary" data-id="<?= $this->page_id ?>">Save changes</a>
+	    </div>
+    </div>
+</div>
 <div class="install-header">
 	<?php if (!$this->installed): ?>
 		<h1>Add this app to your page...</h1>
@@ -7,210 +86,494 @@
 	<?php endif; ?>
 </div>
 
-<div class="color-setting">
-<ul>
-    <li class="dropdown" id="setting">
-	    <a class="dropdown-toggle" data-toggle="dropdown" href="#setting">
-	    	<span><i class="icon-cog"></i>Settings</span>
-	    </a>
-	    <ul class="dropdown-menu">
-	    <li><a href="#">ocean theme </a></li>
-	    <li><a href="#">classic theme</a></li>
-	    <li><a href="#">pink lady theme</a></li>
-	    <li class="divider"></li>
-	    <li><a href="#">Extra</a></li>
-	    </ul>
-    </li>
-</ul>
-</div>
-
-<div id="wrapper">
-
-	<div id="header">
-    
-    	<div id="logo"></div>
-        
-    </div><!--/end header -->
-    
-    <div id="content">
-    
-        <div id="ranking">
-        
-			<div id="top_fans">
-		
-				<div class="tip"><a title="You are awesome and nobody can touch you!<br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
-				
-				<h2>Top Fan <span>|&nbsp;&nbsp;Most Active Fan</span></h2>
-				
-
-				<?php $count = 0; ?> 
-				
-				<div class="panel up">
-
-				<?php foreach($this->top_fans as $top_fan): ?>
+<div id="preview-panel" class="panel">
+<div class="row">
+	<div class="span6">
+		<div class="top-fan">
+			<div class="title">
+				<div class="photo"> <img src="/img/news-feed/top-fan-icon.jpg" /> </div>
+				<div class="title-header"> <h3> Top Fans  </h3>
+					<div class="tip"><a title="You are awesome and nobody can touch you! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
+				 </div>
+			</div>
+			<?php $count = 0; ?> 
+			<?php foreach($this->top_fans as $top_fan): ?>
 			
-					<div class="border<?= ($count == 0 ? ' first' : '') ?>">
+			<?php if ($count == 0){?>
+			
+				<ul class="top-list">
+					<li>
+						<div class="border-dark">
+						
+								<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+									<h1><?= $count + 1 ?></h1>
+								</div>
+								<div class="photo">
+									<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
+								</div>
+								<div class="name">
+									<a class="first" href="#" ><?= $top_fan['fan_first_name'] ?></a>
+									<br/>
+								</div>
+								<div class="points">
+									<h3><?= $top_fan['number_of_posts'] ?></h3> <span>Points <br/>This Week</span>
+								</div>
+							</div>
+					</li>
 					
-						<div class="rank"><h2><?= $count + 1 ?></h2></div>
-						
-						<div class="photo">
-						
-							<a target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>
-						
+				</ul>
+			<?php }else{ ?>
+				<?php if ($count == 1){?>
+					<ul  id="top-fans-collapse" class="top-list collapse">
+				<?php }?>
+					<li>
+					<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+						<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1><?= $count + 1 ?></h1>
+							</div>
+							<div class="photo">
+								<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
+							</div>
+							<div class="name">
+								<a  <?php if ($count == 0){?>class='first'<?php }?> href="#"><?= $top_fan['fan_first_name'] ?></a>
+								<br/>
+							</div>
+							<div class="points">
+								<h3><?= $top_fan['number_of_posts'] ?> </h3> <span>Points <br/>This Week</span>
+							</div>
 						</div>
-						
-						<div class="name"><a target="_blank" href="https://facebook.com/<?= $top_fan['facebook_user_id'] ?>"><?= $top_fan['fan_first_name'] ?></a></div>
-						
-						<div class="points"><p><?= $top_fan['number_of_posts'] ?><span>Points<br>this Week</span></p></div>
-						
-						<div class="clearfix"></div>
+					</li>
 					
-					</div><!--end border -->
-					<?php $count ++; ?>
-				<?php endforeach; ?>
-
+			<?php }?>
+			<?php $count ++; ?>
+			<?php endforeach; ?>
+				
+			<?php if ($count < 5){?>
+				
+				<?php for ( ;$count<5; $count++){ ?>
+					<?php if ($count == 1){?>
+						<ul  id="top-fans-collapse" class="top-list collapse">
+					<?php }?>
+					<li>
+					<li>
+					<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+							<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1><?= $count + 1 ?></h1>
+							</div>
+							<div class="photo">
+								</div>
+							<div class="name">
+									</div>
+							<div class="points">
+								
+							</div>
+						</div>
+					</li>
+				<?}?>
+			<?}?>
+			
+			
+			</ul>
+			<?php $count ++; ?>
+			<ul class="top-list">
+				<li>
+						<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+							<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1>*</h1>
+							</div>
+							<div class="photo">
+								<a href="#" ><img class="face" width="50" height="50" /></a>	
+							</div>
+							<div class="name">
+								<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+								<br/>
+							</div>
+							<div class="points">
+								<span class="align-right"><h3><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">LOGIN</a></h3><br/> TO SEE YOUR RANK!</span> 
+							</div>
+						</div>
+				</li>
+			</ul>
+			<div class="shadow">
+				<button class="btn-top" id="top-fans-btn" data-toggle="collapse" data-target="#top-fans-collapse">
+						+ More
+				</button>
+			</div>
+		</div>
+		
+		<div class="fan-favorite">
+			<div class="title">
+				<div class="photo"> <img src="/img/news-feed/fan-fav-icon.jpg" /> </div>
+				<div class="title-header"> <h3>Fan Favorite</h3>
+					<div class="tip"><a title="People like you. Your mom was right!<br /><br />But <i>seriously</i>, your contribution is well regarded within the community. People like your posts and interact with you a lot.<br /><br />Keep up the good work!">?</a></div>
+				</div>
+			</div>
+			<?php $count = 0; ?> 
+			<?php foreach($this->most_popular as $popular): ?>
+			<?php if ($count == 0){?>
+			<ul class="top-list">
+					<li>
+						<div class="border-dark">
+						
+								<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+									<h1><?= $count + 1 ?></h1>
+								</div>
+								<div class="photo">
+									<a   href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
+								</div>
+								<div class="name">
+									<a class="first" href="#" ><?= $popular['fan_first_name'] ?></a>
+									<br/>
+								</div>
+								<div class="points">
+									<h3><?= $popular['count'] ?> </h3> <span>Points <br/>This Week</span>
+								</div>
+							</div>
+					</li>
+					
+			</ul>
+			<?php }else{ ?>
+				<?php if ($count == 1){?>
+					<ul  id="fan-favorite-collapse" class="top-list collapse">
+				<?php }?>
+					<li>
+					<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+						<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1><?= $count + 1 ?></h1>
+							</div>
+							<div class="photo">
+								<a   href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
+							</div>
+							<div class="name">
+								<a  href="#" ><?= $popular['fan_first_name'] ?></a>
+								<br/>
+							</div>
+							<div class="points">
+								<h3><?= $popular['count'] ?> </h3> <span>Points <br/>This Week</span>
+							</div>
+						</div>
+					</li>
+					
+			<?php }?>
+			<?php $count ++; ?>
+			<?php endforeach; ?>
+			<?php if ($count < 5){?>
+				
+				<?php for ( ;$count<5; $count++){ ?>
+					<?php if ($count == 1){?>
+						<ul  id="top-favorite-collapse" class="top-list collapse">
+					<?php }?>
+					<li>
+					<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+							<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1><?= $count + 1 ?></h1>
+							</div>
+							<div class="photo">
+								</div>
+							<div class="name">
+									</div>
+							<div class="points">
+								
+							</div>
+						</div>
+					</li>
+				<?}?>
+			<?}?>
+			</ul>
+			<?php $count ++; ?>
+			<ul class="top-list">
+				<li>
+						<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+							<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1>*</h1>
+							</div>
+							<div class="photo">
+								<a href="#" ><img class="face" width="50" height="50" /></a>	
+							</div>
+							<div class="name">
+								<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+								<br/>
+							</div>
+							<div class="points">
+								<span class="align-right"><h3><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">LOGIN</a></h3><br/> TO SEE YOUR RANK!</span> 
+							</div>
+						</div>
+				</li>
+			</ul>							
+		
+			<div class="shadow">
+				<button class="btn-top" id="fan-favorite-btn" data-toggle="collapse" data-target="#fan-favorite-collapse">
+						+ More
+				</button>
+			</div>
+		</div>
+	
+	</div>
+	
+	<div class="span6">
+		<div class="top-talker">
+			<div class="title">
+				<div class="photo"> <img src="/img/news-feed/top-talker-icon.jpg" /> </div>
+				<div class="title-header"> <h3>   Top Talker   </h3> 
+					<div class="tip"><a title="Loud and proud! You don't care what time of the night it is, you keep barking!<br /><br />But <i>seriously</i>, your posts and comments help shape the conversations.<br /><br />Keep it loud. Keep it proud.">?</a></div>
+				</div>
+			</div>
+			<?php $count = 0; ?> 
+			<?php foreach($this->top_talker as $talker): ?>
+			<?php if ($count == 0){?>
+			<ul class="top-list">
+					<li>
+						<div class="border-dark">
+						
+								<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+									<h1><?= $count + 1 ?></h1>
+								</div>
+								<div class="photo">
+									<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
+								</div>
+								<div class="name">
+									<a class="first" href="#" ><?= $talker['fan_first_name'] ?></a>
+									<br/>
+								</div>
+								<div class="points">
+									<h3><?= $talker['number_of_posts'] ?> </h3> <span>Points <br/>This Week</span>
+								</div>
+							</div>
+					</li>
+					
+				</ul>
+			<?php }else{ ?>
+				<?php if ($count == 1){?>
+					<ul  id="top-talker-collapse" class="top-list collapse">
+				<?php }?>
+					<li>
+					<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+						<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1><?= $count + 1 ?></h1>
+							</div>
+							<div class="photo">
+								<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
+							</div>
+							<div class="name">
+								<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" ><?= $talker['fan_first_name'] ?></a>
+								<br/>
+							</div>
+							<div class="points">
+								<h3><?= $talker['number_of_posts'] ?> </h3> <span>Points <br/>This Week</span>
+							</div>
+						</div>
+					</li>
+					
+			<?php }?>
+			<?php $count ++; ?>
+			<?php endforeach; ?>
+			<?php if ($count < 5){?>
+				
+				<?php for ( ;$count<5; $count++){ ?>
+					<?php if ($count == 1){?>
+						<ul  id="top-talker-collapse" class="top-list collapse">
+					<?php }?>
+					<li>
+					<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+							<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1><?= $count + 1 ?></h1>
+							</div>
+							<div class="photo">
+								</div>
+							<div class="name">
+									</div>
+							<div class="points">
+								
+							</div>
+						</div>
+					</li>
+				<?}?>
+			<?}?>
+			</ul>
+			<?php $count ++; ?>
+			<ul class="top-list">
+				<li>
+						<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+							<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1>*</h1>
+							</div>
+							<div class="photo">
+								<a href="#" ><img class="face" width="50" height="50" /></a>	
+							</div>
+							<div class="name">
+								<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+								<br/>
+							</div>
+							<div class="points">
+								<span class="align-right"><h3><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">LOGIN</a></h3><br/> TO SEE YOUR RANK!</span> 
+							</div>
+						</div>
+				</li>
+			</ul>
+			<div class="shadow">
+				<button class="btn-top" id="top-talker-btn" data-toggle="collapse" data-target="#top-talker-collapse">
+						 + More
+				</button>
+			</div>
+		</div>
+	
+		<div class="top clicker">
+				<div class="title">
+					<div class="photo"> <img src="/img/news-feed/top-clicker-icon.jpg" /> </div>
+					<div class="title-header"> <h3>   Top Clicker   </h3> 
+						<div class="tip"><a title="Is there anything you don't like? Even Lindsey Lohan has standards --insert chuckle--.<br /><br />But <i>seriously</i>, we're glad you take interest in your peers.<br /><br />Happy clicking!.">?</a></div>
+					</div>
 				</div>
 				
-				<div class="shadow"><p class="toggle flip">+ More</p></div>
-			
-			</div><!--end top_fans -->
-			
-			
-			<div id="fan_favorite">
-			
-				<div class="tip"><a title="People like you. Your mom was right!<br /><br />But <i>seriously</i>, your contribution is well regarded within the community. People like your posts and interact with you a lot.<br /><br />Keep up the good work!">?</a></div>
-			
-				<h2>Fan Favorite <span>|&nbsp;&nbsp;Received most likes</span></h2>
-				
-		  		<div class="panel up">	
-
-		  			<?php if (!count($this->most_popular)): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-							<div class="name">NO FANS</div>
-		  				</div>
-		  			<?php endif; ?>
-
-		  			<?php $count = 0; ?>
-
-		  			<?php foreach($this->most_popular as $popular): ?>
-
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-
-	  						<div class="rank"><h2><?= $count + 1 ?></h2></div>
-
-	  						<div class="photo">
-							
-								<a target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>
-							
+				<?php $count = 0; ?> 
+			<?php foreach($this->top_clicker as $clicker): ?>
+			<?php if ($count == 0){?>
+			<ul class="top-list">
+					<li>
+						<div class="border-dark">
+						
+								<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+									<h1><?= $count + 1 ?></h1>
+								</div>
+								<div class="photo">
+									<a  href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
+								</div>
+								<div class="name">
+									<a class="first" href="#" ><?= $clicker['fan_first_name'] ?></a>
+									<br/>
+								</div>
+								<div class="points">
+									<h3><?= $clicker['number_of_likes'] ?></h3> <span>Points <br/>This Week</span>
+								</div>
 							</div>
-							
-							<div class="name"><a target="_blank" href="https://facebook.com/<?= $popular['facebook_user_id'] ?>"><?= $popular['fan_first_name'] ?></a></div>
-							
-							<div class="points"><p><?= $popular['count'] ?><span>Got Liked<br />this Week</span></p></div>
-							
-							<div class="clearfix"></div>
-							<?php $count++; ?>
-		  				</div>
-		  			<?php endforeach; ?>
-			
-				</div><!--end panel -->
-			
-				<div class="shadow"><p class="toggle flip">+ More</p></div>
-			
-			</div><!--/end fans favorite -->
-		
-			<div id="top_talker">
-				
-				<div class="tip"><a title="Loud and proud! You don't care what time of the night it is, you keep barking!<br /><br />But <i>seriously</i>, your posts and comments help shape the conversations.<br /><br />Keep it loud. Keep it proud.">?</a></div>
-				
-				<h2>Top Talker <span>|&nbsp;&nbsp;Most Comments</span></h2>
-				
-				<div class="panel up">
+					</li>
 					
-					<?php if (!count($this->top_talker)): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-							<div class="name">NO TALKER</div>
-		  				</div>
-		  			<?php endif; ?>
-
-		  			<?php $count = 0; ?>
-
-		  			<?php foreach($this->top_talker as $talker): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-
-	  						<div class="rank"><h2><?= $count + 1 ?></h2></div>
-
-	  						<div class="photo">
-							
-								<a target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>
-							
+				</ul>
+			<?php }else{ ?>
+				<?php if ($count == 1){?>
+					<ul  id="top-clicker-collapse" class="top-list collapse">
+				<?php }?>
+					<li>
+					<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+						<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1><?= $count + 1 ?></h1>
 							</div>
-							
-							<div class="name"><a target="_blank" href="https://facebook.com/<?= $talker['facebook_user_id'] ?>"><?= $talker['fan_first_name'] ?></a></div>
-							
-							<div class="points"><p><?= $talker['number_of_posts'] ?><span>Got Liked<br />this Week</span></p></div>
-							
-							<div class="clearfix"></div>
-							<?php $count++; ?>
-
-		  				</div>
-		  			<?php endforeach; ?>
-				
-				</div><!--end panel -->
-				
-				<div class="shadow"><p class="toggle flip">+ More</p></div>
-				
-			</div><!--end top_talker -->
-
-			
-			<div id="top_clicker">
-			
-				<div class="tip"><a title="Is there anything you don't like? Even Lindsey Lohan has standards --insert chuckle--.<br /><br />But <i>seriously</i>, we're glad you take interest in your peers.<br /><br />Happy clicking!.">?</a></div>
-				
-				<h2>Top Clicker <span>|&nbsp;&nbsp;Liked most items</span></h2>
-				
-				<div class="panel up">
-				
-					<?php if (!count($this->top_clicker)): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-							<div class="name">NO TALKER</div>
-		  				</div>
-		  			<?php endif; ?>
-
-		  			<?php $count = 0; ?>
-
-		  			<?php foreach($this->top_clicker as $clicker): ?>
-		  				<div class="border<?= ($count == 0 ? ' first' : '') ?>">
-
-	  						<div class="rank"><h2><?= $count + 1 ?></h2></div>
-
-	  						<div class="photo">
-							
-								<a target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>
-							
+							<div class="photo">
+								<a  href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
 							</div>
-							
-							<div class="name"><a target="_blank" href="https://facebook.com/<?= $clicker['facebook_user_id'] ?>"><?= $clicker['fan_first_name'] ?></a></div>
-							
-							<div class="points"><p><?= $clicker['number_of_likes'] ?><span>Got Liked<br />this Week</span></p></div>
-							
-							<div class="clearfix"></div>
-							<?php $count++; ?>
-
-		  				</div>
-		  			<?php endforeach; ?>
+							<div class="name">
+								<a  <?php if ($count == 0){?>class='first'<?php }?>  href="#" ><?= $clicker['fan_first_name'] ?></a>
+								<br/>
+							</div>
+							<div class="points">
+								<h3><?= $clicker['number_of_likes'] ?> </h3> <span>Points <br/>This Week</span>
+							</div>
+						</div>
+					</li>
+					
+			<?php }?>
+			<?php $count ++; ?>
+			<?php endforeach; ?>
+			<?php if ($count < 5){?>
 				
-				</div><!--end panel -->
-				
-				<div class="shadow"><p class="toggle flip">+ More</p></div>
-			
-			</div><!--end top_clicker -->
-	                
-	    </div><!--/end ranking -->
-	        
-	    <div class="clear"></div>
-	        
-	</div><!--/end content -->
-
-</div><!--/end wrapper -->
-
+				<?php for ( ;$count<5; $count++){ ?>
+					<?php if ($count == 1){?>
+						<ul  id="top-clicker-collapse" class="top-list collapse">
+					<?php }?>
+					<li>
+					<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+							<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1><?= $count + 1 ?></h1>
+							</div>
+							<div class="photo">
+								</div>
+							<div class="name">
+									</div>
+							<div class="points">
+								
+							</div>
+						</div>
+					</li>
+				<?}?>
+			<?}?>
+			</ul>
+			<?php $count ++; ?>
+			<ul class="top-list">
+				<li>
+						<?php if ($count % 2 == 0) {?>
+							<div class="border-dark">
+						<?php  }else{  ?>
+							<div class="border-light">
+						<?php }?>
+							<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+								<h1>*</h1>
+							</div>
+							<div class="photo">
+								<a href="#" ><img class="face" width="50" height="50" /></a>	
+							</div>
+							<div class="name">
+								<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
+								<br/>
+							</div>
+							<div class="points">
+								<span class="align-right"><h3><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">LOGIN</a></h3><br/> TO SEE YOUR RANK!</span> 
+							</div>
+						</div>
+				</li>
+			</ul>	
+			 
+				<div class="shadow">
+					<button class="btn-top" id="top-clicker-btn" data-toggle="collapse" data-target="#top-clicker-collapse">
+							+ More
+					</button>
+				</div>
+			</div>
+		
+	</div>
+</div>
+		
+</div>		
