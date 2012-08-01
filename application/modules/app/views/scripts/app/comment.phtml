@@ -71,9 +71,9 @@
 		<img src="/img/news-feed/icon-likes.png" />
 		<? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>
 		<?php if ($this->likepost == 0) {?>
-			<a href="#post_<?=$post->id?>" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
+			<a href="#post_<?=$this->post->id?>" onclick="like('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>' )" >Like</a>   
 		<?}else{?>
-			<a href="#post_<?=$post->id?>" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
+			<a href="#post_<?=$this->post->id?>" onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike</a>   
 		<?php }?>
 		</span>
 		<span class="comment">
