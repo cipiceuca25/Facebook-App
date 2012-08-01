@@ -160,17 +160,28 @@
 		});
 
 	
+		
+	
 	
 	function userProfile(user, refresh){
 		refresh = typeof refresh !== 'undefined' ? refresh : true;
 		getUserProfile('.profile-content', user);
-		
+		height=0;
 		$('.light-box').css('display','block');
 		$('.user-profile').css('display', 'block');
 			
 		
 		$('.profile-content').css('height', 'auto');
-		  
+	
+	
+		
+		FB.Canvas.getPageInfo(
+			    function(info) {
+			    	$('.user-profile').css('top', info.scrollTop - 200);
+			    }
+			);
+		
+		//alert(f_clientHeight());
 		if(refresh){
 		
 			$('.profile-content').animate({
@@ -218,6 +229,11 @@
 			  }, 1000, function() {
 			    // Animation complete.
 			  });*/
+			FB.Canvas.getPageInfo(
+				    function(info) {
+				    	$('.user-profile').css('top', info.scrollTop - 200);
+				    }
+				);
 			$('.profile-content').css('height', 'auto');
 			//$('.profile-content').css('height', '1100px');
 			$('.profile-content').animate({
@@ -230,10 +246,10 @@
 	}
 
 	
-	function comment_feed(post_id, limiter, total, toggle){
+	function comment_feed(post_id, type, limiter, total, toggle){
 		ui = '#post_' + post_id;
 		//alert(ui);
-		getFeedComment( ui, post_id,limiter, total, toggle);
+		getFeedComment( ui, post_id, type, limiter, total, toggle);
 
 		//$('.light-box').css('display','block');
 		//$('.user-profile').css('display', 'block');
@@ -301,10 +317,10 @@
 	}
 
 
-	function getFeedComment(ui, post_id, limiter, total, toggle){
+	function getFeedComment(ui, post_id,type, limiter, total, toggle){
 		$.ajax({
 			type: "GET",
-			url: serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&limit=' + limiter + '&total=' +total,
+			url: serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&post_type=' + type +'&limit=' + limiter + '&total=' +total,
 
 			dataType: "html",
 			cache: false,
@@ -399,7 +415,7 @@
 			}
 		});
 	}
-
+/*
 	function getLatestPost(){
 		//alert('getting top postsss');
 		ui = '#latestpost';
@@ -419,7 +435,7 @@
 		});
 		
 	}
-
+*/
 	function like(post_id, post_type, target_id, target_name){
 		$.ajax({
     		type: "GET",
@@ -645,7 +661,7 @@
 				} else {
 				//alert('Post ID: ' + response.id);
 				$('#post_box').val('');
-				addActivities('post', userName, fanpageId, target_id, target);
+				addActivities('post-status', userName, fanpageId, target_id, target);
 			
 				setFeed=0;
 				getFancrankfeed(setFeed);
@@ -654,7 +670,7 @@
 
 	}
 	
-	function commentSubmit(postid, message, target_id, target, postcommentcount){
+	function commentSubmit(postid, type,  message, target_id, target, postcommentcount){
 		var m = '#'+message;
 	
 		//alert(userAccessToken);
@@ -664,9 +680,26 @@
 				} else {
 				//alert('Post ID: ' + response.id);
 				$(m).val('');
-				addActivities('post-comment', userName, postid, target_id, target);
+				addActivities('comment-'+type, userName, postid, target_id, target);
 	
 				comment_feed(postid, 5, postcommentcount +1, false);
+				}
+			});
+	}
+	
+	function commentpopupSubmit(postid, type,  message, target_id, target){
+		var m = '#'+message;
+	
+		//alert(userAccessToken);
+		FB.api('/'+ postid + '/comments' , 'post' , { 'message': $(m).val() , 'access_token' : userAccessToken},  function(response) {
+			if (!response || response.error) {
+				alert(response.error.message);
+				} else {
+				//alert('Post ID: ' + response.id);
+				$(m).val('');
+				addActivities('comment-'+type, userName, postid, target_id, target);
+				comment_bubble(postid, 5, false);
+				
 				}
 			});
 	}
@@ -686,11 +719,11 @@
     			$('.user-profile').css('display', 'block');
     			$('.profile-content').css('height', 'auto');
     			 
-    			
+    			height = $(window).scrollTop() + 20;
     			if(refresh){
 	    			$('.profile-content').animate({
 	    				height:'toggle',
-	    				top:'20px'
+	    				top:height+'px'
 	    			   },500, function(){
 	    				   
 	    			});

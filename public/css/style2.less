@@ -75,16 +75,18 @@ ul, ol {
 .nav-tabs{
 	border-bottom:0px;
 	//border-bottom:1px solid @color-dark;
+	//background-color:@color-background;
 }
 
 .nav-tabs .active  a, .nav-tabs .active a:hover{
 	border:1px solid @color-dark;
 	border-bottom-color:@color-background;
 	color:@color-dark;
+	background-color:@color-background;
 }
 
 .nav-tabs li a{
-	color:white;
+	color:@color-background;
 	border-bottom:1px solid @color-dark;
 	background-color:@color-base;
 }
@@ -112,7 +114,7 @@ ul, ol {
 	display:inline-block;
 	width:70px;
 	height:70px;
-	background-color:white;
+	background-color:@color-background;
 	position:absolute;
 	border: 5px solid @color-dark;
 	
@@ -137,12 +139,12 @@ ul, ol {
 	margin-top:25px;
 	margin-bottom:30px;
 	.border-radius(5px 0 0 5px);
-	#gradient > .horizontal(@color-base, white);
+	#gradient > .horizontal(@color-base, @color-background);
 }
 
 .title-header-dark{
 	.border-radius(5px 0 0 5px);
-	#gradient > .horizontal(@color-base, white);
+	#gradient > .horizontal(@color-base, @color-background);
 	//background-color:@color-dark;
 }
 
@@ -281,7 +283,7 @@ ul, ol {
 	background:white;//@color-feed2;	
 	//border-bottom: solid 2px @color-feed;
 	padding:10px;
-	border-top: solid 2px lighten(@color-badges, 2%);
+	border-top: solid 2px lighten(@color-badges, 5%);
 }
 
 /* POST LISTINGS */
@@ -531,18 +533,30 @@ ul, ol {
 .badge-Friends.big,
 .badge-Follow.big,
 .badge-Following.big,
+.badge-unfollow.big,
 .big{
 		position:relative;
 		top:5px;
-		line-height:23px;
+		
 		font-size:23px;
 		.border-radius(2px);
 		float:left
+		
 }
 
 .badge-Follow{
 	font-size:13px;
 	background-color:@color-follow;
+	.border-radius(10px 0px  0px 10px);
+	line-height:29px;
+	height:29px;
+	margin-right:-10px;
+	float:right;
+}
+
+.badge-unfollow{
+	font-size:13px;
+	//background-color:@color-follow;
 	.border-radius(10px 0px  0px 10px);
 	line-height:29px;
 	height:29px;
@@ -607,6 +621,20 @@ ul, ol {
 	
 	}
 
+.top-list .follow .badge-Follower.big,
+.top-list .follow .badge-Follow.big,
+.top-list .follow .badge-Friends.big,
+.top-list .follow .badge-Following.big,
+.top-list .follow .badge-unfollowing.big,
+.top-list .follow .badge-You.big{
+	position:relative;
+		top:5px;
+		height:29px;
+		font-size:23px;
+		.border-radius(2px);
+		float:left;
+		line-height:29px;
+	}
 
 
 
@@ -750,7 +778,7 @@ ul, ol {
 }
 
 .span1.rb{
-	margin-left:17px;
+	margin-left:10px;
 	
 }
 
@@ -984,6 +1012,7 @@ ul, ol {
 
 	//width:90%;
 }
+
 .popup_comments .grey-dark,
 .popup_comments .grey-light,
 .comments .grey-light,
@@ -1014,7 +1043,7 @@ ul, ol {
 
 .comment_box_popup{
 	margin-left:10px;
-	width:86%;
+	width:85%;
 }
 
 #post_box{
@@ -1130,7 +1159,7 @@ ul, ol {
 .top_post li{
 	margin-bottom:20px;
 	display:block;
-	#gradient > .vertical(lighten(@color-feed, 5%) ,white);
+	#gradient > .vertical(@color-feed ,white);
 	//.border-radius(10px);
 	//.rotate(-5deg);
 	padding:10px;

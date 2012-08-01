@@ -119,27 +119,29 @@
 									
 								</div>
 								<div class="row">
-									
+									<div class="span6">
 									<div class="profile-block">
+									
 										<div class="recbad">RECENT BADGES</div>
 										<div class="span1 rb">
-											<img src="/img/badges/like_comment_1.png" />
+											<img src="/img/badges/post_comment_1.png" />
 										</div>
 										<div class="span1 rb">
-											<img src="/img/badges/like_comment_5.png" />
+											<img src="/img/badges/post_video_1.png" />
 										</div>
 										<div class="span1 rb">
-											<img src="/img/badges/like_comment_10.png" />
+											<img src="/img/badges/post_photo_5.png" />
 										</div>
 										<div class="span1 rb">
-											<img src="/img/badges/like_comment_1.png" />
+											<img src="/img/badges/post_post_1.png" />
 										</div>
 										<div class="span1 rb">
-											<img src="/img/badges/like_comment_5.png" />
+											<img src="/img/badges/like_post_5.png" />
 										</div>
 										<div class="span1 rb">
-											<img src="/img/badges/like_comment_10.png" />
+											<img src="/img/badges/like_photo_1.png" />
 										</div>
+									</div>
 									</div>
 								</div>	
 									
@@ -167,13 +169,23 @@
 									<div class="title-header"> <h3>Upcoming Badges</h3> </div>
 								</div>
 								
+								<div>
+											Total Posts Made : <?=$this->stat_post?> <br/>
+											Total Likes Made : <?=$this->stat_like?> <br/>
+											Total Comments Made : <?=$this->stat_comment?> <br/>
+											Total Recieved Likes: <?=$this->stat_get_like?> <br/>
+											Total Recieved Comments: <?=$this->stat_get_comment?> <br/>
+								</div>
+								
+								
 								<div class="text-title">Completion</div>
 								
 								<ul class="badges-list">
 									<li>
 										<div class="badges">
+										<div class="photo"><img src="/img/badges/like_comment_1.png" /></div>
 											<div class="percentage">100%</div>
-											<div class="photo"><img src="/img/badges/like_comment_1.png" /></div>
+											
 											<div class="stats">Like a Comment 1/1</div>
 										</div>
 										<div class="progress">
@@ -186,8 +198,9 @@
 									
 									<li>
 										<div class="badges">
-											<div class="percentage">20%</div>
 											<div class="photo"><img src="/img/badges/like_comment_5.png" /></div>
+											<div class="percentage">20%</div>
+											
 											<div class="stats">test 1/5</div>
 										</div>
 										<div class="progress">
@@ -196,8 +209,9 @@
 									</li>
 									<li>
 										<div class="badges">
-											<div class="percentage">10%</div>
 											<div class="photo"><img src="/img/badges/like_comment_10.png" /></div>
+											<div class="percentage">10%</div>
+											
 											<div class="stats">test 1/10</div>
 										</div>
 										<div class="progress">

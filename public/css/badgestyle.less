@@ -1,0 +1,116 @@
+@import url('/bootstrap/css/bootstrap.css');
+
+
+@import url('/bootstrap/less/mixin.less');
+
+
+.notification{
+	z-index:50;
+	position:absolute;
+}
+
+.flare{
+
+	position:absolute;
+	height:300px;
+	width:300px;
+	//background-color:black;
+	background-image: url(../img/badges/test/flare.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	.background-size(300px);
+	
+	//saf + chr
+	@-webkit-keyframes spin {  
+	from {  
+	    -webkit-transform: rotate(0deg);  
+	}  
+	to {  
+	    -webkit-transform: rotate(360deg);  
+	    } 
+	}
+	-webkit-animation-name: spin; 
+    -webkit-animation-iteration-count: infinite; 
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-duration: 5s; 
+    
+    //fox
+    @-moz-keyframes spin {  
+	from {  
+	    -moz-transform: rotate(0deg);  
+	}  
+	to {  
+	    -moz-transform: rotate(360deg);  
+	    } 
+	}
+	-moz-animation-name: spin; 
+    -moz-animation-iteration-count: infinite; 
+    -moz-animation-timing-function: linear;
+    -moz-animation-duration: 5s; 
+    
+    //ope
+    @-o-keyframes spin {  
+	from {  
+	    -o-transform: rotate(0deg);  
+	}  
+	to {  
+	    -o-transform: rotate(360deg);  
+	    } 
+	}
+	-o-animation-name: spin; 
+    -o-animation-iteration-count: infinite; 
+    -o-animation-timing-function: linear;
+    -o-animation-duration: 5s; 
+}
+
+.badgeAni{
+	position:absolute;
+	left:75px;
+	top:95px;
+	height:150px;
+	width:150px;
+	background-image: url(../img/badges/test/post_post.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	.background-size(150px);
+}
+
+
+.badge_title{
+	font: bold 20px Arial, Helvetica, sans-serif;
+	position:relative;
+	display:block;
+	.center-block();
+	.border-radius(10px);
+	top:240px;
+	width:300px;
+	border: 3px solid gray;
+	text-align:center;
+	background-color:white;
+	color:black;
+}
+
+.holder{
+	position:relative;
+	width:300px;
+	height:300px;
+	left:270px;
+	opacity:0.1;
+}
+
+.exp_count{
+	display:block;
+	position:relative;
+	.center-block();
+	font: bold 20px Arial, Helvetica, sans-serif; 
+	width:300px;
+	text-align:center;
+	left:270px;
+	color:white;
+}
+
+.next{
+	height:50px;
+	width:50px;
+	background-color:white;
+}

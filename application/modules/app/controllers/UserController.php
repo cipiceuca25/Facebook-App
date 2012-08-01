@@ -157,12 +157,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 
 		$this->_helper->json($result['data']);
 	}
-	
+
 	public function updateprofileAction() {
 		$fancrankDB = new Service_FancrankDBService();
 		$fancrankDB->saveFacebookUser($this->user);
 	}
-	
+
 	public function likesAction() {
 		//$objectId = $this->_getParam('object_id');
 		$likeModel = new Model_Likes();
@@ -171,18 +171,18 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['post_type'] = $this->_getParam('post_type');
 		$data['likes'] = 1;
-		
+
 		$data['access_token'] = $this->_getParam('access_token');
 		//echo ('function called ');
-		
+
 		//Zend_debug::dump($data);
-		
+
 		if(!$likeModel->isDataValid($data)) {
 			$msg = array('response'=>'error','message'=>'invalid input');
 			$this->_helper->json($msg);
 		}
-		
-		
+
+
 		//echo ('getting rdy to like');
 		$found = $likeModel->find($data['facebook_user_id'], $this->_getParam('post_id'), $data['fanpage_id'])->current();
 		if (empty($found)) {
@@ -195,7 +195,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 						'access_token' => $data['access_token']
 				);
 				$fancrankFB->api("/$postId/likes", 'POST', $params);
-				
+
 				//save object likes to fancrank database
 				
 				//******* WE HAVE YET TO UPDATE THE POSTS DATABASE THRU THIS FUNCTION
@@ -306,9 +306,89 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 		$act = new Model_FancrankActivities();
 		
+		$stat = new Model_FansObjectsStats();
+		
+		
+		switch($data['activity_type']){
+		
+			case 'post-photo':
+				$stat->addPostPhoto($data['fanpage_id'], $data['facebook_user_id']);
+				break;
+			case 'post-video':
+				$stat->addPostVideo($data['fanpage_id'], $data['facebook_user_id']);
+				break;
+			case 'post-link':
+				$stat->addPostLink($data['fanpage_id'], $data['facebook_user_id']);
+				break;
+			case 'post-status':
+				$stat->addPostStatus($data['fanpage_id'], $data['facebook_user_id']);
+				break;
+			case 'comment-status':
+				$stat->addCommentStatus($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->addGetCommentStatus($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'comment-photo':
+				$stat->addCommentPhoto($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->addGetCommentPhoto($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'comment-video':
+				$stat->addCommentVideo($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->addGetCommentVideo($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'comment-link':
+				$stat->addCommentLink($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->addGetCommentLink($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'like-status':
+				$stat->addLikeStatus($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->addGetLikeStatus($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'like-photo':
+				$stat->addLikePhoto($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->addGetLikePhoto($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'like-video':
+				$stat->addLikeVideo($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->addGetLikeVideo($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'like-link':
+				$stat->addLikeLink($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->addGetLikeLink($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'like-comment':
+				$stat->addLikeComment($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->addGetLikeComment($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'unlike-status':
+				$stat->subLikeStatus($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->subGetLikeStatus($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'unlike-photo':
+				$stat->subLikePhoto($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->subGetLikePhoto($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'unlike-video':
+				$stat->subLikeVideo($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->subGetLikevideo($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'unlike-link':
+				$stat->subLikeLink($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->subGetLikeLink($data['fanpage_id'], $data['target_user_id']);
+				break;
+			case 'unlike-comment':
+				$stat->subLikeComment($data['fanpage_id'], $data['facebook_user_id']);
+				$stat->subGetLikeComment($data['fanpage_id'], $data['target_user_id']);
+				break;
+			default:
+				break;
+		}
+		
+		
 		$act -> addActivities($data);
 		
 	}
+	
+	
 	
 }
 

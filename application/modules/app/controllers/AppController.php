@@ -338,7 +338,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("gettoppost");
     }
     
-
+/*
     public function getlatestpostAction(){
     	
     	$this->_helper->layout->disableLayout();
@@ -363,6 +363,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("getlatestpost");
     }
     
+    */
+    
     public function commentAction()
     {
     	$this->_helper->layout->disableLayout();
@@ -381,6 +383,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$follow = new Model_Subscribes();
     	$likesModel = new Model_Likes();
+    	$likesPost;
     	$likes = array();
     	$relation = array();
     	$count=0;
@@ -398,12 +401,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}
     	}
     	
+    	$likesPost = $likesModel->getLikes($this->_fanpageId, $postId, $this->_userId );
     	//$postTop = explode('_', $postId);
     	//$postTop = $postTop[0].'_'.$postTop[1];
     	 
     	//$this->view->postTopId = $postTop;
     	//$this->view->postTopName =$this-> getOwnerOfPost($postTop);
     	$this->view->post = $post;
+    	$this->view->likepost = $likesPost;
     	$this->view->relation = $relation;
     	$this->view->likes = $likes;
     	//$this->view->postOwner = $this->getOwnerOfPost($postId);
@@ -465,12 +470,30 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$fan_country = $fan->getFanFields($user->facebook_user_id, $this->_fanpageId, 'fan_country')->current();
     	//Zend_Debug::dump($fan_level);
     	
+    	$stat = new Model_FansObjectsStats();
+    	$stat_post = $stat->getTotalPosts($this->_fanpageId, $user->facebook_user_id);
+    	$stat_comment = $stat->getTotalComments($this->_fanpageId, $user->facebook_user_id);
+    	$stat_like = $stat->getTotalLikes($this->_fanpageId, $user->facebook_user_id);
+    	$stat_get_comment = $stat->getTotalGetComments($this->_fanpageId, $user->facebook_user_id);
+    	$stat_get_like = $stat->getTotalGetLikes($this->_fanpageId, $user->facebook_user_id);
+    	
+    	
     	$this->view->fan_level = $fan_level;
     	$this->view->fan_since = $fan_since;
     	$this->view->fan_country = $fan_country->fan_country;
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	$this->view->friends = $friends;
+    	
+    	
+    	//Zend_Debug::dump($stat_post);
+    	
+    	$this->view->stat_post = $stat_post[0]['total_posts'];
+    	$this->view->stat_comment = $stat_comment[0]['total_comments'];
+    	$this->view->stat_like = $stat_like[0]['total_likes'];
+    	$this->view->stat_get_comment = $stat_get_comment[0]['total_get_comments'];
+    	$this->view->stat_get_like = $stat_get_like[0]['total_get_likes'];
+    	
     	
     	$this->render("myprofile");
     }
@@ -593,7 +616,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$postId = $this->_request->getParam('post_id');
-
+		$postType = $this->_request->getParam('post_type');
     	$limit = $this->_request->getParam('limit');
     	$total = $this->_request->getParam('total');
     	$result = array();
@@ -636,7 +659,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->limit = $limit;
     	$this->view->comments = $result;
     	$this->view->postId = $postId;
-
+    	$this->view->postType = $postType;
     	$this->render("fancrankfeedcomment");
     }
     
@@ -828,18 +851,30 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->viewRenderer->setNoRender(true);
     	$limit = $this->_request->getParam('limit');
     	$target = $this->_request->getParam('target');
-    	
+    	$follow = new Model_Subscribes();
   
     	$userName = $this-> _request->getParam('targetname');
     	$follow = new Model_Subscribes();
     	
     	$result = $follow->getFollowersList($target, $this->_fanpageId, $limit);
     	
+    	$relation = array();
+    	
+    	$count = 0;
+    	foreach ($result as $r){
+    		//echo $top['facebook_user_id'];
+    		$relation[$count] = $follow->getRelation($this->_userId, $r['facebook_user_id']);
+    		//echo $topArray[$count];
+    		$count++;
+    	
+    	}
+    	
+    	$this->view->relation= $relation;
     	$this->view->result = $result;
     	
     	//Zend_Debug::dump($result);
     	$this->view->title = 'Followers';
-    		$this->view->user_name = $userName;
+    	$this->view->user_name = $userName;
     	$this->view->user_id = $target;
     	
     	$this->render("userlist");
@@ -851,11 +886,22 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$limit = $this->_request->getParam('limit');
     	$target = $this->_request->getParam('target');
     	$userName = $this-> _request->getParam('targetname');
-    
     	$follow = new Model_Subscribes();
-    	
     	$result= $follow->getFriendsList($target, $this->_fanpageId, $limit);
+    	
+    	$relation = array();
+    	 
+    	$count = 0;
+    	foreach ($result as $r){
+    		//echo $top['facebook_user_id'];
+    		$relation[$count] = $follow->getRelation($this->_userId, $r['facebook_user_id']);
+    		//echo $topArray[$count];
+    		$count++;
+    		 
+    	}
+    	
     	//Zend_Debug::dump($result);
+    	$this->view->relation= $relation;
     	$this->view->result = $result;
     	$this->view->title = 'Friends';
     	$this->view->user_name = $userName;
@@ -870,10 +916,22 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$target = $this->_request->getParam('target');
     	$userName = $this-> _request->getParam('targetname');
     
+
     	$follow = new Model_Subscribes();
-    	
+    	$relation = array();
     	$result = $follow->getFollowingList($target, $this->_fanpageId, $limit);
+    	$count = 0;
+    	foreach ($result as $r){
+    		//echo $top['facebook_user_id'];
+    		$relation[$count] = $follow->getRelation($this->_userId, $r['facebook_user_id']);
+    		//echo $topArray[$count];
+    		$count++;
+    		 
+    	}
+    	
     	//Zend_Debug::dump($result);
+    	
+    	$this->view->relation= $relation;
     	$this->view->result = $result;
     	$this->view->title = 'Following';
     	
@@ -912,5 +970,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     {
     	$this->_helper->layout->setLayout('insights_layout');
     }
+    
+    public function badgetestAction(){
+    	$this->_helper->layout->setLayout('default_layout');
+    	$this->render("badgetest");
+    
+    }
+    
 }
 

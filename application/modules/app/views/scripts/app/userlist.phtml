@@ -6,8 +6,9 @@
 		<h3><?=$this->user_name?>'s <?= $this->title?> List</h3>
 	
 	</div>
+	
 </div>
-
+Go back to <a href="#" onclick="userProfile('<?= $this->user_id?>', false)"><?= $this->user_name?></a>'s Profile
 <ul class="top-list user">
 <?php if(count($this->result)==0){?>
 	<li class="border-dark" >
@@ -33,11 +34,20 @@
 			<br/>Since <?=  date(" F d Y",strtotime($user['created_time']))?>	
 		</div>
 		<div class="follow">
-		<?php if(($this->title != 'Followers') && ($this->title != 'Friends')){?>
-			<a href="#" title = "Click to Unfollow user" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><span class="badge badge-unfollow big">Unfollow</span></a>
+		<!-- <?php if(($this->title != 'Followers') && ($this->title != 'Friends') && ($this->title != 'You')){?>
+			<a href="#" title = "Click to Unfollow user" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><div class="badge badge-unfollow big">Unfollow</div></a>
 		<?}else{?>
-			<a href="#" title = "Click to Follow user and become Friends!" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><span class="badge badge-follow big">Follow</span></a>
+			<a href="#" title = "Click to Follow user and become Friends!" onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><div class="badge badge-Follow big">Follow</div></a>
+		<?}?> -->
+		
+		
+		<? if (($this->relation[$count] != 'Following')|| ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
+			<a href="#" onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
+		<?}else{?>
+			<a href="#" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
 		<?}?>
+		
+		<div class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?></div></a>
 		</div>
 	</li>
 <?php $count++;?>
