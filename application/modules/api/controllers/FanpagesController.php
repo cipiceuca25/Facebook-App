@@ -258,6 +258,11 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		//Zend_Debug::dump($likeStats);
 		$this->_helper->json($likeStats);
 	}
+	
+	public function changeAction() {
+		$data['profile_image_enable'] = $this->_getParam('profile_image_enable');
+		$this->_helper->json(array('code'=>'200', 'message'=>'ok', 'profile_image_enable'=>$data['profile_image_enable']));
+	}
 	/*
 	public function pictureAction() {
 		$imageDestination = DATA_PATH .'/images/fanpages';

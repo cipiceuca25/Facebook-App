@@ -85,7 +85,7 @@ $(document).ready(function(){
 		width: 400,
 		modal: true,
 		close: function() {
-			
+			$( this ).dialog( "close" );
 		}
 	});
 
@@ -100,13 +100,15 @@ $(document).ready(function(){
 	});
 
 	$(".btn-primary").click(function (e) {
+		e.preventDefault();
+
 		var fanpageId = $(this).attr('data-id');
 		
-		$('#myFanpageSettingModel').dialog( "close" );
-		e.preventDefault();
+		var enableProfileImage = $('#enableProfileImage').val();
+		var topPostBy = $('#topPostBy').val();
 	    if(fanpageId) {
 	        $.ajax({
-	            url: '/api/fanpages/' + fanpageId + ',
+	            url: '/api/fanpages/' + fanpageId+ '?top_post_choice=' +topPostBy+'&profile_image_enable='+enableProfileImage,
 	            type: 'change',
 	            dataType: 'json',
 	            error: function( res ) {
@@ -114,12 +116,13 @@ $(document).ready(function(){
 	            },
 	            success: function( data ) {
 	            	if(data.code == '200') {
-		            	//alert(data.message);
-		            	window.location.reload();
+		            	alert(data.message + ' ' + profile_image_enable);
+	            		//$('#myFanpageSettingModel').dialog( "close" );
 	            	}
 	            }
 	        });            
 	    }
+		$('#myFanpageSettingModel').dialog( "close" );
 	});
 });
 

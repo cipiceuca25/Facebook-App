@@ -70,10 +70,10 @@
 		<span class="likes">
 		<img src="/img/news-feed/icon-likes.png" />
 		<? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>
-		<?php if ($this->likes[$count] == 0) {?>
-			<a href="#" onclick="like('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>' )" >Like</a>   
+		<?php if ($this->likepost == 0) {?>
+			<a href="#post_<?=$this->post->id?>" onclick="like('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>' )" >Like</a>   
 		<?}else{?>
-			<a href="#" onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike</a>   
+			<a href="#post_<?=$this->post->id?>" onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike</a>   
 		<?php }?>
 		</span>
 		<span class="comment">
@@ -158,8 +158,8 @@
 		<li class="comment_container">
 	
 			<form action="#">
-				<textarea class="comment_box_popup" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
-				<input type=button class="btn-submit" value="Submit" onclick="commentSubmit('<?= $this->postId ?>','comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>' )">
+				<textarea class="comment_box_popup" id="comment_<?= $this->post->id ?>" onkeyup="resizeCommentBox(this)"></textarea>
+				<input type=button class="btn-submit" value="Submit" onclick="commentpopupSubmit('<?= $this->post->id ?>','<?= $this->post->type ?>','comment_<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>' )">
 			</form>
 		
 		</li>
