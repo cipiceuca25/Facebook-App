@@ -507,7 +507,7 @@
     		async: true,
     		success: function( data ) {
     			$(ui).html(data);
-    			getLatestPost();
+    			//getLatestPost();
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
         		alert(url);
