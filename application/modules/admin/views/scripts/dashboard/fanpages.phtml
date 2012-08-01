@@ -38,6 +38,11 @@
 					<button class="app btn btn-success" rel="tooltip" title="See fancrank working with your data" data-id="<?= $page['fanpage_id'] ?>">Preview</button>
 				<?php endif; ?>
 			</td>
+			<td class="analystic">
+				<?php if ( !empty($page['active']) ): ?>
+					<button class="app-analystic btn" rel="tooltip" title="See your fanpage statistics" data-id="<?= $page['fanpage_id'] ?>">Analystic</button>
+				<?php endif; ?>
+			</td>			
 		</tr>
 	<?php endforeach; ?>
 	</tbody>	

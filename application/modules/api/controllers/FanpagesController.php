@@ -3,6 +3,8 @@ require_once APPLICATION_PATH .'/../library/Collector.php';
 class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 {
 	protected $_config;
+	protected $_fanpageId;
+	protected $_accessToken;
 	
 	public function init() {
 		//override existing enviroment configuration
@@ -24,6 +26,8 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		foreach($admins as $admin) {
 			if ($this->_identity->facebook_user_id === $admin->facebook_user_id) {
 				$adminUserFound = true;
+				$this->_fanpageId = $this->_getParam('id');
+				$this->_accessToken = $this->_identity->facebook_user_access_token;				
 				break;
 			}
 		}
@@ -181,4 +185,103 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
         $response =  $client->request();
         return Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
 	}
+	
+	public function setthemeAction() {
+		try {
+			$fanpageTheme = $this->_request->getParam('fanpageTheme');
+			if(Model_FanpageThemes::isValidTheme($fanpageTheme)) {
+				$colorChoice = new Model_UsersColorChoice;
+				$colorChoice ->change($this->_fanpageId, $fanpageTheme);
+				$this->_helper->json(array('code'=>'200', 'message'=>'ok'));				
+			}else {
+				$this->_helper->json(array('code'=>'400', 'message'=>'invalid theme input'));
+			}
+		} catch (Exception $e) {
+			$this->_response->setHttpResponseCode(400);
+		}
+	}
+	
+	public function putAction() {
+		$imageDestination = DATA_PATH .'/images/fanpages';
+		try {
+			$upload = new Zend_File_Transfer_Adapter_Http();
+			$upload//->addValidator('Count', false, 1)     // ensure only 1 file
+					->addValidator('Size', false, 1000000) // limit to 100K
+					->addValidator('Extension' ,false, 'jpg,png,gif');
+			$imageFileName = $this->_fanpageId .'_picture' .strrchr($upload->getFileName(), '.');
+			$fullFilePath = $imageDestination .DIRECTORY_SEPARATOR .$imageFileName;
+			if ($upload->isValid()) {
+				$upload->setDestination($imageDestination);
+				$upload->addFilter('Rename', array('target' => $fullFilePath, 'overwrite' => true));
+				//check upload file
+				if ($upload->receive()) {
+					$this->view->message = 'ok';
+					$this->_response->setHttpResponseCode(200);
+				}else {
+					//TO LOG
+					throw new Exception('unable to save');
+				}
+			}else {
+				//TO LOG
+				throw new Exception(implode(PHP_EOL, $upload->getErrors()));
+			}
+		} catch (Exception $e) {
+			//TO LOG
+			$this->view->message = $e->getMessage();
+			$this->_response->setHttpResponseCode(400);
+		}
+	}
+	
+	public function analysticAction() {
+		$time = time();
+		$range = 7776000;
+		$since = $time - $range;
+		$until = $time;
+			
+		$fanpageId = $this->_fanpageId;
+		$type = $this->_getParam('type');
+
+		$collector = new Service_FancrankCollectorService(null, $fanpageId, $this->_accessToken, 'insights');
+		$result = $collector->collectFanpageInsight(5, $type);
+		$likeStats = array();
+		foreach ($result as $data) {
+			foreach($data->values as $value) {
+				$time = explode('T', $value->end_time);
+				$newTime = str_replace('-', '/', $time[0]);
+				$value->end_time = $newTime;
+				$likeStats[] = $value;
+			}
+		}
+		 
+		//Zend_Debug::dump($likeStats); exit();
+		//asort($likeStats);
+		//Zend_Debug::dump($likeStats);
+		$this->_helper->json($likeStats);
+	}
+	
+	public function changeAction() {
+		$data['profile_image_enable'] = $this->_getParam('profile_image_enable');
+		$this->_helper->json(array('code'=>'200', 'message'=>'ok', 'profile_image_enable'=>$data['profile_image_enable']));
+	}
+	/*
+	public function pictureAction() {
+		$imageDestination = DATA_PATH .'/images/fanpages';
+		$imageFileName = $this->_fanpageId .'_picture';
+		$fullFilePath = $imageDestination .DIRECTORY_SEPARATOR .$imageFileName;
+		
+		if(!file_exists($fullFilePath))
+		{
+			return false;
+		}
+		
+		$image = readfile($fullFilePath);
+		
+		header('Content-Type: image/jpeg');
+		
+		$this->getResponse()
+		->setHeader('Content-Type', 'image/jpeg/png/gif');
+		
+		$this->view->profileImage = $image;
+	}
+	*/
 }

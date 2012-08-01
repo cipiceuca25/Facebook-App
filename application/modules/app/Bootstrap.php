@@ -34,6 +34,15 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     }
     */
     
+    protected function _initViewHelper()
+    {
+    	$view = new Zend_View();
+    	$view->addHelperPath(APPLICATION_PATH .'/modules/app/views/helpers', 'Fancrank_View_Helper');
+    	$viewRenderer = new Zend_Controller_Action_Helper_ViewRenderer();
+    	$viewRenderer->setView($view);
+    	Zend_Controller_Action_HelperBroker::addHelper($viewRenderer);
+    }
+    
     protected function _initAppLogTraffic() {
     	if (php_sapi_name() != 'cli') {
     		$log = new Zend_Log();
@@ -42,15 +51,6 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     		$info = $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"] .' extra request params: ' .$request;
     		$log->log($info, Zend_Log::NOTICE, 'traffic info');    		
     	}
-    }
-    
-    protected function _initViewHelper()
-    {
-    	$view = new Zend_View();
-		$view->addHelperPath(APPLICATION_PATH .'/modules/app/views/helpers', 'Fancrank_View_Helper');
-		$viewRenderer = new Zend_Controller_Action_Helper_ViewRenderer();
-		$viewRenderer->setView($view);
-		Zend_Controller_Action_HelperBroker::addHelper($viewRenderer);
     }
     
     protected function _initMemcache()

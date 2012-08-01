@@ -45,6 +45,12 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
         $this->view->installed = $fanpage->installed;
         $this->view->page_id = $this->_getParam('id');
+        $colorChoice = new Model_UsersColorChoice;
+        $choice = $colorChoice->getColorChoice($this->_getParam('id'))->color_choice;
+        if(empty($choice)) {
+        	$choice = 3;
+        }
+        $this->view->fanpageTheme = $choice;
 
         if ($fanpage->active) {
         	//maybe we should be asking for a relavant time from the api user and pass it as a parameter in the queries
@@ -100,6 +106,10 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     		error_log(json_encode($e->getResult()));
     		return array();
     	}
+    }
+    
+    public function analysticAction() {
+    	$this->view->page_id = $this->_getParam('id');
     }
 }
 

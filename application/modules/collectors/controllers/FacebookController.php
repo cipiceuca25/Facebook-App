@@ -62,6 +62,22 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		$result = $top->getUserMostPopularRank($fanpage_id, $facebook_user_id);
 		Zend_Debug::dump($result);
     }
+    
+    public function testmodelAction() {
+    	$facebook_user_id = '578800322';
+    	$fanpage_id = '178384541065';
+    	$m = new Model_FanpageSetting();
+    	$data = array(
+    			'fanpage_id' => $fanpage_id,
+    			'theme_choice' => 1,
+    			'top_post_choice' => 'day',
+    			'profile_image_enable' => 0
+    			);
+    	$result = $m->saveFanpageSetting($data);
+    	
+    	
+    	Zend_Debug::dump($m->isProfileImageEnable(178384541065));
+    }
 
     public function extendAction() {
     	$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', 'production');
