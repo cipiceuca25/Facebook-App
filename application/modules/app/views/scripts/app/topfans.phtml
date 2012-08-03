@@ -24,18 +24,27 @@
 															<h1><?= $count + 1 ?></h1>
 														</div>
 														<div class="photo">
-															<a href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
+															<a href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
 														</div>
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" <?if (($this->topFanArray[$count] != 'Following') && ($this->topFanArray[$count] != 'Friends')&& ($this->topFanArray[$count] != 'You')) {?>
-																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', true)" 
+														
+														<?php if ($this->topFanArray[$count] != 'You'){?>
+														
+														<a href="#" <?if (($this->topFanArray[$count] != 'Following') /*&& ($this->topFanArray[$count] != 'Friends') */) {?>
+																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
 																<?}else{ ?>
-																onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"
+																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')"
 																<?}?>
 															>
 															<div class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></div></a>
+														<?php }else{?>
+															<div class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></div>
+														
+														<?php }?>	
+															
+														
 														</div>
 														<div class="points">
 															<h3><?= $top_fan['number_of_posts'] ?></h3> <span>Points <br/>This Week</span>
@@ -58,20 +67,27 @@
 														<h1><?= $count + 1 ?></h1>
 													</div>
 													<div class="photo">
-														<a href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"></a>	
+														<a href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
 													</div>
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
 													<br/>
 														
 													
-													<a href="#" <?if (($this->topFanArray[$count] != 'Following') && ($this->topFanArray[$count] != 'Friends') && ($this->topFanArray[$count] != 'You')) {?>
-															onclick="follow(<?=$top_fan['facebook_user_id']?>, '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', true)"
-														<?}else{ ?>
-															onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"
-														<?}?>
-														>
-														<div class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></div></a>
+													<?php if ($this->topFanArray[$count] != 'You'){?>
+														
+														<a href="#" <?if (($this->topFanArray[$count] != 'Following')/* && ($this->topFanArray[$count] != 'Friends')*/) {?>
+																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
+																<?}else{ ?>
+																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')"
+																<?}?>
+															>
+															<div class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></div></a>
+														<?php }else{?>
+															<div class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></div>
+														
+														<?php }?>
+													
 													</div>
 													<div class="points">
 														<h3><?= $top_fan['number_of_posts'] ?> </h3> <span>Points <br/>This Week</span>
@@ -121,10 +137,21 @@
 													<div class="border-light">
 												<?php }?>
 													<div class="rank">
-														<h1><?= $this->topFanYou['my_rank']?></h1>
+														
+														<? if (strlen($this->topFanYou['my_rank'])== 1){?>
+															<h1><?= $this->topFanYou['my_rank']?></h1>
+														<?php }elseif (strlen($this->topFanYou['my_rank'])== 2) { ?>
+															<h2><?= $this->topFanYou['my_rank']?></h2>
+														<?php }elseif (strlen($this->topFanYou['my_rank'])== 3) { ?>
+															<h3><?= $this->topFanYou['my_rank']?></h3>
+														<?php }else{?>
+															<h1>*</h1>
+														<?php }?>
+														
+															
 													</div>
 													<div class="photo">
-														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
+														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture" onerror="ImgError(this);"></a>	
 													</div>
 													<div class="name">
 														<a href="#" >YOU</a>
@@ -161,20 +188,27 @@
 															<h1><?= $count + 1 ?></h1>
 														</div>
 														<div class="photo">
-															<a   href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
+															<a   href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
 														</div>
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 														<br/>
 															
 														
-														<a href="#" <?if (($this->popularArray[$count] != 'Following') && ($this->popularArray[$count] != 'Friends') && ($this->popularArray[$count] != 'You')) {?>
-																	onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>', true)" 
+														<?php if ($this->popularArray[$count] != 'You'){?>
+														
+														<a href="#" <?if (($this->popularArray[$count] != 'Following')/* && ($this->popularArray[$count] != 'Friends')*/) {?>
+																onclick="follow(<?=$popular['facebook_user_id']?> , '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
 																<?}else{ ?>
-																	onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"
+																onclick="unfollow(<?=$popular['facebook_user_id']?> , '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>')"
 																<?}?>
 															>
 															<div class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></div></a>
+														<?php }else{?>
+															<div class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></div>
+														
+														<?php }?>
+														
 														</div>
 														<div class="points">
 															<h3><?= $popular['count'] ?> </h3> <span>Points <br/>This Week</span>
@@ -197,18 +231,27 @@
 														<h1><?= $count + 1 ?></h1>
 													</div>
 													<div class="photo">
-														<a   href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"></a>	
+														<a   href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
 													</div>
 													<div class="name">
 														<a  href="#" onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"><?= $popular['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" <?if (($this->popularArray[$count] != 'Following') && ($this->popularArray[$count] != 'Friends')&& ($this->popularArray[$count] != 'You')) {?>
-															 onclick="follow(<?=$popular['facebook_user_id']?>, '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>', true)" 
-														<?}else{ ?>
-															onclick="userProfile(<?= $popular['facebook_user_id'] ?>)"
-														<?}?>
-														>
-														<div class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></div></a>
+														
+														<?php if ($this->popularArray[$count] != 'You'){?>
+														
+														<a href="#" <?if (($this->popularArray[$count] != 'Following') /*&& ($this->popularArray[$count] != 'Friends')*/) {?>
+																onclick="follow(<?=$popular['facebook_user_id']?> , '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
+																<?}else{ ?>
+																onclick="unfollow(<?=$popular['facebook_user_id']?> , '<?=$popular['fan_first_name'].' '.$popular['fan_last_name']?>')"
+																<?}?>
+															>
+															<div class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></div></a>
+														<?php }else{?>
+															<div class="badge badge-<?= $this->popularArray[$count]?>"><?= $this->popularArray[$count]?></div>
+														
+														<?php }?>
+													
+													
 													</div>
 													<div class="points">
 														<h3><?= $popular['count'] ?> </h3> <span>Points <br/>This Week</span>
@@ -255,10 +298,18 @@
 													<div class="border-light">
 												<?php }?>
 													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
-														<h1><?= $this->popularYou['my_rank']?></h1>
+														<? if (strlen($this->popularYou['my_rank'])== 1){?>
+															<h1><?= $this->popularYou['my_rank']?></h1>
+														<?php }elseif (strlen($this->popularYou['my_rank'])== 2) { ?>
+															<h2><?= $this->popularYou['my_rank']?></h2>
+														<?php }elseif (strlen($this->popularYou['my_rank'])== 3) { ?>
+															<h3><?= $this->popularYou['my_rank']?></h3>
+														<?php }else{?>
+															<h1>*</h1>
+														<?php }?>
 													</div>
 													<div class="photo">
-														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
+														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture" onerror="ImgError(this);"></a>	
 													</div>
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
@@ -299,18 +350,26 @@
 															<h1><?= $count + 1 ?></h1>
 														</div>
 														<div class="photo">
-															<a href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
+															<a href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
 														</div>
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 														<br/>
-															<a href="#" <?if (($this->talkerArray[$count] != 'Following') && ($this->talkerArray[$count] != 'Friends') && ($this->talkerArray[$count] != 'You')) {?>
-																onclick="follow(<?=$talker['facebook_user_id'] ?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>', true)" 
+														
+														<?php if ($this->talkerArray[$count] != 'You'){?>
+														
+														<a href="#" <?if (($this->talkerArray[$count] != 'Following') /*&& ($this->talkerArray[$count] != 'Friends')*/) {?>
+																onclick="follow(<?=$talker['facebook_user_id']?> , '<?=$talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
 																<?}else{ ?>
-																onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"
+																onclick="unfollow(<?=$talker['facebook_user_id']?> , '<?=$talker['fan_first_name'].' '.$talker['fan_last_name']?>')"
 																<?}?>
 															>
 															<div class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></div></a>
+														<?php }else{?>
+															<div class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></div>
+														
+														<?php }?>
+														
 														</div>
 														<div class="points">
 															<h3><?= $talker['number_of_posts'] ?> </h3> <span>Points <br/>This Week</span>
@@ -333,21 +392,24 @@
 														<h1><?= $count + 1 ?></h1>
 													</div>
 													<div class="photo">
-														<a href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"></a>	
+														<a href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
 													</div>
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"><?= $talker['fan_first_name'] ?></a>
 													<br/>
-													<a href="#" <?if (($this->talkerArray[$count] != 'Following') && ($this->talkerArray[$count] != 'Friends')&& ($this->talkerArray[$count] != 'You')) {?>
-															onclick="follow(<?=$talker['facebook_user_id']?>, '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>', true)" 
-														<?}else{ ?>
-															onclick="userProfile(<?= $talker['facebook_user_id'] ?>)"
-														<?}?>
+													<?php if ($this->talkerArray[$count] != 'You'){?>
 														
-														>
+														<a href="#" <?if (($this->talkerArray[$count] != 'Following') /*&& ($this->talkerArray[$count] != 'Friends')*/) {?>
+																onclick="follow(<?=$talker['facebook_user_id']?> , '<?=$talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
+																<?}else{ ?>
+																onclick="unfollow(<?=$talker['facebook_user_id']?> , '<?=$talker['fan_first_name'].' '.$talker['fan_last_name']?>')"
+																<?}?>
+															>
+															<div class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></div></a>
+														<?php }else{?>
+															<div class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></div>
 														
-														
-														<div class="badge badge-<?= $this->talkerArray[$count]?>"><?= $this->talkerArray[$count]?></div></a>
+														<?php }?>
 													</div>	
 													<div class="points">
 														<h3><?= $talker['number_of_posts'] ?> </h3> <span>Points <br/>This Week</span>
@@ -394,10 +456,18 @@
 													<div class="border-light">
 												<?php }?>
 													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
-														<h1><?= $this->talkerYou['my_rank']?></h1>
+														<? if (strlen($this->talkerYou['my_rank'])== 1){?>
+															<h1><?= $this->talkerYou['my_rank']?></h1>
+														<?php }elseif (strlen($this->talkerYou['my_rank'])== 2) { ?>
+															<h2><?= $this->talkerYou['my_rank']?></h2>
+														<?php }elseif (strlen($this->talkerYou['my_rank'])== 3) { ?>
+															<h3><?= $this->talkerYou['my_rank']?></h3>
+														<?php }else{?>
+															<h1>*</h1>
+														<?php }?>
 													</div>
 													<div class="photo">
-														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
+														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture" onerror="ImgError(this);"></a>	
 													</div>
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>
@@ -435,19 +505,24 @@
 															<h1><?= $count + 1 ?></h1>
 														</div>
 														<div class="photo">
-															<a  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
+															<a  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
 														</div>
 														<div class="name">
 															<a class="first" href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 															<br/>
-															<a href="#" <?if (($this->clickerArray[$count] != 'Following') && ($this->clickerArray[$count] != 'Friends')&& ($this->clickerArray[$count] != 'You')) {?>
-																onclick="follow(<?=$clicker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>', true)" 
-															<?}else{ ?>
-																onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"
-															<?}?>
+															<?php if ($this->clickerArray[$count] != 'You'){?>
+														
+															<a href="#" <?if (($this->clickerArray[$count] != 'Following') /*&& ($this->clickerArray[$count] != 'Friends')*/) {?>
+																	onclick="follow(<?=$clicker['facebook_user_id']?> , '<?=$clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
+																	<?}else{ ?>
+																	onclick="unfollow(<?=$clicker['facebook_user_id']?> , '<?=$clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')"
+																	<?}?>
+																>
+																<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span></a>
+															<?php }else{?>
+																<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span>
 															
-															>
-															<div class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></div></a>
+															<?php }?>
 														</div>
 														<div class="points">
 															<h3><?= $clicker['number_of_likes'] ?></h3> <span>Points <br/>This Week</span>
@@ -470,17 +545,23 @@
 														<h1><?= $count + 1 ?></h1>
 													</div>
 													<div class="photo">
-														<a  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"></a>	
+														<a  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
 													</div>
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?>  href="#" onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"><?= $clicker['fan_first_name'] ?></a>
 														<br/>
-														<a href="#" <?if (($this->clickerArray[$count] != 'Following') && ($this->clickerArray[$count] != 'Friends')&& ($this->clickerArray[$count] != 'You')) {?>
-															 	onclick="follow(<?=$clicker['facebook_user_id']?>, '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>', true)" 
-															<?}else{ ?>
-																onclick="userProfile(<?= $clicker['facebook_user_id'] ?>)"
-															<?}?> >														
-														<div class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></div></a>
+														<?php if ($this->clickerArray[$count] != 'You'){?>
+														<a href="#" <?if (($this->clickerArray[$count] != 'Following') /*&& ($this->clickerArray[$count] != 'Friends')*/) {?>
+																	onclick="follow(<?=$clicker['facebook_user_id']?> , '<?=$clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
+																	<?}else{ ?>
+																	onclick="unfollow(<?=$clicker['facebook_user_id']?> , '<?=$clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')"
+																	<?}?>
+																>
+																<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span></a>
+															<?php } else {?>
+																<span class="badge badge-<?= $this->clickerArray[$count]?>"><?= $this->clickerArray[$count]?></span>
+															
+															<?php }?>
 													</div>
 													<div class="points">
 														<h3><?= $clicker['number_of_likes'] ?> </h3> <span>Points <br/>This Week</span>
@@ -526,10 +607,18 @@
 													<div class="border-light">
 												<?php }?>
 													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
-														<h1><?= $this->clickerYou['my_rank']?></h1>
+														<? if (strlen($this->clickerYou['my_rank'])== 1){?>
+															<h1><?= $this->clickerYou['my_rank']?></h1>
+														<?php }elseif (strlen($this->clickerYou['my_rank'])== 2) { ?>
+															<h2><?= $this->clickerYou['my_rank']?></h2>
+														<?php }elseif (strlen($this->clickerYou['my_rank'])== 3) { ?>
+															<h3><?= $this->clickerYou['my_rank']?></h3>
+														<?php }else{?>
+															<h1>*</h1>
+														<?php }?>
 													</div>
 													<div class="photo">
-														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture"></a>	
+														<a href="#" ><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture" onerror="ImgError(this);"></a>	
 													</div>
 													<div class="name">
 														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" >YOU</a>

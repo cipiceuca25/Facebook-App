@@ -5,11 +5,14 @@
 			 if (!response || response.error) {
 			 	
 		 	 }else{
-			 	 	try{
-			 	 		var x = -1*(parseInt(response.cover.offset_y) + 50);
-			 	 	}catch(err){
-						var x = 0;
-			 	 	}
+		 		 var x = 0;
+		 			if(!(parseInt(response.cover.offset_y)==34)){
+				 	 	try{
+				 	 		var x = -1*(parseInt(response.cover.offset_y) + 50);
+				 	 	}catch(err){
+							
+				 	 	}
+		 	 		}
 			 	 	//alert(x);
 			 	 	try{
 			 		$('#logo').html('<img src =" ' + response.cover.source + '"style=" top:'+ x +'px" />' );
@@ -34,6 +37,37 @@
 	$('a[title]').live("mouseover", function(){
 		$(this).tooltip({ placement: 'left'});	
 	});
+	
+	$('.badge-Following').live("mouseover", function(){
+		$(this).text('Unfollow');
+	});
+	$('.badge-Following').live("mouseleave", function(){
+		$(this).text('Following');
+	});
+	/*
+	$('.badge-Friends').live("mouseover", function(){
+		$(this).text('Unfollow');
+	});
+	$('.badge-Friends').live("mouseleave", function(){
+		$(this).text('Friends');
+	});
+		*/
+	function feedbackAnimation(ui){
+		
+		 $(ui).css({'top':mouseY-16,'left':mouseX-62,'opacity':'1', 'display':'block'});
+		 $(ui).animate({
+			 	opacity: '0',
+				top: "-=30px"
+			   },1000, function(){ 
+			});
+	}
+	
+	var mouseX;
+	var mouseY;
+	$(document).mousemove( function(e) {
+		   mouseX = e.pageX; 
+		   mouseY = e.pageY;
+	}); 	
 	
 	$('#top-fans-btn').live('click', function() {
 		
@@ -122,6 +156,11 @@
 	  $(this).tab('show');
 	});
 	
+	$('#redeem a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+		});
+	
 	$('#newsfeed-tab').live('click',function(){
 		feedLimit = 0;
 		getNewsfeed('#news-feed');
@@ -129,6 +168,7 @@
 		$('#top-fans').html('');
 		$('#profile').html('');
 		$('#achievements').html('');
+		$('#redeem').html('');
 		//alert('getting top posts');
 	});
 	
@@ -139,6 +179,7 @@
 		$('#profile').html('');
 		$('#achievements').html('');
 		$('#newsfeed').html('');
+		$('#redeem').html('');
 		//$('.bubble').html('');
 		
 	});
@@ -149,7 +190,7 @@
 		 $('#top-fans').html('');
 		 $('#achievements').html('');
 		 $('#newsfeed').html('');
-
+		 $('#redeem').html('');
 	});
 	
 	$('#achievements-tab').live('click', function(){
@@ -157,9 +198,22 @@
 		$('#top-fans').html('');
 		$('#profile').html('');
 		$('#newsfeed').html('');
-		});
+		$('#redeem').html('');
+	});
 
+	$('#redeem-tab').live('click', function(){
+		getRedeem('#redeem');
+		$('#top-fans').html('');
+		$('#profile').html('');
+		$('#newsfeed').html('');
+		$('#achievements').html('');
+		});
 	
+	function ImgError(source){
+	    source.src = "/img/profile-picture.png";
+	    source.onerror = "";
+	    return true;
+	}
 		
 	
 	
@@ -177,7 +231,7 @@
 		
 		FB.Canvas.getPageInfo(
 			    function(info) {
-			    	$('.user-profile').css('top', info.scrollTop - 200);
+			    	$('.user-profile').css('top', info.scrollTop - 100);
 			    }
 			);
 		
@@ -191,6 +245,7 @@
 				   
 			});
 		}
+		
 		/*
 		$('.top-border').animate({
 		    height: 'toggle',
@@ -445,9 +500,9 @@
     		success: function( data ) {
 				//alert("target followed")
 				//alert(post_id + 'liked');
-    			alert('liked');
-    			addActivities('like-'+post_type, userName, post_id, target_id, target_name );
     			
+    			addActivities('like-'+post_type, userName, post_id, target_id, target_name );
+    			feedbackAnimation('#like-animation');
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -465,8 +520,9 @@
     		success: function( data ) {
 				//alert("target followed")
 				//alert(post_id + 'liked');
-    			alert('unliked');
+    			
     			addActivities('unlike-'+post_type,userName, post_id, target_id, target_name);
+    			feedbackAnimation('#unlike-animation');
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -534,7 +590,21 @@
     	});
     }
 
-	
+    function getRedeem(ui) {
+    	$.ajax({
+    		type: "GET",
+    		url:  serverUrl +'/app/app/redeem/'+ fanpageId +'?facebook_user_id=' + userId,
+    		dataType: "html",
+    		cache: false,
+    		async: true,
+    		success: function( data ) {
+    			$(ui).html(data);
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+    }	
     
     function getAwards(ui) {
     	$.ajax({
@@ -570,7 +640,7 @@
 	}
 
     
-	function follow(target, name, refresh){
+	function follow(target, name){
 		if (target != userId){
 			
 		
@@ -582,10 +652,8 @@
 	    		success: function( data ) {
 					//alert("target followed")
 	    			addActivities('follow',userName, target, target, name );
-					getUserProfile('.profile-content', target);
-					if (refresh){
-						getTopfans('#top-fans');
-					}
+					//getUserProfile('.profile-content', target);
+					feedbackAnimation('#follow-animation');
 	    		},	
 	    		error: function( xhr, errorMessage, thrownErro ) {
 	    			console.log(xhr.statusText, errorMessage);
@@ -594,7 +662,7 @@
 		}
     }	
 	
-	function unfollow(target, name, refresh){
+	function unfollow(target, name){
 		$.ajax({
     		type: "GET",
     		url: serverUrl +'/app/user/'+ userId + '/unfollow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
@@ -603,10 +671,9 @@
     		success: function( data ) {
 				//alert("target unfollowed")
     			addActivities('unfollow', userName, target, target, name );
-				getUserProfile('.profile-content', target);
-				if (refresh){
-					getTopfans('#top-fans');
-				}
+				//getUserProfile('.profile-content', target);
+    			feedbackAnimation('#unfollow-animation');
+				
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -767,6 +834,8 @@
     	});
 		
 	}
+	
+	/*
 	function getFriendsList(targetname, target, limit, refresh){
 		ui = '.profile-content';
 		refresh = typeof refresh !== 'undefined' ? refresh : true;
@@ -799,6 +868,8 @@
     	});
 		
 	}
+	
+	*/
 	function resizeCommentBox(o){
 		o.style.height = "1px";
 	    o.style.height = (10+o.scrollHeight)+"px";

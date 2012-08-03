@@ -37,6 +37,7 @@
 
 a, a:visited{
 	color:@color-base;
+	
 }
 
 #recent_activities a, 
@@ -46,6 +47,7 @@ a, a:visited{
 
 a:hover{
 	color:@color-dark;
+	text-decoration:none;
 }
 
 body{
@@ -286,6 +288,13 @@ ul, ol {
 	border-top: solid 2px lighten(@color-badges, 5%);
 }
 
+.grey-light:hover,
+.grey-dark:hover{
+	background:darken(white, 3%);
+}
+
+
+
 /* POST LISTINGS */
 
 /*==================================================*/
@@ -450,6 +459,33 @@ ul, ol {
 
 }
 
+.top-list .rank h2{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 63px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:70px;
+	position:relative;
+	line-height:70px;
+	top:5px;
+	right:-3px;
+
+}
+
+.top-list .rank h3{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 43px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:70px;
+	position:relative;
+	line-height:70px;
+	top:13px;
+	right:0px;
+
+}
 
 
 .top-list .photo{
@@ -540,18 +576,27 @@ ul, ol {
 		
 		font-size:23px;
 		.border-radius(2px);
-		float:left
+		float:left;
 		
 }
 
+
 .badge-Follow{
 	font-size:13px;
-	background-color:@color-follow;
+	background-color:@color-dark;
 	.border-radius(10px 0px  0px 10px);
 	line-height:29px;
 	height:29px;
 	margin-right:-10px;
 	float:right;
+	color:white;
+}
+
+.badge-Follow:hover{
+
+	color:@color-dark;
+	background-color:@color-background;
+
 }
 
 .badge-unfollow{
@@ -566,12 +611,14 @@ ul, ol {
 
 .badge-Following{
 	font-size:13px;
-	background-color:@color-following;
+	background-color:#62c462;
 	.border-radius(10px 0px  0px 10px);
 	line-height:29px;
 	height:29px;
 	margin-right:-10px;
 	float:right;
+
+	color:white;
 }
 
 .badge-Friends{
@@ -583,7 +630,16 @@ ul, ol {
 	height:29px;
 	margin-right:-10px;
 	float:right;
+	color:white;
 }
+
+.badge-Friends:hover,
+.badge-Following:hover{
+	background-color:#bd362f;
+}
+
+
+
 .badge-Follower{
 	font-size:13px;
 	background-color:@color-follower;
@@ -596,21 +652,23 @@ ul, ol {
 
 .badge-You{
 	font-size:13px;
-	background-color:@color-text2;
+	background-color:@color-dark;
 	.border-radius(10px 0px  0px 10px);
 	line-height:29px;
 	height:29px;
 	margin-right:-10px;
 	float:right;
+
+	color:white;
 }
 
-.top-list a .badge-Follower,
-.top-list a .badge-Follow,
-.top-list a .badge-Friends,
-.top-list a .badge-Following,
-.top-list a .badge-You{
+.top-list .badge-Follower,
+.top-list .badge-Follow,
+.top-list .badge-Friends,
+.top-list .badge-Following,
+.top-list .badge-You{
 	font-size:13px;
-
+	border:none;
 	.border-radius(2px);
 	height:auto;
 	margin-right:0;
@@ -715,6 +773,7 @@ ul, ol {
 .profile-block.followers a,
 .profile-block.friends a{
 	color:white;
+	
 }
 
 .profile-block.following a:hover,
@@ -731,6 +790,7 @@ ul, ol {
 	width:137px;
 	margin-left:19px;
 	color:white;
+	text-align:center;
 
 }
 
@@ -740,7 +800,7 @@ ul, ol {
 	width:138px;
 	color:white;
 	margin-left:0px;
-	
+	text-align:center;
 }
 
 .profile-block.friends{
@@ -749,7 +809,7 @@ ul, ol {
 	width:138px;
 	color:white;
 	margin-left:0px;
-
+	text-align:center;
 }
 
 
@@ -1019,10 +1079,16 @@ ul, ol {
 .comments .grey-dark{
 	background-color:@color-background;
 	background-image:none;
-
 	border-bottom: 1px solid @color-badges;
 }
 
+.popup_comments .grey-dark:hover,
+.popup_comments .grey-light:hover,
+.comments .grey-light:hover,
+.comments .grey-dark:hover{
+	background-color:darken(@color-background,3%);
+
+}
 .comment_container{
 	//width:100%;
 	//margin-left:-10px;
@@ -1201,12 +1267,11 @@ ul, ol {
 .title-header.reverse h3{
 	padding-right:10px;	
 }
-.span1.re{
-	width:5px;
-}
+
 .span7.line{
 	border-right:2px solid @color-badges;
-	padding-right:45px;
+	padding-left:15px;
+	padding-right:30px;
 }
 
 .top-list.user .name{
@@ -1245,3 +1310,84 @@ ul, ol {
 	padding:0px;
 	margin:0px;
 }
+
+.followlink{
+	display:block;
+	font: bold 18px Arial, Helvetica, sans-serif;
+	text-align:center;
+	width:137px;
+	padding-top:15px;
+	position:relative;
+}
+
+
+#follow-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/followed.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+}
+
+#like-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/liked.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+
+}
+
+#unfollow-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/unfollowed.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+}
+
+#unlike-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/unliked.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+
+}
+
+#comment-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/commented.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

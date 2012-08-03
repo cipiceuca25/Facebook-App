@@ -2,7 +2,7 @@
 						<div class="row">
 							<div class="span12">
 								<div class="title">
-										<div class="photo"> <a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a></div>
+										<div class="photo"> <a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a></div>
 
 										<div class="title-header"> <h3> <?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile</i></h3> </div>
 
@@ -60,25 +60,32 @@
 								<div class="row ">
 									
 										<div class="profile-block following">
-										<h4>FOLLOWING 
-									
-										</h4><br/>
-										<h2> <a href="#" onclick="getFollowingList('<?=$this->facebook_user->facebook_user_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)"><?= $this->following['0']['Following']?></a></h2>
+											<a href="#" class="followlink"  onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
+												FOLLOWING 
+												<br/>
+												<?= $this->following['0']['Following']?>
+											</a>
 										</div>
 									
 									
 										<div class="profile-block followers">
-										<h4>FOLLOWERS  
-										</h4><br/>
-										<h2> <a href="#" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)"><?= $this->follower['0']['Follower']?></a></h2>
+											<a href="#" class="followlink" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
+												FOLLOWERS  
+												<br/>
+												<?= $this->follower['0']['Follower']?>
+											</a>
 										</div>
 									
-									
+									<!-- 
 										<div class="profile-block friends">
-										<h4> FRIENDS  </h4>
-										<br/>  
-										<h2><a href="#" onclick="getFriendsList('<?=$this->facebook_user->facebook_user_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)"><?= $this->friends['0']['friends']?></a></h2>
+											<a href="#" class="followlink" onclick="getFriendsList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
+												FRIENDS  
+												<br/>  
+												<?= $this->friends['0']['friends']?>
+											</a>
 										</div>
+								 	-->
+								
 								
 								</div>
 								

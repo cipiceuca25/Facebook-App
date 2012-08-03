@@ -81,7 +81,13 @@
 
 			<div id="content">
 
-
+				<div id = "like-animation" ></div>
+				<div id = "unlike-animation" ></div>
+				<div id = "comment-animation"></div>
+				<div id = "follow-animation"></div>
+				<div id = "unfollow-animation"></div>
+				
+				
 				<div class="user-profile">
 
 					<div class="top-border">
@@ -96,9 +102,10 @@
 					<div class="tabbable">
 						<ul class="nav nav-tabs" id="pageTabs">
 							<li class="active"><a href="#news-feed" data-toggle="tab"id="newsfeed-tab">News Feed</a></li>
-							<li><a href="#top-fans" data-toggle="tab" id="topfans-tab">Top Fans</a></li>
+							<li><a href="#top-fans" data-toggle="tab" id="topfans-tab">Leaderboard</a></li>
 							<li><a href="#profile" data-toggle="tab" id="profile-tab">My Profile</a></li>
 							<li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>
+							<li><a href="#redeem" data-toggle="tab"id="redeem-tab">Redeem</a></li>
 						</ul>
 						<ul class="nav nav-tabs" id="log-in-out">
 							<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
@@ -110,17 +117,21 @@
 						<a href="#"	onclick="colorChange(3)">Original</a>
 						<a href="#" onclick="colorChange(4)">Autumn</a> 
 						<a href="#" onclick="colorChange(5)">Ocean</a> 
-						<a href="#"onclick="colorChange(6)">Red</a>
+						<a href="#" onclick="colorChange(6)">Red</a>
 						
 						<div class="tab-content">
-							<div class="tab-pane active" id="news-feed"></div>
-							<div class="tab-pane" id="top-fans"></div>
-							<div class="tab-pane" id="profile"></div>
-							<div class="tab-pane" id="achievements"></div>
-
+							
+							
+									<div class="tab-pane active" id="news-feed"></div>
+									<div class="tab-pane" id="top-fans"></div>
+									<div class="tab-pane" id="profile"></div>
+									<div class="tab-pane" id="achievements"></div>
+									<div class="tab-pane" id="redeem"></div>
+								
+							
 						</div>
 						<div id="powered">
-							<br /> POWERED BY <br /> <img src="/img/logo3.png" />
+							<a href="http://www.fancrank.com" target=_new><img src="/img/fan-footer.jpg" /></a>
 						</div>
 					</div>
 

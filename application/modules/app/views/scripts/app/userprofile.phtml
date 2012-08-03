@@ -1,7 +1,7 @@
 						<div class="row">
 							<div class="span9">
 								<div class="title">
-										<div class="photo"> <img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></div>
+										<div class="photo"> <img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></div>
 										<div class="title-header"> <h3><?= $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>'s Profile</h3> </div>
 								</div>
 							</div>
@@ -62,35 +62,46 @@
 								<div class="row ">
 									
 										<div class="profile-block following">
-										<h4>FOLLOWING 
-									
-										</h4><br/>
-										<h2> <a href="#" onclick="getFollowingList('<?=$this->facebook_user->facebook_user_name?>', '<?= $this->facebook_user->facebook_user_id ?>', 15, 0)"><?= $this->following['0']['Following']?></a></h2>
+											<a href="#" class="followlink"  onclick="getFollowingList('<?= $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)">
+												FOLLOWING 
+												<br/>
+												<?= $this->following['0']['Following']?>
+											</a>
 										</div>
 									
 									
 										<div class="profile-block followers">
-										<h4>FOLLOWERS  
-										</h4><br/>
-										<h2> <a href="#" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_name?>','<?= $this->facebook_user->facebook_user_id ?>', 15,0)"><?= $this->follower['0']['Follower']?></a></h2>
+											<a href="#" class="followlink" onclick="getFollowersList('<?= $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)">
+												FOLLOWERS  
+												<br/>
+												<?= $this->follower['0']['Follower']?>
+											</a>
 										</div>
 									
-									
+									<!-- 
 										<div class="profile-block friends">
-										<h4> FRIENDS  </h4>
-										<br/>  
-										<h2><a href="#" onclick="getFriendsList('<?=$this->facebook_user->facebook_user_name?>','<?= $this->facebook_user->facebook_user_id ?>' ,15,0)"><?= $this->friends['0']['friends']?></a></h2>
+											<a href="#" class="followlink" onclick="getFriendsList('<?= $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)">
+												FRIENDS  
+												<br/>  
+												<?= $this->friends['0']['friends']?>
+											</a>
 										</div>
-										
+									 -->	
 									
 										<div class="span2">
-											<a href="#" <?if ((($this->relation) == "Follow")||(($this->relation) =="Followed")){?>title = "Click to follow user" onclick="follow(<?= $this->facebook_user->facebook_user_id ?> , '<?= $this->facebook_user->facebook_user_name ?>')" <?}?>><div class="badge badge-<?= $this->relation?> big"><?= $this->relation?></div></a>
-											
-											<br/>
-											<br/>
-											<?php if(!($this->relation == 'Follow') && !($this->relation == 'You')){?>
-												<a href="#" title = "Click to unfollow user" onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?>, '<?= $this->facebook_user->facebook_user_name ?>')"><div class="badge badge-unfollow big">Unfollow</div></a>
-											<?}?>
+										<?php  if (!($this->relation == 'You')){?>
+											<a href="#" <?if ((($this->relation) == "Follow")||(($this->relation) =="Followed")){?>
+											 onclick="follow(<?= $this->facebook_user->facebook_user_id ?> , '<?= $this->facebook_user->facebook_user_name ?>')" 
+											<?}else{?>
+											 onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?> , '<?= $this->facebook_user->facebook_user_name ?>')" 
+											 <?php }?>
+											 >
+											 <div class="badge badge-<?= $this->relation?> big"><?= $this->relation?></div></a>
+										
+										<?}else{?>
+											<div class="badge badge-<?= $this->relation?> big"><?= $this->relation?></div>
+											<?php }?>
+										
 										</div>
 								</div>
 								
@@ -99,7 +110,157 @@
 							
 									
 						</div>
+						<div class="row">
+							<div class="span9">
+								<div class="subtitle">
+									<div class="title-header"> <h3>Most Recent Activities!</h3> </div>
+								</div>
 							
+								<ul class="post-list" id="pop_recent_activities">
+									<?php if(count($this->activities)==0){?>
+										<li class="grey-light" >
+										<br/>
+										No Recent Activities for this Fanpage.
+										<br/>
+										<br/>
+										</li>
+										<?php }?>
+										
+											<?php
+											$count = 0;
+											foreach ($this->activities as $act):	
+												if ($count % 2 == 0){ ?>			
+												<li class="grey-light" >
+												<? }else{ ?>
+												<li class="grey-dark" >
+												<? } ?>
+												<br/>
+												<?php if ($this->user_id == $act->facebook_user_id){?>
+												
+												<?switch($act->activity_type){ 
+												
+													case 'follow': ?>
+														You followed <a href="#" onclick="userProfile('<?=$act->event_object?>')"><?=$act->target_user_name?></a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'unfollow' :?>
+														You unfollowed <a href="#" onclick="userProfile('<?=$act->event_object?>')"><?=$act->target_user_name?></a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;	
+													case 'like-status':?>
+														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+														<?break;
+													case 'unlike-status':?>
+														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">status post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'like-photo':?>
+														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">photo post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+														<?break;
+													case 'unlike-photo':?>
+														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">photo post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;	
+													case 'like-video':?>
+														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">video post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+														<?break;
+													case 'unlike-video':?>
+														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">video post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'like-link':?>
+														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">link post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+														<?break;
+													case 'unlike-link':?>
+														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">link post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'like-comment':?>
+														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'unlike-comment':?>
+														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'comment-status':?>
+														You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'comment-photo':?>
+														You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">photo post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'comment-video':?>
+														You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">video post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'comment-link':?>
+														You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">link post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													case 'post-status':?>
+														You made a status post on <?=$act->target_user_name?>'s Fanpage on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+														<?break;
+													default:
+													
+												}?>
+												<?}else{?>
+													<?switch($act->activity_type){ 
+															case 'follow': ?>
+																<a href="#" onclick="userProfile('<?=$act->facebook_user_id?>')"><?=$act->facebook_user_name?></a> followed You on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'unfollow' :?>
+																<a href="#" onclick="userProfile('<?=$act->facebook_user_id?>')"><?=$act->facebook_user_name?></a> unfollowed You on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;	
+															case 'like-status':?>
+																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+																<?break;
+															case 'unlike-status':?>
+																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">status post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'like-photo':?>
+																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">photo post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+																<?break;
+															case 'unlike-photo':?>
+																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">photo post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;	
+															case 'like-video':?>
+																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">video post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+																<?break;
+															case 'unlike-video':?>
+																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">video post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'like-link':?>
+																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">link post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
+																<?break;
+															case 'unlike-link':?>
+																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">link post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'like-comment':?>
+																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'unlike-comment':?>
+																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'comment-status':?>
+																You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'comment-photo':?>
+																You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">photo post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'comment-video':?>
+																You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">video post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'comment-link':?>
+																You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">link post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+															case 'post-status':?>
+																You made a status post on <?=$act->target_user_name?>'s Fanpage on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+																<?break;
+														default:
+													}?>
+												<?php }?>
+													 <br/><br/>
+													</li>
+												<?endforeach; ?>
+
+											
+								</ul>
+								
+							</div>
+						
+						
+						
+						</div>
 							
 							
 							

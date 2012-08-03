@@ -440,7 +440,36 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->view->facebook_user = null;
     	}
     	
+    	$badges = new Model_Badges();
+    	
+    	$badges = $badges->findAll();
+    	
+    	//Zend_Debug::dump($badges);
+    	
+    	$this->view->badges = $badges;
+    	
     	$this->render("awards");
+    }
+    
+    public function redeemAction() {
+    	$this->_helper->layout->disableLayout();
+    	//$this->_helper->viewRenderer->setNoRender(true);
+    	//Zend_Debug::dump($this->_facebook_user);
+    	//$this->view->facebook_user = $this->_facebook_user;
+    	 
+    	$user = new Model_FacebookUsers();
+    	 
+    	$user = $user->find($this->_userId)->current();
+    	//Zend_Debug::dump($user);
+    	if($user) {
+    		$this->view->facebook_user = $user;
+    		//$access_token = $this->facebook_user->facebook_user_access_token;
+    		//$this->view->feed = $this->getFeed($access_token);
+    	}else {
+    		$this->view->facebook_user = null;
+    	}
+    	 
+    	$this->render("redeem");
     }
     
     public function myprofileAction() {
@@ -462,7 +491,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$follow = new Model_Subscribes();
     	$follower = $follow->getFollowers($user->facebook_user_id, $this->_fanpageId);
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
-    	$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
+    	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
     	
     	$fan = new Model_Fans();
     	$fan_level = $fan->getFanLevel($user->facebook_user_id, $this->_fanpageId);
@@ -483,7 +512,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->fan_country = $fan_country->fan_country;
     	$this->view->following = $following;
     	$this->view->follower = $follower;
-    	$this->view->friends = $friends;
+    	//$this->view->friends = $friends;
     	
     	
     	//Zend_Debug::dump($stat_post);
@@ -549,13 +578,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$follow = new Model_Subscribes();
     	
-
+    	$activities = new Model_FancrankActivities();
+    	$activities = $activities -> getRecentActivities($user->facebook_user_id, $this->_fanpageId, 5);
+    	 
+    	$this->view->activities = $activities;
+   
     	//echo $user->facebook_user_id;
     	//echo $user['facebook_user_id'];
 
     	$follower = $follow->getFollowers($user->facebook_user_id, $this->_fanpageId);
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
-    	$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
+    	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
     	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id);
     	$fan = new Model_Fans();
     	$fan_level = $fan->getFanLevel($user->facebook_user_id, $this->_fanpageId);
@@ -568,7 +601,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->fan_country = $fan_country->fan_country;
     	$this->view->following = $following;
     	$this->view->follower = $follower;
-    	$this->view->friends = $friends;
+    	//$this->view->friends = $friends;
     	$this->view->relation = $relation;
     	 
     	$this->render("userprofile");
@@ -872,14 +905,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->relation= $relation;
     	$this->view->result = $result;
     	
-    	//Zend_Debug::dump($result);
+
     	$this->view->title = 'Followers';
     	$this->view->user_name = $userName;
     	$this->view->user_id = $target;
     	
     	$this->render("userlist");
     }
-    
+    /*
     public function getfriendsAction(){
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
@@ -908,7 +941,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->user_id = $target;
     	$this->render("userlist");
     }
-    
+    */
     public function getfollowingAction(){    	
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
@@ -973,6 +1006,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
     public function badgetestAction(){
     	$this->_helper->layout->setLayout('default_layout');
+    	
     	$this->render("badgetest");
     
     }

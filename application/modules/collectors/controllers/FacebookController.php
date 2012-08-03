@@ -25,6 +25,25 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         */
     }
 	
+    public function testimagecreateAction(){
+   
+    	// Create image instances
+    	$dest = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\headermerge.png');
+    	$src = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\topfan-mini.png');
+    	$src2 = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\checkrank.png');
+    	
+    	
+    	imagecopy($dest, $src, 500, 5, 0, 0, 810, 300);
+    	imagecopy($dest, $src2, 500, 5, 0, 0, 810, 300);
+    	
+    	
+    	imagepng($dest,APPLICATION_PATH.'\..\public\img\test.png' );
+    	
+
+    
+    }
+    
+    
     public function testfanobjectAction(){
     	$f = new Model_FansObjectsStats();
     	
