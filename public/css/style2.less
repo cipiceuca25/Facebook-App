@@ -407,6 +407,14 @@ ul, ol {
 
 }
 
+
+.top-list.mini{
+
+	max-height:148px;
+	
+
+}
+
 .top-list .in{
 	border-top: 0px;
 		
@@ -425,6 +433,15 @@ ul, ol {
 	height:70px;
 }
 
+.top-list.mini .border-light,
+.top-list.mini .border-dark{
+	border-top: 1px solid @color-feed;
+	//width:533px;
+	display:block;
+	#gradient > .horizontal(@color-feed, white );
+	height:36px;
+}
+
 .top-list .border-light{
 	background-color:@color-background
 }
@@ -441,8 +458,31 @@ ul, ol {
 	float:left;
 }
 
+
+.top-list.mini .rank{
+	display:inline-block;
+	width:36px;
+	height:36px;
+	background-color:@color-base;
+	float:left;
+}
+
 .top-list .rank.first{
 	background-color:@color-dark;
+}
+
+.top-list.mini .rank h1{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 40px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:36px;
+	position:relative;
+	line-height:36px;
+	
+	right:-2px;
+
 }
 
 .top-list .rank h1{
@@ -473,6 +513,20 @@ ul, ol {
 
 }
 
+.top-list.mini .rank h2{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 30px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:36px;
+	position:relative;
+	line-height:36px;
+	top:5px;
+	right:-3px;
+
+}
+
 .top-list .rank h3{
 	
 	//background:url(../img/icon_pound.png) top left no-repeat;
@@ -486,7 +540,19 @@ ul, ol {
 	right:0px;
 
 }
+.top-list.mini .rank h3{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 20px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:36px;
+	position:relative;
+	line-height:36px;
+	top:13px;
+	right:0px;
 
+}
 
 .top-list .photo{
 	
@@ -499,6 +565,30 @@ ul, ol {
 	//margin-top:-20px;
 	margin-top:0px;
 	float:left;
+}
+
+.top-list.mini .photo{
+	
+	display:inline-block;
+	position:relative;
+	margin-left:0px;
+	//border: 5px solid @color-feed;
+	top:0px;
+	//vertical-align:middle;
+	//margin-top:-20px;
+	margin-top:0px;
+	float:left;
+}
+
+.top-list.mini .follow{
+	position:relative;
+	right:5px;
+	top:4px;
+	float:right;
+}
+
+.top-list.mini .photo img{
+	border: 3px solid @color-feed2;
 }
 
 .top-list .photo img{
@@ -514,7 +604,14 @@ ul, ol {
 	float:left;
 }
 
-
+.top-list.mini .name{
+	position:relative;
+	margin-left:10px;
+	display:inline-block;
+	top:9px;
+	//vertical-align:middle;
+	float:left;
+}
 .top-list .name a:hover{
 	color: @color-dark;
 }
@@ -525,9 +622,17 @@ ul, ol {
 }
 
 .top-list .name a.first{
-	font: bold 22px/100% Arial, Helvetica, sans-serif;
+	font: bold 25px/100% Arial, Helvetica, sans-serif;
 }
 
+.top-list.mini .name a{
+	font: bold 14px Arial, Helvetica, sans-serif;
+	color: @color-base;
+}
+
+.top-list.mini .name a.first{
+	font: bold 16px/100% Arial, Helvetica, sans-serif;
+}
 .top-list .points{
 	float:right;
 	//display:inline-block;
@@ -539,9 +644,30 @@ ul, ol {
 
 }
 
+.top-list.mini .points{
+	float:right;
+	//display:inline-block;
+	position:relative;
+	
+	top:7px;
+	//vertical-align:bottom;
+	color:@color-text2;
+
+}
+
+.top-list.mini .points span{
+	font-size:10px;
+	line-height:9px;
+
+}
+
 .top-list .points h3{
 	display:inline-block;
 	font-size:35px;
+}
+.top-list.mini .points h3{
+	display:inline-block;
+	font-size:19px;
 }
 
 .top-list .points span{
@@ -1270,8 +1396,8 @@ ul, ol {
 
 .span7.line{
 	border-right:2px solid @color-badges;
-	padding-left:15px;
-	padding-right:30px;
+	padding-left:22px;
+	padding-right:20px;
 }
 
 .top-list.user .name{

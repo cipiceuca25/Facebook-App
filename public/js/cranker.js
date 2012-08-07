@@ -23,16 +23,19 @@
 
 		});
 		//alert('getting top posts');
+		
 		getNewsfeed('#news-feed');
 		
 	});
 	
 	setFeed='All';
 	feedLimit = 0;
+	mtfb= true;
 	tfb = true;
 	ffb = true;
 	ttb = true;
 	tcb = true;
+	tfdb = true;
 
 	$('a[title]').live("mouseover", function(){
 		$(this).tooltip({ placement: 'left'});	
@@ -68,7 +71,15 @@
 		   mouseX = e.pageX; 
 		   mouseY = e.pageY;
 	}); 	
-	
+	$('#mini-top-fans-btn').live('click', function() {
+		
+		if ((mtfb)==true){
+		$('#mini-top-fans-btn').text('- Close');
+		}else{
+			$('#mini-top-fans-btn').text("+ More");
+		}
+		mtfb = !mtfb;
+	});
 	$('#top-fans-btn').live('click', function() {
 		
 		if ((tfb)==true){
@@ -106,6 +117,14 @@
 		tcb = !tcb;
 	});
 
+	$('#top-followed-btn').live( 'click', function() {
+		if ((tfdb)==true){
+		$('#top-followed-btn').text('- Close');
+		}else{
+			$('#top-followed-btn').text("+ More");
+		}
+		tfdb = !tfdb;
+	});
     function closeProfile(){
     	$('.light-box').css('display','none');
 		$('.user-profile').css('display', 'none');
@@ -123,8 +142,8 @@
 			//getFancrankfeed('all');getTopPost();
 			//alert("top class reload");
 		}
-		if($('#top-fans').hasClass('active')){
-			getTopfans('#top-fans');
+		if($('#leaderboard').hasClass('active')){
+			getLeaderboard('#leaderboard');
 			//getLatestPost();
 			//alert("top class reload");
 		}
@@ -163,9 +182,15 @@
 	
 	$('#newsfeed-tab').live('click',function(){
 		feedLimit = 0;
+		mtfb = true;
+		tfb = true;
+		ffb = true;
+		ttb = true;
+		tcb = true;
+		tfdb = true;
 		getNewsfeed('#news-feed');
 		
-		$('#top-fans').html('');
+		$('#leaderboard').html('');
 		$('#profile').html('');
 		$('#achievements').html('');
 		$('#redeem').html('');
@@ -173,8 +198,14 @@
 	});
 	
 	
-	$('#topfans-tab').live('click',function(){
-		getTopfans('#top-fans');
+	$('#leaderboard-tab').live('click',function(){
+		mtfb = true;
+		tfb = true;
+		ffb = true;
+		ttb = true;
+		tcb = true;
+		tfdb = true;
+		getLeaderboard('#leaderboard');
 		
 		$('#profile').html('');
 		$('#achievements').html('');
@@ -187,7 +218,7 @@
 	$('#profile-tab').live('click', function(){
 	
 		 getMyProfile('#profile');
-		 $('#top-fans').html('');
+		 $('#leaderboard').html('');
 		 $('#achievements').html('');
 		 $('#newsfeed').html('');
 		 $('#redeem').html('');
@@ -195,7 +226,7 @@
 	
 	$('#achievements-tab').live('click', function(){
 		getAwards('#achievements');
-		$('#top-fans').html('');
+		$('#leaderboard').html('');
 		$('#profile').html('');
 		$('#newsfeed').html('');
 		$('#redeem').html('');
@@ -203,7 +234,7 @@
 
 	$('#redeem-tab').live('click', function(){
 		getRedeem('#redeem');
-		$('#top-fans').html('');
+		$('#leaderboard').html('');
 		$('#profile').html('');
 		$('#newsfeed').html('');
 		$('#achievements').html('');
@@ -352,6 +383,8 @@
     	});*/
 
 	
+	
+	
 	function getUserProfile(ui, target) {
 		$.ajax({
 			type: "GET",
@@ -443,6 +476,7 @@
 			success: function( data ) {
 				$(ui).html(data);
 				getFancrankfeed(setFeed);
+				getTopFan();
 				getTopPost();
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
@@ -553,11 +587,31 @@
 		});
 	}
 	
-    function getTopfans(ui) {
+	  function getTopFan() {
+		     
+	    	$.ajax({
+	    		type: "GET",
+	    		url: serverUrl +'/app/app/topfan/'+ fanpageId +'?facebook_user_id=' + userId,
+	    		dataType: "html",
+	    		cache: false,
+	    		async: true,
+	    		success: function( data ) {
+	    			$('#topfan').html(data);
+	    			//getLatestPost();
+	    		},	
+	    		error: function( xhr, errorMessage, thrownErro ) {
+	        		alert(url);
+	    			console.log(xhr.statusText, errorMessage);
+	    			
+	    		}
+	    	});
+	    }
+	
+    function getLeaderboard(ui) {
      
     	$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/app/topfans/'+ fanpageId +'?facebook_user_id=' + userId,
+    		url: serverUrl +'/app/app/leaderboard/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
     		async: true,
@@ -640,7 +694,7 @@
 	}
 
     
-	function follow(target, name){
+	function follow(target, name, ui){
 		if (target != userId){
 			
 		
@@ -653,6 +707,9 @@
 					//alert("target followed")
 	    			addActivities('follow',userName, target, target, name );
 					//getUserProfile('.profile-content', target);
+	    		
+	    			$('.'+ui).attr('onclick',"unfollow('"+target+"','"+name+"','"+ui+"')" );
+	    			$('.'+ui).html('<div class="badge badge-Following">Following</div>');
 					feedbackAnimation('#follow-animation');
 	    		},	
 	    		error: function( xhr, errorMessage, thrownErro ) {
@@ -662,7 +719,7 @@
 		}
     }	
 	
-	function unfollow(target, name){
+	function unfollow(target, name, ui){
 		$.ajax({
     		type: "GET",
     		url: serverUrl +'/app/user/'+ userId + '/unfollow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
@@ -672,6 +729,8 @@
 				//alert("target unfollowed")
     			addActivities('unfollow', userName, target, target, name );
 				//getUserProfile('.profile-content', target);
+    			$('.'+ui).attr('onclick',"follow('"+target+"','"+name+"','"+ui+"')" );
+    			$('.'+ui).html('<div class="badge badge-Follow">Follow</div>');
     			feedbackAnimation('#unfollow-animation');
 				
     		},	

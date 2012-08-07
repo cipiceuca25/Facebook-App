@@ -9,15 +9,18 @@
 		<a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$this->post->from->id?>', false)"<?}?>><?=  $this->post->from->name?></a> 
 	</div>
 	<? if (!($this->relation[$count] == 'Fanpage')){?>
-		
-			<? if (($this->relation[$count] != 'Following') || ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
-				<a href="#" onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>')">
-			<?}else{?>
-				<a href="#" onclick="userProfile('<?=$this->post->from->id?>', false)">
-			<?}?>
-			
-			<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
-		<?}?>
+		<? if ($this->relation[$count] != 'You') { ?>
+			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+					<a href="#" onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>', 'follow_<?=$post->id?>')" class ="follow_<?=$this->post->id?>" >
+				<?}else{?>
+					<a href="#" onclick="unfollow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>', 'follow_<?=$post->id?>')" class ="follow_<?=$this->post->id?>">
+				<?}?>
+				
+				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+			<?php }else{?>
+				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+			<?php }?>
+	<?}?>	
 	<div class="post">
 		<!-- 
 		<div class="pic">
@@ -115,14 +118,18 @@
 			
 			</div>
 			<? if (!($this->relation[$count] == 'Fanpage')){?>
-				<? if (($this->relation[$count] != 'Following') && ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
-					<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
-				<?}else{?>
-					<a href="#" onclick="userProfile('<?=$post->from->id?>', false)">
-				<?}?>
-				
-				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
-			<?}?>
+				<? if ($this->relation[$count] != 'You') { ?>
+					<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+							<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" >
+						<?}else{?>
+							<a href="#" onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+						<?}?>
+						
+						<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+					<?php }else{?>
+						<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+					<?php }?>
+			<?}?>	
 			
 			<div class="post">
 			<? if(isset($post->message)){echo $this->escape($post->message);}?>

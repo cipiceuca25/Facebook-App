@@ -24,9 +24,9 @@
 	<? if (!($this->relation[$count] == 'Fanpage')){?>
 		<? if ($this->relation[$count] != 'You') { ?>
 			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-					<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
+					<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
 				<?}else{?>
-					<a href="#" onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>')">
+					<a href="#" onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
 				<?}?>
 				
 				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
@@ -62,7 +62,8 @@
 
 	
 	<?if ($this->total > $this->limit){ ?>
-		<button class="btn-top" onclick="comment_feed('<?= $this->postId ?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
+	
+		<button class="btn-top" onclick="comment_feed('<?= $this->postId ?>','<?= $this->postType?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
 	<?}?>
 	<li class="comment_container">
 

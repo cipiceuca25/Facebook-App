@@ -136,8 +136,76 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render('newsfeed');
     }
 
+    public function topfanAction()
+    {
+    
+    	$this->_helper->layout->disableLayout();
+    
+    	$user = new Model_FacebookUsers();
+    	$user = $user->find($this->_userId)->current();
+    	//Zend_Debug::dump($user);
+    	if($user) {
+    		$this->view->facebook_user = $user;
+    		//$access_token = $this->facebook_user->facebook_user_access_token;
+    		//$this->view->feed = $this->getFeed($access_token);
+    	}else {
+    		$this->view->facebook_user = null;
+    	}
+    
+    	$this->view->fanpage_id = $this->_fanpageId;
+    
+    	$follow = new Model_Subscribes();
+    	$model = new Model_Rankings;
+    	 
+    	$topFans = $model->getTopFans($this->_fanpageId, 5);
+    	//Zend_Debug::dump($topFans);
+    
+
+    
+    	//exit();
+    	$this->view->top_fans = $topFans;
+
+    	//echo ($user['facebook_user_id']);
+    
+    	$topArray = NULL;
+   
+    	$count=0;
+    	foreach ($topFans as $top){
+    		//echo $top['facebook_user_id'];
+    		$topArray[$count] = $follow->getRelation($user->facebook_user_id, $top['facebook_user_id']);
+    		//echo $topArray[$count];
+    		$count++;
+    
+    	}
+
+    	 
+    	$topFanYou = $model->getUserTopFansRank($this->_fanpageId, $user->facebook_user_id);
+
+    	//Zend_Debug::dump($topFanYou);
+    	 
+    	 
+    	 
+    	$this->view->topFanYou =  $topFanYou;
+    	
+    	//$this-view->talkerYou =
+    	//$this-view->clickerYou =
+    	 
+    	$this->view->topFanArray = $topArray ;
+    
+    
+    	/*
+    	 $this->view->user_top_fans = $model->getUserRanking($this->_fanpageId, 'FAN', $this->_userId);
+    	$this->view->user_most_popular = $model->getUserRanking($this->_fanpageId, 'POPULAR', $this->_userId);
+    	$this->view->user_top_talker = $model->getUserRanking($this->_fanpageId, 'TALKER', $this->_userId);
+    	$this->view->user_top_clicker = $model->getUserRanking($this->_fanpageId, 'CLICKER', $this->_userId);
+    	*/
+    	$this->render("topfan");
+    }
+    
+    
+    
     /* Action to retrieve top five fans by default */
-  	public function topfansAction()
+  	public function leaderboardAction()
   	{	
   		
   		$this->_helper->layout->disableLayout();
@@ -170,20 +238,22 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$topClicker = $model->getTopClicker($this->_fanpageId, 5);
     	//Zend_Debug::dump($topClicker);
 
-    	
+    	$topFollowed = $follow->getTopFollowed($this->_fanpageId, 5);
+    	//Zend_Debug::dump($topClicker);
     
     	//exit();
     	$this->view->top_fans = $topFans;
     	$this->view->most_popular = $mostPopular;
     	$this->view->top_talker = $topTalker;
     	$this->view->top_clicker = $topClicker;
-    
+    	$this->view->top_followed = $topFollowed;
     	//echo ($user['facebook_user_id']);
 
     	$topArray = NULL;
     	$popularArray = NULL;
     	$talkerArray = NULL;
     	$clickerArray = NULL;
+    	$followedArray = NULL;
     	$count=0;
     	foreach ($topFans as $top){
     		//echo $top['facebook_user_id'];
@@ -216,12 +286,22 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     		 
     	}
+    	$count=0;
+    	foreach ($topFollowed as $tf){
+    		//echo $top['facebook_user_id'];
+    		$followedArray[$count] = $follow->getRelation($user->facebook_user_id, $tf['facebook_user_id']);
+    		//echo $topArray[$count];
+    		$count++;
+    		 
+    	}
     	
     	$topFanYou = $model->getUserTopFansRank($this->_fanpageId, $user->facebook_user_id);
     	$popularYou = $model->getUserMostPopularRank($this->_fanpageId, $user->facebook_user_id);
     	$talkerYou = $model->getUserTopTalkerRank($this->_fanpageId, $user->facebook_user_id);
     	$clickerYou = $model->getUserTopClickerRank($this->_fanpageId, $user->facebook_user_id);
-    	//Zend_Debug::dump($topFanYou);
+    	
+    	$followedYou = $follow->getTopFollowedRank($this->_fanpageId, $user->facebook_user_id);
+    	//Zend_Debug::dump($followedYou);
     	
     	
     	
@@ -229,6 +309,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->popularYou = $popularYou;
     	$this->view->talkerYou = $talkerYou;
     	$this->view->clickerYou =$clickerYou;
+    	$this->view->followedYou =$followedYou;
     	//$this-view->talkerYou =
     	//$this-view->clickerYou =
     	
@@ -236,13 +317,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->popularArray = $popularArray ;
     	$this->view->talkerArray = $talkerArray ;
     	$this->view->clickerArray = $clickerArray ;
-    	
+    	$this->view->followedArray = $followedArray ;
+    	 
+    	/*
     	$this->view->user_top_fans = $model->getUserRanking($this->_fanpageId, 'FAN', $this->_userId);
     	$this->view->user_most_popular = $model->getUserRanking($this->_fanpageId, 'POPULAR', $this->_userId);
     	$this->view->user_top_talker = $model->getUserRanking($this->_fanpageId, 'TALKER', $this->_userId);
     	$this->view->user_top_clicker = $model->getUserRanking($this->_fanpageId, 'CLICKER', $this->_userId);
-    	
-    	$this->render("topfans");
+    	*/
+    	$this->render("leaderboard");
   	}
 
   	/* Action to show login user's wall post */
@@ -653,9 +736,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$limit = $this->_request->getParam('limit');
     	$total = $this->_request->getParam('total');
     	$result = array();
+    	//Zend_Debug::dump($limit);
     	$result = $this->getFeedComment($postId, $limit);
     	//$result = json_encode($result);
-
+		
     	
     	$follow = new Model_Subscribes();
     	$likesModel = new Model_Likes();

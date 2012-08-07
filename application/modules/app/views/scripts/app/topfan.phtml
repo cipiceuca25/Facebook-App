@@ -1,0 +1,160 @@
+
+								<div class="top-fan">
+									
+
+									<?php $count = 0; ?> 
+									<?php foreach($this->top_fans as $top_fan): ?>
+									
+									<?php if ($count == 0){?>
+									
+										<ul class="top-list mini">
+											<li>
+												<div class="border-dark">
+														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+															<h1><?= $count + 1 ?></h1>
+														</div>
+														<div class="photo">
+															<a href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
+														</div>
+														<div class="name">
+															<a class="first" href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
+														<br/>
+														
+														
+															
+														
+														</div>
+														<div class="follow">
+														<?php if ($this->topFanArray[$count] != 'You'){?>
+														
+														<a href="#" <?if (($this->topFanArray[$count] != 'Following') /*&& ($this->topFanArray[$count] != 'Friends') */) {?>
+																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'topfan_follow_<?=$top_fan['facebook_user_id']?>')" class = "topfan_follow_<?=$top_fan['facebook_user_id']?>"
+																<?}else{ ?>
+																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'topfan_follow_<?=$top_fan['facebook_user_id']?>')" class = "topfan_follow_<?=$top_fan['facebook_user_id']?>"
+																<?}?>
+															>
+															<div class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></div></a>
+														<?php }else{?>
+															<div class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></div>
+														
+														<?php }?>	</div>
+													</div>
+											</li>
+											
+										</ul>
+									<?php }else{ ?>
+										<?php if ($count == 1){?>
+											<ul  id="mini-top-fans-collapse" class="top-list mini collapse">
+										<?php }?>
+											<li>
+											<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1><?= $count + 1 ?></h1>
+													</div>
+													<div class="photo">
+														<a href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>	
+													</div>
+													<div class="name">
+														<a  <?php if ($count == 0){?>class='first'<?php }?> href="#" onclick="userProfile(<?= $top_fan['facebook_user_id'] ?>)"><?= $top_fan['fan_first_name'] ?></a>
+													<br/>
+														
+													
+													
+													
+													</div>
+													<div class="follow">
+													<?php if ($this->topFanArray[$count] != 'You'){?>
+														
+														<a href="#" <?if (($this->topFanArray[$count] != 'Following')/* && ($this->topFanArray[$count] != 'Friends')*/) {?>
+																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'topfan_follow_<?=$top_fan['facebook_user_id']?>')" id = "topfan_follow_<?=$top_fan['facebook_user_id']?>"
+																<?}else{ ?>
+																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'topfan_follow_<?=$top_fan['facebook_user_id']?>')" id = "topfan_follow_<?=$top_fan['facebook_user_id']?>"
+																<?}?>
+															>
+															<div class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></div></a>
+														<?php }else{?>
+															<div class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></div>
+														
+														<?php }?> </div>
+												</div>
+											</li>
+											
+									<?php }?>
+									
+									<?php $count ++; ?>
+									<?php endforeach; ?>
+										
+									<?php if ($count < 5){?>
+										
+										<?php for ( ;$count<5; $count++){ ?>
+											<?php if ($count == 1){?>
+												<ul  id="mini-top-fans-collapse" class="top-list mini collapse">
+											<?php }?>
+											<li>
+											<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+														<h1><?= $count + 1 ?></h1>
+													</div>
+													<div class="photo">
+														</div>
+													<div class="name">
+															</div>
+													<div class="points">
+														
+													</div>
+												</div>
+											</li>
+										<?}?>
+									<?}?>
+									</ul>
+									
+									<?php $count ++; ?>
+									<ul class="top-list mini">
+										<li>
+												<?php if ($count % 2 == 0) {?>
+													<div class="border-dark">
+												<?php  }else{  ?>
+													<div class="border-light">
+												<?php }?>
+													<div class="rank">
+														
+														<? if (strlen($this->topFanYou['my_rank'])== 1){?>
+															<h1><?= $this->topFanYou['my_rank']?></h1>
+														<?php }elseif (strlen($this->topFanYou['my_rank'])== 2) { ?>
+															<h2><?= $this->topFanYou['my_rank']?></h2>
+														<?php }elseif (strlen($this->topFanYou['my_rank'])== 3) { ?>
+															<h3><?= $this->topFanYou['my_rank']?></h3>
+														<?php }else{?>
+															<h1>*</h1>
+														<?php }?>
+														
+															
+													</div>
+													<div class="photo">
+														<a href="#" ><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->user_id ?>/picture" onerror="ImgError(this);"></a>	
+													</div>
+													<div class="name">
+														<a href="#" >YOU</a>
+														<br/>
+													</div>
+												
+												</div>
+										</li>
+									</ul>
+									<div class="shadow">
+										<button class="btn-top" id="mini-top-fans-btn" data-toggle="collapse" data-target="#mini-top-fans-collapse">
+												+ More
+										</button>
+									</div>
+								</div>
+							</div>
+		
+			

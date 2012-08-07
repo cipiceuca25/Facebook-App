@@ -51,7 +51,7 @@ class Model_Rankings extends Model_DbTable_Rankings
                     UNION ALL
                     SELECT l.facebook_user_id FROM likes l WHERE l.post_type = 'photo' AND l.fanpage_id = '". $page_id ."'		
                    	) AS topfans
-					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id)
+					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id && fans.fanpage_id = '".$page_id."')
 					GROUP BY fans.facebook_user_id
 					HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')                    		
 					ORDER BY number_of_posts DESC";
@@ -80,7 +80,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 				WHERE facebook_user_id != '". $page_id ."'
 				AND fanpage_id = '". $page_id ."'
 			) AS posts_count
-			INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id)
+			INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id && fans.fanpage_id = '".$page_id."')
 			GROUP BY fans.facebook_user_id
 			HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')			
 			ORDER BY number_of_posts DESC";
@@ -101,7 +101,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 				WHERE facebook_user_id != '". $page_id ."'
 				AND fanpage_id = '". $page_id ."'
 			) AS likes_count
-			INNER JOIN fans ON (fans.facebook_user_id = likes_count.facebook_user_id)
+			INNER JOIN fans ON (fans.facebook_user_id = likes_count.facebook_user_id && fans.fanpage_id = '".$page_id."')
 			GROUP BY fans.facebook_user_id
 			HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')						
 			ORDER BY number_of_likes DESC";
@@ -124,7 +124,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 						UNION ALL
 						SELECT c.facebook_user_id, count(*) AS num FROM likes l LEFT JOIN comments c ON(l.post_id = c.comment_id) WHERE c.facebook_user_id != l.fanpage_id AND l.fanpage_id = '". $page_id ."' AND l.post_type ='comment' GROUP BY c.comment_id, c.facebook_user_id
 					) AS favorite
-					INNER JOIN fans ON (fans.facebook_user_id = favorite.facebook_user_id)
+					INNER JOIN fans ON (fans.facebook_user_id = favorite.facebook_user_id && fans.fanpage_id = '".$page_id."')
 					GROUP BY favorite.facebook_user_id
 					HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')
 					ORDER BY count DESC";
@@ -168,7 +168,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 						    UNION ALL
 						    SELECT l.facebook_user_id FROM likes l WHERE l.post_type = 'photo' AND l.fanpage_id = '". $fanpage_id ."'
 						    ) AS topfans
-						    INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id)
+						    INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id && fans.fanpage_id = '".$fanpage_id."')
 						    GROUP BY fans.facebook_user_id
 						    HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage_id ."')
 						    ORDER BY number_of_posts DESC
@@ -208,7 +208,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 							WHERE facebook_user_id != '". $fanpage_id ."'
 							AND fanpage_id = '". $fanpage_id ."'
 						) AS posts_count
-						INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id)
+						INNER JOIN fans ON (fans.facebook_user_id = posts_count.facebook_user_id && fans.fanpage_id = '".$fanpage_id."')
 						GROUP BY fans.facebook_user_id
 						HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage_id ."')
 						ORDER BY number_of_posts DESC
@@ -242,7 +242,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 							WHERE facebook_user_id != '". $fanpage_id ."'
 							AND fanpage_id = '". $fanpage_id ."'
 						) AS likes_count
-						INNER JOIN fans ON (fans.facebook_user_id = likes_count.facebook_user_id)
+						INNER JOIN fans ON (fans.facebook_user_id = likes_count.facebook_user_id && fans.fanpage_id = '".$fanpage_id."')
 						GROUP BY fans.facebook_user_id
 						HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage_id ."')						
 						ORDER BY number_of_likes DESC
@@ -279,7 +279,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 							UNION ALL
 							SELECT c.facebook_user_id, count(*) AS num FROM likes l LEFT JOIN comments c ON(l.post_id = c.comment_id) WHERE c.facebook_user_id != l.fanpage_id AND l.fanpage_id = '". $fanpage_id ."' AND l.post_type ='comment' GROUP BY c.comment_id, c.facebook_user_id
 						) AS favorite
-						INNER JOIN fans ON (fans.facebook_user_id = favorite.facebook_user_id)
+						INNER JOIN fans ON (fans.facebook_user_id = favorite.facebook_user_id && fans.fanpage_id = '".$fanpage_id."')
 						GROUP BY favorite.facebook_user_id
 						HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage_id ."')
 						ORDER BY count DESC
