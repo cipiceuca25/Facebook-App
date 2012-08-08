@@ -388,7 +388,66 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 	}
 	
-	
+	public function uploadAction() {
+		$fc = $this->_getParam('fanpage_id');
+		
+		try {
+			$upload = new Zend_File_Transfer_Adapter_Http();
+			$upload//->addValidator('Count', false, 1)     // ensure only 1 file
+			->addValidator('Size', false, 1000000) // limit to 100K
+			->addValidator('Extension' ,false, 'jpg,png,gif');
+			//echo $upload ->getFileName();	
+			$facebook = new Service_FancrankFBService();
+			$facebook->setAccessToken($this->_getParam('access_token'));
+			$facebook->setFileUploadSupport(true);
+			$upload->receive();
+			
+			$imageFileName = $upload->getFileName();
+				
+			try {
+				$file= $imageFileName;
+			
+				$args = array(
+						'message' => $this->_getParam('message'),
+						'picture' => $file,
+				);
+				echo $file;
+				$args[basename($file)] = '@' . realpath($file);
+				
+				$result = $facebook->api("/".$fc."/feed", 'post', $args);
+					
+				//Zend_Debug::dump($result);
+				echo 'done';
+			} catch (FacebookApiException $e) {
+				print $e->getMessage();
+				
+			}
+				
+				
+			/*$imageFileName = $this->_getParam('fanpage_id') .'_picture' .strrchr($upload->getFileName(), '.');
+				$fullFilePath = $imageDestination .DIRECTORY_SEPARATOR .$imageFileName;
+			if ($upload->isValid()) {
+			$upload->setDestination($imageDestination);
+			$upload->addFilter('Rename', array('target' => $fullFilePath, 'overwrite' => true));
+			//check upload file
+			if ($upload->receive()) {
+			$this->view->message = 'ok';
+			$this->_response->setHttpResponseCode(200);
+			}else {
+			//TO LOG
+			throw new Exception('unable to save');
+			}
+			}else {
+			//TO LOG
+			throw new Exception(implode(PHP_EOL, $upload->getErrors()));
+			}*/
+		} catch (Exception $e) {
+			//TO LOG
+			
+			$this->view->message = $e->getMessage();
+			$this->_response->setHttpResponseCode(400);
+		}
+	}
 	
 }
 
