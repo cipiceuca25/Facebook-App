@@ -166,7 +166,7 @@
 	
 			<form action="#">
 				<textarea class="comment_box_popup" id="comment_<?= $this->post->id ?>" onkeyup="resizeCommentBox(this)"></textarea>
-				<input type=button class="btn-submit" value="Submit" onclick="commentpopupSubmit('<?= $this->post->id ?>','<?= $this->post->type ?>','comment_<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>' )">
+				<input type=button class="btn-submit" value="Comment" onclick="commentpopupSubmit('<?= $this->post->id ?>','<?= $this->post->type ?>','comment_<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>' )">
 			</form>
 		
 		</li>

@@ -23,13 +23,33 @@
 									<div class="title-header"> <h3>Fancrank Feed</h3> </div>
 
 								</div>
-											<span>[<a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span>
-										
-											<form action="#" class="submit_box">
-															<textarea id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
-															<input type=button class="btn-submit" value="Submit" id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
-											</form>
 											
+										
+											<div>
+												<ul class="nav nav-tabs" id="postingTab">
+												  <li class="active"><a href="#post_post" data-toggle="tab" id="post_post_tab">Posts</a></li>
+												  <li><a href="#post_photo" data-toggle="tab" id="post_photo_tab">Photo/Video</a></li>
+												</ul>
+												
+												<div class="tab-content" id="postingContent">
+													<div class="tab-pane active" id="post_post">
+													  	<form action="#" class="submit_box">
+																		<textarea id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
+																		<input type=button class="btn-submit" value=" Post "  id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
+														</form>
+													</div>
+												  <div class="tab-pane" id="post_photo">
+												  	Upload Photo 
+												  	<br/>
+												  	<br/>
+												  	<br/>
+												  	<br/>
+												  </div>
+												</div>
+											</div>
+											
+											<span>[ <a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span>
+										
 											<ul class="post-list" id ="fancrankfeed">
 												
 											</ul>
@@ -43,9 +63,9 @@
 							</div>
 							
 						
-							<div class="span4">
+							<div class="span5 re">
 								<div class="row">
-									<div class="span4">
+									<div class="span5 re">
 										<div class="title">
 											<div class="photo"> <img src="/img/news-feed/top-fan-icon.jpg" /> </div>
 											<div class="title-header"> <h3> Top Fans  </h3>
@@ -65,7 +85,7 @@
 								</div>
 								
 								<div class="row">
-									<div class="span4">
+									<div class="span5 re">
 										<div class="subtitle">
 										
 		

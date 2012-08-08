@@ -162,6 +162,16 @@
 	  $(this).tab('show');
 	});
 
+	$('#post_post a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+	});
+	
+	$('#post_photo a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+	});
+	
 	$('#fan-favorite a').click(function (e) {
 	  e.preventDefault();
 	  $(this).tab('show');
