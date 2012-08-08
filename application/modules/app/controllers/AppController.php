@@ -172,7 +172,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$count=0;
     	foreach ($topFans as $top){
     		//echo $top['facebook_user_id'];
-    		$topArray[$count] = $follow->getRelation($user->facebook_user_id, $top['facebook_user_id']);
+    		$topArray[$count] = $follow->getRelation($user->facebook_user_id, $top['facebook_user_id'],$this->_fanpageId);
     		//echo $topArray[$count];
     		$count++;
     
@@ -257,7 +257,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$count=0;
     	foreach ($topFans as $top){
     		//echo $top['facebook_user_id'];
-    		$topArray[$count] = $follow->getRelation($user->facebook_user_id, $top['facebook_user_id']);
+    		$topArray[$count] = $follow->getRelation($user->facebook_user_id, $top['facebook_user_id'],$this->_fanpageId);
     		//echo $topArray[$count];
     		$count++;
     		
@@ -265,7 +265,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$count=0;
     	foreach ($mostPopular as $mp){
     		//echo $top['facebook_user_id'];
-    		$popularArray[$count] = $follow->getRelation($user->facebook_user_id, $mp['facebook_user_id']);
+    		$popularArray[$count] = $follow->getRelation($user->facebook_user_id, $mp['facebook_user_id'],$this->_fanpageId);
     		//echo $topArray[$count];
     		$count++;
     	
@@ -273,7 +273,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$count=0;
     	foreach ($topTalker as $tt){
     		//echo $top['facebook_user_id'];
-    		$talkerArray[$count] = $follow->getRelation($user->facebook_user_id, $tt['facebook_user_id']);
+    		$talkerArray[$count] = $follow->getRelation($user->facebook_user_id, $tt['facebook_user_id'],$this->_fanpageId);
     		//echo $topArray[$count];
     		$count++;
     		 
@@ -281,7 +281,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		$count=0;
     	foreach ($topClicker as $tc){
     		//echo $top['facebook_user_id'];
-    		$clickerArray[$count] = $follow->getRelation($user->facebook_user_id, $tc['facebook_user_id']);
+    		$clickerArray[$count] = $follow->getRelation($user->facebook_user_id, $tc['facebook_user_id'],$this->_fanpageId);
     		//echo $topArray[$count];
     		$count++;
     		 
@@ -289,7 +289,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$count=0;
     	foreach ($topFollowed as $tf){
     		//echo $top['facebook_user_id'];
-    		$followedArray[$count] = $follow->getRelation($user->facebook_user_id, $tf['facebook_user_id']);
+    		$followedArray[$count] = $follow->getRelation($user->facebook_user_id, $tf['facebook_user_id'],$this->_fanpageId);
     		//echo $topArray[$count];
     		$count++;
     		 
@@ -471,14 +471,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$relation = array();
     	$count=0;
     	$likes[$count]=null;
-    	$relation[$count] =$follow->getRelation($this->_userId, $post->from->id);
+    	$relation[$count] =$follow->getRelation($this->_userId, $post->from->id,$this->_fanpageId);
     	
     	$count=1;
     	if(!empty($result)) {
     		foreach ($result as $posts){
     			//echo $top['facebook_user_id'];
     			$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
-    			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id);
+    			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
     			//echo $likes[$count];
     			$count++;
     		}
@@ -672,7 +672,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$follower = $follow->getFollowers($user->facebook_user_id, $this->_fanpageId);
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
     	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
-    	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id);
+    	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id,$this->_fanpageId);
     	$fan = new Model_Fans();
     	$fan_level = $fan->getFanLevel($user->facebook_user_id, $this->_fanpageId);
     	$fan_since = $fan->getFanSince($user->facebook_user_id, $this->_fanpageId);
@@ -707,13 +707,24 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$relation = array();
     	$count=0;
 		//Zend_Debug::dump($result);
-    	foreach ($result as $posts){
-    		//echo $top['facebook_user_id'];
-    		$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
-			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id);
-    		//echo $likes[$count];
-    		$count++;
-    	} 
+		if ($viewAs == 'myfeed'){
+			foreach ($result as $posts){
+				//Zend_Debug::dump($posts);
+				//echo $top['facebook_user_id'];
+				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts['post_id'], $this->_userId );
+				$relation[$count] = $follow->getRelation($this->_userId, $posts['facebook_user_id'],$this->_fanpageId);
+				//echo $likes[$count];
+				$count++;
+			}			
+		}else{
+			foreach ($result as $posts){
+				//echo $top['facebook_user_id'];
+				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+				$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
+				//echo $likes[$count];
+				$count++;
+			}
+		}
     	
 		
 		
@@ -723,8 +734,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     	$this->view->likes = $likes;
     	$this->view->post = $result;
+    	if($viewAs == 'myfeed'){
+    		$this->render("fancrankfeedm");
+    	}else{
+    		$this->render("fancrankfeed");
+    	}
     	
-    	$this->render("fancrankfeed");
     }
     
     
@@ -753,7 +768,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			//echo $top['facebook_user_id'];
     			$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
 
-    			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id);
+    			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 
     			//echo $likes[$count];
     			$count++;
@@ -866,7 +881,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$response = $client->request();
     	 
     	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-    	
+    	//Zend_Debug::dump($result->data);
     	if(!empty ($result->data)) {
 
     		switch ($view){
@@ -880,7 +895,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     					return $result->data;
     			case 'user':
     				return $this->feedFilterByUser($result->data, $this->_fanpageId);
-    			
+    			case 'myfeed':
+    				return $this->feedFilterByMyFeed($this->_fanpageId, $limit);
     			default:
     				return $result->data;
     		}
@@ -907,6 +923,60 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	return $result;
     }
+    
+    protected function feedFilterByMyFeed($fanpageId, $limit) {
+    	$result = array();
+    	$post = new Model_Posts();
+		$post = $post->getMyFeedPost($fanpageId, $this->_userId ,$limit);
+		$result = $post;
+		
+		
+    	//Zend_Debug::dump($result);
+    	return $result;
+    	
+    	
+		/* I dont care. it works . and its ok fast. 
+		 * 
+		 * 
+		 * 
+		 * Select * from(
+		
+		SELECT post.* 
+		FROM fancrank.subscribes sub , fancrank.posts post
+		where sub.facebook_user_id = 28117303 && sub.fanpage_id = 197221680326345 && sub.follow_enable = 1
+		&& post.facebook_user_id = sub.facebook_user_id_subscribe_to && sub.fanpage_id = post.fanpage_id
+		
+		union 
+		
+		SELECT post.*
+		FROM fancrank.subscribes sub , fancrank.likes likes, fancrank.posts post
+		where sub.facebook_user_id = 28117303 && sub.fanpage_id = 197221680326345 && sub.follow_enable = 1
+		&& sub.facebook_user_id_subscribe_to = likes.facebook_user_id && likes.fanpage_id = sub.fanpage_id
+		&& likes.post_id = post.post_id && likes.post_type != 'comment'
+		
+		union 
+		
+		SELECT post.*
+		FROM fancrank.subscribes sub , fancrank.comments com, fancrank.posts post
+		where sub.facebook_user_id = 28117303 && sub.fanpage_id = 197221680326345 && sub.follow_enable = 1
+		&& sub.facebook_user_id_subscribe_to = com.facebook_user_id && com.fanpage_id = sub.fanpage_id
+		&& post.post_id = com.comment_post_id && post.fanpage_id = sub.fanpage_id 
+		
+		union 
+		
+		SELECT post.*
+		FROM fancrank.subscribes sub , fancrank.likes likes, fancrank.comments com, fancrank.posts post
+		where sub.facebook_user_id = 28117303 && sub.fanpage_id = 197221680326345 && sub.follow_enable = 1
+		&& sub.facebook_user_id_subscribe_to = likes.facebook_user_id && likes.fanpage_id = sub.fanpage_id
+		&& likes.post_id = com.comment_id && likes.post_type = 'comment' && com.comment_post_id = post.post_id
+		)as h
+		
+		order by created_time DESC
+		
+		
+		*/
+    }
+    
     
     public function toppostAction() {
     	$this->_helper->layout->disableLayout();
@@ -980,7 +1050,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$count = 0;
     	foreach ($result as $r){
     		//echo $top['facebook_user_id'];
-    		$relation[$count] = $follow->getRelation($this->_userId, $r['facebook_user_id']);
+    		$relation[$count] = $follow->getRelation($this->_userId, $r['facebook_user_id'], $this->_fanpageId);
     		//echo $topArray[$count];
     		$count++;
     	
@@ -1040,7 +1110,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$count = 0;
     	foreach ($result as $r){
     		//echo $top['facebook_user_id'];
-    		$relation[$count] = $follow->getRelation($this->_userId, $r['facebook_user_id']);
+    		$relation[$count] = $follow->getRelation($this->_userId, $r['facebook_user_id'],$this->_fanpageId);
     		//echo $topArray[$count];
     		$count++;
     		 

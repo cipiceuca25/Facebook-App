@@ -4,7 +4,7 @@
 
 <?php if(empty($this->post)){
 
-	echo "Missing Access Token";
+	echo "Missing Access Token or Empty List";
 }?>
 
 
@@ -83,13 +83,16 @@
 	<div class="social"> 
 	
 		<span class="likes">
-		<img src="/img/news-feed/icon-likes.png" />
-		<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
-		<?php if ($this->likes[$count] == 0) {?>
-			<a href="#post_<?=$post->id?>" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
-		<?}else{?>
-			<a href="#post_<?=$post->id?>" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
-		<?php }?>
+			<img src="/img/news-feed/icon-likes.png" />
+			
+			<span class="like_<?= $post->id?>"><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?></span>
+			
+			
+			<?php if ($this->likes[$count] == 0) {?>
+				<a class="like_control_<?= $post->id?>" href="#post_<?=$post->id?>" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
+			<?}else{?>
+				<a class="like_control_<?= $post->id?>" href="#post_<?=$post->id?>" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
+			<?php }?>
 		</span>
 		<span class="comment">
 		<?php if(isset($post->comments->count)){
