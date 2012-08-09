@@ -61,7 +61,7 @@
 			
 			
 			<?php if (isset($post->picture)){?><div class="link-right"><?php }?>
-				<a target="new" href="<?echo $this->escape($post->link)?> "><?= $this->escape($post->name)?></a>
+				<a target="new" href="<?echo $this->escape($post->link)?> "><?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?></a>
 				
 				<?php  if (isset($post->caption)){?></br><?php echo $this->escape($post->caption); }?>: 
 				<br/>
