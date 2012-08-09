@@ -12,9 +12,7 @@
 							</div>
 						</div>
 						-->
-					<div class="row">
-				
-				
+						<div class="row">
 							<div class="span7 line">
 								<div class="title">
 									<div class="photo">
@@ -25,41 +23,87 @@
 									<div class="title-header"> <h3>Fancrank Feed</h3> </div>
 
 								</div>
-											<span>[<a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span>
-										
-											<form action="#" class="submit_box">
-															<textarea id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
-															<input type=button class="btn-submit" value="Submit" id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
-											</form>
 											
+										
+											<div>
+												<ul class="nav nav-tabs" id="postingTab">
+												  <li class="active"><a href="#post_post" data-toggle="tab" id="post_post_tab">Posts</a></li>
+												  <li><a href="#post_photo" data-toggle="tab" id="post_photo_tab">Photo/Video</a></li>
+												</ul>
+												
+												<div class="tab-content" id="postingContent">
+													<div class="tab-pane active" id="post_post">
+													  	<form action="#" class="submit_box">
+																		<textarea id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
+																		<input type=button class="btn-submit" value=" Post "  id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
+														</form>
+													</div>
+												  <div class="tab-pane" id="post_photo">
+												 		<form action="#" class="submit_box">
+												    		<input type="hidden" name="MAX_FILE_SIZE" value="100000" />
+												        	<span class="control-label">Select an image</span>
+												    		<input type="file" name="datafile" />
+															<input type="button" value="Upload"
+												        		onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?= $this->fanpage_id?>','upload','<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>'); return false;" >
+															<div id="upload"></div>
+														
+															<textarea id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
+															<input type=button class="btn-submit" value=" Post "  id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
+														</form>
+												 
+												  </div>
+												</div>
+											</div>
+											
+											<span>[ <a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span>
+										
 											<ul class="post-list" id ="fancrankfeed">
 												
 											</ul>
 											
 											<div class="shadow">
 													<button class="btn-top" onclick="getFancrankfeed(setFeed)">
-															+ More
+															MORE + 
 													</button>
 											</div>
 								
 							</div>
 							
-							<div class="span1 re">
-								
-							&nbsp;
-							</div>
-							<div class="span4">
-								<div class="subtitle">
-								
-
-									<div class="title-header reverse"> <h3>Top Posts</h3>
-								<!--  
-								<div class="tip"><a title="Wow, I can't believe you said that! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of likes and comments from other people!">?</a></div>
-									-->
+						
+							<div class="span5 re">
+								<div class="row">
+									<div class="span5 re">
+										<div class="title">
+											<div class="photo"> <img src="/img/news-feed/top-fan-icon.jpg" /> </div>
+											<div class="title-header"> <h3> Top Fans  </h3>
+												<div class="tip"><a title="You are awesome and nobody can touch you! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
+											 </div>
+										</div>
+										
+										<div id="topfan">
+										
+										
+										
+										</div>
+										
 									
-									 </div>
-									
+									</div>
+								
 								</div>
+								
+								<div class="row">
+									<div class="span5 re">
+										<div class="subtitle">
+										
+		
+											<div class="title-header"> <h3>Top Posts</h3>
+										<!--  
+										<div class="tip"><a title="Wow, I can't believe you said that! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of likes and comments from other people!">?</a></div>
+											-->
+											
+											 </div>
+											
+										</div>
 
 									
 										<ul class="top_post" id="toppost">
@@ -67,9 +111,10 @@
 											
 										</ul>
 									
+									</div>
+								</div>
 							</div>
 							
-						</div>
 						<div class="row">
 							&nbsp;
 						</div>

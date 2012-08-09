@@ -25,6 +25,74 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
         */
     }
 	
+    public function testimagecreateAction(){
+   
+    	// Create image instances
+    	$dest = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\headermerge.png');
+    	$src = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\topfan-mini.png');
+    	$src2 = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\checkrank.png');
+    	
+    	
+    	$model = new Model_Rankings;
+    	$topFans = $model->getTopFans('216821905014540', 5);
+    	
+    	// imagettftext ( resource $image , float $size , float $angle , int $x , int $y , int $color , string $fontfile , string $text )
+    	
+    	
+    	
+
+    	$blue= imagecolorallocate($src, 23, 61, 113);
+    	$green = imagecolorallocate($src, 193, 204, 178);
+    	$gray = imagecolorallocate($src, 30, 30, 30);
+    	
+    	$font = APPLICATION_PATH.'\..\public\img\font\arialbd.ttf';
+    	$font2 = APPLICATION_PATH.'\..\public\img\font\arial.ttf';
+    	$yim = 47;
+    
+    	$count = 0;
+    	foreach ($topFans as $top){
+    		set_time_limit(60);
+    		//echo $top['facebook_user_id'];
+    		$text = $top['fan_first_name'];
+    		$point = $top['number_of_posts'];
+    		$file = 'https://graph.facebook.com/'.$top['facebook_user_id'].'/picture';
+    		$size = getimagesize($file);
+    		switch($size["mime"]){
+    			case "image/jpeg":
+    				$pic = imagecreatefromjpeg($file); //jpeg file
+    				break;
+    			case "image/gif":
+    				$pic = imagecreatefromgif($file); //gif file
+    				break;
+    			case "image/png":
+    				$pic = imagecreatefrompng($file); //png file
+    				break;
+    			default:
+    				$pic=false;
+    				break;
+    		}
+    		imagefilledrectangle ($src, 40, $yim , 75 , $yim+35 , $green );
+    		imagecopyresized($src, $pic, 43, $yim+3, 0, 0, 30, 30, 50, 50);
+    		//echo $topArray[$count];
+    		imagettftext($src, 16, 0, 87, $yim+25, $blue, $font, $text);
+    		imagettftext($src, 14, 0, 180, $yim+25, $gray, $font, $point);
+    		imagettftext($src, 9, 0, 215, $yim+23, $gray, $font2, 'Points');
+    		$count++;
+    		$yim +=37;
+    	}
+    	
+    	imagecopy($dest, $src, 500, 5, 0, 0, 810, 300);
+    	imagecopy($dest, $src2, 500, 5, 0, 0, 810, 300);
+    	
+    	
+    	
+    	imagepng($dest,APPLICATION_PATH.'\..\public\img\test.png' );
+    	
+
+    
+    }
+    
+    
     public function testfanobjectAction(){
     	$f = new Model_FansObjectsStats();
     	

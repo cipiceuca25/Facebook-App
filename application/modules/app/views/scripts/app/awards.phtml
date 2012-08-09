@@ -2,7 +2,7 @@
 						<div class="row">
 							<div class="span12">
 								<div class="title">
-									<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a></div>
+									<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a></div>
 									<div class="title-header"> <h3><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Awards</h3> </div>
 								</div>
 							</div>
@@ -253,4 +253,15 @@
 										</div>
 								</div>
 						
+							</div>
+							
+							<div class="row">
+								<div class="span6">
+								<?php foreach($this->badges as $b): ?>
+									<div class="span1 rb">
+									<img src ="/img/badges/generic.png" title="<?= $b->name . $b->quantity . ' ' . $b->description?>" />
+									</div>
+								<?php endforeach; ?>
+								</div>
+							
 							</div>

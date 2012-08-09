@@ -61,6 +61,8 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+
+	/*
 	public function getFriendsList($user, $fanpage, $limit){
 		$select = "select f.facebook_user_id, f.facebook_user_name, f.facebook_user_last_name, f.facebook_user_first_name,b.* 
 					from subscribes a, subscribes b, facebook_users f
@@ -74,6 +76,57 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 		
 		return $this->getAdapter()->fetchAll($select);
 	}
+	*/
+	
+	public function getTopFollowed($fanpage, $limit){
+		$select = "SELECT distinct a.facebook_user_id_subscribe_to, b.*, count(*) as count
+					FROM fancrank.subscribes a, fancrank.fans b 
+					where a.fanpage_id = ".$fanpage." && 
+						  b.fanpage_id = ".$fanpage." &&
+				          a.facebook_user_id_subscribe_to = b.facebook_user_id &&
+				          a.follow_enable = 1 &&
+						  b.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage."')	
+					group by a.facebook_user_id_subscribe_to 
+					order by count DESC";
+		
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+		return $this->getAdapter()->fetchAll($select);
+	
+	}
+	
+	public function getTopFollowedRank($fanpage, $facebook_user_id){
+		
+		$select = "select *
+				from
+				(
+				    select rank.*, @rownum:=@rownum+1 as my_rank
+				    FROM
+					    (
+						SELECT distinct a.facebook_user_id_subscribe_to ,b.*, count(*) as count
+							FROM fancrank.subscribes a, fancrank.fans b 
+							where a.fanpage_id = ".$fanpage." && 
+							  b.fanpage_id = ".$fanpage." &&
+					          a.facebook_user_id_subscribe_to = b.facebook_user_id &&
+					          a.follow_enable = 1 &&
+							  b.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage."')	
+							group by a.facebook_user_id_subscribe_to 
+							order by count DESC
+					) as rank, (SELECT @rownum:=0) r
+				) as topfollow_rank
+				WHERE facebook_user_id = '". $facebook_user_id ."'
+		";
+		
+		$result = $this->getAdapter()->fetchAll($select);
+		if(!empty($result[0])) {
+			return $result[0];
+		}
+		
+		
+		
+		
+	}
+	
 	
 	public function getFollowers($user, $fanpage){
 		 
@@ -87,7 +140,7 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 
 		return $this->getAdapter()->fetchAll($select);
 	}
-	
+	/*
 	public function getFriends($user, $fanpage){
 
 		$select = "select count(a.facebook_user_id) as friends 
@@ -99,15 +152,16 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 		return $this->getAdapter()->fetchAll($select);
 		
 	}
-	public function isFollowing($user, $target){
-		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1 AND s.facebook_user_id=$user AND s.facebook_user_id_subscribe_to = $target";
+	*/
+	public function isFollowing($user, $target, $fanpage){
+		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1 AND s.facebook_user_id= $user AND s.facebook_user_id_subscribe_to = $target And s.fanpage_id = $fanpage";
 		if ($this->getAdapter()->fetchAll($select))
 			return true;
 	
 		return false;
 	}
-	public function isFollower($user, $target){
-		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1  AND s.facebook_user_id=$target AND s.facebook_user_id_subscribe_to = $user";
+	public function isFollower($user, $target, $fanpage){
+		$select = "select s.facebook_user_id from subscribes s where s.follow_enable=1  AND s.facebook_user_id= $target AND s.facebook_user_id_subscribe_to = $user And s.fanpage_id = $fanpage" ;
 		if ($this->getAdapter()->fetchAll($select))
 			return true;
 	
@@ -123,7 +177,7 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 		return false;
 	}
 	
-	public function getRelation($user, $target){
+	public function getRelation($user, $target, $fanpage){
 		if($user == $target){
 			return "You";
 		}
@@ -132,11 +186,12 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 			return "Fanpage";
 		}
 		
-		$isfollowing = $this->isFollowing($user, $target);
-		$isfollower =  $this->isFollower($user, $target);
+		$isfollowing = $this->isFollowing($user, $target, $fanpage);
+		$isfollower =  $this->isFollower($user, $target, $fanpage);
 		
 		if ($isfollowing && $isfollower){
-			return "Friends";
+			//return "Friends";
+			return "Following";
 		}else if ($isfollowing){
 			return "Following";
 		}else if ($isfollower){

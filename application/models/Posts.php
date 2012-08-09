@@ -104,5 +104,51 @@ class Model_Posts extends Model_DbTable_Posts
 		return $this->getAdapter()->fetchAll($select);
 	}
 
+	
+	public function getMyFeedPost($fanpage_id, $user_id, $limit){
+		$select="Select h.*, fan_name, fanpage_name from(
+		
+				SELECT p.*
+				FROM subscribes s , posts p
+				where s.facebook_user_id = '".$user_id."' && s.fanpage_id = '".$fanpage_id."' && s.follow_enable = 1
+				&& p.facebook_user_id = s.facebook_user_id_subscribe_to && s.fanpage_id = p.fanpage_id
+				
+				union
+				
+				SELECT p.*
+				FROM subscribes sub ,likes likes, posts p
+				where sub.facebook_user_id = '".$user_id."' && sub.fanpage_id = '".$fanpage_id."'  && sub.follow_enable = 1
+				&& sub.facebook_user_id_subscribe_to = likes.facebook_user_id && likes.fanpage_id = sub.fanpage_id
+				&& likes.post_id = p.post_id && likes.post_type != 'comment'
+				
+				union
+				
+				SELECT p.*
+				FROM subscribes sub , comments com, posts p
+				where sub.facebook_user_id = '".$user_id."' && sub.fanpage_id = '".$fanpage_id."'  && sub.follow_enable = 1
+				&& sub.facebook_user_id_subscribe_to = com.facebook_user_id && com.fanpage_id = sub.fanpage_id
+				&& p.post_id = com.comment_post_id && p.fanpage_id = sub.fanpage_id
+				
+				union
+				
+				SELECT p.*
+				FROM subscribes sub , likes likes, comments com, posts p
+				where sub.facebook_user_id = '".$user_id."' && sub.fanpage_id = '".$fanpage_id."'  && sub.follow_enable = 1
+				&& sub.facebook_user_id_subscribe_to = likes.facebook_user_id && likes.fanpage_id = sub.fanpage_id
+				&& likes.post_id = com.comment_id && likes.post_type = 'comment' && com.comment_post_id = p.post_id
+				)as h 
+				left join fans
+				on (h.facebook_user_id = fans.facebook_user_id && fans.fanpage_id = h.fanpage_id)
+			 	left join fanpages
+				on (h.fanpage_id = fanpages.fanpage_id)
+						
+				order by h.created_time DESC";
+						
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+		
+		return $this->getAdapter()->fetchAll($select);
+	
+	}
 }
 

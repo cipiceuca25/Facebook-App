@@ -18,17 +18,21 @@
 	<li class="grey-dark" >
 	<?php }?>
 
-	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
+	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></a></div>
 	<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a>
 	</div>
 	<? if (!($this->relation[$count] == 'Fanpage')){?>
-		<? if (($this->relation[$count] != 'Following')|| ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
-			<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
-		<?}else{?>
-			<a href="#" onclick="userProfile('<?=$post->from->id?>')">
-		<?}?>
-		
-		<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+		<? if ($this->relation[$count] != 'You') { ?>
+			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+					<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+				<?}else{?>
+					<a href="#" onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+				<?}?>
+				
+				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+			<?php }else{?>
+				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+			<?php }?>
 	<?}?>
 	
 	<div class="post">
@@ -38,13 +42,13 @@
 	<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
 	
 	<span class="likes">
-	<? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?> 
+		<span class="like_<?= $post->id?>"><? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?> </span>
 	
 	
 	<?php if ($this->likes[$count] == 0) {?>
-		<a href="#" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Like</a> 
+		<a class="like_control_<?= $post->id?>" href="#" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Like</a> 
 	<?}else{?>
-		<a href="#" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
+		<a class="like_control_<?= $post->id?>" href="#" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
 	<?php }?>
 	 </span>
 
@@ -58,7 +62,8 @@
 
 	
 	<?if ($this->total > $this->limit){ ?>
-		<button class="btn-top" onclick="comment_feed('<?= $this->postId ?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
+	
+		<button class="btn-top" onclick="comment_feed('<?= $this->postId ?>','<?= $this->postType?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
 	<?}?>
 	<li class="comment_container">
 

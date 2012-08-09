@@ -4,20 +4,23 @@
 	
 
 						
-	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$this->post->from->id?>', false)"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->post->from->id ?>/picture"></a></div>
+	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$this->post->from->id?>', false)"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->post->from->id ?>/picture" onerror="ImgError(this);"></a></div>
 	<div class="name">
 		<a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$this->post->from->id?>', false)"<?}?>><?=  $this->post->from->name?></a> 
 	</div>
 	<? if (!($this->relation[$count] == 'Fanpage')){?>
-		
-			<? if (($this->relation[$count] != 'Following') || ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
-				<a href="#" onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>')">
-			<?}else{?>
-				<a href="#" onclick="userProfile('<?=$this->post->from->id?>', false)">
-			<?}?>
-			
-			<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
-		<?}?>
+		<? if ($this->relation[$count] != 'You') { ?>
+			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+					<a href="#" onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>', 'follow_<?=$post->id?>')" class ="follow_<?=$this->post->id?>" >
+				<?}else{?>
+					<a href="#" onclick="unfollow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>', 'follow_<?=$post->id?>')" class ="follow_<?=$this->post->id?>">
+				<?}?>
+				
+				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+			<?php }else{?>
+				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+			<?php }?>
+	<?}?>	
 	<div class="post">
 		<!-- 
 		<div class="pic">
@@ -69,11 +72,11 @@
 	
 		<span class="likes">
 		<img src="/img/news-feed/icon-likes.png" />
-		<? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>
+		<span class="like_<?= $this->post->id?>"><? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?></span>
 		<?php if ($this->likepost == 0) {?>
-			<a href="#post_<?=$this->post->id?>" onclick="like('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>' )" >Like</a>   
+			<a class="like_control_<?= $this->post->id?>" href="#post_<?=$this->post->id?>" onclick="like('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>' )" >Like</a>   
 		<?}else{?>
-			<a href="#post_<?=$this->post->id?>" onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike</a>   
+			<a class="like_control_<?= $this->post->id?>" href="#post_<?=$this->post->id?>" onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike</a>   
 		<?php }?>
 		</span>
 		<span class="comment">
@@ -109,20 +112,24 @@
 		<li class="grey-dark" >
 		<?php }?>
 	
-			<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>', false)"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"></a></div>
+			<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>', false)"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"  onerror="ImgError(this);"></a></div>
 			<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>', false)"<?}?>><?=  $post->from->name?></a>
 			
 			
 			</div>
 			<? if (!($this->relation[$count] == 'Fanpage')){?>
-				<? if (($this->relation[$count] != 'Following') && ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
-					<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')">
-				<?}else{?>
-					<a href="#" onclick="userProfile('<?=$post->from->id?>', false)">
-				<?}?>
-				
-				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
-			<?}?>
+				<? if ($this->relation[$count] != 'You') { ?>
+					<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+							<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" >
+						<?}else{?>
+							<a href="#" onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+						<?}?>
+						
+						<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+					<?php }else{?>
+						<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+					<?php }?>
+			<?}?>	
 			
 			<div class="post">
 			<? if(isset($post->message)){echo $this->escape($post->message);}?>
@@ -131,13 +138,13 @@
 			<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
 			
 			<span class="likes">
-			<? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?> 
+			<span class="like_<?= $post->id?>"><? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?></span>
 			
 			
 			<?php if ($this->likes[$count] == 0) {?>
-				<a href="#" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Like</a> 
+				<a class="like_control_<?= $this->post->id?>" href="#" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Like</a> 
 			<?}else{?>
-				<a href="#" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
+				<a class="like_control_<?= $this->post->id?>" href="#" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
 			<?php }?>
 			 </span>
 		
@@ -159,7 +166,7 @@
 	
 			<form action="#">
 				<textarea class="comment_box_popup" id="comment_<?= $this->post->id ?>" onkeyup="resizeCommentBox(this)"></textarea>
-				<input type=button class="btn-submit" value="Submit" onclick="commentpopupSubmit('<?= $this->post->id ?>','<?= $this->post->type ?>','comment_<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>' )">
+				<input type=button class="btn-submit" value="Comment" onclick="commentpopupSubmit('<?= $this->post->id ?>','<?= $this->post->type ?>','comment_<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>' )">
 			</form>
 		
 		</li>

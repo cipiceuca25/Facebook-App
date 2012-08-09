@@ -31,23 +31,27 @@ Go back to <a href="#" onclick="userProfile('<?= $this->user_id?>', false)"><?= 
 		<div class="photo"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture"></div>
 		<div class="name">
 			<a href="#" onclick="userProfile('<?= $user['facebook_user_id']?>', false)"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
-			<br/>Since <?=  date(" F d Y",strtotime($user['created_time']))?>	
+			<br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?> since <?=  date(" F d Y",strtotime($user['created_time']))?>	
 		</div>
 		<div class="follow">
-		<!-- <?php if(($this->title != 'Followers') && ($this->title != 'Friends') && ($this->title != 'You')){?>
+		<!-- <?php if(($this->title != 'Followers') /*&& ($this->title != 'Friends')*/ && ($this->title != 'You')){?>
 			<a href="#" title = "Click to Unfollow user" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><div class="badge badge-unfollow big">Unfollow</div></a>
 		<?}else{?>
 			<a href="#" title = "Click to Follow user and become Friends!" onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><div class="badge badge-Follow big">Follow</div></a>
 		<?}?> -->
 		
-		
-		<? if (($this->relation[$count] != 'Following')|| ($this->relation[$count] != 'Friends')&& ($this->relation[$count] != 'You')){?>
+		<? if ($this->relation[$count] != 'You') {?>
+		<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
 			<a href="#" onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
 		<?}else{?>
 			<a href="#" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
 		<?}?>
 		
 		<div class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?></div></a>
+		<?}else{?>
+		<div class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?></div>
+		<?php }?>
+		
 		</div>
 	</li>
 <?php $count++;?>

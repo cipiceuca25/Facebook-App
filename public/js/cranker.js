@@ -5,11 +5,14 @@
 			 if (!response || response.error) {
 			 	
 		 	 }else{
-			 	 	try{
-			 	 		var x = -1*(parseInt(response.cover.offset_y) + 50);
-			 	 	}catch(err){
-						var x = 0;
-			 	 	}
+		 		 var x = 0;
+		 			if(!(parseInt(response.cover.offset_y)==34)){
+				 	 	try{
+				 	 		var x = -1*(parseInt(response.cover.offset_y) + 50);
+				 	 	}catch(err){
+							
+				 	 	}
+		 	 		}
 			 	 	//alert(x);
 			 	 	try{
 			 		$('#logo').html('<img src =" ' + response.cover.source + '"style=" top:'+ x +'px" />' );
@@ -20,21 +23,65 @@
 
 		});
 		//alert('getting top posts');
+		
 		getNewsfeed('#news-feed');
 		
 	});
 	
 	setFeed='All';
 	feedLimit = 0;
+	mtfb= true;
 	tfb = true;
 	ffb = true;
 	ttb = true;
 	tcb = true;
+	tfdb = true;
 
 	$('a[title]').live("mouseover", function(){
 		$(this).tooltip({ placement: 'left'});	
 	});
 	
+	$('.badge-Following').live("mouseover", function(){
+		$(this).text('Unfollow');
+	});
+	$('.badge-Following').live("mouseleave", function(){
+		$(this).text('Following');
+	});
+	/*
+	$('.badge-Friends').live("mouseover", function(){
+		$(this).text('Unfollow');
+	});
+	$('.badge-Friends').live("mouseleave", function(){
+		$(this).text('Friends');
+	});
+		*/
+	function feedbackAnimation(ui){
+
+		
+		
+		 $(ui).css({'top':mouseY-16,'left':mouseX-62,'opacity':'1', 'display':'block'});
+		 $(ui).animate({
+			 	opacity: '0',
+				top: "-=30px"
+			   },1000, function(){ 
+			});
+	}
+	
+	var mouseX;
+	var mouseY;
+	$(document).mousemove( function(e) {
+		   mouseX = e.pageX; 
+		   mouseY = e.pageY;
+	}); 	
+	$('#mini-top-fans-btn').live('click', function() {
+		
+		if ((mtfb)==true){
+		$('#mini-top-fans-btn').text('- Close');
+		}else{
+			$('#mini-top-fans-btn').text("+ More");
+		}
+		mtfb = !mtfb;
+	});
 	$('#top-fans-btn').live('click', function() {
 		
 		if ((tfb)==true){
@@ -72,6 +119,14 @@
 		tcb = !tcb;
 	});
 
+	$('#top-followed-btn').live( 'click', function() {
+		if ((tfdb)==true){
+		$('#top-followed-btn').text('- Close');
+		}else{
+			$('#top-followed-btn').text("+ More");
+		}
+		tfdb = !tfdb;
+	});
     function closeProfile(){
     	$('.light-box').css('display','none');
 		$('.user-profile').css('display', 'none');
@@ -89,8 +144,8 @@
 			//getFancrankfeed('all');getTopPost();
 			//alert("top class reload");
 		}
-		if($('#top-fans').hasClass('active')){
-			getTopfans('#top-fans');
+		if($('#leaderboard').hasClass('active')){
+			getLeaderboard('#leaderboard');
 			//getLatestPost();
 			//alert("top class reload");
 		}
@@ -107,6 +162,16 @@
 	  $(this).tab('show');
 	});
 
+	$('#post_post a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+	});
+	
+	$('#post_photo a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+	});
+	
 	$('#fan-favorite a').click(function (e) {
 	  e.preventDefault();
 	  $(this).tab('show');
@@ -122,23 +187,42 @@
 	  $(this).tab('show');
 	});
 	
+	$('#redeem a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+		});
+	
 	$('#newsfeed-tab').live('click',function(){
 		feedLimit = 0;
+		mtfb = true;
+		tfb = true;
+		ffb = true;
+		ttb = true;
+		tcb = true;
+		tfdb = true;
 		getNewsfeed('#news-feed');
 		
-		$('#top-fans').html('');
+		$('#leaderboard').html('');
 		$('#profile').html('');
 		$('#achievements').html('');
+		$('#redeem').html('');
 		//alert('getting top posts');
 	});
 	
 	
-	$('#topfans-tab').live('click',function(){
-		getTopfans('#top-fans');
+	$('#leaderboard-tab').live('click',function(){
+		mtfb = true;
+		tfb = true;
+		ffb = true;
+		ttb = true;
+		tcb = true;
+		tfdb = true;
+		getLeaderboard('#leaderboard');
 		
 		$('#profile').html('');
 		$('#achievements').html('');
 		$('#newsfeed').html('');
+		$('#redeem').html('');
 		//$('.bubble').html('');
 		
 	});
@@ -146,20 +230,33 @@
 	$('#profile-tab').live('click', function(){
 	
 		 getMyProfile('#profile');
-		 $('#top-fans').html('');
+		 $('#leaderboard').html('');
 		 $('#achievements').html('');
 		 $('#newsfeed').html('');
-
+		 $('#redeem').html('');
 	});
 	
 	$('#achievements-tab').live('click', function(){
 		getAwards('#achievements');
-		$('#top-fans').html('');
+		$('#leaderboard').html('');
 		$('#profile').html('');
 		$('#newsfeed').html('');
-		});
+		$('#redeem').html('');
+	});
 
+	$('#redeem-tab').live('click', function(){
+		getRedeem('#redeem');
+		$('#leaderboard').html('');
+		$('#profile').html('');
+		$('#newsfeed').html('');
+		$('#achievements').html('');
+		});
 	
+	function ImgError(source){
+	    source.src = "/img/profile-picture.png";
+	    source.onerror = "";
+	    return true;
+	}
 		
 	
 	
@@ -177,7 +274,7 @@
 		
 		FB.Canvas.getPageInfo(
 			    function(info) {
-			    	$('.user-profile').css('top', info.scrollTop - 200);
+			    	$('.user-profile').css('top', info.scrollTop - 100);
 			    }
 			);
 		
@@ -191,6 +288,7 @@
 				   
 			});
 		}
+		
 		/*
 		$('.top-border').animate({
 		    height: 'toggle',
@@ -297,6 +395,8 @@
     	});*/
 
 	
+	
+	
 	function getUserProfile(ui, target) {
 		$.ajax({
 			type: "GET",
@@ -388,6 +488,7 @@
 			success: function( data ) {
 				$(ui).html(data);
 				getFancrankfeed(setFeed);
+				getTopFan();
 				getTopPost();
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
@@ -445,8 +546,13 @@
     		success: function( data ) {
 				//alert("target followed")
 				//alert(post_id + 'liked');
-    			alert('liked');
+    			feedbackAnimation('#like-animation');
     			addActivities('like-'+post_type, userName, post_id, target_id, target_name );
+    			
+    			num=$('.like_'+post_id).html();
+    			$('.like_'+post_id).html((parseInt(num)+1));
+    			$('.like_control_'+post_id).attr('onclick', "unlike('"+post_id+"','"+post_type+"','"+target_id+"','"+target_name+"')");
+    			$('.like_control_'+post_id).html('Unlike');
     			
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
@@ -465,8 +571,14 @@
     		success: function( data ) {
 				//alert("target followed")
 				//alert(post_id + 'liked');
-    			alert('unliked');
+    			feedbackAnimation('#unlike-animation');
     			addActivities('unlike-'+post_type,userName, post_id, target_id, target_name);
+    			
+    			num=$('.like_'+post_id).html();
+    			$('.like_'+post_id).html((parseInt(num)-1));
+    			$('.like_control_'+post_id).attr('onclick', "like('"+post_id+"','"+post_type+"','"+target_id+"','"+target_name+"')");
+    			$('.like_control_'+post_id).html('Like');
+    			
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -497,17 +609,37 @@
 		});
 	}
 	
-    function getTopfans(ui) {
+	  function getTopFan() {
+		     
+	    	$.ajax({
+	    		type: "GET",
+	    		url: serverUrl +'/app/app/topfan/'+ fanpageId +'?facebook_user_id=' + userId,
+	    		dataType: "html",
+	    		cache: false,
+	    		async: true,
+	    		success: function( data ) {
+	    			$('#topfan').html(data);
+	    			//getLatestPost();
+	    		},	
+	    		error: function( xhr, errorMessage, thrownErro ) {
+	        		alert(url);
+	    			console.log(xhr.statusText, errorMessage);
+	    			
+	    		}
+	    	});
+	    }
+	
+    function getLeaderboard(ui) {
      
     	$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/app/topfans/'+ fanpageId +'?facebook_user_id=' + userId,
+    		url: serverUrl +'/app/app/leaderboard/'+ fanpageId +'?facebook_user_id=' + userId,
     		dataType: "html",
     		cache: false,
     		async: true,
     		success: function( data ) {
     			$(ui).html(data);
-    			getLatestPost();
+    			//getLatestPost();
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
         		alert(url);
@@ -534,7 +666,21 @@
     	});
     }
 
-	
+    function getRedeem(ui) {
+    	$.ajax({
+    		type: "GET",
+    		url:  serverUrl +'/app/app/redeem/'+ fanpageId +'?facebook_user_id=' + userId,
+    		dataType: "html",
+    		cache: false,
+    		async: true,
+    		success: function( data ) {
+    			$(ui).html(data);
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+    }	
     
     function getAwards(ui) {
     	$.ajax({
@@ -570,7 +716,7 @@
 	}
 
     
-	function follow(target, name, refresh){
+	function follow(target, name, ui){
 		if (target != userId){
 			
 		
@@ -582,10 +728,11 @@
 	    		success: function( data ) {
 					//alert("target followed")
 	    			addActivities('follow',userName, target, target, name );
-					getUserProfile('.profile-content', target);
-					if (refresh){
-						getTopfans('#top-fans');
-					}
+					//getUserProfile('.profile-content', target);
+	    		
+	    			$('.'+ui).attr('onclick',"unfollow('"+target+"','"+name+"','"+ui+"')" );
+	    			$('.'+ui).html('<div class="badge badge-Following">Following</div>');
+					feedbackAnimation('#follow-animation');
 	    		},	
 	    		error: function( xhr, errorMessage, thrownErro ) {
 	    			console.log(xhr.statusText, errorMessage);
@@ -594,7 +741,7 @@
 		}
     }	
 	
-	function unfollow(target, name, refresh){
+	function unfollow(target, name, ui){
 		$.ajax({
     		type: "GET",
     		url: serverUrl +'/app/user/'+ userId + '/unfollow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
@@ -603,10 +750,11 @@
     		success: function( data ) {
 				//alert("target unfollowed")
     			addActivities('unfollow', userName, target, target, name );
-				getUserProfile('.profile-content', target);
-				if (refresh){
-					getTopfans('#top-fans');
-				}
+				//getUserProfile('.profile-content', target);
+    			$('.'+ui).attr('onclick',"follow('"+target+"','"+name+"','"+ui+"')" );
+    			$('.'+ui).html('<div class="badge badge-Follow">Follow</div>');
+    			feedbackAnimation('#unfollow-animation');
+				
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -624,11 +772,12 @@
     		cache: false,
     		success: function( data ) {
     			
-    			alert('act saved');
+    			//alert('act saved');
     			//$(ui).html(data);
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
+    			alert('issue with activity save');
     		}
     	});
 
@@ -767,6 +916,8 @@
     	});
 		
 	}
+	
+	/*
 	function getFriendsList(targetname, target, limit, refresh){
 		ui = '.profile-content';
 		refresh = typeof refresh !== 'undefined' ? refresh : true;
@@ -799,8 +950,76 @@
     	});
 		
 	}
+	
+	*/
 	function resizeCommentBox(o){
 		o.style.height = "1px";
 	    o.style.height = (10+o.scrollHeight)+"px";
+	}
+
+	
+	function upload(form, action_url, div_id, target_id, target){
+		fileUpload(form, action_url, div_id);
+		addActivities('post-photo', userName, fanpageId, target_id, target);
+		setFeed=0;
+		getFancrankfeed(setFeed);
+	}
+	
+	function fileUpload(form, action_url, div_id) {
+	    
+		
+		// Create the iframe...
+	    var iframe = document.createElement("iframe");
+	    iframe.setAttribute("id", "upload_iframe");
+	    iframe.setAttribute("name", "upload_iframe");
+	    iframe.setAttribute("style", "width: 100; height: 50; border: 1; display:block");
+	 
+	    // Add to document...
+	    form.parentNode.appendChild(iframe);
+	    window.frames['upload_iframe'].name = "upload_iframe";
+	 
+	    iframeId = document.getElementById("upload_iframe");
+	 
+	    // Add event...
+	    var eventHandler = function () {
+	 
+	            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
+	            else iframeId.removeEventListener("load", eventHandler, false);
+	 
+	            // Message from server...
+	            if (iframeId.contentDocument) {
+	                content = iframeId.contentDocument.body.innerHTML;
+	            } else if (iframeId.contentWindow) {
+	                content = iframeId.contentWindow.document.body.innerHTML;
+	            } else if (iframeId.document) {
+	                content = iframeId.document.body.innerHTML;
+	            }
+	 
+	            document.getElementById(div_id).innerHTML = content;
+	 
+	            // Del the iframe...
+	            setTimeout('iframeId.parentNode.removeChild(iframeId)', 250);
+	        };
+	 
+	    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
+	    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+	 
+	   // alert('now im gonna send the form');
+	    action_url = action_url + '&message=' + $('#post_box').val();
+	    action_url = action_url + '&access_token=' + userAccessToken;
+	    alert(action_url);
+	    // Set properties of form...
+	    form.setAttribute("target", "upload_iframe");
+	    form.setAttribute("action", action_url);
+	    form.setAttribute("method", "post");
+	    form.setAttribute("enctype", "multipart/form-data");
+	    form.setAttribute("encoding", "multipart/form-data");
+	 
+	    // Submit the form...
+	    form.submit();
+
+	    document.getElementById(div_id).innerHTML = "Uploading...";
+	    
+	   
 	}
 	

@@ -37,6 +37,7 @@
 
 a, a:visited{
 	color:@color-base;
+	
 }
 
 #recent_activities a, 
@@ -46,6 +47,7 @@ a, a:visited{
 
 a:hover{
 	color:@color-dark;
+	text-decoration:none;
 }
 
 body{
@@ -286,6 +288,13 @@ ul, ol {
 	border-top: solid 2px lighten(@color-badges, 5%);
 }
 
+.grey-light:hover,
+.grey-dark:hover{
+	background:darken(white, 3%);
+}
+
+
+
 /* POST LISTINGS */
 
 /*==================================================*/
@@ -398,6 +407,14 @@ ul, ol {
 
 }
 
+
+.top-list.mini{
+
+	max-height:148px;
+	
+
+}
+
 .top-list .in{
 	border-top: 0px;
 		
@@ -416,6 +433,15 @@ ul, ol {
 	height:70px;
 }
 
+.top-list.mini .border-light,
+.top-list.mini .border-dark{
+	border-top: 1px solid @color-feed;
+	//width:533px;
+	display:block;
+	#gradient > .horizontal(@color-feed, white );
+	height:36px;
+}
+
 .top-list .border-light{
 	background-color:@color-background
 }
@@ -432,8 +458,31 @@ ul, ol {
 	float:left;
 }
 
+
+.top-list.mini .rank{
+	display:inline-block;
+	width:36px;
+	height:36px;
+	background-color:@color-base;
+	float:left;
+}
+
 .top-list .rank.first{
 	background-color:@color-dark;
+}
+
+.top-list.mini .rank h1{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 40px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:36px;
+	position:relative;
+	line-height:36px;
+	
+	right:-2px;
+
 }
 
 .top-list .rank h1{
@@ -450,7 +499,60 @@ ul, ol {
 
 }
 
+.top-list .rank h2{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 63px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:70px;
+	position:relative;
+	line-height:70px;
+	top:5px;
+	right:-3px;
 
+}
+
+.top-list.mini .rank h2{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 30px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:36px;
+	position:relative;
+	line-height:36px;
+	top:5px;
+	right:-3px;
+
+}
+
+.top-list .rank h3{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 43px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:70px;
+	position:relative;
+	line-height:70px;
+	top:13px;
+	right:0px;
+
+}
+.top-list.mini .rank h3{
+	
+	//background:url(../img/icon_pound.png) top left no-repeat;
+	color: @color-feed;
+	font: bold 20px Arial, Helvetica, sans-serif;
+	text-align:right;
+	width:36px;
+	position:relative;
+	line-height:36px;
+	top:13px;
+	right:0px;
+
+}
 
 .top-list .photo{
 	
@@ -463,6 +565,30 @@ ul, ol {
 	//margin-top:-20px;
 	margin-top:0px;
 	float:left;
+}
+
+.top-list.mini .photo{
+	
+	display:inline-block;
+	position:relative;
+	margin-left:0px;
+	//border: 5px solid @color-feed;
+	top:0px;
+	//vertical-align:middle;
+	//margin-top:-20px;
+	margin-top:0px;
+	float:left;
+}
+
+.top-list.mini .follow{
+	position:relative;
+	right:5px;
+	top:4px;
+	float:right;
+}
+
+.top-list.mini .photo img{
+	border: 3px solid @color-feed2;
 }
 
 .top-list .photo img{
@@ -478,7 +604,14 @@ ul, ol {
 	float:left;
 }
 
-
+.top-list.mini .name{
+	position:relative;
+	margin-left:10px;
+	display:inline-block;
+	top:9px;
+	//vertical-align:middle;
+	float:left;
+}
 .top-list .name a:hover{
 	color: @color-dark;
 }
@@ -489,9 +622,17 @@ ul, ol {
 }
 
 .top-list .name a.first{
-	font: bold 22px/100% Arial, Helvetica, sans-serif;
+	font: bold 25px/100% Arial, Helvetica, sans-serif;
 }
 
+.top-list.mini .name a{
+	font: bold 14px Arial, Helvetica, sans-serif;
+	color: @color-base;
+}
+
+.top-list.mini .name a.first{
+	font: bold 16px/100% Arial, Helvetica, sans-serif;
+}
 .top-list .points{
 	float:right;
 	//display:inline-block;
@@ -503,9 +644,30 @@ ul, ol {
 
 }
 
+.top-list.mini .points{
+	float:right;
+	//display:inline-block;
+	position:relative;
+	
+	top:7px;
+	//vertical-align:bottom;
+	color:@color-text2;
+
+}
+
+.top-list.mini .points span{
+	font-size:10px;
+	line-height:9px;
+
+}
+
 .top-list .points h3{
 	display:inline-block;
 	font-size:35px;
+}
+.top-list.mini .points h3{
+	display:inline-block;
+	font-size:19px;
 }
 
 .top-list .points span{
@@ -540,18 +702,27 @@ ul, ol {
 		
 		font-size:23px;
 		.border-radius(2px);
-		float:left
+		float:left;
 		
 }
 
+
 .badge-Follow{
 	font-size:13px;
-	background-color:@color-follow;
+	background-color:@color-dark;
 	.border-radius(10px 0px  0px 10px);
 	line-height:29px;
 	height:29px;
 	margin-right:-10px;
 	float:right;
+	color:white;
+}
+
+.badge-Follow:hover{
+
+	color:@color-dark;
+	background-color:@color-background;
+
 }
 
 .badge-unfollow{
@@ -566,12 +737,14 @@ ul, ol {
 
 .badge-Following{
 	font-size:13px;
-	background-color:@color-following;
+	background-color:#62c462;
 	.border-radius(10px 0px  0px 10px);
 	line-height:29px;
 	height:29px;
 	margin-right:-10px;
 	float:right;
+
+	color:white;
 }
 
 .badge-Friends{
@@ -583,7 +756,16 @@ ul, ol {
 	height:29px;
 	margin-right:-10px;
 	float:right;
+	color:white;
 }
+
+.badge-Friends:hover,
+.badge-Following:hover{
+	background-color:#bd362f;
+}
+
+
+
 .badge-Follower{
 	font-size:13px;
 	background-color:@color-follower;
@@ -596,21 +778,23 @@ ul, ol {
 
 .badge-You{
 	font-size:13px;
-	background-color:@color-text2;
+	background-color:@color-dark;
 	.border-radius(10px 0px  0px 10px);
 	line-height:29px;
 	height:29px;
 	margin-right:-10px;
 	float:right;
+
+	color:white;
 }
 
-.top-list a .badge-Follower,
-.top-list a .badge-Follow,
-.top-list a .badge-Friends,
-.top-list a .badge-Following,
-.top-list a .badge-You{
+.top-list .badge-Follower,
+.top-list .badge-Follow,
+.top-list .badge-Friends,
+.top-list .badge-Following,
+.top-list .badge-You{
 	font-size:13px;
-
+	border:none;
 	.border-radius(2px);
 	height:auto;
 	margin-right:0;
@@ -714,7 +898,8 @@ ul, ol {
 .profile-block.following a,
 .profile-block.followers a,
 .profile-block.friends a{
-	color:@color-background;
+	color:white;
+	
 }
 
 .profile-block.following a:hover,
@@ -731,16 +916,17 @@ ul, ol {
 	width:137px;
 	margin-left:19px;
 	color:white;
+	text-align:center;
 
 }
 
 .profile-block.followers{
 	float:left;
 	background-color:@color-follower;
-	width:137px;
+	width:138px;
 	color:white;
 	margin-left:0px;
-	
+	text-align:center;
 }
 
 .profile-block.friends{
@@ -749,7 +935,7 @@ ul, ol {
 	width:138px;
 	color:white;
 	margin-left:0px;
-
+	text-align:center;
 }
 
 
@@ -791,7 +977,7 @@ ul, ol {
 	//border-left:1px solid @color-feed2;
 	margin-top:10px;
 	border-right: 1px solid @color-feed2;
-	#gradient > .horizontal( @color-background,@color-feed );
+	#gradient > .horizontal( @color-background,@color-feed2 );
 }
 
 .span6.right{
@@ -803,7 +989,7 @@ ul, ol {
 	//border-right: 1px solid @color-feed2;
 	margin-top:10px;
 	//background-color:@color-feed2;
-	#gradient > .horizontal( @color-feed, @color-background );
+	#gradient > .horizontal( @color-feed2, @color-background );
 }
 
 .row.border{
@@ -1019,10 +1205,16 @@ ul, ol {
 .comments .grey-dark{
 	background-color:@color-background;
 	background-image:none;
-
 	border-bottom: 1px solid @color-badges;
 }
 
+.popup_comments .grey-dark:hover,
+.popup_comments .grey-light:hover,
+.comments .grey-light:hover,
+.comments .grey-dark:hover{
+	background-color:darken(@color-background,3%);
+
+}
 .comment_container{
 	//width:100%;
 	//margin-left:-10px;
@@ -1047,11 +1239,11 @@ ul, ol {
 }
 
 #post_box{
-	width:84%;
+	width:86%;
 }
 
 .submit_box{
-	margin-left:5px;
+	margin-left:0px;
 }
 
 .btn-submit,
@@ -1076,7 +1268,7 @@ ul, ol {
 }
 
 .btn-submit{
-	width:50px;
+	width:60px;
 	height:50px;
 	.border-radius(3px);
 }
@@ -1201,12 +1393,11 @@ ul, ol {
 .title-header.reverse h3{
 	padding-right:10px;	
 }
-.span1.re{
-	width:5px;
-}
+
 .span7.line{
 	border-right:2px solid @color-badges;
-	padding-right:45px;
+	padding-left:5px;
+	padding-right:19px;
 }
 
 .top-list.user .name{
@@ -1245,3 +1436,105 @@ ul, ol {
 	padding:0px;
 	margin:0px;
 }
+
+.followlink{
+	display:block;
+	font: bold 18px Arial, Helvetica, sans-serif;
+	text-align:center;
+	width:137px;
+	padding-top:15px;
+	position:relative;
+}
+
+
+#follow-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/followed.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+}
+
+#like-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/liked.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+
+}
+
+#unfollow-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/unfollowed.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+}
+
+#unlike-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/unliked.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+
+}
+
+#comment-animation{
+	z-index:99;
+	position:fixed;
+	height:25px;
+	width:125px;
+	background-image: url(../img/commented.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	display:none;
+
+}
+
+
+#postingContent{
+
+	padding-top:3px;
+	min-height:90px;
+}
+
+#postingTab{
+
+	margin-bottom:0px;
+	
+}
+
+.nav-tabs li a{
+	.border-radius(0);
+}	
+
+#postingTab li a{
+	padding-top:2px;
+	padding-bottom:2px;
+	border: 0px;
+	background-color:@color-background;
+	color:@color-base;
+	padding-left:0px;
+	margin-right:0px;
+}
+
+.span5.re{
+	width:300px;
+}
+
+
+
