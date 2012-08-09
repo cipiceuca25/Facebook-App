@@ -77,6 +77,18 @@ class Model_Fans extends Model_DbTable_Fans
 		return $this->_fanProfile->fan_points;
 	}
 	
+	public function getFanCountry() {
+		return $this->_fanProfile->fan_country;
+	}
+	
+	public function getFanGender() {
+		return $this->_fanProfile->fan_gender;
+	}
+	
+	public function getFanSince() {
+		return $this->_fanProfile->created_time;
+	}
+	
 	public function updateLevel() {
 		if($this->_fanProfile->fan_points <= 0) {
 			$this->_fanProfile->fan_level =  1;

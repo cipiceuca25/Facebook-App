@@ -576,10 +576,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
     	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
     	
-    	$fan = new Model_Fans();
-    	$fan_level = $fan->getFanLevel($user->facebook_user_id, $this->_fanpageId);
-    	$fan_since = $fan->getFanSince($user->facebook_user_id, $this->_fanpageId);
-    	$fan_country = $fan->getFanFields($user->facebook_user_id, $this->_fanpageId, 'fan_country')->current();
+    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    	
+    	$fan_level = null;
+    	$fan_since = null;
+    	$fan_country = null;
+    	 
+    	if(!$fan->isNewFan()) {
+    		$fan_level = $fan->getFanLevel();
+    		$fan_since = $fan->getFanSince();
+    		$fan_country = $fan->getFanCountry();
+    	}
+    	
     	//Zend_Debug::dump($fan_level);
     	
     	$stat = new Model_FansObjectsStats();
@@ -673,10 +681,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
     	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
     	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id,$this->_fanpageId);
-    	$fan = new Model_Fans();
-    	$fan_level = $fan->getFanLevel($user->facebook_user_id, $this->_fanpageId);
-    	$fan_since = $fan->getFanSince($user->facebook_user_id, $this->_fanpageId);
-    	$fan_country = $fan->getFanFields($user->facebook_user_id, $this->_fanpageId, 'fan_country')->current();
+    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    	
+
+    	$fan_level = null;
+    	$fan_since = null;
+    	$fan_country = null;
+    	
+    	if(!$fan->isNewFan()) {
+    		$fan_level = $fan->getFanLevel();
+    		$fan_since = $fan->getFanSince();
+    		$fan_country = $fan->getFanCountry();
+    	}
     	//Zend_Debug::dump($fan_level);
     	 
     	$this->view->fan_level = $fan_level;
