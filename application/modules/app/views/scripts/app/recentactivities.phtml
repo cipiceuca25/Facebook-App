@@ -71,6 +71,9 @@
 			case 'post-status':?>
 				You made a status post on <?=$act->target_user_name?>'s Fanpage on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
 				<?break;
+			case 'post-photo':?>
+				You made a photo post on <?=$act->target_user_name?>'s Fanpage on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
+				<?break;
 			default:
 			
 		}?>

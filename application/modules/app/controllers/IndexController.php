@@ -44,8 +44,9 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     {
     	$this->_helper->layout->setLayout('default_layout');
     	$model = new Model_Rankings;
-    	$post = new Model_Posts;
-    	$colorChoice = new Model_UsersColorChoice;
+    	//$post = new Model_Posts;
+    	$follow = new Model_Subscribes();
+    	//$colorChoice = new Model_UsersColorChoice;
     	$user = new Model_FacebookUsers();
     	$user = $user->find($this->data['user_id'])->current();
     	//Zend_Debug::dump($user);
@@ -71,9 +72,9 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$topClicker = $model->getTopClicker($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topClicker);
     	
-    	$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    	
-    	$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
+    	//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
+    	$topFollowed = $follow->getTopFollowed($this->data['page']['id'], 5);
+    	//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
 
    		
     	//Zend_Debug::dump($color); exit();
@@ -82,13 +83,14 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$this->view->most_popular = $mostPopular;
     	$this->view->top_talker = $topTalker;
     	$this->view->top_clicker = $topClicker;
-    	$this->view->top_post = $topPosts;
-    	$this->view->latest_post = $latestPost;
+    	$this->view->top_followed = $topFollowed;
+    	//$this->view->top_post = $topPosts;
+    	//$this->view->latest_post = $latestPost;
     	
-    	$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
-    	$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
-    	$this->view->user_top_talker = $model->getUserRanking($this->data['page']['id'], 'TALKER', $this->view->fan_id);
-    	$this->view->user_top_clicker = $model->getUserRanking($this->data['page']['id'], 'CLICKER', $this->view->fan_id);
+    	//$this->view->user_top_fans = $model->getUserRanking($this->data['page']['id'], 'FAN', $this->view->fan_id);
+    	//$this->view->user_most_popular = $model->getUserRanking($this->data['page']['id'], 'POPULAR', $this->view->fan_id);
+    	//$this->view->user_top_talker = $model->getUserRanking($this->data['page']['id'], 'TALKER', $this->view->fan_id);
+    	//$this->view->user_top_clicker = $model->getUserRanking($this->data['page']['id'], 'CLICKER', $this->view->fan_id);
     	
     	/*
     	$this->view->top_fans = $model->getRanking($this->data['page']['id'], 'FAN', false, 5);
