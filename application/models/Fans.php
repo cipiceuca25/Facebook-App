@@ -36,7 +36,7 @@ class Model_Fans extends Model_DbTable_Fans
 		$result = $this->find($facebook_user_id, $fanpage_id)->current();
 		
 		if($result) {
-			Zend_Debug::dump($result->toArray());
+			//Zend_Debug::dump($result->toArray());
 			$this->_isNew = false;
 			$this->_fanProfile = $result;		
 		}else {
@@ -49,7 +49,7 @@ class Model_Fans extends Model_DbTable_Fans
 	public function insertNewFan($data) {
 		$data['fan_currency'] = $this->_newBalance;
 		if(empty($data['fan_points'])) {
-			$data['fan_level'] = 1;
+			$data['fan_level'] = 0;
 		}else {
 			$data['fan_level'] = $this->calculateLevel($data['fan_points']);
 		}
@@ -90,8 +90,8 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function updateLevel() {
-		if($this->_fanProfile->fan_points <= 0) {
-			$this->_fanProfile->fan_level =  1;
+		if($this->_fanProfile->fan_points <= self::BASE_XP) {
+			$this->_fanProfile->fan_level =  0;
 			return;
 		}
 		//$newLevel = floor(pow($this->_fanProfile->fan_points / self::BASE_XP, 1 / self::LEVEL_FACTOR));

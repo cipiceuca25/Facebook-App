@@ -600,7 +600,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$this->view->fan_level = $fan_level;
     	$this->view->fan_since = $fan_since;
-    	$this->view->fan_country = $fan_country->fan_country;
+    	$this->view->fan_country = $fan_country;
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
