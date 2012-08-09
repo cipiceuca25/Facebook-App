@@ -62,8 +62,8 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			$lang = array();
 		}
 		
-		$birthday = new Zend_Date(!empty($data->birthday) ? $data->birthday : null);
-		$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null);
+		$birthday = new Zend_Date(!empty($data->birthday) ? $data->birthday : null, Zend_Date::ISO_8601);
+		$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null, Zend_Date::ISO_8601);
 		 
 		$facebookUserData = array(
 				'facebook_user_id' 			=> $data->id,
@@ -142,8 +142,8 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		$albumModel = new Model_Albums();
 		foreach($albums as $k => $album) {
 			if( empty($album->id) ) continue;
-			$created = new Zend_Date(!empty($album->created_time) ? $album->created_time : null);
-			$updated = new Zend_Date(!empty($album->updated_time) ? $album->updated_time : null);
+			$created = new Zend_Date(!empty($album->created_time) ? $album->created_time : null, Zend_Date::ISO_8601);
+			$updated = new Zend_Date(!empty($album->updated_time) ? $album->updated_time : null, Zend_Date::ISO_8601);
 	
 			$row = array(
 					'album_id'				=> $album->id,
@@ -181,8 +181,8 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		foreach($photos as $photo) {
 			if( empty($photo->id) ) continue;
 			try {
-				$created = new Zend_Date(!empty($photo->created_time) ? $photo->created_time : null);
-				$updated = new Zend_Date(!empty($photo->updated_time) ? $photo->updated_time : null);
+				$created = new Zend_Date(!empty($photo->created_time) ? $photo->created_time : null, Zend_Date::ISO_8601);
+				$updated = new Zend_Date(!empty($photo->updated_time) ? $photo->updated_time : null, Zend_Date::ISO_8601);
 				$row = array(
 						'photo_id'          => $photo->id,
 						'fanpage_id'        => $this->_fanpageId,
@@ -222,8 +222,8 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		$postModel = new Model_Posts();
 		foreach($posts as $k => $post) {
 			if( empty($post->id) ) continue;
-			$created = new Zend_Date(!empty($post->created_time) ? $post->created_time : null);
-			$updated = new Zend_Date(!empty($post->updated_time) ? $post->updated_time : null);
+			$created = new Zend_Date(!empty($post->created_time) ? $post->created_time : null, Zend_Date::ISO_8601);
+			$updated = new Zend_Date(!empty($post->updated_time) ? $post->updated_time : null, Zend_Date::ISO_8601);
 
 			$row = array(
 					'post_id'               => $post->id,
@@ -271,7 +271,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		foreach ( $commentsList as $k => $comment ) {
 			if (empty ( $comment->id ) || empty ( $comment->created_time ) || empty($comment->from->id))	continue;
 
-			$created = new Zend_Date ( ! empty ( $comment->created_time ) ? $comment->created_time : null );
+			$created = new Zend_Date ( ! empty ( $comment->created_time ) ? $comment->created_time : null, Zend_Date::ISO_8601);
 			
 			$parentid = $comment->id;
 			if(strrpos($comment->id, '_') > 0) {
@@ -307,8 +307,11 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	}
 
 	public function saveLikes($likesList) {
+		if(empty($likesList)) {
+			return;
+		}
 		$likes_model = new Model_Likes;
-		$cols = array('fanpage_id', 'post_id', 'facebook_user_id', 'post_type');
+		$cols = array('fanpage_id', 'post_id', 'facebook_user_id', 'post_type', 'updated_time');
 		$update = array('post_type');
 		try {
 			$likes_model->insertMultiple($likesList, $cols, $update);
@@ -321,7 +324,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	public function saveLikesIterate($likesList) {
 		$likeModel = new Model_Likes();
 		foreach ($likesList as $like) {
-			$found = $likeModel->find(array('facebook_user_id'=>$like['facebook_user_id']), array('post_id'=>$like['post_id']), array('fanpage_id'=>$like['fanpage_id']))->current();
+			$found = $likeModel->find($like['fanpage_id'], $like['post_id'], $like['facebook_user_id'])->current();
 			try {
 				if (empty($found)) {
 					$likeModel->insert($like);
@@ -338,7 +341,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		$facebookUserModel = new Model_FacebookUsers();
 		$fansModel = new Model_Fans();
 		foreach ($fansList as $data) {
-			$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null);
+			$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null, Zend_Date::ISO_8601);
 			
 			try {
 				$facebookUserData = array(
@@ -360,7 +363,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 						'fan_name'			=> trim($facebookUserData['facebook_user_name']),
 						'fan_first_name'	=> $facebookUserData['facebook_user_first_name'],
 						'fan_last_name'		=> $facebookUserData['facebook_user_last_name'],
-						'fan_gender'		=> $facebookUserData['facebook_user_gender'],
+						'fan_gender'		=> $facebookUserData['facebook_user_gender']
 				);
 				
 				//add the fan if it doesnt exist
@@ -371,7 +374,9 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				if (empty($fan)) {
 					$fansModel->insert($fansData);
 				}else {
-					$fansModel->fan_name = $facebookUserData['facebook_user_name'];
+					$fansModel->fan_name = $fansData['fan_name'];
+					$fansModel->fan_first_name = $fansData['fan_first_name'];
+					$fansModel->fan_last_name = $fansData['fan_last_name'];
 					$fan->save();
 				}
 				
@@ -383,6 +388,68 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			}
 		}
 		
+		return $result;
+	}
+
+	public function saveAndUpdateFans($fansList, $pointResult) {
+		$result = array();
+		$facebookUserModel = new Model_FacebookUsers();
+		$fansModel = new Model_Fans();
+		foreach ($fansList as $data) {
+			$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null, Zend_Date::ISO_8601);
+				
+			try {
+				$facebookUserData = array(
+						'facebook_user_id' 			=> $data->id,
+						'facebook_user_first_name' 	=> !empty($data->first_name) ? $data->first_name : '',
+						'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
+						'facebook_user_name'		=> !empty($data->name) ? $data->name : $data->first_name .' ' .$data->last_name,
+						'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
+						'updated_time' 				=> $updated->toString ( 'yyyy-MM-dd HH:mm:ss' ),
+						'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
+				);
+	
+				//save facebook user's relative information into facebook_users table
+				$facebookUserModel->saveAndUpdateById($facebookUserData, array('id_field_name'=>'facebook_user_id'));
+	
+				$fansData = array(
+						'facebook_user_id'  => $facebookUserData['facebook_user_id'],
+						'fanpage_id'        => $this->_fanpageId,
+						'fan_name'			=> trim($facebookUserData['facebook_user_name']),
+						'fan_first_name'	=> $facebookUserData['facebook_user_first_name'],
+						'fan_last_name'		=> $facebookUserData['facebook_user_last_name'],
+						'fan_gender'		=> $facebookUserData['facebook_user_gender']
+				);
+	
+				$fansModel = new Model_Fans($facebookUserData['facebook_user_id'], $this->_fanpageId);
+				
+				if ($fansModel->isNewFan()) {
+					if(isset($pointResult[$facebookUserData['facebook_user_id']])) {
+						$fansData['fans_point'] = $pointResult[$facebookUserData['facebook_user_id']];
+					}
+					$fansModel->insertNewFan($fansData);
+				}else {
+					$fanProfile = $fansModel->getFanProfile();
+					$fanProfile->fan_name = $fansData['fan_name'];
+					$fanProfile->fan_first_name = $fansData['fan_first_name'];
+					$fanProfile->fan_last_name = $fansData['fan_last_name'];
+					if(isset($pointResult[$facebookUserData['facebook_user_id']])) {
+						echo $facebookUserData['facebook_user_id'] .'<br/>';
+						$fansModel->updateFanPoints($pointResult[$facebookUserData['facebook_user_id']]);
+					}
+					
+					$fansModel->updateCurrency();
+					$fansModel->updateFanProfile();
+				}
+	
+				$result[] = $fansData;
+			} catch (Exception $e) {
+				print $e->getMessage();
+				$collectorLogger = Zend_Registry::get('collectorLogger');
+				$collectorLogger->log(sprintf('Unable to save fan user %s fanpage %s to database. Error Message: %s ', $data->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
+			}
+		}
+	
 		return $result;
 	}
 	

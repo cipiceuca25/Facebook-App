@@ -9,11 +9,9 @@ class Collector
     			$collector->collectFanpageInitInfo();
     			self::queue('5 second', $url, $fanpageId, $accessToken, 'full');
     			break;
-    		case 'fetch' :
-    			$collector->fetchFanpageInfo();
-    			break;	
     		case 'update' :
-    			break;
+    			$collector->updateFanpage(null, null);
+    			break;	
     		case 'full' : 
     			$collector->fullScanFanpage();
     			break;	

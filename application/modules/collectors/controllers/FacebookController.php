@@ -90,11 +90,22 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test1Action() {
-    	$access_token="AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm";
-		$fb = new Service_FancrankFBService();
-		$result = $fb->getExtendedAccessToken($access_token);
-		echo 'new token =: ' .$result;
-		$user_id = '100004098439774';
+
+    	$postTime = new Zend_Date('2012-08-07T11:52:50+0000', Zend_Date::ISO_8601);
+    	$commentTime = new Zend_Date('2012-08-07T11:58:40+0000', zend_date::ISO_8601);
+		
+		echo '<br/>' .floor(($commentTime->getTimestamp() - $postTime->getTimestamp()) / 60);
+		
+		$arr = array();
+		$arr['1234567890000'] = 1;
+		$arr[23] = 2;
+		Zend_Debug::dump($arr);
+    	
+//     	$access_token="AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm";
+// 		$fb = new Service_FancrankFBService();
+// 		$result = $fb->getExtendedAccessToken($access_token);
+// 		echo 'new token =: ' .$result;
+// 		$user_id = '100004098439774';
 		
 
 // 		$attachment =  array(
@@ -107,6 +118,94 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		
 // 		$fb->api('/'.$user_id.'/feed', 'POST', $attachment);
 		
+    }
+    
+    public function test2Action() {
+    	//$fanpageId = '178384541065';
+    	//$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
+    	
+    	$fanpageId = '216821905014540';
+    	$accessToken = 'AAAFHFbxmJmgBAFMM8ULzy7NbBUE3AfQ0JlshZCtIoN6538nCcontTwQhgfqwXsYZCzf6uuWYvBuy6Hn1HO3qyQztlMr1TJkGcVvUygSS5fvuqFlXwH';
+    	   
+    	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
+    	$yesterday = new Zend_Date();
+    	$yesterday->sub(2, Zend_Date::DAY);
+    	//echo $yesterday->getTimestamp();
+    	//echo $yesterday->toString('yyyy-MM-dd');
+    	$since = new Zend_Date($yesterday->toString('yyyy-MM-dd'), 'yyyy-MM-dd');
+    	echo $since->toString('yyyy-MM-dd');    	
+    	$until = $since->getTimestamp();
+    	$since = $until-3600*24;
+		$collector->updateFanpage($since, $until);
+    }
+    
+    public function test3Action () {
+    	$facebook_user_id = '578800322';
+    	$fanpage_id = '178384541065';
+    	try {
+    		$fan = new Model_Fans($facebook_user_id, $fanpage_id);
+    		
+    		if(! $fan->isNewFan()) {
+    			$fanProfile = $fan->getFanProfile();
+    			$fanProfile->fan_name = 'Megan Hicks';
+				$fan->updateFanPoints(1000);
+				$fan->updateCurrency();
+    			$fan->updateFanProfile();
+    			Zend_Debug::dump($fanProfile);
+    			echo 'current level: ' .$fan->getFanLevel() .PHP_EOL;
+    			
+    			echo 'fan_points: ' .$fan->getFanPoints() .PHP_EOL;
+    			
+    			echo 'next level: ' .$fan->getNextLevelRequiredXP();
+    			
+    			echo 'get new level: ' .$fan->updateLevel();
+    		}
+    	} catch (Exception $e) {
+    		echo $e->getMessage();
+    	}
+
+    }
+    
+    public function testuploadAction() {
+		
+    	$access_token = 'AAAFHFbxmJmgBAHk0jZAn0PozdZCzjjBII3bosrvP9tG4c4PwnC5d7JSqkLuPimGAgHBj2ZAmPJBvi21SwvFhxDOVDbd8vMNVUFXNnYe7ZCHlskighIXt';
+    	$fanapgeId = '197221680326345';
+    	$facebook = new Service_FancrankFBService();
+    	$facebook->setAccessToken($access_token); 
+     	$facebook->setFileUploadSupport(true);
+    	
+     	$imageFileName = 'cover2.jpg';
+     	
+     	try {
+			$file= DATA_PATH .'/images/fanpages/' .$imageFileName;
+     		$args = array(
+     			'no_story' => 1,	
+     			'message' => 'update cover photo',
+     		);
+
+			$args[basename($file)] = '@' . realpath($file);
+			
+			$result = $facebook->api("/$fanapgeId/photos", 'post', $args);
+			
+			if($result && is_numeric($result['id'])) {
+				$args = array('cover'=>$result['id'], 'no_story'=>1);
+				$result = $facebook->api("/$fanapgeId", 'post', $args);
+			}
+     		Zend_Debug::dump($result);
+     		echo 'done';
+     	} catch (FacebookApiException $e) {
+     		print $e->getMessage();
+     	}
+    }
+    
+    public function test4Action() {
+    	$imageFileName = 'cover2.jpg';
+    	$file= DATA_PATH .'/images/fanpages/' .$imageFileName;
+    	$image = imagecreatefromjpeg($file);
+    	$this->getResponse()->setHeader('Content-Type', 'image/jpeg');
+		//Zend_Debug::dump($image);
+		//header('Content-Type: image/jpeg');
+		imagejpeg($image, null, 100);
     }
     
     public function testmemcacheAction() {
