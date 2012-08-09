@@ -394,7 +394,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		try {
 			$upload = new Zend_File_Transfer_Adapter_Http();
 			$upload//->addValidator('Count', false, 1)     // ensure only 1 file
-			->addValidator('Size', false, 1000000) // limit to 100K
+			->addValidator('Size', false, 10000000) // limit to 100K
 			->addValidator('Extension' ,false, 'jpg,png,gif');
 			//echo $upload ->getFileName();	
 			$facebook = new Service_FancrankFBService();
@@ -409,7 +409,8 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			
 				$args = array(
 						'message' => $this->_getParam('message'),
-						'picture' => $file,
+						'picture' => 'http://xiless.com/public/www/back.jpg' ,//$file,
+						
 				);
 				echo $file;
 				$args[basename($file)] = '@' . realpath($file);
