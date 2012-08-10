@@ -60,7 +60,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		
 		if ($fanpage->active) {
 			$fanpage->active = (int) FALSE;
-
+			
 			if ($fanpage->installed) {
 				//uninstall
 				//$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);

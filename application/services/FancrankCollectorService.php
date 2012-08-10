@@ -68,8 +68,8 @@ class Service_FancrankCollectorService {
  		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
  		//Zend_Debug::dump($postLikeList);
 		
- 		$commentsList = $this->getCommentsFromPost($posts, 5, 1000);
- 		//Zend_Debug::dump($commentsList);
+ 		$postCommentsList = $this->getCommentsFromPost($posts, 5, 1000);
+ 		//Zend_Debug::dump($postCommentsList);
 		
 		//get all albums recursively
 		$url = 'https://graph.facebook.com/' .$this->_fanpageId .'/albums?access_token=' .$this->_accessToken;
@@ -88,7 +88,7 @@ class Service_FancrankCollectorService {
 		//Zend_Debug::dump($albumCommentList);
 		$photoCommentList = $this->getCommentsFromMyAlbum($photoList);
 		//Zend_Debug::dump($photoCommentList);
-		$commentsList = array_merge($commentsList, $albumCommentList, $photoCommentList);
+		$commentsList = array_merge($postCommentsList, $albumCommentList, $photoCommentList);
 		//Zend_Debug::dump($commentsList);
 		$commentLikeList = $this->getLikesFromMyComment($commentsList);
 
@@ -103,6 +103,12 @@ class Service_FancrankCollectorService {
 		echo '<br/>total likes for ' .count($albumsList) . ' albums ' .count($albumLikesList);
 		echo '<br/>total likes for ' .count($photoList) . ' photos ' .count($photoLikesList);
 		echo '<br/>Total likes : ' .count($allLikesList);
+		
+		$pointResult = $this->calculatePostPoints($posts, $postCommentsList);
+		$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
+		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
+		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList);
+		$pointResult = $this->calculateLikesPoints($pointResult, $allLikesList);
 		
 		$db->beginTransaction();
 		
@@ -120,7 +126,8 @@ class Service_FancrankCollectorService {
 			$fansIdsList = $this->fansIdCollector($posts, $commentsList,  $allLikesList);
 			
 			$facebookUsers = $this->getFansList($fansIdsList, $this->_accessToken);
-			$result = $fdb->saveFans($facebookUsers);
+			//$result = $fdb->saveFans($facebookUsers);
+			$result = $fdb->saveAndUpdateFans($facebookUsers, $pointResult);
 			
 			$db->commit();
 			$stop = time() - $start;
@@ -149,10 +156,10 @@ class Service_FancrankCollectorService {
  		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
  		//Zend_Debug::dump($postLikeList);
 		
- 		$commentsList = $this->getCommentsFromPost($posts, 5, 1000);
+ 		$postCommentsList = $this->getCommentsFromPost($posts, 5, 1000);
  		//Zend_Debug::dump($commentsList);
  		
- 		$pointResult = $this->calculatePostPoints($posts, $commentsList);
+ 		$pointResult = $this->calculatePostPoints($posts, $postCommentsList);
  		
   		//Zend_Debug::dump($pointResult); exit();
 		//get all albums recursively
@@ -183,7 +190,7 @@ class Service_FancrankCollectorService {
 		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
 		//Zend_Debug::dump($pointResult);
 		
-		$commentsList = array_merge($commentsList, $albumCommentList, $photoCommentList);
+		$commentsList = array_merge($postCommentsList, $albumCommentList, $photoCommentList);
 		//Zend_Debug::dump($commentsList);
 		
 		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList);
