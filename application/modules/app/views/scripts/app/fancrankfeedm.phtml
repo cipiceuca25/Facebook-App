@@ -63,7 +63,7 @@
 				<?php if ($post['picture'] != null ){?><div class="link-right"><?php }?>
 					<a target="new" href="<?echo $this->escape($post['link'])?> "><?= $this->escape($post['link_name'])?></a>
 					
-					<?php  if ($post['post_caption']!= null){?></br><?php echo $this->escape($post['post_caption']); }?>: 
+					<?php  if ($post['post_caption']!= null){?></br><?php echo $this->escape($post['post_caption']); ?>:<? }?> 
 					<br/>
 					<br/>
 					
@@ -78,7 +78,23 @@
 		</div>
 	</div>
 	
-		<div class="message"><? if($post['post_message'] != null ){echo $this->escape($post['post_message']);}?></div>
+		<div class="message"><? if($post['post_message'] != null ){
+				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+	
+				
+				$m = $this->escape($post['post_message']);
+			
+
+				if(preg_match($reg_exUrl, $m, $url)) {
+				
+		
+				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new >".$url[0]."</a> ", $m);
+				
+				} else {
+				
+				       echo $m;
+				
+				}}?></div>
 	
 	
 	<div class="social"> 

@@ -138,13 +138,19 @@ class Model_Rankings extends Model_DbTable_Rankings
 
 	public function getTopPosts($page_id, $limit=5) {
 		$date = new Zend_Date();
+		$today = new Zend_Date();
+		$today->now();
+		//echo $today->toString('yyyy-MM-dd HH:mm:ss');
 		$date->sub('7', Zend_Date::DAY);
-
+		//AND p.created_time < '". $today->toString('yyyy-MM-dd HH:mm:ss') ." ' 	
+		//
 		$select = "SELECT DISTINCT p.*, f.fan_first_name, f.fan_last_name, (p.post_comments_count + p.post_likes_count)*1000000/TIMESTAMPDIFF(SECOND, p.created_time, NOW()) as count 
 					FROM posts p 
 					INNER JOIN
 					fans f ON(p.facebook_user_id = f.facebook_user_id)
-					WHERE  p.fanpage_id = '".$page_id."' AND f.fanpage_id = '".$page_id ."' AND p.created_time > '". $date->toString('yyyy-MM-dd HH:mm:ss') ."' ORDER BY count DESC";
+					WHERE  p.fanpage_id = '".$page_id."' AND f.fanpage_id = '".$page_id ."' 
+					AND p.created_time > '". $date->toString('yyyy-MM-dd HH:mm:ss') ." '	
+							 ORDER BY count DESC";
 		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";

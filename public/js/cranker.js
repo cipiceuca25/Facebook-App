@@ -26,6 +26,7 @@
 		
 		getNewsfeed('#news-feed');
 		
+
 	});
 	
 	setFeed='All';
@@ -207,6 +208,7 @@
 		$('#achievements').html('');
 		$('#redeem').html('');
 		//alert('getting top posts');
+		
 	});
 	
 	
@@ -490,6 +492,7 @@
 				getFancrankfeed(setFeed);
 				getTopFan();
 				getTopPost();
+			
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);

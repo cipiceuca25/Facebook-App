@@ -15,7 +15,23 @@
 	
 		<div class="post_container">
 		<div class="post">
-		<div class="message"><? if(isset($this->post->message)){echo $this->escape($this->post->message);}?><br/></div>
+		<div class="message"><? if(isset($this->post->message)){
+			$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+	
+				
+				$m = $this->escape($post->message);
+			
+
+				if(preg_match($reg_exUrl, $m, $url)) {
+				
+		
+				       echo preg_replace($reg_exUrl, "<a href=".$url[0]."target=_new>".$url[0]."</a> ", $m);
+				
+				} else {
+				
+				       echo $m;
+				
+				}}?><br/></div>
 		<div class="pic">
 		
 			<? if(isset($this->post->link)) { ?> 
@@ -42,7 +58,7 @@
 					<br/>
 					<?php  if (isset($this->post->caption)){?>
 					</br>
-					<?php echo $this->escape($this->post->caption); }?>: 
+					<?php echo $this->escape($this->post->caption); ?>:<? }?>  
 					
 					
 					<?php if (isset($this->post->description)){?>
@@ -130,7 +146,24 @@
 				<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>', false)"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture"  onerror="ImgError(this);"></a></div>
 				<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>', false)"<?}?>><?=  $post->from->name?></a></div>
 				<div class="post">
-					<div class="message"><? if(isset($post->message)){echo $this->escape($post->message);}?></div>
+					<div class="message"><? if(isset($post->message)){
+						$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+	
+				
+						$m = $this->escape($post->message);
+					
+		
+						if(preg_match($reg_exUrl, $m, $url)) {
+						
+				
+						       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
+						
+						} else {
+						
+						       echo $m;
+						
+						}}?>
+						</div>
 				
 			
 			

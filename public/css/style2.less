@@ -548,28 +548,32 @@ ul, ol {
 
 .top-list .border-light,
 .top-list .border-dark{
-	border-top: 1px solid @color-feed;
+	border-top: 1px solid #C4CDE0;//@color-feed;
 	//width:533px;
 	display:block;
-	#gradient > .horizontal(@color-feed, white );
+	background-color: white;
+	background-image:none;
+	//#gradient > .horizontal(@color-feed, white );
 	height:70px;
 }
 
 .top-list.mini .border-light,
 .top-list.mini .border-dark{
-	border-top: 1px solid @color-feed;
+	border-top: 1px solid #C4CDE0;//@color-feed;
 	//width:533px;
 	display:block;
-	#gradient > .horizontal(@color-feed, white );
+	background-color: white;
+	background-image:none;
+	//#gradient > .horizontal(@color-feed, white );
 	height:36px;
 }
 
 .top-list .border-light{
-	background-color:@color-background
+	//background-color:@color-background
 }
 
 .top-list .border-dark{
-	background-color:@color-feed;
+	//background-color:@color-feed;
 }
 
 .top-list .rank{
@@ -596,7 +600,7 @@ ul, ol {
 .top-list.mini .rank h1{
 	
 	//background:url(../img/icon_pound.png) top left no-repeat;
-	color: @color-feed;
+	color: white;//@color-feed;
 	font: bold 40px 'lucida grande',tahoma,verdana,arial,sans-serif;
 	text-align:right;
 	width:36px;
@@ -607,10 +611,18 @@ ul, ol {
 
 }
 
+#topfan{
+	padding-bottom:20px;
+	
+}
+#toppost{
+	top:-20px;
+	position:relative;
+}
 .top-list .rank h1{
 	
 	//background:url(../img/icon_pound.png) top left no-repeat;
-	color: @color-feed;
+	color: white;//@color-feed;
 	font: bold 79px Arial, Helvetica, sans-serif;
 	text-align:right;
 	width:70px;
@@ -624,7 +636,7 @@ ul, ol {
 .top-list .rank h2{
 	
 	//background:url(../img/icon_pound.png) top left no-repeat;
-	color: @color-feed;
+	color: white;//@color-feed;
 	font: bold 63px 'lucida grande',tahoma,verdana,arial,sans-serif;
 	text-align:right;
 	width:70px;
@@ -638,7 +650,7 @@ ul, ol {
 .top-list.mini .rank h2{
 	
 	//background:url(../img/icon_pound.png) top left no-repeat;
-	color: @color-feed;
+	color: white;//@color-feed;
 	font: bold 30px 'lucida grande',tahoma,verdana,arial,sans-serif;
 	text-align:right;
 	width:36px;
@@ -652,7 +664,7 @@ ul, ol {
 .top-list .rank h3{
 	
 	//background:url(../img/icon_pound.png) top left no-repeat;
-	color: @color-feed;
+	color: white;//@color-feed;
 	font: bold 43px 'lucida grande',tahoma,verdana,arial,sans-serif;
 	text-align:right;
 	width:70px;
@@ -665,7 +677,7 @@ ul, ol {
 .top-list.mini .rank h3{
 	
 	//background:url(../img/icon_pound.png) top left no-repeat;
-	color: @color-feed;
+	color: white;//@color-feed;
 	font: bold 20px 'lucida grande',tahoma,verdana,arial,sans-serif;
 	text-align:right;
 	width:36px;
@@ -710,11 +722,11 @@ ul, ol {
 }
 
 .top-list.mini .photo img{
-	border: 3px solid @color-feed2;
+	border: 3px solid white;//@color-feed2;
 }
 
 .top-list .photo img{
-	border: 5px solid @color-feed2;
+	border: 5px solid white;//@color-feed2;
 }
 
 .top-list .name{
@@ -733,6 +745,7 @@ ul, ol {
 	top:9px;
 	//vertical-align:middle;
 	float:left;
+
 }
 .top-list .name a:hover{
 	color: @color-dark;
@@ -748,12 +761,12 @@ ul, ol {
 }
 
 .top-list.mini .name a{
-	font: bold 14px 'lucida grande',tahoma,verdana,arial,sans-serif;
+	font: 12px 'lucida grande',tahoma,verdana,arial,sans-serif;
 	color: @color-base;
 }
 
 .top-list.mini .name a.first{
-	font: bold 16px/100% 'lucida grande',tahoma,verdana,arial,sans-serif;
+	font: 14px/100% 'lucida grande',tahoma,verdana,arial,sans-serif;
 }
 .top-list .points{
 	float:right;
@@ -946,7 +959,7 @@ ul, ol {
 .top-list .badge-Friends,
 .top-list .badge-Following,
 .top-list .badge-You{
-	font-size:13px;
+	font-size:11px;
 	border:none;
 	.border-radius(2px);
 	height:auto;
@@ -1274,7 +1287,7 @@ ul, ol {
 	z-index:51;
 	padding:5px;
 	width:602px;
-
+	.border-radius(2px);
 	height:660px;
 	position:absolute;
 	top:350px;
@@ -1410,12 +1423,13 @@ ul, ol {
 	#gradient > .vertical(@color-badges, #EDEFF4 );
 	//background-color:red;
 	width:100%;
-	height:30px;
+	height:40px;
 	font-size:11px;
 	border:0px;
 	border-top:solid 1px @color-badges;
 	color:@color-base;
 	font-weight:bold;
+	line-height:40px;
 
 }
 
@@ -1430,6 +1444,7 @@ ul, ol {
 	width:60px;
 	height:25px;
 	.border-radius(2px);
+	line-height:25px;
 }
 
 

@@ -1,72 +1,146 @@
 <?php $count = 0?>
 <?php foreach($this->top_post as $topPost): ?>
 											
-	<?php if ($count % 2 == 0){?>
-		<li class="top_post" >
-	<?php }else{?>
-		<li class="top_post"  >
-	<?php }?>
+	
+		<li class="grey-light" >
+
 		
-			<div class="info">
-				<div class="name"><a href="#" onclick="userProfile('<?= $topPost['facebook_user_id']?>', true)"><?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?></a>
-				<br />
-				<span class="date"><?= date("F d Y", strtotime($topPost['created_time']))?></span> 
-				</div>
+			<div class="flag">
 				<div class="photo"><a href="#" onclick="userProfile('<?= $topPost['facebook_user_id']?>', true)"><img class="face"  width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a></div>
 					
+				<div class="name"><a href="#" onclick="userProfile('<?= $topPost['facebook_user_id']?>', true)"><?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?></a>
+				</div>
+				<div class="date"><?= date("F d Y", strtotime($topPost['created_time']))?></div> 
+				
+				
 				
 			</div>
-		
+			
+		<div class="post_container">
 			<div class="post">
 				
 			
 			
-											
-				<div class="image">
-						 <a href="#" onclick="comment_bubble('<?= $topPost['post_id']?>', 5, true)" >
-						<? if (($topPost['post_type']=='photo') || ($topPost['post_type']=='video') ){ ?>
-						<img src = '<?= (str_replace('_s.jpg', '_n.jpg', $topPost['picture'])) ;?> '/>
-						<?}?>
-						</a>
-				</div>
-			
-				
 				<div class="message">
 				<? if($topPost['post_message']){
-					echo $this->escape($topPost['post_message']);
+					$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+	
+				
+					$m = $this->escape($topPost['post_message']);
+			
+
+					if(preg_match($reg_exUrl, $m, $url)) {
+				
+		
+				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
+				
+					} else {
+				
+				       echo $m;
+				
+					}
 				}?>
-				</div>
-				
-				
-				 
-				
-			 
-				<div class="social">
-						<img src="/img/news-feed/icon-likes.png" /> <?= $topPost['post_likes_count']?> 
-					<?php if ($this->likes[$count] == 0) {?>
+				</div>							
+				<div class="pic">
+		
+					<? if(!empty($topPost['link'])) { ?> 
+						<?php if($topPost['post_type'] == 'link') {?>
+							<div class="link">
+							<div class="link-left"> 
+						<?php }?> 
+						<a target="new" href="<?echo $this->escape($topPost['link'])?> "> 
+					<?}?>
 					
-						<a href="#" onclick="like('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>')" class="likes"> Like</a> 
-					<?}else{?>
-						<a href="#" onclick="unlike('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>')" class="likes"> Unlike</a> 
-					<?php }?>
-					
-					
-					<?php if(isset($topPost['post_comments_count'])){
-						echo $topPost['post_comments_count']; //echo  $post->comments->count;
-				 	} else {
-						echo '0'; 
-					}?>
-					 <a href="#" onclick="comment_bubble('<?= $topPost['post_id']?>', 5, true)" >Comment</a> 
+					<? if(!empty($topPost['picture']) ||($topPost['post_type'] =='video') ){?>
+						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $topPost['picture']))?> '/>
+					 <? } ?>
+					 
+					<? if((!empty($topPost['link'])) && ($topPost['post_type'])) { ?> 
+						</a> </div>
+						
+						
+						<?php if (isset($topPost['picture'])){?>
+						<div class="link-right"><?php }?>
+							<a target="new" href="<?echo $this->escape($topPost['link'])?> ">
+							<?= (!empty($topPost['link_name'])?$this->escape($topPost['link_name']): $this->escape($topPost['link']))?>
+							<br/>
+							<br/>
+							<?php  if (!empty($topPost['post_caption'])){?>
+							</br>
+							<?php echo $this->escape($topPost['post_caption']);?>:<? }?> 
 							
+							
+							<?php if (!empty($topPost['post_description'])){?>
+							<?=$this->escape($topPost['post_description'])?> 
+							<?php }?>
+							<?php if (!empty($topPost['picture'])){?> 
+							</a></div> 
+							<?php }?>
+						
+					<?}elseif(isset($topPost['link'])){ ?>
+						</a></div>
+					<?php }?>
+			
+			
 				</div>
 			
 				
 			</div>
+				
+				
+				 
+			</div>	
+			 
+				<div class="social">
+					<? if (!($this->relation[$count] == 'Fanpage')){?>
+						<? if ($this->relation[$count] != 'You') { ?>
+						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+								<a href="#" onclick="follow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>" >
+							<?}else{?>
+								<a href="#" onclick="unfollow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>">
+							<?}?>
+							
+								<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+							<?php }else{?>
+								<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+							<?php }?>
+							
+						<?}else{?>
+							<div class="badge badge-<?= $this->relation[$count]?>">Admin</div>
+						<?php }?>
+					
+					<span class="likes">
+							<!-- <img src="/img/news-feed/icon-likes.png" />-->
+							<span class="like_<?= $topPost['post_id']?>"><?= $topPost['post_likes_count']?></span>
+						<?php if ($this->likes[$count] == 0) {?>
+							<a class="like_control_<?= $topPost['post_id']?>"href="#" onclick="like('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>')" class="likes">Like</a>
+						<?}else{?>
+							<a class="like_control_<?= $topPost['post_id']?>"ref="#" onclick="unlike('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>')" class="likes">Unlike</a>
+						<?php }?>
+					</span>
+					<span class="comment">
+						<span class="comment_<?= $topPost['post_id']?>">
+						<?php if(isset($topPost['post_comments_count'])){
+							echo $topPost['post_comments_count']; //echo  $post->comments->count;
+					 	} else {
+							echo '0'; 
+						}?></span>
+						
+						 <a href="#" onclick="comment_bubble('<?= $topPost['post_id']?>', 5, true)" >Comment</a> 
+					</span>
+				</div>
+			
+				
+	
 			
 											
 										
 	</li>
+<li class="feed_spacer">
 
+<div class="feed_spacer_top"></div>
+
+</li>
 <?php $count ++;?>
 <?php endforeach; ?>
 

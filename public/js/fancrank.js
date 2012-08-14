@@ -19,6 +19,8 @@ jQuery(document).ready(function($){
 		    placement: 'left'
 	});
 		  
+	
+	
 });
 
 $.fn.serializeObject = function()

@@ -389,9 +389,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     	//Zend_Debug::dump($user); exit();
 
-    	
+    	$follow = new Model_Subscribes();
     	$likesModel = new Model_Likes();
     	$likes = array();
+    	$relation = array();
     	//$picture = array();
     	$count=0;
 		//Zend_Debug::dump($topPosts);
@@ -399,7 +400,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//echo $top['facebook_user_id'];
     		$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts['post_id'], $this->_userId );
     		//echo $likes[$count];
-    		
+    		$relation[$count] = $follow->getRelation($this->_userId, $posts['facebook_user_id'],$this->_fanpageId);
     		//$pic = $this->getPost($posts['post_id']);
     		//Zend_Debug::dump($pic);
     		//if (($pic->type == 'photo') ||($pic->type == 'video')  ){
@@ -413,11 +414,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	
     	
-    	
+    	//Zend_Debug::dump($topPosts);
     //	$this->view->picture = $picture;
     	$this->view->likes = $likes;
     	$this->view->top_post = $topPosts;
-
+    	$this->view->relation = $relation;
     	$this->render("gettoppost");
     }
     
