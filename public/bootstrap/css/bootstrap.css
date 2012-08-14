@@ -197,47 +197,46 @@ a:hover {
 .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 800px;
-
+  width: 810px;
 }
 
 
 
 .span12 {
- width: 800px;
+ width: 810px;
 }
 .span11 {
- width: 730px;
+ width: 740px;
 }
 .span10 {
- width: 662px;
+ width: 671px;
 }
 .span9 {
- width: 592px;
+ width: 602px;
 }
 .span8 {
- width: 524px;
+ width: 533px;
 }
 .span7 {
- width: 456px;
+ width: 464px;
 }
 .span6 {
- width: 388px;
+ width: 395px;
 }
 .span5 {
- width: 320px;
+ width: 326px;
 }
 .span4 {
- width: 252px;
+ width: 256px;
 }
 .span3 {
- width: 184px;
+ width: 187px;
 }
 .span2 {
- width: 116px;
+ width: 119px;
 }
 .span1 {
- width: 48px;
+ width: 50px;
 }
 
 .offset12 {

@@ -17,11 +17,21 @@
 	<?php }else{?>
 	<li class="grey-dark" >
 	<?php }?>
-
+	
+	
+	
+	<div class="post_container">
 	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></a></div>
-	<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a>
-	</div>
-	<? if (!($this->relation[$count] == 'Fanpage')){?>
+	
+	
+	
+	<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a></div>
+	<div class="post">
+	<div class="message"><? if(isset($post->message)){echo $this->escape($post->message);}?></div>
+	
+	
+	<div class="social"> 
+	 <? if (!($this->relation[$count] == 'Fanpage')){?>
 		<? if ($this->relation[$count] != 'You') { ?>
 			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
 					<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
@@ -33,14 +43,15 @@
 			<?php }else{?>
 				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
 			<?php }?>
-	<?}?>
+	<?}else{?>
+			<div class="badge badge-<?= $this->relation[$count]?>">Admin</div>
+	<?php }?>
+	 
+	<span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span>
 	
-	<div class="post">
-	<? if(isset($post->message)){echo $this->escape($post->message);}?>
-	<img src = '<? if(isset($post->picture) && ($post->type == 'photo')){ echo (str_replace('_s.jpg', '_n.jpg', $post->picture)) ;}?> '/></div>
 	
-	<div class="social"> <img src="/img/news-feed/icon-likes.png" /> 
 	
+	<!--  <img src="/img/news-feed/icon-likes.png" /> -->
 	<span class="likes">
 		<span class="like_<?= $post->id?>"><? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?> </span>
 	
@@ -50,11 +61,11 @@
 	<?}else{?>
 		<a class="like_control_<?= $post->id?>" href="#" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
 	<?php }?>
-	 </span>
-
-	<br/>
-	 <span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span></div>
-	
+	 </span>	 
+	 
+	 </div>
+	 </div>
+	</div>
 	</li>
 										
 <?php $count ++;?>
@@ -66,8 +77,10 @@
 		<button class="btn-top" onclick="comment_feed('<?= $this->postId ?>','<?= $this->postType?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
 	<?}?>
 	<li class="comment_container">
-
-		<form action="#">
+		<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);"></div>
+	
+		<form action="#" >
+		
 			<textarea class="comment_box" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
 			<input type=button class="btn-submit" value="Submit" onclick="commentSubmit('<?= $this->postId ?>','<?=$this->postType?>' ,'comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>', <?= $this->total?> )">
 		</form>

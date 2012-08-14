@@ -830,8 +830,14 @@
 				//alert('Post ID: ' + response.id);
 				$(m).val('');
 				addActivities('comment-'+type, userName, postid, target_id, target);
-	
-				comment_feed(postid, 5, postcommentcount +1, false);
+				
+				num=$('.comment_'+postid).html();
+    			$('.comment_'+postid).html((parseInt(num)+1));
+    		
+    	
+				comment_feed(postid, type, num+1, num+1,  false);
+				
+				
 				}
 			});
 	}
@@ -847,7 +853,9 @@
 				//alert('Post ID: ' + response.id);
 				$(m).val('');
 				addActivities('comment-'+type, userName, postid, target_id, target);
-				comment_bubble(postid, 5, false);
+				num=$('.comment_'+postid).html();
+    			$('.comment_'+postid).html((parseInt(num)+1));
+				comment_bubble(postid, num+1, false);
 				
 				}
 			});

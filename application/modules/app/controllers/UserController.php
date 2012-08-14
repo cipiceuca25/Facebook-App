@@ -308,7 +308,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 		$stat = new Model_FansObjectsStats();
 		
-		
+		/*
 		switch($data['activity_type']){
 		
 			case 'post-photo':
@@ -382,7 +382,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			default:
 				break;
 		}
-		
+		*/
 		
 		$act -> addActivities($data);
 		

@@ -40,46 +40,47 @@
 			<?php }?>
 	<?}?>		
 	
-
+	<div class="post_container">
 	<div class="post">
 	
-	<div class="pic">
-	
-		<? if($post['link']!= null) { ?> 
-			<?php if($post['post_type'] == 'link') {?>
-				<div class="link-left"> 
-			<?php }?> 
-			<a target="new" href="<?echo $this->escape($post['link'])?> "> 
-		<?}?>
+		<div class="pic">
 		
-		<? if($post['picture'] != null){?>
-			<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post['picture']))?> '/>
-		 <? } ?>
-		 
-		<? if($post['post_type'] == 'link') { ?> 
-			</a> </div>
+			<? if($post['link']!= null) { ?> 
+				<?php if($post['post_type'] == 'link') {?>
+					<div class="link-left"> 
+				<?php }?> 
+				<a target="new" href="<?echo $this->escape($post['link'])?> "> 
+			<?}?>
 			
-			
-			<?php if ($post['picture'] != null ){?><div class="link-right"><?php }?>
-				<a target="new" href="<?echo $this->escape($post['link'])?> "><?= $this->escape($post['link_name'])?></a>
+			<? if($post['picture'] != null){?>
+				<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post['picture']))?> '/>
+			 <? } ?>
+			 
+			<? if($post['post_type'] == 'link') { ?> 
+				</a> </div>
 				
-				<?php  if ($post['post_caption']!= null){?></br><?php echo $this->escape($post['post_caption']); }?>: 
-				<br/>
-				<br/>
 				
-				<?php if ($post['post_description']!= null){?><?=$this->escape($post['post_description'])?><?php }?>
-				<?php if ($post['picture']!= null){?></div> <?php }?>
+				<?php if ($post['picture'] != null ){?><div class="link-right"><?php }?>
+					<a target="new" href="<?echo $this->escape($post['link'])?> "><?= $this->escape($post['link_name'])?></a>
+					
+					<?php  if ($post['post_caption']!= null){?></br><?php echo $this->escape($post['post_caption']); }?>: 
+					<br/>
+					<br/>
+					
+					<?php if ($post['post_description']!= null){?><?=$this->escape($post['post_description'])?><?php }?>
+					<?php if ($post['picture']!= null){?></div> <?php }?>
+				
+			<?}elseif($post['link']!= null){ ?>
+				</a>
+			<?php }?>
 			
-		<?}elseif($post['link']!= null){ ?>
-			</a>
-		<?php }?>
-		
-		<br/>
+			<br/>
+		</div>
 	</div>
 	
+		<div class="message"><? if($post['post_message'] != null ){echo $this->escape($post['post_message']);}?></div>
 	
-	<div class="message"><? if($post['post_message'] != null ){echo $this->escape($post['post_message']);}?></div>
-	</div>
+	
 	<div class="social"> 
 	
 		<span class="likes">
@@ -109,7 +110,10 @@
 		<span class="date"><?=  date("l, F d, g:i a ",strtotime($post['created_time']))?></span>
 	</div>
 
-	<ul class="comments" id="post_<?=$post['post_id']?>" ></ul></li>	
+	<ul class="comments" id="post_<?=$post['post_id']?>" ></ul>
+	
+	</div>
+	</li>	
 
 					
 <?php $count ++;?>

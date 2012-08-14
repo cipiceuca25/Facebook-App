@@ -1,18 +1,13 @@
 
 						<div class="row">
-							<div class="span12">
-								<div class="title">
+							<div class="span8">
+				
+									<div class="title">
 										<div class="photo"> <a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a></div>
 
 										<div class="title-header"> <h3> <?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile</i></h3> </div>
-
-								</div>
-							</div>
-						</div>
+									</div>
 						
-						<div class="row">
-						
-							<div class="span6 left">
 								
 								<div class="row ">
 									<div class="span2">
@@ -22,51 +17,51 @@
 										</div>
 										
 									</div>
-									<div class="span4">
-										<div class="profile-block fan-point">
-											<h3>FAN POINT</h3>
-											
-											<div class="progress">
-												
-												<div class="bar" style="width: 60%;">
-												
-												</div>
-												
-											</div>
-											<h5>2000/3000 1000 Until Next Level</h5>
-										</div>
-									</div>
-								</div>
-								<div class="row ">
 									<div class="span2">
-										<div class="profile-block">
-										<h3>RANK</h3>
-										<h4>12345/67890</h4>
-										</div>
+										&nbsp;
 									</div>
 									<div class="span2">
 										<div class="profile-block">
-										<h3>FAN SINCE</h3>
+										<h3>Fan Since</h3>
 										<h4><?= date("F d Y", strtotime($this->fan_since))?></h4>
 										</div>
 									</div>
 									<div class="span2">
 										<div class="profile-block">
-										<h3>COUNTRY</h3>
+										<h3>Country</h3>
 										<h4><?= $this->fan_country?></h4>
 										</div>
 									</div>
-								</div>		
+									
+									
+									
+								</div>
 								<div class="row ">
-									
-										<div class="profile-block following">
-											<a href="#" class="followlink"  onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
-												FOLLOWING 
-												<br/>
-												<?= $this->following['0']['Following']?>
-											</a>
+									<div class="span4">
+										<div class="profile-block fan-point">
+											<h3>Fan Experience</h3>
+											
+											<div class="progress">
+												
+												<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;">
+												
+												</div>
+												
+											</div>
+											<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?>  <?=$this->fan_exp_required?> Until Next Level</h5>
 										</div>
+									</div>
 									
+									<div class="span2 fol">
+										<div class="profile-block following">
+												<a href="#" class="followlink"  onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
+													FOLLOWING 
+													<br/>
+													<?= $this->following['0']['Following']?>
+												</a>
+										</div>
+									</div>
+									<div class="span2 fol2">
 									
 										<div class="profile-block followers">
 											<a href="#" class="followlink" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
@@ -75,6 +70,15 @@
 												<?= $this->follower['0']['Follower']?>
 											</a>
 										</div>
+									</div>
+								</div>		
+								
+								
+											
+										
+									
+									
+										
 									
 									<!-- 
 										<div class="profile-block friends">
@@ -87,26 +91,27 @@
 								 	-->
 								
 								
-								</div>
 								
-							</div>
+						
 							
-							<div class="span6 right">
+						
 								<div class="row">
-									<div class="span3">
-										<div class="profile-block">
+									<div class="span4">
+										<div class="profile-block  fan-point">
 										<span class="ach" >OVERALL ACHIEVEMENT</span>
 										<div class="progress">
-											<div class="bar" style="width: 60%;">
+											<div class="bar" style="width: <?= $this->overall_achievement?>%;">
 											</div>
+											
 										</div>
+										<h5><?=$this->user_badge?>/<?=$this->all_badge?> </h5>
 										</div>
 									</div>
 								
 								</div>
 								<div class="row">
 									
-											<div class="span3">
+											<div class="span4">
 												<div class="profile-block">
 													<span class="ach" >PERSONAL ACHIEVEMENT</span>
 													<div class="progress">
@@ -115,7 +120,7 @@
 												</div>
 											</div>
 											
-											<div class="span3">
+											<div class="span4">
 												<div class="profile-block">
 													<span class="ach" >SOCIAL ACHIEVEMENT</span>
 													<div class="progress">
@@ -126,7 +131,7 @@
 									
 								</div>
 								<div class="row">
-									<div class="span6">
+									<div class="span8">
 									<div class="profile-block">
 									
 										<div class="recbad">RECENT BADGES</div>
@@ -152,24 +157,28 @@
 									</div>
 								</div>	
 									
-							</div>
-							
-							
-							
-							
-						</div>
 						
-						<div class="row">
-							<div class="span8">
-								<div class="subtitle">
-									<div class="title-header"> <h3>Most Recent Activities!</h3> </div>
-								</div>
 							
+							
+							
+							
+			
+							</div>
+								
+							<div class="span4">
+								<div class="subtitle">
+									<div class="title-header reverse"> <h3>Most Recent Activities!</h3> </div>
+								</div>
+				
 								<ul class="post-list" id="recent_activities">
 										
 								</ul>
 								
 							</div>
+							
+						</div>
+						<div class="row">
+							
 							
 							<div class="span4">
 								<div class="subtitle">
