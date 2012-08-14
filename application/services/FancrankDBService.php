@@ -425,7 +425,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				
 				if ($fansModel->isNewFan()) {
 					if(isset($pointResult[$facebookUserData['facebook_user_id']])) {
-						$fansData['fans_point'] = $pointResult[$facebookUserData['facebook_user_id']];
+						$fansData['fan_points'] = $pointResult[$facebookUserData['facebook_user_id']];
 					}
 					$fansModel->insertNewFan($fansData);
 				}else {

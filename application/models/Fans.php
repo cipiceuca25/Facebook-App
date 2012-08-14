@@ -2,7 +2,7 @@
 
 class Model_Fans extends Model_DbTable_Fans
 {
-	const BASE_XP = 200;
+	const BASE_XP = 100;
 	const MAX_LEVEL = 60;
 	const LEVEL_FACTOR = 2;
 	
@@ -24,7 +24,7 @@ class Model_Fans extends Model_DbTable_Fans
 		parent::__construct();
 		$this->_isNew = true;
 		$this->_fanProfile = null;
-		$this->_newBalance = 200;
+		$this->_newBalance = self::BASE_XP;
 	}
 	
 	public function __construct2($facebook_user_id, $fanpage_id) {
@@ -42,15 +42,18 @@ class Model_Fans extends Model_DbTable_Fans
 		}else {
 			$this->_isNew = true;
 			$this->_fanProfile = null;
-			$this->_newBalance = 200;
+			$this->_newBalance = self::BASE_XP;
 		}
 	}
 	
 	public function insertNewFan($data) {
-		$data['fan_currency'] = $this->_newBalance;
 		if(empty($data['fan_points'])) {
+			$data['fan_currency'] = $this->_newBalance;
+			$data['fan_points']	= $this->_newBalance;
 			$data['fan_level'] = 1;
 		}else {
+			$data['fan_currency'] = $this->_newBalance;
+			$data['fan_points']	+= $this->_newBalance;
 			$data['fan_level'] = $this->calculateLevel($data['fan_points']);
 		}
 		$this->insert($data);
@@ -90,13 +93,14 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function updateLevel() {
-		if($this->_fanProfile->fan_points <= 0) {
-			$this->_fanProfile->fan_level =  1;
+		$newLevel = $this->calculateLevel($this->_fanProfile->fan_points);
+		if($this->_fanProfile->fan_level > $newLevel) {
 			return;
 		}
+		
 		//$newLevel = floor(pow($this->_fanProfile->fan_points / self::BASE_XP, 1 / self::LEVEL_FACTOR));
 		//$this->_fanProfile->fan_level = $newLevel < self::MAX_LEVEL ? $newLevel : self::MAX_LEVEL;
-		$this->_fanProfile->fan_level = $this->calculateLevel($this->_fanProfile->fan_points);
+		$this->_fanProfile->fan_level = $newLevel;
 	}
 	
 	
@@ -108,6 +112,7 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	protected function calculateLevel($points) {
+		if($points < self::BASE_XP) return 1;
 		$newLevel = floor(pow($points / self::BASE_XP, 1 / self::LEVEL_FACTOR));
 		return $newLevel < self::MAX_LEVEL ? $newLevel : self::MAX_LEVEL;
 	}

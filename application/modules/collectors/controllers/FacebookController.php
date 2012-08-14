@@ -158,17 +158,36 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test1Action() {
+		
+    	$appToken = '359633657407080|8__URQrP98IM8YTmoUroI0OUvBc';
+		$url = 'https://graph.facebook.com/359633657407080/subscriptions?access_token=' .$appToken;
 
-    	$postTime = new Zend_Date('2012-08-07T11:52:50+0000', Zend_Date::ISO_8601);
-    	$commentTime = new Zend_Date('2012-08-07T11:58:40+0000', zend_date::ISO_8601);
+		echo $url .'<br/>';
 		
-		echo '<br/>' .floor(($commentTime->getTimestamp() - $postTime->getTimestamp()) / 60);
+		$arr = array(1=>'test1', 2=>123, 3=>'test2');
+		$result = Zend_Json::encode($arr);
 		
-		$arr = array();
-		$arr['1234567890000'] = 1;
-		$arr[23] = 2;
-		Zend_Debug::dump($arr);
-    	
+		//echo $result; exit();
+		$filePath = DATA_PATH .'/temp/last_update.data';
+		
+		$data = unserialize( file_get_contents( $filePath ) );
+		
+		echo $data['app_token'] .'<br/>';
+		//echo $data['json'];
+		
+		$data['app_token'] = $appToken;
+		$data['url']	= $url;
+		$data['json'] = $result;
+		
+		file_put_contents( $filePath, serialize( $data ) );
+		
+		echo $data['json'];
+		
+		
+		//$result = $this->httpCurl($url, null, null);
+		
+		//Zend_Debug::dump($result);
+		
 //     	$access_token="AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm";
 // 		$fb = new Service_FancrankFBService();
 // 		$result = $fb->getExtendedAccessToken($access_token);
@@ -216,7 +235,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     		if(! $fan->isNewFan()) {
     			$fanProfile = $fan->getFanProfile();
     			$fanProfile->fan_name = 'Megan Hicks';
-				$fan->updateFanPoints(1000);
+				$fan->updateFanPoints(-100);
 				$fan->updateCurrency();
     			$fan->updateFanProfile();
     			Zend_Debug::dump($fanProfile);
@@ -232,6 +251,35 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     		echo $e->getMessage();
     	}
 
+    }
+    
+    public function testsubAction() {
+    	$fb = new Service_FancrankFBService();
+    	$token = $fb->getAppAccessToken();
+    	echo $token .'<br/>';
+    	 
+    	$params = array(
+    				'object'=>'page',
+    				'fields'=>'feed',
+    				'verify_token'=>'fancrank'
+    			);
+    	
+    	$url = 'https://graph.facebook.com/359633657407080/subscriptions';
+    	
+    	$ch = curl_init();
+    	curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/'
+    			.$fb->getAppId().'/subscriptions?access_token='
+    					.$token);
+    	curl_setopt($ch, CURLOPT_POST, 1);
+    	curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+    	$res = curl_exec($ch);
+    	
+    	Zend_Debug::dump($res);
+    	curl_close($ch);
+    	//$result = $this->httpCurl($url, $param, 'post');
+    	
+    	//Zend_Debug::dump($result);
+    	
     }
     
     public function testuploadAction() {
@@ -256,7 +304,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 			$result = $facebook->api("/$fanapgeId/photos", 'post', $args);
 			
 			if($result && is_numeric($result['id'])) {
-				$args = array('cover'=>$result['id'], 'no_story'=>1);
+				$args = array('cover'=>$result['id'], 'no_feed_story'=>true);
 				$result = $facebook->api("/$fanapgeId", 'post', $args);
 			}
      		Zend_Debug::dump($result);

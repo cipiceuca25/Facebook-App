@@ -179,6 +179,10 @@ class Service_FancrankFBService extends Facebook {
 			
 		}
 	}
+	
+	public function getAppId() {
+		return $this->_appId;
+	}
 }
 
 ?>
