@@ -28,7 +28,7 @@
                 "redirect": {
                     "display": "popup",
                     "response_type": "code",
-                    "scope": "publish_stream,email,user_about_me,user_birthday,user_checkins,user_hometown,user_location,user_likes,user_status"
+                    "scope": "publish_stream,email,user_about_me,user_birthday,user_checkins,user_hometown,user_location,user_likes,user_status,user_relationship_details,user_relationships"
                 }
             },
             "popup": {
