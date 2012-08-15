@@ -139,17 +139,17 @@
 		$('.profile-content').css('display','none');
 		$('.profile-content').css('height','660px');
 
-		if($('#news-feed').hasClass('active')){
+		//if($('#news-feed').hasClass('active')){
 			
 			//getNewsfeed('#news-feed');
 			//getFancrankfeed('all');getTopPost();
 			//alert("top class reload");
-		}
-		if($('#leaderboard').hasClass('active')){
-			getLeaderboard('#leaderboard');
+		//}
+		//if($('#leaderboard').hasClass('active')){
+			//getLeaderboard('#leaderboard');
 			//getLatestPost();
 			//alert("top class reload");
-		}
+		//}
     	$('.profile-content').html('');
     	$('#moreComment').removeAttr('postid');
     }

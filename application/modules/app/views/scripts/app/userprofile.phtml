@@ -1,273 +1,225 @@
-						<div class="row">
-							<div class="span9">
-								<div class="title">
-										<div class="photo"> <img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></div>
-										<div class="title-header"> <h3><?= $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>'s Profile</h3> </div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="row">
-						
-							<div class="span9 left">
-								
-								<div class="row ">
-									<div class="span3">
-										<div class="profile-block">
-											<h3>Level</h3>
-											<h1><?= $this->fan_level?></h1>
-										</div>
-										
-									</div>
-									<div class="span6">
-										<div class="profile-block fan-point">
-											<h3>FAN POINT</h3>
-											
-											<div class="progress">
-												
-												<div class="bar" style="width: 60%;">
-												
-												</div>
-												
-											</div>
-											<h5>2000/3000 1000 Until Next Level</h5>
-										</div>
-									</div>
-								</div>
-								<div class="row ">
-									<div class="span3">
-										<div class="profile-block">
-										<h3>RANK</h3>
-										<h4>12345/67890</h4>
-										</div>
-									</div>
-									<div class="span3">
-										<div class="profile-block">
-										<h3>FAN SINCE</h3>
-										<h4><?if ($this->facebook_user->created_time=='notuser'){ ?>
-												<?echo "This user does not use Fancrank"?>
-											<?}else{?>
-												<?= date("F d Y", strtotime($this->fan_since))?>
-											<?}?>
-											</h4>
-										</div>
-									</div>
-									<div class="span3">
-										<div class="profile-block">
-										<h3>COUNTRY</h3>
-										<h4><?= $this->fan_country?></h4>
-										</div>
-									</div>
-								</div>		
-								<div class="row ">
-									
-										<div class="profile-block following">
-											<a href="#" class="followlink"  onclick="getFollowingList('<?= $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)">
-												FOLLOWING 
-												<br/>
-												<?= $this->following['0']['Following']?>
-											</a>
-										</div>
-									
-									
-										<div class="profile-block followers">
-											<a href="#" class="followlink" onclick="getFollowersList('<?= $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)">
-												FOLLOWERS  
-												<br/>
-												<?= $this->follower['0']['Follower']?>
-											</a>
-										</div>
-									
-									<!-- 
-										<div class="profile-block friends">
-											<a href="#" class="followlink" onclick="getFriendsList('<?= $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)">
-												FRIENDS  
-												<br/>  
-												<?= $this->friends['0']['friends']?>
-											</a>
-										</div>
-									 -->	
-									
-										<div class="span2">
-										<?php  if (!($this->relation == 'You')){?>
-											<a href="#" <?if ((($this->relation) == "Follow")||(($this->relation) =="Followed")){?>
-											 onclick="follow(<?= $this->facebook_user->facebook_user_id ?> , '<?= $this->facebook_user->facebook_user_name ?>')" 
-											<?}else{?>
-											 onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?> , '<?= $this->facebook_user->facebook_user_name ?>')" 
-											 <?php }?>
-											 >
-											 <div class="badge badge-<?= $this->relation?> big"><?= $this->relation?></div></a>
-										
-										<?}else{?>
-											<div class="badge badge-<?= $this->relation?> big"><?= $this->relation?></div>
-											<?php }?>
-										
-										</div>
-								</div>
-								
-							</div>
-							
-							
-									
-						</div>
-						<div class="row">
-							<div class="span9">
-								<div class="subtitle">
-									<div class="title-header"> <h3>Most Recent Activities!</h3> </div>
-								</div>
-							
-								<ul class="post-list" id="pop_recent_activities">
-									<?php if(count($this->activities)==0){?>
-										<li class="grey-light" >
-										<br/>
-										No Recent Activities for this Fanpage.
-										<br/>
-										<br/>
-										</li>
-										<?php }?>
-										
-											<?php
-											$count = 0;
-											foreach ($this->activities as $act):	
-												if ($count % 2 == 0){ ?>			
-												<li class="grey-light" >
-												<? }else{ ?>
-												<li class="grey-dark" >
-												<? } ?>
-												<br/>
-												<?php if ($this->user_id == $act->facebook_user_id){?>
-												
-												<?switch($act->activity_type){ 
-												
-													case 'follow': ?>
-														You followed <a href="#" onclick="userProfile('<?=$act->event_object?>')"><?=$act->target_user_name?></a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'unfollow' :?>
-														You unfollowed <a href="#" onclick="userProfile('<?=$act->event_object?>')"><?=$act->target_user_name?></a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;	
-													case 'like-status':?>
-														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
-														<?break;
-													case 'unlike-status':?>
-														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">status post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'like-photo':?>
-														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">photo post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
-														<?break;
-													case 'unlike-photo':?>
-														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">photo post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;	
-													case 'like-video':?>
-														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">video post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
-														<?break;
-													case 'unlike-video':?>
-														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">video post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'like-link':?>
-														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">link post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
-														<?break;
-													case 'unlike-link':?>
-														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">link post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'like-comment':?>
-														You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'unlike-comment':?>
-														You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'comment-status':?>
-														You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'comment-photo':?>
-														You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">photo post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'comment-video':?>
-														You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">video post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'comment-link':?>
-														You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">link post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													case 'post-status':?>
-														You made a status post on <?=$act->target_user_name?>'s Fanpage on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-														<?break;
-													default:
-													
-												}?>
-												<?}else{?>
-													<?switch($act->activity_type){ 
-															case 'follow': ?>
-																<a href="#" onclick="userProfile('<?=$act->facebook_user_id?>')"><?=$act->facebook_user_name?></a> followed You on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'unfollow' :?>
-																<a href="#" onclick="userProfile('<?=$act->facebook_user_id?>')"><?=$act->facebook_user_name?></a> unfollowed You on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;	
-															case 'like-status':?>
-																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
-																<?break;
-															case 'unlike-status':?>
-																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">status post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'like-photo':?>
-																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">photo post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
-																<?break;
-															case 'unlike-photo':?>
-																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">photo post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;	
-															case 'like-video':?>
-																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">video post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
-																<?break;
-															case 'unlike-video':?>
-																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">video post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'like-link':?>
-																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">link post </a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time) )?>.
-																<?break;
-															case 'unlike-link':?>
-																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">link post</a> posted on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'like-comment':?>
-																You liked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'unlike-comment':?>
-																You unliked <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'comment-status':?>
-																You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">status post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'comment-photo':?>
-																You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">photo post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'comment-video':?>
-																You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">video post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'comment-link':?>
-																You post a comment on <?=$act->target_user_name?>'s <a href="#" onclick="comment_bubble('<?=$act->event_object?>', 5, true)">link post</a> on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-															case 'post-status':?>
-																You made a status post on <?=$act->target_user_name?>'s Fanpage on <?=date("l, F d, g:i a",strtotime($act->created_time))?>.
-																<?break;
-														default:
-													}?>
-												<?php }?>
-													 <br/><br/>
-													</li>
-												<?endforeach; ?>
 
-											
-								</ul>
-								
+<div class="row">
+	<div class="span7">
+		<div class="title">
+			<div class="photo">
+				<img class="face" width="30" height="30"
+					src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"
+					onerror="ImgError(this);">
+			</div>
+			<div class="title-header">
+				<h3>
+					<?= $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>
+					's Profile
+				</h3>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+		<div class="span7">
+			<div class="row profile_background">
+				<div class="span7">
+					<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+					<div class="row ">
+						<div class="span2">
+							<div class="profile-block">
+								<h3>Level</h3>
+								<div class="rank">
+									<?= $this->fan_level?>
+								</div>
 							</div>
-						
-						
-						
 						</div>
-							
-							
-							
-						
-						
-					
-							
-						
-						
-			
+						<div class="span5">
+
+							<div class="profile-block fan-point">
+								<h3>Fan Experience</h3>
+
+								<div class="progress">
+
+									<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;">
+
+									</div>
+
+								</div>
+								<h5>
+									<?=$this->fan_exp?>		/	<?=$this->fan_level_exp?><br/>
+									<?=$this->fan_exp_required?>						Until Next Level
+								</h5>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+
+						<div class="span7">
+
+
+							<div class="rank">*</div>
+
+
+							<div class="profile-block">
+								<h4>Overall Achievement</h4>
+								<div class="progress">
+									<div class="bar" style="width: <?= $this->overall_achievement?>%;">
+									</div>
+
+								</div>
+								<h5>
+									<?=$this->user_badge?>			/			<?=$this->all_badge?>
+								</h5>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="row">
+
+						<div class="span3_5">
+
+
+							<div class="profile-block">
+								<h4>Personal Achievement</h4>
+								<div class="progress">
+									<div class="bar" style="width: 60%;"></div>
+								</div>
+							</div>
+						</div>
+
+						<div class="span3_5">
+
+
+							<div class="profile-block">
+								<h4>Social Achievement</h4>
+								<div class="progress">
+									<div class="bar" style="width: 60%;"></div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				</div>
+			</div>
+
+			<div class="feed_spacer_top"></div>
+
+			<div class="row profile_background">
+				<div class="span7">
+					<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+					<div class="row">
+						<div class="span7">
+							<div class="profile-block">
+								<h4>Recent Badges</h4>
+
+
+								<div class="span1">
+									<img src="/img/badges/post_comment_1.png" />
+								</div>
+								<div class="span1">
+									<img src="/img/badges/post_video_1.png" />
+								</div>
+								<div class="span1">
+									<img src="/img/badges/post_photo_5.png" />
+								</div>
+								<div class="span1">
+									<img src="/img/badges/post_post_1.png" />
+								</div>
+								<div class="span1">
+									<img src="/img/badges/like_post_5.png" />
+								</div>
+								<div class="span1">
+									<img src="/img/badges/like_photo_1.png" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				</div>
+			</div>
+
+			<div class="feed_spacer_top"></div>
+
+			<div class="row profile_background">
+				<div class="span7">
+					<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+					<div class="row">
+						<div class="span3_5">
+							<div class="profile-block">
+								<h4>
+									Followed by
+
+									<?= $this->follower['0']['Follower']?>
+									Fans
+								</h4>
+								<div id="followerslist"></div>
+								<div class="shadow">
+									<button class="btn-top"
+										onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)">
+										View Full List</button>
+								</div>
+							</div>
+						</div>
+						<div class="span3_5">
+							<div class="profile-block">
+
+								<h4>
+									Following
+
+									<?= $this->following['0']['Following']?>
+									Fans
+								</h4>
+
+								<div id="followinglist"></div>
+								<div class="shadow">
+									<button class="btn-top"
+										onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)">
+										View Full List</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				</div>
+			</div>
+
+			<div class="feed_spacer_top"></div>
+
+			<div class="row profile_background">
+				<div class="span7">
+					<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+					<div class="row">
+						<div class="span3_5">
+							<div class="profile-block left-align">
+								<h4>Fan Since</h4>
+								<?= date("F d Y", strtotime($this->fan_since))?>
+								<br />
+								<h4>Country</h4>
+								<?= $this->fan_country?>
+							</div>
+						</div>
+						<div class="span3_5">
+							<div class="profile-block left-align">
+								<h4>Other Statistics</h4>
+								Total Posts Made :
+								<?=$this->stat_post?>
+								<br /> Total Likes Made :
+								<?=$this->stat_like?>
+								<br /> Total Comments Made :
+								<?=$this->stat_comment?>
+								<br /> Total Recieved Likes:
+								<?=$this->stat_get_like?>
+								<br /> Total Recieved Comments:
+								<?=$this->stat_get_comment?>
+								<br />
+							</div>
+
+						</div>
+					</div>
+					<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+				</div>
+			</div>
+		</div>
+	</div>

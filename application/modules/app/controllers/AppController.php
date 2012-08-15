@@ -691,42 +691,72 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user2 = null;
     	}
-    	
+		
     	$follow = new Model_Subscribes();
-    	
-    	$activities = new Model_FancrankActivities();
-    	$activities = $activities -> getRecentActivities($user->facebook_user_id, $this->_fanpageId, 5);
-    	 
-    	$this->view->activities = $activities;
-   
-    	//echo $user->facebook_user_id;
-    	//echo $user['facebook_user_id'];
-
     	$follower = $follow->getFollowers($user->facebook_user_id, $this->_fanpageId);
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
     	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
-    	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id,$this->_fanpageId);
+    	
     	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
     	
-
     	$fan_level = null;
     	$fan_since = null;
     	$fan_country = null;
-    	
+    	 
     	if(!$fan->isNewFan()) {
     		$fan_level = $fan->getFanLevel();
     		$fan_since = $fan->getFanSince();
     		$fan_country = $fan->getFanCountry();
     	}
+    	
+    	$userBadges = new Model_BadgeEvents();
+    	$userBadgeCount = $userBadges->getNumBadgesByUser($this->_fanpageId, $user->facebook_user_id);
+
+    	//Zend_Debug::dump($userBadgeCount);
+    	$allBadges = new Model_Badges();
+    	$allBadges = $allBadges -> getNumBadges();
+    	//Zend_Debug::dump($allBadges);
+    	$overallAchievement = $userBadgeCount[0]['count']/$allBadges[0]['count']*100;
+    	
+    	
+    	$this->view->user_badge = $userBadgeCount[0]['count'];
+    	$this->view->all_badge = $allBadges[0]['count'];
+    	$this->view->overall_achievement = $overallAchievement;
+    	
+    	$this->view->fan_point = $fan->getFanCurrency();
+    	$fan_exp = $fan->getCurrentEXP();
+    	$fan_exp_required = $fan->getNextLevelRequiredXP();
+    	$this->view->fan_exp = $fan_exp;
+    	$this->view->fan_exp_required = $fan_exp_required;
+    	$this->view->fan_level_exp = $fan_exp + $fan_exp_required;
+    	$this->view->fan_exp_percentage = $fan_exp/($fan_exp + $fan_exp_required)*100;
+    	
     	//Zend_Debug::dump($fan_level);
-    	 
+    	
+    	$stat = new Model_FansObjectsStats();
+    	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
+    	$stat_post = $stat[0]['total_posts'];
+    	$stat_comment = $stat[0]['total_comments'];
+    	$stat_like = $stat[0]['total_likes'];
+    	$stat_get_comment = $stat[0]['total_get_comments'];
+    	$stat_get_like = $stat[0]['total_get_likes'];
+    	
+    	
     	$this->view->fan_level = $fan_level;
     	$this->view->fan_since = $fan_since;
     	$this->view->fan_country = $fan_country;
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
-    	$this->view->relation = $relation;
+    	
+    	
+    	//Zend_Debug::dump($stat_post);
+    	
+    	$this->view->stat_post = $stat_post;
+    	$this->view->stat_comment = $stat_comment;
+    	$this->view->stat_like = $stat_like;
+    	$this->view->stat_get_comment = $stat_get_comment;
+    	$this->view->stat_get_like = $stat_get_like;
     	 
     	$this->render("userprofile");
     }
