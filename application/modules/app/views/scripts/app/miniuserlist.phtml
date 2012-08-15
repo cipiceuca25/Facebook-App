@@ -1,16 +1,16 @@
-
+<?php $count=0;?>
 <ul class="followlist">
 <?php if(count($this->result)==0){?>
 	<li class="border-dark" >
-	<br/>
-	No users
-	<br/>
-	<br/>
+
+	<div class="name">No users</div>
+
 	</li>
+	<?php $count++;?>
 <?php }?>
 
 
-<?php $count=0;?>
+
 <?php foreach ($this->result as $user):?>	
 	
 
