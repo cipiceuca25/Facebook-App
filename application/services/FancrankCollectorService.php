@@ -104,10 +104,10 @@ class Service_FancrankCollectorService {
 		echo '<br/>total likes for ' .count($photoList) . ' photos ' .count($photoLikesList);
 		echo '<br/>Total likes : ' .count($allLikesList);
 		
-		$pointResult = $this->calculatePostPoints($posts, $postCommentsList);
+		$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
 		$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
 		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
-		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList);
+		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList, $commentLikeList);
 		$pointResult = $this->calculateLikesPoints($pointResult, $allLikesList);
 		
 		$db->beginTransaction();
