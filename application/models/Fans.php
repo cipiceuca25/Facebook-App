@@ -76,8 +76,8 @@ class Model_Fans extends Model_DbTable_Fans
 		return $this->_fanProfile->last_login_time;	
 	}
 	
-	public function getFanPoints() {
-		return $this->_fanProfile->fan_points;
+	public function getFanCurrency() {
+		return $this->_fanProfile->fan_currency;
 	}
 	
 	public function getFanCountry() {
@@ -103,6 +103,14 @@ class Model_Fans extends Model_DbTable_Fans
 		$this->_fanProfile->fan_level = $newLevel;
 	}
 	
+	
+	public function getCurrentEXP(){
+		return $this->_fanProfile->fan_points;
+		
+		
+		
+	}
+	
 	protected function calculateLevel($points) {
 		if($points < self::BASE_XP) return 1;
 		$newLevel = floor(pow($points / self::BASE_XP, 1 / self::LEVEL_FACTOR));
@@ -116,6 +124,8 @@ class Model_Fans extends Model_DbTable_Fans
 			$this->_fanProfile->fan_currency = $newBalance;
 		}
 	}
+	
+	
 	
 	public function updateFanPoints($newFanPoints) {
 		$this->_newBalance += $newFanPoints;

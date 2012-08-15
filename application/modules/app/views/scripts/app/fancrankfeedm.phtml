@@ -17,16 +17,75 @@
 	<li class="grey-dark" >
 	<?php }?>
 
-						
-	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post['facebook_user_id']?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a></div>
-	<div class="name">
-		<a href="#" <? if (!($this->relation[$count] == 'Fanpage') ){?>onclick="userProfile('<?=$post['facebook_user_id']?>')"<?}?>><?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?></a> 
-	
-		
+	<div class="flag">	
+		<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post['facebook_user_id']?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a></div>
+		<div class="name">
+			<a href="#" <? if (!($this->relation[$count] == 'Fanpage') ){?>onclick="userProfile('<?=$post['facebook_user_id']?>')"<?}?>><?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?></a> 
+		</div>
+		<div class="date"><?=  date("l, F d, g:i a ",strtotime($post['created_time']))?></div>
 	
 	</div>
+		
 	
-	<? if (!($this->relation[$count] == 'Fanpage')){?>
+	<div class="post_container">
+	<div class="post">
+		<? if($post['post_message'] != null ){?><div class="message"><?
+				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+	
+				
+				$m = $this->escape($post['post_message']);
+			
+
+				if(preg_match($reg_exUrl, $m, $url)) {
+				
+		
+				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new >".$url[0]."</a> ", $m);
+				
+				} else {
+				
+				       echo $m;
+				
+				}?></div><?}?>
+				
+		<div class="pic">
+		
+			<? if($post['link']!= null) { ?> 
+				<?php if($post['post_type'] == 'link') {?>
+					<div class="link">
+					<div class="link-left"> 
+				<?php }?> 
+				<a target="new" href="<?echo $this->escape($post['link'])?> "> 
+			<?}?>
+			
+			<? if($post['picture'] != null){?>
+				<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post['picture']))?> '/>
+			 <? } ?>
+			 
+			<? if($post['post_type'] == 'link') { ?> 
+				</a> </div>
+				
+				
+				<?php if ($post['picture'] != null ){?><div class="link-right"><?php }?>
+					<a target="new" href="<?echo $this->escape($post['link'])?> "><?= $this->escape($post['link_name'])?></a>
+					
+					<?php  if ($post['post_caption']!= null){?></br><?php echo $this->escape($post['post_caption']); ?>:<? }?> 
+					<br/>
+					
+					<?php if ($post['post_description']!= null){?><?=$this->escape($post['post_description'])?><?php }?>
+					<?php if ($post['picture']!= null){?></div> <?php }?>
+				
+			<?}elseif($post['link']!= null){ ?>
+				</a><br/></div>
+			<?php }?>
+			
+		</div>
+	</div>
+	</div>
+		
+	
+	
+	<div class="social"> 
+		<? if (!($this->relation[$count] == 'Fanpage')){?>
 		<? if ($this->relation[$count] != 'You') { ?>
 			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
 					<a href="#" onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" >
@@ -38,50 +97,7 @@
 			<?php }else{?>
 				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
 			<?php }?>
-	<?}?>		
-	
-
-	<div class="post">
-	
-	<div class="pic">
-	
-		<? if($post['link']!= null) { ?> 
-			<?php if($post['post_type'] == 'link') {?>
-				<div class="link-left"> 
-			<?php }?> 
-			<a target="new" href="<?echo $this->escape($post['link'])?> "> 
-		<?}?>
-		
-		<? if($post['picture'] != null){?>
-			<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post['picture']))?> '/>
-		 <? } ?>
-		 
-		<? if($post['post_type'] == 'link') { ?> 
-			</a> </div>
-			
-			
-			<?php if ($post['picture'] != null ){?><div class="link-right"><?php }?>
-				<a target="new" href="<?echo $this->escape($post['link'])?> "><?= $this->escape($post['link_name'])?></a>
-				
-				<?php  if ($post['post_caption']!= null){?></br><?php echo $this->escape($post['post_caption']); }?>: 
-				<br/>
-				<br/>
-				
-				<?php if ($post['post_description']!= null){?><?=$this->escape($post['post_description'])?><?php }?>
-				<?php if ($post['picture']!= null){?></div> <?php }?>
-			
-		<?}elseif($post['link']!= null){ ?>
-			</a>
-		<?php }?>
-		
-		<br/>
-	</div>
-	
-	
-	<div class="message"><? if($post['post_message'] != null ){echo $this->escape($post['post_message']);}?></div>
-	</div>
-	<div class="social"> 
-	
+	<?}?>	
 		<span class="likes">
 			<img src="/img/news-feed/icon-likes.png" />
 			
@@ -106,10 +122,13 @@
 		 	} else {echo '0';} ?> , true )">Comment</a>
 		</span>
 		<br/>
-		<span class="date"><?=  date("l, F d, g:i a ",strtotime($post['created_time']))?></span>
+		
 	</div>
 
-	<ul class="comments" id="post_<?=$post['post_id']?>" ></ul></li>	
+	<ul class="comments" id="post_<?=$post['post_id']?>" ></ul>
+	
+	</div>
+	</li>	
 
 					
 <?php $count ++;?>

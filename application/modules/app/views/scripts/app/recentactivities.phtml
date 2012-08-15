@@ -1,9 +1,8 @@
 <?php if(count($this->activities)==0){?>
 	<li class="grey-light" >
-	<br/>
+
 	No Recent Activities for this Fanpage.
-	<br/>
-	<br/>
+
 	</li>
 <?php }?>
 
@@ -15,7 +14,7 @@
 		<? }else{ ?>
 		<li class="grey-dark" >
 		<? } ?>
-		<br/>
+	
 		<?php if ($this->user_id == $act->facebook_user_id){?>
 		
 		<?switch($act->activity_type){ 
@@ -133,7 +132,7 @@
 				default:
 			}?>
 		<?php }?>
-			 <br/><br/>
+			
 			</li>
 		<?endforeach; ?>
 

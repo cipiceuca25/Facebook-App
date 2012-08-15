@@ -44,7 +44,7 @@
 										</ul>
 									<?php }else{ ?>
 										<?php if ($count == 1){?>
-											<ul  id="mini-top-fans-collapse" class="top-list mini collapse">
+											<ul  id="mini-top-fans" class="top-list mini">
 										<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
@@ -92,7 +92,7 @@
 										
 										<?php for ( ;$count<5; $count++){ ?>
 											<?php if ($count == 1){?>
-												<ul  id="mini-top-fans-collapse" class="top-list mini collapse">
+												<ul  id="mini-top-fans" class="top-list mini">
 											<?php }?>
 											<li>
 											<?php if ($count % 2 == 0) {?>
@@ -145,15 +145,14 @@
 														<a href="#" >YOU</a>
 														<br/>
 													</div>
-												
-												</div>
+													<div class="follow">
+														<div class="badge badge-You">You</div>
+													
+													</div>
+												</div>	
 										</li>
 									</ul>
-									<div class="shadow">
-										<button class="btn-top" id="mini-top-fans-btn" data-toggle="collapse" data-target="#mini-top-fans-collapse">
-												+ More
-										</button>
-									</div>
+									
 								</div>
 							</div>
 		

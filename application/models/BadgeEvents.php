@@ -20,5 +20,18 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		
 		return $this->fetchAll($query);
 	}
+	
+	public function getNumBadgesByUser($fanpage_id, $facebook_user_id) {
+		$select = "	SELECT count(*) as count 
+					from badge_events 
+					where facebook_user_id=".$facebook_user_id." && fanpage_id=".$fanpage_id;
+
+		return $this->getAdapter()->fetchAll($select);
+	
+		
+	}
+	
 }
+
+
 
