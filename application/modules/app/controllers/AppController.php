@@ -691,6 +691,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user2 = null;
     	}
+
 		
     	$follow = new Model_Subscribes();
     	$follower = $follow->getFollowers($user->facebook_user_id, $this->_fanpageId);

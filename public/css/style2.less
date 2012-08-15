@@ -557,6 +557,10 @@ ul, ol {
 	//#gradient > .horizontal(@color-feed, white );
 	height:70px;
 }
+.top-list .border-dark.first,
+.top-list.mini .border-dark.first{
+	border-top: 0px solid #C4CDE0;//@color-feed;
+}
 
 .top-list.mini .border-light,
 .top-list.mini .border-dark{
@@ -610,11 +614,6 @@ ul, ol {
 	
 	right:-2px;
 
-}
-
-#topfan{
-	padding-bottom:20px;
-	
 }
 
 .top-list .rank h1{
@@ -811,7 +810,7 @@ ul, ol {
 
 .shadow{
 
-	height:50px;
+	//height:50px;
 	//background:url(../img/bg_shadow.jpg) top center no-repeat;
 	text-align:center;
 	
@@ -1884,7 +1883,6 @@ form{
 }
 
 .row.profile_background{
-	
 	background-color: white;
 	border:1px solid #C4CDE0;
 	.border-radius(3px);
@@ -1893,8 +1891,18 @@ form{
 	padding-bottom:10px;
 }
 
+.top-fan .row.profile_background,
+#leaderboard .row.profile_background{
+	padding:3px;
+}
 
 
+
+.row.profile_background .span12,
+.row.profile_background .span11,
+.row.profile_background .span10,
+.row.profile_background .span9,
+.row.profile_background .span8,
 .row.profile_background .span7,
 .row.profile_background .span6,
 .row.profile_background .span5,

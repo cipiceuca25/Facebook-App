@@ -1,6 +1,6 @@
 
 								<div class="top-fan">
-									
+									<div class="row profile_background">
 
 									<?php $count = 0; ?> 
 									<?php foreach($this->top_fans as $top_fan): ?>
@@ -9,7 +9,7 @@
 									
 										<ul class="top-list mini">
 											<li>
-												<div class="border-dark">
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
 														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 															<h1><?= $count + 1 ?></h1>
 														</div>
@@ -155,5 +155,5 @@
 									
 								</div>
 							</div>
-		
+						</div>
 			

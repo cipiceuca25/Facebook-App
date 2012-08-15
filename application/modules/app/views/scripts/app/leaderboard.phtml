@@ -4,6 +4,7 @@
 <div class="panel">
 						<div class="row">
 							<div class="span12">
+					
 								<div class="top-fan">
 									<div class="title">
 										<div class="photo"> <img src="/img/news-feed/top-fan-icon.jpg" /> </div>
@@ -11,15 +12,15 @@
 											<div class="tip"><a title="You are awesome and nobody can touch you! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
 										 </div>
 									</div>
-
+							
 									<?php $count = 0; ?> 
 									<?php foreach($this->top_fans as $top_fan):  ?>
 									
 									<?php if ($count == 0){?>
-									
+									<div class="row profile_background">
 										<ul class="top-list">
 											<li>
-												<div class="border-dark">
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
 														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 															<h1><?= $count + 1 ?></h1>
 														</div>
@@ -58,11 +59,9 @@
 											<ul  id="top-fans-collapse" class="top-list collapse">
 										<?php }?>
 											<li>
-											<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+				
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<h1><?= $count + 1 ?></h1>
 													</div>
@@ -107,11 +106,9 @@
 												<ul  id="top-fans-collapse" class="top-list collapse">
 											<?php }?>
 											<li>
-											<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+								
+													<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+												
 													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<h1><?= $count + 1 ?></h1>
 													</div>
@@ -131,11 +128,9 @@
 									<?php $count ++; ?>
 									<ul class="top-list">
 										<li>
-												<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+												
+													<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 													<div class="rank">
 														
 														<? if (strlen($this->topFanYou['my_rank'])== 1){?>
@@ -170,10 +165,11 @@
 									</div>
 								</div>
 							</div>
-							
+							</div>
 							
 						</div>
-						
+						<div class="feed_spacer_top">
+							</div>
 						
 					<div class="row">
 							<div class="span6">
@@ -184,12 +180,13 @@
 											<div class="tip"><a title="People like you. Your mom was right!<br /><br />But <i>seriously</i>, your contribution is well regarded within the community. People like your posts and interact with you a lot.<br /><br />Keep up the good work!">?</a></div>
 										</div>
 									</div>
+									<div class="row profile_background">
 									<?php $count = 0; ?> 
 									<?php foreach($this->most_popular as $popular): ?>
 									<?php if ($count == 0){?>
 									<ul class="top-list">
 											<li>
-												<div class="border-dark">
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
 												
 														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 															<h1><?= $count + 1 ?></h1>
@@ -229,11 +226,9 @@
 											<ul  id="fan-favorite-collapse" class="top-list collapse">
 										<?php }?>
 											<li>
-											<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+											
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<h1><?= $count + 1 ?></h1>
 													</div>
@@ -299,11 +294,9 @@
 									<?php $count ++; ?>
 									<ul class="top-list">
 										<li>
-												<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+									
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<? if (strlen($this->popularYou['my_rank'])== 1){?>
 															<h1><?= $this->popularYou['my_rank']?></h1>
@@ -335,7 +328,7 @@
 										</button>
 									</div>
 								</div>
-							
+								</div>
 							</div>
 							<div class="span6">
 								<div class="top-talker">
@@ -345,12 +338,14 @@
 											<div class="tip"><a title="Loud and proud! You don't care what time of the night it is, you keep barking!<br /><br />But <i>seriously</i>, your posts and comments help shape the conversations.<br /><br />Keep it loud. Keep it proud.">?</a></div>
 										</div>
 									</div>
+									<div class="row profile_background">
 									<?php $count = 0; ?> 
 									<?php foreach($this->top_talker as $talker): ?>
 									<?php if ($count == 0){?>
+									
 									<ul class="top-list">
 											<li>
-												<div class="border-dark">
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
 												
 														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 															<h1><?= $count + 1 ?></h1>
@@ -389,11 +384,9 @@
 											<ul  id="top-talker-collapse" class="top-list collapse">
 										<?php }?>
 											<li>
-											<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+								
+													<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<h1><?= $count + 1 ?></h1>
 													</div>
@@ -456,11 +449,9 @@
 									<?php $count ++; ?>
 									<ul class="top-list">
 										<li>
-												<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+							
+													<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<? if (strlen($this->talkerYou['my_rank'])== 1){?>
 															<h1><?= $this->talkerYou['my_rank']?></h1>
@@ -492,9 +483,11 @@
 									</div>
 								</div>
 							</div>
+							</div>
 					</div>
 					
-					
+					<div class="feed_spacer_top">
+							</div>
 					
 					<div class="row">
 					
@@ -507,12 +500,13 @@
 											</div>
 										</div>
 										
+										<div class="row profile_background">
 										<?php $count = 0; ?> 
 									<?php foreach($this->top_clicker as $clicker): ?>
 									<?php if ($count == 0){?>
 									<ul class="top-list">
 											<li>
-												<div class="border-dark">
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
 												
 														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 															<h1><?= $count + 1 ?></h1>
@@ -549,11 +543,9 @@
 											<ul  id="top-clicker-collapse" class="top-list collapse">
 										<?php }?>
 											<li>
-											<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+						
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<h1><?= $count + 1 ?></h1>
 													</div>
@@ -614,11 +606,9 @@
 									<?php $count ++; ?>
 									<ul class="top-list">
 										<li>
-												<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+									
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<? if (strlen($this->clickerYou['my_rank'])== 1){?>
 															<h1><?= $this->clickerYou['my_rank']?></h1>
@@ -651,7 +641,7 @@
 										</div>
 									</div>
 								
-							
+							</div>
 
 						</div>
 				
@@ -664,13 +654,13 @@
 												<div class="tip"><a title="Is there anything you don't like? Even Lindsey Lohan has standards --insert chuckle--.<br /><br />But <i>seriously</i>, we're glad you take interest in your peers.<br /><br />Happy clicking!.">?</a></div>
 											</div>
 										</div>
-										
+										<div class="row profile_background">
 										<?php $count = 0; ?> 
 									<?php foreach($this->top_followed as $followed): ?>
 									<?php if ($count == 0){?>
 									<ul class="top-list">
 											<li>
-												<div class="border-dark">
+												<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
 												
 														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 															<h1><?= $count + 1 ?></h1>
@@ -707,11 +697,9 @@
 											<ul  id="top-followed-collapse" class="top-list collapse">
 										<?php }?>
 											<li>
-											<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+								
+													<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 												<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<h1><?= $count + 1 ?></h1>
 													</div>
@@ -749,11 +737,9 @@
 											<?php }?>
 										<?php for ( ;$count<5; $count++){ ?>
 											<li>
-											<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+									
+													<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+											
 													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<h1><?= $count + 1 ?></h1>
 													</div>
@@ -772,11 +758,9 @@
 									<?php $count ++; ?>
 									<ul class="top-list">
 										<li>
-												<?php if ($count % 2 == 0) {?>
-													<div class="border-dark">
-												<?php  }else{  ?>
-													<div class="border-light">
-												<?php }?>
+										
+													<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+												
 													<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 														<? if (strlen($this->followedYou['my_rank'])== 1){?>
 															<h1><?= $this->followedYou['my_rank']?></h1>
@@ -810,7 +794,7 @@
 									</div>
 								
 							</div>
-							
+							</div>
 						
 					</div>
 					

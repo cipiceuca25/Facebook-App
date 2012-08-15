@@ -42,8 +42,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	
 
     	$blue= imagecolorallocate($src, 23, 61, 113);
-    	$green = imagecolorallocate($src, 193, 204, 178);
-    	$gray = imagecolorallocate($src, 30, 30, 30);
+    	$white = imagecolorallocate($src, 255, 255, 255);
+    	$gray = imagecolorallocate($src, 51, 51, 51);
     	
     	$font = APPLICATION_PATH.'\..\public\img\font\arialbd.ttf';
     	$font2 = APPLICATION_PATH.'\..\public\img\font\arial.ttf';
@@ -71,12 +71,12 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     				$pic=false;
     				break;
     		}
-    		imagefilledrectangle ($src, 40, $yim , 75 , $yim+35 , $green );
+    		imagefilledrectangle ($src, 40, $yim , 75 , $yim+35 , $white );
     		imagecopyresized($src, $pic, 43, $yim+3, 0, 0, 30, 30, 50, 50);
     		//echo $topArray[$count];
     		imagettftext($src, 16, 0, 87, $yim+25, $blue, $font, $text);
-    		imagettftext($src, 14, 0, 180, $yim+25, $gray, $font, $point);
-    		imagettftext($src, 9, 0, 215, $yim+23, $gray, $font2, 'Points');
+    		imagettftext($src, 14, 0, 210, $yim+25, $gray, $font, $point);
+    		imagettftext($src, 9, 0, 245, $yim+23, $gray, $font2, 'Points');
     		$count++;
     		$yim +=37;
     	}
