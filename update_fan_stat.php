@@ -52,7 +52,7 @@ if (count($fanList) > 0) {
 	$error = false;
 	foreach ($fanList as $fan) {
 		try {
-
+			echo $fan->facebook_user_id;
 		}catch(Exception $e) {
 			$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan->facebook_user_id, $fan->fanpage_id);
 			$logger->log('Update fanpage cron Failed: ' .$errMsg .'<br/>' .$e->getMessage(), Zend_Log::INFO);
