@@ -1,11 +1,14 @@
 <?php $count = 0?>
 <?php foreach($this->top_post as $topPost): ?>
 											
-	
-		<li class="grey-light" >
-
 		
+		<li class="grey-light" >
+			<div class="rank">
+					#<?=$count + 1?>
+			</div>
+				
 			<div class="flag">
+				
 				<div class="photo"><a href="#" onclick="userProfile('<?= $topPost['facebook_user_id']?>', true)"><img class="face"  width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a></div>
 					
 				<div class="name"><a href="#" onclick="userProfile('<?= $topPost['facebook_user_id']?>', true)"><?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?></a>
@@ -13,8 +16,11 @@
 				<div class="date"><?= date("F d Y", strtotime($topPost['created_time']))?></div> 
 				
 				
+			
 				
 			</div>
+			
+			
 			
 		<div class="post_container">
 			<div class="post">

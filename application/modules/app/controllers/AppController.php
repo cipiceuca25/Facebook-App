@@ -840,7 +840,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	
     	$activities = new Model_FancrankActivities();
-    	$activities = $activities -> getRecentActivities($this->_userId, $this->_fanpageId, 10);
+    	$activities = $activities -> getRecentActivities($this->_userId, $this->_fanpageId, 20);
     	
     	$this->view->activities = $activities;
     	$this->view->user_id = $this->_userId;
@@ -1087,6 +1087,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->viewRenderer->setNoRender(true);
     	$limit = $this->_request->getParam('limit');
     	$target = $this->_request->getParam('target');
+    	$mini = $this->_request->getParam('mini');
+    	
     	$follow = new Model_Subscribes();
   
     	$userName = $this-> _request->getParam('targetname');
@@ -1113,7 +1115,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->user_name = $userName;
     	$this->view->user_id = $target;
     	
-    	$this->render("userlist");
+    	if ($mini){
+    		$this->render("miniuserlist");
+    	}else{
+    		$this->render("userlist");
+    	}
     }
     /*
     public function getfriendsAction(){
@@ -1151,7 +1157,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$limit = $this->_request->getParam('limit');
     	$target = $this->_request->getParam('target');
     	$userName = $this-> _request->getParam('targetname');
-    
+    	$mini = $this->_request->getParam('mini');
 
     	$follow = new Model_Subscribes();
     	$relation = array();
@@ -1174,7 +1180,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->user_name = $userName;
     	$this->view->user_id = $target;
     	
-    	$this->render("userlist");
+    	if ($mini){
+    		$this->render("miniuserlist");
+    	}else{
+    		$this->render("userlist");
+    	}
 
     }
     

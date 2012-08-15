@@ -24,22 +24,55 @@
 
 								</div>
 											
-										
-											<div>
+											
+											
 												<!-- 
 												<ul class="nav nav-tabs" id="postingTab">
 												  <li class="active"><a href="#post_post" data-toggle="tab" id="post_post_tab">Posts</a></li>
 												  <li><a href="#post_photo" data-toggle="tab" id="post_photo_tab">Photo/Video</a></li>
 												</ul>
 												 -->
-												<div class="tab-content" id="postingContent">
-													<div class="tab-pane active" id="post_post">
-													  	<form action="#" class="submit_box">
+												<!--  <div class="tab-content" id="postingContent">
+													<div class="tab-pane active" id="post_post">-->
+												<ul class="post-list">
+													
+													<li class="grey-light">
+														<div class="submit_container">
+														<span>[ <a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span>
+														</div>
+													</li>
+													
+													<li class="feed_spacer">
+
+													<div class="feed_spacer_top"></div>
+													
+													</li>
+													<li class="grey-light">
+													
+														<div class="submit_container">
+															
+														
+															<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></div>
+														
+															<form action="#" class="submit_box">
 																		<textarea id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
 																		<input type=button class="btn-submit" value=" Post "  id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
-														</form>
-													</div>
-												 <!-- 
+															</form>
+														</div>
+													</li>
+													<li class="feed_spacer">
+
+													<div class="feed_spacer_top"></div>
+													
+													</li>
+												</ul>	
+													
+													
+													  
+														
+														
+												<!-- </div>
+												 
 												  <div class="tab-pane" id="post_photo">
 												 		<form action="#" class="submit_box">
 												    		<input type="hidden" name="MAX_FILE_SIZE" value="100000" />
@@ -54,13 +87,12 @@
 														</form>
 												 
 												  </div>
-												  -->
 												  
-												</div>
-											</div>
+												  
+												</div>-->
 											
-											<span>[ <a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span>
-										
+											
+											
 											<ul class="post-list" id ="fancrankfeed">
 												
 											</ul>

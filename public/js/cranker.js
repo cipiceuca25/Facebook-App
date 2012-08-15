@@ -662,6 +662,8 @@
     		success: function( data ) {
     			$(ui).html(data);
     			getRecentActivities('#recent_activities');
+    			getMiniFollowingList(userName,userId);
+    			getMiniFollowersList(userName, userId);
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -863,13 +865,12 @@
 				}
 			});
 	}
-	
 	function getFollowingList(targetname, target, limit, refresh){
 		ui = '.profile-content';
 		refresh = typeof refresh !== 'undefined' ? refresh : true;
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/app/getfollowing/'+ fanpageId +'?limit='+limit + '&target=' +target + '&targetname=' +targetname,
+    		url: serverUrl +'/app/app/getfollowing/'+ fanpageId +'?limit='+limit + '&target=' +target + '&targetname=' +targetname + '&mini=0',
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -879,11 +880,16 @@
     			$('.user-profile').css('display', 'block');
     			$('.profile-content').css('height', 'auto');
     			 
-    			height = $(window).scrollTop() + 20;
+    			FB.Canvas.getPageInfo(
+    				    function(info) {
+    				    	$('.user-profile').css('top', info.scrollTop - 100);
+    				    }
+    				);
+    			
     			if(refresh){
 	    			$('.profile-content').animate({
 	    				height:'toggle',
-	    				top:height+'px'
+	    				top:'20px'
 	    			   },500, function(){
 	    				   
 	    			});
@@ -900,7 +906,7 @@
 		ui = '.profile-content';
 		$.ajax({
     		type: "GET",
-    		url: serverUrl +'/app/app/getfollowers/'+ fanpageId +'?limit='+limit + '&target=' +target + '&targetname=' +targetname,
+    		url: serverUrl +'/app/app/getfollowers/'+ fanpageId +'?limit='+limit + '&target=' +target + '&targetname=' +targetname + '&mini=0',
     		dataType: "html",
     		cache: false,
     		success: function( data ) {
@@ -908,10 +914,14 @@
     			$(ui).html(data);
     			$('.light-box').css('display','block');
     			$('.user-profile').css('display', 'block');
-    				
-    			
     			$('.profile-content').css('height', 'auto');
-    			  
+    			
+    			FB.Canvas.getPageInfo(
+    				    function(info) {
+    				    	$('.user-profile').css('top', info.scrollTop - 100);
+    				    }
+    				);
+    			
     			if(refresh){
 	    			$('.profile-content').animate({
 	    				height:'toggle',
@@ -920,6 +930,46 @@
 	    				   
 	    			});
     			}
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+		
+	}
+	function getMiniFollowingList(targetname, target){
+		ui = '#followinglist';
+
+		$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/app/getfollowing/'+ fanpageId +'?limit=5' + '&target=' +target + '&targetname=' +targetname + '&mini=1',
+    		dataType: "html",
+    		cache: false,
+    		async:false,
+    		success: function( data ) {
+    			
+    			$(ui).html(data);
+    	
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+	
+	}
+	function getMiniFollowersList(targetname, target){
+
+		ui = '#followerslist';
+		$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/app/getfollowers/'+ fanpageId +'?limit=5' + '&target=' +target + '&targetname=' +targetname + '&mini=1',
+    		dataType: "html",
+    		cache: false,
+    		async:false,
+    		success: function( data ) {
+    			
+    			$(ui).html(data);
+    	
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);

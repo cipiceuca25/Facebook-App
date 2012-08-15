@@ -15,11 +15,12 @@
 	
 		<div class="post_container">
 		<div class="post">
-		<div class="message"><? if(isset($this->post->message)){
+		<? if(isset($this->post->message)){?><div class="message">
+			<?php 
 			$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
 	
 				
-				$m = $this->escape($post->message);
+				$m = $this->escape($this->post->message);
 			
 
 				if(preg_match($reg_exUrl, $m, $url)) {
@@ -31,7 +32,9 @@
 				
 				       echo $m;
 				
-				}}?><br/></div>
+				}
+		?><br/></div>
+		<?}?>
 		<div class="pic">
 		
 			<? if(isset($this->post->link)) { ?> 
@@ -69,7 +72,7 @@
 					<?php }?>
 				
 			<?}elseif(isset($this->post->link)){ ?>
-				</a></div>
+				</a><br/></div>
 			<?php }?>
 			
 			
