@@ -14,13 +14,189 @@
 						-->
 						<div class="row">
 							<div class="span7 line">
+							
+							
+								<div class="subtitle">
+										
+		
+											<div class="title-header fanpage"> <h3>Latest Post From <?= $this->fanpage_name?></h3>
+								
+											
+											 </div>
+											
+											</div>
+												<ul class="post-list" id="latestpost">
+											
+	
+	
+<?php $count = 0?>
+
+<?php if(empty($this->latest)){
+
+	echo "Missing Access Token or Empty List";
+}?>
+
+
+
+<?php foreach ($this->latest as $post):?>		
+
+		
+	<li class="grey-light" >
+	
+	
+	<div class="flag">			
+	<span class="photo"><a href="#"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></a></span>
+	
+	
+	<span class="name">
+		<a href="#" ><?=  $post->from->name?></a> 
+	</span>
+	
+	<div class="date"><?=  date("l g:i a, F d Y",strtotime($post->created_time))?></div>
+	
+	</div>
+	
+			
+	
+	<div class="post_container">
+	<div class="post">
+		
+		
+		
+			<?php if(isset($post->message)){ 
+				?>
+				<div class="message">
+				<?php 
+				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+				$m = $this->escape($post->message);
+				if(preg_match($reg_exUrl, $m, $url)) {
+				
+		
+				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
+				
+				} else {
+				
+				       echo $m;
+				
+				}
+				?>
+				<br/>
+			
+			
+				</div>
+				<?}	?>
+			
+			
+		<div class="pic">
+		
+			<? if(isset($post->link)) { ?> 
+				<?php if($post->type == 'link') {?>
+					<div class="link">
+					<div class="link-left"> 
+				<?php }?> 
+				<a target="new" href="<?echo $this->escape($post->link)?> "> 
+			<?}?>
+			
+			<? if(isset($post->picture)  ||($post->type =='video') ){?>
+				<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
+			 <? } ?>
+			 
+			<? if((isset($post->link)) && ($post->type == 'link')) { ?> 
+				</a> </div>
+				
+				
+				<?php if (isset($post->picture)){?>
+				<div class="link-right"><?php }?>
+					<a target="new" href="<?echo $this->escape($post->link)?> ">
+					<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
+					<?php  if (isset($post->caption)){?>
+					</br>
+					<?php echo $this->escape($post->caption);?>: <?php }?> 
+					
+					
+					<?php if (isset($post->description)){?>
+					<?=$this->escape($post->description)?> 
+					<?php }?>
+					<?php if (isset($post->picture)){?> 
+					</a></div> 
+					<?php }?>
+				
+			<?}elseif(isset($post->link)){ ?>
+				</a><br/></div>
+			<?php }?>
+				
+			
+		</div>
+		
+	
+		
+	</div>	
+	
+		
+		
+	
+	
+	</div>
+	
+	<div class="social"> 
+		
+				<div class="badge badge-Fanpage">Admin</div>
+			
+			<span class="likes">
+				<!--  <img src="/img/news-feed/icon-likes.png" />-->
+				
+				<span class="like_<?= $post->id?>"><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?></span>
+				
+				
+				<?php if ($this->likes[$count] == 0) {?>
+					<a class="like_control_<?= $post->id?>" href="#post_<?=$post->id?>" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
+				<?}else{?>
+					<a class="like_control_<?= $post->id?>" href="#post_<?=$post->id?>" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
+				<?php }?>
+			</span>
+			
+			<span class="comment">
+				<span class="comment_<?= $post->id?>"><?php if(isset($post->comments->count)){
+					echo $post->comments->count; //echo  $post->comments->count;
+			 	} else {
+					echo '0'; 
+				}?></span>
+				
+			 <a href="#postn_<?=$post->id?>" onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
+			 		if(isset($post->comments->count)){
+						echo $post->comments->count; //echo  $post->comments->count;
+			 	} else {echo '0';} ?> , true )">Comment</a>
+			</span>
+			
+			<br/>
+			
+			
+		
+		</div>
+	<ul class="comments" id="postn_<?=$post->id?>" ></ul>
+	</li>	
+
+			
+<?php $count ++;?>
+ 
+
+<?php endforeach; ?>
+ 
+
+</ul>
+
+
+
+<div class="feed_spacer_top"></div>
+							
+							
 								<div class="title">
 									<div class="photo">
 										<a href=""><img class="face" width="30" height="30" src="">
 										</a> 
 									</div>
 
-									<div class="title-header"> <h3>Fancrank Feed</h3> </div>
+									<div class="title-header fancrankfeed"> <h3>Fancrank Feed</h3> </div>
 
 								</div>
 											
@@ -34,8 +210,14 @@
 												 -->
 												<!--  <div class="tab-content" id="postingContent">
 													<div class="tab-pane active" id="post_post">-->
-												<ul class="post-list">
 													
+													
+											
+
+
+
+									
+										<ul class="post-list" id="submitfeed">
 													<li class="grey-light">
 														<div class="submit_container">
 														<span>[ <a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span>
@@ -60,11 +242,7 @@
 															</form>
 														</div>
 													</li>
-													<li class="feed_spacer">
-
-													<div class="feed_spacer_top"></div>
-													
-													</li>
+													<li><div class="feed_spacer_top"></div></li>
 												</ul>	
 													
 													
@@ -90,7 +268,11 @@
 												  
 												  
 												</div>-->
+										
+
 											
+													
+												
 											
 											
 											<ul class="post-list" id ="fancrankfeed">
@@ -111,8 +293,8 @@
 									<div class="span5 re">
 										<div class="title">
 											<div class="photo"> <img src="/img/news-feed/top-fan-icon.jpg" /> </div>
-											<div class="title-header"> <h3> Top Fans  </h3>
-												<div class="tip"><a title="You are awesome and nobody can touch you! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
+											<div class="title-header topfan"> <h3> Top Fans This Week </h3>
+												<div class="tip"><a rel="tooltip" title="You are awesome and nobody can touch you! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
 											 </div>
 										</div>
 										
@@ -132,7 +314,7 @@
 										<div class="subtitle">
 										
 		
-											<div class="title-header"> <h3>Top Posts</h3>
+											<div class="title-header toppost"> <h3>Top Posts This Week</h3>
 										<!--  
 										<div class="tip"><a title="Wow, I can't believe you said that! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of likes and comments from other people!">?</a></div>
 											-->

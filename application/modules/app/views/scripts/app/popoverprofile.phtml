@@ -1,0 +1,52 @@
+<div class="flag">
+	<a>
+	<span class="photo">
+		<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->fan['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+	</span>
+	<span class="name">
+		<?=  $this->fan['fan_first_name'].' '.$this->fan['fan_last_name']?>
+	</span>
+	</a>
+	<div class="rank">
+		<?=  $this->fan['fan_level']?>
+	</div>
+</div>
+<div class="date">
+	Fancrank User Since: <?= date("F Y",strtotime($this->fan['created_time']))?><br/>
+	Country: <?= $this->fan['fan_location']?>, <?= $this->fan['fan_country']?>
+</div> 
+<div class="stat">
+	<div class="row">
+		<div class="span5">
+			<div class="row">
+			<div class="span2">
+				<h5>Posts:</h5>
+				<?= $this->stat[0]['total_posts']?>
+				<br />
+				<h5>Likes:</h5>
+				<?= $this->stat[0]['total_likes']?>
+				<br />
+				<h5>Comments:</h5>
+				<?= $this->stat[0]['total_comments']?>
+				<br />
+			
+		
+			</div>
+			<div class="span3">
+			
+				<h5>Recieved Comments:</h5>
+			<?= $this->stat[0]['total_get_comments']?>
+			<br />
+			<h5>Recieved Likes:</h5>
+			<?= $this->stat[0]['total_get_likes']?>
+			
+			
+			</div>
+			</div>
+		</div>
+	
+	
+	</div>
+	
+
+</div>

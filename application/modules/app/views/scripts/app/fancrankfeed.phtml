@@ -11,20 +11,24 @@
 
 <?php foreach ($this->post as $post):?>		
 
-	<?php if ($count % 2 == 0){?>			
+		
 	<li class="grey-light" >
-	<?php }else{?>
-	<li class="grey-dark" >
-	<?php }?>
-	
-	<div class="flag">			
-	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></a></div>
 	
 	
-	<div class="name">
-		<a href="#" <? if (!($this->relation[$count] == 'Fanpage') ){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a> 
-	</div>
+	<div class="flag" >		
+	<a href="#" data-userid="<?=$post->from->id?>" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?> 
+	rel="popover" data-content="" data-original-title="" data-placement="right"> 
 	
+	
+	
+	
+		<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></span>
+		
+		
+		<span class="name">
+			<?=  $post->from->name?>
+		</span>
+	</a> 
 	<div class="date"><?=  date("l g:i a, F d Y",strtotime($post->created_time))?></div>
 	
 	</div>

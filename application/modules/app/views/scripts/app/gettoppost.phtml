@@ -8,11 +8,24 @@
 			</div>
 				
 			<div class="flag">
+				<a href="#" data-userid="<?= $topPost['facebook_user_id']?>" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?= $topPost['facebook_user_id']?>')"<?}?> 
+				rel="popover" data-content="" data-original-title="" data-placement="left"> 
 				
-				<div class="photo"><a href="#" onclick="userProfile('<?= $topPost['facebook_user_id']?>', true)"><img class="face"  width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a></div>
+				
+				
+				
+					<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id']?>/picture" onerror="ImgError(this);"></span>
 					
-				<div class="name"><a href="#" onclick="userProfile('<?= $topPost['facebook_user_id']?>', true)"><?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?></a>
-				</div>
+					
+					<span class="name">
+						<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>
+					</span>
+				</a> 
+				
+			
+				
+				
+				
 				<div class="date"><?= date("F d Y", strtotime($topPost['created_time']))?></div> 
 				
 				
@@ -142,11 +155,11 @@
 											
 										
 	</li>
-<li class="feed_spacer">
+	<li class="feed_spacer">
 
-<div class="feed_spacer_top"></div>
-
-</li>
+													<div class="feed_spacer_top"></div>
+													
+													</li>
 <?php $count ++;?>
 <?php endforeach; ?>
 

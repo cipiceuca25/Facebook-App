@@ -1,5 +1,4 @@
 
- <br/>
 <?php $count = 0?>
 
 <?php if(empty($this->comments)){
@@ -12,21 +11,27 @@
 
 <?php foreach ($this->comments as $post):?>		
 
-	<?php if ($count % 2 == 0){?>			
+		
 	<li class="grey-light" >
-	<?php }else{?>
-	<li class="grey-dark" >
-	<?php }?>
+
 	
 	
 	
 	<div class="post_container">
-	<div class="photo"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></a></div>
+		<a href="#" data-userid="<?=$post->from->id?>" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?> 
+		rel="popover" data-content="" data-original-title=""> 
+		
 	
 	
-	
-	<div class="name"><a href="#" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?>><?=  $post->from->name?></a></div>
-	<div class="post">
+		
+			<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></span>
+			
+			
+			<span class="name">
+				<?=  $post->from->name?>
+			</span>
+		</a>
+<div class="post">
 	<div class="message"><? if(isset($post->message)){
 		$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
 	

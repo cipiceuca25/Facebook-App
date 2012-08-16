@@ -1,230 +1,222 @@
 
 						<div class="row">
 							<div class="span7">
-				
-									<div class="title">
-										<div class="photo"> <a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a></div>
-
-										<div class="title-header"> <h3> <?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile</i></h3> </div>
+									<div class="row">
+										<div class="span7">
+											<div class="title">
+												<div class="photo"> <a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a></div>
+		
+												<div class="title-header"> <h3> <?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile</i></h3> </div>
+											</div>
+											</div>
 									</div>
+									<div class="row" >
+										<div class="span7">
+										<div id="myprofile">
+											<div class="row profile_background">
+												<div class="row ">
+													<div class="span2">
+														<div class="profile-block">
+															<h3>Level</h3>
+															<div class="rank">
+																<?= $this->fan_level?>
+															</div>
+														</div>
+													</div>
+													<div class="span5">	
+											
+														<div class="profile-block fan-point">
+															<h3>Accumulated Points</h3>
+															
+															<h2><?= $this->fan_point?></h2> 
+															<h5>Points</h5>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+									
+													<div class="span7">
+													
+			
+														<div class="profile-block fan-point">
+															<h3>Fan Experience</h3>
+															
+															<div class="progress">
+																
+																<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;">
+																
+																</div>
+																
+															</div>
+															<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?>  <?=$this->fan_exp_required?> Until Next Level</h5>
+														</div>
+														
+													</div>
+												
+											
+												</div>
+												<div class="row">
+												
+													<div class="span7">
+													
+			
+														<div class="profile-block">
+														<h4>Overall Achievement</h4>
+														<div class="progress">
+															<div class="bar" style="width: <?= $this->overall_achievement?>%;">
+															</div>
+															
+														</div>
+														<h5><?=$this->user_badge?>/<?=$this->all_badge?> </h5>
+														</div>
+													</div>
+												
+											
+												</div>
+												<div class="row">
+													
+													<div class="span3_5">
+													
+												
+															<div class="profile-block">
+																<h4>Personal Achievement</h4>
+																<div class="progress">
+																	<div class="bar" style="width: 60%;"></div>
+																</div>
+															</div>
+														</div>
+											
+													<div class="span3_5">
+														
+													
+															<div class="profile-block">
+																<h4>Social Achievement</h4>
+																<div class="progress">
+																	<div class="bar" style="width: 60%;"></div>
+																</div>
+															</div>
+													</div>
+													
+												</div>
+												
+											</div>
+											<div class="feed_spacer_top"></div>
+											<div class="row profile_background">
+												<div class="row">
+													<div class="span7">
+														<div class="profile-block">
+															<h4>Recent Badges</h4>
+															
+													
+														<div class="span1">
+															<img src="/img/badges/post_comment_1.png" />
+														</div>	
+														<div class="span1">
+															<img src="/img/badges/post_video_1.png" />
+														</div>	
+														<div class="span1">	
+															<img src="/img/badges/post_photo_5.png" />
+														</div>	
+														<div class="span1">
+															<img src="/img/badges/post_post_1.png" />
+														</div>	
+														<div class="span1">
+															<img src="/img/badges/like_post_5.png" />
+														</div>	
+														<div class="span1">
+															<img src="/img/badges/like_photo_1.png" />
+														</div>	
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="feed_spacer_top"></div>
+											<div class="row profile_background">
+												<div class="row">
+													<div class="span3_5">
+														<div class="profile-block">
+																<h4>Followed by 
+														
+																<?= $this->follower['0']['Follower']?> Fans</h4>
+															
+														<div id="followerslist" >
+															
+														</div>
+														<div class="shadow">
+															<button class="btn-top" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
+																View Full List
+															</button>
+														</div>
+														</div>
+													</div>
+													<div class="span3_5">
+														<div class="profile-block">
+													
+																	<h4>Following 
+															
+																	<?= $this->following['0']['Following']?> Fans</h4>
+													
+														<div id="followinglist" >
+																
+														</div>
+														<div class="shadow">
+															<button class="btn-top" onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)" >
+																View Full List
+															</button>
+														</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="feed_spacer_top"></div>
+											<div class="row profile_background">
+												<div class="row">
+													<div class="span3_5">
+														<div class="profile-block left-align">
+														<h4>Fancrank User Since</h4>
+														<?= date("F d Y", strtotime($this->fan_since))?>
+														<br/>
+														<h4>Country</h4>
+														<?= $this->fan_country?>
+														</div>
+													</div>
+													<div class="span3_5">
+														<div class="profile-block left-align">
+															<h4>Other Statistics</h4>
+															Total Posts Made : <?=$this->stat_post?> <br/>
+															Total Likes Made : <?=$this->stat_like?> <br/>
+															Total Comments Made : <?=$this->stat_comment?> <br/>
+															Total Recieved Likes: <?=$this->stat_get_like?> <br/>
+															Total Recieved Comments: <?=$this->stat_get_comment?> <br/>
+														</div>
+													
+													</div>
+												</div>
+											</div>
+										</div>
+										</div>
+									</div>
+									
+									
+									
 							</div>
 							<div class="span5">
-								<div class="subtitle">
-									<div class="title-header reverse"> <h3>Most Recent Activities!</h3> </div>
+								<div class="row">
+									<div class="span5">
+										<div class="subtitle">
+											<div class="title-header"> <h3>Most Recent Activities!</h3> </div>
+										</div>
+									</div>	
 								</div>
-							
+								<div class="row">
+									<div class="span5">
+										<ul class="post-list" id="recent_activities">
+										
+										</ul>
+										
+									</div>	
+								</div>
 							</div>		
 						</div>
 						
-						<div class ="row">
-							<div class="span7">
-								<div class="row profile_background">
-									<div class="span7">
-				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-									<div class="row ">
-										<div class="span2">
-											<div class="profile-block">
-												<h3>Level</h3>
-												<div class="rank">
-													<?= $this->fan_level?>
-												</div>
-											</div>
-										</div>
-										<div class="span5">	
-								
-											<div class="profile-block fan-point">
-												<h3>Fan Experience</h3>
-												
-												<div class="progress">
-													
-													<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;">
-													
-													</div>
-													
-												</div>
-												<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?>  <?=$this->fan_exp_required?> Until Next Level</h5>
-											</div>
-										</div>
-									</div>
-									
-									<div class="row">
-									
-										<div class="span7">
-										
-											
-												<div class="rank">
-													*
-												</div>
-										
-								
-											<div class="profile-block">
-											<h4>Overall Achievement</h4>
-											<div class="progress">
-												<div class="bar" style="width: <?= $this->overall_achievement?>%;">
-												</div>
-												
-											</div>
-											<h5><?=$this->user_badge?>/<?=$this->all_badge?> </h5>
-											</div>
-										</div>
-									
-								
-									</div>
-									<div class="row">
-										
-										<div class="span3_5">
-										
-									
-												<div class="profile-block">
-													<h4>Personal Achievement</h4>
-													<div class="progress">
-														<div class="bar" style="width: 60%;"></div>
-													</div>
-												</div>
-											</div>
-								
-										<div class="span3_5">
-											
-										
-												<div class="profile-block">
-													<h4>Social Achievement</h4>
-													<div class="progress">
-														<div class="bar" style="width: 60%;"></div>
-													</div>
-												</div>
-										</div>
-										
-									</div>
-									
-				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-									</div>
-								</div>
-							
-								<div class="feed_spacer_top"></div>
-						
-								<div class="row profile_background">
-									<div class="span7">
-				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-										<div class="row">
-											<div class="span7">
-												<div class="profile-block">
-													<h4>Recent Badges</h4>
-													
-											
-												<div class="span1">
-													<img src="/img/badges/post_comment_1.png" />
-												</div>	
-												<div class="span1">
-													<img src="/img/badges/post_video_1.png" />
-												</div>	
-												<div class="span1">	
-													<img src="/img/badges/post_photo_5.png" />
-												</div>	
-												<div class="span1">
-													<img src="/img/badges/post_post_1.png" />
-												</div>	
-												<div class="span1">
-													<img src="/img/badges/like_post_5.png" />
-												</div>	
-												<div class="span1">
-													<img src="/img/badges/like_photo_1.png" />
-												</div>	
-												</div>
-											</div>
-										</div>
-				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-									</div>
-								</div>
-							
-								<div class="feed_spacer_top"></div>
-						
-								<div class="row profile_background">
-									<div class="span7">
-				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-										<div class="row">
-											<div class="span3_5">
-												<div class="profile-block">
-														<h4>Followed by 
-												
-														<?= $this->follower['0']['Follower']?> Fans</h4>
-													
-												<div id="followerslist" >
-													
-												</div>
-												<div class="shadow">
-													<button class="btn-top" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
-														View Full List
-													</button>
-												</div>
-												</div>
-											</div>
-											<div class="span3_5">
-												<div class="profile-block">
-											
-															<h4>Following 
-													
-															<?= $this->following['0']['Following']?> Fans</h4>
-											
-												<div id="followinglist" >
-														
-												</div>
-												<div class="shadow">
-													<button class="btn-top" onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)" >
-														View Full List
-													</button>
-												</div>
-												</div>
-											</div>
-										</div>
-				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-								</div>
-								</div>
-							
-								<div class="feed_spacer_top"></div>
-						
-								<div class="row profile_background">
-									<div class="span7">
-				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-										<div class="row">
-											<div class="span3_5">
-												<div class="profile-block left-align">
-												<h4>Fan Since</h4>
-												<?= date("F d Y", strtotime($this->fan_since))?>
-												<br/>
-												<h4>Country</h4>
-												<?= $this->fan_country?>
-												</div>
-											</div>
-											<div class="span3_5">
-												<div class="profile-block left-align">
-													<h4>Other Statistics</h4>
-													Total Posts Made : <?=$this->stat_post?> <br/>
-													Total Likes Made : <?=$this->stat_like?> <br/>
-													Total Comments Made : <?=$this->stat_comment?> <br/>
-													Total Recieved Likes: <?=$this->stat_get_like?> <br/>
-													Total Recieved Comments: <?=$this->stat_get_comment?> <br/>
-												</div>
-											
-											</div>
-										</div>
-				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-									</div>
-								</div>
-							</div>
-			
-							
-								
-							<div class="span5">
-								
-				
-								<ul class="post-list" id="recent_activities">
-										
-								</ul>
-								
-							</div>
-							
-						</div>
-				
-			
-					
 					

@@ -26,7 +26,8 @@
 		
 		getNewsfeed('#news-feed');
 		
-
+		
+		
 	});
 	
 	setFeed='All';
@@ -37,10 +38,47 @@
 	ttb = true;
 	tcb = true;
 	tfdb = true;
+	
+	
 
-	$('a[title]').live("mouseover", function(){
-		$(this).tooltip({ placement: 'left'});	
+	$(document).on('mouseover', 'a[rel=popover]', function () {
+		popover($(this));
+		
+		if ( $(this).data('isPopoverLoaded') == true ) { return; }
+		  $(this).data('isPopoverLoaded', true).popover({delay: { show: 300, hide: 100 } , placement: $(this).attr('data-placement')}).trigger('mouseover');
+		  
 	});
+	
+	function popover(x){
+		//alert ('getting info for '+ id);
+		$.ajax({
+    		type: "GET",
+    		url:  serverUrl +'/app/app/popoverprofile/'+ fanpageId +'?facebook_user_id=' + $(x).attr('data-userid'),
+    		dataType: "html",
+    		cache: false,
+    		async: false,
+    		success: function( data ) {
+    			$(x).attr('data-content', data);
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+	}
+	
+	
+	$(document).on('mouseover', 'a[rel=tooltip]', function () {
+		  if ( $(this).data('isTooltipLoaded') == true ) { return; }
+		  $(this).data('isTooltipLoaded', true).tooltip({
+				'placement' : 'left'   
+			}).trigger('mouseover');
+		});
+	/*
+	$('a[rel=tooltip]').on("mouseover",function(){
+		$(this).tooltip({
+			'placement' : 'left'   
+		});	
+	});*/
 	
 	$('.badge-Following').live("mouseover", function(){
 		$(this).text('Unfollow');
@@ -226,7 +264,9 @@
 		$('#newsfeed').html('');
 		$('#redeem').html('');
 		//$('.bubble').html('');
-		
+	
+			
+	
 	});
 	
 	$('#profile-tab').live('click', function(){
@@ -370,7 +410,13 @@
 		
 	}
 	
+	function comment_feed2(post_id, type, limiter, total, toggle){
+		ui = '#postn_' + post_id;
+		//alert(ui);
+		getFeedComment( ui, post_id, type, limiter, total, toggle);
 
+		
+	}
 	 
 
 	 
