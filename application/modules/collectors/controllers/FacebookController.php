@@ -371,6 +371,36 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		print_r($a3);		
     }
     
+    public function test6Action() {
+    	$fanStat = new Model_FansObjectsStats();
+    	$fanpageId = '178384541065';
+    	$userId = '664609767';
+
+    	echo $fanStat->getFanPostStatusCount($fanpageId, $userId);
+    	echo '<br/>';
+    	echo $fanStat->getFanCommentCount($fanpageId, $userId);
+    	echo '<br/>';
+    	echo 'like: ' .$fanStat->getFanLikeCommentCount($fanpageId, $userId);
+    	echo '<br/>';
+    	echo 'got like: ' .$fanStat->getFanGotLikeFrom($fanpageId, $userId, 'comment');
+    	echo '<br/>';
+    	echo 'got comment: ' .$fanStat->getFanGotCommentCountFromStatus($fanpageId, $userId);
+
+    	$result = $fanStat->updatedFan($fanpageId, $userId);
+    	Zend_Debug::dump($result);
+    }
+    
+    public function test7Action() {
+    	$activity = new Model_FancrankActivities();
+    	$fanpage_id = '178384541065';
+    	$facebook_user_id = '664609767';
+    	    	
+    	$result = $activity->getRecentActivitiesInRealTime($facebook_user_id, $fanpage_id, 10);
+    	
+    	Zend_Debug::dump($result);
+    	
+    }
+    
     public function testmemcacheAction() {
     	$starttime = time();
     	echo $starttime;

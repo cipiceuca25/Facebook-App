@@ -285,7 +285,8 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					'facebook_user_id' => $comment->from->id,
 					'comment_message' => $this->quoteInto($comment->message),
 					'created_time' => $created->toString ( 'yyyy-MM-dd HH:mm:ss' ),
-					'comment_likes_count' => isset ( $comment->likes ) ? $comment->likes : 0 
+					'comment_likes_count' => isset ( $comment->likes ) ? $comment->likes : 0,
+					'comment_type' => $comment->comment_type 
 			);
 			
 			$rows [] = $row ['comment_id'];

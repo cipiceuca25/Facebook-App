@@ -76,18 +76,20 @@ class Service_FancrankCollectorService {
 		$albumsList = array();
 		$this->getFromUrlRecursive($url, 2, 1000, $albumsList);
 		//Zend_Debug::dump($albumsList);
+		$albumLikesList = $this->getLikesFromMyAlbums($albumsList, 'album');
+		//Zend_Debug::dump($albumLikesList);
+		
+		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList, 'album');
+		//Zend_Debug::dump($albumCommentList);
 		
 		$photoList = array();
 		$photoList = $this->getPhotosFromAlbum($albumsList, 2, 1000);
 		//Zend_Debug::dump($photoList);
-		$albumLikesList = $this->getLikesFromMyAlbums($albumsList);
-		//Zend_Debug::dump($albumLikesList);
-		$photoLikesList = $this->getLikesFromMyAlbums($photoList);
+		$photoLikesList = $this->getLikesFromMyAlbums($photoList, 'photo');
 		//Zend_Debug::dump($photoLikesList);
-		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList);
-		//Zend_Debug::dump($albumCommentList);
-		$photoCommentList = $this->getCommentsFromMyAlbum($photoList);
+		$photoCommentList = $this->getCommentsFromMyAlbum($photoList, 'photo');
 		//Zend_Debug::dump($photoCommentList);
+		
 		$commentsList = array_merge($postCommentsList, $albumCommentList, $photoCommentList);
 		//Zend_Debug::dump($commentsList);
 		$commentLikeList = $this->getLikesFromMyComment($commentsList);
@@ -167,23 +169,21 @@ class Service_FancrankCollectorService {
 		
 		echo '---------------';
 
-		//$newPosts = $this->filterPosts($lastUpdatedData['posts'], $posts);
+		$newPosts = $this->filterPosts($lastUpdatedData['posts'], $posts);
 		
-		//Zend_Debug::dump($newPosts);
+		Zend_Debug::dump($newPosts);
 		
 		if(empty($posts)) {
 			return;
 		}
 
  		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
- 		//Zend_Debug::dump($postLikeList); exit();
+ 		Zend_Debug::dump($postLikeList); 
 		
  		$postCommentsList = $this->getCommentsFromPost($posts, 5, 1000);
  		Zend_Debug::dump($postCommentsList);
  		
  		$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
- 		
- 		Zend_Debug::dump($pointResult);
  		
   		//Zend_Debug::dump($pointResult); exit();
 		//get all albums recursively
@@ -192,10 +192,10 @@ class Service_FancrankCollectorService {
 		$this->getFromUrlRecursive($url, 2, 1000, $albumsList);
 		Zend_Debug::dump($albumsList);
 		
-		$albumLikesList = $this->getLikesFromMyAlbums($albumsList);
+		$albumLikesList = $this->getLikesFromMyAlbums($albumsList, 'album');
 		Zend_Debug::dump($albumLikesList);
 
-		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList);
+		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList, 'album');
 		Zend_Debug::dump($albumCommentList);
 
 		$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
@@ -203,13 +203,13 @@ class Service_FancrankCollectorService {
 		
 		$photoList = array();
 		$photoList = $this->getPhotosFromAlbum($albumsList, 2, 1000);
-		//Zend_Debug::dump($photoList);
+		Zend_Debug::dump($photoList);
 		
-		$photoLikesList = $this->getLikesFromMyAlbums($photoList);
-		//Zend_Debug::dump($photoLikesList);
+		$photoLikesList = $this->getLikesFromMyAlbums($photoList, 'photo');
+		Zend_Debug::dump($photoLikesList);
 
-		$photoCommentList = $this->getCommentsFromMyAlbum($photoList);
-		//Zend_Debug::dump($photoCommentList);
+		$photoCommentList = $this->getCommentsFromMyAlbum($photoList, 'photo');
+		Zend_Debug::dump($photoCommentList);
 		
 		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
 		Zend_Debug::dump($pointResult);
@@ -392,12 +392,14 @@ class Service_FancrankCollectorService {
 				$this->getFromUrlRecursive($url, $level, $limit, $result);
 		
 				foreach ($result as $comment) {
+					$comment->comment_type = !empty($post->type) ? $post->type : '';
 					$results[] = $comment;
 				}
 				$hasMore = true;
 			}
 			if(! $hasMore && !empty($post->comments->data)) {
 				foreach ($post->comments->data as $comment) {
+					$comment->comment_type = !empty($post->type) ? $post->type : '';
 					$results[] = $comment;
 				}
 			}
@@ -535,7 +537,7 @@ class Service_FancrankCollectorService {
 					$results[] = array('fanpage_id'=>$this->_fanpageId,
 										'post_id'=>$post->id,
 										'facebook_user_id'=>$like->id,
-										'post_type'=>'post',
+										'post_type'=> !empty($post->type) ? $post->type : '',
 										'updated_time'=>$update_time);					
 				}
 				$hasMoreLike = true;
@@ -545,7 +547,7 @@ class Service_FancrankCollectorService {
 					$results[] = array('fanpage_id'=>$this->_fanpageId,
 										'post_id'=>$post->id,
 										'facebook_user_id'=>$like->id,
-										'post_type'=>'post',
+										'post_type'=> !empty($post->type) ? $post->type : '',
 										'updated_time'=>$update_time);
 				}
 			}
@@ -677,7 +679,7 @@ class Service_FancrankCollectorService {
 		return $likesList;
 	}
 	
-	private function getLikesFromMyAlbums($albums) {
+	private function getLikesFromMyAlbums($albums, $type) {
 		$likesList = array();
 		$time = new Zend_Date();
 		$update_time = $time->toString('yyyy-MM-dd HH:mm:ss');
@@ -690,7 +692,8 @@ class Service_FancrankCollectorService {
 							'post_id'           => $album->id,
 							'facebook_user_id'  => $like->id,
 							'post_type'         => 'photo',
-							'updated_time'		=> $update_time
+							'updated_time'		=> $update_time,
+							'post_type'			=> $type
 					);
 				}
 				
@@ -704,7 +707,8 @@ class Service_FancrankCollectorService {
 								'post_id'           => $album->id,
 								'facebook_user_id'  => $like->id,
 								'post_type'         => 'photo',
-								'updated_time'		=> $update_time
+								'updated_time'		=> $update_time,
+								'post_type'			=> $type
 						);
 					}
 				}
@@ -719,10 +723,6 @@ class Service_FancrankCollectorService {
 		$time = new Zend_Date();
 		$update_time = $time->toString('yyyy-MM-dd HH:mm:ss');
 		foreach ($commentList as $comment) {
-			$post_type = 'photo';
-			if(substr_count($comment->id, '_') === 2) {
-				$post_type = 'comment';
-			}
 			if(!empty($comment->like_count) && $comment->like_count >= 1) {
 				$result = array();
 				$url = $this->_facebookGraphAPIUrl . $comment->id .'/likes?access_token=' .$this->_accessToken;
@@ -732,7 +732,7 @@ class Service_FancrankCollectorService {
 							'fanpage_id'        => $this->_fanpageId,
 							'post_id'           => $comment->id,
 							'facebook_user_id'  => $like->id,
-							'post_type'         => $post_type,
+							'post_type'         => $comment->comment_type .'_comment',
 							'updated_time'		=> $update_time		
 					);
 				}
@@ -741,12 +741,13 @@ class Service_FancrankCollectorService {
 		return $likesList;
 	}
 	
-	private function getCommentsFromMyAlbum($albums) {
+	private function getCommentsFromMyAlbum($albums, $type) {
 		$commentList = array();
 		foreach ($albums as $album) {
 			if(! empty($album->comments->data) ) {
 		
 				foreach ($album->comments->data as $comment) {
+					$comment->comment_type = $type;
 					$commentList[] = $comment;
 				}
 		
@@ -755,6 +756,7 @@ class Service_FancrankCollectorService {
 					$url = $album->comments->paging->next;
 					$this->getFromUrlRecursive($url, 1, 1000, $result);
 					foreach ($result as $comment) {
+						$comment->comment_type = $type;
 						$commentList[] = $comment;
 					}
 				}
