@@ -761,11 +761,53 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$stat_get_like = $stat[0]['total_get_likes'];
     	
     	$activity = new Model_Posts();
-    	//$activity = $activity->getUserActivity($this->_fanpageId, $user->facebook_user_id);
+    	$activity = $activity->getUserActivity($this->_fanpageId, $user->facebook_user_id, 15);
+    	$followingList = $follow -> getFollowersList($user->facebook_user_id,$this-> _fanpageId, 15);
     	
-    	//Zend_debug::dump($activity);
+    	for($i=0; $i<count($followingList);$i++){
+    		
+    		if ($followingList[$i]['update_time'] == null){
+    			$followingList[$i]['update_time'] = $followingList[$i]['created_time'];
+    		}
+    		$followingList[$i]['user_created_time'] = $followingList[$i]['update_time'];
+    		//echo $f['user_created_time'] ;
+    	}
     	
+    	$fullactivity = array();
+    	$a =0;
+    	$b = 0;
+    	for($i=0; $i<count($followingList) + count($activity) ; $i++){
+    		if (($a < count($activity)) && ($b < count($followingList))){
+	    		if ($activity[$a]['user_created_time'] > $followingList[$b]['user_created_time'] ){
+	    			$fullactivity[$i] = $activity[$a];
+	    			$a++;
+	    		}else{
+	    			$fullactivity[$i] = $followingList[$b];
+	    			$b++;
+	    		}
+
+    		}else{
+	    		if ($a >= count($activity)){
+	    			$fullactivity[$i] = $followingList[$b];  
+	    			$b++;  			
+	    		}
+	    		if ($b >= count($followingList)){
+	    			$fullactivity[$i] = $activity[$a];
+	    			$a++;
+	    		}
+    		}
+    		
+    		//Zend_debug::dump($fullactivity);
+    		
+    	}
+    	
+    	//$activity = array_merge($activity, $followingList);
+    	
+    	
+    	//Zend_debug::dump($followingList);
     
+    	
+    	
     	$this->view->fan_level = $fan_level;
     	$this->view->fan_since = $fan_since;
     	$this->view->fan_country = $fan_country;
@@ -820,10 +862,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				$count++;
 			}
 		}
-    	
-		
-		
-	
 
 		$this->view->relation = $relation;
 

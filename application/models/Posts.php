@@ -154,33 +154,33 @@ class Model_Posts extends Model_DbTable_Posts
 	public function getUserActivity ($fanpage_id, $user_id, $limit){
 		$select="select a.*, f.fan_name from 
 				(
-				select p.*, p.created_time as user_created_time from posts p 
-													where p.facebook_user_id = '".$user_id."' 
+				select p.*, p.created_time as user_created_time, 'post' as act_type from posts p 
+													where p.facebook_user_id = '".$user_id."'
 													and p.fanpage_id= '".$fanpage_id."'
 				union 
-				SELECT p.*, c.created_time as user_created_time FROM comments c, posts p
+				SELECT p.*, c.created_time as user_created_time, 'comment' as act_type FROM comments c, posts p
 													where c.facebook_user_id = '".$user_id."'
 													and c.fanpage_id = '".$fanpage_id."'
 													and p.post_id = c.comment_post_id
 													and p.fanpage_id = c.fanpage_id
 				union 
-				SELECT p.*, l.created_time as user_created_time FROM  posts p, likes l 
+				SELECT p.*, l.created_time as user_created_time, 'like-post' as act_type FROM  posts p, likes l 
 													where l.facebook_user_id = '".$user_id."'
 													and l.fanpage_id = '".$fanpage_id."'
 													and p.post_id = l.post_id
 													and p.fanpage_id = l.fanpage_id
+													
 				union
-				SELECT  p.*, l.created_time as user_created_time FROM comments c, posts p, likes l 
-													where l.facebook_user_id = '".$user_id."' 
+				SELECT  p.*, l.created_time as user_created_time, 'like-comment' as act_type FROM comments c, posts p, likes l 
+													where l.facebook_user_id = '".$user_id."'
 													and l.fanpage_id = '".$fanpage_id."'
 													and p.post_id = c.comment_post_id
 													and p.fanpage_id = c.fanpage_id
 													and l.post_id = c.comment_id 
 				) as a, fans f 
-				where f.facebook_user_id = a.facebook_user_id && f.fanpage_id = a.fanpage_id
-				
-				order by a.created_time DESC";
-		
+				where f.facebook_user_id = a.facebook_user_id and f.fanpage_id = a.fanpage_id
+				order by a.user_created_time DESC ";
+
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
 		
