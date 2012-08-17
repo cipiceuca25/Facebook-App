@@ -45,7 +45,7 @@
 				<a target="new" href="<?echo $this->escape($this->post->link)?> "> 
 			<?}?>
 			
-			<? if(isset($this->post->picture)  ||($this->post->type =='video') ){?>
+			<? if(isset($this->post->picture)  || ($this->post->type =='video') ){?>
 				<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $this->post->picture))?> '/>
 			 <? } ?>
 			 
