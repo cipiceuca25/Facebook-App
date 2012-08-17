@@ -1023,6 +1023,9 @@
           case 'right':
             tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width}
             break
+          case 'toppost':
+        	  tp = {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth}
+              break
         }
 
         $tip
@@ -1046,7 +1049,7 @@
         , title = this.getTitle()
 
       $tip.find('.tooltip-inner')[this.isHTML(title) ? 'html' : 'text'](title)
-      $tip.removeClass('fade in top bottom left right')
+      $tip.removeClass('fade in top bottom left right toppost')
     }
 
   , hide: function () {
@@ -1205,7 +1208,7 @@
       $tip.find('.popover-title')[this.isHTML(title) ? 'html' : 'text'](title)
       $tip.find('.popover-content > *')[this.isHTML(content) ? 'html' : 'text'](content)
 
-      $tip.removeClass('fade top bottom left right in')
+      $tip.removeClass('fade top bottom left right toppost in')
     }
 
   , hasContent: function () {
