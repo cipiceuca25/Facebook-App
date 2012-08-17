@@ -50,9 +50,13 @@ if (count($fanList) > 0) {
 	$logger = new Zend_Log($writer);
 
 	$error = false;
+	$fanStat = new Model_FansObjectsStats();
+	$start = time();
 	foreach ($fanList as $fan) {
 		try {
-			echo $fan->facebook_user_id;
+			//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
+			$result = $fanStat->updatedFan($fan->fanpage_id, $fan->facebook_user_id);
+			//break;
 		}catch(Exception $e) {
 			$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan->facebook_user_id, $fan->fanpage_id);
 			$logger->log('Update fanpage cron Failed: ' .$errMsg .'<br/>' .$e->getMessage(), Zend_Log::INFO);
@@ -62,7 +66,10 @@ if (count($fanList) > 0) {
     
 	if($error) {
 		// send email with attachment
+		echo 'there is error';
 	}
+	$stop = time() - $start;
+	echo '<br />total execution time: ' .$stop;
     echo 'job done'.PHP_EOL;
     exit();
 }
