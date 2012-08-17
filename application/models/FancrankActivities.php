@@ -52,21 +52,21 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 		$fanpageModel = new Model_Fanpages();
 		$fanpageName = $fanpageModel->findRow($fanpage_id)->fanpage_name;
 		
-		$select = "select p.created_time, 'post' as activity_type, p.post_id as event_object, $fanpage_id as fanpage_id, p.facebook_user_id, f.facebook_user_name, $fanpage_id as target_user_id, '" .$fanpageName ."' as target_user_name   
+		$select = "select p.created_time, concat('post-',p.post_type) as activity_type, p.post_id as event_object, $fanpage_id as fanpage_id, p.facebook_user_id, f.facebook_user_name, $fanpage_id as target_user_id, '" .$fanpageName ."' as target_user_name   
 					from posts p inner join facebook_users f on (p.facebook_user_id = f.facebook_user_id)
 					where p.fanpage_id = $fanpage_id and p.facebook_user_id = $facebook_user_id
 					union 
-					select c.created_time, 'comment' as activity_type, c.comment_id as event_object, $fanpage_id as fanpage_id, c.facebook_user_id, f.facebook_user_name, c.comment_post_id as target_user_id, '' as target_user_name
+					select c.created_time, concat('comment-',c.comment_type) as activity_type, c.comment_id as event_object, $fanpage_id as fanpage_id, c.facebook_user_id, f.facebook_user_name, c.comment_post_id as target_user_id, '' as target_user_name
 					from comments c inner join facebook_users f on (c.facebook_user_id = f.facebook_user_id)
 					where c.fanpage_id = $fanpage_id and c.facebook_user_id = $facebook_user_id
 					union
-					select l.created_time, 'like' as activity_type, l.post_id as event_object, $fanpage_id as fanpage_id, l.facebook_user_id, f.facebook_user_name, l.post_id as target_user_id, l.post_type as target_user_name
+					select l.created_time, concat('like-',l.post_type) as activity_type, l.post_id as event_object, $fanpage_id as fanpage_id, l.facebook_user_id, f.facebook_user_name, l.post_id as target_user_id, l.post_type as target_user_name
 					from likes l inner join facebook_users f on (l.facebook_user_id = f.facebook_user_id)
 					where l.fanpage_id = $fanpage_id and l.facebook_user_id = $facebook_user_id
 					union
 					select fc.created_time, fc.activity_type, fc.event_object, fc.fanpage_id, fc.facebook_user_id, fc.facebook_user_name, fc.target_user_id, fc.target_user_name
 					from fancrank_activities fc
-					where fc.fanpage_id = $fanpage_id and fc.activity_type = 'follow' and fc.facebook_user_id = $facebook_user_id
+					where fc.fanpage_id = $fanpage_id and (fc.activity_type = 'follow' or fc.activity_type = 'unfollow') and fc.facebook_user_id = $facebook_user_id
 					order by created_time DESC
 				";
 		
@@ -115,7 +115,9 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 								$post = $this->getAdapter()->fetchRow($select);
 								$row['target_user_id'] = $post['facebook_user_id'];
 								$row['target_user_name'] = $post['facebook_user_name'];
+								$row['activity_type'] = 'like-' +$post['post_type'];
 							}
+							
 							break;
 						default:
 							if(substr_count($row['target_user_name'], '_comment') > 0) {

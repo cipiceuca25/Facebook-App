@@ -932,11 +932,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	
     	$activities = new Model_FancrankActivities();
-    	$activities = $activities -> getRecentActivities($this->_userId, $this->_fanpageId, 20);
+    	$activities = $activities -> getRecentActivitiesInRealTime($this->_userId, $this->_fanpageId, 20);
     	
     	$this->view->activities = $activities;
     	$this->view->user_id = $this->_userId;
-    	//Zend_Debug::dump($activities);
+    	
+    	Zend_Debug::dump($activities);
     	
     	$this->render("recentactivities");
     }
