@@ -111,24 +111,60 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function testAction() {
-    	$facebook_user_id = '578800322';
-    	$fanpage_id = '178384541065'; 
-    	
-		$badge = new Model_Badges();
-		//$result = $badge->fetchAll();
+		$yesterday = new Zend_Date(1344829222, zend_date::TIMESTAMP);
+    	//$yesterday->sub(2, Zend_Date::DAY);
+		Zend_Debug::dump($yesterday->toString(zend_date::ISO_8601));
 		
-		$top = new Model_Rankings();
-		$result = $top->getUserTopFansRank($fanpage_id, $facebook_user_id);
+		$time = time()-3600*24*30;
+		
+		echo $time .'<br/>';
+		
+		$yesterday = new Zend_Date($time, zend_date::TIMESTAMP);
+		
+		Zend_Debug::dump($yesterday->toString(zend_date::ISO_8601));
+		
+		//exit();
+		
+		//$yesterday->sub(2, Zend_Date::DAY);
+		$fanpageId = '216821905014540';
+		$accessToken = 'AAAFHFbxmJmgBAFMM8ULzy7NbBUE3AfQ0JlshZCtIoN6538nCcontTwQhgfqwXsYZCzf6uuWYvBuy6Hn1HO3qyQztlMr1TJkGcVvUygSS5fvuqFlXwH';
+		$batchQueries = $this->postBatchQueryBuilder($fanpageId, 10, $accessToken);
+		
+		Zend_Debug::dump($batchQueries);
+		$result = Fancrank_Util_Util::requestFacebookAPI_POST("https://graph.facebook.com/", $batchQueries);
+		
 		Zend_Debug::dump($result);
 		
-		$result = $top->getUserTopTalkerRank($fanpage_id, $facebook_user_id);
-		Zend_Debug::dump($result);
+		$resultList = array();
 		
-		$result = $top->getUserTopClickerRank($fanpage_id, $facebook_user_id);
-		Zend_Debug::dump($result);
+		foreach(json_decode($result) as $key=>$values) {
+			if(!empty($values->code) && $values->code === 200 && !empty($values->body)) {
+				$values = json_decode($values->body);
+				if(!empty ($values->data)) {
+					foreach ($values->data as $value) {
+						//echo $value->id .' ' .$queryType .'postId: '.$postIdsGroup[$groupKey][$key] .'<br />';
+						$resultList[] = $value;
+					}
+				}
+			}
+		}
 		
-		$result = $top->getUserMostPopularRank($fanpage_id, $facebook_user_id);
-		Zend_Debug::dump($result);
+		Zend_Debug::dump($resultList);
+		
+    }
+    
+    private function postBatchQueryBuilder($fanpageId, $postNum, $access_token) {
+    	$result = array();
+    	$limit = 5;
+    	for($i=0; $i<$postNum; $i++) {
+    		$offset = $i * $limit;
+    		if($offset > $postNum || $i >= 50) {
+    			break;
+    		}
+    		$tmp = array('method'=>'GET', 'relative_url'=> "/$fanpageId/feed?since=yesterday&limit=$limit&offset=$offset");
+    		$result[] = $tmp;
+    	}
+    	return 'batch=' .urlencode(json_encode($result)) .'&access_token=' .$access_token;
     }
     
     public function testmodelAction() {
@@ -169,6 +205,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		
 		//echo $result; exit();
 		$filePath = DATA_PATH .'/temp/last_update.data';
+		
+		if (file_exists($filePath)) {
+			echo "The file $filePath exists";
+		}
 		
 		$data = unserialize( file_get_contents( $filePath ) );
 		
@@ -223,7 +263,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	echo $since->toString('yyyy-MM-dd');    	
     	$until = $since->getTimestamp();
     	$since = $until-3600*24;
-		$collector->updateFanpage($since, $until);
+		$collector->updateFanpage('3+days+ago', 'now');
     }
     
     public function test3Action () {
@@ -322,6 +362,43 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		//Zend_Debug::dump($image);
 		//header('Content-Type: image/jpeg');
 		imagejpeg($image, null, 100);
+    }
+    
+    public function test5Action() {
+		$a1 = array(1=>'2', 2=>'a', 3=>'5');
+		$a2 = array('a'=>1);
+		$a3 = array_intersect_key($a1, $a2);
+		print_r($a3);		
+    }
+    
+    public function test6Action() {
+    	$fanStat = new Model_FansObjectsStats();
+    	$fanpageId = '178384541065';
+    	$userId = '664609767';
+
+    	echo $fanStat->getFanPostStatusCount($fanpageId, $userId);
+    	echo '<br/>';
+    	echo $fanStat->getFanCommentCount($fanpageId, $userId);
+    	echo '<br/>';
+    	echo 'like: ' .$fanStat->getFanLikeCommentCount($fanpageId, $userId);
+    	echo '<br/>';
+    	echo 'got like: ' .$fanStat->getFanGotLikeFrom($fanpageId, $userId, 'comment');
+    	echo '<br/>';
+    	echo 'got comment: ' .$fanStat->getFanGotCommentCountFromStatus($fanpageId, $userId);
+
+    	$result = $fanStat->updatedFan($fanpageId, $userId);
+    	Zend_Debug::dump($result);
+    }
+    
+    public function test7Action() {
+    	$activity = new Model_FancrankActivities();
+    	$fanpage_id = '178384541065';
+    	$facebook_user_id = '664609767';
+    	    	
+    	$result = $activity->getRecentActivitiesInRealTime($facebook_user_id, $fanpage_id, 10);
+    	
+    	Zend_Debug::dump($result);
+    	
     }
     
     public function testmemcacheAction() {

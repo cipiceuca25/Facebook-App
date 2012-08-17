@@ -76,18 +76,20 @@ class Service_FancrankCollectorService {
 		$albumsList = array();
 		$this->getFromUrlRecursive($url, 2, 1000, $albumsList);
 		//Zend_Debug::dump($albumsList);
+		$albumLikesList = $this->getLikesFromMyAlbums($albumsList, 'album');
+		//Zend_Debug::dump($albumLikesList);
+		
+		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList, 'album');
+		//Zend_Debug::dump($albumCommentList);
 		
 		$photoList = array();
 		$photoList = $this->getPhotosFromAlbum($albumsList, 2, 1000);
 		//Zend_Debug::dump($photoList);
-		$albumLikesList = $this->getLikesFromMyAlbums($albumsList);
-		//Zend_Debug::dump($albumLikesList);
-		$photoLikesList = $this->getLikesFromMyAlbums($photoList);
+		$photoLikesList = $this->getLikesFromMyAlbums($photoList, 'photo');
 		//Zend_Debug::dump($photoLikesList);
-		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList);
-		//Zend_Debug::dump($albumCommentList);
-		$photoCommentList = $this->getCommentsFromMyAlbum($photoList);
+		$photoCommentList = $this->getCommentsFromMyAlbum($photoList, 'photo');
 		//Zend_Debug::dump($photoCommentList);
+		
 		$commentsList = array_merge($postCommentsList, $albumCommentList, $photoCommentList);
 		//Zend_Debug::dump($commentsList);
 		$commentLikeList = $this->getLikesFromMyComment($commentsList);
@@ -104,10 +106,10 @@ class Service_FancrankCollectorService {
 		echo '<br/>total likes for ' .count($photoList) . ' photos ' .count($photoLikesList);
 		echo '<br/>Total likes : ' .count($allLikesList);
 		
-		$pointResult = $this->calculatePostPoints($posts, $postCommentsList);
+		$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
 		$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
 		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
-		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList);
+		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList, $commentLikeList);
 		$pointResult = $this->calculateLikesPoints($pointResult, $allLikesList);
 		
 		$db->beginTransaction();
@@ -142,60 +144,83 @@ class Service_FancrankCollectorService {
 	
 	public function updateFanpage($since=null, $until=null) {
 		$start = time();
+		$pointResult = array();
+		$lastUpdatedData = array();
+		
+		$filePath = DATA_PATH .'/temp/' .$this->_fanpageId .'_last_update.data';
+		
+		if (file_exists($filePath)) {
+			//echo "The file $filePath exists";
+			$lastUpdatedData = unserialize( file_get_contents( $filePath ) );
+		}else {
+			$lastUpdatedData['posts'] = array();
+			$lastUpdatedData['postLikeList'] = array();
+			$lastUpdatedData['postCommentsList'] = array();
+		}
 
+		//Zend_Debug::dump($lastUpdatedData['posts']);
+		//exit();
 		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/feed?access_token=' .$this->_accessToken .'&until=' .$until .'&since=' .$since;
+		
 		$posts = array();
 		//echo $url; exit();
 		$this->getPostsByTimeRange($url, 10, 100, $posts);
-		Zend_Debug::dump($posts); //exit();
+		Zend_Debug::dump($posts);
+		
+		echo '---------------';
+
+		$newPosts = $this->filterPosts($lastUpdatedData['posts'], $posts);
+		
+		Zend_Debug::dump($newPosts);
 		
 		if(empty($posts)) {
 			return;
 		}
 
  		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
- 		//Zend_Debug::dump($postLikeList);
+ 		Zend_Debug::dump($postLikeList); 
 		
  		$postCommentsList = $this->getCommentsFromPost($posts, 5, 1000);
- 		//Zend_Debug::dump($commentsList);
+ 		Zend_Debug::dump($postCommentsList);
  		
- 		$pointResult = $this->calculatePostPoints($posts, $postCommentsList);
+ 		$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
  		
   		//Zend_Debug::dump($pointResult); exit();
 		//get all albums recursively
 		$url = 'https://graph.facebook.com/' .$this->_fanpageId .'/albums?access_token=' .$this->_accessToken .'&since=' .$since;
 		$albumsList = array();
 		$this->getFromUrlRecursive($url, 2, 1000, $albumsList);
-		//Zend_Debug::dump($albumsList);
+		Zend_Debug::dump($albumsList);
 		
-		$albumLikesList = $this->getLikesFromMyAlbums($albumsList);
-		//Zend_Debug::dump($albumLikesList);
+		$albumLikesList = $this->getLikesFromMyAlbums($albumsList, 'album');
+		Zend_Debug::dump($albumLikesList);
 
-		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList);
-		//Zend_Debug::dump($albumCommentList);
+		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList, 'album');
+		Zend_Debug::dump($albumCommentList);
 
 		$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
-		//Zend_Debug::dump($pointResult);
-
+		Zend_Debug::dump($pointResult);
+		
 		$photoList = array();
 		$photoList = $this->getPhotosFromAlbum($albumsList, 2, 1000);
-		//Zend_Debug::dump($photoList);
+		Zend_Debug::dump($photoList);
 		
-		$photoLikesList = $this->getLikesFromMyAlbums($photoList);
-		//Zend_Debug::dump($photoLikesList);
+		$photoLikesList = $this->getLikesFromMyAlbums($photoList, 'photo');
+		Zend_Debug::dump($photoLikesList);
 
-		$photoCommentList = $this->getCommentsFromMyAlbum($photoList);
-		//Zend_Debug::dump($photoCommentList);
+		$photoCommentList = $this->getCommentsFromMyAlbum($photoList, 'photo');
+		Zend_Debug::dump($photoCommentList);
 		
 		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
-		//Zend_Debug::dump($pointResult);
+		Zend_Debug::dump($pointResult);
 		
 		$commentsList = array_merge($postCommentsList, $albumCommentList, $photoCommentList);
 		//Zend_Debug::dump($commentsList);
 		
-		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList);
-		
 		$commentLikeList = $this->getLikesFromMyComment($commentsList);
+		Zend_Debug::dump($commentLikeList);
+		
+		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList, $commentLikeList);
 
 		$allLikesList = array_merge($postLikeList, $commentLikeList, $albumLikesList, $photoLikesList);
 		
@@ -213,7 +238,7 @@ class Service_FancrankCollectorService {
 		echo '<br/>total likes for ' .count($photoList) . ' photos ' .count($photoLikesList);
 		echo '<br/>Total likes : ' .count($allLikesList);
 		
-		//Zend_Debug::dump($allLikesList); exit();
+		Zend_Debug::dump($allLikesList); exit();
 		$db->beginTransaction();
 		
 		try {
@@ -367,12 +392,14 @@ class Service_FancrankCollectorService {
 				$this->getFromUrlRecursive($url, $level, $limit, $result);
 		
 				foreach ($result as $comment) {
+					$comment->comment_type = !empty($post->type) ? $post->type : '';
 					$results[] = $comment;
 				}
 				$hasMore = true;
 			}
 			if(! $hasMore && !empty($post->comments->data)) {
 				foreach ($post->comments->data as $comment) {
+					$comment->comment_type = !empty($post->type) ? $post->type : '';
 					$results[] = $comment;
 				}
 			}
@@ -510,7 +537,7 @@ class Service_FancrankCollectorService {
 					$results[] = array('fanpage_id'=>$this->_fanpageId,
 										'post_id'=>$post->id,
 										'facebook_user_id'=>$like->id,
-										'post_type'=>'post',
+										'post_type'=> !empty($post->type) ? $post->type : '',
 										'updated_time'=>$update_time);					
 				}
 				$hasMoreLike = true;
@@ -520,7 +547,7 @@ class Service_FancrankCollectorService {
 					$results[] = array('fanpage_id'=>$this->_fanpageId,
 										'post_id'=>$post->id,
 										'facebook_user_id'=>$like->id,
-										'post_type'=>'post',
+										'post_type'=> !empty($post->type) ? $post->type : '',
 										'updated_time'=>$update_time);
 				}
 			}
@@ -652,7 +679,7 @@ class Service_FancrankCollectorService {
 		return $likesList;
 	}
 	
-	private function getLikesFromMyAlbums($albums) {
+	private function getLikesFromMyAlbums($albums, $type) {
 		$likesList = array();
 		$time = new Zend_Date();
 		$update_time = $time->toString('yyyy-MM-dd HH:mm:ss');
@@ -665,7 +692,8 @@ class Service_FancrankCollectorService {
 							'post_id'           => $album->id,
 							'facebook_user_id'  => $like->id,
 							'post_type'         => 'photo',
-							'updated_time'		=> $update_time
+							'updated_time'		=> $update_time,
+							'post_type'			=> $type
 					);
 				}
 				
@@ -679,7 +707,8 @@ class Service_FancrankCollectorService {
 								'post_id'           => $album->id,
 								'facebook_user_id'  => $like->id,
 								'post_type'         => 'photo',
-								'updated_time'		=> $update_time
+								'updated_time'		=> $update_time,
+								'post_type'			=> $type
 						);
 					}
 				}
@@ -694,10 +723,6 @@ class Service_FancrankCollectorService {
 		$time = new Zend_Date();
 		$update_time = $time->toString('yyyy-MM-dd HH:mm:ss');
 		foreach ($commentList as $comment) {
-			$post_type = 'photo';
-			if(substr_count($comment->id, '_') === 2) {
-				$post_type = 'comment';
-			}
 			if(!empty($comment->like_count) && $comment->like_count >= 1) {
 				$result = array();
 				$url = $this->_facebookGraphAPIUrl . $comment->id .'/likes?access_token=' .$this->_accessToken;
@@ -707,7 +732,7 @@ class Service_FancrankCollectorService {
 							'fanpage_id'        => $this->_fanpageId,
 							'post_id'           => $comment->id,
 							'facebook_user_id'  => $like->id,
-							'post_type'         => $post_type,
+							'post_type'         => $comment->comment_type .'_comment',
 							'updated_time'		=> $update_time		
 					);
 				}
@@ -716,12 +741,13 @@ class Service_FancrankCollectorService {
 		return $likesList;
 	}
 	
-	private function getCommentsFromMyAlbum($albums) {
+	private function getCommentsFromMyAlbum($albums, $type) {
 		$commentList = array();
 		foreach ($albums as $album) {
 			if(! empty($album->comments->data) ) {
 		
 				foreach ($album->comments->data as $comment) {
+					$comment->comment_type = $type;
 					$commentList[] = $comment;
 				}
 		
@@ -730,6 +756,7 @@ class Service_FancrankCollectorService {
 					$url = $album->comments->paging->next;
 					$this->getFromUrlRecursive($url, 1, 1000, $result);
 					foreach ($result as $comment) {
+						$comment->comment_type = $type;
 						$commentList[] = $comment;
 					}
 				}
@@ -816,9 +843,12 @@ class Service_FancrankCollectorService {
 		return $result;
 	}
 	
-	private function calculatePostPoints($posts, $commentsList) {
+	private function calculatePostPoints($posts, $commentsList, $postLikeList) {
 		$totalPoints = 0;
 		$postPointResult = array();
+		$postModel = new Model_Posts();
+		$commentModel = new Model_Comments();
+		
 		foreach ($posts as $post) {
 			$totalLikePoints = 0;
 			$totalCommentPoints = 0;
@@ -827,7 +857,8 @@ class Service_FancrankCollectorService {
 			if(!empty($post->from->id) && $this->_fanpageId === $post->from->id) {
 				$postTime = new Zend_Date($post->created_time, Zend_Date::ISO_8601);
 				foreach ($commentsList as $comment) {
-					if(preg_match("/{$post->from->id}_/", $comment->id) && $comment->from->id !== $post->from->id) {
+					
+					if(preg_match("/{$post->id}_/", $comment->id) && $comment->from->id !== $post->from->id && !$commentModel->findRow($comment->id)) {
 						$commentTime = new Zend_Date($comment->created_time, zend_date::ISO_8601);
 						$timeDifferentInMinute = floor(($commentTime->getTimestamp() - $postTime->getTimestamp()) / 60);
 						$multiply = 1;
@@ -838,7 +869,7 @@ class Service_FancrankCollectorService {
 							case ($timeDifferentInMinute < 60) : $multiply = 2; break;
 							default: break;
 						}
-						echo $comment->from->id .'gain comment:' .$multiply*2 .' from post ' .$post->from->id .'<br/>';
+						echo $comment->from->id .'gain comment: ' .$multiply*2 .' points from admin post ' .$post->id .'<br/>';
 						if(isset($postPointResult[$comment->from->id])) {
 							$postPointResult[$comment->from->id] = $postPointResult[$comment->from->id] + $multiply*2;
 						}else {
@@ -849,32 +880,80 @@ class Service_FancrankCollectorService {
 					
 				continue;
 			}
-		
-			if(empty($post->likes->count) && empty($post->comments->count)) {
+			
+			$oldPost = $postModel->findRow($post->id);
+			
+			if(empty($post->likes->count) && empty($post->comments->count) && !$oldPost) {
 				$totalPoints = -5;
 				echo $post->from->id .' lost: ' .$totalPoints .' from ' .$post->id .'<br/>';
-			}else {
+			}else if(!$oldPost) {
 				$virginity = 4;
-				
+				$uniqueUser = array();
 				if(!empty($post->likes->count) && $post->likes->count >= 1) {
 					$totalLikePoints = $post->likes->count;
-					$unique = $totalLikePoints;
-					echo $post->from->id .' gain like: ' .$totalLikePoints .' from ' .$post->id .'<br/>';
+					foreach ($postLikeList as $like) {
+						if($like['post_id'] === $post->id) {
+							$uniqueUser[$like['facebook_user_id']] = 1;
+						}
+					}
+					echo $post->from->id .' gain new like: ' .$totalLikePoints .' from ' .$post->id .'<br/>';
 				}
 				
 				$ownerCommentCount = 0;
 				if(!empty($post->comments->count) && $post->comments->count >= 1) {
 					foreach ($commentsList as $comment) {
-						if(preg_match("/{$post->from->id}_/", $comment->id) && $comment->from->id === $post->from->id) {
-							$ownerCommentCount++;
+						if(preg_match("/{$post->id}_/", $comment->id)) {
+							if($comment->from->id === $post->from->id) {
+								$ownerCommentCount++;
+							}else {
+								$uniqueUser[$comment->from->id] = 1;
+							}
 						}
 					}
+					
 					$totalCommentPoints = ($post->comments->count - $ownerCommentCount) * 2;
-					$unique += $post->comments->count - $ownerCommentCount;
-					echo $post->from->id .' gain comment: ' .$totalCommentPoints .' from ' .$post->id .'<br/>';
+
+					echo $post->from->id .' gain new comment: ' .$totalCommentPoints .' from ' .$post->id .'<br/>';
 				}
 				
-				$totalPoints = $virginity + $totalLikePoints + $totalCommentPoints + $unique;
+				echo $post->from->id .' gain new unique: ' .count($uniqueUser) .' from post ' .$post->id .'<br/>';
+				
+				$totalPoints = $virginity + $totalLikePoints + $totalCommentPoints + count($uniqueUser);
+			}else if($oldPost) {
+				
+				$likeModel = new Model_Likes();
+				$uniqueUser = array();
+				if(!empty($post->likes->count) && $post->likes->count >= 1) {
+					foreach ($postLikeList as $like) {
+						if($like['post_id'] === $post->id && !$likeModel->getLikes($like['fanpage_id'], $like['post_id'], $like['facebook_user_id'])) {
+							$uniqueUser[$like['facebook_user_id']] = 1;
+						}
+					}
+					echo $post->from->id .' gain more like: ' .count($uniqueUser) .' from ' .$post->id .'<br/>';
+				}
+				
+				$uniqueCommentUser = array();
+				$newCommentCount = 0;
+				if(!empty($post->comments->count) && $post->comments->count >= 1) {
+					foreach ($commentsList as $comment) {
+						if(preg_match("/{$post->id}_/", $comment->id) && !$commentModel->findRow($comment->id)) {
+							$newCommentCount++;
+							if(isset($uniqueCommentUser[$comment->from->id])) {
+								$uniqueCommentUser[$comment->from->id] += 1;
+							}else {
+								$uniqueCommentUser[$comment->from->id] = 1;
+							}
+						}
+					}
+					$totalCommentPoints =  $newCommentCount * 2;
+					echo $post->from->id .' gain more comment: ' .$totalCommentPoints .' from ' .$post->id .'<br/>';
+				}
+				
+				$unique = count($uniqueUser) + count($uniqueCommentUser) - count(array_intersect_key($uniqueUser, $uniqueCommentUser));
+				
+				echo $post->from->id .' gain more unique: ' .$unique .' from post ' .$post->id .'<br/>';
+				
+				$totalPoints = $totalLikePoints + $totalCommentPoints + $unique;
 			}
 				
 			if(isset($postPointResult[$post->from->id])) {
@@ -888,10 +967,12 @@ class Service_FancrankCollectorService {
 	}
 	
 	private function calculateAlbumPoints($pointResult, $albumsList, $albumCommentList) {
+		$commentModel = new Model_Comments();
+		
 		foreach ($albumsList as $album) {
 			$postTime = new Zend_Date($album->created_time, Zend_Date::ISO_8601);
 			foreach ($albumCommentList as $comment) {
-				if($comment->from->id !== $album->from->id) {
+				if($comment->from->id !== $album->from->id && !$commentModel->findRow($comment->id)) {
 					$commentTime = new Zend_Date($comment->created_time, zend_date::ISO_8601);
 					$timeDifferentInMinute = floor(($commentTime->getTimestamp() - $postTime->getTimestamp()) / 60);
 					$multiply = 1;
@@ -915,10 +996,12 @@ class Service_FancrankCollectorService {
 	}
 	
 	private function calculatePhotoPoints($pointResult, $photoList, $photoCommentList) {
+		$commentModel = new Model_Comments();
+		
 		foreach ($photoList as $photo) {
 			$postTime = new Zend_Date($photo->created_time, Zend_Date::ISO_8601);
 			foreach ($photoCommentList as $comment) {
-				if($comment->from->id !== $photo->from->id) {
+				if($comment->from->id !== $photo->from->id && !$commentModel->findRow($comment->id)) {
 					$commentTime = new Zend_Date($comment->created_time, zend_date::ISO_8601);
 					$timeDifferentInMinute = floor(($commentTime->getTimestamp() - $postTime->getTimestamp()) / 60);
 					$multiply = 1;
@@ -941,13 +1024,19 @@ class Service_FancrankCollectorService {
 		return $pointResult;
 	}
 	
-	private function calculateCommentPoints($pointResult, $commentsList) {
+	private function calculateCommentPoints($pointResult, $commentsList, $commentLikeList) {
+		$commentModel = new Model_Comments();
+		
 		foreach($commentsList as $comment) {
 			if($comment->from->id !== $this->_fanpageId && ! empty($comment->like_count)) {
-				if(isset($pointResult[$comment->from->id])) {
-					$pointResult[$comment->from->id] = $pointResult[$comment->from->id] + $comment->like_count;
-				}else {
-					$pointResult[$comment->from->id] = $comment->like_count;
+				foreach ($commentLikeList as $commentLike) {
+					if($comment->id === $commentLike['post_id'] && !$commentModel->findRow($comment->id)) {
+						if(isset($pointResult[$comment->from->id])) {
+							$pointResult[$comment->from->id] = $pointResult[$comment->from->id] + $comment->like_count;
+						}else {
+							$pointResult[$comment->from->id] = $comment->like_count;
+						}
+					}
 				}
 			}
 		}
@@ -955,7 +1044,9 @@ class Service_FancrankCollectorService {
 	}
 	
 	private function calculateLikesPoints($pointResult, $likesList) {
+		$likeModel = new Model_Likes();
 		foreach ($likesList as $like) {
+			if($likeModel->getLikes($like['fanpage_id'], $like['post_id'], $like['facebook_user_id'])) continue;
 			if(isset($pointResult[$like['facebook_user_id']])) {
 				$pointResult[$like['facebook_user_id']] = $pointResult[$like['facebook_user_id']] + 1;
 			}else {
@@ -963,6 +1054,77 @@ class Service_FancrankCollectorService {
 			}
 		}
 		return $pointResult;
+	}
+	
+	private function filterPosts($previousPosts, $newPosts) {
+		if(empty($previousPosts)) {
+			return $newPosts;
+		}
+		
+		$result = array();
+		foreach ($newPosts as $newPost) {
+			$found = false;
+			foreach($previousPosts as $prePost) {
+				if($newPost->id !== $prePost->id) continue;
+				$preLikeCount = 0;
+				$newLikeCount = 0;
+				if(!empty($prePost->likes->count)) {
+					$preLikeCount = $prePost->likes->count;
+				}
+				if(!empty($newPost->likes->count)) {
+					$newLikeCount = $newPost->likes->count;
+				}
+				if($newPost->updated_time !== $prePost->updated_time || $newLikeCount > $preLikeCount) {
+					//echo 'new like count: ' .$newLikeCount .' old count: ' .$preLikeCount;
+					$result[] = $newPost;
+				}
+				$found = true;
+				break;
+			}
+			if(!$found) {
+				$result[] = $newPost;
+			}
+		}
+		return $result;
+	}
+	
+	private function filterLikes($previousLikes, $newLikes) {
+		if(empty($previousLikes)) {
+			return $newLikes;
+		}
+		
+		$result = array();
+		foreach ($newLikes as $newLike) {
+			$found = false;
+			foreach($previousLikes as $preLike) {
+				if($newPost->id !== $prePost->id) continue;
+				$found = true;
+				break;
+			}
+			if(!$found) {
+				$result[] = $newLike;
+			}
+		}
+		return $result;
+	}
+	
+	private function filterComment($previousCommentList, $newCommentList) {
+		if(empty($previousCommentList)) {
+			return $newCommentList;
+		}
+		$result = array();
+		foreach ($previousCommentList as $preComment) {
+			$found = false;
+			foreach($newCommentList as $newComment) {
+				if($newComment->id !== $preComment->id) continue;
+				$found = true;
+				break;
+			}
+			if(!$found) {
+				$result[] = $newLike;
+			}
+		}
+		return $result;
 	}
 }
 

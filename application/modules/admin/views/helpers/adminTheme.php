@@ -1,6 +1,6 @@
 <?php
 
-class Admin_View_Helper_adminTheme extends Zend_View_Helper_Abstract
+class Admin_View_Helper_AdminTheme extends Zend_View_Helper_Abstract
 {
 	protected $_view;
 	

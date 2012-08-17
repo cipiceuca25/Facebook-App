@@ -2,6 +2,284 @@
 
 class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 {
+	public function updatedFan($fanpage_id, $facebook_user_id) {
+		$date = new Zend_Date();
+		$fanStat = $this->findFan($fanpage_id, $facebook_user_id);
+
+		$data = array(	'fanpage_id' => $fanpage_id,
+				'facebook_user_id' => $facebook_user_id,
+				'updated_time'=>$date->toString ( 'yyyy-MM-dd HH:mm:ss' ),
+				'fan_post_status_count' => $this->getFanPostStatusCount($fanpage_id, $facebook_user_id),
+				'fan_post_photo_count' => $this->getFanPostPhotoCount($fanpage_id, $facebook_user_id),
+				'fan_post_video_count' => $this->getFanPostVideoCount($fanpage_id, $facebook_user_id),
+				'fan_post_link_count' => $this->getFanPostLinkCount($fanpage_id, $facebook_user_id),
+				'fan_comment_status_count' => $this->getFanCommentStatusCount($fanpage_id, $facebook_user_id),
+				'fan_comment_photo_count' => $this->getFanCommentPhotoCount($fanpage_id, $facebook_user_id),
+				'fan_comment_video_count' => $this->getFanCommentVideoCount($fanpage_id, $facebook_user_id),
+				'fan_comment_link_count' => $this->getFanCommentLinkCount($fanpage_id, $facebook_user_id),
+				'fan_like_status_count' => $this->getFanLikeStatusCount($fanpage_id, $facebook_user_id),
+				'fan_like_photo_count' => $this->getFanLikePhotoCount($fanpage_id, $facebook_user_id),
+				'fan_like_video_count' => $this->getFanLikeVideoCount($fanpage_id, $facebook_user_id),
+				'fan_like_link_count' => $this->getFanLikeLinkCount($fanpage_id, $facebook_user_id),
+				'fan_like_comment_count' => $this->getFanLikeCommentCount($fanpage_id, $facebook_user_id),
+				'fan_get_like_status_count' => $this->getFanGotLikeFromStatus($fanpage_id, $facebook_user_id),
+				'fan_get_like_photo_count' => $this->getFanGotLikeFromPhoto($fanpage_id, $facebook_user_id),
+				'fan_get_like_video_count' => $this->getFanGotLikeFromVideo($fanpage_id, $facebook_user_id),
+				'fan_get_like_link_count' => $this->getFanGotLikeFromLink($fanpage_id, $facebook_user_id),
+				'fan_get_like_comment_count' => $this->getFanGotLikeFromComment($fanpage_id, $facebook_user_id),
+				'fan_get_comment_status_count' => $this->getFanGotCommentCountFromStatus($fanpage_id, $facebook_user_id),
+				'fan_get_comment_photo_count' => $this->getFanGotCommentCountFromPhoto($fanpage_id, $facebook_user_id),
+				'fan_get_comment_video_count' => $this->getFanGotCommentCountFromVideo($fanpage_id, $facebook_user_id),
+				'fan_get_comment_link_count' => $this->getFanGotCommentCountFromLink($fanpage_id, $facebook_user_id),
+		);
+		
+		if($fanStat) {
+			foreach ($data as $key => $value) {
+				$fanStat->{$key} = $value;
+			}
+			$fanStat->save();
+		}else {
+			$this->insert($data);
+		}
+	}
+	
+	public function getFanPostCountByType($fanpage_id, $facebook_user_id, $type) {
+		if($type === 'all') {
+			$postModel = new Model_Posts();
+			$select = $postModel->select();
+			$select->from($postModel, array('count(*) as count'));
+			$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
+			->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id));
+
+			$rows = $this->fetchAll($select);
+			
+			if(empty($rows[0]->count)) {
+				return 0;
+			}
+			
+			return ($rows[0]->count);
+		}
+		
+		$postModel = new Model_Posts();
+		$select = $postModel->select();
+		$select->from($postModel, array('count(*) as count'));
+		$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
+		->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id))
+		->where($this->quoteInto('post_type = ?', $type));
+		$rows = $this->fetchAll($select);
+		
+		if(empty($rows[0]->count)) {
+			return 0;
+		}
+		return ($rows[0]->count);
+	}
+	
+	public function getFanPostStatusCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanPostCountByType($fanpage_id, $facebook_user_id, 'status');
+	}
+	
+	public function getFanPostVideoCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanPostCountByType($fanpage_id, $facebook_user_id, 'video');
+	}
+	
+	public function getFanPostPhotoCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanPostCountByType($fanpage_id, $facebook_user_id, 'photo');
+	}
+	
+	public function getFanPostLinkCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanPostCountByType($fanpage_id, $facebook_user_id, 'link');
+	}
+	
+	public function getFanPostCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanPostCountByType($fanpage_id, $facebook_user_id, 'all');
+	}
+	
+	public function getFanCommentCountByType($fanpage_id, $facebook_user_id, $type) {
+		if($type === 'all') {
+			$commentModel = new Model_Comments();
+			$select = $commentModel->select();
+			$select->from($commentModel, array('count(*) as count'));
+			$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
+			->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id));
+			$rows = $this->fetchAll($select);
+			return ($rows[0]->count);
+		}
+		$commentModel = new Model_Comments();
+		$select = $commentModel->select();
+		$select->from($commentModel, array('count(*) as count'));
+		$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
+				->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id))
+				->where($this->quoteInto('comment_type = ?', $type));
+		$rows = $this->fetchAll($select);
+		return ($rows[0]->count);
+	}
+	
+	public function getFanCommentStatusCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanCommentCountByType($fanpage_id, $facebook_user_id, 'status');
+	}
+	
+	public function getFanCommentPhotoCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanCommentCountByType($fanpage_id, $facebook_user_id, 'photo');
+	}
+	
+	public function getFanCommentVideoCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanCommentCountByType($fanpage_id, $facebook_user_id, 'video');
+	}
+	
+	public function getFanCommentLinkCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanCommentCountByType($fanpage_id, $facebook_user_id, 'link');
+	}
+	
+	public function getFanCommentCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanCommentCountByType($fanpage_id, $facebook_user_id, 'all');
+	}
+	
+	public function getFanLikeCountByType($fanpage_id, $facebook_user_id, $type) {
+		if($type === 'all') {
+			$likeModel = new Model_Likes();
+			$select = $likeModel->select();
+			$select->from($likeModel, array('count(*) as count'));
+			$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
+				->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id))
+				->where($this->quoteInto('likes = ?', 1));
+			$rows = $this->fetchAll($select);
+			return ($rows[0]->count);
+		}
+		
+		$likeModel = new Model_Likes();
+		$select = $likeModel->select();
+		$select->from($likeModel, array('count(*) as count'));
+		$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
+			->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id))
+			->where($this->quoteInto('post_type = ?', $type))
+			->where($this->quoteInto('likes = ?', 1));
+		$rows = $this->fetchAll($select);
+		return ($rows[0]->count);
+	}
+	
+	
+	public function getFanLikeStatusCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanLikeCountByType($fanpage_id, $facebook_user_id, 'status');
+	}
+	
+	public function getFanLikeCommentCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanLikeCountByType($fanpage_id, $facebook_user_id, 'comment');
+	}
+	
+	public function getFanLikePhotoCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanLikeCountByType($fanpage_id, $facebook_user_id, 'photo');
+	}
+	
+	public function getFanLikeVideoCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanLikeCountByType($fanpage_id, $facebook_user_id, 'video');
+	}
+	
+	public function getFanLikeLinkCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanLikeCountByType($fanpage_id, $facebook_user_id, 'link');
+	}
+	
+	public function getFanLikeCount($fanpage_id, $facebook_user_id) {
+		return $this->getFanLikeCountByType($fanpage_id, $facebook_user_id, 'all');
+	}
+	
+	public function getFanGotLikeFrom($fanpage_id, $facebook_user_id, $type) {
+		$select = null;
+		
+		switch($type) {
+			case 'status':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
+				WHERE p.facebook_user_id = $facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'status' AND l.likes = 1";
+				break;
+			case 'link':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
+				WHERE p.facebook_user_id = $facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'link' AND l.likes = 1";
+				break;
+			case 'photo':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
+				WHERE p.facebook_user_id = $facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'photo' AND l.likes = 1";
+				break;
+			case 'video':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
+				WHERE p.facebook_user_id = $facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'video' AND l.likes = 1";
+				break;
+			case 'comment':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN comments c ON(l.post_id = c.comment_id) WHERE c.facebook_user_id = 
+							$facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type LIKE '%_comment' AND l.likes = 1"; 
+				break;
+			default: break;
+		}
+		
+		if(empty($select)) {
+			return 0;
+		}
+		
+		$rows = $this->getAdapter()->fetchAll($select);
+		
+		if(empty($rows[0]['count'])) {
+			return 0;
+		}
+		return ($rows[0]['count']);
+	}
+	
+	public function getFanGotLikeFromStatus($fanpage_id, $facebook_user_id) {
+		return $this->getFanGotLikeFrom($fanpage_id, $facebook_user_id, 'status');
+	}
+	
+	public function getFanGotLikeFromPhoto($fanpage_id, $facebook_user_id) {
+		return $this->getFanGotLikeFrom($fanpage_id, $facebook_user_id, 'photo');
+	}
+	
+	public function getFanGotLikeFromVideo($fanpage_id, $facebook_user_id) {
+		return $this->getFanGotLikeFrom($fanpage_id, $facebook_user_id, 'video');
+	}
+	
+	public function getFanGotLikeFromComment($fanpage_id, $facebook_user_id) {
+		return $this->getFanGotLikeFrom($fanpage_id, $facebook_user_id, 'comment');
+	}
+	
+	public function getFanGotLikeFromLink($fanpage_id, $facebook_user_id) {
+		return $this->getFanGotLikeFrom($fanpage_id, $facebook_user_id, 'link');
+	}
+	
+	public function getFanGotCommentFrom($fanpage_id, $facebook_user_id, $type) {
+		$select = null;
+		
+		if($type === 'all') {
+			$select = "SELECT sum(p.post_comments_count) AS count FROM posts p
+				WHERE p.fanpage_id = $fanpage_id AND p.facebook_user_id = $facebook_user_id GROUP BY p.facebook_user_id";
+		}else {
+			$select = "SELECT sum(p.post_comments_count) AS count FROM posts p
+				WHERE p.fanpage_id = $fanpage_id AND p.facebook_user_id = $facebook_user_id AND p.post_type = '". $type ."' GROUP BY p.facebook_user_id";
+		}
+		
+		if(empty($select)) {
+			return 0;
+		}
+		
+		$rows = $this->getAdapter()->fetchAll($select);
+		
+		if(empty($rows[0]['count'])) {
+			return 0;
+		}
+		return ($rows[0]['count']);
+	}
+	
+	public function getFanGotCommentCountFromStatus($fanpage_id, $facebook_user_id) {
+		return $this->getFanGotCommentFrom($fanpage_id, $facebook_user_id, 'status');
+	}
+
+	public function getFanGotCommentCountFromVideo($fanpage_id, $facebook_user_id) {
+		return $this->getFanGotCommentFrom($fanpage_id, $facebook_user_id, 'video');
+	}
+	
+	public function getFanGotCommentCountFromLink($fanpage_id, $facebook_user_id) {
+		return $this->getFanGotCommentFrom($fanpage_id, $facebook_user_id, 'link');
+	}
+	
+	public function getFanGotCommentCountFromPhoto($fanpage_id, $facebook_user_id) {
+		return $this->getFanGotCommentFrom($fanpage_id, $facebook_user_id, 'photo');
+	}
+	
 	protected function addFan($fanpage_id, $facebook_user_id){
 		$dateObject = new Zend_Date();
 		$data = array(	'fanpage_id' => $fanpage_id, 
@@ -892,7 +1170,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
-	public function getAdminLikes($facebook_user_id, $facebook_user_id){
+	public function getAdminLikes($fanpage_id, $facebook_user_id){
 		$select = "select com+pos as count
 					from
 					(SELECT count(*) as com from likes l, comments c
