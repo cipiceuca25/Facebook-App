@@ -864,7 +864,7 @@ ul, ol {
 	font-size:11px;
 	background-color:lighten(@color-base, 20%);
 	//#gradient > .horizontal(white, lighten(@color-base, 20%));
-	.border-radius(1px);
+	.border-radius(2px);
 	line-height:16px;
 	height:16px;
 	margin-right:3px;
@@ -885,7 +885,7 @@ ul, ol {
 .badge-unfollow{
 	font-size:11px;
 	//background-color:@color-follow;
-	.border-radius(1px);
+	.border-radius(2px);
 	line-height:16px;
 	height:16px;
 	margin-right:3px;
@@ -897,7 +897,7 @@ ul, ol {
 	font-size:11px;
 	background-color:#62c462;
 	//#gradient > .horizontal(white,#62c462);
-	.border-radius(1px);
+	.border-radius(2px);
 	line-height:16px;
 	height:16px;
 	margin-right:3px;
@@ -932,7 +932,7 @@ ul, ol {
 	font-size:11px;
 	background-color:@color-follower;
 	//#gradient > .horizontal(white, @color-follower);
-	.border-radius(1px);
+	.border-radius(2px);
 	line-height:16px;
 	height:16px;
 		margin-right:3px;
@@ -946,7 +946,7 @@ ul, ol {
 	font-size:11px;
 	//#gradient > .horizontal(white, @color-dark);
 	background-color:@color-feed2;
-	.border-radius(1px);
+	.border-radius(2px);
 	line-height:16px;
 	height:16px;
 	margin-right:3px;
@@ -961,7 +961,7 @@ ul, ol {
 	font-size:11px;
 	//#gradient > .horizontal(white, @color-friends);
 	background-color:lighten(@color-bubble1-original, 20%);
-	.border-radius(1px);
+	.border-radius(2px);
 	line-height:16px;
 	height:16px;
 		margin-right:3px;
@@ -1344,6 +1344,8 @@ ul, ol {
 	left:20px;
 	background-color:@color-background;
 	display:none;
+	padding-top:5px;
+	padding-bottom:5px;
 }
 
 .profile-content:hover{
@@ -2106,9 +2108,9 @@ form{
 .popover-inner{
 	.span5;
 	.border-radius(3px);
-	border:5px solid lighten(@color-base, 40%);	
+	border:5px solid lighten(@color-base, 30%);	
 	padding:0px;
-	background-color:lighten(@color-base, 40%);	
+	background-color:lighten(@color-base, 30%);	
 }
 
 .popover-title{
@@ -2173,16 +2175,45 @@ form{
 	margin:0px;
 	
 }
-
+.popover.top .arrow{
+	border-top: 5px solid lighten(@color-base, 30%);
+	margin-left:-104px;
+}
 .popover.left .arrow{
-	border-left: 5px solid lighten(@color-base, 40%);
+	border-left: 5px solid lighten(@color-base, 30%);
+}
+
+.popover.top{
+	margin-left:180px;
+	margin-top:10px;	
 }
 
 .popover.left{
-	left:-100px;
+	margin-left:39px;
+	margin-top:19px;
 }
 
-.popover.right .arrow{
-	
-	border-right: 5px solid lighten(@color-base, 40%);
+.popover.right .arrow{	
+	border-right: 5px solid lighten(@color-base, 30%);
+}
+
+
+.popover.toppost{
+	.popover.left;
+	margin-left:-35px;
+	margin-top:8px;
+
+}
+.popover.toppost .arrow{
+	  top: 50%;
+  right: 0;
+  margin-top: -5px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+
+	border-left: 5px solid lighten(@color-base, 30%);
+}
+
+#achievements{
+	font-size:11px;
 }

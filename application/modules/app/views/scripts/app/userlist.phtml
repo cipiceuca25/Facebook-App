@@ -31,7 +31,7 @@ Go back to <a href="#" onclick="userProfile('<?= $this->user_id?>', false)"><?= 
 		<div class="photo"><img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture"></div>
 		<div class="name">
 			<a href="#" onclick="userProfile('<?= $user['facebook_user_id']?>', false)"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
-			<br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?> since <?=  date(" F d Y",strtotime($user['created_time']))?>	
+			<!--   <br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?>  since <?=  date(" F d Y",strtotime($user['created_time']))?>	-->
 		</div>
 		<div class="follow">
 		<!-- <?php if(($this->title != 'Followers') /*&& ($this->title != 'Friends')*/ && ($this->title != 'You')){?>

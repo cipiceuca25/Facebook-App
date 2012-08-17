@@ -16,9 +16,16 @@
 	
 	
 	<div class="flag" >		
-	<a href="#" data-userid="<?=$post->from->id?>" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?> 
-	rel="popover" data-content="" data-original-title="" data-placement="right"> 
-	
+	<a href="#" 
+		<? if (!($this->relation[$count] == 'Fanpage')){?> 
+			onclick="userProfile('<?=$post->from->id?>')"
+			rel="popover" 
+			data-content="" 
+			data-original-title="" 
+			data-placement="right" 
+			data-userid="<?=$post->from->id?>"
+		<?php }?> 
+	> 
 	
 	
 	
@@ -117,13 +124,13 @@
 	
 	<div class="social"> 
 			<? if (!($this->relation[$count] == 'Fanpage')){?>
-			<? if ($this->relation[$count] != 'You') { ?>
-			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-					<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" >
-				<?}else{?>
-					<a href="#" onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
-				<?}?>
-				
+				<? if ($this->relation[$count] != 'You') { ?>
+					<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+							<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" >
+					<?}else{?>
+							<a href="#" onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+					<?}?>
+						
 					<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
 				<?php }else{?>
 					<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>

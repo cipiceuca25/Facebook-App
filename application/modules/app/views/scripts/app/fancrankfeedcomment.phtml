@@ -18,10 +18,18 @@
 	
 	
 	<div class="post_container">
-		<a href="#" data-userid="<?=$post->from->id?>" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?=$post->from->id?>')"<?}?> 
-		rel="popover" data-content="" data-original-title=""> 
-		
 	
+		
+	<a href="#" 
+		<? if (!($this->relation[$count] == 'Fanpage')){?> 
+			onclick="userProfile('<?=$post->from->id?>')"
+			rel="popover" 
+			data-content="" 
+			data-original-title="" 
+			data-placement="right" 
+			data-userid="<?=$post->from->id?>"
+		<?php }?> 
+	> 
 	
 		
 			<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></span>

@@ -94,13 +94,28 @@
 												<?php $badgeName = array_keys($this->badges)?>
 												
 												<?php for($i = 0 ; $i < count($badgeName); $i++){?>
-												
+												<div class="row">
+													<div class="profile-block">
 													<?php $badgeQuantity = array_keys($badge[$badgeName[$i]]);?>
 														<?php for($j = 0 ; $j < count($badgeQuantity); $j++){?>
 														
-														<?= $badgeQuantity[$j]?> <?= $badgeName[$i]?> . ' -- ' . <?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['description']?> . ' -- ' . <?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage']?><br/>
+														<div class="span1">
 														
+															<img src="<?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['picture']?>" title = "<?= str_replace('[quantity]',  $badgeQuantity[$j], $badge[$badgeName[$i]][$badgeQuantity[$j]]['description'])?>" /> 
+														
+														</div>
+														<div class="span2">
+															<?= $badgeName[$i]?>-<?=$badgeQuantity[$j]?>
+														
+															 <?= round($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] *100)?>% Completed
+													
+														</div>
+														
+														<?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] !== 1){
+																$j = count($badgeQuantity) +1;
+														}?> 
 													<?}?>
+												</div></div>
 											<?}?>
 										
 				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
