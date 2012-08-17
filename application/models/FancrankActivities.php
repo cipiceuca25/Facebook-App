@@ -115,7 +115,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 								$post = $this->getAdapter()->fetchRow($select);
 								$row['target_user_id'] = $post['facebook_user_id'];
 								$row['target_user_name'] = $post['facebook_user_name'];
-								$row['activity_type'] = 'like-' +$post['post_type'];
+						
 							}
 							
 							break;
