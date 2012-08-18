@@ -799,10 +799,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    		}
     		}
     		
-    		//Zend_debug::dump($fullactivity);
+    	
     		
     	}
-    	
+    	Zend_debug::dump($fullactivity);
     	//$activity = array_merge($activity, $followingList);
     	
     	
@@ -846,6 +846,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$relation = array();
     	$count=0;
 		//Zend_Debug::dump($result);
+		if ($result != null){
 		if ($viewAs == 'myfeed'){
 			foreach ($result as $posts){
 				//Zend_Debug::dump($posts);
@@ -863,6 +864,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				//echo $likes[$count];
 				$count++;
 			}
+		}
 		}
 
 		$this->view->relation = $relation;

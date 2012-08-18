@@ -9,7 +9,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
 
 	public function preDispatch() 
 	{
-		//$sources = $this->getModuleBootstrap()->getResource('Sources');
+        //$sources = $this->getModuleBootstrap()->getResource('Sources');
 		$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
 		
 		// get the source name

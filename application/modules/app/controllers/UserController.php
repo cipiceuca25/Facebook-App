@@ -214,7 +214,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 
 	public function unlikeAction() {
 		
-	$likeModel = new Model_Likes();
+		$likeModel = new Model_Likes();
 		$data['facebook_user_id'] = $this->_getParam('id');
 		$data['post_id'] = $this->_getParam('post_id');
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
@@ -290,8 +290,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$follow = new Model_Subscribes();
 		$user= $this->_getParam('id');
 		$target = $this->_getParam('target_id');
-		echo $user.' '.$target;
-		echo $follow->getRelation($user, $target);
+		$fanpage_id = $this->_getParam('fanpage_id');
+		//echo $user.' '.$target;
+		echo $follow->getRelation($user, $target, $fanpage_id);
 	}
 	
 	public function addactivityAction(){
@@ -387,6 +388,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$act -> addActivities($data);
 		
 	}
+	
+	
+
 	
 	public function uploadAction() {
 		$fc = $this->_getParam('fanpage_id');

@@ -18,7 +18,7 @@
 	<div class="flag">	
 	
 			
-	<a href="#" 
+	<a 
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
 			onclick="userProfile('<?=$post['facebook_user_id']?>')"
 			rel="popover" 
@@ -28,9 +28,7 @@
 			data-userid="<?=$post['facebook_user_id']?>"
 		<?php }?> 
 	> 
-	
-	
-	
+
 		<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></span>
 		
 		
@@ -102,19 +100,21 @@
 	
 	
 	<div class="social"> 
-		<? if (!($this->relation[$count] == 'Fanpage')){?>
+		<? if (($this->relation[$count] != 'Fanpage')){?>
 		<? if ($this->relation[$count] != 'You') { ?>
 			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-					<a href="#" onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" >
+					<a  onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" >
 				<?}else{?>
-					<a href="#" onclick="unfollow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>">
+					<a onclick="unfollow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>">
 				<?}?>
 				
-				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+				<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
 			<?php }else{?>
-				<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+				<span class="badge badge-You">You</span>
 			<?php }?>
-	<?}?>	
+		<?}else{?>	
+			<span class="badge badge-Fanpage">Admin</span>
+		<?php }?>
 		<span class="likes">
 			<img src="/img/news-feed/icon-likes.png" />
 			
@@ -122,9 +122,9 @@
 			
 			
 			<?php if ($this->likes[$count] == 0) {?>
-				<a class="like_control_<?= $post['post_id']?>" href="#post_<?=$post['post_id']?>" onclick="like('<?= $post['post_id']?>', '<?= $post['post_type']?>', '<?=$post['facebook_user_id']?>','<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>' )" >Like</a>   
+				<a class="like_control_<?= $post['post_id']?>"  onclick="like('<?= $post['post_id']?>', '<?= $post['post_type']?>', '<?=$post['facebook_user_id']?>','<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>' )" >Like</a>   
 			<?}else{?>
-				<a class="like_control_<?= $post['post_id']?>" href="#post_<?=$post['post_id']?>" onclick="unlike('<?= $post['post_id']?>', '<?= $post['post_type']?>', '<?=$post['facebook_user_id']?>','<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>')">Unlike</a>   
+				<a class="like_control_<?= $post['post_id']?>"  onclick="unlike('<?= $post['post_id']?>', '<?= $post['post_type']?>', '<?=$post['facebook_user_id']?>','<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>')">Unlike</a>   
 			<?php }?>
 		</span>
 		<span class="comment">
@@ -133,7 +133,7 @@
 		 	} else {
 				echo '0'; 
 			}?>
-		 <a href="#post_<?=$post['post_id']?>" onclick=" comment_feed('<?= $post['post_id'] ?>','<?= $post['post_type']?>', 5,<?php 
+		 <a  onclick=" comment_feed('<?= $post['post_id'] ?>','<?= $post['post_type']?>', 5,<?php 
 		 		if($post['post_comments_count']!=null){
 					echo $post['post_comments_count']; //echo  $post['post_comments_count'];
 		 	} else {echo '0';} ?> , true )">Comment</a>

@@ -31,10 +31,21 @@
 	
 <?php $count = 0?>
 
-<?php if(empty($this->latest)){
+<?php if(empty($this->latest)){?>
 
-	echo "Missing Access Token or Empty List";
-}?>
+		<li class="grey-light">
+	<div class="flag">
+	
+	</div>
+	<div class="post_container">
+		<div class="post">
+			<div class="message">
+			Feed Empty/Feed not Available
+			</div>
+		</div>
+		</div>
+	</li>
+<?}else{?>
 
 
 
@@ -44,15 +55,16 @@
 	<li class="grey-light" >
 	
 	
-	<div class="flag">			
-	<span class="photo"><a href="#"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></a></span>
-	
-	
-	<span class="name">
-		<a href="#" ><?=  $post->from->name?></a> 
-	</span>
-	
-	<div class="date"><?=  date("l g:i a, F d Y",strtotime($post->created_time))?></div>
+	<div class="flag">	
+	<a>	
+		<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></span>
+		
+		
+		<span class="name">
+			<?=  $post->from->name?>
+		</span>
+	</a>	
+		<div class="date"><?=  date("l g:i a, F d Y",strtotime($post->created_time))?></div>
 	
 	</div>
 	
@@ -127,15 +139,9 @@
 				
 			
 		</div>
-		
-	
-		
+
 	</div>	
-	
-		
-		
-	
-	
+
 	</div>
 	
 	<div class="social"> 
@@ -180,7 +186,7 @@
 <?php $count ++;?>
  
 
-<?php endforeach; ?>
+<?php endforeach; }?>
  
 
 </ul>
@@ -196,7 +202,12 @@
 										</a> 
 									</div>
 
-									<div class="title-header fancrankfeed"> <h3>Fancrank Feed</h3> </div>
+									<div class="title-header fancrankfeed"> <h3>FanCrank Feed</h3>
+									<div class="tip">
+										<a rel="tooltip" title='The FanCrank Feed is a customized news feed of all the activity on the page.  Choose "All" to see all posts on the page.  Choose "My Feed" to only show posts by the page owner and the people you follow.  choose "Page Posts" to see posts from the page owner.'>?</a>
+									</div>
+									
+									 </div>
 
 								</div>
 											
@@ -220,7 +231,7 @@
 										<ul class="post-list" id="submitfeed">
 													<li class="grey-light">
 														<div class="submit_container">
-														<span>[ <a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a href="#" onclick="getFancrankfeed('admin')">Admin</a> | <a href="#" onclick="getFancrankfeed('user')">User</a> ]</span>
+														<span>[ <a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a href="#" onclick="getFancrankfeed('admin')">Page Posts</a> ]</span>
 														</div>
 													</li>
 													
@@ -293,8 +304,10 @@
 									<div class="span5 re">
 										<div class="title">
 											<div class="photo"> <img src="/img/news-feed/top-fan-icon.jpg" /> </div>
-											<div class="title-header topfan"> <h3> Top Fans This Week </h3>
-												<div class="tip"><a rel="tooltip" title="You are awesome and nobody can touch you! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of posts, comments and likes you make to the page.<br /><br />If you're top 5 that means you interact with our brand the most!">?</a></div>
+											<div class="title-header topfan"> 
+												<h3> Top Fans This Week </h3>
+												<div class="tip"><a rel="tooltip" title="These 5 fans have liked, commented, and interacted the most on the page.  This ranking changes every week.  Prizes are awarded to the top fan every week!"
+												">?</a></div>
 											 </div>
 										</div>
 										
@@ -318,7 +331,9 @@
 										<!--  
 										<div class="tip"><a title="Wow, I can't believe you said that! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of likes and comments from other people!">?</a></div>
 											-->
-											
+											<div class="tip">
+												<a rel="tooltip" title="The posts listed below are the posts that have gotten the most likes and comments!  This list is updated regularly.">?</a>
+											</div>
 											 </div>
 											
 										</div>

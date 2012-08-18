@@ -7,25 +7,24 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
         //$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
-
         if (APPLICATION_ENV != 'production') {
-        	$this->data['page']['id'] = $this->_request->getParam('id');
-        	$this->view->fanpage_id = $this->_request->getParam('id');
-        	//$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
-        	$this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
-        	$this->view->user_id = $this->data['user_id'];
-        	$this->view->access_token = $this->_getParam('access_token');
-        	//Zend_debug::dump($this->data['user_id']);
+            $this->data['page']['id'] = $this->_request->getParam('id');
+            $this->view->fanpage_id = $this->_request->getParam('id');
+            //$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
+            $this->data['user_id'] = $this->_getParam('user_id'); //set test user id from url
+            $this->view->user_id = $this->data['user_id'];
+            $this->view->access_token = $this->_getParam('access_token');
+            //Zend_debug::dump($this->data['user_id']);
         }else {
-			if (isset($_REQUEST['signed_request'])) {
-				$fb = new Service_FancrankFBService();
-				$this->data['page']['id']= $fb->getFanPageId();
-				$this->data['user_id']=$fb->getFanPageUserId();
-				$this->view->user_id = $this->data['user_id'];
-				// Zend_Debug::dump($fb->getSignedData());
-			} else {
-				$this->data['page']['id'] = $this->_getParam('id');
-			}
+            if (isset($_REQUEST['signed_request'])) {
+                $fb = new Service_FancrankFBService();
+                $this->data['page']['id']= $fb->getFanPageId();
+                $this->data['user_id']=$fb->getFanPageUserId();
+                $this->view->user_id = $this->data['user_id'];
+                // Zend_Debug::dump($fb->getSignedData());
+            } else {
+                $this->data['page']['id'] = $this->_getParam('id');
+            }
 			
 			$this->view->user_id = $this->data['user_id'];
 			$this->view->fanpage_id = $this->data['page']['id'];
@@ -36,8 +35,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         }
         //set the proper navbar
         $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
-        
-		if($this->_auth->hasIdentity()) {
+        if($this->_auth->hasIdentity()) {
             //bring the user into the app if he is already logged in
 			$this->_redirect('/app/app/index/' .$this->data['page']['id']);   
 		}

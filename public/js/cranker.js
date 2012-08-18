@@ -6,13 +6,18 @@
 			 	
 		 	 }else{
 		 		 var x = 0;
-		 			if(!(parseInt(response.cover.offset_y)==34)){
-				 	 	try{
-				 	 		var x = -1*(parseInt(response.cover.offset_y) + 50);
-				 	 	}catch(err){
-							
-				 	 	}
-		 	 		}
+		 		 try{
+		 			 y = response.cover.offset_y;
+		 		 }catch(err){
+		 			 y = 0;
+		 		 }
+		 		 
+		 		 if (y > 35){
+				 x = -1*(parseInt(y) + 50);
+		 	 	 }else{
+		 	 		 x = 0;
+		 	 	 }
+		 	 
 			 	 	//alert(x);
 			 	 	try{
 			 		$('#logo').html('<img src =" ' + response.cover.source + '"style=" top:'+ x +'px" />' );
@@ -33,7 +38,7 @@
 	setFeed='All';
 	feedLimit = 0;
 	mtfb= true;
-	tfb = true;
+	tfb = false;
 	ffb = true;
 	ttb = true;
 	tcb = true;
@@ -85,6 +90,13 @@
 	});
 	$('.badge-Following').live("mouseleave", function(){
 		$(this).text('Following');
+	});
+	
+	$('.badge-Follower').live("mouseover", function(){
+		$(this).text('Follow');
+	});
+	$('.badge-Follower').live("mouseleave", function(){
+		$(this).text('Follower');
 	});
 	/*
 	$('.badge-Friends').live("mouseover", function(){
@@ -766,11 +778,30 @@
     	});
 	}
 
-    
+
+    function getRelation(target, ui){
+    	
+    	$.ajax({
+    		type: "GET",
+    		url: serverUrl +'/app/user/'+ userId + '/relation/?target_id=' + target + '&fanpage_id=' + fanpageId,
+    		dataType: "html",
+    		cache: false,
+    		success: function( data ) {
+    			$('.'+ui).html('<div class="badge badge-'+data+'">'+data+'</div>');
+			
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+
+    }
+	
 	function follow(target, name, ui){
 		if (target != userId){
 			
-		
+			
+			
 			$.ajax({
 	    		type: "GET",
 	    		url: serverUrl +'/app/user/'+ userId + '/follow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
@@ -780,9 +811,10 @@
 					//alert("target followed")
 	    			addActivities('follow',userName, target, target, name );
 					//getUserProfile('.profile-content', target);
-	    		
+	    			getRelation(target, ui);
+	    			//alert(relation);
 	    			$('.'+ui).attr('onclick',"unfollow('"+target+"','"+name+"','"+ui+"')" );
-	    			$('.'+ui).html('<div class="badge badge-Following">Following</div>');
+	    			//$('.'+ui).html('<div class="badge badge-'+relation+'">'+relation+'</div>');
 					feedbackAnimation('#follow-animation');
 	    		},	
 	    		error: function( xhr, errorMessage, thrownErro ) {
@@ -793,6 +825,7 @@
     }	
 	
 	function unfollow(target, name, ui){
+		
 		$.ajax({
     		type: "GET",
     		url: serverUrl +'/app/user/'+ userId + '/unfollow/?subscribe_to=' + target + '&facebook_user_id=' + userId + '&fanpage_id='+ fanpageId + '&subscribe_ref_id=1',
@@ -802,8 +835,10 @@
 				//alert("target unfollowed")
     			addActivities('unfollow', userName, target, target, name );
 				//getUserProfile('.profile-content', target);
+    			getRelation(target, ui);
+    		
     			$('.'+ui).attr('onclick',"follow('"+target+"','"+name+"','"+ui+"')" );
-    			$('.'+ui).html('<div class="badge badge-Follow">Follow</div>');
+    			//$('.'+ui).html('<div class="badge badge-'+relation+'">'+relation+'</div>');
     			feedbackAnimation('#unfollow-animation');
 				
     		},	
