@@ -280,6 +280,11 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		return $this->getFanGotCommentFrom($fanpage_id, $facebook_user_id, 'photo');
 	}
 	
+	public function getTopFanListByFanpageId($fanpage_id) {
+		
+	}
+	
+	//////////////////////////////////////////////////////////////
 	protected function addFan($fanpage_id, $facebook_user_id){
 		$dateObject = new Zend_Date();
 		$data = array(	'fanpage_id' => $fanpage_id, 

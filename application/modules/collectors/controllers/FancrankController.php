@@ -9,7 +9,8 @@ class Collectors_FancrankController extends Fancrank_Collectors_Controller_BaseC
     }
 	
     public function insightsAction() {
-    	
+    	$analytic = new Fancrank_Analytics_FancrankAnalytics();
+    	Zend_Debug::dump($analytic->getTopFanList('123'));
     }
     
     private function httpCurl($url, $params=null, $method=null) {
