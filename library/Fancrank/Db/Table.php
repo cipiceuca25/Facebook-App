@@ -248,4 +248,11 @@ class Fancrank_Db_Table extends Zend_Db_Table_Abstract
     		$this->insert($model);
     	}
     }
+
+    public function countAll() 
+    {
+        $select = $this->select();
+        $select->from($this->_name, array('num'=> 'COUNT(*)'));
+        return $this->fetchRow($select)->num;
+    }
 }

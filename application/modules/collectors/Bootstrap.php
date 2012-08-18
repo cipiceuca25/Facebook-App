@@ -9,7 +9,7 @@ class Collectors_Bootstrap extends Zend_Application_Module_Bootstrap
     protected function _initMemcache()
     {
     	$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini',APPLICATION_ENV);
-    	$options = $config->memcache->toArray();
+    //	$options = $config->memcache->toArray();
     	if (isset($options)) {
     		try {
     			$cache = Zend_Cache::factory(
