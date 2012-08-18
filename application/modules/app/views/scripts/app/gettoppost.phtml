@@ -3,10 +3,7 @@
 											
 		
 		<li class="grey-light" >
-			<div class="rank">
-					#<?=$count + 1?>
-			</div>
-				
+	
 			<div class="flag">
 				<a href="#" data-userid="<?= $topPost['facebook_user_id']?>" <? if (!($this->relation[$count] == 'Fanpage')){?>onclick="userProfile('<?= $topPost['facebook_user_id']?>')"<?}?> 
 				rel="popover" data-content="" data-original-title="" data-placement="toppost"> 
@@ -164,6 +161,33 @@
 <?php endforeach; ?>
 
 <?php if (!($this->top_post)) {?>
-	<?php echo 'There are no Top Posts this week.'?>				
+	
+		<li class="grey-light" >
+
+			<div class="flag">
+	
+			</div>
+			
+			
+			
+			<div class="post_container">
+				<div class="post">
+					
+				
+				
+					<div class="message">
+						There are no Top Posts this week
+					</div>							
+					
+				
+					
+				</div>
+					
+					
+					 
+			</div>	
+
+						
+	</li>				
 <?php }?>
 		

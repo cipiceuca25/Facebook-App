@@ -2,10 +2,21 @@
 
 <?php $count = 0?>
 
-<?php if(empty($this->post)){
-
-	echo "Missing Access Token or Empty List";
-}?>
+<?php if(empty($this->post)){?>
+	
+	<li class="grey-light">
+	<div class="flag">
+	
+	</div>
+	<div class="post_container">
+		<div class="post">
+			<div class="message">
+			Feed Empty/Feed not Available
+			</div>
+		</div>
+		</div>
+	</li>
+<?}else{?>
 
 
 
@@ -16,7 +27,7 @@
 	
 	
 	<div class="flag" >		
-	<a href="#" 
+	<a data-toggle="modal"
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
 			onclick="userProfile('<?=$post->from->id?>')"
 			rel="popover" 
@@ -123,21 +134,21 @@
 	</div>
 	
 	<div class="social"> 
-			<? if (!($this->relation[$count] == 'Fanpage')){?>
+			<? if (($this->relation[$count] != 'Fanpage')){?>
 				<? if ($this->relation[$count] != 'You') { ?>
 					<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-							<a href="#" onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" >
+							<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" >
 					<?}else{?>
-							<a href="#" onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+							<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
 					<?}?>
 						
-					<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+					<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
 				<?php }else{?>
-					<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+					<span class="badge badge-You">You</span>
 				<?php }?>
 				
 			<?}else{?>
-				<div class="badge badge-<?= $this->relation[$count]?>">Admin</div>
+				<span class="badge badge-Fanpage">Admin</span>
 			<?php }?>
 			<span class="likes">
 				<!--  <img src="/img/news-feed/icon-likes.png" />-->
@@ -146,9 +157,9 @@
 				
 				
 				<?php if ($this->likes[$count] == 0) {?>
-					<a class="like_control_<?= $post->id?>" href="#post_<?=$post->id?>" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
+					<a class="like_control_<?= $post->id?>"  onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
 				<?}else{?>
-					<a class="like_control_<?= $post->id?>" href="#post_<?=$post->id?>" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
+					<a class="like_control_<?= $post->id?>"  onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
 				<?php }?>
 			</span>
 			
@@ -159,7 +170,7 @@
 					echo '0'; 
 				}?></span>
 				
-			 <a href="#post_<?=$post->id?>" onclick=" comment_feed('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
+			 <a  onclick=" comment_feed('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; //echo  $post->comments->count;
 			 	} else {echo '0';} ?> , true )">Comment</a>
@@ -183,7 +194,7 @@
 </li>
 <?php endforeach; ?>
 				
-						
+<?php }?>					
 	
 
 

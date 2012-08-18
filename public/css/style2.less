@@ -46,8 +46,9 @@ a, a:visited{
 }
 
 a:hover{
-	color:@color-dark;
+	color:darken(@color-dark, 15%);
 	text-decoration:none;
+	cursor:pointer;
 }
 
 body{
@@ -79,6 +80,7 @@ ul, ol {
 	border-bottom:0px;
 	//border-bottom:1px solid @color-dark;
 	//background-color:@color-background;
+	
 }
 
 .nav-tabs .active  a, .nav-tabs .active a:hover{
@@ -92,6 +94,7 @@ ul, ol {
 	color:@color-background;
 	border-bottom:1px solid @color-dark;
 	background-color:@color-base;
+	.border-radius(3px 3px 0 0);
 }
 
 .nav-tabs li a:hover{
@@ -569,7 +572,7 @@ ul, ol {
 .top-list .border-dark.first,
 .top-list.mini .border-dark.first{
 	border-top: 0px solid #C4CDE0;//@color-feed;
-	.border-radius(3px);
+	//.border-radius(3px);
 }
 
 .top-list.mini .border-light,
@@ -820,12 +823,6 @@ ul, ol {
 	font-size:19px;
 }
 
-.top-list .points span{
-	//vertical-align:top;
-	display:inline-block;
-	line-height:11px;
-	font-size:11px;
-}
 
 .shadow{
 
@@ -876,8 +873,8 @@ ul, ol {
 	margin-top:3px;
 }
 
+.badge-Follower:hover,
 .badge-Follow:hover{
-
 	color:@color-dark;
 	background-color:@color-background;
 	//#gradient > .horizontal(white,@color-background);
@@ -1385,19 +1382,20 @@ ul, ol {
 
 #logo{
 	display:block;
-	height:300px;
+	max-height:300px;
 	width:810px;
 	overflow:hidden;
 }
 
 
 #header{
-	background:url(../img/header.jpg) top left no-repeat;
+	//background:url(../img/header.jpg) top left no-repeat;
 }
 
 #logo img{
 	width:810px;
 	position:relative;
+	top:0px;
 }
 
 #logoutBtn{
@@ -1667,7 +1665,7 @@ ul, ol {
 .top-list.user .follow{
 	float:right;
 	position:relative;
-	top:17px;
+	top:11px;
 	right:30px;
 }
 
@@ -1771,9 +1769,6 @@ ul, ol {
 	
 }
 
-.nav-tabs li a{
-	.border-radius(0);
-}	
 
 #postingTab li a{
 	padding-top:2px;
@@ -1957,10 +1952,17 @@ form{
 .top-fan .row.profile_background,
 #leaderboard .row.profile_background{
 	padding:3px;
-	margin-top:-5px;
+	//margin-top:-5px;
 	//border:5px solid lighten(@color-base, 40%);
-	//.border-radius(0 0 3px 3px);
-	border-bottom:0px;
+	.border-radius(0);
+	margin-top:-10px;
+	//padding-top:10px;
+	//background-color:lighten(@color-base, 40%);
+	border:5px solid lighten(@color-base, 40%);
+	//border-bottom:0px;
+	//border-top:0px;
+	.box-shadow(0 0 0 0 white);
+	
 }
 
 #myprofile .row.profile_background{
@@ -2036,8 +2038,6 @@ form{
 	border:5px solid lighten(@color-base, 40%);
 	
 	border-top:0px;
-	
-
 }
 
 #topfan{
