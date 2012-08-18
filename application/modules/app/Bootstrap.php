@@ -53,7 +53,7 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     	}
     }
     
-    protected function _initMemcache()
+    /*protected function _initMemcache()
     {
     	$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini',APPLICATION_ENV);
     	$options = $config->memcache->toArray();
@@ -74,5 +74,5 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     		}
     	}
     	return;
-    }
+    }*/
 }
