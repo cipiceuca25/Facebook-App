@@ -2,6 +2,7 @@ jQuery(document).ready(function($){
 	$('.fancrank_login').click(function(event){
 		event.preventDefault();
 		confirmFunction();
+		
 		/*
 		var message = 'Authorization Policy: blablabla';
 		var title = 'Policy Message';
@@ -16,7 +17,7 @@ jQuery(document).ready(function($){
 		});
 		dialog.style.width='250px';
 		dialog.style.height='150px';
-		*/	
+		*/
 	});	
 });
 

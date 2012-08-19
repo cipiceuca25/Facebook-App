@@ -11,7 +11,7 @@ class Fancrank_View_Helper_SelectTheme extends Zend_View_Helper_Abstract
 	public function selectTheme($choice, $env) {
 		if($env) {
 			if(empty($choice)) {
-				$choice = 3;
+				$choice = 5;
 			}
 			$cssFile = '/css/loadstyle' .$choice .'.less';
 			echo $this->_view->headLink()->headLink(array('id'=>'stylesheet', 'rel'=>'stylesheet/less', 'href'=>"$cssFile"));

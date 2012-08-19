@@ -46,6 +46,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			$token = $token->find($this->_fanpageId)->current();
 			//Zend_Debug::dump($token);
 			$this->_accessToken = $token ->access_token;			
+		}else {
+			$this->_redirect('http://www.fancrank.com');
 		}
 		
 		$name = new Model_FacebookUsers();

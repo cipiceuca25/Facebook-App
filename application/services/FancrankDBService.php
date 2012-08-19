@@ -435,7 +435,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					$fanProfile->fan_first_name = $fansData['fan_first_name'];
 					$fanProfile->fan_last_name = $fansData['fan_last_name'];
 					if(isset($pointResult[$facebookUserData['facebook_user_id']])) {
-						echo $facebookUserData['facebook_user_id'] .'<br/>';
+						//echo $facebookUserData['facebook_user_id'] .'<br/>';
 						$fansModel->updateFanPoints($pointResult[$facebookUserData['facebook_user_id']]);
 					}
 					
