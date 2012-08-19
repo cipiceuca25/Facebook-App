@@ -1,8 +1,9 @@
 jQuery(document).ready(function($){
 	$('.fancrank_login').click(function(event){
 		event.preventDefault();
-		//confirmFunction();
-
+		confirmFunction();
+		
+		/*
 		var message = 'Authorization Policy: blablabla';
 		var title = 'Policy Message';
 		var buttonLabel = '<input class="btn" type="button" name="login" value="agree" id="agree" onClick="FB.Dialog.remove(this);confirmFunction();"><input class="btn" type="button" name="disagree" value="Disagree" id="disagree" onClick="FB.Dialog.remove(this);">';
@@ -16,7 +17,7 @@ jQuery(document).ready(function($){
 		});
 		dialog.style.width='250px';
 		dialog.style.height='150px';
-
+		*/
 	});	
 });
 

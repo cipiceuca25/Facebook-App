@@ -365,10 +365,12 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test5Action() {
-		$a1 = array(1=>'2', 2=>'a', 3=>'5');
-		$a2 = array('a'=>1);
-		$a3 = array_intersect_key($a1, $a2);
-		print_r($a3);		
+    	$fanpageId = '178384541065';
+    	$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
+    	   
+    	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
+    	
+    	$collector->fullScanFanpage();
     }
     
     public function test6Action() {
@@ -400,7 +402,15 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	Zend_Debug::dump($result);
     	
     }
-    
+
+    public function test8Action() {
+    	$fanpageId = '178384541065';
+    	$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
+    	
+    	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
+    	 
+    	$collector->test();
+    }
     public function testmemcacheAction() {
     	$starttime = time();
     	echo $starttime;

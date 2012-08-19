@@ -5,6 +5,16 @@ var fanpageId = <?= $this->page_id ?>;
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.min.js') ?>
 <? $this->headScript()->appendFile('/js/admin/dashboard/analystic.js') ?>
 
+<div style="padding: 10px 0;" class="well">
+	<ul class="nav nav-list">
+          <li><a href="#"><i class="icon-user"></i> search</a></li>
+          <li><a class="model-btn" href="#myFanpageSettingModel"><i class="icon-cog"></i> top fan list</a></li>
+          <li><a class="model-btn" href="#myFanpageSettingModel"><i class="icon-cog"></i> top like list</a></li>
+          <li class="divider"></li>
+          <li><a href="#"><i class="icon-flag"></i> Help</a></li>
+        </ul>
+</div>
+	
 <div class="analystic-setting btn-group">
 	<ul class="nav nav-pills">
 		<li></li>

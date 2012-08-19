@@ -118,7 +118,7 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function updateCurrency($newBalance = null) {
-		if(empty($newBalance)) {
+		if(isset($newBalance)) {
 			$this->_fanProfile->fan_currency = $this->_newBalance;
 		}else {
 			$this->_fanProfile->fan_currency = $newBalance;

@@ -60,7 +60,6 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}
     	
     
-    	
     	$topFans = $model->getTopFans($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topFans);
     	 
