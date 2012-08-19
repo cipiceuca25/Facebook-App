@@ -35,47 +35,36 @@
 				}
 		?><br/></div>
 		<?}?>
-		<div class="pic">
-		
-			<? if(isset($this->post->link)) { ?> 
-				<?php if($this->post->type == 'link') {?>
-					<div class="link">
-					<div class="link-left"> 
-				<?php }?> 
-				<a target="new" href="<?echo $this->escape($this->post->link)?> "> 
-			<?}?>
+			<div class="pic">	
+		<?php if (($post->type == 'photo') || ($post->type =='video')) {?>	
 			
-			<? if(isset($this->post->picture)  || ($this->post->type =='video') ){?>
-				<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $this->post->picture))?> '/>
-			 <? } ?>
-			 
-			<? if((isset($this->post->link)) && ($this->post->type == 'link')) { ?> 
-				</a> </div>
-				
-				
-				<?php if (isset($this->post->picture)){?>
-				<div class="link-right"><?php }?>
-					<a target="new" href="<?echo $this->escape($this->post->link)?> ">
-					<?= (isset($this->post->name)?$this->escape($this->post->name): $this->escape($this->post->link))?>
-					<br/>
-					<br/>
-					<?php  if (isset($this->post->caption)){?>
-					</br>
-					<?php echo $this->escape($this->post->caption); ?>:<? }?>  
-					
-					
-					<?php if (isset($this->post->description)){?>
-					<?=$this->escape($this->post->description)?> 
-					<?php }?>
-					<?php if (isset($this->post->picture)){?> 
-					</a></div> 
-					<?php }?>
-				
-			<?}elseif(isset($this->post->link)){ ?>
-				</a><br/></div>
-			<?php }?>
+				<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?>'/>
 			
 			
+		<?}elseif ($post->type == 'link') {?>
+			<div class="link">
+				<div class="link-left">
+					<a target="new" href="<?echo $this->escape($post->link)?> "> 
+						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
+					</a>
+				</div>
+			
+				<div class="link-right">
+					<a target="new" href="<?echo $this->escape($post->link)?> ">
+						<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
+						<?php  if (isset($post->caption)){?>
+						</br>
+						<?php echo $this->escape($post->caption);?>: <?php }?> 
+						
+						
+						<?php if (isset($post->description)){?>
+						<?=$this->escape($post->description)?> 
+						<?php }?>
+						
+					</a>
+				</div>
+			</div>
+		<?}?>
 		</div>
 		
 	

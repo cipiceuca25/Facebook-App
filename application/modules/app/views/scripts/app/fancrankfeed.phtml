@@ -22,6 +22,7 @@
 
 <?php foreach ($this->post as $post):?>		
 
+	<?php if ((isset($post->message))){ ?>
 		
 	<li class="grey-light" >
 	
@@ -55,72 +56,62 @@
 	
 	<div class="post_container">
 	<div class="post">
-		
-		
-		
+
+
+
 			<?php if(isset($post->message)){ 
 				?>
-				<div class="message">
+			<div class="message">
 				<?php 
 				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
 				$m = $this->escape($post->message);
 				if(preg_match($reg_exUrl, $m, $url)) {
-				
-		
+
+
 				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
-				
+
 				} else {
-				
+
 				       echo $m;
-				
+
 				}
 				?>
-				<br/>
+				<br />
+
+
+			</div>
+			<?}	
+			?>
+		<div class="pic">	
+		<?php if (($post->type == 'photo') || ($post->type =='video')) {?>	
+			<a target="new" href="<?echo $this->escape($post->link)?> "> 
+						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
+					</a>
 			
-			
+		<?}elseif ($post->type == 'link') {?>
+			<div class="link">
+				<div class="link-left">
+					<a target="new" href="<?echo $this->escape($post->link)?> "> 
+						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
+					</a>
 				</div>
-				<?}	?>
 			
-			
-		<div class="pic">
-		
-			<? if(isset($post->link)) { ?> 
-				<?php if($post->type == 'link') {?>
-					<div class="link">
-					<div class="link-left"> 
-				<?php }?> 
-				<a target="new" href="<?echo $this->escape($post->link)?> "> 
-			<?}?>
-			
-			<? if(isset($post->picture)  ||($post->type =='video') ){?>
-				<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
-			 <? } ?>
-			 
-			<? if((isset($post->link)) && ($post->type == 'link')) { ?> 
-				</a> </div>
-				
-				
-				<?php if (isset($post->picture)){?>
-				<div class="link-right"><?php }?>
+				<div class="link-right">
 					<a target="new" href="<?echo $this->escape($post->link)?> ">
-					<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
-					<?php  if (isset($post->caption)){?>
-					</br>
-					<?php echo $this->escape($post->caption);?>: <?php }?> 
-					
-					
-					<?php if (isset($post->description)){?>
-					<?=$this->escape($post->description)?> 
-					<?php }?>
-					<?php if (isset($post->picture)){?> 
-					</a></div> 
-					<?php }?>
-				
-			<?}elseif(isset($post->link)){ ?>
-				</a><br/></div>
-			<?php }?>
-				
-			
+						<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
+						<?php  if (isset($post->caption)){?>
+						</br>
+						<?php echo $this->escape($post->caption);?>: <?php }?> 
+						
+						
+						<?php if (isset($post->description)){?>
+							<?=$this->escape($post->description)?> 
+						<?php }?>
+						
+					</a>
+				</div>
+			</div>
+		<?}?>
 		</div>
 		
 	
@@ -192,6 +183,7 @@
 <div class="feed_spacer_top"></div>
 
 </li>
+<?php }?>
 <?php endforeach; ?>
 				
 <?php }?>					
