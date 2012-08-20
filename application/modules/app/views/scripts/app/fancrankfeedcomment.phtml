@@ -16,7 +16,7 @@
 	<div class="post_container">
 	
 		
-	<a href="#" 
+	<a  
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
 			onclick="userProfile('<?=$post->from->id?>')"
 			rel="popover" 
@@ -36,7 +36,7 @@
 			</span>
 		</a>
 <div class="post">
-	<div class="message"><? if(isset($post->message)){
+	<span class="message"><? if(isset($post->message)){
 		$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
 	
 				
@@ -52,10 +52,10 @@
 				
 				       echo $m;
 				
-				}}?></div>
+				}}?>
 	
-	
-	<div class="social"> 
+	<br/>
+	<span class="social"> 
 	 	<? if (($this->relation[$count] != 'Fanpage')){?>
 			<? if ($this->relation[$count] != 'You') { ?>
 				<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
@@ -89,7 +89,9 @@
 		<?php }?>
 		 </span>	 
 	 
-	 </div>
+	 </span>
+	 
+	 </span>
 	 </div>
 	</div>
 	</li>

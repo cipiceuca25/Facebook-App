@@ -63,23 +63,30 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			$subscribe->fanpage_id = $data['fanpage_id'];
 			$subscribe->follow_enable = TRUE;
 			try {
-				$subscribe->save();				
+				$subscribe->save();			
+				echo "followed";
 			} catch (Exception $e) {
 				//TO LOG
 			}
 		}else {
+			
 			if($subscribe_Model->isDataValid($data)) {
+				echo "making new follow data";
 				try {
+					Zend_Debug::dump($subscribe);
 					$result = $subscribe_Model->insert($data);
-					//Zend_Debug::dump($result);
+					Zend_Debug::dump($result);
+					
 				} catch (Exception $e) {
 					//TO LOG
+					echo $e. "dafaq";
 				}
 			}else {
 				//echo 'nothing to save';
 			}
 			//Zend_Debug::dump($color->getColorChoice(1));
 		}
+		
 	}
 	
 	public function profileAction() {

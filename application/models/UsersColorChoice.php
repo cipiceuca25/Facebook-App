@@ -10,7 +10,7 @@ class Model_UsersColorChoice extends Model_DbTable_UsersColorChoice
 		
 		if ($this -> find($fanpage_id)->current() ==false){
 			
-			$data = array('fanpage_id' => $fanpage_id, 'color_choice' => 3);
+			$data = array('fanpage_id' => $fanpage_id, 'color_choice' => 5);
 			
 			$insert = $this->getAdapter()->insert(array('users_color_choice' => 'users_color_choice'), $data);
 		}

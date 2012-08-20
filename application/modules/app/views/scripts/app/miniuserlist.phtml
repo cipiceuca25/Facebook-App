@@ -19,7 +19,7 @@
 
 		<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture"></div>
 		<div class="name">
-			<a href="#" onclick="userProfile('<?= $user['facebook_user_id']?>', true)"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
+			<a onclick="userProfile('<?= $user['facebook_user_id']?>', true)"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
 			
 		</div>
 	

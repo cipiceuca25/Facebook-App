@@ -373,7 +373,21 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->view->facebook_user = null;
     	}
     	*/
-    	$latest = $this->getFeed(1, 'admin');
+		$latest = $this->getFeed(1, 'admin');
+    	$likesModel = new Model_Likes();
+    	$likes = array();
+    	$count=0;
+    	//Zend_Debug::dump($result);
+    	if ($latest != null){
+    			foreach ($latest as $posts){
+    				//echo $top['facebook_user_id'];
+    				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    				//echo $likes[$count];
+    				$count++;
+    			}
+    		}
+    	
+    
     	//Zend_debug::dump($latest);
     	$this->view->latest = $latest ;
     	$fanpage = new Model_Fanpages();
@@ -381,7 +395,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//Zend_Debug::dump($fanpage);
     	$this->view->fanpage_name = $fanpage->fanpage_name;
     	$this->view->fanpage_id = $this->_fanpageId;
-
+    	$this->view->likes = $likes;
     	$this->render("newsfeed");
     }
     
@@ -748,10 +762,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$fan_exp = $fan->getCurrentEXP();
     	$fan_exp_required = $fan->getNextLevelRequiredXP();
     	$this->view->fan_exp = $fan_exp;
-    	$this->view->fan_exp_required = $fan_exp_required;
-    	$this->view->fan_level_exp = $fan_exp + $fan_exp_required;
-    	$this->view->fan_exp_percentage = $fan_exp/($fan_exp + $fan_exp_required)*100;
-    	
+    	$this->view->fan_exp_required = $fan_exp_required - $fan_exp;
+    	$this->view->fan_level_exp = $fan_exp_required;
+    	$this->view->fan_exp_percentage = $fan_exp/$fan_exp_required*100;
     	//Zend_Debug::dump($fan_level);
     	
     	$stat = new Model_FansObjectsStats();
@@ -802,7 +815,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     		
     	}
-    	Zend_debug::dump($fullactivity);
+    	Zend_Debug::dump($fullactivity);
     	//$activity = array_merge($activity, $followingList);
     	
     	

@@ -401,8 +401,11 @@
 	function comment_feed(post_id, type, limiter, total, toggle){
 		ui = '#post_' + post_id;
 		//alert(ui);
+		
 		getFeedComment( ui, post_id, type, limiter, total, toggle);
+		
 
+		$('.social.comment.'+post_id).css('display', 'none');
 		//$('.light-box').css('display','block');
 		//$('.user-profile').css('display', 'block');
 	
@@ -486,7 +489,7 @@
 			cache: false,
 			async: false,
 			success: function( data ) {
-			
+				
 				$(ui).html(data);
 				
 			},	
@@ -509,7 +512,8 @@
 			//alert('hurray it didnt f-ing close');
 		}
 		
-
+		
+		
 		
 		
 	}
@@ -611,7 +615,15 @@
     			addActivities('like-'+post_type, userName, post_id, target_id, target_name );
     			
     			num=$('.like_'+post_id).html();
-    			$('.like_'+post_id).html((parseInt(num)+1));
+    			if ((num== null)||(num==0)){
+    				$('.like_'+post_id).html('1 person');
+    				alert('.social.like.'+post_id);
+    				
+    			}else{
+    				$('.like_'+post_id).html((parseInt(num)+1) + ' people');
+    			}
+    			$('.social.like.'+post_id).css('display', 'block');
+    			
     			$('.like_control_'+post_id).attr('onclick', "unlike('"+post_id+"','"+post_type+"','"+target_id+"','"+target_name+"')");
     			$('.like_control_'+post_id).html('Unlike');
     			
@@ -636,7 +648,12 @@
     			addActivities('unlike-'+post_type,userName, post_id, target_id, target_name);
     			
     			num=$('.like_'+post_id).html();
-    			$('.like_'+post_id).html((parseInt(num)-1));
+    			if (num == 2){
+    				$('.like_'+post_id).html('1 person');
+    			}else{
+    				$('.like_'+post_id).html((parseInt(num)-1) + ' people');
+    			}
+    			
     			$('.like_control_'+post_id).attr('onclick', "like('"+post_id+"','"+post_type+"','"+target_id+"','"+target_name+"')");
     			$('.like_control_'+post_id).html('Like');
     			
@@ -916,11 +933,14 @@
 				//alert('Post ID: ' + response.id);
 				$(m).val('');
 				addActivities('comment-'+type, userName, postid, target_id, target);
-				
+
 				num=$('.comment_'+postid).html();
-    			$('.comment_'+postid).html((parseInt(num)+1));
-    		
-    	
+
+    				$('.comment_'+postid).html((parseInt(num)+1));
+    				
+    			
+    			
+    				
 				comment_feed(postid, type, num+1, num+1,  false);
 				
 				

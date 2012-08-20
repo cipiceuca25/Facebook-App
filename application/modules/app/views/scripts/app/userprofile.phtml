@@ -47,7 +47,7 @@
 																</div>
 																
 															</div>
-															<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?>  <?=$this->fan_exp_required?> Until Next Level</h5>
+															<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?> <br/> <?=$this->fan_exp_required?> Until Next Level</h5>
 														</div>
 														
 													</div>
@@ -172,11 +172,23 @@
 												<div class="row">
 													<div class="span3_5">
 														<div class="profile-block left-align">
-														<h4>Fancrank User Since</h4>
-														<?= date("F d Y", strtotime($this->fan_since))?>
-														<br/>
-														<h4>Country</h4>
-														<?= $this->fan_country?>
+															<h4>Fancrank User Since:</h4>
+															<?php if ($this->fan['created_time'] == null){?>
+																Not A Fancrank User
+															<?}else{?>
+															 <?= date("F Y",strtotime($this->fan['created_time']))?>
+															<?}?>
+															<br/>
+															<h4>Location: </h4>
+															<?php if ($this->fan['fan_country'] != null ) {?>
+																<?php if ($this->fan['fan_location'] != null){?>
+																	<?= $this->fan['fan_location']?>, <?= $this->fan['fan_country']?>
+																<?php }?>
+																<?= $this->fan['fan_country']?>
+															<?php }else{?>
+																Unknown
+															<?php }?>
+	
 														</div>
 													</div>
 													<div class="span3_5">
