@@ -2,7 +2,10 @@
 				
 									<div class="row">
 										<div class="span7">
+											
 											<div class="title">
+												<div class="linkback">Go to <a href="http://www.facebook.com/<?= $this->facebook_user->facebook_user_id?>" target="_new" ><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?></a>'s Facebook Profile</div>
+											
 												<div class="photo"> <a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a></div>
 		
 												<div class="title-header"> <h3> <?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile</i></h3> </div>

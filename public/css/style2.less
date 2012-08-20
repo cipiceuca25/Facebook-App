@@ -53,7 +53,7 @@ a:hover{
 
 body{
 	background-color:@color-background;
-	color:#333;
+	color:#666;
 }
 
 #content{
@@ -298,7 +298,7 @@ ul, ol {
 	
 	//border-top: solid 2px lighten(@color-badges, 5%);
 	position:relative;
-	border:1px solid #C4CDE0;
+	border:1px solid darken(#C4CDE0, 20%);
 	.border-radius(3px);
 	.box-shadow(3px 3px 3px 1px darken(@color-background, 20%);
 }
@@ -311,7 +311,7 @@ ul, ol {
 
 	//border-top: solid 2px lighten(@color-badges, 5%);
 	position:relative;
-	border:1px solid #C4CDE0;
+	border:1px solid darken(#C4CDE0, 20%);
 	.border-radius(3px);
 }
 
@@ -344,8 +344,7 @@ ul, ol {
 	
 	
 }
-
-
+.popup_comments .post_container,
 .comments .post_container{
 	margin-left:6px;
 	margin-right:6px;
@@ -408,7 +407,7 @@ ul, ol {
 	margin-left:6px;
 	margin-right:6px;
 	margin-bottom:11px;
-	
+	line-height:16px;
 }
 
 .comments .message,
@@ -463,9 +462,7 @@ ul, ol {
 	//left:-3px;
 }
 
-.post-list .post a:hover {
-	text-decoration:none;
-}
+
 
 .post-list .name {
 	font-weight:bold;	
@@ -1559,7 +1556,9 @@ ul, ol {
 
 .align-right{
 	text-align:right;
-	top:-6px;
+	margin-top:5px;
+	margin-left:5px;
+	line-height:3px;
 	position:relative;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1950,7 +1949,7 @@ form{
 
 .row.profile_background{
 	background-color: white;
-	border:1px solid #C4CDE0;
+	border:1px solid darken(#C4CDE0, 20%);
 	.border-radius(3px);
 	padding-top:10px;
 	margin-left:0;
@@ -1967,7 +1966,8 @@ form{
 }
 
 
-.top-fan .row.profile_background,
+#userlist .row.profile_background,
+#top-fans .row.profile_background,
 #leaderboard .row.profile_background{
 	padding:3px;
 	//margin-top:-5px;
@@ -2064,7 +2064,7 @@ form{
 }
 
 
-#recent_activities,
+.scrollbox,
 #myprofile{
 	margin-top:-10px;
 	padding-top:10px;
@@ -2247,4 +2247,39 @@ form{
 
 #achievements .row.profile_background .span12 .profile-block{
 	margin-left:30px;
+}
+
+.linkback{
+	text-align:right;
+	margin-bottom:-18px;
+}
+
+
+#recent_activities .message{
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+#recent_activities {
+    overflow: auto;
+    padding-left:5px;
+    height: 854px;
+
+
+}
+
+.track3 {
+    width: 5px;
+}
+
+.handle3 {
+    width: 4px;
+    background: @color-dark;
+    opacity: 0.45;
+    filter: alpha(opacity=45);
+    border: 1px solid #555;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    left:4px;
 }

@@ -30,7 +30,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 			$this->view->fanpage_id = $this->data['page']['id'];
         }
         
-        if(empty($this->view->fanpage_id) || empty($this->view->user_id)) {
+        if(empty($this->view->fanpage_id)) {
         	$this->_redirect('http://www.fancrank.com');
         }
         //set the proper navbar

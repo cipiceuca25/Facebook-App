@@ -78,10 +78,23 @@
 			<?php if(isset($post->message)){ 
 				?>
 			<div class="message">
+		
+				
+				
+				<?php 
+				$reg_ex = "/\n/";
+				$m = $this->escape($post->message);
+				if(preg_match_all($reg_ex, $m, $url)) {
+				
+				
+					$m= preg_replace($reg_ex, "<br/>", $m);
+			
+				} ?>
+				
 				<?php 
 				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-				$m = $this->escape($post->message);
-				if(preg_match($reg_exUrl, $m, $url)) {
+				
+				if(preg_match_all($reg_exUrl, $m, $url)) {
 
 
 				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
@@ -93,7 +106,7 @@
 				}
 				?>
 				<br />
-
+				
 
 			</div>
 			<?}	

@@ -17,6 +17,8 @@ class Model_Likes extends Model_DbTable_Likes
 			$this->insert ( $data );
 		} else {
 			$found->likes = 1;
+			$dateObject = new Zend_Date();
+			$found->updated_time = $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
 			$found->save ();
 		}
 	}
@@ -26,6 +28,8 @@ class Model_Likes extends Model_DbTable_Likes
 		if (! empty ( $found )) {
 			
 			$found->likes = 0;
+			$dateObject = new Zend_Date();
+			$found->updated_time = $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
 			$found->save ();
 		}
 	}

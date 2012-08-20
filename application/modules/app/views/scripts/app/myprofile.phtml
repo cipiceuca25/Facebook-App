@@ -210,13 +210,22 @@
 								</div>
 								<div class="row">
 									<div class="span5">
-										<ul class="post-list" id="recent_activities">
-										
-										</ul>
-										
+										<div class="scrollbox">
+											<ul class="post-list" id="recent_activities" >
+											
+											</ul>
+										</div>
 									</div>	
 								</div>
+								
 							</div>		
 						</div>
 						
-					
+					<script>
+						$('#recent_activities').enscroll({
+						    showOnHover: true,
+						    clickTrackToScroll: false,
+						    verticalTrackClass: 'track3',
+						    verticalHandleClass: 'handle3'
+						});
+					</script>

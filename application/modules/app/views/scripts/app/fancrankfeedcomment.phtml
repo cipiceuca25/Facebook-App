@@ -5,7 +5,7 @@
 
 
 
-<?php foreach ($this->comments as $post):?>		
+<?php foreach ($this->comments as $post): ?>		
 
 		
 	<li class="grey-light" >
@@ -36,12 +36,23 @@
 			</span>
 		</a>
 <div class="post">
-	<span class="message"><? if(isset($post->message)){
+	<span class="message">
+	
+	<? if(isset($post->message)){
+		
+		$reg_ex = "/\n/";
+		$m = $this->escape($post->message);
+			
+		if(preg_match_all($reg_ex, $m, $url)) {
+		
+		
+			$m= preg_replace($reg_ex, "<br/>", $m);
+				
+						}
 		$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
 	
 				
-				$m = $this->escape($post->message);
-			
+				
 
 				if(preg_match($reg_exUrl, $m, $url)) {
 				

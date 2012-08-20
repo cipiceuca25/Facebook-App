@@ -868,7 +868,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				$relation[$count] = $follow->getRelation($this->_userId, $posts['facebook_user_id'],$this->_fanpageId);
 				//echo $likes[$count];
 				$count++;
-			}			
+			}	
+					
 		}else{
 			foreach ($result as $posts){
 				//echo $top['facebook_user_id'];
@@ -949,12 +950,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	
     	$activities = new Model_FancrankActivities();
-    	$activities = $activities -> getRecentActivitiesInRealTime($this->_userId, $this->_fanpageId, 20);
+    	$activities = $activities -> getRecentActivities($this->_userId, $this->_fanpageId, 20);
     	
     	$this->view->activities = $activities;
     	$this->view->user_id = $this->_userId;
     	
-    	Zend_Debug::dump($activities);
+    	//Zend_Debug::dump($activities);
     	
     	$this->render("recentactivities");
     }

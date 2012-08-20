@@ -32,7 +32,7 @@
 		getNewsfeed('#news-feed');
 		
 		
-		
+	
 	});
 	
 	setFeed='All';
@@ -44,6 +44,12 @@
 	tcb = true;
 	tfdb = true;
 	
+
+	
+	
+
+	
+	
 	
 
 	$(document).on('mouseover', 'a[rel=popover]', function () {
@@ -51,8 +57,14 @@
 		
 		if ( $(this).data('isPopoverLoaded') == true ) { return; }
 		  $(this).data('isPopoverLoaded', true).popover({delay: { show: 300, hide: 100 } , placement: $(this).attr('data-placement')}).trigger('mouseover');
+		
+		
 		  
 	});
+	
+	
+	
+	
 	
 	function popover(x){
 		//alert ('getting info for '+ id);
@@ -84,9 +96,12 @@
 			'placement' : 'left'   
 		});	
 	});*/
+
 	
+	 
 	$('.badge-Following').live("mouseover", function(){
 		$(this).text('Unfollow');
+
 	});
 	$('.badge-Following').live("mouseleave", function(){
 		$(this).text('Following');
@@ -257,6 +272,7 @@
 		$('#profile').html('');
 		$('#achievements').html('');
 		$('#redeem').html('');
+		
 		//alert('getting top posts');
 		
 	});
@@ -288,6 +304,7 @@
 		 $('#achievements').html('');
 		 $('#newsfeed').html('');
 		 $('#redeem').html('');
+		
 	});
 	
 	$('#achievements-tab').live('click', function(){
@@ -1184,4 +1201,6 @@
 	    
 	   
 	}
+	
+	
 	
