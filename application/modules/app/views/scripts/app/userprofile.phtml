@@ -197,23 +197,108 @@
 													<div class="span3_5">
 														<div class="profile-block left-align">
 															<h4>Other Statistics</h4>
-															Total Posts Made : <?=$this->stat_post?> <br/>
-															Total Likes Made : <?=$this->stat_like?> <br/>
-															Total Comments Made : <?=$this->stat_comment?> <br/>
-															Total Recieved Likes: <?=$this->stat_get_like?> <br/>
-															Total Recieved Comments: <?=$this->stat_get_comment?> <br/>
+														<img src="/img/post.png" />Total Posts Made : <?=$this->stat_post?> <br/>
+															<img src="/img/thumbsup.png" />Total Likes Made : <?=$this->stat_like?> <br/>
+															<img src="/img/comment.png" />Total Comments Made : <?=$this->stat_comment?> <br/>
+															<img src="/img/rthumbsup.png" />Total Recieved Likes: <?=$this->stat_get_like?> <br/>
+															<img src="/img/rcomment.png"/>Total Recieved Comments: <?=$this->stat_get_comment?> <br/>
 														</div>
 													
 													</div>
 												</div>
 											</div>
+											<div class="feed_spacer_top"></div>
+											
+												
+													<div class="scrollbox2">
+														<ul class="post-list">
+														<?php $count = 0?>
+
+														<?php if(empty($this->post)){?>
+
+														
+														
+																<li class="grey-light">
+															<div class="flag">
+															
+															</div>
+															<div class="post_container">
+																<div class="post">
+																	<div class="message">
+																	Feed Empty/Feed not Available
+																	</div>
+																</div>
+																</div>
+															</li>
+														<? }else{?>
+															
+															
+															
+															<?php foreach ($this->post as $post):?>	
+																<li class="grey-light">
+																	
+																	<? if (isset($post['follow_enable'])){?>
+																	<?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?> 
+																	has <?php if($post['follow_enable'] == 1) {?> been followed by
+																		<?php }else{?>
+																			been unfollowed by
+																		<?php }?>
+																		<?=$post['facebook_user_name']?>
+																	
+																	
+																	<?}elseif (isset($post['act_type'])){?>
+																		
+																		<?switch($post['act_type']){ 
+		
+																				
+																			 case 'like-post':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   liked <?=$post['fan_name']?>'s post <?=$post['post_id']?> 
+																			
+																			<?break;?>
+																			 <?php case 'comment':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   commented on <?=$post['fan_name']?>'s post <?=$post['post_id']?> 
+																			
+																			<?break;?>
+																			 <?php case 'like-comment':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   liked  <?=$post['fan_name']?>'s comment <?=$post['post_id']?> 
+																			
+																			<?break;?>				
+																			
+																			 <?php case 'post':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   posted  <?=$post['post_id']?> 
+																			
+																			<?break;?>
+																			
+																		<?php }?>
+																	
+					
+																	<?}else{?>
+																	<?php }?>
+																</li>
+																				
+															<?php $count ++;?>
+															
+																<li class="feed_spacer">
+															
+																<div class="feed_spacer_top"></div>
+															
+																</li>
+															<?php endforeach; }?>
+																													
+														
+														</ul>
+													</div>
+										
 										</div>
 										</div>
 									</div>
 									
 									
 									
-							</div>
-					
 						
+					
+							<script>
+						$('.scrollbox2').enscroll({
+						    showOnHover: true,
+						    clickTrackToScroll: false,
+						    verticalTrackClass: 'track3',
+						    verticalHandleClass: 'handle3'
+						});
+					</script>
 					

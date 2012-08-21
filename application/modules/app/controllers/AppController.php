@@ -815,7 +815,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     		
     	}
-    	Zend_Debug::dump($fullactivity);
+    	//Zend_Debug::dump($fullactivity);
     	//$activity = array_merge($activity, $followingList);
     	
     	
@@ -830,7 +830,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
     	
-    	
+    	$this->view->post = $fullactivity;
     	//Zend_Debug::dump($stat_post);
     	
     	$this->view->stat_post = $stat_post;
