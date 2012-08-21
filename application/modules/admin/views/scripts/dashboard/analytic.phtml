@@ -1,9 +1,13 @@
+<? $this->headLink()->headLink(array('id'=>'stylesheet', 'rel'=>'stylesheet/less', 'href'=>'/css/dashboard/analytic.less')) ?>
+
 <script>
 var fanpageId = <?= $this->page_id ?>;
 var postData = <?= $this->post_data ?>;
+var sexPieData = <?= $this->fansNumberBySex ?>;
 </script>
-
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.min.js') ?>
+<? $this->headScript()->appendFile('/js/libs/jquery.flot.pie.min.js') ?>
+<? $this->headScript()->appendFile('/js/libs/jquery.dataTables.min.js') ?>
 <? $this->headScript()->appendFile('/js/admin/dashboard/analytic.js') ?>
 
 <div>
@@ -46,7 +50,7 @@ var postData = <?= $this->post_data ?>;
 
 <div id="placeholder"></div>
 
-<div style="width:900px;" class="container-fluid">
+<div style="width:1000px;" class="container-fluid">
 		<div class="content">
 			<div class="row-fluid">
 				<div class="span12">
@@ -66,15 +70,12 @@ var postData = <?= $this->post_data ?>;
 								<li>
 									<a href="#nohead" data-toggle="tab">Top influencer</a>
 								</li>
-								<li>
-									<a href="#nohead" data-toggle="tab">find user</a>
-								</li>								
 							</ul>
 						</div>
 						<div class="box-content box-nomargin">
 							<div class="tab-content">
 									<div class="tab-pane active" id="basic">
-										<table class='table table-striped dataTable table-bordered'>
+										<table id="topFanTable" class='table table-striped table-bordered'>
 											<thead>
 												<tr>
 													<th>id</th>
@@ -116,7 +117,7 @@ var postData = <?= $this->post_data ?>;
 	<div class="box-content box-nomargin">
 		<div class="tab-content">
 				<div class="tab-pane active" id="basic">
-					<table class='table table-striped dataTable table-bordered'>
+					<table id="topPostByLike" class='table table-striped dataTable table-bordered'>
 						<thead>
 							<tr>
 								<th>Facebook User ID</th>
@@ -145,7 +146,7 @@ var postData = <?= $this->post_data ?>;
 	<div class="box-content box-nomargin">
 		<div class="tab-content">
 				<div class="tab-pane active" id="basic">
-					<table class='table table-striped dataTable table-bordered'>
+					<table id="topPostByComment" class='table table-striped dataTable table-bordered'>
 						<thead>
 							<tr>
 								<th>Facebook User ID</th>
@@ -171,3 +172,6 @@ var postData = <?= $this->post_data ?>;
 <!-- top post bar graph -->    
 
 <div id="postStat"></div>
+
+<div id="sexPieGraph"></div>
+<div id="piehover"></div>
