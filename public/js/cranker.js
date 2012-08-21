@@ -450,7 +450,7 @@
 		getFeedComment( ui, post_id, type, limiter, total, toggle);
 		
 		$('.social.commentn.'+post_id).css('display', 'none');
-}
+
 		
 	}
 	 
@@ -638,7 +638,7 @@
     			num=$('.like_'+post_id).html();
     			if ((num== null)||(num==0)){
     				$('.like_'+post_id).html('1 person');
-    				alert('.social.like.'+post_id);
+    				//alert('.social.like.'+post_id);
     				
     			}else{
     				$('.like_'+post_id).html((parseInt(num)+1) + ' people');
