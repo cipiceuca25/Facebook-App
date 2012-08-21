@@ -57,48 +57,38 @@
 					}
 				}?>
 				</div>							
-				<div class="pic">
-		
-					<? if(!empty($topPost['link'])) { ?> 
-						<?php if($topPost['post_type'] == 'link') {?>
+					<div class="pic">	
+						<?php if (($topPost['post_type'] == 'photo') || ($topPost['post_type']  =='video')) {?>	
+							
+								<a target="new" href="<?echo $this->escape($post->link)?> "> 
+										<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $topPost['picture']))?> '/>
+								</a>
+							
+						<?}elseif ($topPost['post_type']  == 'link') {?>
 							<div class="link">
-							<div class="link-left"> 
-						<?php }?> 
-						<a target="new" href="<?echo $this->escape($topPost['link'])?> "> 
-					<?}?>
-					
-					<? if(!empty($topPost['picture']) ||($topPost['post_type'] =='video') ){?>
-						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $topPost['picture']))?> '/>
-					 <? } ?>
-					 
-					<? if((!empty($topPost['link'])) && ($topPost['post_type'])) { ?> 
-						</a> </div>
-						
-						
-						<?php if (isset($topPost['picture'])){?>
-						<div class="link-right"><?php }?>
-							<a target="new" href="<?echo $this->escape($topPost['link'])?> ">
-							<?= (!empty($topPost['link_name'])?$this->escape($topPost['link_name']): $this->escape($topPost['link']))?>
-							<br/>
-							<br/>
-							<?php  if (!empty($topPost['post_caption'])){?>
-							</br>
-							<?php echo $this->escape($topPost['post_caption']);?>:<? }?> 
+								<div class="link-left">
+									<a target="new" href="<?echo $this->escape($post->link)?> "> 
+										<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $topPost['picture']))?> '/>
+									</a>
+								</div>
 							
-							
-							<?php if (!empty($topPost['post_description'])){?>
-							<?=$this->escape($topPost['post_description'])?> 
-							<?php }?>
-							<?php if (!empty($topPost['picture'])){?> 
-							</a></div> 
-							<?php }?>
-						
-					<?}elseif(isset($topPost['link'])){ ?>
-						</a></div>
-					<?php }?>
-			
-			
-				</div>
+								<div class="link-right">
+									<a target="new" href="<?echo $this->escape($topPost['link'])?> ">
+										<?= (isset($topPost['name'])?$this->escape($topPost['name']): $this->escape($topPost['link']))?>
+										<?php  if (isset($topPost['caption'])){?>
+										</br>
+										<?php echo $this->escape($topPost['caption']);?>: <?php }?> 
+										
+										
+										<?php if (isset($topPost['description'])){?>
+										<?=$this->escape($topPost['description'])?> 
+										<?php }?>
+										
+									</a>
+								</div>
+							</div>
+						<?}?>
+					</div>
 			
 				
 			</div>

@@ -332,41 +332,62 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 	public function findFanRecord($fanpage_id, $facebook_user_id){
 		
 		$select = "	SELECT 
-				(sum(f.fan_post_status_count) + sum(f.fan_post_photo_count) + sum(f.fan_post_video_count) + sum(f.fan_post_link_count)) 													as total_posts, 
-				(sum(f.fan_comment_status_count) + sum(f.fan_comment_photo_count) + sum(f.fan_comment_video_count) + sum(f.fan_comment_link_count)) 										as total_comments,
-				(sum(f.fan_like_status_count) + sum(f.fan_like_photo_count) + sum(f.fan_like_video_count) + sum(f.fan_like_link_count)) + sum(f.fan_like_comment_count)						as total_likes,
-				(sum(f.fan_get_like_status_count) + sum(f.fan_get_like_photo_count) + sum(f.fan_get_like_video_count) + sum(f.fan_get_like_link_count)) + sum(f.fan_get_like_comment_count)	as total_get_likes	,
-				(sum(f.fan_get_comment_status_count) + sum(f.fan_get_comment_photo_count) + sum(f.fan_get_comment_video_count) + sum(f.fan_get_comment_link_count)) 						as total_get_comments,
+				f.fan_post_status_count + 
+				f.fan_post_photo_count + 
+				f.fan_post_video_count + 
+				f.fan_post_link_count	as total_posts, 
 				
-				sum(f.fan_comment_link_count) 							as link_comments,
-				sum(f.fan_comment_video_count) 							as video_comments,
-				sum(f.fan_comment_photo_count) 							as photo_comments,
-				sum(f.fan_comment_status_count) 						as status_comments,
+				f.fan_comment_status_count + 
+				f.fan_comment_photo_count + 
+				f.fan_comment_video_count + 
+				f.fan_comment_link_count	as total_comments,
+				f.fan_like_status_count + 
+				f.fan_like_photo_count + 
+				f.fan_like_video_count + 
+				f.fan_like_link_count + 
+				f.fan_like_comment_count	as total_likes,
+				f.fan_get_like_status_count + 
+				f.fan_get_like_photo_count + 
+				f.fan_get_like_video_count + 
+				f.fan_get_like_link_count + 
+				f.fan_get_like_comment_count as total_get_likes	,
+				f.fan_get_comment_status_count + 
+				f.fan_get_comment_photo_count + 
+				f.fan_get_comment_video_count + 
+				f.fan_get_comment_link_count as total_get_comments,
 				
-				sum(f.fan_like_link_count) 								as link_likes,
-				sum(f.fan_like_video_count) 							as video_likes,
-				sum(f.fan_like_photo_count) 							as photo_likes,
-				sum(f.fan_like_status_count) 							as status_likes,
-				sum(f.fan_like_comment_count)							as comment_likes,
+				f.fan_comment_link_count 							as link_comments,
+				f.fan_comment_video_count						as video_comments,
+				f.fan_comment_photo_count 							as photo_comments,
+				f.fan_comment_status_count				as status_comments,
 				
-				sum(f.fan_get_like_video_count) 						as get_video_likes,
-				sum(f.fan_get_like_photo_count) 						as get_photo_likes,
-				sum(f.fan_get_like_link_count) 							as get_link_likes,
-				sum(f.fan_get_like_status_count) 						as get_status_likes,
-				sum(f.fan_get_like_comment_count)						as get_comment_likes,
+				f.fan_like_link_count 								as link_likes,
+				f.fan_like_video_count 							as video_likes,
+				f.fan_like_photo_count 							as photo_likes,
+				f.fan_like_status_count 							as status_likes,
+				f.fan_like_comment_count							as comment_likes,
 				
-				sum(f.fan_get_comment_link_count) 						as get_link_comments,
-				sum(f.fan_get_comment_video_count) 						as get_video_comments,
-				sum(f.fan_get_comment_status_count) 					as get_status_comments,
-				sum(f.fan_get_comment_photo_count) 						as get_photo_comments,
+				f.fan_get_like_video_count						as get_video_likes,
+				f.fan_get_like_photo_count 						as get_photo_likes,
+				f.fan_get_like_link_count 							as get_link_likes,
+				f.fan_get_like_status_count 						as get_status_likes,
+				f.fan_get_like_comment_count						as get_comment_likes,
+				
+				f.fan_get_comment_link_count						as get_link_comments,
+				f.fan_get_comment_video_count 						as get_video_comments,
+				f.fan_get_comment_status_count 					as get_status_comments,
+				f.fan_get_comment_photo_count					as get_photo_comments,
 		
-				sum(f.fan_post_status_count) 							as post_status,
-				sum(f.fan_post_photo_count) 							as post_photo,
-				sum(f.fan_post_video_count) 							as post_video,
-				sum(f.fan_post_link_count) 								as post_link
+				f.fan_post_status_count							as post_status,
+				f.fan_post_photo_count 							as post_photo,
+				f.fan_post_video_count 							as post_video,
+				f.fan_post_link_count 								as post_link
 				
 				FROM fans_objects_stats f
-				WHERE f.fanpage_id = '".$fanpage_id."' AND f.facebook_user_id = '".$facebook_user_id."'";
+				WHERE f.fanpage_id = '".$fanpage_id."' AND f.facebook_user_id = '".$facebook_user_id."'
+				
+				order by f.updated_time DESC
+				limit 1";
 		//Zend_Debug::dump($query);
 		return $this->getAdapter()->fetchAll($select);
 		

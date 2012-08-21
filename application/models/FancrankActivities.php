@@ -30,37 +30,114 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 	}
 	
 	public function getRecentActivities($facebook_user_id, $fanpage_id, $limit){
-		/*
-		$where = array('facebook_user_id = ?' => $facebook_user_id, 'fanpage_id =?'=> $fanpage_id);
-		$order = 'created_time DESC';
-		$count = $limit;
-		$offset= 0;
-		$found = $this -> findAll($where,$order, $count, $offset);
-		*/
-		$query = $this->select()
-		->from($this)
-		->where('fanpage_id = ? ', $fanpage_id)
-		->where('facebook_user_id = ?', $facebook_user_id)
-		//->orWhere('target_user_id = ?', $facebook_user_id)
-		->order('created_time DESC')
-		->limit($limit);
-		//where (a and b) or (b and c)
-		return $this->fetchAll($query);
+		
+		$select= "
+					select * from 
+					
+					(
+					(Select c.fanpage_id, c.facebook_user_id, c.fan_name as facebook_user_name, 
+							concat('comment-', c.comment_type)as activity_type, 
+							p.post_id as event_object, 
+							p.facebook_user_id as target_user_id,
+							p.fan_name as target_user_name,
+							c.created_time
+							from 
+							
+							(SELECT a.* , f.fan_name FROM comments a
+							inner join fans f 
+							on f.facebook_user_id = a.facebook_user_id) as c,
+							
+							(SELECT b.* , g.fan_name FROM posts b
+							inner join fans g 
+							on g.facebook_user_id = b.facebook_user_id) as p
+							
+							where c.fanpage_id =  $fanpage_id  and c.facebook_user_id = $facebook_user_id and c.comment_post_id = p.post_id
+							order by created_time DESC
+							limit $limit)
+					
+					union 
+					
+					
+					(SELECT p.fanpage_id, p.facebook_user_id, f.fan_name as facebook_user_name, concat('post-', p.post_type)as activity_type, post_id as event_object, p.fanpage_id as target_user_id, fp.fanpage_name as target_user_name , p.created_time
+								FROM posts p , fans f, fanpages fp
+								where p.facebook_user_id = 28117303 and p.fanpage_id = $fanpage_id  and p.facebook_user_id = f.facebook_user_id and p.fanpage_id = fp.fanpage_id
+						 	order by created_time DESC
+								limit $limit)
+					
+					union 
+					
+					
+					(select liketable2.fanpage_id, liketable2.facebook_user_id, fan_name as facebook_user_name, activity_type, post2.post_id as event_object, post2.facebook_user_id as target_id, post2.target_user_name, liketable2.updated_time as created_time from
+							(select liketable.*, f.fan_name from 
+							(select *, concat('like-', l.post_type) as activity_type from likes l where l.likes = 1 and  l.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id  and not (l.post_type REGEXP '_comment[[:>:]]')
+							union 
+							select *, concat('unlike-', l.post_type) as activity_type from likes l where l.likes = 0 and l.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id  and not (l.post_type REGEXP '_comment[[:>:]]')
+							) as liketable 
+							inner join fans f
+							on liketable.facebook_user_id = f.facebook_user_id) as liketable2,
+							
+							(select p.*, f.fan_name as target_user_name from posts p inner join fans f on p.facebook_user_id =f.facebook_user_id 
+							
+							union 
+							
+							select p.*, fp.fanpage_name as target_user_name from posts p inner join fanpages fp on p.facebook_user_id = fp.fanpage_id) as post2
+							where liketable2.post_id = post2.post_id
+							order by created_time DESC
+							limit $limit)
+					
+					union 
+					
+					(
+					select liketable2.fanpage_id, liketable2.facebook_user_id, fan_name as facebook_user_name, activity_type, comment2.comment_post_id as event_object, comment2.facebook_user_id as target_user_id, comment2.target_user_name ,  liketable2.updated_time as created_time from
+					(select liketable.*, f.fan_name from 
+					(select *, concat('like-comment') as activity_type from likes l where l.likes = 1 and  l.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id  and (l.post_type REGEXP '_comment[[:>:]]')
+					union 
+					select *, concat('unlike-comment') as activity_type from likes l where l.likes = 0 and l.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id  and (l.post_type REGEXP '_comment[[:>:]]')
+					)as liketable 
+					inner join fans f
+					on liketable.facebook_user_id = f.facebook_user_id) as liketable2,
+					
+					(select c.*, f.fan_name as target_user_name from comments c inner join fans f on c.facebook_user_id =f.facebook_user_id 
+					
+					union 
+					
+					select c.*, fp.fanpage_name as target_user_name from comments c inner join fanpages fp on c.facebook_user_id = fp.fanpage_id) as comment2
+					where liketable2.post_id = comment2.comment_id
+					order by created_time DESC
+					limit $limit
+					)
+					
+					union 
+					
+					(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time  
+					from fancrank_activities 
+					where fanpage_id = $fanpage_id && facebook_user_id = $facebook_user_id
+					order by created_time DESC
+					limit $limit)
+					
+					) as act
+					
+					order by created_time DESC
+					limit $limit ";
+		$result = $this->getAdapter()->fetchAll($select);
+		
+		return $result;
+	
 	}
 	
 	public function getRecentActivitiesInRealTime($facebook_user_id, $fanpage_id, $limit) {
 		$fanpageModel = new Model_Fanpages();
 		$fanpageName = $fanpageModel->findRow($fanpage_id)->fanpage_name;
 		
-		$select = "select p.created_time, concat('post-',p.post_type) as activity_type, p.post_id as event_object, $fanpage_id as fanpage_id, p.facebook_user_id, f.facebook_user_name, $fanpage_id as target_user_id, '" .$fanpageName ."' as target_user_name   
+		$select = "select p.created_time, 'post' as activity_type, p.post_id as event_object, $fanpage_id as fanpage_id, p.facebook_user_id, f.facebook_user_name, $fanpage_id as target_user_id, '" .$fanpageName ."' as target_user_name   
 					from posts p inner join facebook_users f on (p.facebook_user_id = f.facebook_user_id)
 					where p.fanpage_id = $fanpage_id and p.facebook_user_id = $facebook_user_id
 					union 
-					select c.created_time, concat('comment-',c.comment_type) as activity_type, c.comment_id as event_object, $fanpage_id as fanpage_id, c.facebook_user_id, f.facebook_user_name, c.comment_post_id as target_user_id, '' as target_user_name
+					select c.created_time, 'comment' as activity_type, c.comment_id as event_object, $fanpage_id as fanpage_id, c.facebook_user_id, f.facebook_user_name, c.comment_post_id as target_user_id, '' as target_user_name
 					from comments c inner join facebook_users f on (c.facebook_user_id = f.facebook_user_id)
 					where c.fanpage_id = $fanpage_id and c.facebook_user_id = $facebook_user_id
 					union
-					select l.created_time, concat('like-',l.post_type) as activity_type, l.post_id as event_object, $fanpage_id as fanpage_id, l.facebook_user_id, f.facebook_user_name, l.post_id as target_user_id, l.post_type as target_user_name
+					select l.created_time, 'likes' as activity_type, l.post_id as event_object, $fanpage_id as fanpage_id, l.facebook_user_id, f.facebook_user_name, l.post_id as target_user_id, l.post_type as target_user_name
 					from likes l inner join facebook_users f on (l.facebook_user_id = f.facebook_user_id)
 					where l.fanpage_id = $fanpage_id and l.facebook_user_id = $facebook_user_id
 					union
@@ -84,6 +161,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 		foreach ($result as $row) {
 			switch($row['activity_type']) {
 				case 'comment':
+					$row['activity_type'] = 'comment-'.$row["target_user_name"];
 					if(is_numeric($row['event_object'])) {
 						$row['target_user_id'] = $fanpage_id;
 						$row['target_user_name'] = $fanpageName;

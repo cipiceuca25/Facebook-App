@@ -47,13 +47,13 @@ a, a:visited{
 
 a:hover{
 	color:darken(@color-dark, 15%);
-	text-decoration:none;
+	text-decoration:underline;
 	cursor:pointer;
 }
 
 body{
 	background-color:@color-background;
-	color:#333;
+	color:#666;
 }
 
 #content{
@@ -298,7 +298,7 @@ ul, ol {
 	
 	//border-top: solid 2px lighten(@color-badges, 5%);
 	position:relative;
-	border:1px solid #C4CDE0;
+	border:1px solid darken(#C4CDE0, 20%);
 	.border-radius(3px);
 	.box-shadow(3px 3px 3px 1px darken(@color-background, 20%);
 }
@@ -311,14 +311,14 @@ ul, ol {
 
 	//border-top: solid 2px lighten(@color-badges, 5%);
 	position:relative;
-	border:1px solid #C4CDE0;
+	border:1px solid darken(#C4CDE0, 20%);
 	.border-radius(3px);
 }
 
 .grey-light:hover,
 .grey-dark:hover{
-	background:darken(white, 2%);
-	border:1px solid #97A4C2;
+	background:darken(white, 3%);
+	border:1px solid darken(#97A4C2, 20%);
 }
 
 
@@ -344,8 +344,7 @@ ul, ol {
 	
 	
 }
-
-
+.popup_comments .post_container,
 .comments .post_container{
 	margin-left:6px;
 	margin-right:6px;
@@ -363,6 +362,7 @@ ul, ol {
 .comments .message{
 	//float:left;
 	font-size:11px;
+	line-height:14px;
 }	
 
 
@@ -407,20 +407,20 @@ ul, ol {
 	margin-left:6px;
 	margin-right:6px;
 	margin-bottom:11px;
-	
+	line-height:16px;
 }
 
 .comments .message,
 .popup_comments .message{
 	margin-bottom:0px;
-	margin-left:35px;
+	margin-left:36px;
 }
 
 .post-list .link{
 	background-color: #F6F7F9;
 	float:left;
 	border:1px solid  #D3DAE8;
-	width:420px;
+	width:380px;
 }
 
 .post-list .link a,
@@ -462,9 +462,7 @@ ul, ol {
 	//left:-3px;
 }
 
-.post-list .post a:hover {
-	text-decoration:none;
-}
+
 
 .post-list .name {
 	font-weight:bold;	
@@ -472,7 +470,8 @@ ul, ol {
 	
 	float:left;
 	margin-left:7px;
-	margin-right:5px
+	margin-right:5px;
+	line-height:14px;
 }
 
 
@@ -490,14 +489,21 @@ ul, ol {
 	line-height:25px;
 	font-size:11px;
 	background-color:#EDEFF4;
-	padding-left:4px;
+	padding-left:10px;
+	margin-top:1px;
 }
 
 .popup_comments .social,
 .comments .social{
-	//margin-left:-5px;
+	display:inline-block;
+	padding-left:0px;
+	height:20px;
+
+	margin-left:-1px;
 	margin-right:-12px;
-	clear:none;
+	margin-top:-3px;
+	//clear:none;
+	background-color:transparent;
 
 }
 
@@ -523,11 +529,11 @@ ul, ol {
 
 	font-size:11px;	
 	margin-left:38px;
-
+	margin-top:-3px;
 }
 
 .social .date{
-	margin-left:6px;
+	margin-left:1px;
 }
 
 
@@ -863,10 +869,11 @@ ul, ol {
 	background-color:lighten(@color-base, 20%);
 	//#gradient > .horizontal(white, lighten(@color-base, 20%));
 	.border-radius(2px);
-	line-height:16px;
-	height:16px;
+	line-height:11px;
+	height:11px;
 	margin-right:3px;
-	float:right;
+	//float:right;
+	display:inline-block;
 	color:white;
 	width:51px;
 	text-align:center;
@@ -884,11 +891,12 @@ ul, ol {
 	font-size:11px;
 	//background-color:@color-follow;
 	.border-radius(2px);
-	line-height:16px;
-	height:16px;
+	line-height:11px;
+	height:11px;
 	margin-right:3px;
 	margin-right:-10px;
-	float:right;
+	//float:right;
+	display:inline-block;
 }
 
 .badge-Following{
@@ -896,11 +904,12 @@ ul, ol {
 	background-color:#62c462;
 	//#gradient > .horizontal(white,#62c462);
 	.border-radius(2px);
-	line-height:16px;
-	height:16px;
+	line-height:11px;
+	height:11px;
 	margin-right:3px;
 	//margin-right:-5px;
-	float:right;
+	//float:right;
+	display:inline-block;
 	width:51px;
 	color:white;
 	text-align:center;
@@ -931,10 +940,11 @@ ul, ol {
 	background-color:@color-follower;
 	//#gradient > .horizontal(white, @color-follower);
 	.border-radius(2px);
-	line-height:16px;
-	height:16px;
+	line-height:11px;
+	height:11px;
 		margin-right:3px;
-	float:right;
+	//float:right;
+	display:inline-block;
 	width:51px;
 	text-align:center;
 	margin-top:3px;
@@ -945,10 +955,11 @@ ul, ol {
 	//#gradient > .horizontal(white, @color-dark);
 	background-color:@color-feed2;
 	.border-radius(2px);
-	line-height:16px;
-	height:16px;
+	line-height:11px;
+	height:11px;
 	margin-right:3px;
-	float:right;
+	//float:right;
+	display:inline-block;
 	width:51px;
 	color:white;
 	text-align:center;
@@ -960,10 +971,11 @@ ul, ol {
 	//#gradient > .horizontal(white, @color-friends);
 	background-color:lighten(@color-bubble1-original, 20%);
 	.border-radius(2px);
-	line-height:16px;
-	height:16px;
+	line-height:11px;
+	height:11px;
 		margin-right:3px;
-	float:right;
+	//float:right;
+	display:inline-block;
 	width:51px;
 	color:white;
 	text-align:center;
@@ -1049,10 +1061,10 @@ ul, ol {
 /*==================================================*/
 
 .profile-block{
-	//height:90px;
-	margin-left:20px;
+	min-height:95px;
+	margin-left:15px;
 	text-align:center;
-	
+	margin-bottom:10px;
 }
 
 .profile-block h1{
@@ -1154,14 +1166,20 @@ ul, ol {
 }
 
 
+.profile-block.points {
+	position:relative;
+	top:25px;
+
+}
+
 .profile-block.fan-point .progress{
 
-	height:30px;
+	height:20px;
 	margin-bottom:5px;
 
 }
 .profile-block.fan-point .progress .bar{
-	height:30px;
+	height:20px;
 	background-color: @color-dark;
 	background-image :none;
 	//#gradient > .horizontal(@color-base,darken(@color-base, 15%) );
@@ -1544,7 +1562,9 @@ ul, ol {
 
 .align-right{
 	text-align:right;
-	top:-6px;
+	margin-top:5px;
+	margin-left:5px;
+	line-height:3px;
 	position:relative;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1823,6 +1843,8 @@ ul, ol {
 
 .span3_5{
 	width:200px;
+	margin-left:7px;
+	margin-right:7px;
 }
 
 .span3 {
@@ -1842,7 +1864,10 @@ ul, ol {
 	
 	margin-bottom:2px;
 	//min-height:140px;
-	//bottom:0px;
+	//bottom:0px;	
+	
+	
+	margin-left:40px;
 
 }
 
@@ -1932,11 +1957,11 @@ form{
 
 .row.profile_background{
 	background-color: white;
-	border:1px solid #C4CDE0;
+	border:1px solid darken(#C4CDE0, 20%);
 	.border-radius(3px);
-	padding-top:10px;
+	padding-top:3px;
 	margin-left:0;
-	padding-bottom:10px;
+	padding-bottom:3px;
 	.box-shadow(2px 2px 2px 1px darken(@color-background, 20%);
 	
 }
@@ -1949,7 +1974,8 @@ form{
 }
 
 
-.top-fan .row.profile_background,
+#userlist .row.profile_background,
+#top-fans .row.profile_background,
 #leaderboard .row.profile_background{
 	padding:3px;
 	//margin-top:-5px;
@@ -2046,7 +2072,7 @@ form{
 }
 
 
-#recent_activities,
+.scrollbox,
 #myprofile{
 	margin-top:-10px;
 	padding-top:10px;
@@ -2229,4 +2255,41 @@ form{
 
 #achievements .row.profile_background .span12 .profile-block{
 	margin-left:30px;
+}
+
+.linkback{
+	text-align:right;
+	margin-bottom:-18px;
+}
+
+
+#recent_activities .message{
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+#recent_activities {
+    overflow: auto;
+    padding-left:5px;
+    height: 911px;
+}
+
+.scrollbox2{
+	overflow: auto;
+    padding-left:5px;
+    height: 150px;
+}
+
+.track3 {
+    width: 5px;
+}
+
+.handle3 {
+    width: 4px;
+    background: @color-dark;
+    opacity: 0.45;
+    filter: alpha(opacity=45);
+    border: 1px solid #555;
+    
+    left:4px;
 }

@@ -2,10 +2,21 @@
 
 <?php $count = 0?>
 
-<?php if(empty($this->post)){
+<?php if(empty($this->post)){?>
 
-	echo "Missing Access Token or Empty List";
-}?>
+		<li class="grey-light">
+	<div class="flag">
+	
+	</div>
+	<div class="post_container">
+		<div class="post">
+			<div class="message">
+			Feed Empty/Feed not Available
+			</div>
+		</div>
+		</div>
+	</li>
+<? }else{?>
 
 
 
@@ -61,7 +72,38 @@
 				       echo $m;
 				
 				}?></div><?}?>
-				
+			<div class="pic">	
+		<?php if (($post['post_type'] == 'photo') || ($post['post_type'] == 'video')) {?>	
+			<a target="new" href="<?echo $this->escape($post['link'])?> "> 
+						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post['picture']))?> '/>
+					</a>
+			
+		<?}elseif ($post['post_type'] == 'link') {?>
+			<div class="link">
+				<div class="link-left">
+					<a target="new" href="<?echo $this->escape($post['link'])?> "> 
+						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post['picture']))?> '/>
+					</a>
+				</div>
+			
+				<div class="link-right">
+					<a target="new" href="<?echo $this->escape($post['link'])?> "><?= $this->escape($post['link_name'])?>
+					
+					<?php  if ($post['post_caption']!= null){?>
+					</br>
+					<?php echo $this->escape($post['post_caption']); ?>:<? }?> 
+					<br/>
+					
+					<?php if ($post['post_description']!= null){?>
+						<?=$this->escape($post['post_description'])?>
+					<?php }?>
+						
+					</a>
+				</div>
+			</div>
+		<?}?>
+		</div>
+			
 		<div class="pic">
 		
 			<? if($post['link']!= null) { ?> 
@@ -155,7 +197,7 @@
 <div class="feed_spacer_top"></div>
 
 </li>
-<?php endforeach; ?>
+<?php endforeach; }?>
 				
 						
 	

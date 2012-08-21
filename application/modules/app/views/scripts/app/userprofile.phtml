@@ -2,7 +2,10 @@
 				
 									<div class="row">
 										<div class="span7">
+											
 											<div class="title">
+												<div class="linkback">Go to <a href="http://www.facebook.com/<?= $this->facebook_user->facebook_user_id?>" target="_new" ><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?></a>'s Facebook Profile</div>
+											
 												<div class="photo"> <a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a></div>
 		
 												<div class="title-header"> <h3> <?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile</i></h3> </div>
@@ -47,7 +50,7 @@
 																</div>
 																
 															</div>
-															<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?>  <?=$this->fan_exp_required?> Until Next Level</h5>
+															<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?> <br/> <?=$this->fan_exp_required?> Until Next Level</h5>
 														</div>
 														
 													</div>
@@ -142,7 +145,7 @@
 															
 														</div>
 														<div class="shadow">
-															<button class="btn-top" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
+															<button class="btn-top" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)">
 																View Full List
 															</button>
 														</div>
@@ -159,7 +162,7 @@
 																
 														</div>
 														<div class="shadow">
-															<button class="btn-top" onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)" >
+															<button class="btn-top" onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15, false)" >
 																View Full List
 															</button>
 														</div>
@@ -172,33 +175,130 @@
 												<div class="row">
 													<div class="span3_5">
 														<div class="profile-block left-align">
-														<h4>Fancrank User Since</h4>
-														<?= date("F d Y", strtotime($this->fan_since))?>
-														<br/>
-														<h4>Country</h4>
-														<?= $this->fan_country?>
+															<h4>Fancrank User Since:</h4>
+															<?php if ($this->fan['created_time'] == null){?>
+																Not A Fancrank User
+															<?}else{?>
+															 <?= date("F Y",strtotime($this->fan['created_time']))?>
+															<?}?>
+															<br/>
+															<h4>Location: </h4>
+															<?php if ($this->fan['fan_country'] != null ) {?>
+																<?php if ($this->fan['fan_location'] != null){?>
+																	<?= $this->fan['fan_location']?>, <?= $this->fan['fan_country']?>
+																<?php }?>
+																<?= $this->fan['fan_country']?>
+															<?php }else{?>
+																Unknown
+															<?php }?>
+	
 														</div>
 													</div>
 													<div class="span3_5">
 														<div class="profile-block left-align">
 															<h4>Other Statistics</h4>
-															Total Posts Made : <?=$this->stat_post?> <br/>
-															Total Likes Made : <?=$this->stat_like?> <br/>
-															Total Comments Made : <?=$this->stat_comment?> <br/>
-															Total Recieved Likes: <?=$this->stat_get_like?> <br/>
-															Total Recieved Comments: <?=$this->stat_get_comment?> <br/>
+														<img src="/img/post.png" />Total Posts Made : <?=$this->stat_post?> <br/>
+															<img src="/img/thumbsup.png" />Total Likes Made : <?=$this->stat_like?> <br/>
+															<img src="/img/comment.png" />Total Comments Made : <?=$this->stat_comment?> <br/>
+															<img src="/img/rthumbsup.png" />Total Recieved Likes: <?=$this->stat_get_like?> <br/>
+															<img src="/img/rcomment.png"/>Total Recieved Comments: <?=$this->stat_get_comment?> <br/>
 														</div>
 													
 													</div>
 												</div>
 											</div>
+											<div class="feed_spacer_top"></div>
+											
+												
+													<div class="scrollbox2">
+														<ul class="post-list">
+														<?php $count = 0?>
+
+														<?php if(empty($this->post)){?>
+
+														
+														
+																<li class="grey-light">
+															<div class="flag">
+															
+															</div>
+															<div class="post_container">
+																<div class="post">
+																	<div class="message">
+																	Feed Empty/Feed not Available
+																	</div>
+																</div>
+																</div>
+															</li>
+														<? }else{?>
+															
+															
+															
+															<?php foreach ($this->post as $post):?>	
+																<li class="grey-light">
+																	
+																	<? if (isset($post['follow_enable'])){?>
+																	<?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?> 
+																	has <?php if($post['follow_enable'] == 1) {?> been followed by
+																		<?php }else{?>
+																			been unfollowed by
+																		<?php }?>
+																		<?=$post['facebook_user_name']?>
+																	
+																	
+																	<?}elseif (isset($post['act_type'])){?>
+																		
+																		<?switch($post['act_type']){ 
+		
+																				
+																			 case 'like-post':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   liked <?=$post['fan_name']?>'s post <?=$post['post_id']?> 
+																			
+																			<?break;?>
+																			 <?php case 'comment':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   commented on <?=$post['fan_name']?>'s post <?=$post['post_id']?> 
+																			
+																			<?break;?>
+																			 <?php case 'like-comment':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   liked  <?=$post['fan_name']?>'s comment <?=$post['post_id']?> 
+																			
+																			<?break;?>				
+																			
+																			 <?php case 'post':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   posted  <?=$post['post_id']?> 
+																			
+																			<?break;?>
+																			
+																		<?php }?>
+																	
+					
+																	<?}else{?>
+																	<?php }?>
+																</li>
+																				
+															<?php $count ++;?>
+															
+																<li class="feed_spacer">
+															
+																<div class="feed_spacer_top"></div>
+															
+																</li>
+															<?php endforeach; }?>
+																													
+														
+														</ul>
+													</div>
+										
 										</div>
 										</div>
 									</div>
 									
 									
 									
-							</div>
-					
 						
+					
+							<script>
+						$('.scrollbox2').enscroll({
+						    showOnHover: true,
+						    clickTrackToScroll: false,
+						    verticalTrackClass: 'track3',
+						    verticalHandleClass: 'handle3'
+						});
+					</script>
 					
