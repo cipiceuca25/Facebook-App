@@ -18,7 +18,7 @@ jQuery(document).ready(function($){
 
 				addPreviewButton(this, $(this).attr('data-id'));
 				addInstallButton(this, $(this).attr('data-id'));
-				addAnalysticButton(this, $(this).attr('data-id'));
+				addAnalyticButton(this, $(this).attr('data-id'));
 			}.bind(this)
 		});
 	});
@@ -41,7 +41,7 @@ jQuery(document).ready(function($){
 
 				//remove the install button
 				$(this).closest('tr').find('.preview').find('button').remove();
-				$(this).closest('tr').find('.analystic').find('button').remove();				
+				$(this).closest('tr').find('.analytic').find('button').remove();				
 				$(this).closest('tr').find('.tab').find('button').remove();
 			}.bind(this)
 		});
@@ -54,11 +54,11 @@ jQuery(document).ready(function($){
 		window.location = '/admin/dashboard/preview?id=' + id;
 	})
 
-	$(document).delegate('.app-analystic', 'click', function(event) {
+	$(document).delegate('.app-analytic', 'click', function(event) {
 		//preview the app
 		id = $(event.target).attr('data-id');
 		//window.open('/dashboard/preview?id=' + id, 'preview', null, true);
-		window.location = '/admin/dashboard/analystic?id=' + id;
+		window.location = '/admin/dashboard/analytic?id=' + id;
 	})
 	
 	$(document).delegate('.install', 'click', function(event){
@@ -142,7 +142,7 @@ function deleteSuccess(page)
 	new Alert.create('success', 'Page tab removed successfully!');
 }
 
-function addAnalysticButton(btn, id)
+function addanalyticButton(btn, id)
 {
-	$(btn).closest('tr').find('.analystic').append('<button class="app-analystic btn btn-analystic" rel="tooltip" title="See your fanpage statistics" data-id="' + id + '">Analystic</button>');
+	$(btn).closest('tr').find('.analytic').append('<button class="app-analytic btn btn-analytic" rel="tooltip" title="See your fanpage statistics" data-id="' + id + '">Analytic</button>');
 }

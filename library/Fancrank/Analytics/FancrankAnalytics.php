@@ -10,9 +10,5 @@ class Fancrank_Analytics_FancrankAnalytics
 		$db = Zend_Db::factory($config->resources->db);
 	}
 	
-	public function getTopFanList($fanpageId) {
-		$rankModel = new Model_Rankings();
-		return $rankModel->getTopFans($fanpageId, 10);
-	}
 }
 

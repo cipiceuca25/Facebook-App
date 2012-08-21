@@ -106,9 +106,6 @@ class Model_Fans extends Model_DbTable_Fans
 	
 	public function getCurrentEXP(){
 		return $this->_fanProfile->fan_points;
-		
-		
-		
 	}
 	
 	protected function calculateLevel($points) {

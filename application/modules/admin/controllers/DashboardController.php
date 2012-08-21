@@ -108,8 +108,34 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	}
     }
     
-    public function analysticAction() {
-    	$this->view->page_id = $this->_getParam('id');
-    }
+    public function analyticAction() {
+    	$fanpageId = $this->_getParam('id');
+    	
+    	$fanpageModel = new Model_Fanpages;
+    	 
+    	$fans_model = new Model_Fans;
+    	
+     	$postDataByType = $fanpageModel->getPostsStatByFanpageId($fanpageId);
+
+     	$date = new Zend_Date();
+     	$date->subDay(2);
+     	
+     	$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'), 5);
+     	
+    	
+     	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 5);
+     	$topPostByComment = $fanpageModel->getTopPostsByNumberOfComments($fanpageId, 5);
+     	$topFanList = $fanpageModel->getTopFanList($fanpageId, 5);
+    	
+    	$this->view->fans = $fans_model->countAll();
+    	$this->view->new_fans = $newFans;
+    	$this->view->page_id = $fanpageId;
+    	//Zend_Debug::dump($this->_getParam('id')); exit();
+    	$this->view->post_data = json_encode($postDataByType);
+    	$this->view->topFanList = $topFanList;
+    	$this->view->topPostByLike = $topPostByLike;
+    	$this->view->topPostByComment = $topPostByComment;
+	}
+    
 }
 

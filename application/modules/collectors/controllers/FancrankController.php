@@ -8,9 +8,29 @@ class Collectors_FancrankController extends Fancrank_Collectors_Controller_BaseC
         parent::init();
     }
 	
-    public function insightsAction() {
+    public function indexAction()
+    {
+
+    }
+    
+    public function insightAction() {
     	$analytic = new Fancrank_Analytics_FancrankAnalytics();
     	Zend_Debug::dump($analytic->getTopFanList('123'));
+    }
+    
+    public function fanpageAction() {
+    	$fanpageModel = new Model_Fanpages;
+    	 
+    	$fans_model = new Model_Fans;
+    	
+     	$postDataByType = $fanpageModel->getPostsStatByFanpageId('165668590150326');
+     	Zend_Debug::dump($postDataByType);
+     	
+     	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes('165668590150326', 5);
+		Zend_Debug::dump($topPostByLike);
+		
+		$topFanList = $fanpageModel->getTopFanList('165668590150326', 5);
+		Zend_Debug::dump($topFanList);
     }
     
     private function httpCurl($url, $params=null, $method=null) {
