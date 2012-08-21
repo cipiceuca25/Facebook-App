@@ -27,7 +27,23 @@
 
 
 	<div class="flag">	
-	
+	<div class="date">
+	<? if (($this->relation[$count] != 'Fanpage')){?>
+		<? if ($this->relation[$count] != 'You') { ?>
+			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+					<a  onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" >
+				<?}else{?>
+					<a onclick="unfollow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>">
+				<?}?>
+				
+				<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+			<?php }else{?>
+				<span class="badge badge-You">You</span>
+			<?php }?>
+		<?}else{?>	
+			<span class="badge badge-Fanpage">Admin</span>
+		<?php }?>
+	</div>
 			
 	<a 
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
@@ -47,22 +63,7 @@
 			<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>
 		</span>
 	</a> 
-	<? if (($this->relation[$count] != 'Fanpage')){?>
-		<? if ($this->relation[$count] != 'You') { ?>
-			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-					<a  onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" >
-				<?}else{?>
-					<a onclick="unfollow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>">
-				<?}?>
-				
-				<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
-			<?php }else{?>
-				<span class="badge badge-You">You</span>
-			<?php }?>
-		<?}else{?>	
-			<span class="badge badge-Fanpage">Admin</span>
-		<?php }?>
-	<div class="date"><?=  date("l g:i a, F d Y",strtotime($post['created_time']))?></div>
+	
 	
 	</div>
 
@@ -139,8 +140,9 @@
 			 		if($post['post_comments_count']!=null){
 						echo $post['post_comments_count']; 
 			 		} else {echo '0';} ?> , true )" class="commenthider_<?= $post['post-id'] ?>">Comment </a>
-		
+				&middot;
 			
+				<?=  date("l g:i a, F d Y",strtotime($post['created_time']))?>
 			
 			<br/>
 	</div>

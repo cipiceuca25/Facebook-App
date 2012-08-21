@@ -5,7 +5,24 @@
 		<li class="grey-light" >
 	
 			<div class="flag">
+				<div class="date"><? if (!($this->relation[$count] == 'Fanpage')){?>
+						<? if ($this->relation[$count] != 'You') { ?>
+						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+								<a href="#" onclick="follow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>" >
+							<?}else{?>
+								<a href="#" onclick="unfollow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>">
+							<?}?>
+							
+								<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+							<?php }else{?>
+								<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+							<?php }?>
+							
+						<?}else{?>
+							<div class="badge badge-<?= $this->relation[$count]?>">Admin</div>
+						<?php }?>
 				
+					</div> 
 				<a data-toggle="modal"
 					<? if (!($this->relation[$count] == 'Fanpage')){?> 
 						onclick="userProfile('<?=$topPost['facebook_user_id']?>')"
@@ -27,25 +44,8 @@
 				</a> 
 				
 			
-				<? if (!($this->relation[$count] == 'Fanpage')){?>
-						<? if ($this->relation[$count] != 'You') { ?>
-						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								<a href="#" onclick="follow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>" >
-							<?}else{?>
-								<a href="#" onclick="unfollow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>">
-							<?}?>
-							
-								<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
-							<?php }else{?>
-								<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
-							<?php }?>
-							
-						<?}else{?>
-							<div class="badge badge-<?= $this->relation[$count]?>">Admin</div>
-						<?php }?>
 				
 				
-				<div class="date"><?= date("F d Y", strtotime($topPost['created_time']))?></div> 
 				
 				
 			
@@ -131,8 +131,9 @@
 		
 				 <a  onclick=" comment_bubble('<?= $topPost['post_id']?>', 5, true)">Comment </a>
 		
-			
-			
+				&middot;
+				<?date_default_timezone_set('America/Toronto');?>
+				<?= date("F d Y", strtotime($topPost['created_time']))?>
 			<br/>
 			</div>
 			

@@ -14,8 +14,22 @@
 	
 	
 	<div class="post_container">
-	
-		
+		<span class="comment_badge">
+		<? if (($this->relation[$count] != 'Fanpage')){?>
+			<? if ($this->relation[$count] != 'You') { ?>
+				<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+						<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+					<?}else{?>
+						<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+					<?}?>
+						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+				<?php }else{?>
+					<span class="badge badge-You">You</span>
+				<?php }?>
+		<?}else{?>
+				<span class="badge badge-Fanpage">Admin</span>
+		<?php }?>
+		</span>
 	<a  
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
 			onclick="userProfile('<?=$post->from->id?>')"
@@ -30,11 +44,13 @@
 		
 			<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></span>
 			
-			
 			<span class="name">
 				<?=  $post->from->name?>
 			</span>
+			
 		</a>
+		
+		
 <div class="post">
 	<span class="message">
 	
@@ -67,21 +83,8 @@
 	
 	<br/>
 	<span class="social"> 
-	 	<? if (($this->relation[$count] != 'Fanpage')){?>
-			<? if ($this->relation[$count] != 'You') { ?>
-				<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-						<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
-					<?}else{?>
-						<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
-					<?}?>
-						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
-				<?php }else{?>
-					<span class="badge badge-You">You</span>
-				<?php }?>
-		<?}else{?>
-				<span class="badge badge-Fanpage">Admin</span>
-		<?php }?>
-	 
+	 	
+	 		<?date_default_timezone_set('America/Toronto');?>
 		<span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span>
 		
 		

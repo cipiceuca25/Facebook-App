@@ -90,6 +90,14 @@
 				'placement' : 'left'   
 			}).trigger('mouseover');
 		});
+	
+	$(document).on('mouseover', 'a[rel=tooltip-award]', function () {
+		  if ( $(this).data('isTooltipLoaded') == true ) { return; }
+		  $(this).data('isTooltipLoaded', true).tooltip({
+				'placement' : 'top'   
+			}).trigger('mouseover');
+		});
+	
 	/*
 	$('a[rel=tooltip]').on("mouseover",function(){
 		$(this).tooltip({

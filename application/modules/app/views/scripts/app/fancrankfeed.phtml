@@ -28,6 +28,25 @@
 	
 	
 	<div class="flag" >		
+	
+	<span class="date">
+	<? if (($this->relation[$count] != 'Fanpage')){?>
+					<? if ($this->relation[$count] != 'You') { ?>
+						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+								<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" >
+						<?}else{?>
+								<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+						<?}?>
+							
+						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+					<?php }else{?>
+						<span class="badge badge-You">You</span>
+					<?php }?>
+					
+				<?}else{?>
+					<span class="badge badge-Fanpage">Admin</span>
+				<?php }?></span><br/>
+	
 	<a data-toggle="modal"
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
 			onclick="userProfile('<?=$post->from->id?>')"
@@ -48,23 +67,6 @@
 			<?=  $post->from->name?>
 		</span>
 	</a> 
-	<? if (($this->relation[$count] != 'Fanpage')){?>
-				<? if ($this->relation[$count] != 'You') { ?>
-					<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-							<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" >
-					<?}else{?>
-							<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
-					<?}?>
-						
-					<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
-				<?php }else{?>
-					<span class="badge badge-You">You</span>
-				<?php }?>
-				
-			<?}else{?>
-				<span class="badge badge-Fanpage">Admin</span>
-			<?php }?>
-	<div class="date"><?=  date("l g:i a, F d Y",strtotime($post->created_time))?></div>
 	
 	</div>
 	
@@ -168,8 +170,11 @@
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; 
 			 		} else {echo '0';} ?> , true )"  class="commenthider_<?= $post->id ?>">Comment </a>
-		
+				
+				&middot;
+				
 			
+				<?=  date("l g:i a, F d Y",strtotime($post->created_time))?>
 			
 			<br/>
 	</div>

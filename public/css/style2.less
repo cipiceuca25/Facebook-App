@@ -345,8 +345,18 @@ ul, ol {
 	float:left;
 	position:relative;
 	
-	
 }
+.comments .post_container .photo,
+#toppost .photo,
+#fancrankfeed .photo{
+	top:-17px;
+}
+
+#fancrankfeed .comments .photo,
+.popup_comments .photo{
+	top:0px;
+}
+
 .popup_comments .post_container,
 .comments .post_container{
 	margin-left:6px;
@@ -366,6 +376,8 @@ ul, ol {
 	//float:left;
 	font-size:11px;
 	line-height:14px;
+	position:relative;
+	top:2px;
 }	
 
 
@@ -373,7 +385,7 @@ ul, ol {
 	width:32px;
 	height:32px;	
 	//border: 3px solid @color-feed2;
-
+	
 }
 
 .post-list .post {
@@ -716,6 +728,7 @@ ul, ol {
 	//margin-top:-20px;
 	margin-top:0px;
 	float:left;
+	
 }
 
 .top-list.mini .photo{
@@ -861,9 +874,9 @@ ul, ol {
 		line-height:20px;
 		width:75px;
 		
-		.border-radius(1px);
+		.border-radius(2px);
 		float:left;
-		
+		height:20px
 }
 
 
@@ -878,7 +891,7 @@ ul, ol {
 	//float:right;
 	display:inline-block;
 	color:white;
-	width:51px;
+	width:59px;
 	text-align:center;
 	margin-top:3px;
 }
@@ -905,7 +918,7 @@ ul, ol {
 
 .badge-Following{
 	font-size:11px;
-	background-color:#62c462;
+	background-color:#56A556;
 	//#gradient > .horizontal(white,#62c462);
 	.border-radius(2px);
 	line-height:11px;
@@ -914,7 +927,7 @@ ul, ol {
 	//margin-right:-5px;
 	//float:right;
 	display:inline-block;
-	width:51px;
+	width:59px;
 	color:white;
 	text-align:center;
 	margin-top:3px;
@@ -949,7 +962,7 @@ ul, ol {
 		margin-right:3px;
 	//float:right;
 	display:inline-block;
-	width:51px;
+	width:59px;
 	text-align:center;
 	margin-top:3px;
 }
@@ -957,14 +970,14 @@ ul, ol {
 .badge-You{
 	font-size:11px;
 	//#gradient > .horizontal(white, @color-dark);
-	background-color:@color-feed2;
+	background-color:#F7CB1E;
 	.border-radius(2px);
 	line-height:11px;
 	height:11px;
 	margin-right:3px;
 	//float:right;
 	display:inline-block;
-	width:51px;
+	width:59px;
 	color:white;
 	text-align:center;
 	margin-top:3px;
@@ -980,10 +993,15 @@ ul, ol {
 		margin-right:3px;
 	//float:right;
 	display:inline-block;
-	width:51px;
+	width:59px;
 	color:white;
 	text-align:center;
 	margin-top:3px;
+}
+
+.badge{
+
+	padding: 1px 0px 1px 0px;
 }
 
 .top-list .badge-Follower,
@@ -2416,4 +2434,35 @@ h5{
 
 #toppost .grey-light .post_container .post .pic .link{
 	width:220px;
+}
+
+.badge_container{
+	float:left;
+	height:50px;
+}
+
+.badge_text{
+	vertical-align:middle;
+	display:inline-block;
+	
+}
+
+.badge_profile{
+	float:right;
+	position:relative;
+	top:-35px;
+	left:-8px;
+}
+
+.comment_badge{
+	position:absolute;
+	left:39px;
+	z-index:3;
+}	
+.popup_comments .name,
+.comments .name{
+	margin-left:69px;
+	position:relative;
+	top:3px;
+	z-index:2;
 }

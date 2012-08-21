@@ -8,9 +8,25 @@
 											
 												<div class="photo"> <a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a></div>
 		
-												<div class="title-header"> <h3> <?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile</i></h3> </div>
+												<div class="title-header"> <h3> <?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile</i></h3> 
+												<div class="badge_profile">
+													<? if ($this->relation != 'You') {?>
+													<? if (($this->relation != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+														<a onclick="follow(<?= $this->facebook_user->facebook_user_id?>, '<?= $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>')">
+													<?}else{?>
+														<a onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?>, '<?= $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>')">
+													<?}?>
+													
+													<span class="badge badge-<?= $this->relation?> big"><?= $this->relation?></span></a>
+													<?}else{?>
+													<span class="badge badge-<?= $this->relation?> big"><?= $this->relation?></span>
+													<?php }?>
+												</div>
+												
+												</div>
+												
 											</div>
-											</div>
+										</div>
 									</div>
 									<div class="row" >
 										<div class="span7">

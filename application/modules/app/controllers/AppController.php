@@ -731,6 +731,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$follower = $follow->getFollowers($user->facebook_user_id, $this->_fanpageId);
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
     	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
+    	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id, $this->_fanpageId);
+    	
     	
     	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
     	
@@ -855,7 +857,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	//Zend_debug::dump($followingList);
     
-    	
+    	$this->view->relation = $relation;
     	
     	$this->view->fan_level = $fan_level;
     	$this->view->fan_since = $fan_since;
