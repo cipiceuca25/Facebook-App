@@ -167,7 +167,7 @@
 				 <a  onclick=" comment_feed('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; 
-			 		} else {echo '0';} ?> , true )">Comment </a>
+			 		} else {echo '0';} ?> , true )"  class="commenthider_<?= $post->id ?>">Comment </a>
 		
 			
 			

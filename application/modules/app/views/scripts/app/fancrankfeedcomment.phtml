@@ -74,9 +74,7 @@
 					<?}else{?>
 						<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
 					<?}?>
-					
-						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span> 
-					</a>
+						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
 				<?php }else{?>
 					<span class="badge badge-You">You</span>
 				<?php }?>

@@ -125,14 +125,7 @@
 					<a class="like_control_<?= $this->post->id?>"  onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike</a>   
 				<?php }?>
 		
-				 &middot;
-		
-				 <a  onclick=" comment_feed('<?= $this->post->id ?>','<?= $this->post->type?>', 5,<?php 
-			 		if(isset($this->post->comments->count)){
-						echo $this->post->comments->count; 
-			 		} else {echo '0';} ?> , true )">Comment </a>
-		
-			
+
 			
 			<br/>
 	</div>

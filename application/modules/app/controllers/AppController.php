@@ -778,6 +778,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$activity = new Model_Posts();
     	$activity = $activity->getUserActivity($this->_fanpageId, $user->facebook_user_id, 15);
     	$followingList = $follow -> getFollowersList($user->facebook_user_id,$this-> _fanpageId, 15);
+    	$followingList2 = $follow -> getFollowingList($user->facebook_user_id,$this-> _fanpageId, 15);
     	
     	for($i=0; $i<count($followingList);$i++){
     		
@@ -787,7 +788,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$followingList[$i]['user_created_time'] = $followingList[$i]['update_time'];
     		//echo $f['user_created_time'] ;
     	}
+    	for($i=0; $i<count($followingList2);$i++){
     	
+    		if ($followingList2[$i]['update_time'] == null){
+    			$followingList2[$i]['update_time'] = $followingList2[$i]['created_time'];
+    		}
+    		$followingList2[$i]['user_created_time'] = $followingList2[$i]['update_time'];
+    		//echo $f['user_created_time'] ;
+    	}
     	$fullactivity = array();
     	$a =0;
     	$b = 0;
@@ -815,7 +823,33 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     		
     	}
-    	//Zend_Debug::dump($fullactivity);
+    	$a =0;
+    	$b = 0;
+    	for($i=0; $i<count($followingList2) + count($fullactivity) ; $i++){
+    		if (($a < count($fullactivity)) && ($b < count($followingList2))){
+    			if ($fullactivity[$a]['user_created_time'] > $followingList2[$b]['user_created_time'] ){
+    				$fullactivity2[$i] = $fullactivity[$a];
+    				$a++;
+    			}else{
+    				$fullactivity2[$i] = $followingList2[$b];
+    				$b++;
+    			}
+    	
+    		}else{
+    			if ($a >= count($fullactivity)){
+    				$fullactivity2[$i] = $followingList2[$b];
+    				$b++;
+    			}
+    			if ($b >= count($followingList2)){
+    				$fullactivity2[$i] = $fullactivity[$a];
+    				$a++;
+    			}
+    		}
+    	
+    		 
+    	
+    	}
+    	//Zend_Debug::dump($fullactivity2);
     	//$activity = array_merge($activity, $followingList);
     	
     	
@@ -830,7 +864,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
     	
-    	$this->view->post = $fullactivity;
+    	$this->view->post = $fullactivity2;
     	//Zend_Debug::dump($stat_post);
     	
     	$this->view->stat_post = $stat_post;

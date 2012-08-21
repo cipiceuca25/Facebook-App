@@ -421,8 +421,10 @@
 		
 		getFeedComment( ui, post_id, type, limiter, total, toggle);
 		
-
+		
 		$('.social.comment.'+post_id).css('display', 'none');
+		
+	
 		//$('.light-box').css('display','block');
 		//$('.user-profile').css('display', 'block');
 	
@@ -446,7 +448,9 @@
 		ui = '#postn_' + post_id;
 		//alert(ui);
 		getFeedComment( ui, post_id, type, limiter, total, toggle);
-
+		
+		$('.social.commentn.'+post_id).css('display', 'none');
+}
 		
 	}
 	 

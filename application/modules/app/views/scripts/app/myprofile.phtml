@@ -21,17 +21,23 @@
 		<div class="row">
 			<div class="span7">
 				<div id="myprofile">
-					<div class="row profile_background">
-						<div class="span3_5">
+					<div class="row spacefix">
+						<div class="span3_5 profile_background">
+						
 							<div class="profile-block">
 								<h3>Level</h3>
 								<div class="rank">
 									<?= $this->fan_level?>
 								</div>
 							</div>
-
+							<div class="profile-block points">
+								<h1>
+									<?= $this->fan_point?>
+								</h1>
+								<h3>Points</h3>
+							</div>
 							<div class="profile-block fan-point">
-								<h3>Fan Experience</h3>
+								<h4>Fan Experience</h4>
 
 								<div class="progress">
 
@@ -49,23 +55,11 @@
 									Until Next Level
 								</h5>
 							</div>
-							<div class="profile-block">
-								<h4>Personal Achievement</h4>
-								<div class="progress">
-									<div class="bar" style="width: 60%;"></div>
-								</div>
-							</div>
+							
 						</div>
 
-						<div class="span3_5">
-							<div class="profile-block points">
-								
-
-								<h1>
-									<?= $this->fan_point?>
-								</h1>
-								<h3>Points</h3>
-							</div>
+						<div class="span3_5 profile_background">
+							
 							<div class="profile-block">
 								<h4>Overall Achievement</h4>
 								<div class="progress">
@@ -79,17 +73,24 @@
 									<?=$this->all_badge?>
 								</h5>
 							</div>
-
+							<div class="profile-block">
+								<h4>Personal Achievement</h4>
+								<div class="progress">
+									<div class="bar" style="width: 60%;"></div>
+								</div>
+								<h5>0/100</h5>
+							</div>
 							<div class="profile-block">
 								<h4>Social Achievement</h4>
 								<div class="progress">
 									<div class="bar" style="width: 60%;"></div>
 								</div>
+								<h5>0/100</h5>
 							</div>
-
+							
 						</div>
-					</div>
-
+				
+						</div>
 
 					<div class="feed_spacer_top"></div>
 					<div class="row profile_background">
@@ -171,7 +172,7 @@
 						</div>
 						<div class="span3_5">
 							<div class="profile-block left-align">
-								<h4>Other Statistics</h4>
+								<h4>Other Statistics:</h4>
 								<img src="/img/post.png" />Total Posts Made :
 								<?=$this->stat_post?>
 								<br /> <img src="/img/thumbsup.png" />Total Likes Made :
@@ -200,7 +201,7 @@
 			<div class="span5">
 				<div class="subtitle">
 					<div class="title-header">
-						<h3>Most Recent Activities!</h3>
+						<h3>Your Recent Activities</h3>
 					</div>
 				</div>
 			</div>
