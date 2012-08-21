@@ -93,27 +93,31 @@
 												<?php $badge = $this->badges?>
 												<?php $badgeName = array_keys($this->badges)?>
 												
-												<?php for($i = 0 ; $i < count($badgeName); $i++){?>
+												<?php for($i = 0 ; $i < count($badgeName); $i++){?> 
 												<div class="row">
 													<div class="profile-block">
-													<?php $badgeQuantity = array_keys($badge[$badgeName[$i]]);?>
-														<?php for($j = 0 ; $j < count($badgeQuantity); $j++){?>
+													<?php $badgeQuantity = array_keys($badge[$badgeName[$i]]);?> 
+														<?php for($j = 0 ; $j < count($badgeQuantity); $j++){?> 
 														
 														<div class="span1">
 														
-															<img src="<?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['picture']?>" title = "<?= str_replace('[quantity]',  $badgeQuantity[$j], $badge[$badgeName[$i]][$badgeQuantity[$j]]['description'])?>" /> 
+															<img src="<?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['picture']?>" 
+															title = "<?= str_replace('[quantity]',  $badgeQuantity[$j], $badge[$badgeName[$i]][$badgeQuantity[$j]]['description'])?>" 
+															<?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] !== 1){?> style="opacity:0.5" <?php }?>/> 
 														
 														</div>
-														<div class="span2">
-															<?= $badgeName[$i]?>-<?=$badgeQuantity[$j]?>
+												
 														
-															 <?= round($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] *100)?>% Completed
-													
-														</div>
 														
-														<?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] !== 1){
-																$j = count($badgeQuantity) +1;
-														}?> 
+														<?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] !== 1){?>
+																<div class="span2">
+																	<?= $badgeName[$i]?>-<?=$badgeQuantity[$j]?>
+																
+																	 <?= round($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] *100)?>% Completed
+															
+																</div>
+																<?php $j = count($badgeQuantity) +1;?>
+														<?php }?> 
 													<?}?>
 												</div></div>
 											<?}?>

@@ -161,6 +161,9 @@ ul, ol {
 	//background-color:@color-dark;
 }
 
+.title-header.two{
+	margin-top:5px;
+}
 .title h3, 
 .subtitle h3{
 	margin-left:65px;
@@ -855,7 +858,7 @@ ul, ol {
 		top:5px;
 		
 		font-size:15px;
-		line-height:20px
+		line-height:20px;
 		width:75px;
 		
 		.border-radius(1px);
@@ -885,6 +888,7 @@ ul, ol {
 	color:@color-dark;
 	background-color:@color-background;
 	//#gradient > .horizontal(white,@color-background);
+	text-decoration:none;
 }
 
 .badge-unfollow{
@@ -1006,13 +1010,15 @@ ul, ol {
 .top-list .follow .badge-unfollowing.big,
 .top-list .follow .badge-You.big{
 	position:relative;
-		top:5px;
-		height:20px;
+		top:19px;
+		//height:20px;
 		font-size:15px;
-		.border-radius(1px);
-		float:left;
-		line-height:20px;
+		right:10px;
+		.border-radius(2px);
+		float:right;
+		line-height:15px;
 		width:75px;
+		
 	}
 
 
@@ -1061,11 +1067,16 @@ ul, ol {
 /*==================================================*/
 
 .profile-block{
-	min-height:95px;
-	margin-left:15px;
+
+	//margin-left:15px;
 	text-align:center;
-	margin-bottom:10px;
+	margin-bottom:5px;
+	margin-top:5px;
 }
+
+#myprofile .profile-block{
+	min-height:95px;
+	}
 
 .profile-block h1{
 	text-align:center;
@@ -1116,7 +1127,7 @@ ul, ol {
 
 .profile-block h5{
 	font-size:11px;
-	font-weight:normal;
+	//font-weight:normal;
 }
 
 
@@ -1244,6 +1255,8 @@ ul, ol {
 .text-title.gray{
 	color: @color-text2;
 }
+
+
 
 
 /*---BADGES---*/
@@ -1497,7 +1510,7 @@ ul, ol {
 .btn-submit,
 .btn-top{
 	//#gradient > .vertical(@color-badges, #EDEFF4 );
-	//background-color:red;
+	
 	width:100%;
 	height:40px;
 	font-size:11px;
@@ -1544,6 +1557,7 @@ ul, ol {
 	.border-radius(1px);
 	line-height:25px;
 	//padding:2px 9px 2px;
+	background-color:#ddd;
 }
 
 
@@ -1843,9 +1857,9 @@ ul, ol {
 }
 
 .span3_5{
-	width:200px;
+	width:205px;
 	margin-left:7px;
-	margin-right:7px;
+	margin-right:11px;
 }
 
 .span3 {
@@ -1955,7 +1969,7 @@ form{
 	line-height:17px;
 	font-weight:bold;
 }
-
+	
 .row.profile_background{
 	background-color: white;
 	border:1px solid darken(#C4CDE0, 20%);
@@ -1967,6 +1981,22 @@ form{
 	
 }
 
+.row.spacefix{
+	margin-left:-10px;
+}
+
+.span3_5.profile_background{
+	background-color: white;
+	border:1px solid darken(#C4CDE0, 20%);
+	.border-radius(3px);
+	padding:10px;
+	padding-top:3px;
+	width:200px;
+	margin-right:0px;
+	padding-bottom:3px;
+	.box-shadow(2px 2px 2px 1px darken(@color-background, 20%);
+	
+}
 #top-fans .btn-top{
 	margin-top:-10px;
 }
@@ -1991,6 +2021,8 @@ form{
 	.box-shadow(0 0 0 0 white);
 	
 }
+
+
 
 #myprofile .row.profile_background{
 	.border-radius(3px);
@@ -2045,7 +2077,7 @@ form{
 .profile-block.left-align{
 	font-size:11px;
 	text-align:left;
-	margin-left:40px;
+	//margin-left:40px;
 }
 .title-header.toppost,
 .title-header.topfan,
@@ -2072,7 +2104,9 @@ form{
 
 }
 
-
+#myprofile{
+	overflow:hidden;
+}
 .scrollbox,
 #myprofile{
 	margin-top:-10px;
@@ -2126,6 +2160,7 @@ form{
 	border-bottom:0px;
 
 }
+#userprofile .feed_spacer_top,
 #myprofile .feed_spacer_top,
 #topfan .feed_spacer_top,
 #toppost .feed_spacer_top,
@@ -2272,13 +2307,20 @@ form{
 #recent_activities {
     overflow: auto;
     padding-left:5px;
-    height: 911px;
+    height: 845px;
+    
 }
 
 .scrollbox2{
 	overflow: auto;
     padding-left:5px;
-    height: 150px;
+    height: 200px;
+    margin-top:-10px;
+	padding-top:10px;
+	background-color:lighten(@color-base, 40%);
+	border:5px solid lighten(@color-base, 40%);
+	.border-radius(0 0 3px 3px);
+	border-top:0px;
 }
 
 .track3 {
@@ -2293,4 +2335,80 @@ form{
     border: 1px solid #555;
     
     left:4px;
+}
+
+#userprofile .row.profile_background{
+	.border-radius(3px);
+}
+
+#userprofile{
+	overflow:hidden;
+
+	margin-top:-10px;
+	padding-top:10px;
+	background-color:lighten(@color-base, 40%);
+	border:5px solid lighten(@color-base, 40%);
+	.border-radius(0 0 3px 3px);
+	border-top:0px;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+#userprofile .profile-block{
+	min-height:0px;
+
+	margin-top:0px;
+	margin-bottom:0px;
+}
+
+#userprofile .profile-block .rank{
+	.profile-block .rank;
+	font-size:20px;
+	border:3px solid;
+	width:30px;
+	height:30px;
+	line-height:30px;
+	margin-left:0px;
+}
+
+#userprofile .profile-block.points{
+	top:0px;
+	font:30px Arial, Helvetica, sans-serif;
+	width:100%;
+	padding:10px;
+	font:
+}
+
+#userprofile .span3_5{
+	width:195px;
+}
+
+#userprofile .profile_background.h{
+	min-height:180px;
+}
+
+h5{
+	font-weight:bold;
+}
+
+.pb-float{
+	float:left;
+	margin-top:20px;
+	margin-bottom:20px;
+	margin-left:11px;
+	margin-right:12px;
+}
+
+#userprofile profile-block.float{
+	float:left;
+	text-align:center;
+	width:100%;
+}
+
+#userprofile .btn-top{
+	height:auto;
+}
+
+popup_comments .btn-top{
+	border:0px solid;
 }

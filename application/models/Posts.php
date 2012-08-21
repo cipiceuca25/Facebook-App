@@ -166,14 +166,30 @@ class Model_Posts extends Model_DbTable_Posts
 				union 
 				SELECT p.*, l.created_time as user_created_time, 'like-post' as act_type FROM  posts p, likes l 
 													where l.facebook_user_id = '".$user_id."'
+													and l.likes = 1
 													and l.fanpage_id = '".$fanpage_id."'
 													and p.post_id = l.post_id
 													and p.fanpage_id = l.fanpage_id
-													
+				union 
+				SELECT p.*, l.created_time as user_created_time, 'unlike-post' as act_type FROM  posts p, likes l 
+													where l.facebook_user_id = '".$user_id."'
+													and l.likes = 0
+													and l.fanpage_id = '".$fanpage_id."'
+													and p.post_id = l.post_id
+													and p.fanpage_id = l.fanpage_id									
 				union
 				SELECT  p.*, l.created_time as user_created_time, 'like-comment' as act_type FROM comments c, posts p, likes l 
 													where l.facebook_user_id = '".$user_id."'
 													and l.fanpage_id = '".$fanpage_id."'
+													and l.likes = 1
+													and p.post_id = c.comment_post_id
+													and p.fanpage_id = c.fanpage_id
+													and l.post_id = c.comment_id 
+				union
+				SELECT  p.*, l.created_time as user_created_time, 'unlike-comment' as act_type FROM comments c, posts p, likes l 
+													where l.facebook_user_id = '".$user_id."'
+													and l.fanpage_id = '".$fanpage_id."'
+													and l.likes = 0
 													and p.post_id = c.comment_post_id
 													and p.fanpage_id = c.fanpage_id
 													and l.post_id = c.comment_id 

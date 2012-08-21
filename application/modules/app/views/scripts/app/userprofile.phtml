@@ -14,98 +14,85 @@
 									</div>
 									<div class="row" >
 										<div class="span7">
-										<div id="myprofile">
-											<div class="row profile_background">
-												<div class="row ">
-													<div class="span2">
-														<div class="profile-block">
-															<h3>Level</h3>
-															<div class="rank">
-																<?= $this->fan_level?>
-															</div>
-														</div>
-													</div>
-													<div class="span5">	
-											
-														<div class="profile-block fan-point">
-															<h3>Accumulated Points</h3>
-															
-															<h2><?= $this->fan_point?></h2> 
-															<h5>Points</h5>
-														</div>
-													</div>
-												</div>
-												<div class="row">
+										<div id="userprofile">
+					<div class="row spacefix">
+						<div class="span3_5 profile_background h">
+						
+							<div class="profile-block">
+								<div class="pb-float">
+									<h4>Level</h4>
+									<div class="rank">
+										<?= $this->fan_level?>
+									</div>
+								</div>
+								<div class="pb-float">
+									<h4>Fan Experience</h4>
+	
+									<div class="progress">
+	
+										<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;">
+	
+										</div>
+									</div>
+									<h5>
+										<?=$this->fan_exp?>
+										/
+										<?=$this->fan_level_exp?>
+				
+									</h5>
 									
-													<div class="span7">
-													
-			
-														<div class="profile-block fan-point">
-															<h3>Fan Experience</h3>
-															
-															<div class="progress">
-																
-																<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;">
-																
-																</div>
-																
-															</div>
-															<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?> <br/> <?=$this->fan_exp_required?> Until Next Level</h5>
+								</div>
+							</div>
+							<div class="profile-block float">
+								<h5>Overall Achievement: <?=$this->user_badge?>
+									/
+									<?=$this->all_badge?></h5>
+							
+							</div>
+							<div class="profile-block float">
+								<h5>Personal Achievement: 0/100</h5>
+							
+							</div>
+							<div class="profile-block float">
+								<h5>Social Achievement: 0/100</h5>
+						
+							</div>
+						
+						</div>
+
+						<div class="span3_5 profile_background h">
+								
+							<div class="profile-block left-align">
+								<h5>Fancrank User Since:</h5>
+															<?php if ($this->fan['created_time'] == null){?>
+																Not A Fancrank User
+															<?}else{?>
+															 <?= date("F Y",strtotime($this->fan['created_time']))?>
+															<?}?>
+															<br/>
+															<h5>Location: </h5>
+															<?php if ($this->fan['fan_country'] != null ) {?>
+																<?php if ($this->fan['fan_location'] != null){?>
+																	<?= $this->fan['fan_location']?>, <?= $this->fan['fan_country']?>
+																<?php }?>
+																<?= $this->fan['fan_country']?>
+															<?php }else{?>
+																Unknown
+															<?php }?>
+								<h5>Other Statistics:</h5>
+														<img src="/img/post.png" />Total Posts Made : <?=$this->stat_post?> <br/>
+															<img src="/img/thumbsup.png" />Total Likes Made : <?=$this->stat_like?> <br/>
+															<img src="/img/comment.png" />Total Comments Made : <?=$this->stat_comment?> <br/>
+															<img src="/img/rthumbsup.png" />Total Recieved Likes: <?=$this->stat_get_like?> <br/>
+															<img src="/img/rcomment.png"/>Total Recieved Comments: <?=$this->stat_get_comment?> <br/>
 														</div>
-														
-													</div>
-												
-											
-												</div>
-												<div class="row">
-												
-													<div class="span7">
-													
-			
-														<div class="profile-block">
-														<h4>Overall Achievement</h4>
-														<div class="progress">
-															<div class="bar" style="width: <?= $this->overall_achievement?>%;">
-															</div>
-															
 														</div>
-														<h5><?=$this->user_badge?>/<?=$this->all_badge?> </h5>
-														</div>
-													</div>
-												
-											
-												</div>
-												<div class="row">
-													
-													<div class="span3_5">
-													
-												
-															<div class="profile-block">
-																<h4>Personal Achievement</h4>
-																<div class="progress">
-																	<div class="bar" style="width: 60%;"></div>
-																</div>
-															</div>
-														</div>
-											
-													<div class="span3_5">
-														
-													
-															<div class="profile-block">
-																<h4>Social Achievement</h4>
-																<div class="progress">
-																	<div class="bar" style="width: 60%;"></div>
-																</div>
-															</div>
-													</div>
-													
-												</div>
-												
-											</div>
+							</div>
+				
+				
 											<div class="feed_spacer_top"></div>
 											<div class="row profile_background">
-												<div class="row">
-													<div class="span7">
+											
 														<div class="profile-block">
 															<h4>Recent Badges</h4>
 															
@@ -129,17 +116,16 @@
 															<img src="/img/badges/like_photo_1.png" />
 														</div>	
 														</div>
-													</div>
-												</div>
+												
 											</div>
 											<div class="feed_spacer_top"></div>
 											<div class="row profile_background">
-												<div class="row">
+										
 													<div class="span3_5">
 														<div class="profile-block">
-																<h4>Followed by 
+																<h5>Followed by 
 														
-																<?= $this->follower['0']['Follower']?> Fans</h4>
+																<?= $this->follower['0']['Follower']?> Fans</h5>
 															
 														<div id="followerslist" >
 															
@@ -154,9 +140,9 @@
 													<div class="span3_5">
 														<div class="profile-block">
 													
-																	<h4>Following 
+																	<h5>Following 
 															
-																	<?= $this->following['0']['Following']?> Fans</h4>
+																	<?= $this->following['0']['Following']?> Fans</h5>
 													
 														<div id="followinglist" >
 																
@@ -168,46 +154,24 @@
 														</div>
 														</div>
 													</div>
-												</div>
+											
 											</div>
-											<div class="feed_spacer_top"></div>
-											<div class="row profile_background">
-												<div class="row">
-													<div class="span3_5">
-														<div class="profile-block left-align">
-															<h4>Fancrank User Since:</h4>
-															<?php if ($this->fan['created_time'] == null){?>
-																Not A Fancrank User
-															<?}else{?>
-															 <?= date("F Y",strtotime($this->fan['created_time']))?>
-															<?}?>
-															<br/>
-															<h4>Location: </h4>
-															<?php if ($this->fan['fan_country'] != null ) {?>
-																<?php if ($this->fan['fan_location'] != null){?>
-																	<?= $this->fan['fan_location']?>, <?= $this->fan['fan_country']?>
-																<?php }?>
-																<?= $this->fan['fan_country']?>
-															<?php }else{?>
-																Unknown
-															<?php }?>
-	
-														</div>
-													</div>
-													<div class="span3_5">
-														<div class="profile-block left-align">
-															<h4>Other Statistics</h4>
-														<img src="/img/post.png" />Total Posts Made : <?=$this->stat_post?> <br/>
-															<img src="/img/thumbsup.png" />Total Likes Made : <?=$this->stat_like?> <br/>
-															<img src="/img/comment.png" />Total Comments Made : <?=$this->stat_comment?> <br/>
-															<img src="/img/rthumbsup.png" />Total Recieved Likes: <?=$this->stat_get_like?> <br/>
-															<img src="/img/rcomment.png"/>Total Recieved Comments: <?=$this->stat_get_comment?> <br/>
-														</div>
-													
-													</div>
-												</div>
+									</div>
+									</div>
+									</div>
+									
+									<div class="row">
+									<div class="span7">
+											
+											<div class="subtitle">
+			
+												<div class="title-header two"> <h3><?echo $this->facebook_user->facebook_user_first_name ?>'s Recent Activities</h3> </div>
 											</div>
-											<div class="feed_spacer_top"></div>
+											</div>
+									</div>
+									<div class="row">
+										<div class="span7">
+											
 											
 												
 													<div class="scrollbox2">
@@ -238,12 +202,23 @@
 																<li class="grey-light">
 																	
 																	<? if (isset($post['follow_enable'])){?>
-																	<?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?> 
-																	has <?php if($post['follow_enable'] == 1) {?> been followed by
+																		<?php if ($post['facebook_user_id'] ==$post['facebook_user_id_subscribe_to'] ){?>
+																		<?echo $this->facebook_user->facebook_user_first_name?> 
+																		has <?php if($post['follow_enable'] == 1) {?> followed
+																			<?php }else{?>
+																				unfollowed 
+																			<?php }?>
+																			<a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['facebook_user_name']?></a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																		
+																		
 																		<?php }else{?>
-																			been unfollowed by
+																		<?echo $this->facebook_user->facebook_user_first_name?> 
+																		has <?php if($post['follow_enable'] == 1) {?> been followed by
+																			<?php }else{?>
+																				been unfollowed by
+																			<?php }?>
+																			<a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['facebook_user_name']?></a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
 																		<?php }?>
-																		<?=$post['facebook_user_name']?>
 																	
 																	
 																	<?}elseif (isset($post['act_type'])){?>
@@ -251,17 +226,28 @@
 																		<?switch($post['act_type']){ 
 		
 																				
-																			 case 'like-post':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   liked <?=$post['fan_name']?>'s post <?=$post['post_id']?> 
+																			 case 'like-post':?><?echo $this->facebook_user->facebook_user_first_name  ?>   liked <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">post</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
 																			
 																			<?break;?>
-																			 <?php case 'comment':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   commented on <?=$post['fan_name']?>'s post <?=$post['post_id']?> 
+																			
+																			 <?php case 'unlike-post':?><?echo $this->facebook_user->facebook_user_first_name  ?>   unliked <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">post</a>  on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
 																			
 																			<?break;?>
-																			 <?php case 'like-comment':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   liked  <?=$post['fan_name']?>'s comment <?=$post['post_id']?> 
+
+																			 <?php case 'like-comment':?><?echo $this->facebook_user->facebook_user_first_name ?>   liked  <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">comment</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
 																			
 																			<?break;?>				
+																			 <?php case 'unlike-comment':?><?echo $this->facebook_user->facebook_user_first_name ?>   unliked  <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">comment</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
 																			
-																			 <?php case 'post':?><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>   posted  <?=$post['post_id']?> 
+																			<?break;?>	
+																			 <?php case 'post':?><?echo $this->facebook_user->facebook_user_first_name ?>   posted  <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">this</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			
+																			<?break;?>
+																			
+																			<?php case 'comment':?><?echo $this->facebook_user->facebook_user_first_name?>   commented on <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">post</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			
+																			<?break;?>
+																			 <?php default:?><?echo $this->facebook_user->facebook_user_first_name?> did <?php $post['act_type']   ?> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
 																			
 																			<?break;?>
 																			

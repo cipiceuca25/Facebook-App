@@ -157,7 +157,7 @@
 				 <a  onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; 
-			 		} else {echo '0';} ?> , true )">Comment </a>
+			 		} else {echo '0';} ?> , true )" class="commenthidern_<?= $post->id ?>">Comment </a>
 		
 			
 			
@@ -181,7 +181,7 @@
 	</div>
 	
 	<?php if(isset($post->comments->count) && ($post->comments->count != 0)){?>
-	<div class="social comment <?=$post->id?>">
+	<div class="social commentn <?=$post->id?>">
 	
 			 <a  onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
 			 		if(isset($post->comments->count)){
