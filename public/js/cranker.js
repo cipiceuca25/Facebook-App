@@ -450,7 +450,7 @@
 		getFeedComment( ui, post_id, type, limiter, total, toggle);
 		
 		$('.social.commentn.'+post_id).css('display', 'none');
-}
+
 		
 	}
 	 
@@ -633,17 +633,32 @@
 				//alert("target followed")
 				//alert(post_id + 'liked');
     			feedbackAnimation('#like-animation');
+    			   			
     			addActivities('like-'+post_type, userName, post_id, target_id, target_name );
     			
     			num=$('.like_'+post_id).html();
+    			
+    			if (post_type == 'comment'){
+    				if ((num== null)||(num==0)){
+        				$('.like_'+post_id).html('1');
+        				//alert('.social.like.'+post_id);
+        				
+        			}else{
+        				$('.like_'+post_id).html((parseInt(num)+1));
+        				
+        			}
+    			}else{
     			if ((num== null)||(num==0)){
     				$('.like_'+post_id).html('1 person');
-    				alert('.social.like.'+post_id);
+    				//alert('.social.like.'+post_id);
     				
     			}else{
     				$('.like_'+post_id).html((parseInt(num)+1) + ' people');
+    				
+    			}
     			}
     			$('.social.like.'+post_id).css('display', 'block');
+    			
     			
     			$('.like_control_'+post_id).attr('onclick', "unlike('"+post_id+"','"+post_type+"','"+target_id+"','"+target_name+"')");
     			$('.like_control_'+post_id).html('Unlike');
@@ -669,12 +684,19 @@
     			addActivities('unlike-'+post_type,userName, post_id, target_id, target_name);
     			
     			num=$('.like_'+post_id).html();
+    			if (post_type == 'comment'){
+    				if (num == 2){
+        				$('.like_'+post_id).html('1');
+        			}else{
+        				$('.like_'+post_id).html((parseInt(num)-1));
+        			}
+    			}else{
     			if (num == 2){
     				$('.like_'+post_id).html('1 person');
     			}else{
     				$('.like_'+post_id).html((parseInt(num)-1) + ' people');
     			}
-    			
+    			}
     			$('.like_control_'+post_id).attr('onclick', "like('"+post_id+"','"+post_type+"','"+target_id+"','"+target_name+"')");
     			$('.like_control_'+post_id).html('Like');
     			

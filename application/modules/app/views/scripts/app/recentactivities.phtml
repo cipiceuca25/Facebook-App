@@ -50,10 +50,10 @@
 				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>' , 5, true)">link post</a> posted on <?=date("l, F d, g:i a",strtotime($act['created_time']))?>.
 				<?break;
 			case 'like-comment':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act['created_time']))?>.
+				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act['created_time']))?>.
 				<?break;
 			case 'unlike-comment':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act['created_time']))?>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 5, true)">comment</a> on <?=date("l, F d, g:i a",strtotime($act['created_time']))?>.
 				<?break;
 			case 'comment-status':?>
 				You post a comment on <?=$act['target_user_name']?>'s <a onclick="comment_bubble('<?=$act['event_object']?>', 5, true)">status post</a> on <?=date("l, F d, g:i a",strtotime($act['created_time']))?>.
