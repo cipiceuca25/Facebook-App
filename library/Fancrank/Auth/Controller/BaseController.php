@@ -221,7 +221,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             		$fan = $fans_model->fetchRow($select);
             	
             		if (empty($fan)) {
-            			$fan->first_login_time = $create->toString('yyyy-MM-dd HH:mm:ss');
+            			$fans_model->first_login_time = $create->toString('yyyy-MM-dd HH:mm:ss');
             			$fans_model->insert($new_fan_row);
             		}else {
             			$fan->fan_user_avatar = $source_data['facebook_user_avatar'];
