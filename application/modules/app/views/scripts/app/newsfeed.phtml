@@ -14,7 +14,6 @@
 						<div class="row">
 							<div class="span7 line">
 							
-							
 								<div class="subtitle">
 										
 		
@@ -55,7 +54,8 @@
 	<li class="grey-light" >
 	
 	
-	<div class="flag">	
+	<div class="flag">	<span class="date"><span class="badge badge-Fanpage">Admin</span></span><br/>
+	
 	<a>	
 		<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></span>
 		
@@ -64,7 +64,7 @@
 			<?=  $post->from->name?>
 		</span>
 	</a>	
-		<div class="date"><?=  date("l g:i a, F d Y",strtotime($post->created_time))?></div>
+		
 	
 	</div>
 	
@@ -159,8 +159,8 @@
 						echo $post->comments->count; 
 			 		} else {echo '0';} ?> , true )" class="commenthidern_<?= $post->id ?>">Comment </a>
 		
-			
-			
+				 &middot;
+				<span class="time" title="<?= strtotime($post->created_time)?>"> <?=  strtotime($post->created_time)?></span>
 			<br/>
 	</div>
 	
@@ -176,8 +176,6 @@
 				</span>
 				likes this.
 				</a>
-		
-	
 	</div>
 	
 	<?php if(isset($post->comments->count) && ($post->comments->count != 0)){?>
@@ -229,8 +227,8 @@
 							
 								<div class="title">
 									<div class="photo">
-										<a href=""><img class="face" width="30" height="30" src="">
-										</a> 
+										<img src="/img/news-feed/top-fan-icon.jpg" />
+										 
 									</div>
 
 									<div class="title-header fancrankfeed"> <h3>FanCrank Feed</h3>

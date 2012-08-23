@@ -53,6 +53,7 @@ class Model_Likes extends Model_DbTable_Likes
 		}
 		//echo 'data not empty';
 		//Zend_Debug::dump($data);
+
 		foreach ($data as $key => $field) {
 			if(empty($field)) {
 				return false;

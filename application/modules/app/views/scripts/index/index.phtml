@@ -1,7 +1,7 @@
 <div class="panel">
 	<div class="row">
 		<div class="span12">
-			<div class="top-fan">
+			<div class="top-fan" id="login">
 				<div class="title">
 					<div class="photo">
 						<img src="/img/news-feed/top-fan-icon.jpg" />
@@ -19,7 +19,8 @@
 						<?php $count = 0; ?> 
 						<?php foreach($this->top_fans as $top_fan):  ?>
 						<?php if ($count == 0){?>
-
+						<div id="whatisfancrank">
+						</div>
 						<ul class="top-list">
 							<li>
 								<div class="border-dark first">
@@ -168,9 +169,7 @@
 								</li>
 							</ul>
 				</div>
-				<div class="shadow">
-					<button class="btn-top" id="top-fans-btn" data-toggle="collapse" data-target="#top-fans-collapse">- Close</button>
-				</div>
+			
 			</div><!-- topfan -->
 		</div><!-- span -->
 	</div><!-- row -->

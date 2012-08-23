@@ -14,8 +14,22 @@
 	
 	
 	<div class="post_container">
-	
-		
+		<span class="comment_badge">
+		<? if (($this->relation[$count] != 'Fanpage')){?>
+			<? if ($this->relation[$count] != 'You') { ?>
+				<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+						<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+					<?}else{?>
+						<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+					<?}?>
+						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+				<?php }else{?>
+					<span class="badge badge-You">You</span>
+				<?php }?>
+		<?}else{?>
+				<span class="badge badge-Fanpage">Admin</span>
+		<?php }?>
+		</span>
 	<a  
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
 			onclick="userProfile('<?=$post->from->id?>')"
@@ -30,11 +44,13 @@
 		
 			<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></span>
 			
-			
 			<span class="name">
 				<?=  $post->from->name?>
 			</span>
+			
 		</a>
+		
+		
 <div class="post">
 	<span class="message">
 	
@@ -67,22 +83,8 @@
 	
 	<br/>
 	<span class="social"> 
-	 	<? if (($this->relation[$count] != 'Fanpage')){?>
-			<? if ($this->relation[$count] != 'You') { ?>
-				<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-						<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
-					<?}else{?>
-						<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
-					<?}?>
-						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
-				<?php }else{?>
-					<span class="badge badge-You">You</span>
-				<?php }?>
-		<?}else{?>
-				<span class="badge badge-Fanpage">Admin</span>
-		<?php }?>
-	 
-		<span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span>
+	 	
+	
 		
 		
 		
@@ -97,7 +99,11 @@
 			<a class="like_control_<?= $post->id?>" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
 		<?php }?>
 		 </span>	 
-	 
+		 
+		 &middot;
+		
+		 <span class="date"><span class="time" title="<?=  strtotime($post->created_time)?>"><?=  strtotime($post->created_time)?></span></span>
+		
 	 </span>
 	 
 	 </span>
@@ -111,7 +117,10 @@
 	
 	<?if ($this->total > $this->limit){ ?>
 	
-		<button class="btn-top" onclick="comment_feed('<?= $this->postId ?>','<?= $this->postType?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
+		
+			<button class="btn-top" onclick="comment_feed<?= ($this->latest == 'true')?'2':''?>('<?= $this->postId ?>','<?= $this->postType?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
+		
+	
 	<?}?>
 	<li class="comment_container">
 		<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);"></div>
@@ -119,7 +128,7 @@
 		<form action="#" >
 		
 			<textarea class="comment_box" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
-			<input type=button class="btn-submit" value="Submit" onclick="commentSubmit('<?= $this->postId ?>','<?=$this->postType?>' ,'comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>', <?= $this->total?> )">
+			<input type=button class="btn-submit" value="Submit" onclick="commentSubmit('<?= $this->postId ?>','<?=$this->postType?>' ,'comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>', <?= $this->total?>,<?= ($this->latest == 'true')?'true':'false'?> )">
 		</form>
 	
 	</li>

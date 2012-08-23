@@ -1,8 +1,27 @@
 <?php $count = 0?>
+	<?date_default_timezone_set('America/Toronto');?>
 <ul class="post-list">
-	<li class="grey-dark" >
+	<li class="grey-dark" id="target_comment">
 	
 		<div class="flag" >		
+		 <div class="date">
+		<? if (($this->relation[$count] != 'Fanpage')){?>
+					<? if ($this->relation[$count] != 'You') { ?>
+						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+								<a onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>', 'follow_<?=$this->post->from->id?>')" class ="follow_<?=$this->post->from->id?>" >
+						<?}else{?>
+								<a onclick="unfollow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>', 'follow_<?=$this->post->from->id?>')" class ="follow_<?=$this->post->from->id?>">
+						<?}?>
+							
+						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+					<?php }else{?>
+						<span class="badge badge-You">You</span>
+					<?php }?>
+					
+				<?}else{?>
+					<span class="badge badge-Fanpage">Admin</span>
+				<?php }?>
+		</div>
 		<a data-toggle="modal"
 			<? if (!($this->relation[$count] == 'Fanpage')){?> 
 				onclick="userProfile('<?=$this->post->from->id?>')"
@@ -22,24 +41,7 @@
 			<span class="name">
 				<?=  $this->post->from->name?>
 			</span>
-		</a> 
-		<? if (($this->relation[$count] != 'Fanpage')){?>
-					<? if ($this->relation[$count] != 'You') { ?>
-						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								<a onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>', 'follow_<?=$this->post->from->id?>')" class ="follow_<?=$this->post->from->id?>" >
-						<?}else{?>
-								<a onclick="unfollow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>', 'follow_<?=$this->post->from->id?>')" class ="follow_<?=$this->post->from->id?>">
-						<?}?>
-							
-						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
-					<?php }else{?>
-						<span class="badge badge-You">You</span>
-					<?php }?>
-					
-				<?}else{?>
-					<span class="badge badge-Fanpage">Admin</span>
-				<?php }?>
-		<div class="date"><?=  date("l g:i a, F d Y",strtotime($this->post->created_time))?></div>
+		</a>
 		
 		</div>
 	
@@ -124,10 +126,10 @@
 				<?}else{?>
 					<a class="like_control_<?= $this->post->id?>"  onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike</a>   
 				<?php }?>
-		
+				&middot;
+				
+				<?=  date("l g:i a, F d Y",strtotime($this->post->created_time))?>
 
-			
-			<br/>
 	</div>
 	<div class="social like <?=$this->post->id?>"  <?php if(!isset($this->post->likes->count) || ($this->post->likes->count == 0)){?>style="display:none"<?php }?>>
 		
@@ -147,14 +149,16 @@
 	<?php if(isset($this->post->comments->count) && ($this->post->comments->count != 0)){?>
 	<div class="social comment <?=$this->post->id?>">
 				
-			<a>
+			
+				There <?php if($this->post->comments->count == 1){?>is<?php }else{?>are<?php }?> 
 				<span class="comment_<?= $this->post->id?>"><? if(isset($this->post->comments->count)){echo $this->post->comments->count;}else{echo '0';} ?>
 					
-					<?php if($this->post->comments->count == 1){?>person<?php }else{?>people<?php }?> 
+					
 				
 				</span>
-				commented on this.
-			</a>	
+				comment<?php if($this->post->comments->count != 1){?>s<?php }?> on this post.
+				
+				
 				
 	</div>
 	<?php }?>
@@ -180,8 +184,23 @@
 	
 	
 	<div class="post_container">
-	
-		
+	<span class="comment_badge">
+		 	<? if (($this->relation[$count] != 'Fanpage')){?>
+			<? if ($this->relation[$count] != 'You') { ?>
+				<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+						<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+					<?}else{?>
+						<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+					<?}?>
+					
+						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span> 
+					</a>
+				<?php }else{?>
+					<span class="badge badge-You">You</span>
+				<?php }?>
+		<?}else{?>
+				<span class="badge badge-Fanpage">Admin</span>
+		<?php }?></span>
 	<a  
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
 			onclick="userProfile('<?=$post->from->id?>')"
@@ -233,22 +252,7 @@
 	
 	<br/>
 	<span class="social"> 
-	 	<? if (($this->relation[$count] != 'Fanpage')){?>
-			<? if ($this->relation[$count] != 'You') { ?>
-				<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-						<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
-					<?}else{?>
-						<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
-					<?}?>
-					
-						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span> 
-					</a>
-				<?php }else{?>
-					<span class="badge badge-You">You</span>
-				<?php }?>
-		<?}else{?>
-				<span class="badge badge-Fanpage">Admin</span>
-		<?php }?>
+	
 	 
 		<span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span>
 		
