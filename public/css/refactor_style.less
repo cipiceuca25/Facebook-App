@@ -1,94 +1,124 @@
 @import url('/bootstrap/css/bootstrap.css');
 @import url('/bootstrap/less/mixin.less');
 
-@color-background-blue: 			#E7EBF2; // background color
+@color-background-blue: 			#E7EBF2; // background color, follow hover, tip border
 @color-container-blue: 				#C1CEE0; // container blue
 @color-link-blue: 					#3B5998; // links color
-@color-tab-border-blue:				#173D71; // tab dark blue, rank first
-@color-tab-back-blue:				#47658E; // unselected blue, rank numbers 
+@color-link-hover:					#0a1b31	//link hover
+@color-tab-border-blue:				#173D71; // tab dark blue, rank first, follow text hover,button hover , fan exp bar
+@color-tab-back-blue:				#47658E; // unselected blue, rank numbers , button text, tip, other exp bars
 @color-tab-hover:					#eeeeee; // the hover color
-@color-photo-border-blue:			#7D98BE; // the border on the icons
+@color-photo-border-blue:			#7D98BE; // the border on the icons, follow button
 @color-social-bar-blue:				#EDEFF4; // social bar color
 @color-user-border-gray:			#E5E5E5;//flag bottom border color
-@color-text:						#666666; text color
+@color-text:						#666666; //text color
 @color-post-border:					#8194BD; //post border
 @color-post-border-hover:			#5a6d99
 @color-post-shadow:					#A5B4CE;
+@color-post-hover:					#f7f7f7; // the color of the post on hover
+@color-post:						#ffffff;
+@color-admin:						#09937C;
+@color-unfollow:					#BD362F;
+@color-following:					#56A556;
+@color-you:							#F7CB1E;
+@color-link:						#F6F7F9; //color of link box
+@color-link-border:					#D3DAE8; // the border of the link
+@color-button:						#dddddd; //post button back
+@color-rank-border:					#C4CDE0; //ranking border
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //main 
-@color-main-background: white;
-@color-main-header-picture-border: white;
-@color-main-container: white;
-@color-main-text: white;
-@color-main-link-text: white;
-@color-main-link-text-hover: white;
-@color-main-content: white;
-@color-main-split-line:white;
+@color-main-background: 				@color-background-blue;
+@color-main-header-picture-border: 		@color-photo-border-blue;
+@color-main-container: 					@color-container-blue;
+@color-main-text: 						@color-text;
+@color-main-link-text: 					@color-link-blue;
+@color-main-link-text-hover: 			@color-link-hover;
+@color-main-content: 					@color-post;
+@color-main-split-line:					@color-container-blue;
+@color-main-title-text:					@color-post;
 
 //tabs
-@color-tab-background:white;
-@color-tab-text:white;
-@color-tab-border:white;
-@color-tab-background-hover:white;
-@color-tab-border-hover:white;
-@color-tab-text:white;
+@color-tab-background:					@color-tab-back-blue;
+@color-tab-text:						@color-post;
+@color-tab-border:						@color-tab-back-blue;
+@color-tab-background-hover:			@color-tab-hover;
+@color-tab-border-hover:				@color-tab-hover;
+@color-tab-text-hover:					@color-post;
+@color-tab-select-background:			@color-background-blue;
+@color-tab-select-text:					@color-tab-border-blue;
+@color-tab-select:border:				@color-tab-border-blue;
 
 
 //tips
-@color-tip-border:white;
-@color-tip-base:white;
-@color-tip-question-mark:white;
-@color-tip-base-hover:white;
-@color-tip-question-mark-hover:white;
-@color-tip-border-hover:white;
+@color-tip-border:						@color-post;
+@color-tip-base:white;					@color-tab-back-blue;
+@color-tip-question-mark:				@color-post;
+@color-tip-base-hover:					@color-post;
+@color-tip-question-mark-hover:			@color-tab-back-blue;
+@color-tip-border-hover:				@color-tab-back-blue;
 
 //rank
-@color-ranking-first:white;
-@color-ranking-numbers:white;
-@color-ranking-border:white;
-@color-ranking-number-text:white;
-@color-ranking-border-hover:white;
-@color-ranking-numbers-hover:white;
+@color-ranking-first:					@color-tab-border-blue;
+@color-ranking-numbers:					@color-tab-back-blue;
+@color-ranking-border:					@color-rank-border;
+@color-ranking-number-text:				@color-post;
+@color-ranking-border-hover:			@color-rank-border;
+@color-ranking-numbers-hover:			@color-tab-back-blue;
+@color-ranking-background:				@color-post;
 
 
 //badges
-@color-badge-text:white;
-@color-badge-admin:white;
-@color-badge-follow:white;
-@color-badge-follow-hover:white;
-@color-badge-follower:white;
-@color-badge-you:white;
-@color-badge-following:white;
-@color-badge-unfollow:white;
+@color-badge-text:						@color-post;
+@color-badge-admin:						@color-admin;
+@color-badge-follow:					@color-photo-border-blue;
+@color-badge-follow-hover:				@color-background-blue;
+@color-badge-follower:					
+@color-badge-you:						@color-you;
+@color-badge-following:					@color-following;
+@color-badge-unfollow:					@color-unfollow;
 
 //posts
-@color-post-background:white;
-@color-post-border:white;
-@color-post-text:white;
-@color-post-social-background:white;
-@color-post-user-border:white;
-@color-post-background-hover:white;
-@color-post-border-hover:white;
-@color-post-shadow:white;
-@color-post-link-background:white;
+@color-post-background:					@color-post;
+@color-post-border:						@color-post-border;
+@color-post-text:						@color-text;
+@color-post-social-background:			@color-social-bar-blue;
+@color-post-user-border:				@color-user-border-gray;
+@color-post-background-hover:			@color-post-hover;
+@color-post-border-hover:				@color-post-border-hover;
+@color-post-shadow:						@color-post-shadow;
+@color-post-link-background:			@color-link
+@color-post-link-border:				@color-link-border
 
 //buttons
-@color-more-button:white;
-@color-more-button-text:white;
-@color-more-button-hover:white;
-@color-more-button-text-hover:white;
+@color-more-button:						@color-tab-hover;
+@color-more-button-text:				@color-tab-back-blue;
+@color-more-button-hover:				@color-tab-border-blue;			
+@color-more-button-text-hover:			@color-post;
 
-@color-post-button:white;
-@color-post-button-hover:white;
-@color-post-text:white;
-@color-post-text-hover:white;
+@color-post-button:						@color-button;
+@color-post-button-hover:				@color-tab-border-blue;
+@color-post-button-text:				@color-tab-back-blue;			
+@color-post-button-text-hover:			@color-post;
+
+@color-userlist-button:					@color-tab-hover;
+@color-userlist-button-hover:			@color-tab-border-blue;
+@color-userlist-button-text:			@color-tab-back-blue;
+@color-userlist-button-text-hover:		@color-post;
+
+
+//userlist
+@color-userlist-background:				@color-background-blue;
+@color-userlist-border:					@color-post;
+
 
 //scrollbar 
 @color-scrollbar : white;
 
 //my profile
 @color-level-border:white;
-@color-level-background:white;
+@color-level-background:				@color-post;
 @color-level-text:white;
 @color-fan-experience-bar :white;
 @color-overall-achievement-bar:white;

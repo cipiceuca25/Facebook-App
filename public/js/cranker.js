@@ -60,13 +60,7 @@
 		  
 	});
 	
-	
-	$(document).on('click', '#powered', function (){
-		$.each($('.time'), function(index) { 
-		    alert(index+':' + $(this).html()); 
-		});
-	});
-	
+
 	
 	function popover(x){
 		//alert ('getting info for '+ id);
