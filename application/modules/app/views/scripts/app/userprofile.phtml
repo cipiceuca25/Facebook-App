@@ -216,7 +216,9 @@
 															
 															<?php foreach ($this->post as $post):?>	
 																<li class="grey-light">
-																	
+																	<div class="post_container">
+																		<div class="post">
+																		<div class="message">
 																	<? if (isset($post['follow_enable'])){?>
 																		<?php if ($post['facebook_user_id'] ==$post['facebook_user_id_subscribe_to'] ){?>
 																		<?echo $this->facebook_user->facebook_user_first_name?> 
@@ -272,6 +274,9 @@
 					
 																	<?}else{?>
 																	<?php }?>
+																	</div>
+																	</div>
+																	</div>
 																</li>
 																				
 															<?php $count ++;?>

@@ -28,11 +28,10 @@
 
 		});
 		//alert('getting top posts');
-		
+
 		getNewsfeed('#news-feed');
 		
 		
-	
 	});
 	
 	setFeed='All';
@@ -45,7 +44,6 @@
 	tfdb = true;
 	
 
-	
 	
 
 	
@@ -63,7 +61,11 @@
 	});
 	
 	
-	
+	$(document).on('click', '#powered', function (){
+		$.each($('.time'), function(index) { 
+		    alert(index+':' + $(this).html()); 
+		});
+	});
 	
 	
 	function popover(x){
@@ -147,15 +149,7 @@
 		   mouseX = e.pageX; 
 		   mouseY = e.pageY;
 	}); 	
-	$('#mini-top-fans-btn').live('click', function() {
-		
-		if ((mtfb)==true){
-		$('#mini-top-fans-btn').text('- Close');
-		}else{
-			$('#mini-top-fans-btn').text("+ More");
-		}
-		mtfb = !mtfb;
-	});
+
 	$('#top-fans-btn').live('click', function() {
 		
 		if ((tfb)==true){
@@ -164,6 +158,7 @@
 			$('#top-fans-btn').text("+ More");
 		}
 		tfb = !tfb;
+	
 	});
 	
 	$('#fan-favorite-btn').live( 'click', function() {
@@ -280,15 +275,18 @@
 		$('#profile').html('');
 		$('#achievements').html('');
 		$('#redeem').html('');
-		
+
 		//alert('getting top posts');
 		
+			    
+		FB.Canvas.setSize({width:810, height:600});
+	
 	});
 	
 	
 	$('#leaderboard-tab').live('click',function(){
 		mtfb = true;
-		tfb = true;
+		tfb = false;
 		ffb = true;
 		ttb = true;
 		tcb = true;
@@ -300,8 +298,7 @@
 		$('#newsfeed').html('');
 		$('#redeem').html('');
 		//$('.bubble').html('');
-	
-			
+		FB.Canvas.setSize({width:810, height:600});
 	
 	});
 	
@@ -312,6 +309,7 @@
 		 $('#achievements').html('');
 		 $('#newsfeed').html('');
 		 $('#redeem').html('');
+		 FB.Canvas.setSize({width:810, height:600});
 		
 	});
 	
@@ -321,6 +319,8 @@
 		$('#profile').html('');
 		$('#newsfeed').html('');
 		$('#redeem').html('');
+		FB.Canvas.setSize({width:810, height:600});
+	
 	});
 
 	$('#redeem-tab').live('click', function(){
@@ -329,7 +329,9 @@
 		$('#profile').html('');
 		$('#newsfeed').html('');
 		$('#achievements').html('');
-		});
+		FB.Canvas.setSize({width:810, height:600});
+		
+	});
 	
 	function ImgError(source){
 	    source.src = "/img/profile-picture.png";
@@ -427,7 +429,7 @@
 		ui = '#post_' + post_id;
 		//alert(ui);
 		
-		getFeedComment( ui, post_id, type, limiter, total, toggle);
+		getFeedComment( ui, post_id, type, limiter, total, toggle, false);
 		
 		
 		$('.social.comment.'+post_id).css('display', 'none');
@@ -455,7 +457,7 @@
 	function comment_feed2(post_id, type, limiter, total, toggle){
 		ui = '#postn_' + post_id;
 		//alert(ui);
-		getFeedComment( ui, post_id, type, limiter, total, toggle);
+		getFeedComment( ui, post_id, type, limiter, total, toggle, true);
 		
 		$('.social.commentn.'+post_id).css('display', 'none');
 
@@ -509,10 +511,10 @@
 	}
 
 
-	function getFeedComment(ui, post_id,type, limiter, total, toggle){
+	function getFeedComment(ui, post_id,type, limiter, total, toggle, latest){
 		$.ajax({
 			type: "GET",
-			url: serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&post_type=' + type +'&limit=' + limiter + '&total=' +total,
+			url: serverUrl +'/app/app/fancrankfeedcomment/'+ fanpageId + '?post_id=' +post_id + '&post_type=' + type +'&limit=' + limiter + '&total=' +total+'&latest='+latest ,
 
 			dataType: "html",
 			cache: false,
@@ -520,7 +522,17 @@
 			success: function( data ) {
 				
 				$(ui).html(data);
-				
+				if (latest){
+					$.each($('#postn_'+ post_id + ' .time'), function(index) { 
+						$(this).html(timeZone($(this).html())); 
+						$(this).attr('title', timeZoneTitle($(this).attr('title')));
+					});
+				}else{
+					$.each($('#post_'+ post_id + ' .time'), function(index) { 
+						$(this).html(timeZone($(this).html()));
+						$(this).attr('title', timeZoneTitle($(this).attr('title')));
+					});
+				}
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -583,7 +595,7 @@
 				getFancrankfeed(setFeed);
 				getTopFan();
 				getTopPost();
-			
+		
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -604,6 +616,11 @@
 			success: function( data ) {
 		
 				$(ui).html(data);
+				
+				$.each($('#toppost .time'), function(index) { 
+					$(this).html(timeZone($(this).html())); 
+					$(this).attr('title', timeZoneTitle($(this).attr('title')));
+				});
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -730,7 +747,10 @@
 			success: function( data ) {
 			
 				$(ui).html(data);
-				
+				$.each($('.time'), function(index) { 
+					$(this).html(timeZone($(this).html())); 
+					$(this).attr('title', timeZoneTitle($(this).attr('title')));
+				});
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -768,6 +788,7 @@
     		async: true,
     		success: function( data ) {
     			$(ui).html(data);
+    			
     			//getLatestPost();
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
@@ -822,6 +843,7 @@
     		async: true,
     		success: function( data ) {
     			$(ui).html(data);
+ 
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -839,6 +861,10 @@
     		async: false,
     		success: function( data ) {
     			$(ui).html(data);
+    			$.each($('.time'), function(index) { 
+					$(this).html(timeZone($(this).html())); 
+					$(this).attr('title', timeZoneTitle($(this).attr('title')));
+				});
     		},	
     		error: function( xhr, errorMessage, thrownErro ) {
     			console.log(xhr.statusText, errorMessage);
@@ -973,7 +999,7 @@
 
 	}
 	
-	function commentSubmit(postid, type,  message, target_id, target, postcommentcount){
+	function commentSubmit(postid, type,  message, target_id, target, postcommentcount, latest){
 		var m = '#'+message;
 	
 		//alert(userAccessToken);
@@ -984,16 +1010,15 @@
 				//alert('Post ID: ' + response.id);
 				$(m).val('');
 				addActivities('comment-'+type, userName, postid, target_id, target);
-
-				num=$('.comment_'+postid).html();
-
-    				$('.comment_'+postid).html((parseInt(num)+1));
-    				
-    			
-    			
-    				
-				comment_feed(postid, type, num+1, num+1,  false);
 				
+				$('.comment_'+postid).html(postcommentcount+1);
+				
+				if(latest){
+					alert('calling comment feed 2');
+					comment_feed2(postid, type, postcommentcount+1, postcommentcount+1,  false);
+				}else{
+					comment_feed(postid, type, postcommentcount+1, postcommentcount+1,  false);
+				}
 				
 				}
 			});
@@ -1169,7 +1194,77 @@
 		o.style.height = "1px";
 	    o.style.height = (10+o.scrollHeight)+"px";
 	}
+	
+	function timeZoneTitle(time){
+		
+		var date = new Date(time*1000);
+		return date.toLocaleString();
+	}
+	
+	function timeZone(time){
+		
+		var date = new Date(time*1000);
+		var now = new Date();
+		var weekday=new Array(7);
+		weekday[0]="Sunday";
+		weekday[1]="Monday";
+		weekday[2]="Tuesday";
+		weekday[3]="Wednesday";
+		weekday[4]="Thursday";
+		weekday[5]="Friday";
+		weekday[6]="Saturday";
+		apm ='';
+		
+		var hour = date.getHours();
+		if (hour < 12){
+			 apm = 'am';
+		}else{
+			apm = 'pm';
+		}
+		if (hour == 0)
+		   {
+		   hour = 12;
+		   }
+		if (hour > 12)
+		   {
+		   hour = hour - 12;
+		   }
+		
+		if (now.getYear() > date.getYear()){
+			return (date.toDateString());
+		}else{
+			if(now.getMonth() > date.getMonth()){
+				return (date.toDateString());
+			}else{
+				if(now.getDate() == date.getDate()){
+					if(now.getHours() == date.getHours()){
+						if (now.getMinutes() == date.getMinutes()){
+							return 'a few seconds ago';
+						}else if (now.getMinutes() - date.getMinutes() == 1 ){
+							return now.getMinutes() - date.getMinutes() + ' minute ago';
+						}else{
+							return now.getMinutes() - date.getMinutes() + ' minute ago';
+						}
+					}else if (now.getHours() - date.getHours== 1 ){
+						return (now.getHours()-date.getHours() )+' hour ago';
+					}else{
+						return (now.getHours()-date.getHours() )+' hours ago';
+					}
+					
+				}else if(now.getDate() - date.getDate() == 1){
+					return 'Yesterday at ' + hour + ':' + date.getMinutes() +''+ apm;
+				}else if(now.getDate() - date.getDate() <= 3){
+					return weekday[date.getDay()] + ' at ' + hour + ':' + date.getMinutes() +''+ apm;	
+				}else {
+					return (date.toDateString());
+				}
 
+			}
+		}
+		
+	}
+	
+	
 	
 	function upload(form, action_url, div_id, target_id, target){
 		fileUpload(form, action_url, div_id);
@@ -1235,6 +1330,8 @@
 	    
 	   
 	}
+	
+	
 	
 	
 	

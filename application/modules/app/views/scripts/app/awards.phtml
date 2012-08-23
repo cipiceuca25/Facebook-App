@@ -13,14 +13,12 @@
 							<div class="row profile_background">
 									<div class="span12">
 				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-										<div class="row">
-											<div class="span12">
+										
 												<div class="profile-block">
 													<h4>Corkboard</h4>
 														
 												</div>
-											</div>
-										</div>
+										
 				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
 									</div>
 								</div>
@@ -33,9 +31,9 @@
 						<div class="row">
 						<div class="span12">
 							<div class="row profile_background">
-									<div class="span12">
+							
 				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
-										<div class="row">
+									
 									
 										<div class="span12">
 										
@@ -52,8 +50,8 @@
 										</div>
 									
 									
-										</div>
-										<div class="row">
+										
+									
 											
 											<div class="span6">
 											
@@ -77,12 +75,12 @@
 													</div>
 											</div>
 											
-										</div>
+									
 				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
 									</div>
 								</div>
-								</div>
 						</div>
+						
 						<div class="feed_spacer_top"></div>
 						<div class="row">
 							<div class="span12">
@@ -91,7 +89,7 @@
 									<div class="profile-block">
 														<h4>Badges</h4>
 										</div>
-									<div class="span12">
+									<div class="span12" id="badges">
 									
 				<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
 												<?php $badge = $this->badges?>
@@ -105,7 +103,7 @@
 														<?php for($j = 0 ; $j < count($badgeQuantity); $j++){?>
 														<a class="badge_container" rel="tooltip" data-placement="top" 
 														data-original-title="<img src='<?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['picture']?>' >
-														<br/><?= str_replace('[quantity]',  $badgeQuantity[$j], $badge[$badgeName[$i]][$badgeQuantity[$j]]['description'])?>"><img src="<?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['picture']?>"<?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] !== 1){?> style="opacity:0.5" <?php }?>/><?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] !== 1){?><span class="badge_text"><?= $badgeName[$i]?>-<?=$badgeQuantity[$j]?><br/><?= round($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] *100)?>% Completed</span><?php $j = count($badgeQuantity) +1;?><?php }?></a>
+														<?= str_replace('[quantity]',  $badgeQuantity[$j], $badge[$badgeName[$i]][$badgeQuantity[$j]]['description'])?>"><img src="<?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['picture']?>"<?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] !== 1){?> style="opacity:0.5" <?php }?>/><?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] !== 1){?><span class="badge_text"><?= $badgeName[$i]?>-<?=$badgeQuantity[$j]?><br/><?= round($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] *100)?>% Completed</span><?php $j = count($badgeQuantity) +1;?><?php }?></a>
 													<?}?>
 												</div></div>
 											<?}?>

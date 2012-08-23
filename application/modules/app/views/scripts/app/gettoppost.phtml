@@ -132,8 +132,8 @@
 				 <a  onclick=" comment_bubble('<?= $topPost['post_id']?>', 5, true)">Comment </a>
 		
 				&middot;
-				<?date_default_timezone_set('America/Toronto');?>
-				<?= date("F d Y", strtotime($topPost['created_time']))?>
+				
+				<span class="time" title="<?= strtotime($topPost['created_time'])?>"><?=strtotime($topPost['created_time'])?> </span>
 			<br/>
 			</div>
 			

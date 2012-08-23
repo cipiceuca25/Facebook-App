@@ -22,6 +22,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	 * Initilized fanpage id and login user variables
 	 */
 	public function preDispatch() {
+
 		parent::preDispatch();
 		if (APPLICATION_ENV != 'production') {
 			$this->_fanpageId = $this->_getParam('id');
@@ -937,6 +938,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$postType = $this->_request->getParam('post_type');
     	$limit = $this->_request->getParam('limit');
     	$total = $this->_request->getParam('total');
+    	
+    	$latest = $this->_request->getParam('latest');
+    	
     	$result = array();
     	//Zend_Debug::dump($limit);
     	$result = $this->getFeedComment($postId, $limit);
@@ -979,6 +983,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->comments = $result;
     	$this->view->postId = $postId;
     	$this->view->postType = $postType;
+    	
+    	if($latest){
+    		$this->view->latest = $latest;
+    	}
+    	
     	$this->render("fancrankfeedcomment");
     }
     

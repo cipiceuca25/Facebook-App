@@ -84,8 +84,7 @@
 	<br/>
 	<span class="social"> 
 	 	
-	 		<?date_default_timezone_set('America/Toronto');?>
-		<span class="date"><?=  date("l, F d, g:i a ",strtotime($post->created_time))?></span>
+	
 		
 		
 		
@@ -100,7 +99,11 @@
 			<a class="like_control_<?= $post->id?>" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
 		<?php }?>
 		 </span>	 
-	 
+		 
+		 &middot;
+		 <?php date_default_timezone_set(UTC) ?> 
+		 <span class="date"><span class="time" title="<?=  strtotime($post->created_time)?>"><?=  strtotime($post->created_time)?></span></span>
+		
 	 </span>
 	 
 	 </span>
@@ -114,7 +117,10 @@
 	
 	<?if ($this->total > $this->limit){ ?>
 	
-		<button class="btn-top" onclick="comment_feed('<?= $this->postId ?>','<?= $this->postType?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
+		
+			<button class="btn-top" onclick="comment_feed<?= ($this->latest == 'true')?'2':''?>('<?= $this->postId ?>','<?= $this->postType?>', <?=$this->limit + 5?> , <?= $this->total?> , false)"> MORE +</button>
+		
+	
 	<?}?>
 	<li class="comment_container">
 		<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);"></div>
@@ -122,7 +128,7 @@
 		<form action="#" >
 		
 			<textarea class="comment_box" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)"></textarea>
-			<input type=button class="btn-submit" value="Submit" onclick="commentSubmit('<?= $this->postId ?>','<?=$this->postType?>' ,'comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>', <?= $this->total?> )">
+			<input type=button class="btn-submit" value="Submit" onclick="commentSubmit('<?= $this->postId ?>','<?=$this->postType?>' ,'comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>', <?= $this->total?>,<?= ($this->latest == 'true')?'true':'false'?> )">
 		</form>
 	
 	</li>

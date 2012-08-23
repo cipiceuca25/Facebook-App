@@ -142,7 +142,7 @@
 			 		} else {echo '0';} ?> , true )" class="commenthider_<?= $post['post-id'] ?>">Comment </a>
 				&middot;
 			
-				<?=  date("l g:i a, F d Y",strtotime($post['created_time']))?>
+				<span class="time"  title="<?= strtotime($post['created_time'])?>"><?= strtotime($post['created_time'])?></span>
 			
 			<br/>
 	</div>

@@ -346,12 +346,15 @@ ul, ol {
 	position:relative;
 	
 }
-.comments .post_container .photo,
+
+#latestpost .photo,
 #toppost .photo,
 #fancrankfeed .photo{
 	top:-17px;
 }
 
+
+#latestpost .comments .photo,
 #fancrankfeed .comments .photo,
 .popup_comments .photo{
 	top:0px;
@@ -531,7 +534,7 @@ ul, ol {
 }
 .post-list .likes {
 	margin-left:5px;
-	padding-right:10px;	
+	//padding-right:10px;	
 }
 
 .post-list .comment {
@@ -1703,6 +1706,7 @@ ul, ol {
 .span7.line{
 	border-right:3px solid @color-badges;
 	padding-right:19px;
+	padding-left:1px;
 }
 
 .top-list.user .name{
@@ -1996,8 +2000,8 @@ form{
 	margin-left:0;
 	padding-bottom:3px;
 	.box-shadow(2px 2px 2px 1px darken(@color-background, 20%);
-	
-}
+	overflow:hidden;
+}	
 
 .row.spacefix{
 	margin-left:-10px;
@@ -2046,30 +2050,8 @@ form{
 	.border-radius(3px);
 }
 
-.row.profile_background .span12,
-.row.profile_background .span11,
-.row.profile_background .span10,
-.row.profile_background .span9,
-.row.profile_background .span8,
-.row.profile_background .span7,
-.row.profile_background .span6,
-.row.profile_background .span5,
-.row.profile_background .span4,
 
-.row.profile_background .span3,
-.row.profile_background .span2{
-	margin-left:-3px;
-}
 
-.row.profile_background .span6{
-	margin-left:5px;
-}
-
-.row.profile_background .span1{
-	margin-left:10px;
-	margin-right:10px;
-	//padding-bottom:10px;
-}
 
 .followlist .name{
 	.top-list.mini .name;
@@ -2308,9 +2290,28 @@ form{
 }
 
 #achievements .row.profile_background .span12 .profile-block{
-	margin-left:30px;
+	margin-left:10px;
+	margin-right:5px;
+	position:relative;
+	left:-28px;
+}
+#achievements .row.profile_background .span6 .profile-block{
+	margin-left:1px;
+	margin-right:5px;
+	position:relative;
+	left:-20px;
 }
 
+#achievements .row.profile_background .span6 {
+	position:Relative;
+	width:398px;
+	margin-left:0;
+	left:20px;
+}
+
+#profile .row .span7{
+	margin-left:18px;
+}
 .linkback{
 	text-align:right;
 	margin-bottom:-18px;
@@ -2340,6 +2341,10 @@ form{
 	.border-radius(0 0 3px 3px);
 	border-top:0px;
 }
+
+.scrollbox2 .message{
+	padding-top:11px;
+	}
 
 .track3 {
     width: 5px;
@@ -2465,4 +2470,30 @@ h5{
 	position:relative;
 	top:3px;
 	z-index:2;
+}
+
+#achievements #badges .row .profile-block{
+	left:-15px;
+}
+
+#login .top-list{
+	width:49%;
+	left:51%;
+	position:relative;
+}
+#login .row.profile_background{
+	.border-radius(0 0 2px 2px);
+}
+
+
+#whatisfancrank{
+	width:49%;
+	
+	position:absolute;
+	background:url(../img/whatisfancrank.jpg);
+	height:334px;
+}
+
+.time:hover{
+	cursor:pointer;
 }
