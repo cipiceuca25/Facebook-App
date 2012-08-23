@@ -24,7 +24,7 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 	});
 	
-	$("#topFanTable tbody tr").live('click', function(event) {
+	$(".dataTable tbody tr").live('click', function(event) {
 
 		var aData = topFanTable.fnGetData( this );
 		var iId = aData[0];
@@ -36,7 +36,7 @@ jQuery(document).ready(function($){
 			popover(iId);
 		}
 	});
-
+	
 	function popover(x){
 		//alert ('getting info for '+ id);
 		$.ajax({

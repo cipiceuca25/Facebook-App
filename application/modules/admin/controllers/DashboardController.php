@@ -2,6 +2,17 @@
 
 class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 {
+	public function preDispatch()
+	{
+		parent::preDispatch();
+		$fanapgeId = $this->_getParam('id');
+		$uid = $this->_identity->facebook_user_id;
+		$fanpage_admin_model = new Model_FanpageAdmins;
+		if(!empty($fanapgeId) && ! $fanpage_admin_model->findRow($uid, $fanapgeId)) {
+			$this->_helper->redirector('index', 'index');
+		}
+	}
+	
     public function indexAction()
     {
     
@@ -25,7 +36,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
     public function myaccountAction()
     {
-    	Zend_Debug::dump($this->_identity);
+    	//Zend_Debug::dump($this->_identity);
         $this->view->user_id = $this->_identity->facebook_user_id;
         $this->view->user_email = $this->_identity->facebook_user_email;
         $this->view->user_first_name  = $this->_identity->facebook_user_first_name;
@@ -41,6 +52,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     public function previewAction()
     {
         $fanpages_model = new Model_Fanpages;
+        $follow = new Model_Subscribes();
         $fanpage = $fanpages_model->findByFanpageId($this->_getParam('id'))->current();
 
         $this->view->installed = $fanpage->installed;
@@ -55,15 +67,18 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         if ($fanpage->active) {
         	//maybe we should be asking for a relavant time from the api user and pass it as a parameter in the queries
         	$topfans = new Model_Rankings();
-        	$this->view->top_fans = $topfans->getTopFans($this->_getParam('id'));
-        	$this->view->most_popular = $topfans->getMostPopular($this->_getParam('id'));
-        	$this->view->top_talker = $topfans->getTopTalker($this->_getParam('id'));
-        	$this->view->top_clicker = $topfans->getTopClicker($this->_getParam('id'));        	
+        	$this->view->top_fans = $topfans->getTopFans($this->_getParam('id'), 5);
+        	//Zend_Debug::dump($this->view->top_fans); exit();
+        	$this->view->most_popular = $topfans->getMostPopular($this->_getParam('id'), 5);
+        	$this->view->top_talker = $topfans->getTopTalker($this->_getParam('id'), 5);
+        	$this->view->top_clicker = $topfans->getTopClicker($this->_getParam('id'), 5);
+        	$this->view->top_followed = $follow->getTopFollowed($this->_getParam('id'), 5);
         }else {
         	$this->view->top_fans = array();
         	$this->view->most_popular = array();
         	$this->view->top_talker = array();
         	$this->view->top_clicker = array();
+        	$this->view->top_followed = array();
         }
 
     }
@@ -112,8 +127,14 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$this->_helper->layout()->disableLayout();
      	$this->_helper->viewRenderer->setNoRender();
      	
+     	$fanpageId = $this->_getParam('id');
+     	
+     	if(empty($fanpageId)) {
+     		return;
+     	}
+     	
      	header('Content-Type: application/csv');
-     	header('Content-Disposition: attachment;filename=export.csv');
+     	header("Content-Disposition: attachment;filename=$fanpageId" ."_export.csv");
     	
      	$exportType = $this->_getParam('queryType');
 
@@ -131,7 +152,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
      		default : break;
      	}
      	
-//     	$filename = time() . '.csv';
+//     	$filename = $fanpageId .'_export.csv';
 //     	$this->_helper->contextSwitch()->addContext('csv',
 //     			array('suffix' => 'csv',
 //     					'headers' => array('Content-Type' => 'application/csv',
