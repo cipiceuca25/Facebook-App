@@ -226,7 +226,7 @@
 																			<?php }else{?>
 																				unfollowed 
 																			<?php }?>
-																			<a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['facebook_user_name']?></a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			<a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['facebook_user_name']?></a> on <span class="time" title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?> </span>
 																		
 																		
 																		<?php }else{?>
@@ -235,7 +235,7 @@
 																			<?php }else{?>
 																				been unfollowed by
 																			<?php }?>
-																			<a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['facebook_user_name']?></a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			<a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['facebook_user_name']?></a> on <span class="time" title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?> </span>
 																		<?php }?>
 																	
 																	
@@ -244,25 +244,25 @@
 																		<?switch($post['act_type']){ 
 		
 																				
-																			 case 'like-post':?><?echo $this->facebook_user->facebook_user_first_name  ?>   liked <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">post</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			 case 'like-post':?><?echo $this->facebook_user->facebook_user_first_name  ?>   liked <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">post</a> on <span class="time" title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?> </span>
 																			
 																			<?break;?>
 																			
-																			 <?php case 'unlike-post':?><?echo $this->facebook_user->facebook_user_first_name  ?>   unliked <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">post</a>  on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			 <?php case 'unlike-post':?><?echo $this->facebook_user->facebook_user_first_name  ?>   unliked <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">post</a>  on <span class="time" title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?> </span>
 																			
 																			<?break;?>
 
-																			 <?php case 'like-comment':?><?echo $this->facebook_user->facebook_user_first_name ?>   liked  <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">comment</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			 <?php case 'like-comment':?><?echo $this->facebook_user->facebook_user_first_name ?>   liked  <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">comment</a> on <span class="time" title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?> </span>
 																			
 																			<?break;?>				
-																			 <?php case 'unlike-comment':?><?echo $this->facebook_user->facebook_user_first_name ?>   unliked  <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">comment</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			 <?php case 'unlike-comment':?><?echo $this->facebook_user->facebook_user_first_name ?>   unliked  <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">comment</a> on <span class="time" title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?> </span>
 																			
 																			<?break;?>	
-																			 <?php case 'post':?><?echo $this->facebook_user->facebook_user_first_name ?>   posted  <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">this</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			 <?php case 'post':?><?echo $this->facebook_user->facebook_user_first_name ?>   posted  <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">this</a> on <span class="time" title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?> </span>
 																			
 																			<?break;?>
 																			
-																			<?php case 'comment':?><?echo $this->facebook_user->facebook_user_first_name?>   commented on <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">post</a> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>
+																			<?php case 'comment':?><?echo $this->facebook_user->facebook_user_first_name?>   commented on <a onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?></a>'s <a  onclick="comment_bubble('<?=$post['post_id']?>', 5,false)">post</a> on <span class="time" title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?> </span>
 																			
 																			<?break;?>
 																			 <?php default:?><?echo $this->facebook_user->facebook_user_first_name?> did <?php $post['act_type']   ?> on <?=  date(" F d Y",strtotime($post['user_created_time']))?>

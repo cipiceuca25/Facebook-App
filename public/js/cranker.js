@@ -501,7 +501,10 @@
 			success: function( data ) {
 		
 				$(ui).html(data);
-				
+				$.each($('.profile-content .time'), function(index) { 
+					$(this).html(timeZone($(this).html())); 
+					$(this).attr('title', timeZoneTitle($(this).attr('title')));
+				});
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -1229,6 +1232,11 @@
 		   {
 		   hour = hour - 12;
 		   }
+		var min = date.getMinutes();
+		if ( min ==0){
+			
+			min = '00';
+		}
 		
 		if (now.getYear() > date.getYear()){
 			return (date.toDateString());
@@ -1252,9 +1260,9 @@
 					}
 					
 				}else if(now.getDate() - date.getDate() == 1){
-					return 'Yesterday at ' + hour + ':' + date.getMinutes() +''+ apm;
+					return 'Yesterday at ' + hour + ':' + min +''+ apm;
 				}else if(now.getDate() - date.getDate() <= 3){
-					return weekday[date.getDay()] + ' at ' + hour + ':' + date.getMinutes() +''+ apm;	
+					return weekday[date.getDay()] + ' at ' + hour + ':' + min +''+ apm;	
 				}else {
 					return (date.toDateString());
 				}
