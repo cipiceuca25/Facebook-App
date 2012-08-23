@@ -1,18 +1,78 @@
 jQuery(document).ready(function($){
 
 	/**************** Analytic Table Section *******************************/
-	$(document).ready(function() {
-	    $('#topFanTable').dataTable();
-	} );
+	var topFanTable = $('#topFanTable').dataTable();
 
-	$(document).ready(function() {
-	    $('#topPostByLike').dataTable();
-	} );
+    $('#topPostByLike').dataTable();
 
-	$(document).ready(function() {
-	    $('#topPostByComment').dataTable();
-	} );
+    $('#topPostByComment').dataTable();
+    
+    $( "#userprofile" ).dialog( "destroy" );
+    
+	$('#userprofile').dialog({
+		autoOpen: false,
+		height: 350,
+		width: 400,
+		modal: true,
+		close: function() {
+			$( this ).dialog( "close" );
+		}
+	});
 
+	$(".model-btn-close").click(function (e) {
+		$('#userprofile').dialog( "close" );
+		e.preventDefault();
+	});
+	
+	$("#topFanTable tbody tr").live('click', function(event) {
+
+		var aData = topFanTable.fnGetData( this );
+		var iId = aData[0];
+		
+		//alert(iId);
+		$(this).toggleClass('row_selected');
+		if(iId) {
+			event.preventDefault();
+			popover(iId);
+		}
+	});
+
+	function popover(x){
+		//alert ('getting info for '+ id);
+		$.ajax({
+    		type: "GET",
+    		url:  serverUrl +'/admin/dashboard/fanprofile/'+ fanpageId +'?facebook_user_id=' + x,
+    		dataType: "html",
+    		cache: false,
+    		async: false,
+    		success: function( data ) {
+    			
+    			$('#fan-profile-content').html(data);
+    			$('#userprofile').dialog( "open" );
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			alert(xhr.statusText);
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});
+	}
+
+	/* Get the rows which are currently selected */
+	function fnGetSelected( oTableLocal )
+	{
+		var aReturn = new Array();
+		var aTrs = oTableLocal.fnGetNodes();
+		
+		for ( var i=0 ; i<aTrs.length ; i++ )
+		{
+			if ( $(aTrs[i]).hasClass('row_selected') )
+			{
+				aReturn.push( aTrs[i] );
+			}
+		}
+		return aReturn;
+	}
+	
 	/**************** Graph Section *******************************/
 	$('#placeholder').css({'width':'400px', 'height':'200px'});
 
@@ -32,7 +92,7 @@ jQuery(document).ready(function($){
         }
   	}
   	    
-    $(".dropdown-menu a").click(function () {
+    $(".graph-drodown a").click(function () {
 
 		var type;
 		switch($(this).html()) {
@@ -70,7 +130,34 @@ jQuery(document).ready(function($){
         
     });
 
+    // export ajax call
+    $(".export-dropdown a").click(function () {
 
+		var type;
+		switch($(this).html()) {
+			case 'Top fans list': type = 'topfans'; break;
+			case 'Top post': type = 'topposts'; break;
+			default:
+				return false; 
+				break;
+		}
+		
+        function loadAnimate() {
+            $("#loadGif").text("Load.....");
+        }
+
+        if(fanpageId && type) {
+        	//alert(fanpageId+' '+type); return false;
+        	url = '/admin/dashboard/export/' + fanpageId + '?queryType=' + type;
+        	window.location.href = url;
+        }
+        
+        function unloadkAnimate() {
+            $("#loadGif").text("Done");
+        }
+        
+    });
+    
     function showTooltip(x, y, contents) {
         $('<div id="graphTooltip">' + contents + '</div>').css( {
             position: 'absolute',

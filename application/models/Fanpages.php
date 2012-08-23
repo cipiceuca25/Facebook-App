@@ -114,20 +114,34 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $result;
 	}
 	
-	public function getNewFansNumberSince($fanpage_id, $since, $limit) {
+	public function getNewFansNumberSince($fanpage_id, $since) {
 		
 		$select = $this->getAdapter()->select();
 		$select->from(array('fans' => 'fans'), 'count(*) as count')
 			->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
-			->where($this->quoteInto('created_time >= ?'), $since)
-			->limit($limit);
-		
+			->where($this->quoteInto('created_time >= ?'), $since);
+
 		$row = $this->getAdapter()->fetchRow($select);
 		
 		if(empty($row['count'])) {
 			return 0;
 		}
 		
+		return $row['count'];
+	}
+	
+	public function getFansNumber($fanpage_id) {
+	
+		$select = $this->getAdapter()->select();
+		$select->from(array('fans' => 'fans'), 'count(*) as count')
+			->where($this->quoteInto('fanpage_id = ?', $fanpage_id));
+	
+		$row = $this->getAdapter()->fetchRow($select);
+	
+		if(empty($row['count'])) {
+			return 0;
+		}
+	
 		return $row['count'];
 	}
 	

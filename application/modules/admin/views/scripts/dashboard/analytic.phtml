@@ -30,6 +30,21 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 	</div>			
 </div>
 
+<div class="btn-group">
+	<ul class="nav nav-pills">
+		<li></li>
+		<li class="dropdown" id="menu2"><a class="dropdown-toggle"
+			data-toggle="dropdown" href="#menu2"> Export <b
+				class="caret"></b>
+		</a>
+			<ul class="dropdown-menu export-dropdown">
+				<li><a href="#">Top fans list</a></li>
+				<li><a href="#">Top post</a></li>
+			</ul></li>
+	</ul>
+	<span id="loadGif"></span>
+</div>
+
 <!-- likes graph -->
 <div class="analytic-setting btn-group">
 	<ul class="nav nav-pills">
@@ -38,7 +53,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 			data-toggle="dropdown" href="#menu1"> Show statistics <b
 				class="caret"></b>
 		</a>
-			<ul class="dropdown-menu">
+			<ul class="dropdown-menu graph-drodown">
 				<li><a href="#">total likes statistics</a></li>
 				<li><a href="#">daily posts statistics</a></li>
 				<li><a href="#">daily comments statistics</a></li>
@@ -75,7 +90,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 						<div class="box-content box-nomargin">
 							<div class="tab-content">
 									<div class="tab-pane active" id="basic">
-										<table id="topFanTable" class='table table-striped table-bordered'>
+										<table id="topFanTable" class='table analyticTableView table-striped table-bordered'>
 											<thead>
 												<tr>
 													<th>id</th>
@@ -175,3 +190,13 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 
 <div id="sexPieGraph"></div>
 <div id="piehover"></div>
+
+<!-- user profile -->
+<div class="modal" id="userprofile">
+	    <div class="modal-header">
+	    <button type="button" class="close model-btn-close" data-dismiss="modal">x</button>
+	    <h3>fan profile</h3>
+	    </div>
+	    <div class="modal-body" id="fan-profile-content">
+		</div>
+</div>

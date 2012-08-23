@@ -19,8 +19,22 @@ jQuery(document).ready(function($){
 		    placement: 'left'
 	});
 		  
-	
-	
+	var tourOptions = {
+		welcomeMessage : '<h2>Tour</h2><p>Welcome to Fancrank Admin Page</p>',
+		data : [
+		        { element: '#dummyName', 'tooltip' : 'This is current target page' },
+		        { element: '#dummyStatus', 'tooltip' : 'This is page current status' },
+		        { element: '#dummyTab', 'tooltip' : 'Clicking this will install the app to the fanpage tab' },
+		        { element: '#dummyPreview', 'tooltip' : 'Clicking this will link to a preview page' },
+		        { element: '#dummyAnalytic', 'tooltip' : 'Clicking this will link to a Analytic page' }
+		       ],
+		controlsPosition : 'TR'
+	};
+
+	$('#fancrankTour').click(function(e){
+		$('#dummyPageRow').show();	
+		$.fancrankTour(tourOptions);
+	});
 });
 
 $.fn.serializeObject = function()

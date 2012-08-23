@@ -48,8 +48,8 @@ $jobCount = $adapter->query("select count(*) as count from message")->fetchAll()
 $adapter = new Fancrank_Queue_Adapter($config->queue);
 $queue = new Zend_Queue($adapter, $config->queue);
 
-$messages = $queue->receive((int) $jobCount[0]['count'], 0);
-//$messages = $queue->receive(1);
+//$messages = $queue->receive((int) $jobCount[0]['count'], 0);
+$messages = $queue->receive(1);
 //Zend_Debug::dump(count($messages));
 
 if (count($messages) > 0) {
@@ -60,7 +60,7 @@ if (count($messages) > 0) {
  
     foreach ($messages as $message) {
         $job = Zend_Json::decode($message->body, Zend_Json::TYPE_OBJECT);
-		//Zend_Debug::dump($job);
+		Zend_Debug::dump($job);
         try {
         	Collector::run($job->url, $job->fanpage_id, $job->access_token, $job->type);
         	// We have processed the message; now we remove it from the queue.

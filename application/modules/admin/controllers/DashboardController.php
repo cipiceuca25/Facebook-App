@@ -108,6 +108,38 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	}
     }
     
+    public function exportAction() {
+    	$this->_helper->layout()->disableLayout();
+     	$this->_helper->viewRenderer->setNoRender();
+     	
+     	header('Content-Type: application/csv');
+     	header('Content-Disposition: attachment;filename=export.csv');
+    	
+     	$exportType = $this->_getParam('queryType');
+
+     	$fanpageId = $this->_getParam('id');
+     	$fanpageModel = new Model_Fanpages;
+     	$result = array();
+     	
+     	switch ($exportType) {
+     		case 'topfans' :      	
+		     	$result = $fanpageModel->getTopFanList($fanpageId, 50);
+		     	break;
+     		case 'topposts' : 
+     			$result = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 50);
+     			break;
+     		default : break;
+     	}
+     	
+//     	$filename = time() . '.csv';
+//     	$this->_helper->contextSwitch()->addContext('csv',
+//     			array('suffix' => 'csv',
+//     					'headers' => array('Content-Type' => 'application/csv',
+//     							'Content-Disposition:' => 'attachment; filename="'. $filename.'"')))->initContext('csv');
+    					 
+    	print_r($this->array_to_scv($result));
+    }
+    
     public function analyticAction() {
     	$fanpageId = $this->_getParam('id');
     	
@@ -128,7 +160,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
      	$topFanList = $fanpageModel->getTopFanList($fanpageId, 50);
      	$fansNumberBySex = $fanpageModel->getFansNumberBySex($fanpageId);
     	
-    	$this->view->fans = $fans_model->countAll();
+    	$this->view->fans = $fanpageModel->getFansNumber($fanpageId);
     	$this->view->new_fans = $newFans;
     	$this->view->page_id = $fanpageId;
     	//Zend_Debug::dump($this->_getParam('id')); exit();
@@ -139,5 +171,67 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$this->view->topPostByComment = $topPostByComment;
 	}
     
+	public function fanprofileAction() {
+	
+		$fanpageId = $this->_getParam('id');
+		
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$userId = $this->_request->getParam('facebook_user_id');
+    	
+    	$fan = new Model_Fans($userId, $fanpageId);
+    	
+    	$fan = $fan->getFanProfile();
+    	$stat = new Model_FansObjectsStats();
+    	$stat = $stat->findFanRecord($fanpageId, $userId);
+    	
+    	$this->view->stat= $stat;
+    	$this->view->fan = $fan;
+    	$this->render("fanprofile");
+	}
+	
+	private function array_2_csv($array) {
+		$csv = array();
+		foreach ($array as $item) {
+			if (is_array($item)) {
+				$csv[] = $this->array_2_csv($item);
+			} else {
+				$csv[] = $item;
+			}
+		}
+		return implode(',', $csv);
+	}
+	
+	function array_to_scv($array, $header_row = true, $col_sep = ",", $row_sep = "\n", $qut = '"')
+	{
+		$output = null;
+		if (!is_array($array) or !is_array($array[0])) return false;
+	
+		//Header row.
+		if ($header_row)
+		{
+			foreach ($array[0] as $key => $val)
+			{
+				//Escaping quotes.
+				$key = str_replace($qut, "$qut$qut", $key);
+				$output .= "$col_sep$qut$key$qut";
+			}
+			$output = substr($output, 1)."\n";
+		}
+		//Data rows.
+		foreach ($array as $key => $val)
+		{
+			$tmp = '';
+			foreach ($val as $cell_key => $cell_val)
+			{
+				//Escaping quotes.
+				$cell_val = str_replace($qut, "$qut$qut", $cell_val);
+				$tmp .= "$col_sep$qut$cell_val$qut";
+			}
+			$output .= substr($tmp, 1).$row_sep;
+		}
+	
+		return $output;
+	}
 }
 

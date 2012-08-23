@@ -1,0 +1,67 @@
+<div class="flag">
+	<a>
+	<span class="photo">
+		<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->fan['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+	</span>
+	<span class="name">
+		<?=  $this->fan['fan_first_name'].' '.$this->fan['fan_last_name']?>
+	</span>
+	</a>
+	<div class="rank">
+		<?=  $this->fan['fan_level']?>
+	</div>
+</div>
+<div class="date">
+	<?php if ($this->fan['created_time'] == null){?>
+		Not A Fancrank User
+	<?}else{?>
+	Fancrank User Since: <?= date("F Y",strtotime($this->fan['created_time']))?>
+	<?}?>
+	<br/>
+	Location: 
+	<?php if ($this->fan['fan_country'] != null ) {?>
+		<?php if ($this->fan['fan_location'] != null){?>
+			<?= $this->fan['fan_location']?>, <?= $this->fan['fan_country']?>
+		<?php }?>
+		<?= $this->fan['fan_country']?>
+	<?php }else{?>
+		Unknown
+	<?php }?>
+	
+	
+</div> 
+<div class="stat">
+	<div class="row">
+		<div class="span5">
+			<div class="row">
+			<div class="span2">
+				<img src="/img/post.png" /><h5>Posts:</h5>
+				<?= $this->stat[0]['total_posts']?>
+				<br />
+				<img src="/img/thumbsup.png" /><h5>Likes:</h5>
+				<?= $this->stat[0]['total_likes']?>
+				<br />
+				<img src="/img/comment.png" /><h5>Comments:</h5>
+				<?= $this->stat[0]['total_comments']?>
+				<br />
+			
+		
+			</div>
+			<div class="span3">
+			
+				<img src="/img/rthumbsup.png" /><h5>Recieved Comments:</h5>
+			<?= $this->stat[0]['total_get_comments']?>
+			<br />
+			<img src="/img/rcomment.png"/><h5>Recieved Likes:</h5>
+			<?= $this->stat[0]['total_get_likes']?>
+			
+			
+			</div>
+			</div>
+		</div>
+	
+	
+	</div>
+	
+
+</div>

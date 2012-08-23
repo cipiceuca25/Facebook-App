@@ -8,7 +8,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 	
 	public function init() {
 		//override existing enviroment configuration
-		$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', 'production');
+		$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
 		$this->_config = $sources->get('facebook');
 		
 		parent::init();
@@ -263,6 +263,20 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		$data['profile_image_enable'] = $this->_getParam('profile_image_enable');
 		$this->_helper->json(array('code'=>'200', 'message'=>'ok', 'profile_image_enable'=>$data['profile_image_enable']));
 	}
+	
+	public function exportAction() {
+		$fanpageId = $this->_getParam('id');
+		$filename = $fanpageId .'_' .time() . '.csv';
+
+		$result = array();
+		print_r($result);
+		
+		$this->_helper->contextSwitch()->addContext('csv',
+				array('suffix' => 'csv',
+						'headers' => array('Content-Type' => 'application/csv',
+						'Content-Disposition:' => 'attachment; filename="'. $filename.'"')))->initContext('csv');
+	}
+	
 	/*
 	public function pictureAction() {
 		$imageDestination = DATA_PATH .'/images/fanpages';
