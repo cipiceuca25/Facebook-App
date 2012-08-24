@@ -1,5 +1,5 @@
 <h2>Fanpages</h2>
-<table class="table-striped">
+<table class="fanpage-table table-striped">
 	<thead>
 		<th>Name</th>
 		<th>Category</th>
@@ -8,6 +8,22 @@
 		<th></th>
 	</thead>
 	<tbody>
+	<tr id="dummyPageRow" style="display:none">
+		<td id="dummyName" class="name"><a href="#"><img src=""/>dummy page</a></td>
+		<td id="dummyCategory" class="category"></td>
+		<td class="status">
+			<button id="dummyStatus" class="btn" rel="tooltip" title="Turn on data collection for this page" data-id="">Activate</button>
+		</td>
+		<td class="tab">
+			<button id="dummyTab" class="btn" rel="tooltip" title="Install the fancrank app on you page" data-id="">Install Tab</button>
+		</td>
+		<td class="preview">
+			<button id="dummyPreview" class="btn" rel="tooltip" title="See fancrank working with your data" data-id="">Preview</button>
+		</td>
+		<td class="analytic">
+			<button id="dummyAnalytic" class="btn" rel="tooltip" title="See your fanpage statistics" data-id="">Analytic</button>
+		</td>
+	</tr>
 	<?php foreach($this->pages as $page): ?>
 		<?php
 			$url = 'https://www.facebook.com/pages/' . str_replace(' ', '-', $page['fanpage_name']) . '/' . $page['fanpage_id'];

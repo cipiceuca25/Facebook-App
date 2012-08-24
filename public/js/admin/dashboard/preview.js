@@ -77,7 +77,7 @@ $(document).ready(function(){
 	});
 
   /**************** Fanpage Setting Popup *************/
-	$( "myFanpageSettingModel" ).dialog( "destroy" );
+	$( "#myFanpageSettingModel" ).dialog( "destroy" );
 
 	$('#myFanpageSettingModel').dialog({
 		autoOpen: false,

@@ -55,7 +55,7 @@ if (count($fanList) > 0) {
 	foreach ($fanList as $fan) {
 		try {
 			//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
-			if($fan->fanpage_id === '165668590150326') {
+			if($fan->fanpage_id === '216821905014540') {
 				$result = $fanStat->updatedFan($fan->fanpage_id, $fan->facebook_user_id);
 			}
 			//break;

@@ -11,6 +11,9 @@
             <li><a href="/admin/dashboard/fanpages">My Pages</a></li>
             <li><a href="/admin/dashboard/myaccount">My Account</a></li>
             <li><a href="/admin/dashboard/logout">Log out</a></li>
+   				<?php if ( $this->layout()->action === 'fanpages' ): ?>
+					<li><a id="fancrankTour" href="#"><i class="icon-flag"></i> Help</a></li>
+				<?php endif; ?>
         </ul>
     </div>
 </div>

@@ -48,8 +48,11 @@
 					 xfbml  : true// parse XFBML
 				});
 
-				FB.Canvas.setAutoGrow(91);
-				FB.Canvas.setSize();	
+		        jQuery(window).load(function(){
+		            //resize our tab app canvas after our content has finished loading
+		            //FB.Canvas.setSize();
+		            FB.Canvas.setAutoGrow(91);
+		        });
 			};
 			
 			    

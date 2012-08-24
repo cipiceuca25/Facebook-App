@@ -19,14 +19,17 @@
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
         <script src="/js/libs/jquery-1.7.2.min.js"></script>
+        <script src="/js/libs/jquery.scrollTo-1.4.2-min.js"></script>
 		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
     	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
         <script src="/bootstrap/js/bootstrap.min.js"></script>
         <script src="//connect.facebook.net/en_US/all.js"></script>
 
+        <script src="/js/fancrankTour.js"></script>
         <script src="/js/fancrank.js"></script>
         <script>
 			var appId = "<?= $this->layout()->appKey ?>";
+			var serverUrl = "<?= $this->fullServerUrl() ?>";
 			window.fbAsyncInit = function() {
 				FB.init({
 					 appId  : appId,
@@ -34,7 +37,7 @@
 					 cookie : true, // enable cookies to allow the server to access the session
 					 xfbml  : true// parse XFBML
 				});
-				FB.Canvas.setAutoResize(10);
+				FB.Canvas.setAutoGrow(91);
 			
 				//FB.Canvas.setSize();
 			};

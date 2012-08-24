@@ -1,5 +1,11 @@
 
 	$(document).ready(function() {
+		//trick to indentify parent container
+		if(window.location != window.parent.location) {
+			$(document.body).css({'overflow':'hidden'});
+		} else {
+			$(document.body).css({'overflow':'auto'});
+		}
 		
 		FB.api(fanpageId , function(response){
 			 if (!response || response.error) {
@@ -30,8 +36,7 @@
 		//alert('getting top posts');
 
 		getNewsfeed('#news-feed');
-		
-		
+
 	});
 	
 	setFeed='All';

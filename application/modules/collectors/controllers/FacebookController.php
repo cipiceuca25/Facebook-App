@@ -411,6 +411,18 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	 
     	$collector->test();
     }
+    
+    public function test9Action() {
+    	$post = new Model_Posts();
+    	$row = array(
+					'post_id'               => '153123704737554_10150137218225908',
+					'post_message'          => 'hello',
+			);
+    	echo 'save post';
+    	$result = $post->saveAndUpdateById($row, array('id_field_name'=>'post_id'));
+    	Zend_Debug::dump($result);	
+    }
+    
     public function testmemcacheAction() {
     	$starttime = time();
     	echo $starttime;

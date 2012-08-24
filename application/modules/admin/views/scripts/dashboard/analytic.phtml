@@ -1,9 +1,13 @@
+<? $this->headLink()->headLink(array('id'=>'stylesheet', 'rel'=>'stylesheet/less', 'href'=>'/css/dashboard/analytic.less')) ?>
+
 <script>
 var fanpageId = <?= $this->page_id ?>;
 var postData = <?= $this->post_data ?>;
+var sexPieData = <?= $this->fansNumberBySex ?>;
 </script>
-
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.min.js') ?>
+<? $this->headScript()->appendFile('/js/libs/jquery.flot.pie.min.js') ?>
+<? $this->headScript()->appendFile('/js/libs/jquery.dataTables.min.js') ?>
 <? $this->headScript()->appendFile('/js/admin/dashboard/analytic.js') ?>
 
 <div>
@@ -26,6 +30,21 @@ var postData = <?= $this->post_data ?>;
 	</div>			
 </div>
 
+<div class="btn-group">
+	<ul class="nav nav-pills">
+		<li></li>
+		<li class="dropdown" id="menu2"><a class="dropdown-toggle"
+			data-toggle="dropdown" href="#menu2"> Export <b
+				class="caret"></b>
+		</a>
+			<ul class="dropdown-menu export-dropdown">
+				<li><a href="#">Top fans list</a></li>
+				<li><a href="#">Top post</a></li>
+			</ul></li>
+	</ul>
+	<span id="loadGif"></span>
+</div>
+
 <!-- likes graph -->
 <div class="analytic-setting btn-group">
 	<ul class="nav nav-pills">
@@ -34,7 +53,7 @@ var postData = <?= $this->post_data ?>;
 			data-toggle="dropdown" href="#menu1"> Show statistics <b
 				class="caret"></b>
 		</a>
-			<ul class="dropdown-menu">
+			<ul class="dropdown-menu graph-drodown">
 				<li><a href="#">total likes statistics</a></li>
 				<li><a href="#">daily posts statistics</a></li>
 				<li><a href="#">daily comments statistics</a></li>
@@ -46,7 +65,7 @@ var postData = <?= $this->post_data ?>;
 
 <div id="placeholder"></div>
 
-<div style="width:900px;" class="container-fluid">
+<div style="width:1000px;" class="container-fluid">
 		<div class="content">
 			<div class="row-fluid">
 				<div class="span12">
@@ -66,15 +85,12 @@ var postData = <?= $this->post_data ?>;
 								<li>
 									<a href="#nohead" data-toggle="tab">Top influencer</a>
 								</li>
-								<li>
-									<a href="#nohead" data-toggle="tab">find user</a>
-								</li>								
 							</ul>
 						</div>
 						<div class="box-content box-nomargin">
 							<div class="tab-content">
 									<div class="tab-pane active" id="basic">
-										<table class='table table-striped dataTable table-bordered'>
+										<table id="topFanTable" class='table analyticTableView table-striped table-bordered'>
 											<thead>
 												<tr>
 													<th>id</th>
@@ -116,7 +132,7 @@ var postData = <?= $this->post_data ?>;
 	<div class="box-content box-nomargin">
 		<div class="tab-content">
 				<div class="tab-pane active" id="basic">
-					<table class='table table-striped dataTable table-bordered'>
+					<table id="topPostByLike" class='table table-striped dataTable table-bordered'>
 						<thead>
 							<tr>
 								<th>Facebook User ID</th>
@@ -145,7 +161,7 @@ var postData = <?= $this->post_data ?>;
 	<div class="box-content box-nomargin">
 		<div class="tab-content">
 				<div class="tab-pane active" id="basic">
-					<table class='table table-striped dataTable table-bordered'>
+					<table id="topPostByComment" class='table table-striped dataTable table-bordered'>
 						<thead>
 							<tr>
 								<th>Facebook User ID</th>
@@ -171,3 +187,16 @@ var postData = <?= $this->post_data ?>;
 <!-- top post bar graph -->    
 
 <div id="postStat"></div>
+
+<div id="sexPieGraph"></div>
+<div id="piehover"></div>
+
+<!-- user profile -->
+<div class="modal" id="userprofile">
+	    <div class="modal-header">
+	    <button type="button" class="close model-btn-close" data-dismiss="modal">x</button>
+	    <h3>fan profile</h3>
+	    </div>
+	    <div class="modal-body" id="fan-profile-content">
+		</div>
+</div>

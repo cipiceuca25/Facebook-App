@@ -97,20 +97,51 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
-	public function getNewFansNumberSince($fanpage_id, $since, $limit) {
+	public function getFansNumberBySex($fanpage_id) {
+		$select = "select count(*) as sex from fans f inner join facebook_users u on f.facebook_user_id = u.facebook_user_id where f.fanpage_id = $fanpage_id and u.facebook_user_gender = 'male'
+					union 
+					select count(*) as sex from fans f inner join facebook_users u on f.facebook_user_id = u.facebook_user_id where f.fanpage_id = $fanpage_id and u.facebook_user_gender = 'female'";
+
+		$rows = $this->getAdapter()->fetchAll($select);
+		
+		$result = array('male'=>0, 'female'=>0);
+		if(! empty($rows[0]['sex'])) {
+			$result['male'] = $rows[0]['sex'];
+		}
+		if(! empty($rows[1]['sex'])) {
+			$result['female'] = $rows[1]['sex'];
+		}
+		return $result;
+	}
+	
+	public function getNewFansNumberSince($fanpage_id, $since) {
 		
 		$select = $this->getAdapter()->select();
 		$select->from(array('fans' => 'fans'), 'count(*) as count')
 			->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
-			->where($this->quoteInto('created_time >= ?'), $since)
-			->limit($limit);
-		
+			->where($this->quoteInto('created_time >= ?'), $since);
+
 		$row = $this->getAdapter()->fetchRow($select);
 		
 		if(empty($row['count'])) {
 			return 0;
 		}
 		
+		return $row['count'];
+	}
+	
+	public function getFansNumber($fanpage_id) {
+	
+		$select = $this->getAdapter()->select();
+		$select->from(array('fans' => 'fans'), 'count(*) as count')
+			->where($this->quoteInto('fanpage_id = ?', $fanpage_id));
+	
+		$row = $this->getAdapter()->fetchRow($select);
+	
+		if(empty($row['count'])) {
+			return 0;
+		}
+	
 		return $row['count'];
 	}
 	

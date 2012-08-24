@@ -19,18 +19,23 @@ class Collectors_FancrankController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function fanpageAction() {
+    	$fanpageId =  '165668590150326';
+    	
     	$fanpageModel = new Model_Fanpages;
     	 
     	$fans_model = new Model_Fans;
     	
-     	$postDataByType = $fanpageModel->getPostsStatByFanpageId('165668590150326');
+     	$postDataByType = $fanpageModel->getPostsStatByFanpageId($fanpageId);
      	Zend_Debug::dump($postDataByType);
      	
-     	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes('165668590150326', 5);
+     	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 5);
 		Zend_Debug::dump($topPostByLike);
 		
-		$topFanList = $fanpageModel->getTopFanList('165668590150326', 5);
+		$topFanList = $fanpageModel->getTopFanList($fanpageId, 5);
 		Zend_Debug::dump($topFanList);
+		
+		$fansNumberBySex = $fanpageModel->getFansNumberBySex($fanpageId);
+		Zend_Debug::dump($fansNumberBySex);
     }
     
     private function httpCurl($url, $params=null, $method=null) {

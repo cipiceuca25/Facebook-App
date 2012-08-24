@@ -2,6 +2,17 @@
 
 class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 {
+	public function preDispatch()
+	{
+		parent::preDispatch();
+		$fanapgeId = $this->_getParam('id');
+		$uid = $this->_identity->facebook_user_id;
+		$fanpage_admin_model = new Model_FanpageAdmins;
+		if(!empty($fanapgeId) && ! $fanpage_admin_model->findRow($uid, $fanapgeId)) {
+			$this->_helper->redirector('index', 'index');
+		}
+	}
+	
     public function indexAction()
     {
     
@@ -25,7 +36,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
     public function myaccountAction()
     {
-    	Zend_Debug::dump($this->_identity);
+    	//Zend_Debug::dump($this->_identity);
         $this->view->user_id = $this->_identity->facebook_user_id;
         $this->view->user_email = $this->_identity->facebook_user_email;
         $this->view->user_first_name  = $this->_identity->facebook_user_first_name;
@@ -41,6 +52,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     public function previewAction()
     {
         $fanpages_model = new Model_Fanpages;
+        $follow = new Model_Subscribes();
         $fanpage = $fanpages_model->findByFanpageId($this->_getParam('id'))->current();
 
         $this->view->installed = $fanpage->installed;
@@ -55,15 +67,18 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         if ($fanpage->active) {
         	//maybe we should be asking for a relavant time from the api user and pass it as a parameter in the queries
         	$topfans = new Model_Rankings();
-        	$this->view->top_fans = $topfans->getTopFans($this->_getParam('id'));
-        	$this->view->most_popular = $topfans->getMostPopular($this->_getParam('id'));
-        	$this->view->top_talker = $topfans->getTopTalker($this->_getParam('id'));
-        	$this->view->top_clicker = $topfans->getTopClicker($this->_getParam('id'));        	
+        	$this->view->top_fans = $topfans->getTopFans($this->_getParam('id'), 5);
+        	//Zend_Debug::dump($this->view->top_fans); exit();
+        	$this->view->most_popular = $topfans->getMostPopular($this->_getParam('id'), 5);
+        	$this->view->top_talker = $topfans->getTopTalker($this->_getParam('id'), 5);
+        	$this->view->top_clicker = $topfans->getTopClicker($this->_getParam('id'), 5);
+        	$this->view->top_followed = $follow->getTopFollowed($this->_getParam('id'), 5);
         }else {
         	$this->view->top_fans = array();
         	$this->view->most_popular = array();
         	$this->view->top_talker = array();
         	$this->view->top_clicker = array();
+        	$this->view->top_followed = array();
         }
 
     }
@@ -108,6 +123,44 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	}
     }
     
+    public function exportAction() {
+    	$this->_helper->layout()->disableLayout();
+     	$this->_helper->viewRenderer->setNoRender();
+     	
+     	$fanpageId = $this->_getParam('id');
+     	
+     	if(empty($fanpageId)) {
+     		return;
+     	}
+     	
+     	header('Content-Type: application/csv');
+     	header("Content-Disposition: attachment;filename=$fanpageId" ."_export.csv");
+    	
+     	$exportType = $this->_getParam('queryType');
+
+     	$fanpageId = $this->_getParam('id');
+     	$fanpageModel = new Model_Fanpages;
+     	$result = array();
+     	
+     	switch ($exportType) {
+     		case 'topfans' :      	
+		     	$result = $fanpageModel->getTopFanList($fanpageId, 50);
+		     	break;
+     		case 'topposts' : 
+     			$result = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 50);
+     			break;
+     		default : break;
+     	}
+     	
+//     	$filename = $fanpageId .'_export.csv';
+//     	$this->_helper->contextSwitch()->addContext('csv',
+//     			array('suffix' => 'csv',
+//     					'headers' => array('Content-Type' => 'application/csv',
+//     							'Content-Disposition:' => 'attachment; filename="'. $filename.'"')))->initContext('csv');
+    					 
+    	print_r($this->array_to_scv($result));
+    }
+    
     public function analyticAction() {
     	$fanpageId = $this->_getParam('id');
     	
@@ -125,17 +178,81 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	
      	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 5);
      	$topPostByComment = $fanpageModel->getTopPostsByNumberOfComments($fanpageId, 5);
-     	$topFanList = $fanpageModel->getTopFanList($fanpageId, 5);
+     	$topFanList = $fanpageModel->getTopFanList($fanpageId, 50);
+     	$fansNumberBySex = $fanpageModel->getFansNumberBySex($fanpageId);
     	
-    	$this->view->fans = $fans_model->countAll();
+    	$this->view->fans = $fanpageModel->getFansNumber($fanpageId);
     	$this->view->new_fans = $newFans;
     	$this->view->page_id = $fanpageId;
     	//Zend_Debug::dump($this->_getParam('id')); exit();
     	$this->view->post_data = json_encode($postDataByType);
+    	$this->view->fansNumberBySex = json_encode($fansNumberBySex);
     	$this->view->topFanList = $topFanList;
     	$this->view->topPostByLike = $topPostByLike;
     	$this->view->topPostByComment = $topPostByComment;
 	}
     
+	public function fanprofileAction() {
+	
+		$fanpageId = $this->_getParam('id');
+		
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$userId = $this->_request->getParam('facebook_user_id');
+    	
+    	$fan = new Model_Fans($userId, $fanpageId);
+    	
+    	$fan = $fan->getFanProfile();
+    	$stat = new Model_FansObjectsStats();
+    	$stat = $stat->findFanRecord($fanpageId, $userId);
+    	
+    	$this->view->stat= $stat;
+    	$this->view->fan = $fan;
+    	$this->render("fanprofile");
+	}
+	
+	private function array_2_csv($array) {
+		$csv = array();
+		foreach ($array as $item) {
+			if (is_array($item)) {
+				$csv[] = $this->array_2_csv($item);
+			} else {
+				$csv[] = $item;
+			}
+		}
+		return implode(',', $csv);
+	}
+	
+	function array_to_scv($array, $header_row = true, $col_sep = ",", $row_sep = "\n", $qut = '"')
+	{
+		$output = null;
+		if (!is_array($array) or !is_array($array[0])) return false;
+	
+		//Header row.
+		if ($header_row)
+		{
+			foreach ($array[0] as $key => $val)
+			{
+				//Escaping quotes.
+				$key = str_replace($qut, "$qut$qut", $key);
+				$output .= "$col_sep$qut$key$qut";
+			}
+			$output = substr($output, 1)."\n";
+		}
+		//Data rows.
+		foreach ($array as $key => $val)
+		{
+			$tmp = '';
+			foreach ($val as $cell_key => $cell_val)
+			{
+				//Escaping quotes.
+				$cell_val = str_replace($qut, "$qut$qut", $cell_val);
+				$tmp .= "$col_sep$qut$cell_val$qut";
+			}
+			$output .= substr($tmp, 1).$row_sep;
+		}
+	
+		return $output;
+	}
 }
 
