@@ -15,7 +15,7 @@
 				</div>
 				
 			
-					<div class="row profile_background">
+					<div class="row box">
 						<?php $count = 0; ?> 
 						<?php foreach($this->top_fans as $top_fan):  ?>
 						<?php if ($count == 0){?>
@@ -23,14 +23,14 @@
 						</div>
 						<ul class="top-list">
 							<li>
-								<div class="border-dark first">
+								<div class="ranker first">
 									<div class="rank first">
 										<h1>
 											<?= $count + 1 ?>
 										</h1>
 									</div>
 
-									<div class="flag">
+									<div class="user">
 										<a > <span class="photo"><img class="face"
 												width="35" height="35"
 												src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
@@ -57,13 +57,13 @@
 							<ul id="top-fans-collapse" class="top-list collapse in">
 							<?php }?>
 								<li>
-									<div class="border-dark ">
+									<div class="ranker ">
 										<div class="rank">
 											<h1>
 												<?= $count + 1 ?>
 											</h1>
 										</div>
-										<div class="flag">
+										<div class="user">
 											<a > <span class="photo"><img class="face"
 													width="35" height="35"
 													src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
@@ -93,7 +93,7 @@
 						<?php if ($count == 0){?>
 							<ul class="top-list">
 								<li>
-									<div class="border-dark first">
+									<div class="ranker first">
 										<div class="rank first">
 											<h1>
 												<?= $count + 1 ?>
@@ -115,7 +115,7 @@
 							<ul  id="top-fans-collapse" class="top-list collapse in">		
 							<?php }?>
 								<li>
-									<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 											<h1>
 												<?= $count + 1 ?>
@@ -134,7 +134,7 @@
 						
 							<ul class="top-list">
 								<li>
-									<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 										<div class="rank">
 											<? if (strlen($this->popularYou['my_rank'])== 1){?>
 											<h1>
@@ -189,21 +189,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="row profile_background">
+				<div class="row box">
 					<?php $count = 0; ?>
 					<?php foreach($this->most_popular as $popular):  ?>
 					<?php if ($count == 0){?>
 
 					<ul class="top-list">
 						<li>
-							<div class="border-dark first">
+							<div class="ranker first">
 								<div class="rank first">
 									<h1>
 										<?= $count + 1 ?>
 									</h1>
 								</div>
 
-								<div class="flag">
+								<div class="user">
 									<a > <span class="photo"><img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
@@ -230,13 +230,13 @@
 					<ul id="fan-favorite-collapse" class="top-list collapse">
 						<?php }?>
 						<li>
-							<div class="border-dark ">
+							<div class="ranker ">
 								<div class="rank">
 									<h1>
 										<?= $count + 1 ?>
 									</h1>
 								</div>
-								<div class="flag">
+								<div class="user">
 									<a > <span class="photo"><img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
@@ -265,7 +265,7 @@
 						<?php if ($count == 0){?>
 						<ul class="top-list">
 							<li>
-								<div class="border-dark first">
+								<div class="ranker first">
 									<div class="rank first">
 										<h1>
 											<?= $count + 1 ?>
@@ -287,7 +287,7 @@
 							<ul id="fan-favorite-collapse" class="top-list collapse">
 								<?php }?>
 								<li>
-									<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 											<h1>
 												<?= $count + 1 ?>
@@ -305,7 +305,7 @@
 						</ul>
 						<ul class="top-list">
 							<li>
-								<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 									<div class="rank">
 										<? if (strlen($this->popularYou['my_rank'])== 1){?>
 										<h1>
@@ -357,21 +357,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="row profile_background">
+				<div class="row box">
 					<?php $count = 0; ?>
 					<?php foreach($this->top_talker as $talker):  ?>
 					<?php if ($count == 0){?>
 
 					<ul class="top-list">
 						<li>
-							<div class="border-dark first">
+							<div class="ranker first">
 								<div class="rank first">
 									<h1>
 										<?= $count + 1 ?>
 									</h1>
 								</div>
 
-								<div class="flag">
+								<div class="user">
 									<a > <span class="photo"><img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"
@@ -398,13 +398,13 @@
 					<ul id="top-talker-collapse" class="top-list collapse">
 						<?php }?>
 						<li>
-							<div class="border-dark ">
+							<div class="ranker ">
 								<div class="rank">
 									<h1>
 										<?= $count + 1 ?>
 									</h1>
 								</div>
-								<div class="flag">
+								<div class="user">
 									<a > <span class="photo"><img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"
@@ -433,7 +433,7 @@
 						<?php if ($count == 0){?>
 						<ul class="top-list">
 							<li>
-								<div class="border-dark first">
+								<div class="ranker first">
 									<div class="rank first">
 										<h1>
 											<?= $count + 1 ?>
@@ -455,7 +455,7 @@
 							<ul id="top-talker-collapse" class="top-list collapse">
 								<?php }?>
 								<li>
-									<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 											<h1>
 												<?= $count + 1 ?>
@@ -473,7 +473,7 @@
 						</ul>
 						<ul class="top-list">
 							<li>
-								<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 									<div class="rank">
 										<? if (strlen($this->talkerYou['my_rank'])== 1){?>
 										<h1>
@@ -529,21 +529,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="row profile_background">
+				<div class="row box">
 					<?php $count = 0; ?>
 					<?php foreach($this->top_clicker as $clicker):  ?>
 					<?php if ($count == 0){?>
 
 					<ul class="top-list">
 						<li>
-							<div class="border-dark first">
+							<div class="ranker first">
 								<div class="rank first">
 									<h1>
 										<?= $count + 1 ?>
 									</h1>
 								</div>
 
-								<div class="flag">
+								<div class="user">
 									<a > <span class="photo"><img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"
@@ -571,13 +571,13 @@
 					<ul id="top-clicker-collapse" class="top-list collapse">
 						<?php }?>
 						<li>
-							<div class="border-dark ">
+							<div class="ranker ">
 								<div class="rank">
 									<h1>
 										<?= $count + 1 ?>
 									</h1>
 								</div>
-								<div class="flag">
+								<div class="user">
 									<a > <span class="photo"><img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"
@@ -607,7 +607,7 @@
 						<?php if ($count == 0){?>
 						<ul class="top-list">
 							<li>
-								<div class="border-dark first">
+								<div class="ranker first">
 									<div class="rank first">
 										<h1>
 											<?= $count + 1 ?>
@@ -629,7 +629,7 @@
 							<ul id="top-clicker-collapse" class="top-list collapse">
 								<?php }?>
 								<li>
-									<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 											<h1>
 												<?= $count + 1 ?>
@@ -647,7 +647,7 @@
 						</ul>
 						<ul class="top-list">
 							<li>
-								<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 									<div class="rank">
 										<? if (strlen($this->clickerYou['my_rank'])== 1){?>
 										<h1>
@@ -699,21 +699,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="row profile_background">
+				<div class="row box">
 					<?php $count = 0; ?>
 					<?php foreach($this->top_followed as $followed):  ?>
 					<?php if ($count == 0){?>
 
 					<ul class="top-list">
 						<li>
-							<div class="border-dark first">
+							<div class="ranker first">
 								<div class="rank first">
 									<h1>
 										<?= $count + 1 ?>
 									</h1>
 								</div>
 
-								<div class="flag">
+								<div class="user">
 									<a > <span class="photo"><img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $followed['facebook_user_id'] ?>/picture"
@@ -742,13 +742,13 @@
 					<ul id="top-followed-collapse" class="top-list collapse">
 						<?php }?>
 						<li>
-							<div class="border-dark ">
+							<div class="ranker ">
 								<div class="rank">
 									<h1>
 										<?= $count + 1 ?>
 									</h1>
 								</div>
-								<div class="flag">
+								<div class="user">
 									<a > <span class="photo"><img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $followed['facebook_user_id'] ?>/picture"
@@ -780,7 +780,7 @@
 						<?php if ($count == 0){?>
 						<ul class="top-list">
 							<li>
-								<div class="border-dark first">
+								<div class="ranker first">
 									<div class="rank first">
 										<h1>
 											<?= $count + 1 ?>
@@ -802,7 +802,7 @@
 							<ul id="top-followed-collapse" class="top-list collapse">
 								<?php }?>
 								<li>
-									<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 											<h1>
 												<?= $count + 1 ?>
@@ -820,7 +820,7 @@
 						</ul>
 						<ul class="top-list">
 							<li>
-								<div class="border-dark <?= ($count == 0 ? ' first' : '') ?>">
+								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 									<div class="rank">
 										<? if (strlen($this->followedYou['my_rank'])== 1){?>
 										<h1>
