@@ -131,9 +131,6 @@
 	});
 		*/
 	function feedbackAnimation(ui){
-
-		
-		
 		 $(ui).css({'top':mouseY-16,'left':mouseX-62,'opacity':'1', 'display':'block'});
 		 $(ui).animate({
 			 	opacity: '0',
