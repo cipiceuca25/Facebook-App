@@ -67,19 +67,13 @@ class Service_FancrankFBService extends Facebook {
 	
 	function getFanPageUserId()
 	{
-		if(!$data = $this->getSignedData())	{
-			return false;
-		}
-	
+		$data = $this->getSignedData();
 		return isset($data['user_id']) ? $data['user_id'] : false;		
 	}
 	
 	function checkFanPageAdmin()
 	{
-		if(!$data = $this->getSignedData()) {
-			return false;
-		}
-	
+		$data = $this->getSignedData();
 		if(isset($data['page']['admin']) && $data['page']['admin'] == 1) {
 			return true;
 		}
@@ -176,12 +170,42 @@ class Service_FancrankFBService extends Facebook {
 				return $token;
 			}
 		}catch (Exception $e) {
-			
+			echo $e->getMessage();
+			return null;
 		}
 	}
 	
 	public function getAppId() {
 		return $this->_appId;
+	}
+	
+	public function isUserInstalledApp($userId) {
+		if(empty($userId)) {
+			return false;
+		}
+		
+		$app_access_token = $this->getAppAccessToken();
+		
+		$params = array(
+				'fields'=>'installed',
+				'access_token'=>$app_access_token
+		);
+		
+		$url = "https://graph.facebook.com/$userId?" .http_build_query($params);
+		
+		$client = new Zend_Http_Client;
+		$client->setUri($url);
+		$client->setMethod(Zend_Http_Client::GET);
+		try {
+			$response = $client->request();
+			$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+			if(!empty($result->id) && $userId === $result->id && !empty($result->installed)) {
+				return true;
+			}
+		}catch (Exception $e) {
+			echo $e->getMessage();
+		}
+		return false;
 	}
 }
 

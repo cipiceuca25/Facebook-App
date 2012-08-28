@@ -23,11 +23,13 @@
 		<script src="/js/libs/jquery-1.7.2.min.js"></script>
 		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
 		<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+		<script src="/js/libs/jquery.joyride-1.0.5.js"></script>
 		<script src="/bootstrap/js/bootstrap.js"></script>
 		<script src="/js/libs/enscroll-0.2.5.min.js"></script>
 		<script src="//connect.facebook.net/en_US/all.js"></script>
 		
 		<script src="/js/cranker.js"></script>
+		<script src="/js/app/apptour.js"></script>
 		<!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
 		
@@ -36,9 +38,10 @@
 			var appId = "<?= $this->layout()->appKey ?>";
 			var userId = "<?= $this->user_id ?>";
 			
-			var fanpageId = "<?= $this->fanpage_id?>"	;	
+			var fanpageId = "<?= $this->fanpage_id?>";	
 			var userName = "<?= $this->username?>";
 			var userAccessToken = "<?= $this->facebook_user_access_token?>";
+			var tour = "<?= $this->tour ?>"
 			//alert( accessToken);
 			window.fbAsyncInit = function() {
 				FB.init({
@@ -54,9 +57,6 @@
 		            FB.Canvas.setAutoGrow(91);
 		        });
 			};
-			
-			    
-			
 		
 		 </script>
 <!-- End of iframe initialization -->
@@ -66,6 +66,7 @@
 
         <?php $this->selectTheme($this->color_choice, APPLICATION_ENV); ?>
 		
+		<link rel="stylesheet" href="/css/app/joyride-1.0.5.css" />
 		<style>
 		.container,.navbar-fixed-top .container {
 			width: 810px;
@@ -150,7 +151,24 @@
 	</div>
 	<div class="light-box"></div>
 
-	
+	<ol id="joyRideTipContent">
+      <li data-id="newsfeed-tab" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
+        <h2>Fancrank Feed</h2>
+        <p>Fancrank Feed</p>
+      </li>
+      <li data-id="leaderboard-tab" data-text="Next" data-options="tipLocation:top;tipAnimation:fade">
+        <h2>Leaderboard</h2>
+        <p>Check out the ranking</p>
+      </li>
+      <li data-id="topfan-tour" data-text="Next">
+        <h2>Your Rank</h2>
+        <p>Top fans in the week</p>
+      </li>
+      <li data-id="toppost-tour" data-text="Finish">
+        <h2>TOP POST</h2>
+        <p>top post in the week</p>
+      </li>
+    </ol>
 </body>
 
 

@@ -27,8 +27,6 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 					where facebook_user_id=".$facebook_user_id." && fanpage_id=".$fanpage_id;
 
 		return $this->getAdapter()->fetchAll($select);
-	
-		
 	}
 	
 }

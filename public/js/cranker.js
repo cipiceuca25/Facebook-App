@@ -1238,9 +1238,9 @@
 		   hour = hour - 12;
 		   }
 		var min = date.getMinutes();
-		if ( min ==0){
-			
-			min = '00';
+		if ( min < 10){
+            
+            min = '0' + min;
 		}
 		
 		if (now.getYear() > date.getYear()){

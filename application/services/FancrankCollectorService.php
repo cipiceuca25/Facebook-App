@@ -173,17 +173,6 @@ class Service_FancrankCollectorService {
 		$pointResult = array();
 		$lastUpdatedData = array();
 		
-		$filePath = DATA_PATH .'/temp/' .$this->_fanpageId .'_last_update.data';
-		
-		if (file_exists($filePath)) {
-			//echo "The file $filePath exists";
-			$lastUpdatedData = unserialize( file_get_contents( $filePath ) );
-		}else {
-			$lastUpdatedData['posts'] = array();
-			$lastUpdatedData['postLikeList'] = array();
-			$lastUpdatedData['postCommentsList'] = array();
-		}
-
 		//Zend_Debug::dump($lastUpdatedData['posts']);
 		//exit();
 		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/feed?access_token=' .$this->_accessToken .'&until=' .$until .'&since=' .$since;
@@ -210,10 +199,9 @@ class Service_FancrankCollectorService {
  		Zend_Debug::dump($postCommentsList);
  		
  		$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
- 		
   		//Zend_Debug::dump($pointResult); exit();
 		//get all albums recursively
-		$url = 'https://graph.facebook.com/' .$this->_fanpageId .'/albums?access_token=' .$this->_accessToken .'&since=' .$since;
+		$url = 'https://graph.facebook.com/' .$this->_fanpageId .'/albums?access_token=' .$this->_accessToken .'&since=30+days+ago';// .$since;
 		$albumsList = array();
 		$this->getFromUrlRecursive($url, 2, 1000, $albumsList);
 		Zend_Debug::dump($albumsList);
@@ -230,7 +218,7 @@ class Service_FancrankCollectorService {
 		$photoList = array();
 		$photoList = $this->getPhotosFromAlbum($albumsList, 2, 1000);
 		Zend_Debug::dump($photoList);
-		
+
 		$photoLikesList = $this->getLikesFromMyAlbums($photoList, 'photo');
 		Zend_Debug::dump($photoLikesList);
 
@@ -263,6 +251,30 @@ class Service_FancrankCollectorService {
 		echo '<br/>total likes for ' .count($albumsList) . ' albums ' .count($albumLikesList);
 		echo '<br/>total likes for ' .count($photoList) . ' photos ' .count($photoLikesList);
 		echo '<br/>Total likes : ' .count($allLikesList);
+		
+		$filePath = DATA_PATH .'/temp/' .$this->_fanpageId .'_last_update.data';
+		
+		if (file_exists($filePath)) {
+			//echo "The file $filePath exists";
+			//$lastUpdatedData = unserialize( file_get_contents( $filePath ) );
+		}else {
+			$lastUpdatedData['posts'] = $posts;
+			$lastUpdatedData['postCommentsList'] = $postCommentsList;
+			$lastUpdatedData['postLikeList'] = $postLikeList;
+		
+			$lastUpdatedData['albumsList'] = $albumsList;
+			$lastUpdatedData['albumLikesList'] = $albumLikesList;
+			$lastUpdatedData['albumCommentList'] = $albumCommentList;
+		
+			$lastUpdatedData['photoList'] = $photoList;
+			$lastUpdatedData['photoLikesList'] = $photoLikesList;
+			$lastUpdatedData['photoCommentList'] = $photoCommentList;
+				
+			$lastUpdatedData['commentsList'] = $commentsList;
+			$lastUpdatedData['commentLikeList'] = $commentLikeList;
+			$lastUpdatedData['allLikesList'] = $allLikesList;
+			file_put_contents( $filePath, serialize( $lastUpdatedData ) );
+		}
 		
 		Zend_Debug::dump($allLikesList); exit();
 		$db->beginTransaction();
@@ -589,6 +601,7 @@ class Service_FancrankCollectorService {
 			$url = $this->_facebookGraphAPIUrl . $album->id .'/photos?access_token=' .$this->_accessToken;
 			$this->getFromUrlRecursive($url, $level, $limit, $result);
 			foreach ($result as $photo) {
+				$photo->photo_album_id = $album->id;
 				$results[] = $photo;
 			}
 			$hasMoreLike = true;

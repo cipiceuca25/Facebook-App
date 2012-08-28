@@ -187,7 +187,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 						'photo_id'          => $photo->id,
 						'fanpage_id'        => $this->_fanpageId,
 						'facebook_user_id'	=> $photo->from->id,
-						'photo_album_id'    => $photo->id,
+						'photo_album_id'    => $photo->photo_album_id,
 						'photo_source'      => !empty($photo->source) ? $photo->source : null,
 						'photo_caption'     => isset($photo->name) ? $photo->name : '',
 						'photo_picture'		=> !empty($photo->picture) ? $photo->picture : null,

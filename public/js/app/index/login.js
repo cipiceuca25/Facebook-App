@@ -1,23 +1,25 @@
 jQuery(document).ready(function($){
 	$('.fancrank_login').click(function(event){
 		event.preventDefault();
-		confirmFunction();
-		
-		/*
-		var message = 'Authorization Policy: blablabla';
-		var title = 'Policy Message';
-		var buttonLabel = '<input class="btn" type="button" name="login" value="agree" id="agree" onClick="FB.Dialog.remove(this);confirmFunction();"><input class="btn" type="button" name="disagree" value="Disagree" id="disagree" onClick="FB.Dialog.remove(this);">';
-		var dialog = FB.Dialog.create({
-			content: '<div id="window_container"><div id="title_bar">' +title+ '</div><p id="message">' + message + '</p><div id="bottom_bar">' +buttonLabel+ '</div></div>',
-			closeIcon: true,
-			onClose: function() {
-				FB.Dialog.remove(this);
-			},
-			visible: true
-		});
-		dialog.style.width='250px';
-		dialog.style.height='150px';
-		*/
+		//confirmFunction();
+		if(newuser) {
+			var message = 'Fancrank will access the following information: ' +
+							'<ul><li>Basic Information</li><li>Friend Lists</li><li>Post on your behalf</li></ul>';
+			var title = 'Policy Message';
+			var buttonLabel = '<input class="btn" type="button" name="login" value="continue" id="continue" onClick="FB.Dialog.remove(this);confirmFunction();"><input class="btn" type="button" name="disagree" value="cancel" id="cancel" onClick="FB.Dialog.remove(this);">';
+			var dialog = FB.Dialog.create({
+				content: '<div id="window_container"><div id="title_bar">' +title+ '</div><p id="message">' + message + '</p><div id="bottom_bar">' +buttonLabel+ '</div></div>',
+				closeIcon: true,
+				onClose: function() {
+					FB.Dialog.remove(this);
+				},
+				visible: true
+			});
+			dialog.style.width='250px';
+			dialog.style.height='150px';
+		}else {
+			confirmFunction();
+		}
 	});	
 });
 

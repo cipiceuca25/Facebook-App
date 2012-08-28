@@ -17,11 +17,19 @@ class Service_FancrankMailService {
 	}
 	
 	public function sendErrorMail($err) {
+		$this->sendMail($err);
+	}
+	
+	public function sendOKMail($msg) {
+		$this->sendMail($msg);
+	}
+	
+	protected function sendMail($msg) {
 		$mail = new Zend_Mail();
 		//$mail->setBodyText($err);
-		$mail->setBodyHtml($err);
+		$mail->setBodyHtml($msg);
 		$mail->setFrom($this->_server, 'fancrank');
-
+		
 		if(! $this->is_multi_array($this->_mailList->email->toArray())) {
 			$mailTo = $this->_mailList->email;
 			$mail->addTo($mailTo->address, $mailTo->name);
@@ -32,9 +40,9 @@ class Service_FancrankMailService {
 		}else {
 			return;
 		}
-
+		
 		$date = Zend_Date::now();
-		$mail->setSubject('Cron Job Error Notifiation: ' .$date->toString(Zend_date::ISO_8601).PHP_EOL);
+		$mail->setSubject('Cron Job Finished Notification: ' .$date->toString(Zend_date::ISO_8601).PHP_EOL);
 		try {
 			$mail->send($this->_smtpConnection);
 		} catch (Exception $e) {

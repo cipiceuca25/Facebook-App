@@ -34,7 +34,8 @@
 			var appId = "<?= $this->layout()->appKey ?>";
 			var userId = "<?= $this->user_id ?>";
 			var accessToken = "<?= $this->access_token ?>";
-			var fanpageId = "<?= $this->fanpage_id?>"	;	
+			var fanpageId = "<?= $this->fanpage_id?>";
+			var newuser = "<?= $this->newuser?>";	
 			//var userAccessToken = "<?= $this->facebook_user_access_token?>";
 			//alert( accessToken);
 			window.fbAsyncInit = function() {
@@ -44,15 +45,10 @@
 					 cookie : true, // enable cookies to allow the server to access the session
 					 xfbml  : true// parse XFBML
 				});
-			
-		        jQuery(window).load(function(){
-		            //resize our tab app canvas after our content has finished loading
-		            //FB.Canvas.setSize();
-		            FB.Canvas.setAutoGrow(91);
-		        });
 
+				FB.Canvas.setAutoGrow(true);
 			};
-			
+
 		 </script>
 	 	<!-- End of iframe initialization -->
        

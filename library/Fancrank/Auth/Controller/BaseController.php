@@ -57,6 +57,8 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         
         if ($user) {
             //create user session
+        	$user->fanpage_id = $fanpageId;
+            //Zend_Debug::dump($user); exit();
             $this->_auth->getStorage()->write($user);
 			$this->view->current_fanpage_id = $fanpageId;
             //$this->_auth->setExpirationSeconds(5259487);
@@ -176,8 +178,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         		'fan_name'				=> $source_data['facebook_user_name'],
         		'fan_user_avatar'		=> $source_data['facebook_user_avatar'],
         		'created_time'			=> $create->toString('yyyy-MM-dd HH:mm:ss'),
-        		'last_login_time'		=> $create->toString('yyyy-MM-dd HH:mm:ss'),
-        		'fan_level'				=> 1
+        		'last_login_time'		=> $create->toString('yyyy-MM-dd HH:mm:ss')
         );
         
         switch (count($user)) {
@@ -187,15 +188,22 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
             		$users->insert($source_data);
             	 
 	                //add the fan if it doesnt exist
-                	$fans_model = new Model_Fans;
-                	$select = $fans_model->select();
-                	$select->where($fans_model->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data['facebook_user_id'], $this->_getParam('id')));
+                	//$fans_model = new Model_Fans;
+                	//$select = $fans_model->select();
+                	//$select->where($fans_model->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data['facebook_user_id'], $this->_getParam('id')));
+                	//$fan = $fans_model->fetchRow($select);
 
-                	$fan = $fans_model->fetchRow($select);
-
-                	if (empty($fan)) {
-                		$fan->first_login_time = $create->toString('yyyy-MM-dd HH:mm:ss');
-                        $fans_model->insert($new_fan_row);
+            		$fanModel = new Model_Fans($source_data['facebook_user_id'], $this->_getParam('id'));
+            		
+                	if ($fanModel->isNewFan()) {
+                		$new_fan_row['first_login_time'] = $create->toString('yyyy-MM-dd HH:mm:ss');
+                		$new_fan_row['login_count'] = 1;
+                		$fanModel->insertNewFan($new_fan_row);
+                		$source_data['fancrankAppTour'] = 1;
+                        //$fans_model->insert($new_fan_row);
+                    }else {
+                    	//illegal fan
+                    	throw new Exception('dirty fan exist');
                     }
                     
                     $db->commit();
@@ -213,28 +221,44 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
 			//case for exist facebook user
             case 1:
             	try {
-            		//add the fan if it doesnt exist
-            		$fans_model = new Model_Fans;
-            		$select = $fans_model->select();
-            		$select->where($fans_model->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data['facebook_user_id'], $this->_getParam('id')));
-            	
-            		$fan = $fans_model->fetchRow($select);
-            	
-            		if (empty($fan)) {
-            			$fans_model->first_login_time = $create->toString('yyyy-MM-dd HH:mm:ss');
-            			$fans_model->insert($new_fan_row);
-            		}else {
-            			$fan->fan_user_avatar = $source_data['facebook_user_avatar'];
-            			$fan->last_login_time = $create->toString('yyyy-MM-dd HH:mm:ss');
-            			$fan->save();
-            		}
-
             		//update some user data
             		$user = $users->findByFacebookUserId($source_data['facebook_user_id'])->current();
             		$user->facebook_user_access_token = $source_data['facebook_user_access_token'];
             		$user->facebook_user_avatar = $source_data['facebook_user_avatar'];
+            		$user->installed = 1;
             		$user->save();
             		
+            		//add the fan if it doesnt exist
+            		//$fans_model = new Model_Fans;
+            		//$select = $fans_model->select();
+            		//$select->where($fans_model->quoteInto('facebook_user_id = ? AND fanpage_id = ?', $source_data['facebook_user_id'], $this->_getParam('id')));
+            		//$fan = $fans_model->fetchRow($select);
+            		$fanModel = new Model_Fans($source_data['facebook_user_id'], $this->_getParam('id'));
+            		
+            		if ($fanModel->isNewFan()) {
+            			$new_fan_row['first_login_time'] = $create->toString('yyyy-MM-dd HH:mm:ss');
+            			$new_fan_row['login_count'] = 1;
+            			$fanModel->insertNewFan($new_fan_row);
+            			//$fans_model->insert($new_fan_row);
+            		}else {
+            			$fanProfile = $fanModel->getFanProfile();
+            			$fanProfile->fan_user_avatar = $source_data['facebook_user_avatar'];
+            			$fanProfile->last_login_time = $create->toString('yyyy-MM-dd HH:mm:ss');
+            			$fanProfile->login_count++;
+            			$fanModel->updateFanProfile();
+            		}
+            		            	
+//             		if (empty($fan)) {
+//             			$new_fan_row['first_login_time'] = $create->toString('yyyy-MM-dd HH:mm:ss');
+//             			$new_fan_row['login_count'] = 1;
+//             			$fans_model->insert($new_fan_row);
+//             		}else {
+//             			$fan->fan_user_avatar = $source_data['facebook_user_avatar'];
+//             			$fan->last_login_time = $create->toString('yyyy-MM-dd HH:mm:ss');
+//             			$fan->login_count++;
+//             			$fan->save();
+//             		}
+
             		$db->commit();
             	}catch (Exception $e) {
             		$db->rollBack();
@@ -278,7 +302,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     	$client->setUri('https://graph.facebook.com/me');
     	$client->setMethod(Zend_Http_Client::GET);
     	$client->setParameterGet('access_token', $access_token);
-    	$client->setParameterGet('fields', 'id,username,link,first_name,last_name,email,birthday,gender,locale,languages,updated_time');
+    	$client->setParameterGet('fields', 'id,name,username,link,first_name,last_name,email,birthday,gender,locale,languages,updated_time');
     
     	$response = $client->request();
     
@@ -308,7 +332,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     	
     	return array(
     			'facebook_user_id' 			=> $data->id,
-    			'facebook_user_name' 		=> !empty($data->name) ? $data->name : '',
+    			'facebook_user_name' 		=> !empty($data->name) ? $data->name : $data->first_name + $data->last_name,
     			'facebook_user_first_name' 	=> !empty($data->first_name) ? $data->first_name : '',
     			'facebook_user_last_name' 	=> !empty($data->last_name) ? $data->last_name : '',
     			'facebook_user_email' 		=> !empty($data->email) ? $email : '',
@@ -318,7 +342,8 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
     			'facebook_user_birthday'    => $birthday->toString('yyyy-MM-dd HH:mm:ss'),
     			'facebook_user_access_token'=> $access_token,
     			'updated_time' 				=> $updated->toString('yyyy-MM-dd HH:mm:ss'),
-    			'facebook_user_locale' 		=> !empty($data->locale) ? $data->locale : ''
+    			'facebook_user_locale' 		=> !empty($data->locale) ? $data->locale : '',
+    			'installed'					=> 1
     	);
     }
     
