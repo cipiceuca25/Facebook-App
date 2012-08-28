@@ -47,7 +47,7 @@
 			
 		        jQuery(window).load(function(){
 		            //resize our tab app canvas after our content has finished loading
-		            //FB.Canvas.setSize();
+		            FB.Canvas.setSize();
 		            FB.Canvas.setAutoGrow(91);
 		        });
 
@@ -96,12 +96,12 @@
 			        
 			    </div><!--/end header -->
 			    <div id="content">
-				    <div class="login">
+			    	<div class="login">
 				    	<ul class="nav nav-tabs" id="log-in-out">
 							<li ><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">Login</a></li>
 						</ul>
 	        		</div>
-				   <div id="top-fans">
+				   	<div>
 				   	    	      
 						<?= $this->layout()->content ?>
 					
@@ -113,13 +113,7 @@
         		
         	</div>
          </div>
-         <div class="light-box"></div>
-        
         <div id="fb-root"></div>
-    </body>
-
-    
-
-		
+    </body>	
 </html>
 

@@ -4,8 +4,8 @@
 
 <?php if(empty($this->post)){?>
 	
-	<li class="grey-light">
-	<div class="flag">
+	<li class="post-container">
+	<div class="user">
 	
 	</div>
 	<div class="post_container">
@@ -24,30 +24,31 @@
 
 	<?php if ((isset($post->message))){ ?>
 		
-	<li class="grey-light" >
+	<li class="post-container" >
 	
 	
-	<div class="flag" >		
+	<div class="user" >		
 	
-	<span class="date">
-	<? if (($this->relation[$count] != 'Fanpage')){?>
+	<div class="user-badge">
+	<a  <? if (($this->relation[$count] != 'Fanpage')){?>
 					<? if ($this->relation[$count] != 'You') { ?>
 						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								<a onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" >
+								 onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" 
 						<?}else{?>
-								<a onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>">
+								onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>"
 						<?}?>
+						>
 							
-						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 					<?php }else{?>
-						<span class="badge badge-You">You</span>
+						><span class="badge badge-You">You</span>
 					<?php }?>
 					
 				<?}else{?>
-					<span class="badge badge-Fanpage">Admin</span>
-				<?php }?></span><br/>
+					><span class="badge badge-Fanpage">Admin</span>
+				<?php }?> </a></div>
 	
-	<a data-toggle="modal"
+	<div class="photo"><a data-toggle="modal"
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
 			onclick="userProfile('<?=$post->from->id?>')"
 			rel="popover" 
@@ -55,24 +56,27 @@
 			data-original-title="" 
 			data-placement="right" 
 			data-userid="<?=$post->from->id?>"
-		<?php }?> 
-	> 
+		<?php }?>
+	><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);">
+	</a></div>
 	
-	
-	
-		<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></span>
-		
-		
-		<span class="name">
-			<?=  $post->from->name?>
-		</span>
-	</a> 
+	<div class="name"><a data-toggle="modal"
+		<? if (!($this->relation[$count] == 'Fanpage')){?> 
+			onclick="userProfile('<?=$post->from->id?>')"
+			rel="popover" 
+			data-content="" 
+			data-original-title="" 
+			data-placement="right" 
+			data-userid="<?=$post->from->id?>"
+		<?php }?>
+	><?=  $post->from->name?>
+	</a></div>
 	
 	</div>
 	
 			
 	
-	<div class="post_container">
+
 	<div class="post">
 
 
@@ -113,7 +117,7 @@
 			</div>
 			<?}	
 			?>
-		<div class="pic">	
+		<div class="graphical">	
 		<?php if (($post->type == 'photo') || ($post->type =='video')) {?>	
 			<a target="new" href="<?echo $this->escape($post->link)?> "> 
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
@@ -147,9 +151,6 @@
 		
 		
 		
-	</div>	
-	
-		
 		
 	
 	
@@ -166,7 +167,7 @@
 		
 				 &middot;
 		
-				 <a  onclick=" comment_feed('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
+				 <a  onclick=" comment_feed('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; 
 			 		} else {echo '0';} ?> , true )"  class="commenthider_<?= $post->id ?>">Comment </a>
@@ -198,7 +199,7 @@
 	<?php if(isset($post->comments->count) && ($post->comments->count != 0)){?>
 	<div class="social comment <?=$post->id?>">
 	
-			 <a  onclick=" comment_feed('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
+			 <a  onclick=" comment_feed('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; //echo  $post->comments->count;
 			 	} else {echo '0';} ?> , true )">
@@ -234,11 +235,7 @@
 			
 <?php $count ++;?>
  
-<li class="feed_spacer">
 
-<div class="feed_spacer_top"></div>
-
-</li>
 <?php }?>
 <?php endforeach; ?>
 				

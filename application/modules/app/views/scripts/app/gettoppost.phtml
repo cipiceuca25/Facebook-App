@@ -2,28 +2,26 @@
 <?php foreach($this->top_post as $topPost): ?>
 											
 		
-		<li class="grey-light" >
+		<li class="post-container" >
 	
-			<div class="flag">
-				<div class="date"><? if (!($this->relation[$count] == 'Fanpage')){?>
-						<? if ($this->relation[$count] != 'You') { ?>
+			<div class="user">
+				<div class="user-badge">
+					<a  <? if ($this->relation[$count] != 'You') { ?>
 						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								<a href="#" onclick="follow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>" >
+								onclick="follow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>" 
 							<?}else{?>
-								<a href="#" onclick="unfollow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>">
+								 onclick="unfollow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>"
 							<?}?>
-							
-								<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div></a>
+								><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 							<?php }else{?>
-								<div class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></div>
+								> <span class="badge badge-You">You</span>
 							<?php }?>
+							</a>
+					
 							
-						<?}else{?>
-							<div class="badge badge-<?= $this->relation[$count]?>">Admin</div>
-						<?php }?>
 				
 					</div> 
-				<a data-toggle="modal"
+				<div class="photo"><a data-toggle="modal"
 					<? if (!($this->relation[$count] == 'Fanpage')){?> 
 						onclick="userProfile('<?=$topPost['facebook_user_id']?>')"
 						rel="popover" 
@@ -31,34 +29,23 @@
 						data-original-title="" 
 						data-placement="toppost" 
 						data-userid="<?=$topPost['facebook_user_id']?>"
-					<?php }?> 
-				> 
-				
-				
-					<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id']?>/picture" onerror="ImgError(this);"></span>
-					
-					
-					<span class="name">
-						<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>
-					</span>
-				</a> 
-				
-			
-				
-				
-				
-				
-			
-				
+					<?php }?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id']?>/picture" onerror="ImgError(this);">
+					</a></div>
+					<div class="name"><a data-toggle="modal"
+					<? if (!($this->relation[$count] == 'Fanpage')){?> 
+						onclick="userProfile('<?=$topPost['facebook_user_id']?>')"
+						rel="popover" 
+						data-content="" 
+						data-original-title="" 
+						data-placement="toppost" 
+						data-userid="<?=$topPost['facebook_user_id']?>"
+					<?php }?>><?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?></a></div>
 			</div>
 			
 			
 			
-		<div class="post_container">
 			<div class="post">
 				
-			
-			
 				<div class="message">
 				<? if($topPost['post_message']){
 					$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
@@ -79,10 +66,10 @@
 					}
 				}?>
 				</div>							
-					<div class="pic">	
+				<div class="graphical">	
 						<?php if (($topPost['post_type'] == 'photo') || ($topPost['post_type']  =='video')) {?>	
 							
-								<a target="new" href="<?echo $this->escape($post->link)?> "> 
+								<a target="new" href="<?echo $this->escape($topPost['link'])?> "> 
 										<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $topPost['picture']))?> '/>
 								</a>
 							
@@ -110,14 +97,12 @@
 								</div>
 							</div>
 						<?}?>
-					</div>
+				</div>
 			
 				
 			</div>
 				
 				
-				 
-			</div>	
 		 <div class="social"> 
 			
 			
@@ -129,15 +114,15 @@
 		
 				 &middot;
 		
-				 <a  onclick=" comment_bubble('<?= $topPost['post_id']?>', 5, true)">Comment </a>
+				 <a  onclick=" comment_popup('<?= $topPost['post_id']?>', 10, true)">Comment </a>
 		
 				&middot;
 				
 				<span class="time" title="<?= strtotime($topPost['created_time'])?>"><?=strtotime($topPost['created_time'])?> </span>
 			<br/>
-			</div>
+		</div>
 			
-			<div class="social like <?=$topPost['post_id']?>"  <?php if(!isset($topPost['post_likes_count']) || ($topPost['post_likes_count'] == 0)){?>style="display:none"<?php }?>>
+	<div class="social like <?=$topPost['post_id']?>"  <?php if(!isset($topPost['post_likes_count']) || ($topPost['post_likes_count'] == 0)){?>style="display:none"<?php }?>>
 		
 		
 				<!--  <img src="/img/news-feed/icon-likes.png" />-->
@@ -157,7 +142,7 @@
 	<?php if(isset($topPost['post_comments_count']) && ($topPost['post_comments_count'] != 0)){?>
 	<div class="social comment <?=$topPost['post_id']?>">
 	
-			 <a   onclick=" comment_bubble('<?= $topPost['post_id']?>', 5, true)">
+			 <a   onclick=" comment_popup('<?= $topPost['post_id']?>', 10, true)">
 			 	<?php if($topPost['post_comments_count'] != 1){?> 
 			 		View all <span class="comment_<?= $topPost['post_id']?>">
 			 		<?php if(isset($topPost['post_comments_count'])){
@@ -187,40 +172,23 @@
 											
 										
 	</li>
-	<li class="feed_spacer">
 
-													<div class="feed_spacer_top"></div>
-													
-													</li>
 <?php $count ++;?>
 <?php endforeach; ?>
 
 <?php if (!($this->top_post)) {?>
 	
-		<li class="grey-light" >
+		<li class="post-container" >
 
-			<div class="flag">
+			<div class="user">
 	
 			</div>
 			
-			
-			
-			<div class="post_container">
 				<div class="post">
-					
-				
-				
 					<div class="message">
 						There are no Top Posts this week
 					</div>							
-					
-				
-					
 				</div>
-					
-					
-					 
-			</div>	
 
 						
 	</li>				

@@ -50,7 +50,7 @@
 
 		        jQuery(window).load(function(){
 		            //resize our tab app canvas after our content has finished loading
-		            //FB.Canvas.setSize();
+		            FB.Canvas.setSize();
 		            FB.Canvas.setAutoGrow(91);
 		        });
 			};
@@ -62,10 +62,25 @@
 <!-- End of iframe initialization -->
 		
 
+        <? if (APPLICATION_ENV == 'development'): ?>
+          
+            <link rel="stylesheet/less" href="/css/refactor_style.less">
+            <script type="text/javascript">
+                env = 'development';
+
+                less = {};
+                less.env = 'development';
+
+            </script>
+            <script src="/js/libs/less-1.3.0.min.js"></script>
+        <? else: ?>
+            <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+        <? endif ?>
+		 
+		  <link rel="stylesheet/less" href="/css/badgestyle.less">
         <?= $this->headScript(); ?>
 
-        <?php $this->selectTheme($this->color_choice, APPLICATION_ENV); ?>
-		
+        <!--<?php // $this->selectTheme(5, APPLICATION_ENV); ?>-->
 		<style>
 		.container,.navbar-fixed-top .container {
 			width: 810px;
@@ -96,11 +111,7 @@
 				
 				
 				<div class="user-profile">
-
-				
-					<a class="closeProfile" href="#" onclick="closeProfile()"></a>
-				
-		
+					<div class="tip"><a onclick="closeProfile()">X</a></div>
 					<div class="profile-content"></div>
 				</div>
 				<div class="container">
@@ -111,13 +122,13 @@
 							<li class="active"><a href="#news-feed" data-toggle="tab"id="newsfeed-tab">News Feed</a></li>
 							<li><a href="#leaderboard" data-toggle="tab" id="leaderboard-tab">Leaderboard</a></li>
 							<li><a href="#profile" data-toggle="tab" id="profile-tab">My Profile</a></li>
-							<li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>
+							<!--  <li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>-->
 							<li><a href="#redeem" data-toggle="tab"id="redeem-tab">Redeem</a></li>
 						</ul>
 						<ul class="nav nav-tabs" id="log-in-out">
 							<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
 						</ul>
-						
+<!--						
 						<a href="#" onclick="colorChange(5)">Ocean</a>
 				
 						<a href="#" onclick="colorChange(1)">Grayscale</a> 
@@ -126,14 +137,14 @@
 						<a href="#" onclick="colorChange(4)">Autumn</a> 
 						 
 						<a href="#" onclick="colorChange(6)">Red</a>
-						
+						  -->
 						<div class="tab-content">
 
 
 							<div class="tab-pane active" id="news-feed"></div>
 							<div class="tab-pane" id="leaderboard"></div>
 							<div class="tab-pane" id="profile"></div>
-							<div class="tab-pane" id="achievements"></div>
+							<!-- <div class="tab-pane" id="achievements"></div> -->
 							<div class="tab-pane" id="redeem"></div>
 
 
