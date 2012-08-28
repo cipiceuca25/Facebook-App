@@ -45,10 +45,8 @@
 					 cookie : true, // enable cookies to allow the server to access the session
 					 xfbml  : true// parse XFBML
 				});
-		        jQuery(window).load(function(){
-		            //resize our tab app canvas after our content has finished loading
-		            FB.Canvas.setAutoGrow(true);
-		        });
+
+		        FB.Canvas.setAutoGrow();
 			};
 
 			window.setTimeout(function() { FB.Canvas.setAutoGrow(); }, 200);
