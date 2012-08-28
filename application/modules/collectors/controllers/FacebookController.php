@@ -252,7 +252,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	//$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
     	
     	$fanpageId = '216821905014540';
-    	$accessToken = 'AAAFHFbxmJmgBAFMM8ULzy7NbBUE3AfQ0JlshZCtIoN6538nCcontTwQhgfqwXsYZCzf6uuWYvBuy6Hn1HO3qyQztlMr1TJkGcVvUygSS5fvuqFlXwH';
+    	$accessToken = 'AAAFHFbxmJmgBAPUVD7kjQIquRVpaDPJ8TKUPMXqUSD0BuP7F9KhsXtC1uEnWe0eaVTPebNprupHZC4fhNZA0ZAYTQoAjnNM0lG7ZBWQApc3Ttfphz7Dg';
     	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
     	$yesterday = new Zend_Date();
@@ -263,7 +263,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	echo $since->toString('yyyy-MM-dd');    	
     	$until = $since->getTimestamp();
     	$since = $until-3600*24;
-		$collector->updateFanpage('3+days+ago', 'now');
+		$collector->updateFanpage('yesterday', 'now');
     }
     
     public function test3Action () {
@@ -421,6 +421,13 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	echo 'save post';
     	$result = $post->saveAndUpdateById($row, array('id_field_name'=>'post_id'));
     	Zend_Debug::dump($result);	
+    }
+    
+    public function test10Action() {
+    	$facebook = new Service_FancrankFBService();
+    	$userId = '100001005159808';
+    	//echo $facebook->getAppAccessToken();
+    	echo $facebook->isUserInstalledApp($userId);
     }
     
     public function testmemcacheAction() {

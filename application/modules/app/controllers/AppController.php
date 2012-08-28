@@ -22,8 +22,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	 * Initilized fanpage id and login user variables
 	 */
 	public function preDispatch() {
-
 		parent::preDispatch();
+		
 		if (APPLICATION_ENV != 'production') {
 			$this->_fanpageId = $this->_getParam('id');
 			if(empty($this->_facebook_user->facebook_user_id)) {
@@ -51,17 +51,20 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			//$this->_redirect('http://www.fancrank.com');
 		}
 		
-		$name = new Model_FacebookUsers();
-		$name = $name->find($this->_userId)->current();
-		$this->view->username = $name->facebook_user_first_name.' '.$name->facebook_user_last_name;
-
-		
-		
+// 		$name = new Model_FacebookUsers();
+// 		$name = $name->find($this->_userId)->current();
+// 		$this->view->username = $name->facebook_user_first_name.' '.$name->facebook_user_last_name;
 		//echo $token ->access_token;
+		$this->view->username = $this->_facebook_user->facebook_user_name;
 		$this->view->facebook_user_access_token = $this->_facebook_user->facebook_user_access_token;
 		$this->view->access_token = $this->_accessToken;
 		$this->view->fanpage_id = $this->_fanpageId;
 		$this->view->user_id = $this->_userId;
+		if(isset($this->_facebook_user->fancrankAppTour)) {
+			$this->view->tour = $this->_facebook_user->fancrankAppTour;
+		}else {
+			$this->_facebook_user->fancrankAppTour = 0;
+		}
 	}
 
     public function indexAction()
@@ -2006,6 +2009,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     }
     
+    public function tourAction() {
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$tour = $this->_request->getParam('tour');
+    	
+    	if($tour) {
+    		$this->_facebook_user->fancrankAppTour = 1;
+    	}else {
+    		$this->_facebook_user->fancrankAppTour = 0;
+    	}
+    }
     
 }
 

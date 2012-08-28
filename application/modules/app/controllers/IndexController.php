@@ -7,7 +7,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         $this->_auth = Zend_Auth::getInstance();
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
         //$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
-        if (APPLICATION_ENV != 'production') {
+        //Zend_Debug::dump($_REQUEST['signed_request']);
+        if (APPLICATION_ENV == 'stage') {
             $this->data['page']['id'] = $this->_request->getParam('id');
             $this->view->fanpage_id = $this->_request->getParam('id');
             //$this->data['user_id'] = '48903527'; //set test data for signed param (this one is adgezaza)
@@ -22,14 +23,16 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
                 $this->data['user_id']=$fb->getFanPageUserId();
                 $this->view->user_id = $this->data['user_id'];
                 // Zend_Debug::dump($fb->getSignedData());
+                //Zend_Debug::dump($this->data['page']['id']);
             } else {
                 $this->data['page']['id'] = $this->_getParam('id');
+                $this->data['user_id'] = $this->_getParam('user_id');
             }
 			
 			$this->view->user_id = $this->data['user_id'];
 			$this->view->fanpage_id = $this->data['page']['id'];
         }
-        
+
         if(empty($this->view->fanpage_id)) {
         	$this->_redirect('http://www.fancrank.com');
         }
@@ -50,16 +53,24 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	//$colorChoice = new Model_UsersColorChoice;
     	$user = new Model_FacebookUsers();
     	$user = $user->find($this->data['user_id'])->current();
-    	//Zend_Debug::dump($user);
     	if($user) {
     		$this->view->facebook_user = $user;
+    		//$facebook = new Service_FancrankFBService();
+    		//echo $facebook->getAppAccessToken();
+    		if($user->installed) {
+    			$this->view->newuser = false;
+    		}else {
+    			$this->view->newuser = true;
+    		}
     		//$access_token = $this->facebook_user->facebook_user_access_token;
     		//$this->view->feed = $this->getFeed($access_token);
     	}else {
     		$this->view->facebook_user = null;
+    		if(!empty($this->data['user_id'])) {
+    			$this->view->newuser = true;
+    		}
     	}
     	
-    
     	$topFans = $model->getTopFans($this->data['page']['id'], 5);
     	//Zend_Debug::dump($topFans);
     	 
