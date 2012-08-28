@@ -4,17 +4,17 @@
 
 <?php if(empty($this->post)){?>
 
-		<li class="grey-light">
-	<div class="flag">
+	<li class="post-container">
+	<div class="user">
 	
 	</div>
-	<div class="post_container">
+
 		<div class="post">
 			<div class="message">
 			Feed Empty/Feed not Available
 			</div>
 		</div>
-		</div>
+
 	</li>
 <? }else{?>
 
@@ -23,46 +23,60 @@
 <?php foreach ($this->post as $post):?>		
 
 			
-	<li class="grey-light" >
+	<li class="post-container" >
 
 
-	<div class="flag">	
-	<div class="date">
-	<? if (($this->relation[$count] != 'Fanpage')){?>
+	<div class="user">	
+	<div class="user-badge">
+	<a <? if (($this->relation[$count] != 'Fanpage')){?>
 		<? if ($this->relation[$count] != 'You') { ?>
 			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-					<a  onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" >
+					 onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" >
 				<?}else{?>
-					<a onclick="unfollow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>">
+					 onclick="unfollow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>">
 				<?}?>
 				
-				<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span></a>
+				<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 			<?php }else{?>
 				<span class="badge badge-You">You</span>
 			<?php }?>
 		<?}else{?>	
 			<span class="badge badge-Fanpage">Admin</span>
-		<?php }?>
+		<?php }?></a>
 	</div>
 			
-	<a 
-		<? if (!($this->relation[$count] == 'Fanpage')){?> 
-			onclick="userProfile('<?=$post['facebook_user_id']?>')"
-			rel="popover" 
-			data-content="" 
-			data-original-title="" 
-			data-placement="right" 
-			data-userid="<?=$post['facebook_user_id']?>"
-		<?php }?> 
-	> 
+	
 
-		<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></span>
+		<div class="photo">
+			<a 
+			<? if (!($this->relation[$count] == 'Fanpage')){?> 
+				onclick="userProfile('<?=$post['facebook_user_id']?>')"
+				rel="popover" 
+				data-content="" 
+				data-original-title="" 
+				data-placement="right" 
+				data-userid="<?=$post['facebook_user_id']?>"
+			<?php }?> 
+		> 
+		<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+		</a>
+		</div>
 		
 		
-		<span class="name">
+		<div class="name">
+			<a 
+			<? if (!($this->relation[$count] == 'Fanpage')){?> 
+				onclick="userProfile('<?=$post['facebook_user_id']?>')"
+				rel="popover" 
+				data-content="" 
+				data-original-title="" 
+				data-placement="right" 
+				data-userid="<?=$post['facebook_user_id']?>"
+			<?php }?> 
+		> 
 			<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>
-		</span>
-	</a> 
+			</a>
+		</div>
 	
 	
 	</div>
@@ -88,7 +102,7 @@
 				       echo $m;
 				
 				}?></div><?}?>
-			<div class="pic">	
+			<div class="graphical">	
 		<?php if (($post['post_type'] == 'photo') || ($post['post_type'] == 'video')) {?>	
 			<a target="new" href="<?echo $this->escape($post['link'])?> "> 
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post['picture']))?> '/>
@@ -118,7 +132,7 @@
 				</div>
 			</div>
 		<?}?>
-		</div>
+	
 			
 		
 	</div>
@@ -168,7 +182,7 @@
 			 <a  onclick=" comment_feed('<?= $post['post_id'] ?>','<?= $post['post_type']?>', 5,<?php 
 			 		if($post['post_comments_count']!= null){
 						echo $post['post_comments_count']; //echo  $post->comments->count;
-			 	} else {echo '0';} ?> , true )">
+			 	} else {echo '0';} ?> , true )"> <img src="/img/comment.png" />
 			 	<?php if($post['post_comments_count'] != 1){?> 
 			 		View all <span class="comment_<?= $post['post_id']?>">
 			 		<?php if(isset($post['post_comments_count'])){
@@ -202,11 +216,6 @@
 					
 <?php $count ++;?>
 
-<li class="feed_spacer">
-
-<div class="feed_spacer_top"></div>
-
-</li>
 <?php endforeach; }?>
 				
 						

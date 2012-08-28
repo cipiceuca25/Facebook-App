@@ -60,7 +60,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 					
 					(SELECT p.fanpage_id, p.facebook_user_id, f.fan_name as facebook_user_name, concat('post-', p.post_type)as activity_type, post_id as event_object, p.fanpage_id as target_user_id, fp.fanpage_name as target_user_name , p.created_time
 								FROM posts p , fans f, fanpages fp
-								where p.facebook_user_id = 28117303 and p.fanpage_id = $fanpage_id  and p.facebook_user_id = f.facebook_user_id and p.fanpage_id = fp.fanpage_id
+								where p.facebook_user_id = $facebook_user_id and p.fanpage_id = $fanpage_id  and p.facebook_user_id = f.facebook_user_id and p.fanpage_id = fp.fanpage_id
 						 	order by created_time DESC
 								limit $limit)
 					
