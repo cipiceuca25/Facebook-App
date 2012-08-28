@@ -793,11 +793,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$stat_get_comment = $stat[0]['total_get_comments'];
     		$stat_get_like = $stat[0]['total_get_likes'];
     	}else {
-    		$stat_post = 0;
-    		$stat_comment = 0;
-    		$stat_like = 0;
-    		$stat_get_comment = 0;
-    		$stat_get_like = 0;
+    		$stat_post = null;
+    		$stat_comment = null;
+    		$stat_like = null;
+    		$stat_get_comment = null;
+    		$stat_get_like = null;
     	}
     	
     	
@@ -1171,7 +1171,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			 
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanActivityId)){
-    				echo 'db look up';
+    				//echo 'db look up';
     				//$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
     				$activities = $activitiesModel->getRecentActivities($this->_userId, $this->_fanpageId, 20);
     				//Save to the cache, so we don't have to look it up next time
