@@ -727,7 +727,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanProfileId)){
-	    			echo 'db look up';
+	    			//echo 'db look up';
 	    			$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
 	    			//Save to the cache, so we don't have to look it up next time
 	    			$cache->save($fan, $fanProfileId);
