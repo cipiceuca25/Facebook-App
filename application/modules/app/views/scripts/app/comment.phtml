@@ -136,7 +136,7 @@
 			
 			
 					<!--  <img src="/img/news-feed/icon-likes.png" />-->
-				<a>
+				<a><img src = "/img/thumbsup.png" />
 					<span class="like_<?= $this->post->id?>"><? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>
 						
 						<?php if($this->post->likes->count == 1){?>person<?php }else{?>people<?php }?> 
@@ -149,7 +149,7 @@
 		</div>
 		<?php if(isset($this->post->comments->count) && ($this->post->comments->count != 0)){?>
 		<div class="social comment <?=$this->post->id?>">
-			There <?php if($this->post->comments->count == 1){?>is<?php }else{?>are<?php }?> 
+		<img src="/img/comment.png" />	There <?php if($this->post->comments->count == 1){?>is<?php }else{?>are<?php }?> 
 			<span class="comment_<?= $this->post->id?>"><? if(isset($this->post->comments->count)){echo $this->post->comments->count;}else{echo '0';} ?></span>
 			comment<?php if($this->post->comments->count != 1){?>s<?php }?> on this post.
 
@@ -283,7 +283,7 @@
 			
 					<form action="#" class="submit-form" >
 						<textarea class="comment-box" id="comment_<?= $this->post->id ?>" onkeyup="resizeCommentBox(this)"></textarea>
-						<input type=button class="btn-submit" value="Post" onclick="commentpopupSubmit('<?= $this->post->id ?>','<?= $this->post->type ?>','comment_<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>' )">
+						<input type=button class="btn-submit" value="Comment" onclick="commentpopupSubmit('<?= $this->post->id ?>','<?= $this->post->type ?>','comment_<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>' )">
 					</form>
 				
 			</li>

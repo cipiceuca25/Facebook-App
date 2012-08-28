@@ -143,7 +143,7 @@
 	<div class="social comment <?=$topPost['post_id']?>">
 	
 			 <a   onclick=" comment_popup('<?= $topPost['post_id']?>', 10, true)">
-			 	<?php if($topPost['post_comments_count'] != 1){?> 
+			 	<?php if($topPost['post_comments_count'] != 1){?> <img src="/img/comment.png" />
 			 		View all <span class="comment_<?= $topPost['post_id']?>">
 			 		<?php if(isset($topPost['post_comments_count'])){
 						echo $topPost['post_comments_count']; //echo  $post->comments->count;

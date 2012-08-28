@@ -17,9 +17,10 @@
 					<div class="badge-profile">
 						<a <?php if ($this->relation != 'You') {?>
 								<? if (($this->relation != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								onclick="follow(<?= $this->facebook_user->facebook_user_id?>, '<?= $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>')">
-								<?}else{?> 
-								onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?>, '<?= $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>')">
+									onclick="follow(<?= $this->facebook_user->facebook_user_id?>, '<?= $this->facebook_user->facebook_user_first_name ." ". $this->facebook_user->facebook_user_last_name ?>', 'follow_<?= $this->facebook_user->facebook_user_id?>')" class="follow_<?= $this->facebook_user->facebook_user_id?>">
+								
+								<?php }else{?> 
+									onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?>, '<?= $this->facebook_user->facebook_user_first_name ." ". $this->facebook_user->facebook_user_last_name ?>','follow_<?= $this->facebook_user->facebook_user_id?>' )" class="follow_<?= $this->facebook_user->facebook_user_id?>">
 								<?}	?> 
 							<span class="badge badge-<?= $this->relation?>"><?= $this->relation?></span>
 							<?}else{?> 
@@ -112,7 +113,7 @@
 				</div>
 					
 					
-				<div class="title">
+				<div class="title nopic">
 					<div class="title-header nopic">
 						Recent Badges
 					</div>
@@ -150,7 +151,7 @@
 				</div>
 				
 				<div class="half" >	
-					<div class="title">
+					<div class="title nopic">
 						<div class="title-header nopic">
 							Followed by
 	
@@ -169,7 +170,7 @@
 				</div>			
 						
 				<div class="half" >
-					<div class="title">
+					<div class="title nopic">
 						<div class="title-header nopic">
 						
 						Following
@@ -223,7 +224,7 @@
 </div>
 
 
-<div class="title">
+<div class="title nopic">
 	<div class="title-header  nopic">
 
 		<?echo $this->facebook_user->facebook_user_first_name ?>

@@ -1,7 +1,6 @@
 @import url('/bootstrap/css/bootstrap.css');
 @import url('../bootstrap/less/mixin.less');
 
-
 @color-background-blue: 			#E7EBF2; // background color, follow hover, tip border
 @color-container-blue: 				#C1CEE0; // container blue
 @color-link-blue: 					#3B5998; // links color
@@ -26,1001 +25,988 @@
 @color-link-border:					#D3DAE8; // the border of the link
 @color-button:						#dddddd; //post button back
 @color-rank-border:					#C4CDE0; //ranking border
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //main 
-@color-main-background: 				@color-background-blue;
-@color-main-header-picture-border: 		@color-photo-border-blue;
-@color-main-container: 					@color-container-blue;
-@color-main-text: 						@color-text;
-@color-main-title:						@color-post;
-@color-main-link-text: 					@color-link-blue;
-@color-main-link-text-hover: 			@color-link-hover;
-@color-main-content: 					@color-post;
-@color-main-split-line:					@color-container-blue;
-@color-main-title-text:					@color-post;
-@color-main-photo-border:				@color-photo-border-blue;
+@color-main-background:@color-background-blue;
+@color-main-header-picture-border:@color-photo-border-blue;
+@color-main-container:@color-container-blue;
+@color-main-text:@color-text;
+@color-main-title:@color-post;
+@color-main-link-text:@color-link-blue;
+@color-main-link-text-hover:@color-link-hover;
+@color-main-content:@color-post;
+@color-main-split-line:@color-container-blue;
+@color-main-title-text:@color-post;
+@color-main-photo-border:@color-photo-border-blue;
 
 //tabs
-@color-tab-background:					@color-tab-back-blue;
-@color-tab-text:						@color-post;
-@color-tab-border:						@color-tab-back-blue;
-@color-tab-border-bottom:				@color-tab-border-blue;
-@color-tab-border-bottom-hover:			@color-tab-hover;
-@color-tab-background-hover:			@color-tab-hover;
-@color-tab-border-hover:				@color-tab-hover;
-@color-tab-text-hover:					@color-tab-border-blue;
-@color-tab-select-background:			@color-background-blue;
-@color-tab-select-text:					@color-tab-border-blue;
-@color-tab-select-border:				@color-tab-border-blue;
-@color-tab-select-border-bottom:		@color-background-blue;
+@color-tab-background:@color-tab-back-blue;
+@color-tab-text:@color-post;
+@color-tab-border:@color-tab-back-blue;
+@color-tab-border-bottom:@color-tab-border-blue;
+@color-tab-border-bottom-hover:@color-tab-hover;
+@color-tab-background-hover:@color-tab-hover;
+@color-tab-border-hover:@color-tab-hover;
+@color-tab-text-hover:@color-tab-border-blue;
+@color-tab-select-background:@color-background-blue;
+@color-tab-select-text:@color-tab-border-blue;
+@color-tab-select-border:@color-tab-border-blue;
+@color-tab-select-border-bottom:@color-background-blue;
 
 //tips
-@color-tip-border:						@color-post;
-@color-tip-background:					@color-tab-back-blue;
-@color-tip-question-mark:				@color-post;
-@color-tip-background-hover:			@color-post;
-@color-tip-question-mark-hover:			@color-tab-back-blue;
-@color-tip-border-hover:				@color-tab-back-blue;
+@color-tip-border:@color-post;
+@color-tip-background:@color-tab-back-blue;
+@color-tip-question-mark:@color-post;
+@color-tip-background-hover:@color-post;
+@color-tip-question-mark-hover:@color-tab-back-blue;
+@color-tip-border-hover:@color-tab-back-blue;
 
 //rank
-@color-ranking-first:					@color-tab-border-blue;
-@color-ranking-number:					@color-tab-back-blue;
-@color-ranking-border:					@color-rank-border;
-@color-ranking-number-text:				@color-post;
-@color-ranking-border-hover:			@color-rank-border;
-@color-ranking-number-hover:			@color-tab-back-blue;
-@color-ranking-background:				@color-post;
-
+@color-ranking-first:@color-tab-border-blue;
+@color-ranking-number:@color-tab-back-blue;
+@color-ranking-border:@color-rank-border;
+@color-ranking-number-text:@color-post;
+@color-ranking-border-hover:@color-rank-border;
+@color-ranking-number-hover:@color-tab-back-blue;
+@color-ranking-background:@color-post;
 
 //follow tags
-@color-tag-text:						@color-post;
-@color-tag-text-hover:					@color-tab-border-blue;
-@color-tag-admin:						@color-admin;
-@color-tag-follow:						@color-photo-border-blue;
-@color-tag-follow-hover:				@color-background-blue;
-@color-tag-follower:					@color-background-blue;
-@color-tag-you:							@color-you;
-@color-tag-following:					@color-following;
-@color-tag-unfollow:					@color-unfollow;
+@color-tag-text:@color-post;
+@color-tag-text-hover:@color-tab-border-blue;
+@color-tag-admin:@color-admin;
+@color-tag-follow:@color-photo-border-blue;
+@color-tag-follow-hover:@color-background-blue;
+@color-tag-follower:@color-background-blue;
+@color-tag-you:@color-you;
+@color-tag-following:@color-following;
+@color-tag-unfollow:@color-unfollow;
 
 //posts
-@color-post-background:					@color-post;
-@color-post-border:						@color-post-border-thing;
-@color-post-text:						@color-text;
-@color-post-social-background:			@color-social-bar-blue;
-@color-post-comment-background:			@color-social-bar-blue;
-@color-post-user-border:				@color-user-border-gray;
-@color-post-background-hover:			@color-post-hover;
-@color-post-border-hover:				@color-post-border-hover-thing;
-@color-post-shadow:						@color-post-shadow-thing;
-@color-post-link-background:			@color-link;
-@color-post-link-border:				@color-link-border;
+@color-post-background:@color-post;
+@color-post-border:@color-post-border-thing;
+@color-post-text:@color-text;
+@color-post-social-background:@color-social-bar-blue;
+@color-post-comment-background:@color-social-bar-blue;
+@color-post-user-border:@color-user-border-gray;
+@color-post-background-hover:@color-post-hover;
+@color-post-border-hover:@color-post-border-hover-thing;
+@color-post-shadow:@color-post-shadow-thing;
+@color-post-link-background:@color-link;
+@color-post-link-border:@color-link-border;
 
 //buttons
-@color-more-button-background:			@color-tab-hover;
-@color-more-button-text:				@color-tab-back-blue;
-@color-more-button-background-hover:	@color-tab-border-blue;			
-@color-more-button-text-hover:			@color-post;
-@color-more-button-border:				@color-container-blue;
+@color-more-button-background:@color-tab-hover;
+@color-more-button-text:@color-tab-back-blue;
+@color-more-button-background-hover:@color-tab-border-blue;			
+@color-more-button-text-hover:@color-post;
+@color-more-button-border:@color-container-blue;
 
-@color-post-button-background:			@color-container-blue;
-@color-post-button-background-hover:	@color-tab-border-blue;
-@color-post-button-text:				@color-tab-border-blue;			
-@color-post-button-text-hover:			@color-post;
-@color-post-button-border:				@color-tab-border-blue;
+@color-post-button-background:@color-container-blue;
+@color-post-button-background-hover:@color-tab-border-blue;
+@color-post-button-text:@color-tab-border-blue;			
+@color-post-button-text-hover:@color-post;
+@color-post-button-border:@color-tab-border-blue;
 
-@color-userlist-button-background:		@color-tab-hover;
+@color-userlist-button-background:@color-tab-hover;
 @color-userlist-button-background-hover:@color-tab-border-blue;
-@color-userlist-button-text:			@color-tab-back-blue;
-@color-userlist-button-text-hover:		@color-post;
-
+@color-userlist-button-text:@color-tab-back-blue;
+@color-userlist-button-text-hover:@color-post;
 
 //userlist
-@color-userlist-background:				@color-background-blue;
-@color-userlist-border:					@color-post;
-
+@color-userlist-background:@color-background-blue;
+@color-userlist-border:@color-post;
 
 //scrollbar 
-@color-scrollbar : 						@color-tab-border-blue;
+@color-scrollbar:@color-tab-border-blue;
 
 //my profile
-@color-level-border:					@color-tab-back-blue;
-@color-level-background:				@color-post;
-@color-level-text:						@color-tab-back-blue;
-@color-fan-experience-bar :				@color-tab-border-blue;
-@color-overall-achievement-bar:			@color-tab-back-blue;
-@color-personal-achievement-bar:		@color-tab-back-blue;
-@color-social-achievement-bar:			@color-tab-back-blue;
+@color-level-border:@color-tab-back-blue;
+@color-level-background:@color-post;
+@color-level-text:@color-tab-back-blue;
+@color-fan-experience-bar:@color-tab-border-blue;
+@color-overall-achievement-bar:@color-tab-back-blue;
+@color-personal-achievement-bar:@color-tab-back-blue;
+@color-social-achievement-bar:@color-tab-back-blue;
 
 //popover
-@color-popover-background:				@color-container-blue;
-@color-popover-border:					@color-container-blue;
+@color-popover-background:@color-container-blue;
+@color-popover-border:@color-container-blue;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 .span12 {
- width: 804px;
+width:804px;
 }
 .span11 {
- width: 737px;
+width:737px;
 }
 .span10 {
- width: 668px;
+width:668px;
 }
 .span9 {
- width: 599px;
+width:599px;
 }
 .span8 {
- width: 530px;
+width:530px;
 }
 .span7 {
- width: 461px;
+width:461px;
 }
 .span6 {
- width: 392px;
+width:392px;
 }
 .span5 {
- width: 323px;
+width:323px;
 }
 .span4 {
- width: 253px;
+width:253px;
 }
-
 .span3 {
- width: 184px;
+width:184px;
 }
 .span2 {
- width: 116px;
+width:116px;
 }
 .span1 {
- width: 47px;
+width:47px;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
 body{
-	background-color:			@color-main-background;
-	color:						@color-main-text;
-	font: 						11px, Helvetica, Arial sans-serif;
+background-color:@color-main-background;
+color:@color-main-text;
+font:13px Helvetica, Arial sans-serif;
 }
 
 a, 
 a:visited,
 .time{
-	color:						@color-main-link-text;
-	cursor:						pointer;
+color:@color-main-link-text;
+cursor:pointer;
 }
 
 a:hover{
-	color:						@color-main-link-text-hover;
-	text-decoration:			underline;
+color:@color-main-link-text-hover;
+text-decoration:underline;
 }
 
 .container,
 .navbar-fixed-top
 .container {
-	width: 810px;
+width:810px;
 }
 
 #content{
-	position:relative;
-	top:-36px;
+position:relative;
+top:-36px;
 }
 
 ul, ol { 
-	list-style-type:none;
-	margin:0; 
-	padding:0; 
+list-style-type:none;
+margin:0; 
+padding:0; 
 }
 
 #logo{
-	display:block;
-	max-height:300px;
-	min-height:100px;
-	width:810px;
-	overflow:hidden;
+display:block;
+max-height:300px;
+min-height:100px;
+width:810px;
+overflow:hidden;
 }
 
 #logo img{
-	width:810px;
-	position:relative;
-	top:0px;
+width:810px;
+position:relative;
+top:0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .nav-tabs,
 .nav-tabs:hover{
-	border-bottom:0px;
+border-bottom:0;
 }
 
 .nav-tabs .active  a, 
 .nav-tabs .active a:hover{
-	border:						1px solid @color-tab-select-border;
-	border-bottom-color:		@color-tab-select-border-bottom;
-	background-color:			@color-tab-select-background;
-	color:						@color-tab-select-text;
-	
+border:1px solid @color-tab-select-border;
+border-bottom-color:@color-tab-select-border-bottom;
+background-color:@color-tab-select-background;
+color:@color-tab-select-text;
 }
 
 .nav-tabs li a{
-	color:						@color-tab-text;
-	border-bottom:				1px solid @color-tab-border-bottom;
-	background-color:			@color-tab-background;
-	
+color:@color-tab-text;
+border-bottom:1px solid @color-tab-border-bottom;
+background-color:@color-tab-background;
 }
 
 .nav-tabs li a:hover{
-	color:						@color-tab-text-hover;
-	border:						1px solid @color-tab-border;
-	background-color:			@color-tab-background-hover;
-	border-bottom-color:		@color-tab-border-bottom-hover;
-	
+color:@color-tab-text-hover;
+border:1px solid @color-tab-border;
+background-color:@color-tab-background-hover;
+border-bottom-color:@color-tab-border-bottom-hover;
 }
 
 .login{
-	height:70px;
+height:70px;
 }
 
 #log-in-out{
-	position:absolute;
-	right:0px;
-	top:0px;
+position:absolute;
+right:0;
+top:0;
 }
 
 #pageTabs{
-	margin-bottom:36px;
+margin-bottom:36px;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .tip {
-	position: relative;
-	z-index:2;
-	float:right;
- 	top:3px;
- 	right:4px
-  	
-}
- .tip a {
-  	background-color: @color-tip-background;
-  	border: 2px solid @color-tip-border;
-  	color: @color-tip-question-mark;
-  	font: bold 16px/100% Helvetica, Arial,  sans-serif;
-  	padding: 2px 5px 2px 5px;
-  	display:block;
-  	.border-radius(3px);
+position:relative;
+z-index:2;
+float:right;
+top:3px;
+right:4px
 }
 
- .tip a:hover {
-  	background-color: @color-tip-background-hover;
-  	border: 2px solid @color-tip-border-hover;
-  	color: @color-tip-question-mark-hover;
-  	text-decoration:none;
+.tip a {
+background-color:@color-tip-background;
+border:2px solid @color-tip-border;
+color:@color-tip-question-mark;
+font:bold 16px/100% Helvetica, Arial,  sans-serif;
+padding:2px 5px 2px 5px;
+display:block;
+.border-radius(3px);
+}
+
+.tip a:hover {
+background-color:@color-tip-background-hover;
+border:2px solid @color-tip-border-hover;
+color:@color-tip-question-mark-hover;
+text-decoration:none;
 }
 
 .tooltip-inner{
-	background-color:#333;
-
+background-color:#333;
 }
+
 .tooltip.in {
-  	opacity: .95;
-  	filter: alpha(opacity=95);
+opacity: .95;
+filter:alpha(opacity=95);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-.row.box{
-	margin-left:3px;
-	margin-right:1px;
-	margin-bottom:20px;
-	background-color: @color-main-container;
-	.border-radius(3px);
-	padding:5px;
-	padding-top:30px;
+.row.box{	
+margin:0 1px 20px 3px;
+background-color:@color-main-container;
+.border-radius(3px);
+padding:30px 5px 5px 5px;
 }
 
 .row.box.notitle{
-	padding-top:0px;
+padding-top:0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .title-header{
-	font: bold 18px/100% Helvetica, Arial,  sans-serif;
-	position:relative;
-	top:27px;
-	margin-left:75px;
-	color: @color-main-title;
+font:bold 18px/100% Helvetica, Arial,  sans-serif;
+position:relative;
+top:27px;
+margin-left:75px;
+color:@color-main-title;
 }
 
 .title.nopic{
-	margin-top:-20px;
+margin-top:-20px;
 }
 
 .title-header.nopic{
-	margin-left:9px;
+margin-left:9px;
 }
 
 .title-icon{
-	position:absolute;
-	margin-left:8px;
-	margin-top:-14px;
+position:absolute;
+margin:-14px 0 0 8px;
 }
 
 .title-icon img {
-	border:5px solid @color-main-photo-border;
-	.border-radius(3px);
+border:5px solid @color-main-photo-border;
+.border-radius(3px);
 } 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .btn-more{
-	width:100%;
-	height:30px;
-	font-size:11px;
-	background-color:@color-more-button-background;
-	color: @color-more-button-text;
-	font-weight:bold;
-	border:0px;
-	.border-radius(0 0 3px 3px);
-	margin-top:5px;
+width:100%;
+height:30px;
+font-size:11px;
+background-color:@color-more-button-background;
+color:@color-more-button-text;
+font-weight:bold;
+border:0;
+.border-radius(0 0 3px 3px);
+margin-top:5px;
 }
-
 
 .btn-submit:hover,
 .btn-more:hover,
 .comments .btn-more:hover{
-	background-color:@color-more-button-background-hover;
-	color: @color-more-button-text-hover;
+background-color:@color-more-button-background-hover;
+color:@color-more-button-text-hover;
 }
 
 .btn-submit{
-	font-size:11px;
-	border:1px solid @color-post-button-border;
-	color:@color-post-button-text;
-	font-weight:bold;
-	width:51px;
-	height:22px;
-	.border-radius(1px);
-	background-color:@color-post-button-background;
-	float:right;
+font-size:11px;
+border:1px solid @color-post-button-border;
+color:@color-post-button-text;
+font-weight:bold;
+width:51px;
+height:22px;
+.border-radius(1px);
+background-color:@color-post-button-background;
+float:right;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .top-list{
-	background-color:@color-ranking-background;
-	overflow:hidden;
-	padding-left:3px;
-	padding-right:3px;
-	max-height:223px;
-	
+background-color:@color-ranking-background;
+overflow:hidden;
+padding:0 3px 0 3px;
+max-height:223px;
 }
 
 .top-list.first{
-	padding-top:3px;
-	margin-top:10px;
+padding-top:3px;
+margin-top:10px;
 }
 	
 .top-list.bottom{
-	padding-bottom:3px;
+padding-bottom:3px;
 }
 
 .top-list .ranker{
-	border-top: 1px solid @color-ranking-border;
-	height:55px;
+border-top:1px solid @color-ranking-border;
+height:55px;
 }	
 
 .top-list.mini .ranker{
-	height:36px;
+height:36px;
 }
 	
 .top-list .ranker.first{
-	border-top: 0px solid;
+border-top:0 solid;
 }
 	
 .top-list .rank{
-	width:55px;
-	background-color:@color-ranking-number;
-	float:left;
+width:55px;
+background-color:@color-ranking-number;
+float:left;
 }	
 
 .top-list.mini .rank{
-	width:36px;
-	height:36px;
+width:36px;
+height:36px;
 }
 	
 .top-list .rank.first{
-	background-color:@color-ranking-first;
+background-color:@color-ranking-first;
 }	
 
 .top-list .rank h1,
 .top-list .rank h2,
 .top-list .rank h3{
-	color: @color-ranking-number-text;
-	font: bold 60px Helvetica, Arial,  sans-serif;
-	text-align:right;
-	line-height:55px;
+color: @color-ranking-number-text;
+font: bold 60px/55px Helvetica, Arial,  sans-serif;
+text-align:right;
 }
 
 .top-list.mini .follow{
-	position:relative;
-	right:5px;
-	top:8px;
-	float:right;
+position:relative;
+right:5px;
+top:8px;
+float:right;
 }
 
 .top-list.mini .rank h1{	
-	font: bold 40px Helvetica, Arial,  sans-serif;
-	line-height:36px;
+font:bold 40px/36px Helvetica, Arial,  sans-serif;
 }
 	
 .top-list.mini .rank h2{	
-	font: bold 30px Helvetica, Arial,  sans-serif;
-	line-height:36px;
+font:bold 30px/36px Helvetica, Arial,  sans-serif;
 }	
 .top-list.mini .rank h3{
-	font: bold 20px Helvetica, Arial,sans-serif;
-	line-height:36px;
+font:bold 20px/36px Helvetica, Arial,sans-serif;
 }	
 	
 .top-list .rank h2{
-	font: bold 45px Helvetica, Arial, sans-serif;
-	line-height:55px;
-}
-.top-list .rank h3{
-	font: bold 35px Helvetica, Arial,sans-serif;
-	line-height:55px;
+font:bold 45px/55px Helvetica, Arial, sans-serif;
 }
 
 .top-list .rank h3{
-	font: bold 35px Helvetica, Arial,sans-serif;
-	line-height:36px;
+font:bold 35px/55px Helvetica, Arial,sans-serif;
+}
+
+.top-list .rank h3{
+font:bold 35px/36px Helvetica, Arial,sans-serif;
 }
 
 .top-list .user{
-	margin-left:10px;
-	margin-top:10px;
-	float:left;
+margin:10px 0 0 10px;
+float:left;
 }
 
 .top-list.mini .user{
-	margin-left:5px;
-	margin-top:3px;
+margin:3px 0 0 5px
 }
 
 .top-list .user .name{
-	font:  18px Helvetica,Arial,  sans-serif;
-	margin-left:10px;
-	position:relative;
-	top:5px;
-	float:left;
+font:18px Helvetica,Arial,  sans-serif;
+margin-left:10px;
+position:relative;
+top:5px;
+float:left;
 }
 
 .top-list .user .photo{
-	float:left;
+float:left;
 }
 
 .top-list.mini .user .name{
-	top:7px;
-	font:  12px Helvetica,Arial,  sans-serif;
+top:7px;
+font:12px Helvetica,Arial,  sans-serif;
 }
 .top-list .user .name.first{
-	font:  23px Helvetica,Arial,  sans-serif;
-	top:4px;
+font:23px Helvetica,Arial,  sans-serif;
+top:4px;
 }
 
 .top-list.mini .user .name.first{
-	font:  14px Helvetica,Arial,  sans-serif;
-	top:6px;
-	
+font:14px Helvetica,Arial,  sans-serif;
+top:6px;
 }
 
 .top-list .points{
-	position:relative;
-	top:6px;
-	text-align:right;
-	margin-right:10px;
-	float:right;
+position:relative;
+top:6px;
+text-align:right;
+margin-right:10px;
+float:right;
 }
 
 .top-list .points h3{
-	display:inline-block;
-	font-size:25px;
-	position:relative;
+display:inline-block;
+font-size:25px;
+position:relative;
 }
 
-
 .top-list .points .seerank{
-	position:relative;
-	top: -7px;
+position:relative;
+top: -7px;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .badge{
-	.border-radius(3px);
-	margin-right:3px;
-	display:inline-block;
-	color:@color-tab-text;
-	width:59px;
-	text-align:center;
-	padding: 0px 9px 0px;
+.border-radius(3px);
+margin-right:3px;
+display:inline-block;
+color:@color-tab-text;
+width:59px;
+text-align:center;
+padding: 0 9px 0;
 }
 
 .badge-Follow{
-	background-color:@color-tag-follow;
+background-color:@color-tag-follow;
 }
 
 .badge-Follower:hover,
 .badge-Follow:hover{
-	color:@color-tag-text-hover;
-	background-color:@color-tag-follow-hover;
+color:@color-tag-text-hover;
+background-color:@color-tag-follow-hover;
 }
 
 .badge-Following{
-	background-color:@color-tag-following;
+background-color:@color-tag-following;
 }
 
 .badge-Following:hover{
-	background-color:@color-tag-unfollow;
+background-color:@color-tag-unfollow;
 }
 
 .badge-Follower{
-	background-color:@color-tag-follower;
+background-color:@color-tag-follower;
 }
 
 .badge-You{
-	background-color:@color-tag-you;
+background-color:@color-tag-you;
 }
 
 .badge-Fanpage{
-	background-color:@color-tag-admin;
+background-color:@color-tag-admin;
 }
 
 .badge-link:hover{
-	text-decoration:none;
+text-decoration:none;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .post-container{
-	background:@color-post-background;
-	padding:3px;
-	position:relative;
-	border:1px solid @color-post-border;
-	.border-radius(3px);
-	.box-shadow(3px 3px 3px 1px @color-post-shadow);
-	margin-top:8px;
+background:@color-post-background;
+padding:3px;
+position:relative;
+border:1px solid @color-post-border;
+.border-radius(3px);
+.box-shadow(3px 3px 3px 1px @color-post-shadow);
+margin-top:8px;
 }
 
 .post-container:hover{
-	background-color: @color-post-background-hover;
-	border:1px solid @color-post-border-hover;
+background-color: @color-post-background-hover;
+border:1px solid @color-post-border-hover;
 }
 
 .post-container .user{
-	font: bold 11px Helvetica,Arial,  sans-serif;
-	border-bottom:1px solid @color-post-user-border;
-	padding-top: 10px;
-	margin-left:10px;
-	margin-right:10px;
-	overflow:hidden;
+font: bold 11px Helvetica, Arial, sans-serif;
+border-bottom:1px solid @color-post-user-border;
+padding-top: 10px;
+margin: 0 10px 0 10px;
+overflow:hidden;
 }
 
 .post-container .user .user-badge{
-	position:absolute;
-	top:13px;
-	left:50px;
+position:absolute;
+top:13px;
+left:50px;
 }	
 
 .post-container .user .name{
-	position:relative;
-	top:-13px;
-	left:37px;
+position:relative;
+top:-13px;
+left:37px;
 }	
 
 .post-container .post{
-	padding:10px;
+padding:10px;
 }
 
 .post-container .link{
-	word-wrap:break-word;
-	font-size:11px;
-	background-color: @color-post-link-background;
-	border:1px solid  @color-post-link-border;
+word-wrap:break-word;
+font-size:11px;
+background-color: @color-post-link-background;
+border:1px solid  @color-post-link-border;
 }
 
 .post-container .link .link-left{	
-	width:35%;
-	display:inline-block;
+width:35%;
+display:inline-block;
 }
 
 .post-container .link .link-right{
-	width:60%;
-	display:inline-block;
-	margin-top:1px;
-	vertical-align:top;
+width:60%;
+display:inline-block;
+margin-top:1px;
+vertical-align:top;
 }
 
 .post-container .graphical img {
-	display:block;
-	max-width:100%;
-	margin:auto;
-	margin-top:5px;
+display:block;
+max-width:100%;
+margin:auto;
+margin-top:5px;
 }
 
 .post-container .social{
-	line-height:25px;
-	font-size:11px;
-	background-color:@color-post-social-background;
-	padding-left:10px;
-	margin-top:1px;
+line-height:25px;
+font-size:11px;
+background-color:@color-post-social-background;
+padding-left:10px;
+margin-top:1px;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .comments{
-	display:none;
-	width:100%;
+display:none;
+width:100%;
 }
 
 .comment-container{
-	background-color:@color-post-comment-background;
-	margin-top:1px;
-	padding:5px;
-	min-height:30px;
+background-color:@color-post-comment-background;
+margin-top:1px;
+padding:5px;
+min-height:30px;
 }
 
 .comment-container .user .user-badge{
-	position:relative;
-	left:0px;
-	top:0px;
-	float:left;
+position:relative;
+left:0;
+top:0;
+float:left;
 }
 
 .comment-container .user{
-	border-bottom:0px solid;
-	margin-left:35px;
-	margin-top:-10px;
-	margin-right:0px;
+border-bottom:0 solid;
+margin:-10px 0 0 35px;
 }
 
 .comment-container .photo{
-	float:left;
+float:left;
 }
 
 .comment-container .user .name{
-	top:0px;
-	left:0px;
-	float:left;
-	margin-right:5px;
+top:0;
+left:0;
+float:left;
+margin-right:5px;
 }
 
 .comment-container .user .message{
-	font-weight:normal;
+font-weight:normal;
 }
 
 .comment-container .social{
-	margin-left:35px;
-	padding-left:0px;
-	line-height:18px;
+margin-left:35px;
+padding-left:0;
+line-height:18px;
 }
 
 .comments .btn-more{
-	margin-top:1px;
-	background-color: @color-post-social-background;
-	.border-radius(0);
-}
-
-.comments .btn-more:hover{
-	
+margin-top:1px;
+background-color: @color-post-social-background;
+.border-radius(0);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .post-button-container{
-	display:none;
-	border:1px solid #ddd;
-	background-color:#f7f7f7;
-	border-top:0px;
-	width:406px;
-	height:22px;
-	padding:5px;
+display:none;
+border:1px solid #ddd;
+background-color:#f7f7f7;
+border-top:0;
+width:406px;
+height:22px;
+padding:5px;
 }
 
 .submit-form{
-	margin:0px;
+margin:0;
 }
 
 .post-box,
 .comment-box	{
-	resize: none; 
-	overflow:hidden;
-	.border-radius(0px);
-	width:324px;
-	margin-left:5px;
-	margin-right:5px;
-	height:14px;
-	margin-bottom:0px;
-	padding:1px;
-	word-break:hyphenate;
-	outline:none;
-	
+resize: none; 
+overflow:hidden;
+.border-radius(0);
+width:313px;
+margin:0 5px 0 5px;
+padding:1px;
+height:14px;
+word-break:hyphenate;
+outline:none;
 }
 
 .post-box{
-	width:414px;
-	margin-left:0px;
-	padding-bottom:10px;
-	height:10px;
+width:414px;
+margin-left:0;
+padding-bottom:10px;
+height:10px;
 }
 
 .post-box:focus,
 .comment-box:focus{
-	border:1px solid #ddd;
-	outline:none;
-	.box-shadow(0 0 0 0 );
+border:1px solid #ddd;
+outline:none;
+.box-shadow(0 0 0 0 );
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .light-box{
-	display:block;
-	position:fixed;
-	left:0;
-	bottom:0;
-	background-color:rgba(0,0,0,0.7);
-	z-index :25;
-	width:100%;
-	min-height:100%;
-	display:none;
+display:block;
+position:fixed;
+left:0;
+bottom:0;
+background-color:rgba(0,0,0,0.7);
+z-index :25;
+width:100%;
+min-height:100%;
+display:none;
 }
 
 .profile-content{
-	.row.box;
-	padding-top:22px;
-	margin-bottom:0px;
-	margin-left:160px;
-	z-index:51;
-	position:absolute;
-	display:none;
-	background-color:@color-main-background;
+.border-radius(3px);
+padding:22px 0 0 0;
+margin:0 0 0 160px;
+z-index:51;
+position:absolute;
+display:none;
+background-color:@color-main-background;
 }
 
 .user-profile{
-	position:absolute;
-	width:100%;
-	height:100%;
-	display:none;
+position:absolute;
+width:100%;
+height:100%;
+display:none;
 }
 
 .user-profile .tip{
-	z-index:52;
-	position:absolute;
-	right:170px;
-	top:-10px;
+z-index:52;
+position:absolute;
+right:180px;
+top:-10px;
 }
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #popup_comment .comments{
-	display:block;
+display:block;
 }
 
 #popup_comment .comment-box{
-	width: 342px;
+width:342px;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .half{
-	width:228px;
-	display:inline-block;
-	vertical-align:top;
+width:228px;
+display:inline-block;
+vertical-align:top;
 }
 
 .level{
-	border:5px solid @color-level-border;
-	background-color:@color-level-background;
-	color:@color-level-text;
-	.border-radius(3px);
-	font:bold 35px Helvetica, Arial,  sans-serif;
-	width:35px;
-	line-height:35px;
-	margin:auto;
+border:5px solid @color-level-border;
+background-color:@color-level-background;
+color:@color-level-text;
+.border-radius(3px);
+font:bold 35px/35px Helvetica, Arial,  sans-serif;
+width:35px;
+margin:auto;
 }
 
 .profile-block{
-	height:70px;
-	padding-top:5px;
-	padding-bottom:5px;
+height:70px;
+padding:5px 0
 }
 
 .profile-block h3{
-	display:inline-block;
-	font-size:25px;
-	position:relative;
+display:inline-block;
+font-size:25px;
+position:relative;
 }
 
 .profile-block.vertical-center{
-	position:relative;
-	top:15px;
+position:relative;
+top:15px;
 }
 
 .half .profile-block{
-	text-align:center;
+text-align:center;
 }
 
 .progress{
-	margin-bottom:0px;
+margin-bottom:0;
 }
 
 .progress .bar{
-	background-color:@color-fan-experience-bar;
-	#gradient > .vertical(@color-overall-achievement-bar, @color-fan-experience-bar);
+background-color:@color-fan-experience-bar;
+#gradient > .vertical(@color-overall-achievement-bar, @color-fan-experience-bar);
 }
 
 .row.box .half{
-	width:221px;
+width:221px;
 }
+
 .row.box .post-container .half{
-	width:214px;
+width:214px;
 }
+
 #followerslist .top-list.mini,
 #followinglist .top-list.mini{
-	padding:3px;
+padding:3px;
 }
 
 #followinglist .top-list.mini .ranker,
 #followerslist .top-list.mini .ranker{
-	border-color:@color-userlist-border;
-	background-color:@color-userlist-background;
+border-color:@color-userlist-border;
+background-color:@color-userlist-background;
 }
 
 #recent_activities{
-	font-size:11px;
-	overflow: auto;
-    padding-left:5px;
-    height: 826px;
+font-size:11px;
+overflow: auto;
+padding-left:5px;
+height: 826px;
 }
 
 .track3 {
-    width: 5px;
+width: 5px;
 }
 
 .handle3 {
-    width: 4px;
-    background: @color-scrollbar ;
-    opacity: 0.45;
-    filter: alpha(opacity=45);
-    border: 1px solid #555;
-    left:4px;
+width: 4px;
+background: @color-scrollbar ;
+opacity: 0.45;
+filter: alpha(opacity=45);
+border: 1px solid #555;
+left:4px;
 }
 
 .badge-display{
-	display:inline-block;
-	padding:9px;
+display:inline-block;
+padding:9px;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .badge-profile{
-	float:right;
-	position:relative;
-	top:-2px;
-	left:-5px;
+float:right;
+position:relative;
+top:-2px;
+left:-5px;
 }
 
 .badge-profile .badge{
-	font-size: 20px;
-	width:90px;
-	padding: 4px 18px 6px 18px;
+font-size: 20px;
+width:90px;
+padding: 4px 18px 6px 18px;
 }
 
 .link-back{
-	font-size:11px;
-	position:absolute;
-	float:right;
-	top:20px;
-	right:10px;
-	text-align:right;
+font-size:11px;
+position:absolute;
+float:right;
+top:20px;
+right:10px;
+text-align:right;
 }
 
 #user_activities{
-	overflow: auto;
-    padding-left:5px;
-    height: 200px;
-    }
+overflow: auto;
+padding-left:5px;
+height: 200px;
+}
     
 #user_list .badge-profile{
-	top:17px;
+top:17px;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .popover-inner{
-	.span5;
-	.border-radius(3px);
-	border:5px solid @color-popover-border;
-	padding:0px;
-	background-color:@color-popover-background;
+.span5;
+.border-radius(3px);
+border:5px solid @color-popover-border;
+padding:0;
+background-color:@color-popover-background;
 }
 
 .popover-title{
-	display:none;
+display:none;
 }
 
 .popover-content{
-	padding:0px;
-	margin-top:-8px;
+padding:0;
+margin-top:-8px;
 }
 
 
 .popover-content .post-container .user{
-	overflow:visible;
+overflow:visible;
 }
 
-.popover-content .rank{
-	float:right;
-	text-align:center;
-	font:20px/25px Arial, Helvetica, sans-serif;
-	color:@color-level-text;
-	width:25px;
-	height:25px;
-	border: 3px solid @color-level-border;
-	.border-radius(2px);
-	font-weight:bold;
-	position:relative;	
-	top:-45px;
+.popover-content .level{
+float:right;
+text-align:center;
+font:bold 20px/25px Arial, Helvetica, sans-serif;
+color:@color-level-text;
+width:25px;
+height:25px;
+border: 3px solid @color-level-border;
+.border-radius(2px);
+position:relative;	
+top:-45px;
 }
 
 .popover-content .date{
-	font-size:11px;
-	line-height:11px;
-	padding-bottom:5px;
+font:11px/11px;
+padding-bottom:5px;
 }
 
 .popover-content h5{
-	display:inline;
+display:inline;
 }
 
 .popover.top .arrow{
-	border-top: 5px solid @color-popover-border;
-	margin-left:-104px;
+border-top: 5px solid @color-popover-border;
+margin-left:-104px;
 }
+
 .popover.left .arrow{
-	border-left: 5px solid @color-popover-border;
-}
-
-.popover.top{
-	margin-left:99px;
-	margin-top:-10px;	
-}
-
-.popover.left{
-	margin-left:0px;
-	margin-top:0px;
+border-left: 5px solid @color-popover-border;
 }
 
 .popover.right .arrow{	
-	border-right: 5px solid @color-popover-border;
+border-right: 5px solid @color-popover-border;
 }
 
+.popover.toppost .arrow{
+top: 50%;
+right: 0;
+margin-top: -5px;
+border-top: 5px solid transparent;
+border-bottom: 5px solid transparent;
+border-left: 5px solid @color-popover-border;
+}
+
+.popover.top{
+margin-left:99px;
+margin-top:-10px;	
+}
+
+.popover.left{
+margin-left:0;
+margin-top:0;
+}
 
 .popover.toppost{
-	.popover.left;
-
-
+.popover.left;
 }
-.popover.toppost .arrow{
-	  top: 50%;
-  right: 0;
-  margin-top: -5px;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
+///////////////////////////////////////////////////////////////////////////////
+#follow-animation,
+#like-animation,
+#unfollow-animation,
+#unlike-animation,
+#comment-animation{
+z-index:99;
+position:fixed;
+height:25px;
+width:125px;
+display:none;
+}
 
-	border-left: 5px solid @color-popover-border;
+#follow-animation{
+background:url(../img/followed.png) no-repeat center center;
+}
+
+#like-animation{
+background:url(../img/liked.png) no-repeat center center;
+}
+
+#unfollow-animation{
+background:url(../img/unfollowed.png) no-repeat center center;
+}
+
+#unlike-animation{
+background:url(../img/unliked.png) no-repeat center center;
+}
+
+#comment-animation{
+background:url(../img/commented.png) no-repeat center center;
 }
