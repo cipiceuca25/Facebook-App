@@ -732,6 +732,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
 		
     	$follow = new Model_Subscribes();
+
     	$follower = $follow->getFollowers($user->facebook_user_id, $this->_fanpageId);
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
     	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
@@ -1354,11 +1355,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$user = $this->_request->getParam('facebook_user_id');
     	
     	$fan = new Model_Fans($user, $this->_fanpageId);
+    	$follow = new Model_Subscribes();
+    	$relation = $follow->getRelation($this->_userId, $user, $this->_fanpageId);
     	
     	$fan = $fan->getFanProfile();
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user);
     	
+    	$this->view->relation=$relation;
     	$this->view->stat= $stat;
     	$this->view->fan = $fan;
     	$this->render("popoverprofile");

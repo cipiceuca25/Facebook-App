@@ -59,19 +59,13 @@
 		popover($(this));
 		
 		if ( $(this).data('isPopoverLoaded') == true ) { return; }
-		  $(this).data('isPopoverLoaded', true).popover({delay: { show: 300, hide: 100 } , placement: $(this).attr('data-placement')}).trigger('mouseover');
+		  $(this).data('isPopoverLoaded', true).popover({delay: { show: 500, hide: 10 } , placement: $(this).attr('data-placement')}).trigger('mouseover');
 		
 		
 		  
 	});
 	
-	
-	$(document).on('click', '#powered', function (){
-		$.each($('.time'), function(index) { 
-		    alert(index+':' + $(this).html()); 
-		});
-	});
-	
+
 	
 	function popover(x){
 		//alert ('getting info for '+ id);
@@ -114,7 +108,7 @@
 
 	
 	 
-	$('.badge-Following').live("mouseover", function(){
+	$('.badge-Following').live("mouseenter", function(){
 		$(this).text('Unfollow');
 
 	});
@@ -122,7 +116,7 @@
 		$(this).text('Following');
 	});
 	
-	$('.badge-Follower').live("mouseover", function(){
+	$('.badge-Follower').live("mouseenter", function(){
 		$(this).text('Follow');
 	});
 	$('.badge-Follower').live("mouseleave", function(){
@@ -206,7 +200,7 @@
 		$('.user-profile').css('display', 'none');
 		//$('.top-border').css('top','350px');
 		//$('.bottom-border').css('top','350px');
-		$('.profile-content').css('top','350px');
+		//$('.profile-content').css('top','350px');
 		//$('.top-border').css('display','none');
 		//$('.bottom-border').css('display','none');
 		$('.profile-content').css('display','none');
@@ -227,9 +221,7 @@
     	$('#moreComment').removeAttr('postid');
     }
     
-	$('.light-box').live('click',function(){
-		closeProfile();
-	});
+
 	
 	$('#news-feed a').click(function (e) {
 	  e.preventDefault();
@@ -369,7 +361,7 @@
 		
 			$('.profile-content').animate({
 				height:'toggle',
-				top:'20px'
+				//top:'20px'
 			   },500, function(){
 				   
 			});
@@ -392,9 +384,13 @@
 		  */
 	}
 
-	function comment_bubble(post_id, limiter, open){
+	function comment_popup(post_id, limiter, open){
 		//alert(open);
-		getBubbleComment('.profile-content', post_id, limiter);
+		getPopupPost('.profile-content', post_id, limiter);
+		$.each($('#popup_comment .time'), function(index) { 
+			$(this).html(timeZone($(this).html())); 
+			$(this).attr('title', timeZoneTitle($(this).attr('title')));
+		});
 		
 		if(open){
 			$('.light-box').css('display','block');
@@ -422,7 +418,7 @@
 			//$('.profile-content').css('height', '1100px');
 			$('.profile-content').animate({
 				height:'toggle',
-				top:'20px'
+				//top:'20px'
 			   },500, function(){
 				   
 			});
@@ -569,7 +565,7 @@
 
 	
 		
-	function getBubbleComment(ui, post_id,limiter) {
+	function getPopupPost(ui, post_id,limiter) {
 		      
 		$.ajax({
 			type: "GET",
@@ -603,6 +599,8 @@
 				getFancrankfeed(setFeed);
 				getTopFan();
 				getTopPost();
+				$('#latestpost .time').html(timeZone($('#latestpost .time').html())); 
+				$('#latestpost .time').attr('title', timeZoneTitle($('#latestpost .time').attr('title')));
 		
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
@@ -629,6 +627,7 @@
 					$(this).html(timeZone($(this).html())); 
 					$(this).attr('title', timeZoneTitle($(this).attr('title')));
 				});
+				
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -755,10 +754,12 @@
 			success: function( data ) {
 			
 				$(ui).html(data);
-				$.each($('.time'), function(index) { 
+				$.each($('#fancrankfeed .time'), function(index) { 
 					$(this).html(timeZone($(this).html())); 
 					$(this).attr('title', timeZoneTitle($(this).attr('title')));
 				});
+				
+				
 			},	
 			error: function( xhr, errorMessage, thrownErro ) {
 				console.log(xhr.statusText, errorMessage);
@@ -1045,7 +1046,7 @@
 				addActivities('comment-'+type, userName, postid, target_id, target);
 				num=$('.comment_'+postid).html();
     			$('.comment_'+postid).html((parseInt(num)+1));
-				comment_bubble(postid, num+1, false);
+				comment_popover(postid, num+1, false);
 				
 				}
 			});
@@ -1074,7 +1075,7 @@
     			if(refresh){
 	    			$('.profile-content').animate({
 	    				height:'toggle',
-	    				top:'20px'
+	    				//top:'20px'
 	    			   },500, function(){
 	    				   
 	    			});
@@ -1110,7 +1111,7 @@
     			if(refresh){
 	    			$('.profile-content').animate({
 	    				height:'toggle',
-	    				top:'20px'
+	    				//top:'20px'
 	    			   },500, function(){
 	    				   
 	    			});
@@ -1199,8 +1200,12 @@
 	
 	*/
 	function resizeCommentBox(o){
-		o.style.height = "1px";
-	    o.style.height = (10+o.scrollHeight)+"px";
+		if (o.scrollHeight > 26){
+			o.style.height = "1px";
+		    o.style.height = (o.scrollHeight)+"px";
+		}
+		$('.post-button-container').css('display','block');
+		$('.post-box').css('border-bottom','0px');
 	}
 	
 	function timeZoneTitle(time){
@@ -1239,8 +1244,7 @@
 		   }
 		var min = date.getMinutes();
 		if ( min < 10){
-            
-            min = '0' + min;
+			min = '0' + min;
 		}
 		
 		if (now.getYear() > date.getYear()){
@@ -1256,7 +1260,7 @@
 						}else if (now.getMinutes() - date.getMinutes() == 1 ){
 							return now.getMinutes() - date.getMinutes() + ' minute ago';
 						}else{
-							return now.getMinutes() - date.getMinutes() + ' minute ago';
+							return now.getMinutes() - date.getMinutes() + ' minutes ago';
 						}
 					}else if (now.getHours() - date.getHours== 1 ){
 						return (now.getHours()-date.getHours() )+' hour ago';

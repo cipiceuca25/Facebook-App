@@ -1,84 +1,69 @@
-				
-						<!-- 
-						<div class="row">
-							<div class="span12">
-								<div class="title">
-									<div class="photo"><a href=""><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"></a> </div>
+<div class="row">
+	<div class="span7">
+		<div class="title">
+			
+			<div class="title-header nopic">
+				Latest Post From
+				<?= $this->fanpage_name?>
 
-									<div class="title-header"> <h3><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s News Feed</h3> </div>
-
-								</div>
-							</div>
-						</div>
-						-->
-						<div class="row">
-							<div class="span7 line">
-							
-								<div class="subtitle">
-										
-		
-											<div class="title-header fanpage"> <h3>Latest Post From <?= $this->fanpage_name?></h3>
-								
-											
-											 </div>
-											
-											</div>
-																				
-												<ul class="post-list" id="latestpost">
-											
-	
-	
-<?php $count = 0?>
-
-<?php if(empty($this->latest)){?>
-
-		<li class="grey-light">
-	<div class="flag">
-	
-	</div>
-	<div class="post_container">
-		<div class="post">
-			<div class="message">
-			Feed Empty/Feed not Available
+			</div>
+			<div class="tip">
+				<a rel="tooltip"
+					title="This is <?=$this->fanpage_name?>'s latest post! ">?</a>
 			</div>
 		</div>
-		</div>
-	</li>
-<?}else{?>
+		
+		<div class="row box">
+			<ul id="latestpost">
+				<?php $count = 0?>
+
+				<?php if(empty($this->latest)){?>
+
+				<li class="post-container">
+					<div class="user"></div>
+
+					<div class="post">
+						<div class="message">Feed Empty/Feed not Available</div>
+					</div>
+
+				</li>
+				<?}else{?>
 
 
 
-<?php foreach ($this->latest as $post):?>		
+				<?php foreach ($this->latest as $post):?>
 
-		
-	<li class="grey-light" >
-	
-	
-	<div class="flag">	<span class="date"><span class="badge badge-Fanpage">Admin</span></span><br/>
-	
-	<a>	
-		<span class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></span>
-		
-		
-		<span class="name">
-			<?=  $post->from->name?>
-		</span>
-	</a>	
-		
-	
-	</div>
-	
-			
-	
-	<div class="post_container">
-	<div class="post">
-		
-		
-		
-			<?php if(isset($post->message)){ 
+
+				<li class="post-container">
+
+
+					<div class="user">
+						<div class="user-badge">
+							<span class="badge badge-Fanpage">Admin</span>
+						</div>
+
+						<div class="photo"><a> <img class="face" width="30" height="30"
+								src="https://graph.facebook.com/<?= $post->from->id ?>/picture"
+								onerror="ImgError(this);"></a> </div> 
+								
+						<div class="name"><a><?=  $post->from->name?></a> 
+						</div>
+					
+
+
+					</div>
+
+
+
+
+					<div class="post">
+
+
+
+						<?php if(isset($post->message)){ 
 				?>
-				<div class="message">
-				<?php 
+						<div class="message">
+							<?php 
 				$reg_ex = "/\n/";
 				$m = $this->escape($post->message);
 				if(preg_match_all($reg_ex, $m, $url)) {
@@ -87,7 +72,7 @@
 					$m= preg_replace($reg_ex, "<br/>", $m);
 			
 				} ?>
-				<?php 
+							<?php 
 				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
 		
 				if(preg_match($reg_exUrl, $m, $url)) {
@@ -101,195 +86,169 @@
 				
 				}
 				?>
-				<br/>
-			
-			
-				</div>
-				<?}	?>
-			
-			
-			<div class="pic">	
-		<?php if (($post->type == 'photo') || ($post->type =='video')) {?>	
-			<a target="new" href="<?echo $this->escape($post->link)?> "> 
-						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
-			</a>
-			
-		<?}elseif ($post->type == 'link') {?>
-			<div class="link">
-				<div class="link-left">
-					<a target="new" href="<?echo $this->escape($post->link)?> "> 
-						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
-					</a>
-				</div>
-			
-				<div class="link-right">
-					<a target="new" href="<?echo $this->escape($post->link)?> ">
-						<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
-						<?php  if (isset($post->caption)){?>
-						</br>
-						<?php echo $this->escape($post->caption);?>: <?php }?> 
-						
-						
-						<?php if (isset($post->description)){?>
-						<?=$this->escape($post->description)?> 
+							<br />
+
+
+						</div>
+						<?}	?>
+
+
+						<div class="graphical">
+							<?php if (($post->type == 'photo') || ($post->type =='video')) {?>
+							<a target="new" href="<?echo $this->escape($post->link)?> "> <img
+								src='<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> ' />
+							</a>
+
+							<?}elseif ($post->type == 'link') {?>
+							<div class="link">
+								<div class="link-left">
+									<a target="new" href="<?echo $this->escape($post->link)?> "> <img
+										src='<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> ' />
+									</a>
+								</div>
+
+								<div class="link-right">
+									<a target="new" href="<?echo $this->escape($post->link)?> "> <?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
+										<?php  if (isset($post->caption)){?> </br> <?php echo $this->escape($post->caption);?>:
+										<?php }?> <?php if (isset($post->description)){?> <?=$this->escape($post->description)?>
+										<?php }?>
+
+									</a>
+								</div>
+							</div>
+							<?}?>
+						</div>
+
+					</div>
+
+
+
+					<div class="social">
+
+						<?php if ($this->likes[$count] == 0) {?>
+						<a class="like_control_<?= $post->id?>"
+							onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like</a>
+						<?}else{?>
+						<a class="like_control_<?= $post->id?>"
+							onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>
 						<?php }?>
-						
-					</a>
-				</div>
-			</div>
-		<?}?>
-		</div>
 
-	</div>	
-
-	</div>
-	
-	<div class="social"> 
-			
-				<?php if ($this->likes[$count] == 0) {?>
-					<a class="like_control_<?= $post->id?>"  onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
-				<?}else{?>
-					<a class="like_control_<?= $post->id?>"  onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
-				<?php }?>
-		
-				 &middot;
-		
-				 <a  onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
+						&middot; <a
+							onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; 
-			 		} else {echo '0';} ?> , true )" class="commenthidern_<?= $post->id ?>">Comment </a>
-		
-				 &middot;
-				<span class="time" title="<?= strtotime($post->created_time)?>"> <?=  strtotime($post->created_time)?></span>
-			<br/>
-	</div>
-	
-	<div class="social like <?=$post->id?>"  <?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>style="display:none"<?php }?>>
-		
-		
-				<!--  <img src="/img/news-feed/icon-likes.png" />-->
-				<a>
-				<span class="like_<?= $post->id?>"><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
-					
-					<?php if($post->likes->count == 1){?>person<?php }else{?>people<?php }?> 
-				
-				</span>
-				likes this.
-				</a>
-	</div>
-	
-	<?php if(isset($post->comments->count) && ($post->comments->count != 0)){?>
-	<div class="social commentn <?=$post->id?>">
-	
-			 <a  onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 5,<?php 
+			 		} else {echo '0';} ?> , true )"
+							class="commenthidern_<?= $post->id ?>">Comment </a> &middot; <span
+							class="time" title="<?= strtotime($post->created_time)?>"> <?=  strtotime($post->created_time)?>
+						</span> <br />
+					</div>
+
+					<div class="social like <?=$post->id?>"
+					<?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>
+						style="display: none" <?php }?>>
+
+
+						<!--  <img src="/img/news-feed/icon-likes.png" />-->
+						<a> <span class="like_<?= $post->id?>"><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
+
+								<?php if($post->likes->count == 1){?>person<?php }else{?>people<?php }?>
+
+						</span> likes this.
+						</a>
+					</div> <?php if(isset($post->comments->count) && ($post->comments->count != 0)){?>
+					<div class="social commentn <?=$post->id?>">
+
+						<a
+							onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; //echo  $post->comments->count;
-			 	} else {echo '0';} ?> , true )">
-			 	<?php if($post->comments->count != 1){?> 
-			 		View all <span class="comment_<?= $post->id?>">
-			 		<?php if(isset($post->comments->count)){
+			 	} else {echo '0';} ?> , true )"> <?php if($post->comments->count != 1){?>
+							View all <span class="comment_<?= $post->id?>"> <?php if(isset($post->comments->count)){
 						echo $post->comments->count; //echo  $post->comments->count;
 					 	} else {
 							echo '0'; 
 						}?>
-					</span> 
-					comments 
-				<?php }else { ?>
-					View all<span class="comment_<?= $post->id?>">
-			 		
-					 
-					
-					</span>
-					comments 
-				<?php }?>
-				</a>
-			
-	
-	
-	</div>
-	<?php }?>
-	<ul class="comments" id="postn_<?=$post->id?>" ></ul>
-	</li>	
-
-			
-<?php $count ++;?>
- 
-
-<?php endforeach; }?>
- 
-
-</ul>
+						</span> comments <?php }else { ?> View all<span
+							class="comment_<?= $post->id?>"> </span> comments <?php }?>
+						</a>
 
 
 
-<div class="feed_spacer_top"></div>
-							
-							
-								<div class="title">
-									<div class="photo">
-										<img src="/img/news-feed/top-fan-icon.jpg" />
-										 
-									</div>
+					</div> <?php }?>
+					<ul class="comments" id="postn_<?=$post->id?>"></ul>
+				</li>
 
-									<div class="title-header fancrankfeed"> <h3>FanCrank Feed</h3>
-									<div class="tip">
-										<a rel="tooltip" title='The FanCrank Feed is a customized news feed of all the activity on the page.  Choose "All" to see all posts on the page.  Choose "My Feed" to only show posts by the page owner and the people you follow.  choose "Page Posts" to see posts from the page owner.'>?</a>
-									</div>
-									
-									 </div>
 
-								</div>
-											
-											
-											
-												<!-- 
+				<?php $count ++;?>
+
+
+				<?php endforeach; }?>
+
+
+			</ul>
+
+		</div>
+
+		<div class="title">
+			<div class="title-icon">
+				<img src="/img/news-feed/top-fan-icon.jpg" />
+			</div>
+
+			<div class="title-header">FanCrank Feed</div>
+			<div class="tip">
+				<a rel="tooltip"
+					title='The FanCrank Feed is a customized news feed of all the activity on the page.  Choose "All" to see all posts on the page.  Choose "My Feed" to only show posts by the page owner and the people you follow.  choose "Page Posts" to see posts from the page owner.'>?</a>
+			</div>
+		</div>
+
+		<!-- 
 												<ul class="nav nav-tabs" id="postingTab">
 												  <li class="active"><a href="#post_post" data-toggle="tab" id="post_post_tab">Posts</a></li>
 												  <li><a href="#post_photo" data-toggle="tab" id="post_photo_tab">Photo/Video</a></li>
 												</ul>
 												 -->
-												<!--  <div class="tab-content" id="postingContent">
+		<!--  <div class="tab-content" id="postingContent">
 													<div class="tab-pane active" id="post_post">-->
-													
-													
-											
+
+
+		<div class="row box">
 
 
 
-									
-										<ul class="post-list" id="submitfeed">
-													<li class="grey-light">
-														<div class="submit_container">
-														<span>[ <a href="#" onclick="getFancrankfeed('all')">All</a> | <a href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a href="#" onclick="getFancrankfeed('admin')">Page Posts</a> ]</span>
-														</div>
-													</li>
-													
-													<li class="feed_spacer">
 
-													<div class="feed_spacer_top"></div>
-													
-													</li>
-													<li class="grey-light">
-													
-														<div class="submit_container">
-															
-														
-															<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></div>
-														
-															<form action="#" class="submit_box">
-																		<textarea id="post_box" onkeyup="resizeCommentBox(this)"></textarea>
-																		<input type=button class="btn-submit" value=" Post "  id="post_button" onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
-															</form>
-														</div>
-													</li>
-													<li><div class="feed_spacer_top"></div></li>
-												</ul>	
-													
-													
-													  
-														
-														
-												<!-- </div>
+			<ul id="submitfeed">
+				<li class="post-container">
+					<div class="post">
+						<span>[ <a href="#" onclick="getFancrankfeed('all')">All</a> | <a
+							href="#" onclick="getFancrankfeed('myfeed')">My Feed</a> | <a
+							href="#" onclick="getFancrankfeed('admin')">Page Posts</a> ]
+						</span>
+					</div>
+				</li>
+
+				<li class="post-container">
+
+					<div class="post">
+
+						<form action="#" class="submit-form">
+							<textarea id="post_box" class="post-box" onkeyup="resizeCommentBox(this)" onclick="resizeCommentBox(this)"></textarea>
+							
+							<div class="post-button-container">
+								<input type=button class="btn-submit" value="Share"
+									id="post_button"
+									onclick="post('<?= $this->fanpage_id?>', '<?= $this->fanpage_name?>' )">
+							</div>
+						</form>
+					</div>
+				</li>
+
+			</ul>
+
+
+
+
+
+			<!-- </div>
 												 
 												  <div class="tab-pane" id="post_photo">
 												 		<form action="#" class="submit_box">
@@ -308,115 +267,64 @@
 												  
 												  
 												</div>-->
-										
-
-											
-													
-												
-											
-											
-											<ul class="post-list" id ="fancrankfeed">
-												
-											</ul>
-											
-											<div class="shadow">
-													<button class="btn-top" onclick="getFancrankfeed(setFeed)">
-															MORE + 
-													</button>
-											</div>
-								
-							</div>
-							
-						
-							<div class="span5 re">
-								<div class="row">
-									<div class="span5 re">
-										<div class="title">
-											<div class="photo"> <img src="/img/news-feed/top-fan-icon.jpg" /> </div>
-											<div class="title-header topfan"> 
-												<h3 id="topfan-tour"> Top Fans This Week </h3>
-												<div class="tip"><a rel="tooltip" title="These 5 fans have liked, commented, and interacted the most on the page.  This ranking changes every week.  Prizes are awarded to the top fan every week!"
-												">?</a></div>
-											 </div>
-										</div>
-										
-										<div id="topfan">
-										
-										
-										
-										</div>
-										
-									
-									</div>
-								
-								</div>
-								
-								<div class="row">
-									<div class="span5 re">
-										<div class="subtitle">
-										
-		
-											<div class="title-header toppost"> <h3 id="toppost-tour">Top Posts This Week</h3>
-										<!--  
-										<div class="tip"><a title="Wow, I can't believe you said that! <br /><br />But <i>seriously</i>, your ranking is determined by the amount of likes and comments from other people!">?</a></div>
-											-->
-											<div class="tip">
-												<a rel="tooltip" title="The posts listed below are the posts that have gotten the most likes and comments!  This list is updated regularly.">?</a>
-											</div>
-											 </div>
-											
-										</div>
-
-									
-										<ul class="post-list" id="toppost">
-											
-											
-										</ul>
-									
-									</div>
-								</div>
-							</div>
-							
-						<div class="row">
-							&nbsp;
-						</div>
-    			
-    				
-
-    
-    	
-     
-        
 
 
-<!--
 
 
-<hr />
 
 
-<p>top talkers</p>
 
-<pre>
-<?= print_r($this->top_talkers) ?>
-</pre>
+			<ul id="fancrankfeed">
 
-<p>top clickers</p>
+			</ul>
 
-<pre>
-<?= print_r($this->top_clickers) ?>
-</pre>
 
-<p>top fans</p>
+			<button class="btn-more" onclick="getFancrankfeed(setFeed)">MORE +</button>
 
-<pre>
-<?= print_r($this->top_fans) ?>
-</pre>
+		</div>
+	</div>
 
-<p>most popular</p>
 
-<pre>
-<?= print_r($this->most_popular) ?>
-</pre>
+	<div class="span5">
+		<div class="row">
+			<div class="span5">
+				<div class="title">
+					<div class="title-icon">
+						<img src="/img/news-feed/top-fan-icon.jpg" />
+					</div>
+					<div class="title-header"><span id="topfan-tour">Top Fans This Week</span></div>
+					<div class="tip">
+						<a rel="tooltip"
+							title="These 5 fans have liked, commented, and interacted the most on the page.  This ranking changes every week.  Prizes are awarded to the top fan every week!"">?</a>
+					</div>
+				</div>
+				<div class="row box" id="topfan"></div>
+			</div>
 
--->
+		</div>
+
+		<div class="row">
+			<div class="span5">
+
+				<div class="title nopic">
+
+
+					<div class="title-header nopic"><span id="toppost-tour">Top Posts This Week</span></div>
+					<div class="tip">
+						<a rel="tooltip"
+							title="The posts listed below are the posts that have gotten the most likes and comments!  This list is updated regularly.">?</a>
+					</div>
+				</div>
+
+				<div class="row box">
+
+					<ul id="toppost">
+
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>	

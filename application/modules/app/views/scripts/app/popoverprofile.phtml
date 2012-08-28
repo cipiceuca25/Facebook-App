@@ -1,16 +1,38 @@
-<div class="flag">
-	<a>
-	<span class="photo">
-		<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->fan['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
-	</span>
-	<span class="name">
-		<?=  $this->fan['fan_first_name'].' '.$this->fan['fan_last_name']?>
-	</span>
-	</a>
+<div class="post-container">
+<div class="user">
+	<div class="user-badge">
+	<a  <? if (($this->relation != 'Fanpage')){?>
+					<? if ($this->relation != 'You') { ?>
+						<? if (($this->relation!= 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+								 onclick="follow(<?= $this->fan['facebook_user_id'] ?> , '<?=  $this->fan['fan_first_name'].' '.$this->fan['fan_last_name']?>', 'follow_<?= $this->fan['facebook_user_id'] ?>')" class ="follow_<?= $this->fan['facebook_user_id'] ?>" 
+						<?}else{?>
+								onclick="unfollow(<?= $this->fan['facebook_user_id'] ?> , '<?=  $this->fan['fan_first_name'].' '.$this->fan['fan_last_name']?>', 'follow_<?= $this->fan['facebook_user_id'] ?>')" class ="follow_<?= $this->fan['facebook_user_id'] ?>"
+						<?}?>
+						>
+							
+						<span class="badge badge-<?= $this->relation?>"><?= $this->relation?></span>
+					<?php }else{?>
+						><span class="badge badge-You">You</span>
+					<?php }?>
+					
+				<?}else{?>
+					><span class="badge badge-Fanpage">Admin</span>
+				<?php }?> </a>
+	</div>
+	<div class="photo">
+		<a><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->fan['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></a>
+	</div>
+	<div class="name">
+		<a><?=  $this->fan['fan_first_name'].' '.$this->fan['fan_last_name']?></a>
+	</div>
+	
 	<div class="rank">
 		<?=  $this->fan['fan_level']?>
 	</div>
+	
 </div>
+
+<div class="post">
 <div class="date">
 	<?php if ($this->fan['created_time'] == null){?>
 		Not A Fancrank User
@@ -27,10 +49,8 @@
 	<?php }else{?>
 		Unknown
 	<?php }?>
-	
-	
 </div> 
-<div class="stat">
+
 	<div class="row">
 		<div class="span5">
 			<div class="row">
@@ -60,8 +80,6 @@
 			</div>
 		</div>
 	
-	
 	</div>
-	
-
+	</div>
 </div>

@@ -1,23 +1,27 @@
-<div class="row" id="userlist">
+<div class="row">
 <div class="span7">
 
 
 
 <div class="title">
-	<div class="linkback">Go back to <a href="#" onclick="userProfile('<?= $this->user_id?>', false)"><?= $this->user_name?></a>'s Profile</div>
-	<div class="photo">
+	
+	<div class="title-icon">
 		<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture">
 	</div>
+	
 	<div class="title-header">
-		<h3><?=$this->user_name?>'s <?= $this->title?> List</h3>
+		<?=$this->user_name?>'s <?= $this->title?> List
 	
 	</div>
 	
 </div>
-<div class="row profile_background">
+
+<div class="link-back">Go back to <a onclick="userProfile('<?= $this->user_id?>', false)"><?= $this->user_name?></a>'s Profile</div>
+
+<div class="row box" id="user_list">
 	<ul class="top-list">
 	<?php if(count($this->result)==0){?>
-		<li class="border-dark" >
+		<li >
 		<br/>
 		No users
 		<br/>
@@ -30,35 +34,47 @@
 	<?php foreach ($this->result as $user):?>	
 		<li>
 
-			<div class="border-dark first">
+			<div class="ranker" >
 		
-		
-				<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture"></div>
-				<div class="name">
-					<a onclick="userProfile('<?= $user['facebook_user_id']?>', false)"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
+				<div class="user">
+					<div class="photo">
+						<a  data-userid="<?= $user['facebook_user_id'] ?>"
+											<? if (!($this->relation[$count] == 'Fanpage')){?>
+												onclick="userProfile('<?= $user['facebook_user_id'] ?>', false)"
+												<?}?> rel="popover" data-content="" data-original-title=""
+												data-placement="top">
+						<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture">
+						</a>
+					</div>
+					
+					<div class="name">
+						<a  data-userid="<?= $user['facebook_user_id'] ?>"
+											<? if (!($this->relation[$count] == 'Fanpage')){?>
+												onclick="userProfile('<?= $user['facebook_user_id'] ?>' , false)"
+												<?}?> rel="popover" data-content="" data-original-title=""
+												data-placement="top"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
+						
+					</div>
 					<!--   <br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?>  since <?=  date(" F d Y",strtotime($user['created_time']))?>	-->
 				</div>
 				
-				
-				<div class="follow">
-					<!-- <?php if(($this->title != 'Followers') /*&& ($this->title != 'Friends')*/ && ($this->title != 'You')){?>
-						<a href="#" title = "Click to Unfollow user" onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><div class="badge badge-unfollow big">Unfollow</div></a>
-					<?}else{?>
-						<a href="#" title = "Click to Follow user and become Friends!" onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')"><div class="badge badge-Follow big">Follow</div></a>
-					<?}?> -->
+				<div class="badge-profile">
 					
-					<? if ($this->relation[$count] != 'You') {?>
-					<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-						<a onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
-					<?}else{?>
-						<a onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
-					<?}?>
-					
-					<span class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?></span></a>
-					<?}else{?>
-					<span class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?></span>
-					<?php }?>
+						<a <?php if ($this->relation != 'You') {?>
+								<? if (($this->relation != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+								onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
+								<?}else{?> 
+								onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
+								<?}	?> 
+							<span class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?>
+							<?}else{?> 
+							<span class="badge badge-You?> big">You</span>
+							<?}?>
+					 	</a>
+
 				</div>
+				
+				
 			</div>
 		</li>
 	<?php $count++;?>
@@ -68,8 +84,8 @@
 	</ul>
 </div>
 <?php if ($count > 14){?>
-<div class="shadow">
-	<button class="btn-top" onclick="
+
+	<button class="btn-more" onclick="
 	<?php if ($this->title == 'Followers') { 
 		echo'getFollowersList('.$this->user_name.','.$this->user_id.',0, false)'; 
 	}elseif ($this->title =='Friends'){ 
@@ -80,7 +96,7 @@
 		+ More
 	</button>
 
-</div>
+
 <?php }?>
 </div>
 </div>

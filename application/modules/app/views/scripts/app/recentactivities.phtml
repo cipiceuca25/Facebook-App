@@ -1,5 +1,5 @@
 <?php if(count($this->activities)==0){?>
-	<li class="grey-light" >
+	<li class="post-container" >
 
 	No Recent Activities for this Fanpage.
 
@@ -10,9 +10,9 @@
 	$count = 0;
 	foreach ($this->activities as $act):	
 	?>
-		<li class="grey-light" >
+		<li class="post-container" >
 	
-	
+		<div class="post">
 		<div class="message">
 
 		
@@ -26,45 +26,46 @@
 				<?break;	
 			
 			case 'like-status':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>', 5, true)">status post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">status post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'unlike-status':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>' , 5, true)">status post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>' , 5, true)">status post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				<?break;
 			case 'like-photo':?>
-				You liked <?=$act['target_user_name']?>'s <a onclick="comment_bubble('<?=$act['event_object']?>', 5, true)">photo post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a onclick="comment_popup('<?=$act['event_object']?>', 5, true)">photo post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'unlike-photo':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>' , 5, true)">photo post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>' , 5, true)">photo post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;	
 			case 'like-video':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>', 5, true)">video post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">video post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'unlike-video':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>' , 5, true)">video post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>' , 5, true)">video post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'like-link':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>', 5, true)">link post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">link post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'unlike-link':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>' , 5, true)">link post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>' , 5, true)">link post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'like-comment':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 5, true)">comment</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 5, true)">comment</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'unlike-comment':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 5, true)">comment</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 5, true)">comment</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'comment-status':?>
-				You post a comment on <?=$act['target_user_name']?>'s <a onclick="comment_bubble('<?=$act['event_object']?>', 5, true)">status post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You posted a comment on <?=$act['target_user_name']?>'s <a onclick="comment_popup('<?=$act['event_object']?>', 5, true)">status post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'comment-photo':?>
-				You post a comment on <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>', 5, true)">photo post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">photo post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'comment-video':?>
-				You post a comment on <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>', 5, true)">video post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">video post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'comment-link':?>
-				You post a comment on <?=$act['target_user_name']?>'s <a  onclick="comment_bubble('<?=$act['event_object']?>', 5, true)">link post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">link post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
 				<?break;
 			case 'post-status':?>
 				You made a status post on <?=$act['target_user_name']?>'s Fanpage on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
@@ -82,13 +83,8 @@
 			
 		}?>
 		</div>
-	
+		</div>
 	</li>
-			
-			<li class="feed_spacer">
 
-				<div class="feed_spacer_top"></div>
-			
-			</li>
 		<?endforeach; ?>
 

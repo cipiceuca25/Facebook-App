@@ -1,11 +1,15 @@
 <?php $count=0;?>
 
-<ul class="followlist">
+<ul class="top-list mini">
 <?php if(count($this->result)==0){?>
-	<li class="border-dark" >
-
-	<div class="name">No users</div>
-
+	<li>
+		<div class="ranker">
+			<div class="user">
+				<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/x/picture" onerror="ImgError(this);"></div>
+				
+				<div class="name">No users</div>
+			</div>
+		</div>
 	</li>
 	<?php $count++;?>
 <?php }?>
@@ -15,16 +19,17 @@
 <?php foreach ($this->result as $user):?>	
 	
 
-		<li class="border-light" >
-
-		<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture"></div>
-		<div class="name">
-			<a onclick="userProfile('<?= $user['facebook_user_id']?>', true)"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
+		<li  >
+		<div class="ranker">
+		<div class="user">
+			<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture" onerror="ImgError(this);"></div>
 			
+			<div class="name">
+				<a onclick="userProfile('<?= $user['facebook_user_id']?>', true)"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
+			</div>
+	
 		</div>
-	
-		
-	
+		</div>
 	</li>
 <?php $count++;?>
 <?php endforeach; ?>
@@ -32,14 +37,17 @@
 	<?php if ($count < 5){?>
 
 	<?php for (;$count<5; $count++){ ?>
-	<?php if ($count == 1){?>
-	<ul class="followlist">
-		<?php }?>
+
 		<li>
-			<div class="border-dark">
-			
+			<div class="ranker">
 				
+				
+			
+				<div class="user">
+					<div class="photo"></div>
+					<div class="name"></div>
 				</div>
+			</div>
 		
 		</li>
 		<?}
