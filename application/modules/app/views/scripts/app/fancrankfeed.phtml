@@ -195,14 +195,14 @@
 		
 	
 	</div>
-
+ 
 	<?php if(isset($post->comments->count) && ($post->comments->count != 0)){?>
 	<div class="social comment <?=$post->id?>">
 	
 			 <a  onclick=" comment_feed('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; //echo  $post->comments->count;
-			 	} else {echo '0';} ?> , true )">
+			 	} else {echo '0';} ?> , true )"> <img src="/img/comment.png" />
 			 	<?php if($post->comments->count != 1){?> 
 			 		View all <span class="comment_<?= $post->id?>">
 			 		<?php if(isset($post->comments->count)){

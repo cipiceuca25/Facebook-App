@@ -140,7 +140,7 @@
 		<form action="#" class="submit-form" >
 		
 			<textarea class="comment-box" id="comment_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)" ></textarea>
-			<input type=button class="btn-submit" value="Submit" onclick="commentSubmit('<?= $this->postId ?>','<?=$this->postType?>' ,'comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>', <?= $this->total?>,<?= ($this->latest == 'true')?'true':'false'?> )">
+			<input type=button class="btn-submit" value="Comment" onclick="commentSubmit('<?= $this->postId ?>','<?=$this->postType?>' ,'comment_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>', <?= $this->total?>,<?= ($this->latest == 'true')?'true':'false'?> )">
 		</form>
 	
 	</li>
