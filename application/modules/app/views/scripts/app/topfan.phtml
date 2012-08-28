@@ -32,9 +32,9 @@
 														<?php if ($this->topFanArray[$count] != 'You'){?>
 														
 														<a <?if (($this->topFanArray[$count] != 'Following') /*&& ($this->topFanArray[$count] != 'Friends') */) {?>
-																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'topfan_follow_<?=$top_fan['facebook_user_id']?>')" class = "follow_<?=$top_fan['facebook_user_id']?>"
+																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'follow_<?=$top_fan['facebook_user_id']?>')" class = "follow_<?=$top_fan['facebook_user_id']?>"
 																<?}else{ ?>
-																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'topfan_follow_<?=$top_fan['facebook_user_id']?>')" class = "follow_<?=$top_fan['facebook_user_id']?>"
+																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'follow_<?=$top_fan['facebook_user_id']?>')" class = "follow_<?=$top_fan['facebook_user_id']?>"
 																<?}?>
 															>
 															<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
@@ -75,9 +75,9 @@
 													<?php if ($this->topFanArray[$count] != 'You'){?>
 														
 														<a <?if (($this->topFanArray[$count] != 'Following')/* && ($this->topFanArray[$count] != 'Friends')*/) {?>
-																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'topfan_follow_<?=$top_fan['facebook_user_id']?>')" class = "follow_<?=$top_fan['facebook_user_id']?>"
+																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'follow_<?=$top_fan['facebook_user_id']?>')" class = "follow_<?=$top_fan['facebook_user_id']?>"
 																<?}else{ ?>
-																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'topfan_follow_<?=$top_fan['facebook_user_id']?>')" class= "follow_<?=$top_fan['facebook_user_id']?>"
+																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'follow_<?=$top_fan['facebook_user_id']?>')" class= "follow_<?=$top_fan['facebook_user_id']?>"
 																<?}?>
 															>
 															<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span></a>
