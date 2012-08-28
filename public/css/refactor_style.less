@@ -978,49 +978,35 @@ margin-top:0;
 .popover.toppost{
 .popover.left;
 }
-
 ///////////////////////////////////////////////////////////////////////////////
-#follow-animation{
-z-index:99;
-position:fixed;
-height:25px;
-width:125px;
-background:  url(../img/followed.png) no-repeat center center;
-display:none;
-}
-
-#like-animation{
-z-index:99;
-position:fixed;
-height:25px;
-width:125px;
-background:  url(../img/liked.png) no-repeat center center;
-display:none;
-}
-
-#unfollow-animation{
-z-index:99;
-position:fixed;
-height:25px;
-width:125px;
-background:  url(../img/unfollowed.png) no-repeat center center;
-display:none;
-}
-
-#unlike-animation{
-z-index:99;
-position:fixed;
-height:25px;
-width:125px;
-background: url(../img/unliked.png) no-repeat center center;
-display:none;
-}
-
+#follow-animation,
+#like-animation,
+#unfollow-animation,
+#unlike-animation,
 #comment-animation{
 z-index:99;
 position:fixed;
 height:25px;
 width:125px;
-background:  url(../img/commented.png) no-repeat center center;
 display:none;
+}
+
+#follow-animation{
+background:url(../img/followed.png) no-repeat center center;
+}
+
+#like-animation{
+background:url(../img/liked.png) no-repeat center center;
+}
+
+#unfollow-animation{
+background:url(../img/unfollowed.png) no-repeat center center;
+}
+
+#unlike-animation{
+background:url(../img/unliked.png) no-repeat center center;
+}
+
+#comment-animation{
+background:url(../img/commented.png) no-repeat center center;
 }
