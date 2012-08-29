@@ -52,27 +52,4 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     		$log->log($info, Zend_Log::NOTICE, 'traffic info');    		
     	}
     }
-    
-    protected function _initMemcache()
-    {
-    	$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini',APPLICATION_ENV);
-    	$options = $config->memcache->toArray();
-    	if (isset($options)) {
-    		try {
-    			$cache = Zend_Cache::factory(
-    					$options['frontend']['type'],
-    					$options['backend']['type'],
-    					$options['frontend']['options'],
-    					$options['backend']['options']
-    			);
-    			//Zend_Debug::dump($cache);
-    			Zend_Registry::set('memcache', $cache);
-    			return $cache;
-    		} catch (Exception $e) {
-    			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
-    			//echo $e->getMessage();
-    		}
-    	}
-    	return;
-    }
 }

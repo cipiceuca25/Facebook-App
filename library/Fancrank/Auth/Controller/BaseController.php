@@ -56,9 +56,31 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         $user = $this->oauth2(false, false);
         
         if ($user) {
-            //create user session
         	$user->fanpage_id = $fanpageId;
-            //Zend_Debug::dump($user); exit();
+
+        	//save user activities into memcache
+            if(!empty($fanpageId) && !empty($user->facebook_user_id)) {
+            	$cache = Zend_Registry::get('memcache');
+            	$cache->setLifetime(3600);
+            	$fanActivityId = $fanpageId .'_' .$user->facebook_user_id. '_fan_activity';
+            	 
+            	try {
+            		$activitiesModel = new Model_FancrankActivities();
+            
+            		//Check to see if the $fanpageId is cached and look it up if not
+            		if(isset($cache) && !$cache->load($fanActivityId)){
+            			$activities = $activitiesModel->getRecentActivities($user->facebook_user_id,  $fanpageId, 20);
+            			//Save to the cache, so we don't have to look it up next time
+            			$cache->save($activities, $fanActivityId);
+            		}
+            	} catch (Exception $e) {
+            		//Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+            		//echo $e->getMessage();
+            		$cache->remove($fanActivityId);
+            		throw new Exception('memcache error: ' .$e->getMessage());
+            	}
+            }
+            //create user session
             $this->_auth->getStorage()->write($user);
 			$this->view->current_fanpage_id = $fanpageId;
             //$this->_auth->setExpirationSeconds(5259487);

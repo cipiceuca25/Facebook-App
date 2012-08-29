@@ -33,11 +33,9 @@
 			var serverUrl = "<?= $this->fullServerUrl()?>";
 			var appId = "<?= $this->layout()->appKey ?>";
 			var userId = "<?= $this->user_id ?>";
-			var accessToken = "<?= $this->access_token ?>";
 			var fanpageId = "<?= $this->fanpage_id?>";
 			var newuser = "<?= $this->newuser?>";	
-			//var userAccessToken = "<?= $this->facebook_user_access_token?>";
-			//alert( accessToken);
+
 			window.fbAsyncInit = function() {
 				FB.init({
 					 appId  : appId,
@@ -45,8 +43,9 @@
 					 cookie : true, // enable cookies to allow the server to access the session
 					 xfbml  : true// parse XFBML
 				});
-				window.setTimeout(function() { FB.Canvas.setAutoGrow(); }, 200);
+				FB.Canvas.setAutoGrow();
 			};
+			window.setTimeout(function() { FB.Canvas.setAutoGrow(); }, 200);
 		 </script>
 	 	<!-- End of iframe initialization -->
        

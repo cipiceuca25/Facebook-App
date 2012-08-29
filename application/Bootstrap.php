@@ -81,6 +81,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             $logger->setEventItem('path', Zend_Controller_Front::getInstance()->getRequest()->getRequestUri());
         }
 
+        Zend_Registry::set('appLog', $logger);
         return $logger;
     }
     
@@ -125,6 +126,29 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     	Zend_Registry::set('collectorLogger', $logger);
     
     	return $logger;
+    }
+    
+    protected function _initMemcache()
+    {
+    	$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini',APPLICATION_ENV);
+    	$options = $config->memcache->toArray();
+    	if (isset($options)) {
+    		try {
+    			$cache = Zend_Cache::factory(
+    					$options['frontend']['type'],
+    					$options['backend']['type'],
+    					$options['frontend']['options'],
+    					$options['backend']['options']
+    			);
+    			//Zend_Debug::dump($cache);
+    			Zend_Registry::set('memcache', $cache);
+    			return $cache;
+    		} catch (Exception $e) {
+    			Zend_Registry::get('appLog')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    			//echo $e->getMessage();
+    		}
+    	}
+    	return;
     }
 }
 

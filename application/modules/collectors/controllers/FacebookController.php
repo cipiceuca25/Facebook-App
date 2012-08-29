@@ -472,10 +472,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	if(!empty($this->_fanpageId ) && !empty($this->_userId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(3600);
-    	
     		try {
     			$fanActivityId = $this->_fanpageId .'_' .$this->_userId. '_fan_activity';
-    	
+    			$cache->remove($fanActivityId); exit();
+    			 
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanActivityId)){
     				echo 'db look up';
