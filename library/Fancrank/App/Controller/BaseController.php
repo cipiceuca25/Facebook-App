@@ -27,8 +27,8 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
             $this->_facebook_user = $this->_auth->getIdentity();
             // This if statement will prevent cross fanpage visit within same login session
             if($this->_facebook_user->fanpage_id !== $this->_getParam('id')) {
-            	$this->_identity = $this->_auth->clearIdentity();
-            	$this->_redirect('/app/index/index/' .$this->_getParam('id') .'?user_id=' .$this->_facebook_user->facebook_user_id);
+            	//$this->_identity = $this->_auth->clearIdentity();
+            	$this->_redirect('/app/app/index/' .$this->_facebook_user->fanpage_id .'?user_id=' .$this->_facebook_user->facebook_user_id);
             }
             $this->view->facebook_user = $this->_facebook_user;
             //set the proper navbar
