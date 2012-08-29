@@ -182,8 +182,6 @@ $('#redeem a').click(function(e) {
 
 $('#newsfeed-tab').live('click', function() {
 	feedLimit = 0;
-	mtfb = true;
-	tfb = true;
 	ffb = true;
 	ttb = true;
 	tcb = true;
@@ -194,16 +192,10 @@ $('#newsfeed-tab').live('click', function() {
 	$('#profile').html('');
 	$('#achievements').html('');
 	$('#redeem').html('');
-	FB.Canvas.setSize({
-		width : 810,
-		height : 600
-	});
-
+	
 });
 
 $('#leaderboard-tab').live('click', function() {
-	mtfb = true;
-	tfb = false;
 	ffb = true;
 	ttb = true;
 	tcb = true;
@@ -212,7 +204,7 @@ $('#leaderboard-tab').live('click', function() {
 
 	$('#profile').html('');
 	$('#achievements').html('');
-	$('#newsfeed').html('');
+	$('#news-feed').html('');
 	$('#redeem').html('');
 	//$('.bubble').html('');
 	FB.Canvas.setSize({
@@ -227,7 +219,7 @@ $('#profile-tab').live('click', function() {
 	getMyProfile();
 	$('#leaderboard').html('');
 	$('#achievements').html('');
-	$('#newsfeed').html('');
+	$('#news-feed').html('');
 	$('#redeem').html('');
 	FB.Canvas.setSize({
 		width : 810,
@@ -240,7 +232,7 @@ $('#achievements-tab').live('click', function() {
 	getAwards();
 	$('#leaderboard').html('');
 	$('#profile').html('');
-	$('#newsfeed').html('');
+	$('#news-feed').html('');
 	$('#redeem').html('');
 	FB.Canvas.setSize({
 		width : 810,
@@ -253,7 +245,7 @@ $('#redeem-tab').live('click', function() {
 	getRedeem();
 	$('#leaderboard').html('');
 	$('#profile').html('');
-	$('#newsfeed').html('');
+	$('#news-feed').html('');
 	$('#achievements').html('');
 	FB.Canvas.setSize({
 		width : 810,
@@ -269,7 +261,7 @@ function popover(x) {
 				+ '?facebook_user_id=' + $(x).attr('data-userid'),
 		dataType : "html",
 		cache : false,
-		async : false,
+		async : true,
 
 		success : function(data) {
 			$(x).attr('data-content', data);
@@ -302,7 +294,7 @@ function closeProfile() {
 	$('.user-profile').css('display', 'none');
 	$('.profile-content').css('display', 'none');
 	$('.profile-content').html('');
-	$('#moreComment').removeAttr('postid');
+	
 }
 
 function ImgError(source) {
@@ -311,8 +303,8 @@ function ImgError(source) {
 	return true;
 }
 
-function userProfile(user, refresh) {
-	refresh = typeof refresh !== 'undefined' ? refresh : true;
+function userProfile(user, load) {
+	load = typeof load !== 'undefined' ? load : true;
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/userprofile/' + fanpageId + '/?target='
@@ -324,32 +316,14 @@ function userProfile(user, refresh) {
 		success : function(data) {
 
 			$('.profile-content').html(data);
-			$.each($('.profile-content .time'), function(index) {
-				$(this).html(timeZone($(this).html()));
-				$(this).attr('title', timeZoneTitle($(this).attr('title')));
-			});
+			changeTime('.profile-content .time');
+			popup(load);
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
 		}
 	});
 
-	$('.light-box').css('display', 'block');
-	$('.user-profile').css('display', 'block');
-	$('.profile-content').css('height', 'auto');
-
-	FB.Canvas.getPageInfo(function(info) {
-		$('.user-profile').css('top', info.scrollTop - 100);
-	});
-
-	if (refresh) {
-
-		$('.profile-content').animate({
-			height : 'toggle',
-		}, 1000, function() {
-
-		});
-	}
 
 }
 
@@ -362,12 +336,8 @@ function comment_feed(post_id, type, limiter, total, toggle) {
 	getFeedComment(ui, post_id, type, limiter, total, toggle, false);
 
 	$('.social.comment.' + post_id).css('display', 'none');
-	$.each($('#post_' + post_id + ' .time'),
-			function(index) {
-				$(this).html(timeZone($(this).html()));
-				$(this).attr('title',
-						timeZoneTitle($(this).attr('title')));
-			});
+	changeTime('#post_' + post_id + ' .time');
+
 }
 
 function comment_feed2(post_id, type, limiter, total, toggle) {
@@ -376,13 +346,8 @@ function comment_feed2(post_id, type, limiter, total, toggle) {
 	getFeedComment(ui, post_id, type, limiter, total, toggle, true);
 
 	$('.social.commentn.' + post_id).css('display', 'none');
-	$.each($('#postn_' + post_id + ' .time'),
-			function(index) {
-				$(this).html(timeZone($(this).html()));
-				$(this).attr('title',
-						timeZoneTitle($(this).attr('title')));
-			});
-
+	
+	changeTime('#postn_' + post_id + ' .time');
 }
 
 
@@ -407,7 +372,15 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
 		success : function(data) {
 
 			$(ui).html(data);
-		
+			
+			if (toggle) {
+				$(ui).animate({
+					height : 'toggle',
+				}, 1000, 'swing', function() {
+					// Animation complete.
+				});
+
+			} 
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -415,14 +388,7 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
 	});
 
 	//alert('are we animating?' + toggle);
-	if (toggle) {
-		$(ui).animate({
-			height : 'toggle',
-		}, 1000, 'swing', function() {
-			// Animation complete.
-		});
 
-	} 
 
 }
 
@@ -430,8 +396,8 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
 // post_id = 
 
 
-function comment_popup(post_id, limiter, open) {
-	//alert(open);
+function comment_popup(post_id, limiter, load) {
+	load = typeof load !== 'undefined' ? load : true;
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/comment/' + fanpageId + '?post_id='
@@ -439,37 +405,16 @@ function comment_popup(post_id, limiter, open) {
 
 		dataType : "html",
 		cache : false,
-		async : false,
+		async : true,
 		success : function(data) {
 			$('.profile-content').html(data);
+			changeTime('#popup_comment .time');
+			popup(load);
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
 		}
 	});
-	
-	$.each($('#popup_comment .time'), function(index) {
-		$(this).html(timeZone($(this).html()));
-		$(this).attr('title', timeZoneTitle($(this).attr('title')));
-	});
-	
-	if (open) {
-		$('.light-box').css('display', 'block');
-		$('.user-profile').css('display', 'block');
-
-
-		FB.Canvas.getPageInfo(function(info) {
-			$('.user-profile').css('top', info.scrollTop - 200);
-		});
-		//$('.profile-content').css('height', 'auto');
-
-		$('.profile-content').animate({
-			height : 'toggle',
-		//top:'20px'
-		}, 1000, function() {
-
-		});
-	}
 	
 }
 
@@ -481,9 +426,7 @@ function getNewsfeed() {
 		dataType : "html",
 		cache : false,
 		async : true,
-		beforeSend: function(){
-			$('#news-feed').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-		},
+	
 		success : function(data) {
 			
 		
@@ -491,11 +434,8 @@ function getNewsfeed() {
 			getFancrankfeed(setFeed);
 			getTopFan();
 			getTopPost();
-			$('#latestpost .time')
-					.html(timeZone($('#latestpost .time').html()));
-			$('#latestpost .time').attr('title',
-					timeZoneTitle($('#latestpost .time').attr('title')));
-	
+			changeTime('#latestpost .time');
+
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -512,16 +452,14 @@ function getTopPost() {
 		url : serverUrl + '/app/app/gettoppost/' + fanpageId,
 		dataType : "html",
 		cache : false,
-		async : false,
-	
+		async : true,
+		beforeSend: function(){
+			$('#toppost').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
 		success : function(data) {
 
 			$('#toppost').html(data);
-			
-			$.each($('#toppost .time'), function(index) {
-				$(this).html(timeZone($(this).html()));
-				$(this).attr('title', timeZoneTitle($(this).attr('title')));
-			});
+			changeTime('#toppost .time');
 
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -544,7 +482,7 @@ function like(post_id, post_type, target_id, target_name) {
 					//alert(post_id + 'liked');
 					feedbackAnimation('#like-animation');
 
-					addActivities('like-' + post_type, userName, post_id,
+					addActivities('like-' + post_type, post_id,
 							target_id, target_name);
 
 					num = $('.like_' + post_id).html();
@@ -597,7 +535,7 @@ function unlike(post_id, post_type, target_id, target_name) {
 					//alert("target followed")
 					//alert(post_id + 'liked');
 					feedbackAnimation('#unlike-animation');
-					addActivities('unlike-' + post_type, userName, post_id,
+					addActivities('unlike-' + post_type, post_id,
 							target_id, target_name);
 
 					num = $('.like_' + post_id).html();
@@ -630,8 +568,9 @@ function unlike(post_id, post_type, target_id, target_name) {
 
 function getFancrankfeed(view) {
 	ui = '#fancrankfeed';
-	feedLimit += 6;
+	feedLimit += 10;
 	setFeed = view;
+	//alert(serverUrl + '/app/app/fancrankfeed/' + fanpageId + '?viewAs='+ view + '&limit=' + feedLimit);
 	//alert(setFeed);
 	//alert(feedLimit);
 	$.ajax({
@@ -640,21 +579,16 @@ function getFancrankfeed(view) {
 				+ view + '&limit=' + feedLimit,
 		dataType : "html",
 		cache : false,
-		async : false,
-		beforeSend: function(){
-			$(ui).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-		},
+		async :  false,
+	
 		success : function(data) {
-
+			//alert(data);
 			$(ui).html(data);
-			$.each($('#fancrankfeed .time'), function(index) {
-				$(this).html(timeZone($(this).html()));
-				$(this).attr('title', timeZoneTitle($(this).attr('title')));
-			});
-
+			changeTime('#fancrankfeed .time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			//console.log('feeding time');
 		}
 	});
 }
@@ -667,7 +601,7 @@ function getTopFan() {
 				+ userId,
 		dataType : "html",
 		cache : false,
-		async : false,
+		async : true,
 		beforeSend: function(){
 			$('#topfan').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
@@ -779,7 +713,7 @@ function getRecentActivities() {
 		url : serverUrl + '/app/app/recentactivities/' + fanpageId,
 		dataType : "html",
 		cache : false,
-		async : false,
+		async : true,
 		beforeSend: function(){
 			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
@@ -787,10 +721,7 @@ function getRecentActivities() {
 		success : function(data) {
 			
 			$('#recent_activities').html(data);
-			$.each($('.time'), function(index) {
-				$(this).html(timeZone($(this).html()));
-				$(this).attr('title', timeZoneTitle($(this).attr('title')));
-			});
+			changeTime('.time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -798,10 +729,11 @@ function getRecentActivities() {
 	});
 }
 
+
+
 function getRelation(target, ui) {
 
-	$
-			.ajax({
+	$.ajax({
 				type : "GET",
 				url : serverUrl + '/app/user/' + userId
 						+ '/relation/?target_id=' + target + '&fanpage_id='
@@ -833,7 +765,7 @@ function follow(target, name, ui) {
 			cache : false,
 			success : function(data) {
 				//alert("target followed")
-				addActivities('follow', userName, target, target, name);
+				addActivities('follow', target, target, name);
 				//getUserProfile('.profile-content', target);
 				getRelation(target, ui);
 				//alert(relation);
@@ -862,7 +794,7 @@ function unfollow(target, name, ui) {
 		cache : false,
 		success : function(data) {
 			//alert("target unfollowed")
-			addActivities('unfollow', userName, target, target, name);
+			addActivities('unfollow', target, target, name);
 			//getUserProfile('.profile-content', target);
 			getRelation(target, ui);
 
@@ -878,48 +810,27 @@ function unfollow(target, name, ui) {
 	});
 }
 
-function addActivities(act_type, owner_name, event, target_id, target_name) {
+function addActivities(act_type, event, target_id, target_name) {
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/user/' + userId + '/addactivity/?owner_name='
-				+ owner_name + '&activity_type=' + act_type + '&event=' + event
+				+ userName + '&activity_type=' + act_type + '&event=' + event
 				+ '&fanpage_id=' + fanpageId + '&target_id=' + target_id
 				+ '&target_name=' + target_name,
 		dataType : "html",
 		cache : false,
 		success : function(data) {
 
-			//alert('act saved');
-			//$(ui).html(data);
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
-			alert('issue with activity save');
+			console.log('issue with activity save');
 		}
 	});
 
 }
 
-function colorChange(choice) {
-	$.ajax({
-		type : "GET",
-		url : serverUrl + '/app/user/' + userId + '/color/?choice=' + choice
-				+ '&fanpage_id=' + fanpageId,
-		dataType : "html",
-		cache : false,
-		success : function(data) {
-			window.location.reload();
-
-			//$(ui).html(data);
-		},
-		error : function(xhr, errorMessage, thrownErro) {
-			console.log(xhr.statusText, errorMessage);
-		}
-	});
-
-}
-
-function post(target_id, target) {
+function post(fanpage_name) {
 
 	FB.api('/' + fanpageId + '/feed', 'post', {
 		'message' : $('#post_box').val(),
@@ -931,10 +842,7 @@ function post(target_id, target) {
 				} else {
 					//alert('Post ID: ' + response.id);
 					$('#post_box').val('');
-					addActivities('post-status', userName, fanpageId,
-							target_id, target);
-
-					setFeed = 0;
+					addActivities('post-status', fanpageId, fanpageId, fanpage_name);
 					getFancrankfeed(setFeed);
 				}
 			});
@@ -955,11 +863,9 @@ function commentSubmit(postid, type, message, target_id, target,
 		} else {
 			//alert('Post ID: ' + response.id);
 			$(m).val('');
-			addActivities('comment-' + type, userName, postid, target_id,
+			addActivities('comment-' + type, postid, target_id,
 					target);
-
 			$('.comment_' + postid).html(postcommentcount + 1);
-
 			if (latest) {
 				alert('calling comment feed 2');
 				comment_feed2(postid, type, postcommentcount + 1,
@@ -968,7 +874,6 @@ function commentSubmit(postid, type, message, target_id, target,
 				comment_feed(postid, type, postcommentcount + 1,
 						postcommentcount + 1, false);
 			}
-
 		}
 	});
 }
@@ -986,7 +891,7 @@ function commentpopupSubmit(postid, type, message, target_id, target) {
 		} else {
 			//alert('Post ID: ' + response.id);
 			$(m).val('');
-			addActivities('comment-' + type, userName, postid, target_id,
+			addActivities('comment-' + type, postid, target_id,
 					target);
 			num = $('.comment_' + postid).html();
 			$('.comment_' + postid).html((parseInt(num) + 1));
@@ -995,9 +900,9 @@ function commentpopupSubmit(postid, type, message, target_id, target) {
 		}
 	});
 }
-function getFollowingList(targetname, target, limit, refresh) {
-	ui = '.profile-content';
-	refresh = typeof refresh !== 'undefined' ? refresh : true;
+
+function getFollowingList(targetname, target, limit, load) {
+	load = typeof load !== 'undefined' ? load : true;
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/getfollowing/' + fanpageId + '?limit='
@@ -1005,26 +910,11 @@ function getFollowingList(targetname, target, limit, refresh) {
 				+ '&mini=0',
 		dataType : "html",
 		cache : false,
-	
+		async : true,
 		success : function(data) {
 			
-			$(ui).html(data);
-			$('.light-box').css('display', 'block');
-			$('.user-profile').css('display', 'block');
-			$('.profile-content').css('height', 'auto');
-
-			FB.Canvas.getPageInfo(function(info) {
-				$('.user-profile').css('top', info.scrollTop - 100);
-			});
-
-			if (refresh) {
-				$('.profile-content').animate({
-					height : 'toggle',
-				//top:'20px'
-				}, 500, function() {
-
-				});
-			}
+			$('.profile-content').html(data);
+			popup(load);
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1032,9 +922,10 @@ function getFollowingList(targetname, target, limit, refresh) {
 	});
 
 }
-function getFollowersList(targetname, target, limit, refresh) {
-	refresh = typeof refresh !== 'undefined' ? refresh : true;
-	ui = '.profile-content';
+
+
+function getFollowersList(targetname, target, limit, load) {
+	load = typeof load !== 'undefined' ? load : true;
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/getfollowers/' + fanpageId + '?limit='
@@ -1042,26 +933,11 @@ function getFollowersList(targetname, target, limit, refresh) {
 				+ '&mini=0',
 		dataType : "html",
 		cache : false,
-
+		async : true,
 		success : function(data) {
 
-			$(ui).html(data);
-			$('.light-box').css('display', 'block');
-			$('.user-profile').css('display', 'block');
-			$('.profile-content').css('height', 'auto');
-
-			FB.Canvas.getPageInfo(function(info) {
-				$('.user-profile').css('top', info.scrollTop - 100);
-			});
-
-			if (refresh) {
-				$('.profile-content').animate({
-					height : 'toggle',
-				//top:'20px'
-				}, 500, function() {
-
-				});
-			}
+			$('.profile-content').html(data);
+			popup(load);
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1069,71 +945,87 @@ function getFollowersList(targetname, target, limit, refresh) {
 	});
 
 }
-function getMiniFollowingList(targetname, target) {
-	ui = '#followinglist';
 
-	$
-			.ajax({
-				type : "GET",
-				url : serverUrl + '/app/app/getfollowing/' + fanpageId
+
+function popup(load){
+	$('.light-box').css('display', 'block');
+	$('.user-profile').css('display', 'block');
+	$('.profile-content').css('height', 'auto');
+
+	FB.Canvas.getPageInfo(function(info) {
+		$('.user-profile').css('top', info.scrollTop - 100);
+	});
+
+	if (load) {
+		$('.profile-content').animate({
+			height : 'toggle',
+		//top:'20px'
+		}, 500, function() {
+
+		});
+	}
+}
+
+
+
+function getMiniFollowingList(targetname, target) {
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/getfollowing/' + fanpageId
 						+ '?limit=5' + '&target=' + target + '&targetname='
 						+ targetname + '&mini=1',
-				dataType : "html",
-				cache : false,
-				async : false,
-				beforeSend:function(){
-					
-					$(ui).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-					
-				},
-				success : function(data) {
-
-					$(ui).html(data);
-
-				},
-				error : function(xhr, errorMessage, thrownErro) {
-					console.log(xhr.statusText, errorMessage);
-				}
-			});
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend:function(){	
+			$('#followinglist').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+		},
+		success : function(data) {
+			$('#followinglist').html(data);
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
 
 }
 function getMiniFollowersList(targetname, target) {
 
-	ui = '#followerslist';
-	$
-			.ajax({
-				type : "GET",
-				url : serverUrl + '/app/app/getfollowers/' + fanpageId
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/getfollowers/' + fanpageId
 						+ '?limit=5' + '&target=' + target + '&targetname='
 						+ targetname + '&mini=1',
-				dataType : "html",
-				cache : false,
-				async : false,
-				
-				beforeSend:function(){
-					
-					$(ui).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-					
-				},
-				success : function(data) {
-
-					$(ui).html(data);
-
-				},
-				error : function(xhr, errorMessage, thrownErro) {
-					console.log(xhr.statusText, errorMessage);
-				}
-			});
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#followerslist').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$('#followerslist').html(data);
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
 
 }
 
-function resizeCommentBox(o) {
-	if (o.scrollHeight > 26) {
-		o.style.height = "1px";
-		o.style.height = (o.scrollHeight) + "px";
+function resizeCommentBox(x) {
+	if (x.scrollHeight > 26) {
+		x.style.height = "1px";
+		x.style.height = (x.scrollHeight) + "px";
 	}
 	$('.post-button-container').css('display', 'block');
 	$('.post-box').css('border-bottom', '0px');
+}
+
+function changeTime(ui){
+	$.each($(ui), function(index) {
+		$(this).html(timeZone($(this).html()));
+		$(this).attr('title', timeZoneTitle($(this).attr('title')));
+	});
 }
 
 function timeZoneTitle(time) {
@@ -1145,71 +1037,52 @@ function timeZoneTitle(time) {
 function timeZone(time) {
 
 	var date = new Date(time * 1000);
+	
 	var now = new Date();
-	var weekday = new Array(7);
-	weekday[0] = "Sunday";
-	weekday[1] = "Monday";
-	weekday[2] = "Tuesday";
-	weekday[3] = "Wednesday";
-	weekday[4] = "Thursday";
-	weekday[5] = "Friday";
-	weekday[6] = "Saturday";
-	apm = '';
+
+	var weekday = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+	var apm = '';
 
 	var hour = date.getHours();
-	if (hour < 12) {
-		apm = 'am';
-	} else {
-		apm = 'pm';
-	}
+	apm = (hour < 12)? 'am' : 'pm';
+	
 	if (hour == 0) {
 		hour = 12;
 	}
 	if (hour > 12) {
 		hour = hour - 12;
 	}
+	
 	var min = date.getMinutes();
 	if (min < 10) {
 		min = '0' + min;
 	}
-
-	if (now.getYear() > date.getYear()) {
-		return (date.toDateString());
-	} else {
-		if (now.getMonth() > date.getMonth()) {
-			return (date.toDateString());
-		} else {
-			if (now.getDate() == date.getDate()) {
-				if (now.getHours() == date.getHours()) {
-					if (now.getMinutes() == date.getMinutes()) {
-						return 'a few seconds ago';
-					} else if (now.getMinutes() - date.getMinutes() == 1) {
-						return now.getMinutes() - date.getMinutes()
-								+ ' minute ago';
-					} else {
-						return now.getMinutes() - date.getMinutes()
-								+ ' minutes ago';
-					}
-				} else if (now.getHours() - date.getHours == 1) {
-					return (now.getHours() - date.getHours()) + ' hour ago';
-				} else {
-					return (now.getHours() - date.getHours()) + ' hours ago';
+	
+	var difference = now.getTime() - date.getTime();
+	var daydiff = Math.floor(difference/1000/60/60/24);
+	if (daydiff < 4){
+		if (daydiff==1){
+			return 'Yesterday at ' + hour + ':' + min + '' + apm;
+		}else if (daydiff < 1){
+			var hourdiff = Math.floor(difference/1000/60/60);
+			if (hourdiff < 1){
+				var mindiff = Math.floor(difference/1000/60);
+				if(mindiff <1){
+					var secdiff = Math.floor(difference/1000);
+					return secdiff + ((secdiff==1)? ' second ago' : ' seconds ago');
 				}
-
-			} else if (now.getDate() - date.getDate() == 1) {
-				return 'Yesterday at ' + hour + ':' + min + '' + apm;
-			} else if (now.getDate() - date.getDate() <= 3) {
-				return weekday[date.getDay()] + ' at ' + hour + ':' + min + ''
-						+ apm;
-			} else {
-				return (date.toDateString());
+		
+				return mindiff + ((mindiff==1)? ' minute ago' : ' minutes ago');
 			}
-
+			return hourdiff + ((hourdiff==1)?' hour ago' : ' hours ago');
 		}
+		return weekday[date.getDay()] + ' at ' + hour + ':' + min + '' + apm;
+	}else{
+		return (date.toDateString());
 	}
-
 }
 
+/*
 function upload(form, action_url, div_id, target_id, target) {
 	fileUpload(form, action_url, div_id);
 	addActivities('post-photo', userName, fanpageId, target_id, target);
@@ -1277,3 +1150,25 @@ function fileUpload(form, action_url, div_id) {
 	document.getElementById(div_id).innerHTML = "Uploading...";
 
 }
+
+function colorChange(choice) {
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/user/' + userId + '/color/?choice=' + choice
+				+ '&fanpage_id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		success : function(data) {
+			window.location.reload();
+
+			//$(ui).html(data);
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
+
+}
+
+*/
+
