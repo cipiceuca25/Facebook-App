@@ -125,6 +125,18 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 	
 	}
 	
+	public function getRecentActivitiesSince($facebook_user_id, $fanpage_id, $limit, $since) {
+		$select = "select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time  
+					from fancrank_activities 
+					where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id and created_time > '" .$since ."'
+					order by created_time DESC
+					limit $limit";
+		
+		$result = $this->getAdapter()->fetchAll($select);
+		
+		return $result;
+	}
+	
 	public function getRecentActivitiesInRealTime($facebook_user_id, $fanpage_id, $limit) {
 		$fanpageModel = new Model_Fanpages();
 		$fanpageName = $fanpageModel->findRow($fanpage_id)->fanpage_name;

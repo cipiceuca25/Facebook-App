@@ -461,6 +461,56 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	echo '</br>Execution time ' . $totalTime;
     }
     
+    public function testmemcache1Action() {
+    	$activitiesModel = new Model_FancrankActivities();
+    	 
+    	$activities = null;
+    	$limit = 20;
+    	$this->_fanpageId = '197221680326345';
+    	$this->_userId = '100001005159808';
+    	
+    	if(!empty($this->_fanpageId ) && !empty($this->_userId)) {
+    		$cache = Zend_Registry::get('memcache');
+    		$cache->setLifetime(3600);
+    	
+    		try {
+    			$fanActivityId = $this->_fanpageId .'_' .$this->_userId. '_fan_activity';
+    	
+    			//Check to see if the $fanpageId is cached and look it up if not
+    			if(isset($cache) && !$cache->load($fanActivityId)){
+    				echo 'db look up';
+    				//$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    				$activities = $activitiesModel->getRecentActivities($this->_userId, $this->_fanpageId, $limit);
+    				//Save to the cache, so we don't have to look it up next time
+    				$cache->save($activities, $fanActivityId);
+    			}else {
+    				echo 'memcache look up';
+    				$activities = $cache->load($fanActivityId);
+    				// merge new activity
+    			}
+    		} catch (Exception $e) {
+    			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    			//echo $e->getMessage();
+    		}
+    	}
+    	Zend_Debug::dump($activities);
+    	
+    	$newActivity = array();
+    	echo $activities[0]['created_time'];
+    	if(!empty($activities[0]['created_time'])) {
+    		$newActivity = $activitiesModel->getRecentActivitiesSince($this->_userId, $this->_fanpageId, $limit, $activities[1]['created_time']);
+    	}
+    	
+    	if(count($newActivity) > 19) {
+    		Zend_Debug::dump($newActivity);
+    	}else {
+    		echo '-------------';
+    		$result = array_merge($newActivity, array_slice($activities, count($newActivity)));
+    		Zend_Debug::dump($result);
+    	}
+    	
+    }
+    
     public function viewAction() {
     	$time = time();
     	$range = 7776000;

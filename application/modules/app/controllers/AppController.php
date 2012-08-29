@@ -1161,6 +1161,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$activitiesModel = new Model_FancrankActivities();
     	
+    	$limit = 20;
     	$activities = null;
     	if(!empty($this->_fanpageId ) && !empty($this->_userId)) {
     		$cache = Zend_Registry::get('memcache');
@@ -1173,13 +1174,25 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			if(isset($cache) && !$cache->load($fanActivityId)){
     				//echo 'db look up';
     				//$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
-    				$activities = $activitiesModel->getRecentActivities($this->_userId, $this->_fanpageId, 20);
+    				$activities = $activitiesModel->getRecentActivities($this->_userId, $this->_fanpageId, $limit);
     				//Save to the cache, so we don't have to look it up next time
     				$cache->save($activities, $fanActivityId);
     			}else {
     				//echo 'memcache look up';
     				$activities = $cache->load($fanActivityId);
     				// merge new activity
+    			    $newActivity = array();
+				    if(!empty($activities[0]['created_time'])) {
+				    	$newActivity = $activitiesModel->getRecentActivitiesSince($this->_userId, $this->_fanpageId, $limit, $activities[0]['created_time']);
+				    }
+			    	
+			    	if(count($newActivity) >= $limit) {
+			    		//Zend_Debug::dump($newActivity);
+			    		$activities = $newActivity;
+			    		$cache->save($activities, $fanActivityId);
+			    	}else if(count($newActivity) > 0){
+			    		$activities = array_merge($newActivity, array_slice($activities, count($newActivity)));
+			    	}
     			}
     		} catch (Exception $e) {
     			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
