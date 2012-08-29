@@ -288,9 +288,12 @@ function feedbackAnimation(ui) {
 	});
 	$(ui).animate({
 		opacity : '0',
-		top : "-=30px"
+		top : "-=30px",
 	}, 1000, function() {
 	});
+	
+	$(ui).delay(1500).hide(0);
+	
 }
 
 
@@ -390,7 +393,7 @@ function comment_feed2(post_id, type, limiter, total, toggle) {
 // total = what's the total number of comments
 // toggle = pop up ?
 // is this on the latest
-function getFeedComment(ui, post_id, type, limiter, total, toggle) {
+function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/fancrankfeedcomment/' + fanpageId
@@ -437,7 +440,9 @@ function comment_popup(post_id, limiter, open) {
 		dataType : "html",
 		cache : false,
 		async : false,
-	
+		success : function(data) {
+			$('.profile-content').html(data);
+		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
 		}
@@ -477,9 +482,11 @@ function getNewsfeed() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#news-feed').html("<img src='/img/ajax-loader.gif' />");
+			$('#news-feed').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
+			
+		
 			$('#news-feed').html(data);
 			getFancrankfeed(setFeed);
 			getTopFan();
@@ -488,7 +495,7 @@ function getNewsfeed() {
 					.html(timeZone($('#latestpost .time').html()));
 			$('#latestpost .time').attr('title',
 					timeZoneTitle($('#latestpost .time').attr('title')));
-
+	
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -635,7 +642,7 @@ function getFancrankfeed(view) {
 		cache : false,
 		async : false,
 		beforeSend: function(){
-			$(ui).html("<img src='/img/ajax-loader.gif' />");
+			$(ui).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 
@@ -662,7 +669,7 @@ function getTopFan() {
 		cache : false,
 		async : false,
 		beforeSend: function(){
-			$('#topfan').html("<img src='/img/ajax-loader.gif' />");
+			$('#topfan').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$('#topfan').html(data);
@@ -686,7 +693,7 @@ function getLeaderboard() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#leaderboard').html("<img src='/img/ajax-loader.gif' />");
+			$('#leaderboard').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$('#leaderboard').html(data);
@@ -710,7 +717,7 @@ function getMyProfile() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#profile').html("<img src='/img/ajax-loader.gif' />");
+			$('#profile').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			//alert("rdy");
@@ -734,7 +741,7 @@ function getRedeem() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#redeem').html("<img src='/img/ajax-loader.gif' />");
+			$('#redeem').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$('#redeem').html(data);
@@ -754,7 +761,7 @@ function getAwards() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#achievements').html("<img src='/img/ajax-loader.gif' />");
+			$('#achievements').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$('#achievements').html(data);
@@ -774,7 +781,7 @@ function getRecentActivities() {
 		cache : false,
 		async : false,
 		beforeSend: function(){
-			$('#recent_activities').html("<img src='/img/ajax-loader.gif' />");
+			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
@@ -1076,7 +1083,7 @@ function getMiniFollowingList(targetname, target) {
 				async : false,
 				beforeSend:function(){
 					
-					$(ui).html("<img src = '/img/ajax-loader.gif' />");
+					$(ui).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 					
 				},
 				success : function(data) {
@@ -1105,7 +1112,7 @@ function getMiniFollowersList(targetname, target) {
 				
 				beforeSend:function(){
 					
-					$(ui).html("<img src = /img/ajax-loader.gif />");
+					$(ui).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 					
 				},
 				success : function(data) {
