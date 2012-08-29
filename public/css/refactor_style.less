@@ -523,25 +523,37 @@ padding: 0 9px 0;
 
 .badge-Follow{
 background-color:@color-tag-follow;
+transition-property : background-color; 
+transition-duration : 1s
+}
+
+.badge-Follower{
+background-color:@color-tag-follower;
+transition-property : background-color; 
+transition-duration : 1s
 }
 
 .badge-Follower:hover,
 .badge-Follow:hover{
 color:@color-tag-text-hover;
 background-color:@color-tag-follow-hover;
+transition-property : background-color; 
+transition-duration : 0.5s; 
 }
 
 .badge-Following{
 background-color:@color-tag-following;
+transition-property : bacgrkound-color; 
+transition-duration : 1s
 }
 
 .badge-Following:hover{
 background-color:@color-tag-unfollow;
+transition-property : color; 
+transition-duration : 0.5s; 
 }
 
-.badge-Follower{
-background-color:@color-tag-follower;
-}
+
 
 .badge-You{
 background-color:@color-tag-you;
