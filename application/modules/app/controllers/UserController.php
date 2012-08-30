@@ -314,7 +314,13 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 		$act = new Model_FancrankActivities();
 		
-		$stat = new Model_FansObjectsStats();
+		if ($data['activity_type'] == "like-status" || $data['activity_type'] == "like-photo" || 
+			 $data['activity_type'] == "like-video" || $data['activity_type'] == "like-link"){
+			
+			
+			
+		}
+		//$stat = new Model_FansObjectsStats();
 		
 		/*
 		switch($data['activity_type']){
@@ -393,6 +399,8 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		*/
 		
 		$act -> addActivities($data);
+		
+		
 		
 	}
 	

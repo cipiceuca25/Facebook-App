@@ -53,7 +53,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     protected function _initTimesZone()
     {
-        date_default_timezone_set('UTC');
+        date_default_timezone_set('GMT');
     }
 
     /**
