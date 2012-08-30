@@ -1040,7 +1040,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$postId = $this->_request->getParam('post_id');
 		$postType = $this->_request->getParam('post_type');
-    	//$limit = $this->_request->getParam('limit');
+    	$limit = $this->_request->getParam('limit');
     	$total = $this->_request->getParam('total');
     	
     	$latest = $this->_request->getParam('latest');

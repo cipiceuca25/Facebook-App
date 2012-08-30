@@ -284,7 +284,7 @@ function comment_feed(post_id, type, limiter, total, toggle) {
 	getFeedComment(ui, post_id, type, limiter, total, toggle, false);
 
 	$('.social.comment.' + post_id).css('display', 'none');
-	changeTime('#post_' + post_id + ' .time');
+	changeTime(ui + ' .time');
 
 }
 
@@ -295,7 +295,7 @@ function comment_feed2(post_id, type, limiter, total, toggle) {
 
 	$('.social.commentn.' + post_id).css('display', 'none');
 	
-	changeTime('#postn_' + post_id + ' .time');
+	changeTime(ui + ' .time');
 }
 
 
@@ -311,9 +311,13 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
 	
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/app/fancrankfeedcomment/' + fanpageId
-				+ '?post_id=' + post_id + '&post_type=' + type + '&limit='
-				+ limiter + '&total=' + total + '&latest=' + latest + '&until=' + until,
+		url : serverUrl + '/app/app/fancrankfeedcomment/' + fanpageId + 
+				'?post_id=' + post_id + 
+				'&post_type=' + type + 
+				'&limit=' + limiter + 
+				'&total=' + total + 
+				'&latest=' + latest
+				,
 		dataType : "html",
 		cache : false,
 		async : false,
