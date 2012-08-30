@@ -1163,7 +1163,7 @@ class Service_FancrankCollectorService {
 				break;
 			}
 			if(!$found) {
-				$result[] = $newLike;
+				$result[] = $preComment;
 			}
 		}
 		return $result;

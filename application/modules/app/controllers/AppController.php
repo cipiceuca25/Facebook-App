@@ -1002,7 +1002,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     }
     
-    
     public function fancrankfeedcommentAction() {
     	$this->_helper->layout->disableLayout();
     	//$this->_helper->viewRenderer->setNoRender(true);

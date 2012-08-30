@@ -131,6 +131,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		$batchQueries = $this->postBatchQueryBuilder($fanpageId, 10, $accessToken);
 		
 		Zend_Debug::dump($batchQueries);
+		exit();
 		$result = Fancrank_Util_Util::requestFacebookAPI_POST("https://graph.facebook.com/", $batchQueries);
 		
 		Zend_Debug::dump($result);
@@ -165,6 +166,38 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     		$result[] = $tmp;
     	}
     	return 'batch=' .urlencode(json_encode($result)) .'&access_token=' .$access_token;
+    }
+    
+    private function feedBatchQuery($fanpageId, $accessToken, $limit, $since) {
+    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$fanpageId/feed?since=$since&limit=$limit");
+    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$fanpageId/posts?since=$since&limit=$limit");
+    	
+    	$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$accessToken;
+    	
+    	$client = new Zend_Http_Client;
+    	$client->setUri("https://graph.facebook.com/?". $batchQueries);
+    	$client->setMethod(Zend_Http_Client::POST);
+    	
+    	$response = $client->request();
+    	
+    	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    	 
+    	$feed = array();
+    	$posts = array();
+    	if(!empty($result[0]->body)) {
+    		$feed = json_decode($result[0]->body);
+    	}
+    	
+    	if(!empty($result[1]->body)) {
+    		$posts = json_decode($result[1]->body);
+    	}
+
+    	$finalResult['feed'] = $feed;
+    	$finalResult['posts'] = $posts;
+    	
+    	Zend_Debug::dump($finalResult);
+    	
+    	return $finalResult;
     }
     
     public function testmodelAction() {
@@ -428,6 +461,31 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$userId = '100001005159808';
     	//echo $facebook->getAppAccessToken();
     	echo $facebook->isUserInstalledApp($userId);
+    }
+    
+    public function test11Action() {
+    	$fanpage_id = '178384541065';
+    	$facebook_user_id = '664609767';
+    	$activitiesModel = new Model_FancrankActivities();
+    	$activities = $activitiesModel->getRecentActivities($facebook_user_id, $fanpage_id, 5);
+    	Zend_Debug::dump($activities);
+    	$date = new Zend_Date('1344639277');
+    	echo $date->toString(Zend_Date::ISO_8601);
+    	echo '</br>';
+    	$date1 = new Zend_Date('2012-08-10T22:54:38+0000');
+    	echo $date1->toString(Zend_Date::TIMESTAMP);
+    }
+    
+    public function test12Action() {
+    	$fanpageId = '197221680326345';
+    	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
+    	$since = 'yesterday';
+    	$limit = 5; 
+    	$this->feedBatchQuery($fanpageId, $accessToken, $limit, $since);
+    }
+    
+    public function test13Action() {
+
     }
     
     public function testmemcacheAction() {
