@@ -387,20 +387,49 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->view->facebook_user = null;
     	}
     	*/
-		$latest = $this->getFeed(1, 'admin');
+		$result = $this->feedFirstQuery();
+
+		$latest = $result['posts']->data;
+		$feed = $result['feed']->data;
+	
     	$likesModel = new Model_Likes();
-    	$likes = array();
+    	$latestlike = array();
     	$count=0;
     	//Zend_Debug::dump($result);
     	
     	if ($latest != null ){
-    		$likes[$count] = $likesModel->getLikes($this->_fanpageId, $latest[0]->id, $this->_userId );
+    		$latestlike = $likesModel->getLikes($this->_fanpageId, $latest[0]->id, $this->_userId );
     	}
     	//Zend_debug::dump($latest);
+    	$this->view->latestlike = $latestlike;
     	$this->view->latest = $latest ;
+    	
+
+    	$follow = new Model_Subscribes();
+    	$likes = array();
+    	$relation = array();
+    	$count=0;
+    	
+    	if ($feed != null){
+    		
+    			foreach ($feed as $posts){
+    				//echo $top['facebook_user_id'];
+    				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    				$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
+    				//echo $likes[$count];
+    				$count++;
+    	
+    			}
+    		
+    	}
+    	
+    	$this->view->relation = $relation;
+    	
+    	$this->view->likes = $likes;
+    	$this->view->post = $feed;
     	//Zend_Debug::dump($fanpage);
     	$this->view->fanpage_id = $this->_fanpageId;
-    	$this->view->likes = $likes;
+    	
     	$this->render("newsfeed");
     }
     
@@ -493,7 +522,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
     */
     
-    public function commentAction()
+    public function popuppostAction()
     {
     	$this->_helper->layout->disableLayout();
 
@@ -548,7 +577,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->view->postId = $postId;    	
 
     	
-    	$this->render("comment");
+    	$this->render("popuppost");
     }
     
     public function awardsAction() {
@@ -956,9 +985,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$viewAs = $this->_request->getParam('viewAs');
-    	$limit = $this->_request->getParam('limit');
+    	
+    	$until = $this->_request->getParam('until');
+    	//echo $until;
     	$result = array();
-    	$result = $this->getFeed($limit, $viewAs);
+    	$result = $this->getFeed($until,  $viewAs);
     	//$result = json_encode($result);
     	//Zend_Debug::dump($result);
     	
@@ -967,7 +998,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$likes = array();
 		$relation = array();
     	$count=0;
-		//Zend_Debug::dump($result);
+		
 		if ($result != null){
 		if ($viewAs == 'myfeed'){
 			foreach ($result as $posts){
@@ -978,7 +1009,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				//echo $likes[$count];
 				$count++;
 			}	
-					
+		
 		}else{
 			foreach ($result as $posts){
 				//echo $top['facebook_user_id'];
@@ -986,15 +1017,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 				//echo $likes[$count];
 				$count++;
+				
 			}
 		}
 		}
-
+	
 		$this->view->relation = $relation;
 
     	$this->view->likes = $likes;
     	$this->view->post = $result;
     	if($viewAs == 'myfeed'){
+    		$this->view->myfeedcount = $count;
     		$this->render("fancrankfeedm");
     	}else{
     		$this->render("fancrankfeed");
@@ -1008,7 +1041,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->_helper->viewRenderer->setNoRender(true);
     	$postId = $this->_request->getParam('post_id');
 		$postType = $this->_request->getParam('post_type');
-    	$limit = $this->_request->getParam('limit');
+    	//$limit = $this->_request->getParam('limit');
     	$total = $this->_request->getParam('total');
     	
     	$latest = $this->_request->getParam('latest');
@@ -1145,19 +1178,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$client->setParameterGet('access_token', $this->_accessToken);
     	//echo $limit;
     	//if ($limit !== false){
-    		$client->setParameterGet('limit', $limit);
+    	$client->setParameterGet('limit', $limit);
     	//}
     	$response = $client->request();
     
     	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-    	 
-    	
-    		
-    		//Zend_Debug::dump($result->data);	
-    	
-    	
-    	
-    	if(!empty ($result->data)) {    
+		//Zend_Debug::dump($result->data);	
+		if(!empty ($result->data)) {    
 
     		return $result->data;
     	}
@@ -1185,14 +1212,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
 
     //this grabs the facebook feed for the current fanpage id and returns the list to fancrankAction 
-	protected function getFeed($limit, $view) {
+	protected function getFeed($until, $view) {
 
     	$client = new Zend_Http_Client;
     	$client->setUri("https://graph.facebook.com/". $this->_fanpageId ."/feed");
     	$client->setMethod(Zend_Http_Client::GET);
     	$client->setParameterGet('access_token', $this->_accessToken);
-    	$client->setParameterGet('limit', $limit);
-    	 
+    	$client->setParameterGet('limit', 10);
+    	if($view != 'myfeed'){
+	    	if ($until != 'undefined'){
+	    		$client->setParameterGet('until', $until);
+	    	}
+    	}
     	$response = $client->request();
     	 
     	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
@@ -1211,7 +1242,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			case 'user':
     				return $this->feedFilterByUser($result->data, $this->_fanpageId);
     			case 'myfeed':
-    				return $this->feedFilterByMyFeed($this->_fanpageId, $limit);
+    				return $this->feedFilterByMyFeed($this->_fanpageId, $until);
     			default:
     				return $result->data;
     		}
@@ -1239,10 +1270,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	return $result;
     }
     
-    protected function feedFilterByMyFeed($fanpageId, $limit) {
+    protected function feedFilterByMyFeed($fanpageId, $myfeedoffset) {
     	$result = array();
     	$post = new Model_Posts();
-		$post = $post->getMyFeedPost($fanpageId, $this->_userId ,$limit);
+		$post = $post->getMyFeedPost($fanpageId, $this->_userId , 10, $myfeedoffset);
 		$result = $post;
 		
 		
@@ -2125,6 +2156,36 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->_facebook_user->fancrankAppTour = 0;
     	}
+    }
+    
+    private function feedFirstQuery() {
+    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/feed?limit=10");
+    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/posts?limit=1");
+    
+    	$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$this->_accessToken;
+    
+    	$client = new Zend_Http_Client;
+    	$client->setUri("https://graph.facebook.com/?". $batchQueries);
+    	$client->setMethod(Zend_Http_Client::POST);
+    
+    	$response = $client->request();
+    
+    	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    	 
+    	$feed = array();
+    	$posts = array();
+    	if(!empty($result[0]->body)) {
+    		$feed = json_decode($result[0]->body);
+    	}
+    
+    	if(!empty($result[1]->body)) {
+    		$posts = json_decode($result[1]->body);
+    	}
+    	 
+    	$finalResult['feed'] = $feed;
+    	$finalResult['posts'] = $posts;
+    
+    	return $finalResult;
     }
     
 }

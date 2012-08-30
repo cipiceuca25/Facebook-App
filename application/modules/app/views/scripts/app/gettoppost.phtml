@@ -114,11 +114,11 @@
 		
 				 &middot;
 		
-				 <a  onclick=" comment_popup('<?= $topPost['post_id']?>', 10, true)">Comment </a>
+				 <a  onclick=" popup_post('<?= $topPost['post_id']?>', 10, true)">Comment </a>
 		
 				&middot;
 				
-				<span class="time" title="<?= strtotime($topPost['created_time'])?>"><?=strtotime($topPost['created_time'])?> </span>
+				<span class="time" title="" data-unix-time="<?= strtotime($topPost['created_time'])?>"></span>
 			<br/>
 		</div>
 			
@@ -142,7 +142,7 @@
 	<?php if(isset($topPost['post_comments_count']) && ($topPost['post_comments_count'] != 0)){?>
 	<div class="social comment <?=$topPost['post_id']?>">
 	
-			 <a   onclick=" comment_popup('<?= $topPost['post_id']?>', 10, true)">
+			 <a   onclick=" popup_post('<?= $topPost['post_id']?>', 10, true)">
 			 	<?php if($topPost['post_comments_count'] != 1){?> <img src="/img/comment.png" />
 			 		View all <span class="comment_<?= $topPost['post_id']?>">
 			 		<?php if(isset($topPost['post_comments_count'])){

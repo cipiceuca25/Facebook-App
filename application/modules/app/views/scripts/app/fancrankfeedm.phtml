@@ -5,16 +5,11 @@
 <?php if(empty($this->post)){?>
 
 	<li class="post-container">
-	<div class="user">
-	
-	</div>
-
 		<div class="post">
 			<div class="message">
-			Feed Empty/Feed not Available
+			There are no more posts
 			</div>
 		</div>
-
 	</li>
 <? }else{?>
 
@@ -81,9 +76,6 @@
 	
 	</div>
 
-		
-	
-	<div class="post_container">
 	<div class="post">
 		<? if($post['post_message'] != null ){?><div class="message"><?
 				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
@@ -120,7 +112,7 @@
 					<a target="new" href="<?echo $this->escape($post['link'])?> "><?= $this->escape($post['link_name'])?>
 					
 					<?php  if ($post['post_caption']!= null){?>
-					</br>
+					<br/>
 					<?php echo $this->escape($post['post_caption']); ?>:<? }?> 
 					<br/>
 					
@@ -156,7 +148,7 @@
 			 		} else {echo '0';} ?> , true )" class="commenthider_<?= $post['post-id'] ?>">Comment </a>
 				&middot;
 			
-				<span class="time"  title="<?= strtotime($post['created_time'])?>"><?= strtotime($post['created_time'])?></span>
+				<span class="time"  title="" data-unix-time="<?= strtotime($post['created_time'])?>"></span>
 			
 			<br/>
 	</div>
@@ -218,8 +210,9 @@
 
 <?php endforeach; }?>
 				
-						
-	
+<?php if ($this->myfeedcount > 9){?>					
+	<button id ="more_post" class="btn-more" onclick="getFancrankfeed(setFeed)">MORE +</button>
+	<?php }?>
 
 
 			

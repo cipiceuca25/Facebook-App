@@ -276,8 +276,7 @@
 								<a
 									onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['facebook_user_name']?>
 								</a> on <span class="time"
-									title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?>
-								</span>
+									title="" data-unix-time="<?= strtotime($post['user_created_time'])?>"></span>
 
 
 								<?php }else{?>
@@ -291,8 +290,7 @@
 								<a
 									onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['facebook_user_name']?>
 								</a> on <span class="time"
-									title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?>
-								</span>
+									title="" data-unix-time="<?= strtotime($post['user_created_time'])?>"></span>
 								<?php }?>
 
 
@@ -306,10 +304,9 @@
 								liked <a
 									onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?>
 								</a>'s <a
-									onclick="comment_popup('<?=$post['post_id']?>', 5,false)">post</a>
+									onclick="popup_post('<?=$post['post_id']?>', 5,false)">post</a>
 								on <span class="time"
-									title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?>
-								</span>
+									title="" data-unix-time="<?= strtotime($post['user_created_time'])?>"></span>
 
 								<?break;?>
 
@@ -318,10 +315,9 @@
 								unliked <a
 									onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?>
 								</a>'s <a
-									onclick="comment_popup('<?=$post['post_id']?>', 5,false)">post</a>
+									onclick="popup_post('<?=$post['post_id']?>', 5,false)">post</a>
 								on <span class="time"
-									title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?>
-								</span>
+									title="" data-unix-time="<?= strtotime($post['user_created_time'])?>"></span>
 
 								<?break;?>
 
@@ -330,10 +326,9 @@
 								liked <a
 									onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?>
 								</a>'s <a
-									onclick="comment_popup('<?=$post['post_id']?>', 5,false)">comment</a>
+									onclick="popup_post('<?=$post['post_id']?>', 5,false)">comment</a>
 								on <span class="time"
-									title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?>
-								</span>
+									title="" data-unix-time="<?= strtotime($post['user_created_time'])?>"></span>
 
 								<?break;?>
 								<?php case 'unlike-comment':?>
@@ -341,19 +336,17 @@
 								unliked <a
 									onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?>
 								</a>'s <a
-									onclick="comment_popup('<?=$post['post_id']?>', 5,false)">comment</a>
+									onclick="popup_post('<?=$post['post_id']?>', 5,false)">comment</a>
 								on <span class="time"
-									title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?>
-								</span>
+									title="" data-unix-time="<?= strtotime($post['user_created_time'])?>"></span>
 
 								<?break;?>
 								<?php case 'post':?>
 								<?echo $this->facebook_user->facebook_user_first_name ?>
 								posted <a
-									onclick="comment_popup('<?=$post['post_id']?>', 5,false)">this</a>
+									onclick="popup_post('<?=$post['post_id']?>', 5,false)">this</a>
 								on <span class="time"
-									title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?>
-								</span>
+									title="" data-unix-time="<?= strtotime($post['user_created_time'])?>"></span>
 
 								<?break;?>
 
@@ -362,10 +355,9 @@
 								commented on <a
 									onclick="userProfile('<?= $post['facebook_user_id']?>', false)"><?=$post['fan_name']?>
 								</a>'s <a
-									onclick="comment_popup('<?=$post['post_id']?>', 5,false)">post</a>
+									onclick="popup_post('<?=$post['post_id']?>', 5,false)">post</a>
 								on <span class="time"
-									title="<?= strtotime($post['user_created_time'])?>"><?= strtotime($post['user_created_time'])?>
-								</span>
+									title="" data-unix-time="<?= strtotime($post['user_created_time'])?>"></span>
 
 								<?break;?>
 								<?php default:?>

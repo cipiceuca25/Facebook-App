@@ -1,8 +1,6 @@
 <div class="row">
 <div class="span7">
 
-
-
 <div class="title">
 	
 	<div class="title-icon">
@@ -22,10 +20,15 @@
 	<ul class="top-list">
 	<?php if(count($this->result)==0){?>
 		<li >
-		<br/>
-		No users
-		<br/>
-		<br/>
+			<div class="ranker">
+				<div class="user">
+					<div class="photo"><img class="face" width="30" height="30" src="/img/profile-picture.png" onerror="ImgError(this);"></div>
+				
+					<div class="name">No users</div>
+				
+				</div>
+			
+			</div>
 		</li>
 	<?php }?>
 	
@@ -55,7 +58,8 @@
 												data-placement="top"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
 						
 					</div>
-					<!--   <br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?>  since <?=  date(" F d Y",strtotime($user['created_time']))?>	-->
+					<!--   <br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?>  since <span class="time"
+									title="" data-unix-time="<?= strtotime($user['created_time'])?>"></span>	-->
 				</div>
 				
 				<div class="badge-profile">

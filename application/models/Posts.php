@@ -34,6 +34,29 @@ class Model_Posts extends Model_DbTable_Posts
 
 	}
 	
+	
+	public function addLikeToPost($id) {
+		$found = $this->checkPostExists($id);
+		$dateObject = new Zend_Date();
+		
+		if (!empty ( $found )) {
+			$found->likescount ++;
+			$found->save ();
+		}
+	}
+	
+	public function addCommentToPost($id) {
+		$found = $this->checkPostExists($id);
+		$dateObject = new Zend_Date();
+	
+		if (!empty ( $found )) {
+			$found->activityupdated_time = $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
+			$found->commentscount ++;
+			$found->save ();
+		}
+	}
+	
+	
 	public function insertPost($fanpage_id, $post)
 	{
 
@@ -105,7 +128,7 @@ class Model_Posts extends Model_DbTable_Posts
 	}
 
 	
-	public function getMyFeedPost($fanpage_id, $user_id, $limit){
+	public function getMyFeedPost($fanpage_id, $user_id, $limit, $myfeedoffset){
 		$select="Select h.*, fan_name, fanpage_name from(
 		
 				SELECT p.*
@@ -146,6 +169,8 @@ class Model_Posts extends Model_DbTable_Posts
 						
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
+		if($myfeedoffset != 0)
+			$select = $select . " OFFSET $myfeedoffset";
 		
 		return $this->getAdapter()->fetchAll($select);
 	

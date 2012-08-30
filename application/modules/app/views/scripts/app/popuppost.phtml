@@ -250,7 +250,7 @@
 		<div class="social"> 
 		
 		 
-			<span class="time" title="<?=  strtotime($post->created_time)?>"><?=  strtotime($post->created_time)?></span>
+			<span class="time" title="" data-unix-time="<?=  strtotime($post->created_time)?>"></span>
 			
 			&middot;
 			
@@ -260,7 +260,7 @@
 				
 				
 				<?php if ($this->likes[$count] == 0) {?>
-					<a class="like_control_<?= $post->id?>"  onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Like</a> 
+					<a class="like_control_<?= $post->id?>" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Like</a> 
 				<?}else{?>
 					<a class="like_control_<?= $post->id?>" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
 				<?php }?>
@@ -282,8 +282,8 @@
 					<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);"></div>
 			
 					<form action="#" class="submit-form" >
-						<textarea class="comment-box" id="comment_<?= $this->post->id ?>" onkeyup="resizeCommentBox(this)"></textarea>
-						<input type=button class="btn-submit" value="Comment" onclick="commentpopupSubmit('<?= $this->post->id ?>','<?= $this->post->type ?>','comment_<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>' )">
+						<textarea class="comment-box" id="popup_comment_box_<?= $this->post->id ?>" onkeyup="resizeCommentBox(this)"></textarea>
+						<input type=button class="btn-submit" value="Comment" onclick="commentpopupSubmit('<?= $this->post->id ?>','<?= $this->post->type ?>','popup_comment_box_<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>' )">
 					</form>
 				
 			</li>

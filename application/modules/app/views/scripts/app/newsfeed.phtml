@@ -32,7 +32,7 @@
 
 
 
-				<?php foreach ($this->latest as $post):?>
+				<?php  $post = $this->latest[0];?>
 
 
 				<li class="post-container">
@@ -88,9 +88,7 @@
 				}
 				?>
 							<br />
-
-
-						</div>
+							</div>
 						<?}	?>
 
 
@@ -110,7 +108,7 @@
 
 								<div class="link-right">
 									<a target="new" href="<?echo $this->escape($post->link)?> "> <?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
-										<?php  if (isset($post->caption)){?> </br> <?php echo $this->escape($post->caption);?>:
+										<?php  if (isset($post->caption)){?> <br/> <?php echo $this->escape($post->caption);?>:
 										<?php }?> <?php if (isset($post->description)){?> <?=$this->escape($post->description)?>
 										<?php }?>
 
@@ -126,7 +124,7 @@
 
 					<div class="social">
 
-						<?php if ($this->likes[$count] == 0) {?>
+						<?php if ($this->latestlike == 0) {?>
 						<a class="like_control_<?= $post->id?>"
 							onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like</a>
 						<?}else{?>
@@ -140,8 +138,7 @@
 						echo $post->comments->count; 
 			 		} else {echo '0';} ?> , true )"
 							class="commenthidern_<?= $post->id ?>">Comment </a> &middot; <span
-							class="time" title="<?= strtotime($post->created_time)?>"> <?=  strtotime($post->created_time)?>
-						</span> <br />
+							class="time" title="" data-unix-time="<?= strtotime($post->created_time)?>"></span> <br />
 					</div>
 
 					<div class="social like <?=$post->id?>"
@@ -180,10 +177,11 @@
 				</li>
 
 
-				<?php $count ++;?>
+
+			
 
 
-				<?php endforeach; }?>
+				<?php }?>
 
 
 			</ul>
@@ -277,10 +275,249 @@
 
 			<ul id="fancrankfeed">
 
+			
+<?php $count = 0?>
+
+<?php if(empty($this->post)){?>
+	
+	<li class="post-container">
+	<div class="user">
+	
+	</div>
+	<div class="post_container">
+		<div class="post">
+			<div class="message">
+			Feed Empty/Feed not Available
+			</div>
+		</div>
+		</div>
+	</li>
+<?}else{?>
+
+
+
+<?php foreach ($this->post as $post):?>		
+
+		
+	<li class="post-container <?=$post->id?>" >
+	
+	<div class="user" >		
+	
+	<div class="user-badge">
+	<a  <? if (($this->relation[$count] != 'Fanpage')){?>
+					<? if ($this->relation[$count] != 'You') { ?>
+						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+								 onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" 
+						<?}else{?>
+								onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>"
+						<?}?>
+						>
+							
+						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+					<?php }else{?>
+						><span class="badge badge-You">You</span>
+					<?php }?>
+					
+				<?}else{?>
+					><span class="badge badge-Fanpage">Admin</span>
+				<?php }?> </a></div>
+	
+	<div class="photo"><a data-toggle="modal"
+		<? if (!($this->relation[$count] == 'Fanpage')){?> 
+			onclick="userProfile('<?=$post->from->id?>')"
+			rel="popover" 
+			data-content="" 
+			data-original-title="" 
+			data-placement="right" 
+			data-userid="<?=$post->from->id?>"
+		<?php }?>
+	><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);">
+	</a></div>
+	
+	<div class="name"><a data-toggle="modal"
+		<? if (!($this->relation[$count] == 'Fanpage')){?> 
+			onclick="userProfile('<?=$post->from->id?>')"
+			rel="popover" 
+			data-content="" 
+			data-original-title="" 
+			data-placement="right" 
+			data-userid="<?=$post->from->id?>"
+		<?php }?>
+	><?=  $post->from->name?>
+	</a></div>
+	
+	</div>
+	
+			
+	
+
+	<div class="post">
+
+
+
+			<?php if(isset($post->message)){ 
+				?>
+			<div class="message">
+		
+				
+				
+				<?php 
+				$reg_ex = "/\n/";
+				$m = $this->escape($post->message);
+				if(preg_match_all($reg_ex, $m, $url)) {
+				
+				
+					$m= preg_replace($reg_ex, "<br/>", $m);
+			
+				} ?>
+				
+				<?php 
+				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+				
+				if(preg_match_all($reg_exUrl, $m, $url)) {
+
+
+				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
+
+				} else {
+
+				       echo $m;
+
+				}
+				?>
+				<br />
+				
+
+			</div>
+			<?}	
+			?>
+		<div class="graphical">	
+		<?php if (($post->type == 'photo') || ($post->type =='video')) {?>	
+			<a target="new" href="<?echo $this->escape($post->link)?> "> 
+						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
+					</a>
+			
+		<?}elseif ($post->type == 'link') {?>
+			<div class="link">
+				<div class="link-left">
+					<a target="new" href="<?echo $this->escape($post->link)?> "> 
+						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
+					</a>
+				</div>
+			
+				<div class="link-right">
+					<a target="new" href="<?echo $this->escape($post->link)?> ">
+						<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
+						<?php  if (isset($post->caption)){?>
+						</br>
+						<?php echo $this->escape($post->caption);?>: <?php }?> 
+						
+						
+						<?php if (isset($post->description)){?>
+							<?=$this->escape($post->description)?> 
+						<?php }?>
+						
+					</a>
+				</div>
+			</div>
+		<?}?>
+		</div>
+</div>
+	
+	<div class="social"> 
+			
+			
+		<?php if ($this->likes[$count] == 0) {?>
+			<a class="like_control_<?= $post->id?>"  onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )" >Like</a>   
+		<?}else{?>
+			<a class="like_control_<?= $post->id?>"  onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike</a>   
+		<?php }?>
+		
+		 &middot;
+		
+		<a  onclick=" comment_feed('<?= $post->id ?>',
+			 						'<?= $post->type?>', 
+			 						10,
+			 						<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
+								 	true )"
+			class="commenthider_<?= $post->id ?>">Comment</a>
+				
+		&middot;
+
+		<span class="time" title="" data-unix-time="<?=  strtotime($post->created_time)?>"></span>
+			
+		<br/>
+	</div>
+	<div class="social like <?=$post->id?>"  <?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>style="display:none"<?php }?>>
+		
+			<a>
+				<img src = "/img/thumbsup.png" />
+				<span class="like_<?= $post->id?>"><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
+					
+					<?php if(isset($post->likes->count) && $post->likes->count == 1){?>person<?php }else{?>people<?php }?> 
+				
+				</span>
+				likes this.
+			</a>		
+		
+	
+	</div>
+ 
+	<?php if(isset($post->comments->count) && ($post->comments->count != 0)){?>
+	<div class="social comment <?=$post->id?>">
+	
+			 <a  onclick=" comment_feed('<?= $post->id ?>',
+			 							'<?= $post->type?>', 
+			 							10,
+			 							<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
+								 		true )"> 
+					<img src="/img/comment.png" />
+			 		<?php if($post->comments->count != 1){?> 
+			 		View all <span class="comment_<?= $post->id?>">
+			 		<?php if(isset($post->comments->count)){
+						echo $post->comments->count; //echo  $post->comments->count;
+					 	} else {
+							echo '0'; 
+						}?>
+					</span> 
+					comments 
+				<?php }else { ?>
+					View all<span class="comment_<?= $post->id?>">
+			 		
+					 
+					
+					</span>
+					comments 
+				<?php }?>
+				</a>
+			
+	
+	
+	</div>
+	<?php }?>
+	
+	
+	
+	<ul class="comments" id="post_<?=$post->id?>" ></ul>
+	</li>	
+			
+			<?php $count ++;?>
+			 
+			
+			
+			<?php endforeach; ?>
+							
+			<?php }?>					
+			<?php $last_object = $this->post[count($this->post) - 1] ?>
+			<span id="last_post_time" data-time="
+			<?=  strtotime($last_object->created_time)?>"></span>
+			
+			
+			<button id ="more_post" class="btn-more" onclick="getFancrankfeed(setFeed)">MORE +</button>
 			</ul>
 
 
-			<button class="btn-more" onclick="getFancrankfeed(setFeed)">MORE +</button>
+			
 
 		</div>
 	</div>
@@ -296,7 +533,7 @@
 					<div class="title-header"><span id="topfan-tour">Top Fans This Week</span></div>
 					<div class="tip">
 						<a rel="tooltip"
-							title="These 5 fans have liked, commented, and interacted the most on the page.  This ranking changes every week.  Prizes are awarded to the top fan every week!"">?</a>
+							title="These 5 fans have liked, commented, and interacted the most on the page.  This ranking changes every week.  Prizes are awarded to the top fan every week!">?</a>
 					</div>
 				</div>
 				<div class="row box" id="topfan"></div>

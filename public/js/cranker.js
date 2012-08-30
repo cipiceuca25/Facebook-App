@@ -1,5 +1,5 @@
-var setFeed = 'All';
-var feedLimit = 0;
+var setFeed = 'all';
+var myfeedoffset = 0;
 
 var ffb = true;
 var ttb = true;
@@ -10,8 +10,10 @@ var mouseX;
 var mouseY;
 
 $(document).ready(
+		
 	function() {
-	// trick to indentify parent container
+		
+// trick to indentify parent container
 		if (window.location != window.parent.location) {
 			$(document.body).css({
 				'overflow' : 'hidden'
@@ -144,48 +146,8 @@ $('#top-followed-btn').live('click', function() {
 });
 
 
-
-$('#news-feed a').click(function(e) {
-	e.preventDefault();
-	$(this).tab('show');
-});
-
-$('#post_post a').click(function(e) {
-	e.preventDefault();
-	$(this).tab('show');
-});
-
-$('#post_photo a').click(function(e) {
-	e.preventDefault();
-	$(this).tab('show');
-});
-
-$('#fan-favorite a').click(function(e) {
-	e.preventDefault();
-	$(this).tab('show');
-});
-
-$('#profile a').click(function(e) {
-	e.preventDefault();
-	$(this).tab('show');
-});
-
-$('#achievements a').click(function(e) {
-	e.preventDefault();
-	$(this).tab('show');
-});
-
-$('#redeem a').click(function(e) {
-	e.preventDefault();
-	$(this).tab('show');
-});
-
 $('#newsfeed-tab').live('click', function() {
 	feedLimit = 0;
-	ffb = true;
-	ttb = true;
-	tcb = true;
-	tfdb = true;
 	getNewsfeed('#news-feed');
 
 	$('#leaderboard').html('');
@@ -228,18 +190,6 @@ $('#profile-tab').live('click', function() {
 
 });
 
-$('#achievements-tab').live('click', function() {
-	getAwards();
-	$('#leaderboard').html('');
-	$('#profile').html('');
-	$('#news-feed').html('');
-	$('#redeem').html('');
-	FB.Canvas.setSize({
-		width : 810,
-		height : 600
-	});
-
-});
 
 $('#redeem-tab').live('click', function() {
 	getRedeem();
@@ -271,6 +221,7 @@ function popover(x) {
 		}
 	});
 }
+
 function feedbackAnimation(ui) {
 	$(ui).css({
 		'top' : mouseY - 16,
@@ -284,7 +235,7 @@ function feedbackAnimation(ui) {
 	}, 1000, function() {
 	});
 	
-	$(ui).delay(1500).hide(0);
+	$(ui).delay(500).hide(0);
 	
 }
 
@@ -321,13 +272,10 @@ function userProfile(user, load) {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting popup profile');
 		}
 	});
-
-
 }
-
-
 
 function comment_feed(post_id, type, limiter, total, toggle) {
 	ui = '#post_' + post_id;
@@ -359,48 +307,43 @@ function comment_feed2(post_id, type, limiter, total, toggle) {
 // toggle = pop up ?
 // is this on the latest
 function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
+	
+	
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/fancrankfeedcomment/' + fanpageId
 				+ '?post_id=' + post_id + '&post_type=' + type + '&limit='
-				+ limiter + '&total=' + total + '&latest=' + latest,
-
+				+ limiter + '&total=' + total + '&latest=' + latest + '&until=' + until,
 		dataType : "html",
 		cache : false,
 		async : false,
-	
 		success : function(data) {
-
 			$(ui).html(data);
-			
 			if (toggle) {
 				$(ui).animate({
 					height : 'toggle',
 				}, 1000, 'swing', function() {
 					// Animation complete.
 				});
-
 			} 
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting comments on feed');
 		}
 	});
-
 	//alert('are we animating?' + toggle);
-
-
 }
 
 // ui = where to load the comments
 // post_id = 
 
 
-function comment_popup(post_id, limiter, load) {
+function popup_post(post_id, limiter, load) {
 	load = typeof load !== 'undefined' ? load : true;
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/app/comment/' + fanpageId + '?post_id='
+		url : serverUrl + '/app/app/popuppost/' + fanpageId + '?post_id='
 				+ post_id + '&limit=' + limiter,
 
 		dataType : "html",
@@ -413,6 +356,7 @@ function comment_popup(post_id, limiter, load) {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting comment popup');
 		}
 	});
 	
@@ -426,19 +370,22 @@ function getNewsfeed() {
 		dataType : "html",
 		cache : false,
 		async : true,
-	
+		beforeSend: function(){
+			$('#news-feed').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
 		success : function(data) {
 			
 		
 			$('#news-feed').html(data);
-			getFancrankfeed(setFeed);
+			
 			getTopFan();
 			getTopPost();
-			changeTime('#latestpost .time');
+			changeTime('.time');
 
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting news feed');
 		}
 	});
 }
@@ -464,6 +411,7 @@ function getTopPost() {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting topposts');
 		}
 	});
 }
@@ -518,6 +466,7 @@ function like(post_id, post_type, target_id, target_name) {
 				},
 				error : function(xhr, errorMessage, thrownErro) {
 					console.log(xhr.statusText, errorMessage);
+					console.log('error processing likes');
 				}
 			});
 }
@@ -562,35 +511,62 @@ function unlike(post_id, post_type, target_id, target_name) {
 				},
 				error : function(xhr, errorMessage, thrownErro) {
 					console.log(xhr.statusText, errorMessage);
+					console.log('error processing unlikes');
 				}
 			});
 }
 
 function getFancrankfeed(view) {
 	ui = '#fancrankfeed';
-	feedLimit += 10;
-	setFeed = view;
+	
 	//alert(serverUrl + '/app/app/fancrankfeed/' + fanpageId + '?viewAs='+ view + '&limit=' + feedLimit);
 	//alert(setFeed);
 	//alert(feedLimit);
+	if((setFeed == view) && (view != 'myfeed')){
+		last = $('#last_post_time').attr('data-time');
+		myfeedoffset = 0;
+	}else if (view == 'myfeed'){
+		
+		last = myfeedoffset;
+		myfeedoffset +=10;
+	}else{
+		last = undefined;
+	}
+
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/fancrankfeed/' + fanpageId + '?viewAs='
-				+ view + '&limit=' + feedLimit,
+				+ view + '&until=' + last ,
 		dataType : "html",
 		cache : false,
 		async :  false,
-	
+		beforeSend: function(){
+			$('#fancrankfeed').append("<div id='loader' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
 		success : function(data) {
 			//alert(data);
-			$(ui).html(data);
+			$('#loader').remove();
+			$('#last_post_time').remove();
+			$('#more_post').remove();
+			if((setFeed != view)){
+				//alert(last);
+				$(ui).html(data);
+			}else{
+				$(ui).append(data);
+				
+			}
 			changeTime('#fancrankfeed .time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
-			//console.log('feeding time');
+			console.log('error getting the feed');
 		}
 	});
+	if(view == 'post'){
+		view = 'all';	
+	};
+	setFeed = view;
+	
 }
 
 function getTopFan() {
@@ -612,7 +588,7 @@ function getTopFan() {
 		error : function(xhr, errorMessage, thrownErro) {
 			alert(url);
 			console.log(xhr.statusText, errorMessage);
-
+			console.log('error getting the topfan board');
 		}
 	});
 }
@@ -637,7 +613,7 @@ function getLeaderboard() {
 		error : function(xhr, errorMessage, thrownErro) {
 			alert(url);
 			console.log(xhr.statusText, errorMessage);
-
+			console.log('error getting the leaderboards');
 		}
 	});
 }
@@ -662,6 +638,7 @@ function getMyProfile() {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting user profile');
 		}
 	});
 }
@@ -682,30 +659,12 @@ function getRedeem() {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the redemption page');
 		}
 	});
 }
 
-function getAwards() {
-	$.ajax({
-		type : "GET",
-		url : serverUrl + '/app/app/awards/' + fanpageId + '?facebook_user_id='
-				+ userId,
-		dataType : "html",
-		cache : false,
-		async : true,
-		beforeSend: function(){
-			$('#achievements').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-		},
-		success : function(data) {
-			$('#achievements').html(data);
 
-		},
-		error : function(xhr, errorMessage, thrownErro) {
-			console.log(xhr.statusText, errorMessage);
-		}
-	});
-}
 
 function getRecentActivities() {
 	$.ajax({
@@ -725,6 +684,7 @@ function getRecentActivities() {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting user recent activities');
 		}
 	});
 }
@@ -748,6 +708,7 @@ function getRelation(target, ui) {
 				},
 				error : function(xhr, errorMessage, thrownErro) {
 					console.log(xhr.statusText, errorMessage);
+					console.log('there was an error getting the user relation');
 				}
 			});
 
@@ -778,6 +739,7 @@ function follow(target, name, ui) {
 			},
 			error : function(xhr, errorMessage, thrownErro) {
 				console.log(xhr.statusText, errorMessage);
+				console.log('there was an error with following');
 			}
 		});
 	}
@@ -806,6 +768,7 @@ function unfollow(target, name, ui) {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('there was an error with unfollow');
 		}
 	});
 }
@@ -840,17 +803,33 @@ function post(fanpage_name) {
 				if (!response || response.error) {
 					alert(response.error.message);
 				} else {
-					//alert('Post ID: ' + response.id);
+					//alert('Post ID: ' + response.id)
 					$('#post_box').val('');
-					addActivities('post-status', fanpageId, fanpageId, fanpage_name);
-					getFancrankfeed(setFeed);
+					addActivities('post-status', response.id, fanpageId, fanpage_name);
+					getFancrankfeed('post');
 				}
 			});
 
 }
 
-function commentSubmit(postid, type, message, target_id, target,
-		postcommentcount, latest) {
+function commentSubmit(post_id, post_type, post_message_id, post_owner_id, post_owner_name, isLatestAdminPost){
+	FB.api('/' + post_id + '/comments', 'post', {
+		'message' : $('#'+post_message_id).val(),
+		'access_token' : userAccessToken
+	}, function(response) {
+		if (!response || response.error) {
+			alert(response.error.message);
+		} else {
+			$('#'+post_message_id).val('');
+			
+			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name);
+			
+			comment_feed(post_id, type, limiter, total, toggle);
+		}
+	});
+}
+
+function commentSubmit(postid, type, message, target_id, target, latest) {
 	var m = '#' + message;
 
 	//alert(userAccessToken);
@@ -918,6 +897,7 @@ function getFollowingList(targetname, target, limit, load) {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('there was an error with getting the following list');
 		}
 	});
 
@@ -941,6 +921,7 @@ function getFollowersList(targetname, target, limit, load) {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('there was an error with getting the followers list');
 		}
 	});
 
@@ -985,6 +966,7 @@ function getMiniFollowingList(targetname, target) {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the mini following list');
 		}
 	});
 
@@ -1007,6 +989,7 @@ function getMiniFollowersList(targetname, target) {
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the mini followers list');
 		}
 	});
 
@@ -1023,8 +1006,8 @@ function resizeCommentBox(x) {
 
 function changeTime(ui){
 	$.each($(ui), function(index) {
-		$(this).html(timeZone($(this).html()));
-		$(this).attr('title', timeZoneTitle($(this).attr('title')));
+		$(this).html(timeZone($(this).attr('data-unix-time')));
+		$(this).attr('title', timeZoneTitle($(this).attr('data-unix-time')));
 	});
 }
 
@@ -1168,6 +1151,42 @@ function colorChange(choice) {
 		}
 	});
 
+}
+
+
+$('#achievements-tab').live('click', function() {
+	getAwards();
+	$('#leaderboard').html('');
+	$('#profile').html('');
+	$('#news-feed').html('');
+	$('#redeem').html('');
+	FB.Canvas.setSize({
+		width : 810,
+		height : 600
+	});
+
+});
+
+function getAwards() {
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/awards/' + fanpageId + '?facebook_user_id='
+				+ userId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+			$('#achievements').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$('#achievements').html(data);
+
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the awards page');
+		}
+	});
 }
 
 */

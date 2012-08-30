@@ -33,23 +33,23 @@
 </div>
 
 <div class="post">
-<div class="date">
-	<?php if ($this->fan['created_time'] == null){?>
-		Not A Fancrank User
-	<?}else{?>
-	Fancrank User Since: <?= date("F Y",strtotime($this->fan['created_time']))?>
-	<?}?>
-	<br/>
-	Location: 
-	<?php if ($this->fan['fan_country'] != null ) {?>
-		<?php if ($this->fan['fan_location'] != null){?>
-			<?= $this->fan['fan_location']?>, <?= $this->fan['fan_country']?>
+	<div class="date">
+		<?php if ($this->fan['created_time'] == null){?>
+			Not A Fancrank User
+		<?}else{?>
+		Fancrank User Since: <?= date("F Y",strtotime($this->fan['created_time']))?>
+		<?}?>
+		<br/>
+		Location: 
+		<?php if ($this->fan['fan_country'] != null ) {?>
+			<?php if ($this->fan['fan_location'] != null){?>
+				<?= $this->fan['fan_location']?>, <?= $this->fan['fan_country']?>
+			<?php }?>
+			<?= $this->fan['fan_country']?>
+		<?php }else{?>
+			Unknown
 		<?php }?>
-		<?= $this->fan['fan_country']?>
-	<?php }else{?>
-		Unknown
-	<?php }?>
-</div> 
+	</div> 
 
 	<div class="row">
 		<div class="span5">

@@ -20,65 +20,65 @@
 		<?switch($act['activity_type']){ 
 		
 			case 'follow': ?>
-				You followed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You followed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'unfollow' :?>
-				You unfollowed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unfollowed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;	
 			
 			case 'like-status':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">status post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post </a> posted on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'unlike-status':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>' , 5, true)">status post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">status post</a> posted on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'like-photo':?>
-				You liked <?=$act['target_user_name']?>'s <a onclick="comment_popup('<?=$act['event_object']?>', 5, true)">photo post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post </a> posted on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'unlike-photo':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>' , 5, true)">photo post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">photo post</a> posted on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;	
 			case 'like-video':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">video post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">video post </a> posted on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'unlike-video':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>' , 5, true)">video post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">video post</a> posted on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'like-link':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">link post </a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">link post </a> posted on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'unlike-link':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>' , 5, true)">link post</a> posted on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">link post</a> posted on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'like-comment':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 5, true)">comment</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 10, true)">comment</a> on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'unlike-comment':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 5, true)">comment</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 10, true)">comment</a> on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'comment-status':?>
-				You posted a comment on <?=$act['target_user_name']?>'s <a onclick="comment_popup('<?=$act['event_object']?>', 5, true)">status post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You posted a comment on <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a> on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'comment-photo':?>
-				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">photo post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post</a> on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'comment-video':?>
-				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">video post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">video post</a> on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'comment-link':?>
-				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="comment_popup('<?=$act['event_object']?>', 5, true)">link post</a> on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">link post</a> on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'post-status':?>
-				You made a status post on <?=$act['target_user_name']?>'s Fanpage on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a> on <?=$act['target_user_name']?>'s Fanpage on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'post-photo':?>
-				You made a photo post on <?=$act['target_user_name']?>'s Fanpage on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post</a> on <?=$act['target_user_name']?>'s Fanpage on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'post-link':?>
-				You made a link post on <?=$act['target_user_name']?>'s Fanpage on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">link post</a> on <?=$act['target_user_name']?>'s Fanpage on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			case 'post-video':?>
-				You made a photo post on <?=$act['target_user_name']?>'s Fanpage on <span class="time" title="<?=strtotime($act['created_time'])?>"><?=strtotime($act['created_time'])?></span>.
+				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">video post</a> on <?=$act['target_user_name']?>'s Fanpage on <span class="time" title="" data-unix-time="<?=strtotime($act['created_time'])?>"></span>.
 				<?break;
 			default:
 			
