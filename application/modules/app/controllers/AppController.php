@@ -1082,7 +1082,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			    		//Zend_Debug::dump($newActivity);
 			    		$activities = $newActivity;
 			    		$cache->save($activities, $fanActivityId);
+			    		
 			    	}else if(count($newActivity) > 0){
+			    		echo"there are new activities";
 			    		$activities = array_merge($newActivity, array_slice($activities, count($newActivity)));
 			    	}
     			}
@@ -1091,6 +1093,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			//echo $e->getMessage();
     		}
     	}
+    	
     	
     	$this->view->activities = $activities;
     	$this->view->user_id = $this->_userId;
