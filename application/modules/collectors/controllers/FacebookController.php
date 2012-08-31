@@ -492,28 +492,32 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$starttime = time();
     	echo $starttime;
     	$model = new Model_Rankings;
-
+		$newResult = array();
+		$this->_fanpageId = '197221680326345';
+		$newResult['code'] = 110;
     	try {
 			$cache = Zend_Registry::get('memcache');
-			$cache->setLifetime(15); 
-			$this->_fanpageId = '178384541065';
-			$topPostsId = 'topFans_' .$this->_fanpageId;
-
+			
     		//Check to see if the $topStories are cached and look them up if not
-    		if(isset($cache) && !$cache->load($topPostsId)){
+    		if(isset($cache) && !$cache->load('test')){
     			//Look up the $topStories
     			echo 'look up db';
-    			$topFans = $model->getTopFans($this->_fanpageId , 100);
+    			$newResult['topFans'] = $model->getTopFans($this->_fanpageId , 100);
     			 
     			//Save to the cache, so we don't have to look it up next time
-    			$cache->save($topFans, $topPostsId);
+    			$cache->save($newResult, 'test');
     		}else {
-    			$topFans = $cache->load($topPostsId);
+    			echo 'memcache look up';
+    			$newResult = $cache->load('test');
+    			//$newResult['code'] = 110;
+    			unset($newResult['msg']);
+    			$cache->save($newResult, 'test');
+    			$newResult = $cache->load('test');
     		}    		
     	} catch (Exception $e) {
     		echo $e->getMessage();
     	}
-    	Zend_Debug::dump($topFans);
+    	Zend_Debug::dump($newResult);
     	$stop = time();
     	$totalTime = $stop - $starttime;
     	echo '</br>Execution time ' . $totalTime;

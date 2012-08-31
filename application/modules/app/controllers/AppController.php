@@ -100,26 +100,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$cache->setLifetime(3600);
     	
     		try {
-    	
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($this->_fanpageId)){
     				//echo 'db look up';
     				//Look up the $fanpageId
     				$fanpage['topFans'] = $model->getTopFans($this->_fanpageId, 5);
-    				//Zend_Debug::dump($topFans);
-    	
-    				$fanpage['mostPopular'] = $model->getMostPopular($this->_fanpageId, 5);
-    				//Zend_Debug::dump($mostPopular);
-    	
-    				$fanpage['topTalker'] = $model->getTopTalker($this->_fanpageId, 5);
-    				//Zend_Debug::dump($topTalker);
-    	
-    				$fanpage['topClicker'] = $model->getTopClicker($this->_fanpageId, 5);
-    				//Zend_Debug::dump($topClicker);
-    	
-    				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    				$fanpage['topFollowed'] = $follow->getTopFollowed($this->_fanpageId, 5);
-    				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     	
     				//Save to the cache, so we don't have to look it up next time
     				$cache->save($fanpage, $this->_fanpageId);
@@ -134,15 +119,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
    	 
     	$topFans = $fanpage['topFans'];
-    	//Zend_Debug::dump($topFans);
-    
-
-    
-    	//exit();
     	$this->view->top_fans = $topFans;
-
-    	//echo ($user['facebook_user_id']);
-    
     	$topArray = NULL;
    
     	$count=0;
@@ -153,28 +130,33 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     
     	}
-
-    	 
-    	$topFanYou = $model->getUserTopFansRank($this->_fanpageId, $user->facebook_user_id);
-
-    	//Zend_Debug::dump($topFanYou);
-    	 
-    	 
-    	 
-    	$this->view->topFanYou =  $topFanYou;
     	
-    	//$this-view->talkerYou =
-    	//$this-view->clickerYou =
+    	$userLeaderBoardData = array();
     	 
+    	if(!empty($this->_fanpageId) && !empty($user->facebook_user_id)) {
+    		$cache = Zend_Registry::get('memcache');
+    		$cache->setLifetime(3600);
+    		 
+    		try {
+    			//Check to see if the $fanpageId is cached and look it up if not
+    			if(isset($cache) && !$cache->load($this->_fanpageId .'_' .$user->facebook_user_id)){
+    				//Look up the $fanpageId
+    				$userLeaderBoardData['topFans'] = $model->getUserTopFansRank($this->_fanpageId, $user->facebook_user_id);
+    				//Save to the cache, so we don't have to look it up next time
+    				$cache->save($userLeaderBoardData, $this->_fanpageId .'_' .$user->facebook_user_id);
+    			}else {
+    				//echo 'memcache look up';
+    				$userLeaderBoardData = $cache->load($this->_fanpageId .'_' .$user->facebook_user_id);
+    			}
+    		} catch (Exception $e) {
+    			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    			//echo $e->getMessage();
+    		}
+    	}
+
+    	$this->view->topFanYou =  $userLeaderBoardData['topFans'];
     	$this->view->topFanArray = $topArray ;
-    
-    
-    	/*
-    	 $this->view->user_top_fans = $model->getUserRanking($this->_fanpageId, 'FAN', $this->_userId);
-    	$this->view->user_most_popular = $model->getUserRanking($this->_fanpageId, 'POPULAR', $this->_userId);
-    	$this->view->user_top_talker = $model->getUserRanking($this->_fanpageId, 'TALKER', $this->_userId);
-    	$this->view->user_top_clicker = $model->getUserRanking($this->_fanpageId, 'CLICKER', $this->_userId);
-    	*/
+
     	$this->render("topfan");
     }
     
@@ -341,8 +323,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->talkerYou = $userLeaderBoardData['topTalker'];
     	$this->view->clickerYou = $userLeaderBoardData['topClicker'];
     	$this->view->followedYou = $userLeaderBoardData['topFollowed'];
-    	//$this-view->talkerYou =
-    	//$this-view->clickerYou =
     	
     	$this->view->topFanArray = $topArray ;
     	$this->view->popularArray = $popularArray ;
@@ -350,12 +330,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->clickerArray = $clickerArray ;
     	$this->view->followedArray = $followedArray ;
     	 
-    	/*
-    	$this->view->user_top_fans = $model->getUserRanking($this->_fanpageId, 'FAN', $this->_userId);
-    	$this->view->user_most_popular = $model->getUserRanking($this->_fanpageId, 'POPULAR', $this->_userId);
-    	$this->view->user_top_talker = $model->getUserRanking($this->_fanpageId, 'TALKER', $this->_userId);
-    	$this->view->user_top_clicker = $model->getUserRanking($this->_fanpageId, 'CLICKER', $this->_userId);
-    	*/
     	$this->render("leaderboard");
   	}
 
@@ -366,27 +340,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
 		$this->view->facebook_user = $this->_facebook_user;		    	
    
-    	/*
-   		$user = new Model_FacebookUsers();
-    	
-    	$user = $user->find($this->_userId)->current();
-    	//Zend_Debug::dump($user);
-    	if($user) {
-    		$this->view->facebook_user = $user;
-    		//$access_token = $this->facebook_user->facebook_user_access_token;
-    		//$this->view->feed = $this->getFeed($access_token);
-    	}else {
-    		$this->view->facebook_user = null;
-    	}
-    	$user = $user->find($this->_facebook_user->facebook_user_id)->current();
-    	if($user) {
-    		$this->view->facebook_user = $user;
-    		$access_token = $this->_facebook_user->facebook_user_access_token;
-    		$this->view->feed = $this->getFeed($access_token);
-    	}else {
-    		$this->view->facebook_user = null;
-    	}
-    	*/
 		$result = $this->feedFirstQuery();
 
 		$latest = $result['posts']->data;
