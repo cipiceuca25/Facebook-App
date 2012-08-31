@@ -707,9 +707,11 @@ function getRelation(target, ui) {
 				dataType : "html",
 				cache : false,
 				success : function(data) {
+					data = $.trim(data);
+					
 					$('.' + ui).html(
-							'<div class="badge badge-' + data + '">' + data
-									+ '</div>');
+							'<span class="badge badge-' + data + '">' + data
+									+ '</span>');
 
 				},
 				error : function(xhr, errorMessage, thrownErro) {
@@ -740,7 +742,7 @@ function follow(target, name, ui) {
 						'onclick',
 						"unfollow('" + target + "','" + name + "','" + ui
 								+ "')");
-				//$('.'+ui).html('<div class="badge badge-'+relation+'">'+relation+'</div>');
+				//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
 				feedbackAnimation('#follow-animation');
 			},
 			error : function(xhr, errorMessage, thrownErro) {
@@ -768,7 +770,7 @@ function unfollow(target, name, ui) {
 
 			$('.' + ui).attr('onclick',
 					"follow('" + target + "','" + name + "','" + ui + "')");
-			//$('.'+ui).html('<div class="badge badge-'+relation+'">'+relation+'</div>');
+			//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
 			feedbackAnimation('#unfollow-animation');
 
 		},
