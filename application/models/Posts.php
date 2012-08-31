@@ -11,6 +11,16 @@ class Model_Posts extends Model_DbTable_Posts
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	
+	public function findPost($post_id){
+
+		$query = $this->select()
+		->from($this)
+		->where('post_id = ?', $post_id);
+		//Zend_Debug::dump($query);
+		return $this->fetchAll($query)->current();
+	}
+	
 	public function checkPostUpdatedTime($id, $updated_time)
 	{
 		$select = $this->getAdapter()->select();
@@ -36,22 +46,36 @@ class Model_Posts extends Model_DbTable_Posts
 	
 	
 	public function addLikeToPost($id) {
-		$found = $this->checkPostExists($id);
-		$dateObject = new Zend_Date();
+		$found = $this->findPost($id);
 		
+	
+		Zend_Debug::dump($found);
 		if (!empty ( $found )) {
-			$found->likescount ++;
+			$found->post_likes_count ++;
+			$found->save ();
+		}
+	}
+	
+	public function subtractLikeToPost($id) {
+		$found = $this->findPost($id);
+	
+	
+		if (!empty ( $found )) {
+			if ($found->post_likes_count >0){
+				$found->post_likes_count --;
+			}
 			$found->save ();
 		}
 	}
 	
 	public function addCommentToPost($id) {
-		$found = $this->checkPostExists($id);
+		$found = $this->findPost($id);
+		
 		$dateObject = new Zend_Date();
 	
 		if (!empty ( $found )) {
-			$found->activityupdated_time = $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
-			$found->commentscount ++;
+			$found->updated_time = $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
+			$found->post_comments_count ++;
 			$found->save ();
 		}
 	}

@@ -79,7 +79,7 @@
 				if(preg_match($reg_exUrl, $m, $url)) {
 				
 		
-				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
+				       echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
 				
 				} else {
 				
@@ -120,8 +120,6 @@
 
 					</div>
 
-
-
 					<div class="social">
 
 						<?php if ($this->latestlike == 0) {?>
@@ -137,8 +135,9 @@
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; 
 			 		} else {echo '0';} ?> , true )"
-							class="commenthidern_<?= $post->id ?>">Comment </a> &middot; <span
-							class="time" title="" data-unix-time="<?= strtotime($post->created_time)?>"></span> <br />
+							class="commenthidern_<?= $post->id ?>">Comment </a> 
+							&middot;
+							<a rel="tooltip" data-placement="right" class="time" title="" data-unix-time="<?= strtotime($post->created_time)?>"> </a> <br />
 					</div>
 
 					<div class="social like <?=$post->id?>"
@@ -147,7 +146,7 @@
 
 
 						<!--  <img src="/img/news-feed/icon-likes.png" />-->
-						<a> <span class="like_<?= $post->id?>"><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
+						<a> <img src = "/img/thumbsup.png" /> <span class="like_<?= $post->id?>" data-like-count = <? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
 
 								<?php if($post->likes->count == 1){?>person<?php }else{?>people<?php }?>
 
@@ -160,14 +159,22 @@
 							onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; //echo  $post->comments->count;
-			 	} else {echo '0';} ?> , true )"> <?php if($post->comments->count != 1){?>
-							View all <span class="comment_<?= $post->id?>"> <?php if(isset($post->comments->count)){
-						echo $post->comments->count; //echo  $post->comments->count;
+			 	} else {echo '0';} ?> , true )"> <img src="/img/comment.png" /><?php if($post->comments->count != 1){?>
+							View all <span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
+						echo $post->comments->count; 
+					 	} else {
+							echo '0'; 
+						}?>><?php if(isset($post->comments->count)){
+						echo $post->comments->count; 
 					 	} else {
 							echo '0'; 
 						}?>
 						</span> comments <?php }else { ?> View all<span
-							class="comment_<?= $post->id?>"> </span> comments <?php }?>
+							class="comment_<?= $post->id?> "data-comment-count = <?php if(isset($post->comments->count)){
+						echo $post->comments->count; 
+					 	} else {
+							echo '0'; 
+						}?>> </span> comments <?php }?>
 						</a>
 
 
@@ -230,7 +237,7 @@
 					<div class="post">
 
 						<form action="#" class="submit-form">
-							<textarea id="post_box" class="post-box" onkeyup="resizeCommentBox(this)" onclick="resizeCommentBox(this)"></textarea>
+							<textarea id="post_box" class="post-box" onkeyup="resizeCommentBox(this)" onclick="PostBox()"></textarea>
 							
 							<div class="post-button-container">
 								<input type=button class="btn-submit" value="Share"
@@ -444,7 +451,7 @@
 				
 		&middot;
 
-		<span class="time" title="" data-unix-time="<?=  strtotime($post->created_time)?>"></span>
+		<a rel="tooltip" data-placement="right" class="time" title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 			
 		<br/>
 	</div>
@@ -452,7 +459,7 @@
 		
 			<a>
 				<img src = "/img/thumbsup.png" />
-				<span class="like_<?= $post->id?>"><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
+				<span class="like_<?= $post->id?>" data-like-count= <? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
 					
 					<?php if(isset($post->likes->count) && $post->likes->count == 1){?>person<?php }else{?>people<?php }?> 
 				
@@ -473,7 +480,11 @@
 								 		true )"> 
 					<img src="/img/comment.png" />
 			 		<?php if($post->comments->count != 1){?> 
-			 		View all <span class="comment_<?= $post->id?>">
+			 		View all <span class="comment_<?= $post->id?>" data-comment-count=<?php if(isset($post->comments->count)){
+						echo $post->comments->count; //echo  $post->comments->count;
+					 	} else {
+							echo '0'; 
+						}?>>
 			 		<?php if(isset($post->comments->count)){
 						echo $post->comments->count; //echo  $post->comments->count;
 					 	} else {
@@ -482,7 +493,11 @@
 					</span> 
 					comments 
 				<?php }else { ?>
-					View all<span class="comment_<?= $post->id?>">
+					View all<span class="comment_<?= $post->id?>" data-comment-count=<?php if(isset($post->comments->count)){
+						echo $post->comments->count; //echo  $post->comments->count;
+					 	} else {
+							echo '0'; 
+						}?>>
 			 		
 					 
 					

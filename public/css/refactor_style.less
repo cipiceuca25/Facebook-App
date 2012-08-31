@@ -851,20 +851,38 @@ background-color:@color-userlist-background;
 font-size:11px;
 overflow: auto;
 padding-left:5px;
-height: 821px;
+height: 810px;
+.border-radius(3px);
+.box-shadow(3px 3px 3px 1px @color-post-shadow);
+border:1px solid @color-post-border;
+margin-top:9px;
+}
+
+#user_activities .post-container,
+#recent_activities .post-container{
+background:@color-post-background;
+padding:3px;
+border:0px solid @color-post-border;
+.border-radius(0px);
+margin:1px -5px 0px;
+}
+
+#user_activities .post-container:hover,
+#recent_activities .post-container:hover{
+background:@color-post-background-hover;
 }
 
 .track3 {
 width: 5px;
+margin-top:8px;
 }
 
 .handle3 {
-width: 4px;
+width: 5px;
 background: @color-scrollbar ;
 opacity: 0.45;
 filter: alpha(opacity=45);
-border: 1px solid #555;
-left:4px;
+left:5px;
 }
 
 .badge-display{
@@ -899,6 +917,7 @@ text-align:right;
 overflow: auto;
 padding-left:5px;
 height: 200px;
+margin-top:8px;
 }
     
 #user_list .badge-profile{

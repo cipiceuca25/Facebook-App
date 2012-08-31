@@ -82,7 +82,7 @@
 				if(preg_match($reg_exUrl, $m, $url)) {
 				
 		
-				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
+				       echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
 				
 				} else {
 				
@@ -94,7 +94,7 @@
 	</div>
 	<div class="social"> 
 	 	
-		<span class="time" title="" data-unix-time="<?=  strtotime($post->created_time)?>"></span>
+		<a rel="tooltip" data-placement="right" class="time" title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 		
 		&middot;
 		
@@ -127,7 +127,7 @@
 		<form action="#" class="submit-form" >
 		
 			<textarea class="comment-box" id="comment_box_<?= $this->postId ?>" onkeyup="resizeCommentBox(this)" ></textarea>
-			<input type=button class="btn-submit" value="Comment" onclick="commentSubmit('<?= $this->postId ?>','<?=$this->postType?>' ,'comment_box_<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>',<?= ($this->latest == 'true')?'true':'false'?> )">
+			<input type=button class="btn-submit" value="Comment" onclick="commentSubmit('<?= $this->postId ?>','<?=$this->postType?>' ,'<?= $this->postId ?>','<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>',<?= ($this->latest == 'true')?'true':'false'?> )">
 		</form>
 		
 				

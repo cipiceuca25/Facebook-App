@@ -313,12 +313,16 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['target_user_name'] = $this->_getParam('target_name');
 		
 		$act = new Model_FancrankActivities();
-		
+		$post = new Model_Posts();
 		if ($data['activity_type'] == "like-status" || $data['activity_type'] == "like-photo" || 
 			 $data['activity_type'] == "like-video" || $data['activity_type'] == "like-link"){
-			
-			
-			
+			$post->addLikeToPost($data['event_object']);
+		}else if ($data['activity_type'] == "unlike-status" || $data['activity_type'] == "unlike-photo" || 
+			 $data['activity_type'] == "unlike-video" || $data['activity_type'] == "unlike-link"){
+			$post->subtractLikeToPost($data['event_object']);
+		}else if ($data['activity_type'] == "comment-status" || $data['activity_type'] == "comment-photo" || 
+			 $data['activity_type'] == "comment-video" || $data['activity_type'] == "comment-link"){
+			$post->addCommentToPost($data['event_object']);
 		}
 		//$stat = new Model_FansObjectsStats();
 		

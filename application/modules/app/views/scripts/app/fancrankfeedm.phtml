@@ -87,7 +87,7 @@
 				if(preg_match($reg_exUrl, $m, $url)) {
 				
 		
-				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new >".$url[0]."</a> ", $m);
+				       echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
 				
 				} else {
 				
@@ -158,7 +158,7 @@
 				<!--  <img src="/img/news-feed/icon-likes.png" />-->
 			<a>
 				<img src = "/img/thumbsup.png" />
-				<span class="like_<?= $post['post_id']?>"><? if($post['post_likes_count']!=null){echo $post['post_likes_count'];}else{echo '0';} ?>
+				<span class="like_<?= $post['post_id']?>" data-like-count = <? if($post['post_likes_count']!=null){echo $post['post_likes_count'];}else{echo '0';} ?>><? if($post['post_likes_count']!=null){echo $post['post_likes_count'];}else{echo '0';} ?>
 					
 					<?php if($post['post_likes_count'] == 1){?>person<?php }else{?>people<?php }?> 
 				
@@ -176,7 +176,11 @@
 						echo $post['post_comments_count']; //echo  $post->comments->count;
 			 	} else {echo '0';} ?> , true )"> <img src="/img/comment.png" />
 			 	<?php if($post['post_comments_count'] != 1){?> 
-			 		View all <span class="comment_<?= $post['post_id']?>">
+			 		View all <span class="comment_<?= $post['post_id']?>" data-comment-count = <?php if(isset($post['post_comments_count'])){
+						echo $post['post_comments_count']; //echo  $post->comments->count;
+					 	} else {
+							echo '0'; 
+						}?>>
 			 		<?php if(isset($post['post_comments_count'])){
 						echo $post['post_comments_count']; //echo  $post->comments->count;
 					 	} else {
@@ -185,7 +189,11 @@
 					</span> 
 					comments 
 				<?php }else { ?>
-					View all<span class="comment_<?= $post['post_id']?>">
+					View all<span class="comment_<?= $post['post_id']?>" data-comment-count = <?php if(isset($post['post_comments_count'])){
+						echo $post['post_comments_count']; //echo  $post->comments->count;
+					 	} else {
+							echo '0'; 
+						}?>>
 			 		
 					 
 					
