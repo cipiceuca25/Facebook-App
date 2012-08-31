@@ -193,7 +193,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		if(!empty($this->_fanpageId)) {
   			$cache = Zend_Registry::get('memcache');
   			$cache->setLifetime(3600);
-  		
+  			//$cache->remove($this->_fanpageId);
   			try {
   		
   				//Check to see if the $fanpageId is cached and look it up if not
@@ -205,7 +205,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		
   					$fanpage['mostPopular'] = $model->getMostPopular($this->_fanpageId, 5);
   					//Zend_Debug::dump($mostPopular);
-  		
+ 
   					$fanpage['topTalker'] = $model->getTopTalker($this->_fanpageId, 5);
   					//Zend_Debug::dump($topTalker);
   		
@@ -227,7 +227,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   				//echo $e->getMessage();
   			}
   		}
-  		
+  		//Zend_Debug::dump($fanpage);
     	//exit();
     	$this->view->top_fans = $fanpage['topFans'];
     	$this->view->most_popular = $fanpage['mostPopular'];
@@ -286,6 +286,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($this->_fanpageId) && !empty($user->facebook_user_id)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(3600);
+    		//$cache->remove($this->_fanpageId .'_' .$user->facebook_user_id);
     	
     		try {
     	
