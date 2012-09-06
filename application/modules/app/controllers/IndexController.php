@@ -89,7 +89,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanpageId)){
-    				echo 'db look up';
+    				//echo 'db look up';
     				//Look up the $fanpageId
     				$fanpage['topFans'] = $model->getTopFans($this->data['page']['id'], 5);
     				//Zend_Debug::dump($topFans);

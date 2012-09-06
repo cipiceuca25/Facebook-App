@@ -151,7 +151,8 @@ class Model_Rankings extends Model_DbTable_Rankings
 					INNER JOIN
 					fans f ON(p.facebook_user_id = f.facebook_user_id)
 					WHERE  p.fanpage_id = '".$page_id."' AND f.fanpage_id = '".$page_id ."' 
-						
+					AND p.created_time < '". $today->toString('yyyy-MM-dd HH:mm:ss') ." ' 	
+					AND p.created_time > '". $date->toString('yyyy-MM-dd HH:mm:ss') ." '
 							 ORDER BY count DESC";
 		
 		if($limit !== false)

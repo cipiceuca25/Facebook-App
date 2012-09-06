@@ -203,24 +203,25 @@
 						
 							<ul class="top-list bottom">
 								<li>
-									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="ranker">
 										<div class="rank">
-											<? if (strlen($this->topFansYou['my_rank'])== 1){?>
+											<? if (strlen($this->topFanYou['my_rank'])== 1){?>
 											<h1>
-												<?= $this->topFansYou['my_rank']?>
+												<?= $this->topFanYou['my_rank']?>
 											</h1>
-											<?php }elseif (strlen($this->topFansYou['my_rank'])== 2) { ?>
+											<?php }elseif (strlen($this->topFanYou['my_rank'])== 2) { ?>
 											<h2>
-												<?= $this->topFansYou['my_rank']?>
+												<?= $this->topFanYou['my_rank']?>
 											</h2>
-											<?php }elseif (strlen($this->topFansYou['my_rank'])== 3) { ?>
+											<?php }elseif (strlen($this->topFanYou['my_rank'])== 3) { ?>
 											<h3>
-												<?= $this->topFansYou['my_rank']?>
+												<?= $this->topFanYou['my_rank']?>
 											</h3>
 											<?php }else{?>
 											<h1>*</h1>
 											<?php }?>
 										</div>
+										
 										<div class="user">
 										<div class="photo">
 											<img class="face" width="35" height="35"
@@ -233,7 +234,7 @@
 										</div>
 										<div class="points">
 											<h3>
-												<?= $this->popularYou['count']?>
+												<?= $this->topFanYou['number_of_posts']?>
 											</h3>
 											<span>Points <br />
 											</span>
@@ -498,7 +499,7 @@
 			<div class="top-talker">
 				<div class="title">
 					<div class="title-icon">
-						<img src="/img/news-feed/fan-fav-icon.jpg" />
+						<img src="/img/news-feed/top-talker-icon.jpg" />
 					</div>
 					<div class="title-header">
 					Top Talker
@@ -742,7 +743,7 @@
 			<div class="top-clicker">
 				<div class="title">
 					<div class="title-icon">
-						<img src="/img/news-feed/fan-fav-icon.jpg" />
+						<img src="/img/news-feed/top-clicker-icon.jpg" />
 					</div>
 					<div class="title-header">
 					Top Clicker
@@ -1160,8 +1161,8 @@
 
 						<?}	?>
 						<?}	?>
-
 						</ul>
+						
 						<ul class="top-list bottom">
 							<li>
 								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
@@ -1206,7 +1207,8 @@
 								</div>
 							</li>
 						</ul>
-				<button class="btn-more" id="top-followed-btn" data-toggle="collapse"
+						
+						<button class="btn-more" id="top-followed-btn" data-toggle="collapse"
 						data-target="#top-followed-collapse">+ More</button>
 				</div>
 			

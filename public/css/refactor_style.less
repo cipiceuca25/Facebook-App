@@ -208,7 +208,7 @@ padding:0;
 #logo{
 display:block;
 max-height:300px;
-min-height:100px;
+min-height:250px;
 width:810px;
 overflow:hidden;
 }
@@ -380,6 +380,11 @@ padding:0 3px 0 3px;
 max-height:223px;
 }
 
+#user_list .top-list{
+max-height:none;
+}
+
+#whatisfancrank,
 .top-list.first{
 padding-top:3px;
 margin-top:10px;
@@ -599,11 +604,16 @@ left:37px;
 padding:10px;
 }
 
+.post-container .message{
+word-break:break-all;
+}
+
 .post-container .link{
 word-wrap:break-word;
 font-size:11px;
 background-color: @color-post-link-background;
 border:1px solid  @color-post-link-border;
+margin-top:10px;
 }
 
 .post-container .link .link-left{	
@@ -616,11 +626,19 @@ width:60%;
 display:inline-block;
 margin-top:1px;
 vertical-align:top;
+margin-left:10px;
+}
+
+.post-container .link .link-right .link-title{
+font-weight:bold;
+}
+
+.post-container .link .link-right .link-caption{
+color:@color-text;
 }
 
 .post-container .graphical img {
 display:block;
-max-width:100%;
 margin:auto;
 margin-top:5px;
 }
@@ -745,12 +763,17 @@ display:none;
 
 .profile-content{
 .border-radius(3px);
-padding:22px 0 0 0;
+padding:3px 2px 0 0;
 margin:0 0 0 160px;
 z-index:51;
 position:absolute;
 display:none;
 background-color:@color-main-background;
+width:461px;
+}
+
+.profile-content .row.box{
+margin: 0 1px 4px 3px;
 }
 
 .user-profile{
@@ -769,8 +792,14 @@ top:-10px;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#popup_comment .comments{
+#popup_post .comments{
 display:block;
+}
+
+.comments.popup_scroll{
+overflow: auto;
+max-height: 400px;
+width:439px;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -839,18 +868,16 @@ background-color:@color-userlist-background;
 }
 
 #recent_activities{
-font-size:11px;
 overflow: auto;
 padding-left:5px;
-height: 810px;
+height: 675px;
 .border-radius(3px);
-.box-shadow(3px 3px 3px 1px @color-post-shadow);
-border:1px solid @color-post-border;
 margin-top:9px;
 }
 
 #user_activities .post-container,
 #recent_activities .post-container{
+font-size:11px;
 background:@color-post-background;
 padding:3px;
 border:0px solid @color-post-border;
@@ -865,7 +892,7 @@ background:@color-post-background-hover;
 
 .track3 {
 width: 5px;
-margin-top:8px;
+margin-top:1px;
 }
 
 .handle3 {
@@ -876,17 +903,29 @@ filter: alpha(opacity=45);
 left:5px;
 }
 
+.track3.popup {
+width: 0px;
+margin-top:1px;
+}
+
+.handle3.popup {
+left:-5px;
+}
+
+
 .badge-display{
 display:inline-block;
 padding:9px;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 .badge-profile{
 float:right;
 position:relative;
-top:-2px;
 left:-5px;
+top:-2px;
 }
 
 .badge-profile .badge{
@@ -898,21 +937,25 @@ padding: 4px 18px 6px 18px;
 .link-back{
 font-size:11px;
 position:absolute;
-float:right;
-top:20px;
-right:10px;
+top:4px;
+left:77px;
 text-align:right;
 }
 
 #user_activities{
 overflow: auto;
 padding-left:5px;
-height: 200px;
-margin-top:8px;
+max-height: 200px;
 }
     
 #user_list .badge-profile{
 top:17px;
+}
+
+#user_list_scroll{
+overflow: auto;
+max-height: 500px;
+width:441px;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1027,4 +1070,11 @@ background:url(../img/unliked.png) no-repeat center center;
 
 #comment-animation{
 background:url(../img/commented.png) no-repeat center center;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+#whatisfancrank{
+	background:url(../img/whatisfancrank.jpg);
+	height:337px;
 }

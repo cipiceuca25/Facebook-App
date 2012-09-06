@@ -1,10 +1,12 @@
-<div class="row"><div class="span7">
+<div class="row">
+
+<div class="span7">
 
 
 <div class="row box notitle">
 <?php $count = 0?>
 
-<ul id="popup_comment">
+<ul id="popup_post">
 	<li class="post-container" >
 	
 		<div class="user" >		
@@ -24,7 +26,7 @@
 							<?php }?>
 							
 						<?}else{?>
-							><span class="badge badge-Fanpage">Admin</span>
+							rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top" ><span class="badge badge-Fanpage">Admin</span>
 						<?php }?> </a>
 			</div>
 				
@@ -60,62 +62,68 @@
 	
 
 		<div class="post">
-			<? if(isset($this->post->message)){?>
-			<div class="message">
-				<?php 
-					$reg_ex = "/\n/";
-						$m = $this->escape($this->post->message);
-					if(preg_match_all($reg_ex, $m, $url)) {
-					
-					
-						$m= preg_replace($reg_ex, "<br/>", $m);
-				
-					} ?>
-				<?php 
-				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-					if(preg_match($reg_exUrl, $m, $url)) {
-					
-			
-					       echo preg_replace($reg_exUrl, "<a href=".$url[0]."target=_new>".$url[0]."</a> ", $m);
-					
-					} else {
-					
-					       echo $m;
-					
-					}
-			?><br/>
-			</div>
-			<?}?>
+			<?php if(isset($this->post->message)){ ?>
+							<div class="message">
+							<?php 
+							$reg_ex = "/\n/";
+							$message = $this->escape($this->post->message);
+							if(preg_match_all($reg_ex, $message, $url)) {
+								$message= preg_replace($reg_ex, "<br/>", $message);
+							} 
+							
+							$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
+						
+							$m = preg_match_all($reg_exUrl, $message, $match); 
+							
+							if ($m) { 
+							    $links=$match[0]; 
+							    for ($j=0;$j<$m;$j++) { 
+							        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
+							    } 
+							} 
+							
+							echo $message; 
+								//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
+							
+							?><br/>
+							</div>
+			<?}	?>
 		
 		
 			<div class="graphical">	
-			<?php if (($this->post->type == 'photo') || ($this->post->type =='video')) {?>	
+			<?php if (!isset($this->post->type) || ($this->post->type == 'photo') || ($this->post->type =='video') ) {?>	
 				<a target="new" href="<?echo $this->escape($this->post->link)?> ">
 					<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $this->post->picture))?>'/>
 				</a>
 				
 			<?}elseif ($this->post->type == 'link') {?>
 				<div class="link">
+					<?php if (isset($this->post->picture)){?>
 					<div class="link-left">
 						<a target="new" href="<?echo $this->escape($this->post->link)?> "> 
 							<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $this->post->picture))?> '/>
 						</a>
 					</div>
-				
+					<?php }?>
 					<div class="link-right">
-						<a target="new" href="<?echo $this->escape($this->post->link)?> ">
-							<?= (isset($this->post->name)?$this->escape($this->post->name): $this->escape($this->post->link))?>
-							<?php  if (isset($this->post->caption)){?>
-							<br/>
-							<?php echo $this->escape($this->post->caption);?>: <?php }?> 
-							
-							
-							<?php if (isset($this->post->description)){?>
-							<?=$this->escape($this->post->description)?> 
-							<?php }?>
-							
+					<a target="_new" class="link-title" href="<?echo $this->escape($post->link)?>">
+						<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
+					</a>
+					<?php if(isset($post->caption)){?>
+						<br/>
+						<a target="_new" class="link-caption" href="<?echo $this->escape($post->link)?> ">
+							<?php echo $this->escape($post->caption);?>:  
 						</a>
-					</div>
+					<?php }?>	
+				
+					<?php if (isset($post->description)){?>
+						<a target="_new" class="link-caption" href="<?echo $this->escape($post->link)?> ">	
+							<?=$this->escape($post->description)?> 
+						</a>
+					<?php }?>
+						
+					
+				</div>
 				</div>
 			<?}?>
 			</div>
@@ -123,20 +131,31 @@
 	
 		<div class="social"> 
 			
-			
+				<a class="like_control_<?= $this->post->id?>" rel="tooltip" data-placement="top"
 				<?php if ($this->likepost == 0) {?>
-					<a class="like_control_<?= $this->post->id?>"  onclick="like('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>' )" >Like</a>   
+					 data-original-title="Click to like this" onclick="like('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>' )" >Like   
 				<?}else{?>
-					<a class="like_control_<?= $this->post->id?>"  onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike</a>   
-				<?php }?>
+					  data-original-title="You like this" onclick="unlike('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>')">Unlike   
+				<?php }?></a>
 				&middot;
-				<a rel="tooltip" data-placement="right" class="time" title="" data-unix-time="<?=  strtotime($this->post->created_time)?>"></a>
+				<a rel="tooltip" data-placement="right" class="time" data-original-title="" data-unix-time="<?=  strtotime($this->post->created_time)?>"></a>
 		</div>
 		<div class="social like <?=$this->post->id?>"  <?php if(!isset($this->post->likes->count) || ($this->post->likes->count == 0)){?>style="display:none"<?php }?>>
 			
-			
-					<!--  <img src="/img/news-feed/icon-likes.png" />-->
-				<a><img src = "/img/thumbsup.png" />
+				<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$this->post->id?>', false)" data-original-title="
+						<?php 	$likeslist = $this->post->likes->data;
+								$countlikes = count($likeslist);
+								for($i = 0; $i < $countlikes - 1; $i++){
+									echo $likeslist[$i]->name.', ';
+								}
+
+								echo $likeslist[$i]->name;
+								if ($countlikes < $this->post->likes->count){
+									echo " and ".($this->post->likes->count - $countlikes)." others";
+								}
+						?> likes this.
+						">
+					<img src = "/img/thumbsup.png" />
 					<span class="like_<?= $this->post->id?>" data-like-count = <? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>><? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>
 						
 						<?php if($this->post->likes->count == 1){?>person<?php }else{?>people<?php }?> 
@@ -147,31 +166,39 @@
 			
 		
 		</div>
-		<?php if(isset($this->post->comments->count) && ($this->post->comments->count != 0)){?>
-		<div class="social comment <?=$this->post->id?>">
+		
+		<div class="social comment <?=$this->post->id?>" <?php if(!isset($this->post->comments->count) || ($this->post->comments->count == 0)){?>style="display:none"<?}?>>
 		<img src="/img/comment.png" /><a>	There <?php if($this->post->comments->count == 1){?>is<?php }else{?>are<?php }?> 
 			<span class="comment_<?= $this->post->id?>" data-comment-count= <? if(isset($this->post->comments->count)){echo $this->post->comments->count;}else{echo '0';} ?>><? if(isset($this->post->comments->count)){echo $this->post->comments->count;}else{echo '0';} ?></span>
 			comment<?php if($this->post->comments->count != 1){?>s<?php }?> on this post.</a>
 
 					
 		</div>
-		<?php }?>
+		
 	
 
  
 		<?php $count = 1?>
-		<ul class="comments" id="popup_post_<?=$this->post->id?>" >
+		
+		
+		
+		<ul class="comments popup_scroll" id="popup_post_<?=$this->post->id?>" >
+
 		<?php if(empty($this->comments)){
 		
 			//echo "Missing Access Token";
 			
 		}else{?>
+			
+			
 			<?php foreach ($this->comments as $post):?>		
+			
+			
 			<li class="comment-container" >
 			
 			<div class="photo"><a  
 				<? if (!($this->relation[$count] == 'Fanpage')){?> 
-					onclick="userProfile('<?=$post->from->id?>')"
+					onclick="userProfile('<?=$post->from->id?>', false)"
 					rel="popover" 
 					data-content="" 
 					data-original-title="" 
@@ -197,14 +224,14 @@
 							<?php }?>
 							
 						<?}else{?>
-							><span class="badge badge-Fanpage">Admin</span>
+							rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top"><span class="badge badge-Fanpage">Admin</span>
 						<?php }?>
 					</a>
 				</div>	
 	
 				<div class="name"><a  
 					<? if (!($this->relation[$count] == 'Fanpage')){?> 
-						onclick="userProfile('<?=$post->from->id?>')"
+						onclick="userProfile('<?=$post->from->id?>', false)"
 						rel="popover" 
 						data-content="" 
 						data-original-title="" 
@@ -218,39 +245,36 @@
 		
 				<span class="message">
 				
-				<? if(isset($post->message)){
-					
-					$reg_ex = "/\n/";
-					$m = $this->escape($post->message);
+				<?php if(isset($post->message)){  
+							$reg_ex = "/\n/";
+							$message = $this->escape($post->message);
+							if(preg_match_all($reg_ex, $message, $url)) {
+								$message= preg_replace($reg_ex, "<br/>", $message);
+							} 
+							
+							$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
 						
-					if(preg_match_all($reg_ex, $m, $url)) {
-					
-					
-						$m= preg_replace($reg_ex, "<br/>", $m);
+							$m = preg_match_all($reg_exUrl, $message, $match); 
 							
-									}
-					$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-				
+							if ($m) { 
+							    $links=$match[0]; 
+							    for ($j=0;$j<$m;$j++) { 
+							        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
+							    } 
+							} 
 							
+							echo $message; 
+								//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
 							
-			
-							if(preg_match($reg_exUrl, $m, $url)) {
-							
-					
-							       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
-							
-							} else {
-							
-							       echo $m;
-							
-							}}?>
+						
+				}?>
 				
 				<br/></span>
 			</div>
 		<div class="social"> 
 		
 		 
-			<a rel="tooltip" data-placement="right" class="time" title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
+			<a rel="tooltip" data-placement="right" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 			
 			&middot;
 			
@@ -258,12 +282,12 @@
 			<span class="likes">
 				<span class="like_<?= $post->id?>" data-like-count = <? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?>  ><? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?> </span>
 				
-				
+				<a class="like_control_<?= $post->id?>" rel="tooltip" data-placement="top"
 				<?php if ($this->likes[$count] == 0) {?>
-					<a class="like_control_<?= $post->id?>" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Like</a> 
+					  data-original-title="Click to like this" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')">Like
 				<?}else{?>
-					<a class="like_control_<?= $post->id?>" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike</a> 
-				<?php }?>
+					  data-original-title="You like this" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike
+				<?php }?></a> 
 			 </span>	 
 		 
 		 </div>
@@ -272,22 +296,19 @@
 										
 	<?php $count ++;?>
 	<?php endforeach; }?>
+
 		
-		<li>
-		<?if ($this->post->comments->count > $this->limit){ ?>
-			<button class="btn-more" onclick="popup_post('<?= $this->post->id ?>', <?=$this->limit + 10?>, false)"> MORE +</button>
-		<?}?>
-		</li>
-			<li class="comment-container">
-					<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);"></div>
+		
+	</ul>
+	<div class="comment-container">
+			<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);"></div>
 			
-					<form action="#" class="submit-form" >
-						<textarea class="comment-box" id="comment_box_<?= $this->post->id ?>" onkeyup="resizeCommentBox(this)"></textarea>
-						<input type=button class="btn-submit" value="Comment" onclick="commentSubmit2('<?= $this->post->id ?>','<?= $this->post->type ?>','<?= $this->post->id ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>')">
-					</form>																		
+			<form action="#" class="submit-form" >
+				<textarea class="comment-box" id="comment_box_popup_<?= $this->post->id ?>" onkeyup="resizeCommentBox(this)"></textarea>
+				<input type=button class="btn-submit" value="Comment" onclick="commentSubmit2('<?= $this->post->id ?>','<?= $this->post->type ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>')">
+			</form>																		
 				
-			</li>
-		</ul>	
+	</div>
 	</li>
 </ul>	
 				
@@ -295,3 +316,13 @@
 </div>
 </div>
 </div>
+
+
+<script>
+	$('.comments.popup_scroll').enscroll({
+	showOnHover: true,
+	clickTrackToScroll: false,
+	verticalTrackClass: 'track3 popup',
+	verticalHandleClass: 'handle3 popup'
+	});
+</script>

@@ -16,7 +16,7 @@
 					</div>
 					<div class="tip">
 						<a rel="tooltip"
-							title='This is your FanCrank Profile! Check out your points, experience, badges, and other statistics here.'>?</a>
+							data-original-title='This is your FanCrank Profile! Check out your points, experience, badges, and other statistics here.'>?</a>
 					</div>
 				</div>
 		
@@ -100,7 +100,7 @@
 				</div>
 					
 					
-				<div class="title nopic">
+				<!-- <div class="title nopic">
 					<div class="title-header nopic">
 						Recent Badges
 					</div>
@@ -135,7 +135,7 @@
 					
 					
 			
-				</div>
+				</div> -->
 				
 				<div class="half" >	
 					<div class="title nopic">
@@ -153,7 +153,7 @@
 									
 									
 						<button class="btn-more"
-										onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
+										onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)">
 										View Full List</button>	
 					</div>
 					
@@ -176,7 +176,7 @@
 								<div id="followinglist"></div>
 								
 								<button class="btn-more"
-										onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 15)">
+										onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)">
 										View Full List</button>	
 							</div>
 							
@@ -219,11 +219,11 @@
 
 				<div class="title">
 					<div class="title-header nopic">
-						Your Recent Activities
+						Recent Activities
 					</div>
 					<div class="tip">
 						<a rel="tooltip"
-							title='This is your list of recent actitivies, remember that it may not be accurate as it does require time for it to sync up with Facebook'>?</a>
+							data-original-title='This is your list of recent actitivies, remember that it may not be accurate as it does require time for it to sync up with Facebook'>?</a>
 					</div>
 				</div>
 	
@@ -245,6 +245,5 @@
 						    showOnHover: true,
 						    clickTrackToScroll: false,
 						    verticalTrackClass: 'track3',
-						    verticalHandleClass: 'handle3'
-						});
+						    verticalHandleClass: 'handle3'});
 					</script>

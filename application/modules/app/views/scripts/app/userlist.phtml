@@ -17,7 +17,7 @@
 <div class="link-back">Go back to <a onclick="userProfile('<?= $this->user_id?>', false)"><?= $this->user_name?></a>'s Profile</div>
 
 <div class="row box" id="user_list">
-	<ul class="top-list">
+	<ul class="top-list" id="user_list_scroll">
 	<?php if(count($this->result)==0){?>
 		<li >
 			<div class="ranker">
@@ -36,9 +36,8 @@
 	<?php $count=0;?>
 	<?php foreach ($this->result as $user):?>	
 		<li>
-
+			
 			<div class="ranker" >
-		
 				<div class="user">
 					<div class="photo">
 						<a  data-userid="<?= $user['facebook_user_id'] ?>"
@@ -55,7 +54,7 @@
 											<? if (!($this->relation[$count] == 'Fanpage')){?>
 												onclick="userProfile('<?= $user['facebook_user_id'] ?>' , false)"
 												<?}?> rel="popover" data-content="" data-original-title=""
-												data-placement="top"><?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?></a>
+												data-placement="top"><?= $user['facebook_user_name']?></a>
 						
 					</div>
 					<!--   <br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?>  since <span class="time"
@@ -64,17 +63,20 @@
 				
 				<div class="badge-profile">
 					
-						<a <?php if ($this->relation != 'You') {?>
+						<a  <? if (($this->relation[$count] != 'Fanpage')){?>
+								 <?php if ($this->relation != 'You') {?>
 								<? if (($this->relation != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
+								onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')"
 								<?}else{?> 
-								onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_first_name'].' '.$user['facebook_user_last_name'] ?>')">
+								onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')"
 								<?}	?> 
-							<span class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?>
+							><span class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?>
 							<?}else{?> 
-							<span class="badge badge-You?> big">You</span>
-							<?}?>
-					 	</a>
+							><span class="badge badge-You?> big">You
+							<?}?></span>
+					 		<?}else{?>
+							 rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top" ><span class="badge badge-Fanpage">Admin</span>
+						<?php }?> </a>
 
 				</div>
 				
@@ -84,23 +86,17 @@
 	<?php $count++;?>
 	<?php endforeach; ?>
 	
-	
 	</ul>
 </div>
-<?php if ($count > 14){?>
 
-	<button class="btn-more" onclick="
-	<?php if ($this->title == 'Followers') { 
-		echo'getFollowersList('.$this->user_name.','.$this->user_id.',0, false)'; 
-	}elseif ($this->title =='Friends'){ 
-		echo 'getFriendsList('.$this->user_name.','.$this->user_id.',0, false)'; 
-	}else{ 
-		echo 'getFollowingList('.$this->user_name.','.$this->user_id.',0, false)';
-	}?>"> 
-		+ More
-	</button>
-
-
-<?php }?>
 </div>
 </div>
+
+<script>
+	$('#user_list_scroll').enscroll({
+	showOnHover: true,
+	clickTrackToScroll: false,
+	verticalTrackClass: 'track3 popup',
+	verticalHandleClass: 'handle3 popup'
+	});
+</script>

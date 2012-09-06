@@ -1,13 +1,14 @@
-<!--  THIS LAYOUT IS FOR THE MULTIPLE PAGES-->
+
 <!DOCTYPE html>
+<!--  THIS LAYOUT IS FOR THE MULTIPLE PAGES-->
 <html lang="en">
 
 	<head>
+		<title>Fancrank</title>
 		<meta charset="UTF-8" />
 		
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta http-equiv="imagetoolbar" content="no" />
-		
 		<meta http-equiv="Content-Language" content="en" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		
@@ -49,7 +50,7 @@
 		<script src="/js/libs/modernizr-2.5.3.min.js"></script>
 		<script src="/js/libs/jquery.joyride-1.0.5.js"></script>
 		<script src="/bootstrap/js/bootstrap.js"></script>
-		<script src="/js/libs/enscroll-0.2.5.min.js"></script>
+		<script src="/js/libs/enscroll-0.2.6.min.js"></script>
 		<script src="//connect.facebook.net/en_US/all.js"></script>
 		
 		<script src="/js/cranker.js"></script>
@@ -118,11 +119,11 @@
 
 					<div class="tabbable">
 						<ul class="nav nav-tabs" id="pageTabs">
-							<li class="active"><a href="#news-feed" data-toggle="tab"id="newsfeed-tab">News Feed</a></li>
-							<li><a href="#leaderboard" data-toggle="tab" id="leaderboard-tab">Leaderboard</a></li>
-							<li><a href="#profile" data-toggle="tab" id="profile-tab">My Profile</a></li>
+							<li class="active"><a href="#news-feed" id="newsfeed-tab" data-toggle="tab">News Feed</a></li>
+							<li><a href="#leaderboard" id="leaderboard-tab" data-toggle="tab">Leaderboard</a></li>
+							<li><a href="#profile" id="profile-tab" data-toggle="tab" >My Profile</a></li>
 							<!--  <li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>-->
-							<li><a href="#redeem" data-toggle="tab"id="redeem-tab">Redeem</a></li>
+							<li><a href="#redeem" id="redeem-tab" data-toggle="tab">Redeem</a></li>
 						</ul>
 						<ul class="nav nav-tabs" id="log-in-out">
 							<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
@@ -149,7 +150,7 @@
 
 						</div>
 						<div id="powered">
-							<a href="http://www.fancrank.com" target=_new><img src="/img/fan-footer.png" /></a>
+							<a href="http://www.fancrank.com" target=new><img src="/img/fan-footer.png" /></a>
 						</div>
 					</div>
 
