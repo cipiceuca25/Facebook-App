@@ -6,32 +6,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		$date = new Zend_Date();
 		$fanStat = $this->findFan($fanpage_id, $facebook_user_id);
 
-		$data = array(	'fanpage_id' => $fanpage_id,
-				'facebook_user_id' => $facebook_user_id,
-				'updated_time'=>$date->toString ( 'yyyy-MM-dd HH:mm:ss' ),
-				'fan_post_status_count' => $this->getFanPostStatusCount($fanpage_id, $facebook_user_id),
-				'fan_post_photo_count' => $this->getFanPostPhotoCount($fanpage_id, $facebook_user_id),
-				'fan_post_video_count' => $this->getFanPostVideoCount($fanpage_id, $facebook_user_id),
-				'fan_post_link_count' => $this->getFanPostLinkCount($fanpage_id, $facebook_user_id),
-				'fan_comment_status_count' => $this->getFanCommentStatusCount($fanpage_id, $facebook_user_id),
-				'fan_comment_photo_count' => $this->getFanCommentPhotoCount($fanpage_id, $facebook_user_id),
-				'fan_comment_video_count' => $this->getFanCommentVideoCount($fanpage_id, $facebook_user_id),
-				'fan_comment_link_count' => $this->getFanCommentLinkCount($fanpage_id, $facebook_user_id),
-				'fan_like_status_count' => $this->getFanLikeStatusCount($fanpage_id, $facebook_user_id),
-				'fan_like_photo_count' => $this->getFanLikePhotoCount($fanpage_id, $facebook_user_id),
-				'fan_like_video_count' => $this->getFanLikeVideoCount($fanpage_id, $facebook_user_id),
-				'fan_like_link_count' => $this->getFanLikeLinkCount($fanpage_id, $facebook_user_id),
-				'fan_like_comment_count' => $this->getFanLikeCommentCount($fanpage_id, $facebook_user_id),
-				'fan_get_like_status_count' => $this->getFanGotLikeFromStatus($fanpage_id, $facebook_user_id),
-				'fan_get_like_photo_count' => $this->getFanGotLikeFromPhoto($fanpage_id, $facebook_user_id),
-				'fan_get_like_video_count' => $this->getFanGotLikeFromVideo($fanpage_id, $facebook_user_id),
-				'fan_get_like_link_count' => $this->getFanGotLikeFromLink($fanpage_id, $facebook_user_id),
-				'fan_get_like_comment_count' => $this->getFanGotLikeFromComment($fanpage_id, $facebook_user_id),
-				'fan_get_comment_status_count' => $this->getFanGotCommentCountFromStatus($fanpage_id, $facebook_user_id),
-				'fan_get_comment_photo_count' => $this->getFanGotCommentCountFromPhoto($fanpage_id, $facebook_user_id),
-				'fan_get_comment_video_count' => $this->getFanGotCommentCountFromVideo($fanpage_id, $facebook_user_id),
-				'fan_get_comment_link_count' => $this->getFanGotCommentCountFromLink($fanpage_id, $facebook_user_id),
-		);
+		$data = $this->getFanStatById($fanpage_id, $facebook_user_id);
 		
 		if($fanStat) {
 			foreach ($data as $key => $value) {
@@ -41,6 +16,92 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		}else {
 			$this->insert($data);
 		}
+	}
+	
+	public function getFanStatById($fanpage_id, $facebook_user_id) {
+		$select = "select concat('post_', post_type) as type, count(*) as count from posts where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id group by post_type
+					union
+					select concat('comment_', comment_type) as type, count(*) as count from comments where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id group by comment_type
+					union
+					select concat('like_', post_type) as type, count(*) as count from likes where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id and likes = 1 group by post_type
+					union
+					select concat('got_like_', l.post_type) as type, count(*) as count from likes l left join posts p on(l.post_id = p.post_id) where
+					l.fanpage_id = $fanpage_id and p.facebook_user_id = $facebook_user_id and l.likes = 1 group by l.post_type 
+					union
+					select 'got_like_comment' as type, count(*) as count from likes l left join comments c on(l.post_id = c.comment_id) where
+					l.fanpage_id = $fanpage_id and c.facebook_user_id = $facebook_user_id and l.likes = 1
+					union
+					select concat('got_comment_', p.post_type) as type, sum(p.post_comments_count) as count from posts p where p.fanpage_id = $fanpage_id and p.facebook_user_id = $facebook_user_id group by p.post_type
+				";
+		$result = $this->getDefaultAdapter()->fetchAll($select);
+		
+		$date = new Zend_Date();
+		
+		$data = array(	
+				'fanpage_id' => $fanpage_id,
+				'facebook_user_id' => $facebook_user_id,
+				'updated_time'=>$date->toString ( 'yyyy-MM-dd HH:mm:ss' ),
+				'fan_post_status_count' => 0,
+				'fan_post_photo_count' => 0,
+				'fan_post_video_count' => 0,
+				'fan_post_link_count' => 0,
+				'fan_comment_status_count' => 0,
+				'fan_comment_photo_count' => 0,
+				'fan_comment_video_count' => 0,
+				'fan_comment_link_count' => 0,
+				'fan_like_status_count' => 0,
+				'fan_like_photo_count' => 0,
+				'fan_like_video_count' => 0,
+				'fan_like_link_count' => 0,
+				'fan_like_comment_count' => 0,
+				'fan_get_like_status_count' => 0,
+				'fan_get_like_photo_count' => 0,
+				'fan_get_like_video_count' => 0,
+				'fan_get_like_link_count' => 0,
+				'fan_get_like_comment_count' => 0,
+				'fan_get_comment_status_count' => 0,
+				'fan_get_comment_photo_count' => 0,
+				'fan_get_comment_video_count' => 0,
+				'fan_get_comment_link_count' => 0
+		);
+		
+		foreach($result as $key => $v) {
+			//$data[$v['type']] = $v['count'];
+			switch($v['type']) {
+				case 'post_status' : $data['fan_post_status_count'] = $v['count']; break;
+				case 'post_photo' : $data['fan_post_photo_count'] = $v['count']; break;
+				case 'post_video' : $data['fan_post_video_count'] = $v['count']; break;
+				case 'post_link' : $data['fan_post_link_count'] = $v['count']; break;
+				
+				case 'comment_status' : $data['fan_comment_status_count'] = $v['count']; break;
+				case 'comment_photo' : $data['fan_comment_photo_count'] = $v['count']; break;
+				case 'comment_video' : $data['fan_comment_video_count'] = $v['count']; break;
+				case 'comment_link' : $data['fan_comment_link_count'] = $v['count']; break;
+
+				case 'like_status' : $data['fan_like_status_count'] = $v['count']; break;
+				case 'like_photo' : $data['fan_like_photo_count'] = $v['count']; break;
+				case 'like_video' : $data['fan_like_video_count'] = $v['count']; break;
+				case 'like_link' : $data['fan_like_link_count'] = $v['count']; break;
+				case 'like_status_comment' : $data['fan_like_comment_count'] += $v['count']; break;
+				case 'like_photo_comment' : $data['fan_like_comment_count'] += $v['count']; break;
+				case 'like_video_comment' : $data['fan_like_comment_count'] += $v['count']; break;
+				case 'like_link_comment' : $data['fan_like_comment_count'] += $v['count']; break;
+				
+				case 'got_like_status' : $data['fan_get_like_status_count'] = $v['count']; break;
+				case 'got_like_photo' : $data['fan_get_like_photo_count'] = $v['count']; break;
+				case 'got_like_video' : $data['fan_get_like_video_count'] = $v['count']; break;
+				case 'got_like_link' : $data['fan_get_like_link_count'] = $v['count']; break;
+				case 'got_like_comment' : $data['fan_get_like_comment_count'] = $v['count']; break;
+				
+				case 'got_comment_status' : $data['fan_get_comment_status_count'] = $v['count']; break;
+				case 'got_comment_photo' : $data['fan_get_comment_photo_count'] = $v['count']; break;
+				case 'got_comment_video' : $data['fan_get_comment_video_count'] = $v['count']; break;
+				case 'got_comment_link' : $data['fan_get_comment_link_count'] = $v['count']; break;
+				default : break;	
+			}
+		}
+		
+		return $data;
 	}
 	
 	public function getFanPostCountByType($fanpage_id, $facebook_user_id, $type) {

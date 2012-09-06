@@ -460,7 +460,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$facebook = new Service_FancrankFBService();
     	$userId = '100001005159808';
     	//echo $facebook->getAppAccessToken();
-    	echo $facebook->isUserInstalledApp($userId);
+    	//echo $facebook->isUserInstalledApp($userId);
+    	echo $facebook->isFanpageInstalledApp('197221680326345');
     }
     
     public function test11Action() {
@@ -485,7 +486,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test13Action() {
-
+    	$fanpage_id = '216821905014540';
+    	$facebook_user_id = '612158099';
+		$fanStatModel = new Model_FansObjectsStats();
+		Zend_Debug::dump($fanStatModel->getFanStatById($fanpage_id, $facebook_user_id));
     }
     
     public function testmemcacheAction() {

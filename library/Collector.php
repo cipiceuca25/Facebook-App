@@ -1,13 +1,13 @@
 <?php
 class Collector
 {
-    public static function run($url, $fanpageId, $accessToken, $type)
+    public static function run($url, $fanpageId, $facebookUserId, $accessToken, $type)
     {
     	$collector = new Service_FancrankCollectorService($url, $fanpageId, $accessToken, $type);
     	switch ($type) {
     		case 'init' :
     			$collector->collectFanpageInitInfo();
-    			self::queue('5 second', $url, $fanpageId, $accessToken, 'full');
+    			self::queue('5 second', $url, $fanpageId, $facebookUserId, $accessToken, 'full');
     			break;
     		case 'update' :
     			$collector->updateFanpage(null, null);
@@ -20,18 +20,19 @@ class Collector
     	}
     }
 
-    public static function queue($timeout_str, $url, $fanpageId, $accessToken, $type)
+    public static function queue($timeout_str, $url, $fanpageId, $facebookUserId, $accessToken, $type)
     {
         $timeout = strtotime($timeout_str);
 
         if ($timeout - time() == 0) {
-            return self::run($url, $fanpageId, $accessToken, $type);
+            return self::run($url, $fanpageId, $facebookUserId, $accessToken, $type);
         }
 
         $message = array(
             'url' => $url,
             'type' => $type,
             'fanpage_id' => $fanpageId,
+        	'facebook_user_id' => $facebookUserId,	
         	'access_token' => $accessToken,
         );
 

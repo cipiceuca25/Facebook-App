@@ -208,6 +208,12 @@ class Model_Fans extends Model_DbTable_Fans
 		return $this->fetchAll($query);
 	}
 	
+	public function fetchFansIdListByFanpageId($fanpage_id) {
+		$select = $this->select();
+		$select->from($this, array('fanpage_id', 'facebook_user_id'))->where('fanpage_id = ?', $fanpage_id);
+		return $this->fetchAll($select)->toArray();
+	}
+	
 	public function isDataValid($data) {
 		if(empty($data)) {
 			return false;

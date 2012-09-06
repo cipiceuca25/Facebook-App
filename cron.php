@@ -52,26 +52,63 @@ $queue = new Zend_Queue($adapter, $config->queue);
 $messages = $queue->receive(1);
 //Zend_Debug::dump(count($messages));
 
+$link = 'www.fancrank.local/admin';
+
+if(APPLICATION_ENV === 'production') {
+	$link = 'https://fancranapp.com/admin';
+}
+
 if (count($messages) > 0) {
 	$logger = new Zend_Log();
 	//$writer = new Zend_Log_Writer_Stream('php://output');
 	$writer = new Zend_Log_Writer_Stream('./cron_error.log');
 	$logger = new Zend_Log($writer);
- 
+	$dbLog = new Model_CronLog();
+	
     foreach ($messages as $message) {
         $job = Zend_Json::decode($message->body, Zend_Json::TYPE_OBJECT);
 		Zend_Debug::dump($job);
+		$data = array(
+				'fanpage_id'	=> $job->fanpage_id,
+				'facebook_user_id' => $job->facebook_user_id,
+				'access_token'	=> $job->access_token,
+				'url'			=> $job->url,
+				'type'			=> $job->type,
+				'start_time' 	=> (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss')
+		);
         try {
-        	Collector::run($job->url, $job->fanpage_id, $job->access_token, $job->type);
         	// We have processed the message; now we remove it from the queue.
         	//$queue->deleteMessage($message);
+
+        	//Collector::run($job->url, $job->fanpage_id, $job->access_token, $job->type);
+        	$data['status'] = 'success';
+        	$data['end_time'] =	(new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss');
+        	$dbLog->insert($data);
+        	
+        	$userModel = new Model_FacebookUsers();
+        	$adminUser = $userModel->findRow($job->facebook_user_id);
+        	
+        	$fmail = new Service_FancrankMailService($adminUser);
+        	$okMsg = sprintf('Complete data collection on fanpage: %s <br/>
+        					 please click following link to login and verify result <a target="_blank" href="%s">link</a>', $job->fanpage_id, $link);
+        	
+        	$fmail->sendOKMail($okMsg);
          }catch (Exception $e) {
         	try {
         		//remove error message from the queue
-        		//$queue->deleteMessage($message);
+        		$queue->deleteMessage($message);
+        		
+        		//log err message into database
+        		$data['status'] = 'fail';
+        		$data['end_time'] =	(new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss');
+        		$dbLog->insert($data);
+        		
+        		//send email notification
         		$fmail = new Service_FancrankMailService();
         		$errMsg = sprintf('Error on job: %s <br/>fanpage_id: %s <br/>access_token: %s<br/> type: %s<br/>', $job->url, $job->fanpage_id, $job->access_token, $job->type); 
         		$fmail->sendErrorMail($errMsg .'System message: ' .$e->getMessage());
+        		
+        		//log err into log file
         		$logger->log('Queue Failed: ' .$e->getMessage(), Zend_Log::INFO);
         	} catch (Exception $e) {
         		$logger->log('System Error: ' .$e->getMessage(), Zend_Log::INFO);

@@ -142,7 +142,7 @@ function deleteSuccess(page)
 	new Alert.create('success', 'Page tab removed successfully!');
 }
 
-function addanalyticButton(btn, id)
+function addAnalyticButton(btn, id)
 {
 	$(btn).closest('tr').find('.analytic').append('<button class="app-analytic btn btn-analytic" rel="tooltip" title="See your fanpage statistics" data-id="' + id + '">Analytic</button>');
 }

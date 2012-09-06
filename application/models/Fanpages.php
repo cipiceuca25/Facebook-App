@@ -166,5 +166,21 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 
 		return $this->getAdapter()->fetchAll($select);
 	}
+	
+	public function getInstallFanpagesIdList() {
+		$select = $this->select();
+		$select->from($this, array('fanpage_id'))->where('fanpages.installed = TRUE');
+		$result = array();
+		foreach ($this->fetchAll($select)->toArray() as $id) {
+			$result[] = $id['fanpage_id'];
+		}
+		return $result;
+	}
+	
+	public function getInstallFanpages() {
+		$select = $this->select();
+		$select->where('fanpages.installed = TRUE');
+		return $this->fetchAll($select);
+	}
 }
 
