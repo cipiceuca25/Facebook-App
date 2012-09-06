@@ -58,6 +58,7 @@ $(document).ready(
 $(document).mousemove(function(e) {
 	mouseX = e.pageX;
 	mouseY = e.pageY;
+	$('.popover').css('display', 'none');
 });
 
 $(document).on('mouseover', 'a[rel=popover]', function() {
@@ -67,21 +68,29 @@ $(document).on('mouseover', 'a[rel=popover]', function() {
 		return;
 	}
 	$(this).data('isPopoverLoaded', true).popover({
+		
 		delay : {
 			show : 500,
 			hide : 10
 		},
 		placement : $(this).attr('data-placement')
 	}).trigger('mouseover');
-
+	
 });
 
 $(document).on('mouseover', 'a[rel=tooltip]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;
 	}
+	$(this).data('isTooltipLoaded', true).tooltip().trigger('mouseover');
+});
+
+$(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
+	if ($(this).data('isTooltipLoaded') == true) {
+		return;
+	}
 	$(this).data('isTooltipLoaded', true).tooltip({
-		'placement' : 'left'
+		delay : {show:1000, hide:100}
 	}).trigger('mouseover');
 });
 
@@ -92,7 +101,11 @@ $(document).on('mouseover', 'a[rel=tooltip-award]', function() {
 	$(this).data('isTooltipLoaded', true).tooltip({
 		'placement' : 'top'
 	}).trigger('mouseover');
+
 });
+
+
+
 
 $('.badge-Following').live("mouseenter", function() {
 	$(this).text('Unfollow');
@@ -256,6 +269,7 @@ function ImgError(source) {
 
 function userProfile(user, load) {
 	load = typeof load !== 'undefined' ? load : true;
+	popup(load);
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/userprofile/' + fanpageId + '/?target='
@@ -263,12 +277,14 @@ function userProfile(user, load) {
 		dataType : "html",
 		cache : false,
 		async : true,
-	
+		beforeSend: function(){
+			$('.profile-content').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
 		success : function(data) {
 
 			$('.profile-content').html(data);
 			changeTime('.profile-content .time');
-			popup(load);
+			
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -296,7 +312,14 @@ function comment_feed2(post_id, type, limiter, total, toggle) {
 	changeTime(ui + ' .time');
 }
 
+function comment_feed3(post_id, type, limiter, total, toggle) {
+	ui = '#popup_post_' + post_id;
+	//alert(ui);
+	getFeedComment(ui, post_id, type, limiter, total, toggle, false);
 
+	//$('.social.comment.' + post_id).css('display', 'none');
+	changeTime(ui + ' .time');
+}
 
 //ui where is this going 
 //post_id the post id 
@@ -324,7 +347,7 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
 			if (toggle) {
 				$(ui).animate({
 					height : 'toggle',
-				}, 1000, 'swing', function() {
+				}, 10, 'swing', function() {
 					// Animation complete.
 				});
 			} 
@@ -343,6 +366,7 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
 
 function popup_post(post_id, limiter, load) {
 	load = typeof load !== 'undefined' ? load : true;
+	popup(load);
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/popuppost/' + fanpageId + '?post_id='
@@ -350,10 +374,14 @@ function popup_post(post_id, limiter, load) {
 		dataType : "html",
 		cache : false,
 		async : true,
+		beforeSend: function(){
+			$('.profile-content').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
 		success : function(data) {
 			$('.profile-content').html(data);
-			changeTime('#popup_comment .time');
-			popup(load);
+
+			changeTime('#popup_post .time');
+			
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -460,6 +488,7 @@ function like(post_id, post_type, target_id, target_name) {
 							"unlike('" + post_id + "','" + post_type + "','"
 									+ target_id + "','" + target_name + "')");
 					$('.like_control_' + post_id).html('Unlike');
+					$('.like_control_' + post_id).attr('data-original-title', 'You like this');
 
 				},
 				error : function(xhr, errorMessage, thrownErro) {
@@ -513,6 +542,7 @@ function unlike(post_id, post_type, target_id, target_name) {
 							"like('" + post_id + "','" + post_type + "','"
 									+ target_id + "','" + target_name + "')");
 					$('.like_control_' + post_id).html('Like');
+					$('.like_control_' + post_id).attr('data-original-title', 'Click to like this');
 
 				},
 				error : function(xhr, errorMessage, thrownErro) {
@@ -820,20 +850,20 @@ function post(fanpage_name) {
 
 }
 
-function commentSubmit(post_id, post_type, post_message_id, post_owner_id, post_owner_name, isLatestAdminPost){
+function commentSubmit(post_id, post_type, sage_id, post_owner_id, post_owner_name, isLatestAdminPost){
 	FB.api('/' + post_id + '/comments', 'post', {
-		'message' : $('#comment_box_'+post_message_id).val(),
+		'message' : $('#comment_box_'+post_id).val(),
 		'access_token' : userAccessToken
 	}, function(response) {
 		if (!response || response.error) {
 			alert(response.error.message);
 		} else {
-			$('#comment_box_'+post_message_id).val('');
+			$('#comment_box_'+post_id).val('');
 			
 			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name);
 			
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
-			alert(post_comment_count);
+			//alert(post_comment_count);
 			$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
 			$('.comment_'+post_id).html(' '+post_comment_count);
 			
@@ -846,20 +876,21 @@ function commentSubmit(post_id, post_type, post_message_id, post_owner_id, post_
 	});
 }
 
-function commentSubmit2(post_id, post_type, post_message_id, post_owner_id, post_owner_name){
+function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
+	//alert($('#comment_box_popup_'+post_id).val());
 	FB.api('/' + post_id + '/comments', 'post', {
-		'message' : $('#comment_box_'+post_message_id).val(),
+		'message' : $('#comment_box_popup_'+post_id).val(),
 		'access_token' : userAccessToken
 	}, function(response) {
 		if (!response || response.error) {
 			alert(response.error.message);
 		} else {
-			$('#comment_box_'+post_message_id).val('');
+			$('#comment_box_popup_'+post_id).val('');
 			
 			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name);
 			
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
-			alert(post_comment_count);
+			//alert(post_comment_count);
 			$('.comment_'+post_id).html(post_comment_count);
 			
 			popup_post(post_id, post_comment_count, false);
@@ -868,60 +899,37 @@ function commentSubmit2(post_id, post_type, post_message_id, post_owner_id, post
 		}
 	});
 }
-/*
-function commentSubmit(postid, type, message, target_id, target, latest) {
-	var m = '#' + message;
 
-	//alert(userAccessToken);
-	FB.api('/' + postid + '/comments', 'post', {
-		'message' : $(m).val(),
-		'access_token' : userAccessToken
-	}, function(response) {
-		if (!response || response.error) {
-			alert(response.error.message);
-		} else {
-			//alert('Post ID: ' + response.id);
-			$(m).val('');
-			addActivities('comment-' + type, postid, target_id,
-					target);
-			$('.comment_' + postid).html(postcommentcount + 1);
-			if (latest) {
-				alert('calling comment feed 2');
-				comment_feed2(postid, type, postcommentcount + 1,
-						postcommentcount + 1, false);
-			} else {
-				comment_feed(postid, type, postcommentcount + 1,
-						postcommentcount + 1, false);
-			}
+
+function getLikesList(postid, load) {
+	load = typeof load !== 'undefined' ? load : true;
+	popup(load);
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/getlikeslist/' + fanpageId + '?post_id='
+				+ postid ,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		
+		},
+		success : function(data) {
+			$('.profile-content').html(data);
+			
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('there was an error with getting the likes list');
 		}
 	});
+
 }
 
-function commentpopupSubmit(postid, type, message, target_id, target) {
-	var m = '#' + message;
-
-	//alert(userAccessToken);
-	FB.api('/' + postid + '/comments', 'post', {
-		'message' : $(m).val(),
-		'access_token' : userAccessToken
-	}, function(response) {
-		if (!response || response.error) {
-			alert(response.error.message);
-		} else {
-			//alert('Post ID: ' + response.id);
-			$(m).val('');
-			addActivities('comment-' + type, postid, target_id,
-					target);
-			num = $('.comment_' + postid).html();
-			$('.comment_' + postid).html((parseInt(num) + 1));
-			comment_popover(postid, num + 1, false);
-
-		}
-	});
-}
-*/
 function getFollowingList(targetname, target, limit, load) {
 	load = typeof load !== 'undefined' ? load : true;
+	popup(load);
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/getfollowing/' + fanpageId + '?limit='
@@ -930,10 +938,14 @@ function getFollowingList(targetname, target, limit, load) {
 		dataType : "html",
 		cache : false,
 		async : true,
+		beforeSend: function(){
+			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		
+		},
 		success : function(data) {
 			
 			$('.profile-content').html(data);
-			popup(load);
+			
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -946,6 +958,7 @@ function getFollowingList(targetname, target, limit, load) {
 
 function getFollowersList(targetname, target, limit, load) {
 	load = typeof load !== 'undefined' ? load : true;
+	popup(load);
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/getfollowers/' + fanpageId + '?limit='
@@ -954,10 +967,14 @@ function getFollowersList(targetname, target, limit, load) {
 		dataType : "html",
 		cache : false,
 		async : true,
+		beforeSend: function(){
+			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		
+		},
 		success : function(data) {
 
 			$('.profile-content').html(data);
-			popup(load);
+			
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -972,15 +989,14 @@ function popup(load){
 	$('.light-box').css('display', 'block');
 	$('.user-profile').css('display', 'block');
 	$('.profile-content').css('height', 'auto');
-
-	if (load) {
-		FB.Canvas.getPageInfo(function(info) {
+	FB.Canvas.getPageInfo(function(info) {
 			$('.user-profile').css('top', info.scrollTop - 100);
-		});
+	});
+	if (load) {
 		$('.profile-content').animate({
 			height : 'toggle',
 		//top:'20px'
-		}, 500, function() {
+		}, 10, function() {
 
 		});
 	}
@@ -1049,7 +1065,7 @@ function PostBox(){
 function changeTime(ui){
 	$.each($(ui), function(index) {
 		$(this).html(timeZone($(this).attr('data-unix-time')));
-		$(this).attr('title', timeZoneTitle($(this).attr('data-unix-time')));
+		$(this).attr('data-original-title', timeZoneTitle($(this).attr('data-unix-time')));
 	});
 }
 

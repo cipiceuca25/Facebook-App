@@ -1,6 +1,18 @@
 <div class="panel">
 	<div class="row">
-		<div class="span12">
+		<div class="span6">
+			<div class="title">
+				
+				<div class="title-header nopic">What is Fancrank?</div>
+				
+			</div>
+			
+			<div class="row box">
+				<div id="whatisfancrank">
+				</div>
+			</div>
+		</div>
+		<div class="span6">
 			<div class="top-fan" id="login">
 				
 				<div class="title">
@@ -21,8 +33,8 @@
 						<?php $count = 0; ?> 
 						<?php foreach($this->top_fans as $top_fan):  ?>
 						<?php if ($count == 0){?>
-						<div id="whatisfancrank">
-						</div>
+						
+					
 						<ul class="top-list first">
 							<li>
 								<div class="ranker first">
@@ -33,11 +45,19 @@
 									</div>
 
 									<div class="user">
-										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
-												width="35" height="35"
-												src="https://graph.facebook.com/<?=$top_fan['facebook_user_id'] ?>/picture"
-												onerror="ImgError(this);"></span><span class="name first"><?=$top_fan['fan_first_name']?>
-										</span></a>
+										
+										<div class="photo">
+											<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+												<img class="face" width="35" height="35" src="https://graph.facebook.com/<?=$top_fan['facebook_user_id'] ?>/picture"
+												onerror="ImgError(this);">
+											</a>
+										</div>
+												
+										<div class="name first">
+											<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+												<?=$top_fan['fan_first_name']?>
+											</a>
+										</div>
 									</div>
 
 									<div class="points">
@@ -63,11 +83,19 @@
 											</h1>
 										</div>
 										<div class="user">
-											<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
-													width="35" height="35"
+											
+												<div class="photo">
+													<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+													<img class="face" width="35" height="35"
 													src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
-													onerror="ImgError(this);"></span><span class="name"><?=$top_fan['fan_first_name'] ?>
-											</span></a>
+													onerror="ImgError(this);">
+													</a>
+												</div>
+												<div class="name">
+													<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+														<?=$top_fan['fan_first_name'] ?>
+													</a>
+												</div>
 										</div>
 										<div class="points">
 											<h3>
@@ -86,7 +114,7 @@
 							<?php endforeach; ?>
 
 						<?php if ($count < 5){?>
-						<?php if ($count == 0){?>
+							<?php if ($count == 0){?>
 							<ul class="top-list <?= ($count == 0 ? ' first' : '') ?>">
 								<li>
 									<div class="ranker first">
@@ -96,18 +124,18 @@
 											</h1>
 										</div>
 										<div class="user">
-											<span class="photo"></span>
-											<span class="name"></span>
+											<div class="photo"></div>
+											<div class="name"></div>
 										</div>
 										<div class="points"></div>
 									</div>
 								</li>
 								<?php $count++;?>
 							</ul>
-						<?php }?>
+							<?php }?>
 						
 						
-						<?php for ( ;$count<5; $count++){ ?>
+							<?php for ( ;$count<5; $count++){ ?>
 						
 							<?php if ($count == 1){?>
 							<ul  id="top-fans-collapse" class="top-list collapse in">		
@@ -120,15 +148,15 @@
 											</h1>
 										</div>
 										<div class="user">
-											<span class="photo"></span>
-											<span class="name"></span>
+											<div class="photo"></div>
+											<div class="name"></div>
 										</div>
 										<div class="points"></div>
 									</div>
 								</li>
 								
 							
-						<?}?>
+							<?}?>
 						<?}?>		
 							</ul>
 						
@@ -153,14 +181,14 @@
 											<?php }?>
 										</div>
 										<div class="user">
-											<span class="photo">
+											<div class="photo">
 												<img class="face" width="35" height="35"
 													src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 													onerror="ImgError(this);">
-											</span>
-											<span class="name">
+											</div>
+											<div class="name">
 												YOU
-											</span>
+											</div>
 										</div>
 										
 										<div class="points">
@@ -172,6 +200,7 @@
 									</div>
 								</li>
 							</ul>
+							
 				</div>
 			
 			</div><!-- topfan -->
@@ -209,12 +238,19 @@
 								</div>
 
 								<div class="user">
-									<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
+									<div class="photo">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
-											onerror="ImgError(this);"></span><span class="name first">
+											onerror="ImgError(this);">
+										</a>
+									</div>
+									<div class="name first">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
 											<?= $popular['fan_first_name'] ?>
-									</span></a>
+										</a>
+									</div>
 								</div>
 
 								<div class="points">
@@ -240,11 +276,19 @@
 									</h1>
 								</div>
 								<div class="user">
-									<a rel="tooltip" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
+									<div class="photo">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
-											onerror="ImgError(this);"></span><span class="name"><?= $popular['fan_first_name'] ?>
-									</span></a>
+											onerror="ImgError(this);">
+										</a>
+									</div>
+									<div class="name">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+										<?= $popular['fan_first_name'] ?>
+										</a>
+									</div>
 								</div>
 								<div class="points">
 									<h3>
@@ -273,8 +317,8 @@
 										</h1>
 									</div>
 									<div class="user">
-										<span class="photo"></span>
-										<span class="name"></span>
+										<div class="photo"></div>
+										<div class="name"></div>
 									</div>
 									<div class="points"></div>
 								</div>
@@ -297,8 +341,8 @@
 											</h1>
 										</div>
 									<div class="user">
-										<span class="photo"></span>
-										<span class="name"></span>
+										<div class="photo"></div>
+										<div class="name"></div>
 									</div>
 										<div class="points"></div>
 									</div>
@@ -329,14 +373,14 @@
 										<?php }?>
 									</div>
 									<div class="user">
-										<span class="photo">
+										<div class="photo">
 											<img class="face" width="35" height="35"
 												src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 												onerror="ImgError(this);">
-										</span>
-										<span class="name">
+										</div>
+										<div class="name">
 											YOU
-										</span>
+										</div>
 									</div>
 									<div class="points">
 											<h1><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">LOGIN</a>
@@ -358,7 +402,7 @@
 			<div class="top-talker">
 				<div class="title">
 					<div class="title-icon">
-						<img src="/img/news-feed/fan-fav-icon.jpg" />
+						<img src="/img/news-feed/top-talker-icon.jpg" />
 					</div>
 					<div class="title-header">
 						Top Talker
@@ -384,11 +428,19 @@
 								</div>
 
 								<div class="user">
-									<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
+									<div class="photo">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"
-											onerror="ImgError(this);"></span><span class="name first"><?= $talker['fan_first_name'] ?>
-									</span></a>
+											onerror="ImgError(this);">
+										</a>
+									</div>		
+									<div class="name first">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<?= $talker['fan_first_name'] ?>
+										</a>
+									</div>
 								</div>
 
 								<div class="points">
@@ -414,11 +466,20 @@
 									</h1>
 								</div>
 								<div class="user">
-									<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
+									<div class="photo">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"
-											onerror="ImgError(this);"></span><span class="name"><?= $talker['fan_first_name'] ?>
-									</span></a>
+											onerror="ImgError(this);">
+										</a>
+									</div>
+										
+									<div class="name">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+										<?= $talker['fan_first_name'] ?>
+										</a>
+									</div>
 								</div>
 								<div class="points">
 									<h3>
@@ -447,8 +508,8 @@
 										</h1>
 									</div>
 									<div class="user">
-										<span class="photo"></span>
-										<span class="name"></span>
+										<div class="photo"></div>
+										<div class="name"></div>
 									</div>
 									<div class="points"></div>
 								</div>
@@ -471,8 +532,8 @@
 											</h1>
 										</div>
 										<div class="user">
-										<span class="photo"></span>
-										<span class="name"></span>
+										<div class="photo"></div>
+										<div class="name"></div>
 									</div>
 										<div class="points"></div>
 									</div>
@@ -503,14 +564,14 @@
 										<?php }?>
 									</div>
 									<div class='user'>
-										<span class="photo">
+										<div class="photo">
 											<img class="face" width="35" height="35"
 												src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 												onerror="ImgError(this);"> 
-										</span>
-										<span class="name">
+										</div>
+										<div class="name">
 											YOU
-										</span>
+										</div>
 									</div>
 									<div class="points">
 											<h1><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">LOGIN</a>
@@ -536,7 +597,7 @@
 			<div class="top-clicker">
 				<div class="title">
 					<div class="title-icon">
-						<img src="/img/news-feed/fan-fav-icon.jpg" />
+						<img src="/img/news-feed/top-clicker-icon.jpg" />
 					</div>
 					<div class="title-header">
 						Top Clicker
@@ -562,11 +623,19 @@
 								</div>
 
 								<div class="user">
-									<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
+									<div class="photo">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"
-											onerror="ImgError(this);"></span><span class="name first"><?= $clicker['fan_first_name'] ?>
-									</span></a>
+											onerror="ImgError(this);">
+										</a>
+									</div>
+									<div class="name first">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<?= $clicker['fan_first_name'] ?>
+										</a>
+									</div>
 								</div>
 
 								<div class="points">
@@ -593,11 +662,18 @@
 									</h1>
 								</div>
 								<div class="user">
-									<a rel="tooltip"  data-placement="right" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
-											width="35" height="35"
+									<div class="photo">
+										<a rel="tooltip"  data-placement="right" title="Login to FanCrank to see this user's information">
+											<img class="face" width="35" height="35"
 											src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"
-											onerror="ImgError(this);"></span><span class="name"><?= $clicker['fan_first_name'] ?>
-									</span></a>
+											onerror="ImgError(this);">
+										</a>
+									</div>
+									<div class="name">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+										<?= $clicker['fan_first_name'] ?>
+										</a>
+									</div>
 								</div>
 								<div class="points">
 									<h3>
@@ -627,8 +703,8 @@
 										</h1>
 									</div>
 									<div class="user">
-										<span class="photo"></span>
-										<span class="name"></span>
+										<div class="photo"></div>
+										<div class="name"></div>
 									</div>
 									<div class="points"></div>
 								</div>
@@ -651,8 +727,8 @@
 											</h1>
 										</div>
 										<div class="user">
-										<span class="photo"></span>
-										<span class="name"></span>
+										<div class="photo"></div>
+										<div class="name"></div>
 									</div>
 										<div class="points"></div>
 									</div>
@@ -683,14 +759,14 @@
 										<?php }?>
 									</div>
 									<div class="user">
-									<span class="photo">
+									<div class="photo">
 									<img class="face" width="35" height="35"
 											src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 											onerror="ImgError(this);">
-									</span>
-									<span class="name">
+									</div>
+									<div class="name">
 										YOU
-									</span>
+									</div>
 									</div>
 									<div class="points">
 											<h1><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">LOGIN</a>
@@ -738,11 +814,20 @@
 								</div>
 
 								<div class="user">
-									<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
+									<div class="photo">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $followed['facebook_user_id'] ?>/picture"
-											onerror="ImgError(this);"></span><span class="name first"><?= $followed['fan_first_name'] ?>
-									</span></a>
+											onerror="ImgError(this);">
+										</a>
+									</div>
+									
+									<div class="name first">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<?= $followed['fan_first_name'] ?>
+										</a>
+									</div>
 								</div>
 
 								<div class="points">
@@ -770,11 +855,19 @@
 									</h1>
 								</div>
 								<div class="user">
-									<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information"><span class="photo"><img class="face"
+									<div class="photo">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+											<img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $followed['facebook_user_id'] ?>/picture"
-											onerror="ImgError(this);"></span><span class="name"><?= $followed['fan_first_name']?>
-									</span></a>
+											onerror="ImgError(this);">
+										</a>
+									</div>
+									<div class="name">
+										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+										<?= $followed['fan_first_name']?>
+										</a>
+									</div>
 								</div>
 								<div class="points">
 									<h3>
@@ -806,8 +899,8 @@
 										</h1>
 									</div>
 									<div class="user">
-										<span class="photo"></span>
-										<span class="name"></span>
+										<div class="photo"></div>
+										<div class="name"></div>
 									</div>
 									<div class="points"></div>
 								</div>
@@ -830,8 +923,8 @@
 											</h1>
 										</div>
 										<div class="user">
-										<span class="photo"></span>
-										<span class="name"></span>
+										<div class="photo"></div>
+										<div class="name"></div>
 									</div>
 										<div class="points"></div>
 									</div>
@@ -864,14 +957,14 @@
 										<?php }?>
 									</div>
 									<div class="user">
-									<span class="photo">
+									<div class="photo">
 										<img class="face" width="35" height="35"
 											src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 											onerror="ImgError(this);">
-									</span>
-									<span class="name">
+									</div>
+									<div class="name">
 										YOU
-									</span>
+									</div>
 									</div>
 									<div class="points">
 											<h1><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">LOGIN</a>

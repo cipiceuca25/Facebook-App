@@ -24,19 +24,20 @@
 	<div class="user">	
 	<div class="user-badge">
 	<a <? if (($this->relation[$count] != 'Fanpage')){?>
-		<? if ($this->relation[$count] != 'You') { ?>
-			<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-					 onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" >
+			<? if ($this->relation[$count] != 'You') { ?>
+				<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+					 	onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" 
 				<?}else{?>
-					 onclick="unfollow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>">
+					 onclick="unfollow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>"
 				<?}?>
+				>
 				
 				<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 			<?php }else{?>
-				<span class="badge badge-You">You</span>
+				><span class="badge badge-You">You</span>
 			<?php }?>
 		<?}else{?>	
-			<span class="badge badge-Fanpage">Admin</span>
+			rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top" ><span class="badge badge-Fanpage">Admin</span>
 		<?php }?></a>
 	</div>
 			
@@ -77,23 +78,33 @@
 	</div>
 
 	<div class="post">
-		<? if($post['post_message'] != null ){?><div class="message"><?
-				$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-	
-				
-				$m = $this->escape($post['post_message']);
-			
+		<?php if($post['post_message'] != null ){?>
+							<div class="message">
+							<?php 
+							$reg_ex = "/\n/";
+							$message = $this->escape($post['post_message']);
+							if(preg_match_all($reg_ex, $message, $url)) {
+								$message= preg_replace($reg_ex, "<br/>", $message);
+							} 
+							
+							$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
+						
+							$m = preg_match_all($reg_exUrl, $message, $match); 
+							
+							if ($m) { 
+							    $links=$match[0]; 
+							    for ($j=0;$j<$m;$j++) { 
+							        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
+							    } 
+							} 
+							
+							echo $message; 
+								//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
+							
+							?><br/>
+							</div>
+					<?}	?>
 
-				if(preg_match($reg_exUrl, $m, $url)) {
-				
-		
-				       echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
-				
-				} else {
-				
-				       echo $m;
-				
-				}?></div><?}?>
 			<div class="graphical">	
 		<?php if (($post['post_type'] == 'photo') || ($post['post_type'] == 'video')) {?>	
 			<a target="new" href="<?echo $this->escape($post['link'])?> "> 
@@ -102,26 +113,33 @@
 			
 		<?}elseif ($post['post_type'] == 'link') {?>
 			<div class="link">
+				<?php if ($post['picture'] != null){?>
 				<div class="link-left">
 					<a target="new" href="<?echo $this->escape($post['link'])?> "> 
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post['picture']))?> '/>
 					</a>
 				</div>
-			
+				<?php }?>
 				<div class="link-right">
-					<a target="new" href="<?echo $this->escape($post['link'])?> "><?= $this->escape($post['link_name'])?>
-					
-					<?php  if ($post['post_caption']!= null){?>
-					<br/>
-					<?php echo $this->escape($post['post_caption']); ?>:<? }?> 
-					<br/>
-					
+					<a target="_new" class="link-title" href="<?echo $this->escape($post['link'])?>">
+						<?= (($post['link_name']!=null)?$this->escape($post['link_name']): $this->escape($post['link']))?>
+					</a>
+					<?php if(isset($post->caption)){?>
+						<br/>
+						<a target="_new" class="link-caption" href="<?echo $this->escape($post['link'])?> ">
+							<?php echo $this->escape($post['post_caption']);?>:  
+						</a>
+					<?php }?>	
+				
 					<?php if ($post['post_description']!= null){?>
-						<?=$this->escape($post['post_description'])?>
+						<a target="_new" class="link-caption" href="<?echo $this->escape($post['link'])?> ">	
+							<?=$this->escape($post['post_description'])?> 
+						</a>
 					<?php }?>
 						
-					</a>
+					
 				</div>
+				
 			</div>
 		<?}?>
 	
@@ -132,13 +150,14 @@
 		
 	
 	<div class="social"> 
-			
-			
+	
+				<a class="like_control_<?= $post['post_id']?>" rel="tooltip" data-placement="top"
 				<?php if ($this->likes[$count] == 0) {?>
-					<a class="like_control_<?= $post['post_id']?>"  onclick="like('<?= $post['post_id']?>', '<?= $post['post_type']?>', '<?=$post['facebook_user_id']?>','<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>' )" >Like</a>   
+					  data-original-title="Click to like this" onclick="like('<?= $post['post_id']?>', '<?= $post['post_type']?>', '<?=$post['facebook_user_id']?>','<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>' )" >Like  
 				<?}else{?>
-					<a class="like_control_<?= $post['post_id']?>"  onclick="unlike('<?= $post['post_id']?>', '<?= $post['post_type']?>', '<?=$post['facebook_user_id']?>','<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>')">Unlike</a>   
+					  data-original-title="You like this"  onclick="unlike('<?= $post['post_id']?>', '<?= $post['post_type']?>', '<?=$post['facebook_user_id']?>','<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>')">Unlike
 				<?php }?>
+				</a>   
 		
 				 &middot;
 		
@@ -148,7 +167,7 @@
 			 		} else {echo '0';} ?> , true )" class="commenthider_<?= $post['post-id'] ?>">Comment </a>
 				&middot;
 			
-				<span class="time"  title="" data-unix-time="<?= strtotime($post['created_time'])?>"></span>
+				<a rel="tooltip" data-placement="right" class="time"  data-original-title="" data-unix-time="<?= strtotime($post['created_time'])?>"></a>
 			
 			<br/>
 	</div>
@@ -168,8 +187,8 @@
 		
 	
 	</div>
-	<?php if(($post['post_comments_count']!= null) && ($post['post_comments_count'] != 0)){?>
-	<div class="social comment <?=$post['post_id']?>">
+	
+	<div class="social comment <?=$post['post_id']?>" <?php if(($post['post_comments_count']== null) || ($post['post_comments_count'] == 0)){?> style="display:none" <?}?>>
 	
 			 <a  onclick=" comment_feed('<?= $post['post_id'] ?>','<?= $post['post_type']?>', 5,<?php 
 			 		if($post['post_comments_count']!= null){
@@ -205,7 +224,7 @@
 	
 	
 	</div>
-	<?php }?>
+
 	
 
 	<ul class="comments" id="post_<?=$post['post_id']?>" ></ul>
@@ -219,7 +238,7 @@
 <?php endforeach; }?>
 				
 <?php if ($this->myfeedcount > 9){?>					
-	<button id ="more_post" class="btn-more" onclick="getFancrankfeed(setFeed)">MORE +</button>
+	<li><button id ="more_post" class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>
 	<?php }?>
 
 

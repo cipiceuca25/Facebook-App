@@ -1,15 +1,10 @@
-
-			
-							
-
-									<?php $count = 0; ?> 
-									<?php foreach($this->top_fans as $top_fan): ?>
+<?php $count = 0; ?> 
+<?php foreach($this->top_fans as $top_fan): ?>
 									
-									<?php if ($count == 0){?>
-									
-										<ul class="top-list mini first">
-											<li>
-												<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+	<?php if ($count == 0){?>
+		<ul class="top-list mini first">
+			<li>
+				<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 														<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
 															<h1><?= $count + 1 ?></h1>
 														</div>

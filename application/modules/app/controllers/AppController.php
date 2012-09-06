@@ -343,7 +343,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			//echo $e->getMessage();
     		}
     	}
-    	 
+
+ 
     	$this->view->topFanYou =  $userLeaderBoardData['topFans'];
     	$this->view->popularYou = $userLeaderBoardData['mostPopular'];
     	$this->view->talkerYou = $userLeaderBoardData['topTalker'];
@@ -421,6 +422,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(3600);
     		$topPostId = $this->_fanpageId .'_toppost';
+    		
     		try {
     	
     			//Check to see if the $fanpageId is cached and look it up if not
@@ -445,7 +447,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$likesModel = new Model_Likes();
     	$likes = array();
     	$relation = array();
-    	//$picture = array();
+    	$likeslist = array();
     	$count=0;
 		//Zend_Debug::dump($topPosts);
     	foreach ($topPosts as $posts){
@@ -460,14 +462,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//}else{
     		//	$picture[$count] = null;
     		//}
+    		$likeslist[$count] = $this->getPostLikes($posts['post_id']);
     		$count++;
+    		
     	}
 		
     	
-    	
+    	//Zend_Debug::dump($likeslist);
     	
     	//Zend_Debug::dump($topPosts);
     //	$this->view->picture = $picture;
+    	$this->view->likeslist = $likeslist;
     	$this->view->likes = $likes;
     	$this->view->top_post = $topPosts;
     	$this->view->relation = $relation;
@@ -512,9 +517,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	//$originalPost = $this->getPost($postId);
     	$post= $this->getPost($postId);
-    	
+    	//Zend_Debug::dump($post);
     	$result = array();
-    	$result = $this->getFeedComment($postId, $limit);
+    	
+    	$result = isset($post->comments->data)?$post->comments->data:null;
+    	//$result = $this->getFeedComment($postId, $limit);
     	//$result = json_encode($result);
     	
     	$follow = new Model_Subscribes();
@@ -524,7 +531,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$relation = array();
     	$count=0;
     	$likes[$count]=null;
+    	$likesPost = $likesModel->getLikes($this->_fanpageId, $postId, $this->_userId );
     	$relation[$count] =$follow->getRelation($this->_userId, $post->from->id,$this->_fanpageId);
+    	
     	
     	$count=1;
     	if(!empty($result)) {
@@ -537,10 +546,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}
     	}
     	
-    	$likesPost = $likesModel->getLikes($this->_fanpageId, $postId, $this->_userId );
     	//$postTop = explode('_', $postId);
     	//$postTop = $postTop[0].'_'.$postTop[1];
-    	 
     	//$this->view->postTopId = $postTop;
     	//$this->view->postTopName =$this-> getOwnerOfPost($postTop);
     	$this->view->post = $post;
@@ -701,19 +708,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
-    	if(!empty($stat)) {
+    	
     		$stat_post = $stat[0]['total_posts'];
     		$stat_comment = $stat[0]['total_comments'];
     		$stat_like = $stat[0]['total_likes'];
     		$stat_get_comment = $stat[0]['total_get_comments'];
     		$stat_get_like = $stat[0]['total_get_likes'];
-    	}else {
-    		$stat_post = null;
-    		$stat_comment = null;
-    		$stat_like = null;
-    		$stat_get_comment = null;
-    		$stat_get_like = null;
-    	}
     	
     	
     	$this->view->fan_level = $fan_level;
@@ -736,7 +736,50 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("myprofile");
     }
     
-    
+    public function popoverprofileAction(){
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	$user = new Model_FacebookUsers();
+    	$user = $user->find($this->_request->getParam('facebook_user_id'))->current();// the target
+    	//Zend_Debug::dump($user);
+    	if($user) {
+    		$this->view->facebook_user = $user;
+    		//$access_token = $this->facebook_user->facebook_user_access_token;
+    		//$this->view->feed = $this->getFeed($access_token);
+    	}else {
+    	
+    		$client = new Zend_Http_Client;
+    		$client->setUri("https://graph.facebook.com/". $this->_request->getParam('facebook_user_id') );
+    		$client->setMethod(Zend_Http_Client::GET);
+    		//$client->setParameterGet('access_token', $this->_accessToken);
+    		$response = $client->request(); 
+    		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    		if(!empty ($result)) {
+    			$user = array('facebook_user_id' => $result->id,
+    					'facebook_user_first_name'=> $result->first_name,
+    					'facebook_user_last_name'=>$result->last_name,
+    					'created_time'=> 'Not Available',
+    					'hometown' => 'Not Available'
+    			);
+    			$user = (object)$user;
+    		}
+    		//Zend_Debug::dump($user);
+    		$this->view->facebook_user = $user;
+    		//$this->view->facebook_user = null;
+    	} 
+    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    	$follow = new Model_Subscribes();
+    	$relation = $follow->getRelation($this->_userId, $user->facebook_user_id, $this->_fanpageId);
+    	 
+    	$fan = $fan->getFanProfile();
+    	$stat = new Model_FansObjectsStats();
+    	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
+    	 
+    	$this->view->relation=$relation;
+    	$this->view->stat= $stat;
+    	$this->view->fan = $fan;
+    	$this->render("popoverprofile");
+    }
     //THIS IS PROBABLY SEARCHING 
     public function userprofileAction() {
     
@@ -792,7 +835,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     	$follower = $follow->getFollowers($user->facebook_user_id, $this->_fanpageId);
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
-    	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
+
     	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id, $this->_fanpageId);
     	
     	
@@ -807,6 +850,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			//echo 'db look up';
     			$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
     			//Save to the cache, so we don't have to look it up next time
+    			$fan = $fan->getFanProfile();
     			$cache->save($fan, $fanProfileId);
     		}else {
     			//echo 'memcache look up';
@@ -816,17 +860,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
     		//echo $e->getMessage();
     	}
-    	
-    	$fan_level = null;
-    	$fan_since = null;
-    	$fan_country = null;
-    	 
-    	if(!$fan->isNewFan()) {
-    		$fan_level = $fan->getFanLevel();
-    		$fan_since = $fan->getFanSince();
-    		$fan_country = $fan->getFanCountry();
-    	}
-    	
+    
     	$userBadges = new Model_BadgeEvents();
     	$userBadgeCount = $userBadges->getNumBadgesByUser($this->_fanpageId, $user->facebook_user_id);
 
@@ -841,113 +875,32 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->all_badge = $allBadges[0]['count'];
     	$this->view->overall_achievement = $overallAchievement;
     	
-    	$this->view->fan_point = $fan->getFanCurrency();
-    	$fan_exp = $fan->getCurrentEXP();
-    	$fan_exp_required = $fan->getNextLevelRequiredXP();
-    	$this->view->fan_exp = $fan_exp;
-    	$this->view->fan_exp_required = $fan_exp_required - $fan_exp;
-    	$this->view->fan_level_exp = $fan_exp_required;
-    	$this->view->fan_exp_percentage = $fan_exp/$fan_exp_required*100;
+    
     	//Zend_Debug::dump($fan_level);
     	
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
-    	$stat_post = $stat[0]['total_posts'];
-    	$stat_comment = $stat[0]['total_comments'];
-    	$stat_like = $stat[0]['total_likes'];
-    	$stat_get_comment = $stat[0]['total_get_comments'];
-    	$stat_get_like = $stat[0]['total_get_likes'];
-    	
-    	$activity = new Model_Posts();
-    	$activity = $activity->getUserActivity($this->_fanpageId, $user->facebook_user_id, 15);
-    	$followingList = $follow -> getFollowersList($user->facebook_user_id,$this-> _fanpageId, 15);
-    	$followingList2 = $follow -> getFollowingList($user->facebook_user_id,$this-> _fanpageId, 15);
-    	
-    	for($i=0; $i<count($followingList);$i++){
-    		
-    		if ($followingList[$i]['update_time'] == null){
-    			$followingList[$i]['update_time'] = $followingList[$i]['created_time'];
-    		}
-    		$followingList[$i]['user_created_time'] = $followingList[$i]['update_time'];
-    		//echo $f['user_created_time'] ;
-    	}
-    	for($i=0; $i<count($followingList2);$i++){
-    	
-    		if ($followingList2[$i]['update_time'] == null){
-    			$followingList2[$i]['update_time'] = $followingList2[$i]['created_time'];
-    		}
-    		$followingList2[$i]['user_created_time'] = $followingList2[$i]['update_time'];
-    		//echo $f['user_created_time'] ;
-    	}
-    	$fullactivity = array();
-    	$a =0;
-    	$b = 0;
-    	for($i=0; $i<count($followingList) + count($activity) ; $i++){
-    		if (($a < count($activity)) && ($b < count($followingList))){
-	    		if ($activity[$a]['user_created_time'] > $followingList[$b]['user_created_time'] ){
-	    			$fullactivity[$i] = $activity[$a];
-	    			$a++;
-	    		}else{
-	    			$fullactivity[$i] = $followingList[$b];
-	    			$b++;
-	    		}
-
-    		}else{
-	    		if ($a >= count($activity)){
-	    			$fullactivity[$i] = $followingList[$b];  
-	    			$b++;  			
-	    		}
-	    		if ($b >= count($followingList)){
-	    			$fullactivity[$i] = $activity[$a];
-	    			$a++;
-	    		}
-    		}
-    		
-    	
-    		
-    	}
-    	$a =0;
-    	$b = 0;
-    	for($i=0; $i<count($followingList2) + count($fullactivity) ; $i++){
-    		if (($a < count($fullactivity)) && ($b < count($followingList2))){
-    			if ($fullactivity[$a]['user_created_time'] > $followingList2[$b]['user_created_time'] ){
-    				$fullactivity2[$i] = $fullactivity[$a];
-    				$a++;
-    			}else{
-    				$fullactivity2[$i] = $followingList2[$b];
-    				$b++;
-    			}
-    	
-    		}else{
-    			if ($a >= count($fullactivity)){
-    				$fullactivity2[$i] = $followingList2[$b];
-    				$b++;
-    			}
-    			if ($b >= count($followingList2)){
-    				$fullactivity2[$i] = $fullactivity[$a];
-    				$a++;
-    			}
-    		}
-    	
-    		 
-    	
-    	}
-    	//Zend_Debug::dump($fullactivity2);
-    	//$activity = array_merge($activity, $followingList);
     	
     	
-    	//Zend_debug::dump($followingList);
+	    	$stat_post = $stat[0]['total_posts'];
+	    	$stat_comment = $stat[0]['total_comments'];
+	    	$stat_like = $stat[0]['total_likes'];
+	    	$stat_get_comment = $stat[0]['total_get_comments'];
+	    	$stat_get_like = $stat[0]['total_get_likes'];
+    	
+    	
+    	$activitiesModel = new Model_FancrankActivities();
+    	$activity = $activitiesModel->getRecentActivities($user->facebook_user_id, $this->_fanpageId, 20);//$activity->getUserActivity($this->_fanpageId, $user->facebook_user_id, 15);
     
     	$this->view->relation = $relation;
-    	
-    	$this->view->fan_level = $fan_level;
-    	$this->view->fan_since = $fan_since;
-    	$this->view->fan_country = $fan_country;
+    
+    	$this->view->fan = $fan;
+
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
     	
-    	$this->view->post = $fullactivity2;
+    	$this->view->post = $activity;
     	//Zend_Debug::dump($stat_post);
     	
     	$this->view->stat_post = $stat_post;
@@ -1084,7 +1037,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($this->_fanpageId ) && !empty($this->_userId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(3600);
-    		
+    	
     		try {
     			$fanActivityId = $this->_fanpageId .'_' .$this->_userId. '_fan_activity';
     			 
@@ -1171,7 +1124,26 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     }
     
-	
+    protected function getPostLikes($postId) {
+    
+    	$client = new Zend_Http_Client;
+    	$client->setUri("https://graph.facebook.com/". $postId ."/likes");
+    	$client->setMethod(Zend_Http_Client::GET);
+    	$client->setParameterGet('access_token', $this->_accessToken);
+    	//echo $limit;
+    	//if ($limit !== false){
+    	//$client->setParameterGet('limit', $limit);
+    	//}
+    	$response = $client->request();
+    
+    	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    	//Zend_Debug::dump($result->data);
+    	if(!empty ($result->data)) {
+    
+    		return $result->data;
+    	}
+    }
+    
     protected function getPost($postId){
     	$client = new Zend_Http_Client;
     	$client->setUri("https://graph.facebook.com/". $postId);
@@ -1384,7 +1356,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     	
     	}
-    	
+    	//Zend_Debug::dump($result);
     	$this->view->relation= $relation;
     	$this->view->result = $result;
     	
@@ -1399,6 +1371,29 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->render("userlist");
     	}
     }
+    
+	public function getlikeslistAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+		$postid = $this->_request->getParam('post_id');
+		$follow = new Model_Subscribes();
+		$count = 0;
+		
+		$likes = $this->getPostLikes($postid);
+		$result = array();
+		foreach ($likes as $r){
+			$result[$count]['facebook_user_id'] = $r->id;
+			$result[$count]['facebook_user_name'] = $r->name;
+			$relation[$count] = $follow->getRelation($this->_userId, $r->id, $this->_fanpageId);
+			$count++;
+		}
+		
+		
+		$this->view->result = $result;
+		$this->view->relation= $relation;
+		
+		$this->render("userlist");
+	}
     /*
     public function getfriendsAction(){
     	$this->_helper->layout->disableLayout();
@@ -1448,9 +1443,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     		 
     	}
-    	
     	//Zend_Debug::dump($result);
-    	
+    	//Zend_Debug::dump($result);
     	$this->view->relation= $relation;
     	$this->view->result = $result;
     	$this->view->title = 'Following';
@@ -1467,24 +1461,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     }
     
     
-    public function popoverprofileAction(){
-    	$this->_helper->layout->disableLayout();
-    	$this->_helper->viewRenderer->setNoRender(true);
-    	$user = $this->_request->getParam('facebook_user_id');
-    	
-    	$fan = new Model_Fans($user, $this->_fanpageId);
-    	$follow = new Model_Subscribes();
-    	$relation = $follow->getRelation($this->_userId, $user, $this->_fanpageId);
-    	
-    	$fan = $fan->getFanProfile();
-    	$stat = new Model_FansObjectsStats();
-    	$stat = $stat->findFanRecord($this->_fanpageId, $user);
-    	
-    	$this->view->relation=$relation;
-    	$this->view->stat= $stat;
-    	$this->view->fan = $fan;
-    	$this->render("popoverprofile");
-    }
+    
     
     /*
     public function adminfeedAction() {

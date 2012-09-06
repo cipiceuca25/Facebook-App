@@ -450,7 +450,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 				order by f.updated_time DESC
 				limit 1";
 		//Zend_Debug::dump($query);
-		return $this->getAdapter()->fetchAll($select);
+		
+		$result=$this->getAdapter()->fetchAll($select);
+		
+		if(empty($result)){
+			
+			$result[0]['total_posts'] = 0;
+			$result[0]['total_comments'] = 0;
+			$result[0]['total_likes'] = 0;
+			$result[0]['total_get_likes'] = 0;
+			$result[0]['total_get_comments'] = 0;
+			
+		}
+		return $result;
+		
 		
 	
 	}

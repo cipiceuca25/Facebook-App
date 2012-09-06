@@ -287,12 +287,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$fancrankFB->api("/$postId/comments", 'POST', $params);
 	}
 	
-	public function commenttestAction(){
-		$comment = new Model_Comments();
-		$wootwoot = $comment -> getClosestCommentsByTimestamp($this->_getParam('comment'), $this->_getParam('limit'));
-		Zend_Debug::dump($wootwoot);
-	}
-	
 	public function relationAction(){
 		$follow = new Model_Subscribes();
 		$user= $this->_getParam('id');
@@ -324,84 +318,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			 $data['activity_type'] == "comment-video" || $data['activity_type'] == "comment-link"){
 			$post->addCommentToPost($data['event_object']);
 		}
-		//$stat = new Model_FansObjectsStats();
-		
-		/*
-		switch($data['activity_type']){
-		
-			case 'post-photo':
-				$stat->addPostPhoto($data['fanpage_id'], $data['facebook_user_id']);
-				break;
-			case 'post-video':
-				$stat->addPostVideo($data['fanpage_id'], $data['facebook_user_id']);
-				break;
-			case 'post-link':
-				$stat->addPostLink($data['fanpage_id'], $data['facebook_user_id']);
-				break;
-			case 'post-status':
-				$stat->addPostStatus($data['fanpage_id'], $data['facebook_user_id']);
-				break;
-			case 'comment-status':
-				$stat->addCommentStatus($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->addGetCommentStatus($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'comment-photo':
-				$stat->addCommentPhoto($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->addGetCommentPhoto($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'comment-video':
-				$stat->addCommentVideo($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->addGetCommentVideo($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'comment-link':
-				$stat->addCommentLink($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->addGetCommentLink($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'like-status':
-				$stat->addLikeStatus($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->addGetLikeStatus($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'like-photo':
-				$stat->addLikePhoto($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->addGetLikePhoto($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'like-video':
-				$stat->addLikeVideo($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->addGetLikeVideo($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'like-link':
-				$stat->addLikeLink($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->addGetLikeLink($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'like-comment':
-				$stat->addLikeComment($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->addGetLikeComment($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'unlike-status':
-				$stat->subLikeStatus($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->subGetLikeStatus($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'unlike-photo':
-				$stat->subLikePhoto($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->subGetLikePhoto($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'unlike-video':
-				$stat->subLikeVideo($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->subGetLikevideo($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'unlike-link':
-				$stat->subLikeLink($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->subGetLikeLink($data['fanpage_id'], $data['target_user_id']);
-				break;
-			case 'unlike-comment':
-				$stat->subLikeComment($data['fanpage_id'], $data['facebook_user_id']);
-				$stat->subGetLikeComment($data['fanpage_id'], $data['target_user_id']);
-				break;
-			default:
-				break;
-		}
-		*/
-		
+
 		$act -> addActivities($data);
 		
 		
