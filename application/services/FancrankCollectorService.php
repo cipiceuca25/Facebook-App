@@ -184,10 +184,6 @@ class Service_FancrankCollectorService {
 		
 		echo '---------------';
 
-		$newPosts = $this->filterPosts($lastUpdatedData['posts'], $posts);
-		
-		Zend_Debug::dump($newPosts);
-		
 		if(empty($posts)) {
 			return;
 		}
@@ -198,7 +194,7 @@ class Service_FancrankCollectorService {
  		$postCommentsList = $this->getCommentsFromPost($posts, 5, 1000);
  		Zend_Debug::dump($postCommentsList);
  		
- 		$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
+ 		//$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
   		//Zend_Debug::dump($pointResult); exit();
 		//get all albums recursively
 		$url = 'https://graph.facebook.com/' .$this->_fanpageId .'/albums?access_token=' .$this->_accessToken .'&since=30+days+ago';// .$since;
@@ -212,8 +208,8 @@ class Service_FancrankCollectorService {
 		$albumCommentList = $this->getCommentsFromMyAlbum($albumsList, 'album');
 		Zend_Debug::dump($albumCommentList);
 
-		$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
-		Zend_Debug::dump($pointResult);
+		//$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
+		//Zend_Debug::dump($pointResult);
 		
 		$photoList = array();
 		$photoList = $this->getPhotosFromAlbum($albumsList, 2, 1000);
@@ -225,8 +221,8 @@ class Service_FancrankCollectorService {
 		$photoCommentList = $this->getCommentsFromMyAlbum($photoList, 'photo');
 		Zend_Debug::dump($photoCommentList);
 		
-		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
-		Zend_Debug::dump($pointResult);
+		//$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
+		//Zend_Debug::dump($pointResult);
 		
 		$commentsList = array_merge($postCommentsList, $albumCommentList, $photoCommentList);
 		//Zend_Debug::dump($commentsList);
@@ -234,13 +230,11 @@ class Service_FancrankCollectorService {
 		$commentLikeList = $this->getLikesFromMyComment($commentsList);
 		Zend_Debug::dump($commentLikeList);
 		
-		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList, $commentLikeList);
+		//$pointResult = $this->calculateCommentPoints($pointResult, $commentsList, $commentLikeList);
 
 		$allLikesList = array_merge($postLikeList, $commentLikeList, $albumLikesList, $photoLikesList);
 		
-		$pointResult = $this->calculateLikesPoints($pointResult, $allLikesList);
-		
-		Zend_Debug::dump($pointResult);
+		//$pointResult = $this->calculateLikesPoints($pointResult, $allLikesList);
 		
 		$fdb = new Service_FancrankDBService($this->_fanpageId, $this->_accessToken);
 		
@@ -276,7 +270,16 @@ class Service_FancrankCollectorService {
 			file_put_contents( $filePath, serialize( $lastUpdatedData ) );
 		}
 		
-		Zend_Debug::dump($allLikesList); exit();
+		//Zend_Debug::dump($allLikesList);
+		
+		$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
+		$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
+		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
+		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList, $commentLikeList);
+		$pointResult = $this->calculateLikesPoints($pointResult, $allLikesList);
+		//Zend_Debug::dump($pointResult);
+		//exit();
+		
 		$db->beginTransaction();
 		
 		try {

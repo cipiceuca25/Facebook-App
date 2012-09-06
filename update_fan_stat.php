@@ -37,42 +37,49 @@ $application = new Zend_Application(
 );
 
 $application->bootstrap();
+$start = time();
+$fanpageModel = new Model_Fanpages();
+$fanpageIdList = $fanpageModel->getInstallFanpagesIdList();
 
-$fan = new Model_Fans();
-$fanList = $fan->fetchAll();
+//Zend_Debug::dump($fanpageIdList); exit();
 
-//Zend_Debug::dump($fanpageList->toArray()); exit();
+foreach($fanpageIdList as $id) {
 
-if (count($fanList) > 0) {
-	$logger = new Zend_Log();
-	//$writer = new Zend_Log_Writer_Stream('php://output');
-	$writer = new Zend_Log_Writer_Stream('./update_cron_error.log');
-	$logger = new Zend_Log($writer);
-
-	$error = false;
-	$fanStat = new Model_FansObjectsStats();
-	$start = time();
-	foreach ($fanList as $fan) {
-		try {
-			//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
-			if($fan->fanpage_id === '216821905014540') {
-				$result = $fanStat->updatedFan($fan->fanpage_id, $fan->facebook_user_id);
+	$fan = new Model_Fans();
+	$fanList = $fan->fetchFansIdListByFanpageId($id);
+	Zend_Debug::dump(count($fanList));
+	
+	if (count($fanList) > 0) {
+		$logger = new Zend_Log();
+		//$writer = new Zend_Log_Writer_Stream('php://output');
+		$writer = new Zend_Log_Writer_Stream('./update_cron_error.log');
+		$logger = new Zend_Log($writer);
+	
+		$error = false;
+		$fanStat = new Model_FansObjectsStats();
+	
+		foreach ($fanList as $fan) {
+			try {
+				//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
+					$result = $fanStat->updatedFan($fan['fanpage_id'], $fan['facebook_user_id']);
+				//break;
+			}catch(Exception $e) {
+				$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan['facebook_user_id'], $fan['fanpage_id']);
+				$logger->log('Update fanpage cron Failed: ' .$errMsg .' ' .$e->getMessage(), Zend_Log::INFO);
+				$error = true;
 			}
-			//break;
-		}catch(Exception $e) {
-			$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan->facebook_user_id, $fan->fanpage_id);
-			$logger->log('Update fanpage cron Failed: ' .$errMsg .'<br/>' .$e->getMessage(), Zend_Log::INFO);
-			$error = true;
+		}
+	
+		if($error) {
+			// send email with attachment
+			echo 'there is error';
+			$logger->log('Update fanpage fans stats failed on: ' .$fan['fanpage_id'], Zend_Log::INFO);
 		}
 	}
-    
-	if($error) {
-		// send email with attachment
-		echo 'there is error';
-	}
-	$stop = time() - $start;
-	echo '<br />total execution time: ' .$stop;
-    echo 'job done'.PHP_EOL;
-    exit();
 }
+
+$stop = time() - $start;
+echo '<br />total execution time: ' .$stop;
+echo 'job done'.PHP_EOL;
+exit();
 

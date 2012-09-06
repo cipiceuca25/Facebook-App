@@ -4,11 +4,13 @@ class Service_FancrankMailService {
 	protected $_smtpConnection;
 	protected $_server;
 	protected $_mailList;
+	protected $_user;
 	
-	public function __construct() {
+	public function __construct($user=null) {
 		$config = new Zend_Config_Ini(APPLICATION_PATH.'/configs/application.ini',APPLICATION_ENV);
 		$this->_mailList = new Zend_Config_Xml(APPLICATION_PATH.'/configs/emails.xml', 'cron_mail');
-		
+		$this->_user = $user;
+
 		$mailConfig = $config->email;
 		$this->_server = $mailConfig->server;
 		$mailConfig = $mailConfig->toArray();
@@ -41,8 +43,12 @@ class Service_FancrankMailService {
 			return;
 		}
 		
+		if(!empty($this->_user->facebook_user_first_name) && !empty($this->_user->facebook_user_email)) {
+			$mail->addTo($this->_user->facebook_user_email, $this->_user->facebook_user_first_name);
+		}
+
 		$date = Zend_Date::now();
-		$mail->setSubject('Cron Job Finished Notification: ' .$date->toString(Zend_date::ISO_8601).PHP_EOL);
+		$mail->setSubject('Fanpage Ready Notification: ' .$date->toString(Zend_date::ISO_8601).PHP_EOL);
 		try {
 			$mail->send($this->_smtpConnection);
 		} catch (Exception $e) {

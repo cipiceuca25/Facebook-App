@@ -99,7 +99,8 @@ class Model_Posts extends Model_DbTable_Posts
 				'post_application_name'	=>	$post['post_application_name'],
 				'post_application_id'	=>	$post['post_application_id'],
 				'comments_count'		=>	$post['comments_count'],
-				'likes_count'			=>	$post['likes_count']
+				'likes_count'			=>	$post['likes_count'],
+				'status_type'			=>	$post['status_type']
 		);
 	
 		

@@ -207,6 +207,34 @@ class Service_FancrankFBService extends Facebook {
 		}
 		return false;
 	}
+	
+	public function isFanpageInstalledApp($fanpageId) {
+		if(empty($fanpageId)) {
+			return false;
+		}
+	
+		$app_access_token = $this->getAppAccessToken();
+	
+		$params = array(
+				'access_token'=>$app_access_token
+		);
+	
+		$url = "https://graph.facebook.com/$fanpageId/tabs/{$this->appId}?" .http_build_query($params);
+	
+		$client = new Zend_Http_Client;
+		$client->setUri($url);
+		$client->setMethod(Zend_Http_Client::GET);
+		try {
+			$response = $client->request();
+			$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+			if(!empty($result->data)) {
+				return true;
+			}
+		}catch (Exception $e) {
+			echo $e->getMessage();
+		}
+		return false;
+	}
 }
 
 ?>

@@ -24,7 +24,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	public function preDispatch() {
 		parent::preDispatch();
 		
-		if (APPLICATION_ENV != 'production') {
+		if (APPLICATION_ENV != 'stage') {
 			$this->_fanpageId = $this->_getParam('id');
 			if(empty($this->_facebook_user->facebook_user_id)) {
 				$this->_userId = $this->_getParam('user_id'); //set test user id from url
@@ -51,7 +51,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		}else {
 			//$this->_redirect('http://www.fancrank.com');
 		}
-		
 // 		$name = new Model_FacebookUsers();
 // 		$name = $name->find($this->_userId)->current();
 // 		$this->view->username = $name->facebook_user_first_name.' '.$name->facebook_user_last_name;

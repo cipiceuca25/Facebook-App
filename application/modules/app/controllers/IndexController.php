@@ -40,7 +40,12 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
         if($this->_auth->hasIdentity()) {
             //bring the user into the app if he is already logged in
-			$this->_redirect('/app/app/index/' .$this->data['page']['id']);   
+        	$this->_facebook_user = $this->_auth->getIdentity();
+        	if(!empty($this->data['user_id']) && $this->_facebook_user->facebook_user_id !== $this->data['user_id']) {
+        		$this->_forward('logout', 'app', 'app');
+        	}else {
+        		$this->_redirect('/app/app/index/' .$this->data['page']['id']);
+        	}
 		}
     }
 

@@ -46,7 +46,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 			if ( !$fanpage->active ) {
 				$fanpage->active = (int) TRUE;
 				$fanpage->save();
-				Collector::run(null, $this->_getParam('id'), $fanpage->access_token, 'init');
+				Collector::run(null, $this->_getParam('id'), $this->_identity->facebook_user_id, $fanpage->access_token, 'init');
 			}
 			return;			
 		} catch (Exception $e) {
@@ -62,23 +62,28 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 			$fanpage->active = (int) FALSE;
 			
 			if ($fanpage->installed) {
+				$fanpage->installed = (int) FALSE;
 				//uninstall
 				//$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
 	        	//$this->config = $sources->get('facebook');
+				$facebook = new Service_FancrankFBService();
+				
+				if($facebook->isFanpageInstalledApp($this->_getParam('id'))) {
 
-				$response = $this->deleteTab($this->_getParam('id'), $fanpage->access_token, $this->_config->client_id);
-
-		        $body = $response->getBody();
-		        $message = Zend_Json::decode($body, Zend_Json::TYPE_OBJECT);
-
-		        if (!isset($message->error)) {
-		        	$fanpage->installed = (int) FALSE;
-		        	$fanpage->fanpage_tab_id = '';
-		        } else {
-		        	$fanpage->active = (int) TRUE;
-		        	echo $message->error->message;
-		        	$this->_response->setHttpResponseCode(400);
-		        }
+					$response = $this->deleteTab($this->_getParam('id'), $fanpage->access_token, $this->_config->client_id);
+					
+					$body = $response->getBody();
+					$message = Zend_Json::decode($body, Zend_Json::TYPE_OBJECT);
+					
+					if (!isset($message->error)) {
+						$fanpage->fanpage_tab_id = '';
+					} else {
+						$fanpage->active = (int) TRUE;
+						$fanpage->installed = (int) TRUE;
+						echo $message->error->message;
+						$this->_response->setHttpResponseCode(400);
+					}					
+				}
 	    	}
 
 			$fanpage->save();
@@ -95,6 +100,15 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		
 		if ($fanpage->active && !$fanpage->installed) {
 
+			$facebook = new Service_FancrankFBService();
+			if($facebook->isFanpageInstalledApp($this->_getParam('id'))) {
+				echo 'App already installed';
+				$fanpage->installed = 1;
+				$fanpage->save();
+				$this->_response->setHttpResponseCode(400);
+				return;
+			}
+			
 	        $response = $this->installTab($this->_getParam('id'), $fanpage->access_token, $this->_config->client_id);
 
 	        $body = $response->getBody();
