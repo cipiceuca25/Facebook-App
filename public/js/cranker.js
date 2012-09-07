@@ -82,7 +82,7 @@ $(document).on('mouseover', 'a[rel=tooltip]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;
 	}
-	$(this).data('isTooltipLoaded', true).tooltip().trigger('mouseover');
+	$(this).data('isTooltipLoaded', true).tooltip({placement:'left'}).trigger('mouseover');
 });
 
 $(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
