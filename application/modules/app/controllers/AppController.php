@@ -733,42 +733,46 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     public function popoverprofileAction(){
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
+    	$user_id = $this->_request->getParam('facebook_user_id');
     	$user = new Model_FacebookUsers();
-    	$user = $user->find($this->_request->getParam('facebook_user_id'))->current();// the target
+    	$user = $user->find($user_id)->current();// the target
     	//Zend_Debug::dump($user);
     	if($user) {
-    		$this->view->facebook_user = $user;
+    		
     		//$access_token = $this->facebook_user->facebook_user_access_token;
     		//$this->view->feed = $this->getFeed($access_token);
     	}else {
     	
     		$client = new Zend_Http_Client;
-    		$client->setUri("https://graph.facebook.com/". $this->_request->getParam('facebook_user_id') );
+    		$client->setUri("https://graph.facebook.com/". $user_id );
     		$client->setMethod(Zend_Http_Client::GET);
     		//$client->setParameterGet('access_token', $this->_accessToken);
     		$response = $client->request(); 
     		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    		//Zend_Debug::dump($result);
     		if(!empty ($result)) {
     			$user = array('facebook_user_id' => $result->id,
     					'facebook_user_first_name'=> $result->first_name,
     					'facebook_user_last_name'=>$result->last_name,
     					'created_time'=> 'Not Available',
     					'hometown' => 'Not Available'
-    			);
-    			$user = (object)$user;
+    			);	
     		}
+    		$user = (object)$user;
+
     		//Zend_Debug::dump($user);
-    		$this->view->facebook_user = $user;
+    		
     		//$this->view->facebook_user = null;
     	} 
-    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    	
     	$follow = new Model_Subscribes();
     	$relation = $follow->getRelation($this->_userId, $user->facebook_user_id, $this->_fanpageId);
-    	 
+    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
     	$fan = $fan->getFanProfile();
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
-    	 
+    	
+    	$this->view->facebook_user = $user;
     	$this->view->relation=$relation;
     	$this->view->stat= $stat;
     	$this->view->fan = $fan;
@@ -1393,6 +1397,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		
 		$this->view->result = $result;
 		$this->view->relation= $relation;
+		$this->view->title = 'Likes';
+		
+		
 		
 		$this->render("userlist");
 	}

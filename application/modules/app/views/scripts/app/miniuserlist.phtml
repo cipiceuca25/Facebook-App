@@ -33,10 +33,10 @@
 			</div>
 			<div class="name">
 				<a  data-userid="<?= $user['facebook_user_id'] ?>"
-											<? if (!($this->relation[$count] == 'Fanpage')){?>
-												onclick="userProfile('<?= $user['facebook_user_id'] ?>', true)"
-												<?}?> rel="popover" data-content="" data-original-title=""
-												data-placement="top">
+					<? if (!($this->relation[$count] == 'Fanpage')){?>
+						onclick="userProfile('<?= $user['facebook_user_id'] ?>', true)"
+						<?}?> rel="popover" data-content="" data-original-title=""
+						data-placement="top">
 					<?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?>
 				</a>
 			</div>

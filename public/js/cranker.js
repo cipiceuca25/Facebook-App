@@ -58,7 +58,7 @@ $(document).ready(
 $(document).mousemove(function(e) {
 	mouseX = e.pageX;
 	mouseY = e.pageY;
-	$('.popover').css('display', 'none');
+	//$('.popover').css('display', 'none');
 	//FB.Canvas.setAutoGrow();
 	
 	if (fb == false){
@@ -77,7 +77,7 @@ $(document).mousemove(function(e) {
 });
 
 $(document).on('mouseover', 'a[rel=popover]', function() {
-	popover($(this));
+	
 	if ($(this).data('isPopoverLoaded') == true) {
 		return;
 	}
@@ -87,7 +87,7 @@ $(document).on('mouseover', 'a[rel=popover]', function() {
 			hide : 100
 		}
 	}).trigger('mouseover');
-	
+	popover($(this));
 });
 
 $(document).on('mouseover', 'a[rel=tooltip]', function() {
@@ -237,8 +237,10 @@ function popover(x) {
 				+ '?facebook_user_id=' + $(x).attr('data-userid'),
 		dataType : "html",
 		cache : false,
-		async : true,
-
+		async : false,
+		beforeSend: function(){
+			$(x).attr('data-content', "<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
 		success : function(data) {
 			$(x).attr('data-content', data);
 		},
@@ -782,10 +784,8 @@ function follow(target, name) {
 				//getUserProfile('.profile-content', target);
 				getRelation(target, ui);
 				//alert(relation);
-				$('.' + ui).attr(
-						'onclick',
-						"unfollow('" + target + "','" + name + "','" + ui
-								+ "')");
+				$('.' + ui).attr('onclick',	"unfollow('" + target + "','" + name + "','" + ui + "')");
+				$('.' + ui).attr('data-original-title', 'Click to Unfollow this User');
 				//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
 				feedbackAnimation('#follow-animation');
 			},
@@ -812,8 +812,9 @@ function unfollow(target, name) {
 			//getUserProfile('.profile-content', target);
 			getRelation(target, ui);
 
-			$('.' + ui).attr('onclick',
-					"follow('" + target + "','" + name + "','" + ui + "')");
+			$('.' + ui).attr('onclick',	"follow('" + target + "','" + name + "','" + ui + "')");
+			$('.' + ui).attr('data-original-title', 'Click to Follow this User');
+		
 			//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
 			feedbackAnimation('#unfollow-animation');
 
@@ -926,7 +927,7 @@ function getLikesList(postid, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
@@ -953,7 +954,7 @@ function getFollowingList(targetname, target, limit, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
@@ -982,7 +983,7 @@ function getFollowersList(targetname, target, limit, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
@@ -1028,7 +1029,7 @@ function getMiniFollowingList(targetname, target) {
 		cache : false,
 		async : true,
 		beforeSend:function(){	
-			$('#followinglist').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+			$('#followinglist').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
 		},
 		success : function(data) {
 			$('#followinglist').html(data);
@@ -1051,7 +1052,7 @@ function getMiniFollowersList(targetname, target) {
 		cache : false,
 		async : true,
 		beforeSend : function() {
-			$('#followerslist').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('#followerslist').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$('#followerslist').html(data);
