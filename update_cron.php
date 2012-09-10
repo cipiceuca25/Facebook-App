@@ -39,9 +39,11 @@ $application = new Zend_Application(
 $application->bootstrap();
 
 $fanpageModel = new Model_Fanpages();
-$fanpageList = $fanpageModel->fetchAll();
+//$fanpageList = $fanpageModel->fetchAll();
 
-//Zend_Debug::dump($fanpageList->toArray()); exit();
+$fanpageList = $fanpageModel->getActiveFanpages();
+
+//Zend_Debug::dump(count($fanpageList)); exit();
 
 if (count($fanpageList) > 0) {
 	$logger = new Zend_Log();
@@ -52,22 +54,55 @@ if (count($fanpageList) > 0) {
 	
 	$error = false;
 	foreach ($fanpageList as $fanpage) {
+		//if($fanpage->fanpage_id != '216821905014540') continue;
+		$data = array(
+				'fanpage_id'	=> $fanpage->fanpage_id,
+				'access_token'	=> $fanpage->access_token,
+				'url'			=> null,
+				'type'			=> 'update',
+				'start_time' 	=> (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss')
+		);
+		
+		//collect fanpage yesterday data
 		try {
-			if($fanpage->installed) {
+			if($fanpage->active && $fanpage->install) {
 				echo $fanpage->fanpage_id .' ' .$fanpage->access_token .PHP_EOL;
-				$data = array(
-							'fanpage_id'=>$fanpage->fanpage_id, 
-							'access_token'=>$fanpage->access_token,
-							'type'=>'update',
-							'status'=>'success'
-						);
+				//update fanpage
+				$collector = new Service_FancrankCollectorService(null, $fanpage->fanpage_id, $fanpage->access_token, 'update');
+				$collector->updateFanpage('yesterday', 'now');
+				
+				$data['status'] = 'success';
+				$data['end_time'] = (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss');
 				$dbLog->insert($data);
 			}
 		}catch(Exception $e) {
+			$data['status'] = 'fail';
+			$data['note'] = $e->getMessage();
+			$data['end_time'] = (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss');
+			$dbLog->insert($data);
+				
 			$errMsg = sprintf('fanpage_id: %s <br/>access_token: %s<br/> type: update<br/>', $fanpage->fanpage_id, $fanpage->access_token);
 			$logger->log('Update fanpage cron Failed: ' .$errMsg .'<br/>' .$e->getMessage(), Zend_Log::INFO);
 			$error = true;
 		}
+		
+		//update fanpage fans stat
+		$fan = new Model_Fans();
+		$fanList = $fan->fetchFansIdListByFanpageId($fanpage->fanpage_id);
+		$fanStat = new Model_FansObjectsStats();
+		
+		foreach ($fanList as $fan) {
+			try {
+				//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
+				$result = $fanStat->updatedFan($fanpage->fanpage_id, $fan['facebook_user_id']);
+				//break;
+			}catch(Exception $e) {
+				$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan['facebook_user_id'], $fan['fanpage_id']);
+				$logger->log('Update fanpage cron Failed: ' .$errMsg .' ' .$e->getMessage(), Zend_Log::INFO);
+				$error = true;
+			}
+		}
+		
 	}
     
 	if($error) {

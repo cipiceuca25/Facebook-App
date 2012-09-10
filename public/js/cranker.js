@@ -404,13 +404,11 @@ function getNewsfeed() {
 		},
 		success : function(data) {
 			
-		
 			$('#news-feed').html(data);
 			
 			getTopFan();
 			getTopPost();
 			changeTime('.time');
-
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1123,6 +1121,18 @@ function timeZone(time) {
 	}
 }
 
+/*
+function isLogin(data) {
+	if($.trim(data) == "") {
+		alert('hi');
+		//window.location.href = '/app/index/index/'+fanpageId;
+		return false;
+	}else {
+		alert('data');
+		return true;
+	}
+}
+*/
 /*
 function upload(form, action_url, div_id, target_id, target) {
 	fileUpload(form, action_url, div_id);

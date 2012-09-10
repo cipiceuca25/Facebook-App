@@ -182,5 +182,11 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		$select->where('fanpages.installed = TRUE');
 		return $this->fetchAll($select);
 	}
+	
+	public function getActiveFanpages() {
+		$select = $this->select();
+		$select->where('fanpages.active = TRUE');
+		return $this->fetchAll($select);
+	}
 }
 

@@ -239,7 +239,10 @@ jQuery(document).ready(function($){
                 tickLength: 0 // hide gridlines
             },    		
             series: {
-                bars: { show: true },
+                bars: { 
+                		show: true
+                },
+                showNumbers: true,	
                 shadowSize : 1
             },
             grid: {
