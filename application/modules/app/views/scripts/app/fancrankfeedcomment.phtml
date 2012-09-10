@@ -24,22 +24,22 @@
 	<div class="user">
 		
 		<div class="user-badge">
-			<a <? if (($this->relation[$count] != 'Fanpage')){?>
-					<? if ($this->relation[$count] != 'You') { ?>
-						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								 onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" 
-						<?}else{?>
-								onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>"
-						<?}?>
-						>	
-						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
-					<?php }else{?>
-						><span class="badge badge-You">You</span>
-					<?php }?>
+			<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" <?php switch($this->relation[$count]) { 
+				case 'Fanpage':?>
+					 data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+				<?break;?>
+				<?case 'You':?>
+					 data-original-title="This is You"><span class="badge badge-You">You</span>
+				<?break;?>
+				<?case 'Following':?>
+					onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
+					data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+				<?break;?>
 					
-				<?}else{?>
-					rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top" ><span class="badge badge-Fanpage">Admin</span>
-				<?php }?>
+				<?default:?>
+					onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')" 				
+					data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+				<?}?>
 			</a>
 		</div>	
 	

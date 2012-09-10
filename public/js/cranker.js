@@ -59,21 +59,33 @@ $(document).mousemove(function(e) {
 	mouseX = e.pageX;
 	mouseY = e.pageY;
 	$('.popover').css('display', 'none');
+	//FB.Canvas.setAutoGrow();
+	
+	if (fb == false){
+		
+		FB.init({
+			 appId  : appId,
+			 status : true, // check login status
+			 cookie : true, // enable cookies to allow the server to access the session
+			 xfbml  : true// parse XFBML
+			 
+		});
+		fb=true;
+		FB.Canvas.setAutoGrow();	
+	}
+	
 });
 
 $(document).on('mouseover', 'a[rel=popover]', function() {
 	popover($(this));
-
 	if ($(this).data('isPopoverLoaded') == true) {
 		return;
 	}
 	$(this).data('isPopoverLoaded', true).popover({
-		
 		delay : {
 			show : 500,
-			hide : 10
-		},
-		placement : $(this).attr('data-placement')
+			hide : 100
+		}
 	}).trigger('mouseover');
 	
 });
@@ -90,7 +102,8 @@ $(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
 		return;
 	}
 	$(this).data('isTooltipLoaded', true).tooltip({
-		delay : {show:1000, hide:100}
+		delay : {show:1000, hide:100},
+		placement:'top'
 	}).trigger('mouseover');
 });
 
@@ -559,7 +572,7 @@ function getFancrankfeed(view) {
 	//alert(setFeed);
 	//alert(feedLimit);
 	if((setFeed == view) && (view != 'myfeed')){
-		last = $('#last_post_time').attr('data-time');
+		last = parseInt($('#last_post_time').attr('data-time')) - 1;
 		myfeedoffset = 0;
 	}else if (view == 'myfeed'){
 		
@@ -752,7 +765,8 @@ function getRelation(target, ui) {
 
 }
 
-function follow(target, name, ui) {
+function follow(target, name) {
+	ui = "follow_"+target;
 	if (target != userId) {
 
 		$.ajax({
@@ -783,8 +797,8 @@ function follow(target, name, ui) {
 	}
 }
 
-function unfollow(target, name, ui) {
-
+function unfollow(target, name) {
+	ui = "follow_"+target;
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/user/' + userId + '/unfollow/?subscribe_to='

@@ -6,23 +6,23 @@
 	
 			<div class="user">
 				<div class="user-badge">
-					<a  <? if ($this->relation[$count] != 'You') { ?>
-						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								onclick="follow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>" 
-							<?}else{?>
-								 onclick="unfollow(<?=$topPost['facebook_user_id']?> , '<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>', 'follow_<?=$topPost['facebook_user_id']?>')" class ="follow_<?=$topPost['facebook_user_id']?>"
-							<?}?>
-								><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
-							<?php }else{?>
-								> <span class="badge badge-You">You</span>
-							<?php }?>
-							</a>
-					
+					<a rel="tooltip-follow" class ="follow_<?=$topPost['facebook_user_id']?>"<?php switch($this->relation[$count]) { 
+						case 'You':?>
+							 data-original-title="This is You"><span class="badge badge-You">You</span>
+						<?break;?>
+						<?case 'Following'?>
+							onclick="unfollow(<?=$topPost['facebook_user_id']?> ,'<?=$topPost['fan_first_name'].' '.$topPost['fan_last_name']?>')" 
+							data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+						<?break;?>
 							
-				
-					</div> 
+						<?default:?>
+							onclick="follow(<?=$topPost['facebook_user_id']?> , '<?=$topPost['fan_first_name'].' '.$topPost['fan_last_name']?>')" 
+							data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+						<?}?>
+					</a>		
+				</div> 
 				<div class="photo"><a data-toggle="modal"
-					<? if (!($this->relation[$count] == 'Fanpage')){?> 
+					<? if (($this->relation[$count] != 'Fanpage')){?> 
 						onclick="userProfile('<?=$topPost['facebook_user_id']?>')"
 						rel="popover" 
 						data-content="" 
@@ -32,7 +32,7 @@
 					<?php }?>><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $topPost['facebook_user_id']?>/picture" onerror="ImgError(this);">
 					</a></div>
 					<div class="name"><a data-toggle="modal"
-					<? if (!($this->relation[$count] == 'Fanpage')){?> 
+					<? if (($this->relation[$count] != 'Fanpage')){?> 
 						onclick="userProfile('<?=$topPost['facebook_user_id']?>')"
 						rel="popover" 
 						data-content="" 
@@ -47,24 +47,29 @@
 			<div class="post">
 				
 				<div class="message">
-				<? if($topPost['post_message']){
-					$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-	
-				
-					$m = $this->escape($topPost['post_message']);
 			
-
-					if(preg_match($reg_exUrl, $m, $url)) {
-				
-		
-				       echo preg_replace($reg_exUrl, "<a href=".$url[0]." target=_new>".$url[0]."</a> ", $m);
-				
-					} else {
-				
-				       echo $m;
-				
-					}
-				}?>
+				<?php 
+							$reg_ex = "/\n/";
+							$message = $this->escape($topPost['post_message']);
+							if(preg_match_all($reg_ex, $message, $url)) {
+								$message= preg_replace($reg_ex, "<br/>", $message);
+							} 
+							
+							$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
+						
+							$m = preg_match_all($reg_exUrl, $message, $match); 
+							
+							if ($m) { 
+							    $links=$match[0]; 
+							    for ($j=0;$j<$m;$j++) { 
+							        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="new">'.$links[$j].'</a>',$message); 
+							    } 
+							} 
+							
+							echo trim($message); 
+								//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
+							
+							?><br/>
 				</div>							
 				<div class="graphical">	
 						<?php if (($topPost['post_type'] == 'photo') || ($topPost['post_type']  =='video')) {?>	
@@ -82,18 +87,20 @@
 								</div>
 							
 								<div class="link-right">
-									<a target="new" href="<?echo $this->escape($topPost['link'])?> ">
+									<a target="new" class="link-title" href="<?echo $this->escape($topPost['link'])?>">
 										<?= (isset($topPost['name'])?$this->escape($topPost['name']): $this->escape($topPost['link']))?>
-										<?php  if (isset($topPost['caption'])){?>
-										</br>
-										<?php echo $this->escape($topPost['caption']);?>: <?php }?> 
-										
-										
-										<?php if (isset($topPost['description'])){?>
-										<?=$this->escape($topPost['description'])?> 
-										<?php }?>
-										
 									</a>
+									<?php if(isset($post->caption)){?>
+										<br/>
+										<a target="new" class="link-caption" href="<?echo $this->escape($topPost['link'])?> ">
+											<?php echo $this->escape($topPost['caption']);?>:  
+										</a>
+									<?php }?>	
+								
+									<?php if (isset($topPost['description'])){?>
+											<?=$this->escape($topPost['description'])?> 
+										
+									<?php }?>
 								</div>
 							</div>
 						<?}?>
@@ -107,14 +114,14 @@
 			
 				<a class="like_control_<?= $topPost['post_id']?>" rel="tooltip" data-placement="top"
 				<?php if ($this->likes[$count] == 0) {?>
-					 data-original-title="Click to like this" onclick="like('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>', '<?=$topPost['facebook_user_id']?>','<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>' )" >Like  
+					data-original-title="Click to like this" onclick="like('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>', '<?=$topPost['facebook_user_id']?>','<?= $topPost['fan_first_name'].' '.$topPost['fan_last_name'] ?>' )" >Like  
 				<?}else{?>
-					  data-original-title="You like this" onclick="unlike('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>', '<?=$topPost['facebook_user_id']?>','<?= $topPost['fan_first_name'] ?> <?= $topPost['fan_last_name'] ?>')">Unlike  
+					data-original-title="You like this" onclick="unlike('<?= $topPost['post_id']?>', '<?= $topPost['post_type']?>', '<?=$topPost['facebook_user_id']?>','<?= $topPost['fan_first_name'].' '.$topPost['fan_last_name'] ?>')">Unlike  
 				<?php }?></a>
 		
 				 &middot;
 		
-				 <a  onclick=" popup_post('<?= $topPost['post_id']?>', 10, true)">Comment</a>
+				 <a onclick="popup_post('<?= $topPost['post_id']?>', 10, true)">Comment</a>
 		
 				&middot;
 				
@@ -127,7 +134,6 @@
 		
 			<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$topPost['post_id']?>', true)" data-original-title="
 						<?php 	$likeslist = $this->likeslist[$count];
-						
 								$countlikes = count($likeslist);
 								for($i = 0; $i < $countlikes - 1; $i++){
 									echo $likeslist[$i]->name.', ';
@@ -155,7 +161,7 @@
 	<div class="social comment <?=$topPost['post_id']?>" <?php if(!isset($topPost['post_comments_count']) || ($topPost['post_comments_count'] == 0)){?> style="display:none" <?}?>>
 	
 			 <a   onclick=" popup_post('<?= $topPost['post_id']?>', 10, true)">
-			 <img src="/img/comment.png" />
+			 	<img src="/img/comment.png" />
 			 	<?php if($topPost['post_comments_count'] != 1){?> 
 			 		View all <span class="comment_<?= $topPost['post_id']?>"> 
 			 		<?php if(isset($topPost['post_comments_count'])){
@@ -169,7 +175,7 @@
 					View all<span class="comment_<?= $topPost['post_id']?>"></span>
 					comments 
 				<?php }?>
-				</a>
+			</a>
 	</div>
 		
 											

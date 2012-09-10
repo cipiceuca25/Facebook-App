@@ -9,7 +9,7 @@
 			</div>
 			<div class="tip">
 				<a rel="tooltip"
-					data-original-title="This is <?=$this->fanpage_name?>'s latest post!">?</a>
+				data-original-title="This is <?=$this->fanpage_name?>'s latest post!">?</a>
 			</div>
 		</div>
 		
@@ -39,7 +39,7 @@
 
 					<div class="user">
 						<div class="user-badge">
-							<a rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top">
+							<a rel="tooltip-follow" data-original-title="You can't Follow an Admin" class="follow_<?= $post->from->id ?>">
 								<span class="badge badge-Fanpage">Admin</span>
 							</a>
 						</div>
@@ -52,12 +52,7 @@
 						</div>
 					</div>
 
-
-
-
 					<div class="post">
-
-
 
 					<?php if(isset($post->message)){ ?>
 							<div class="message">
@@ -172,11 +167,10 @@
 					</div> 
 					<div class="social commentn <?=$post->id?>" <?php if(!isset($post->comments->count) || ($post->comments->count == 0)){?>style="display:none"<? }?> >
 
-						<a
-							onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
+						<a onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; //echo  $post->comments->count;
-			 	} else {echo '0';} ?> , true )"> <img src="/img/comment.png" /><?php if($post->comments->count != 1){?>
+			 		} else {echo '0';} ?> , true )"> <img src="/img/comment.png" /><?php if($post->comments->count != 1){?>
 							View all <span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
 						echo $post->comments->count; 
 					 	} else {
@@ -200,13 +194,7 @@
 					<ul class="comments" id="postn_<?=$post->id?>"></ul>
 				</li>
 
-
-
-			
-
-
 				<?php }?>
-
 
 			</ul>
 
@@ -223,16 +211,6 @@
 					data-original-title='The FanCrank Feed is a customized news feed of all the activity on the page.  Choose "All" to see all posts on the page.  Choose "My Feed" to only show posts by the page owner and the people you follow.  choose "Page Posts" to see posts from the page owner.'>?</a>
 			</div>
 		</div>
-
-		<!-- 
-												<ul class="nav nav-tabs" id="postingTab">
-												  <li class="active"><a href="#post_post" data-toggle="tab" id="post_post_tab">Posts</a></li>
-												  <li><a href="#post_photo" data-toggle="tab" id="post_photo_tab">Photo/Video</a></li>
-												</ul>
-												 -->
-		<!--  <div class="tab-content" id="postingContent">
-													<div class="tab-pane active" id="post_post">-->
-
 
 		<div class="row box">
 
@@ -325,23 +303,24 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 	<div class="user" >		
 	
 	<div class="user-badge">
-	<a  <? if (($this->relation[$count] != 'Fanpage')){?>
-					<? if ($this->relation[$count] != 'You') { ?>
-						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								 onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" 
-						<?}else{?>
-								onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>"
-						<?}?>
-						>
-							
-						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
-					<?php }else{?>
-						><span class="badge badge-You">You</span>
-					<?php }?>
-					
-				<?}else{?>
-					rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top"><span class="badge badge-Fanpage">Admin</span>
-				<?php }?> </a></div>
+		<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" <?php switch($this->relation[$count]) { 
+			case 'Fanpage':?>
+				 data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+			<?break;?>
+			<?case 'You':?>
+				 data-original-title="This is You"><span class="badge badge-You">You</span>
+			<?break;?>
+			<?case 'Following':?>
+				onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
+				data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+			<?break;?>
+				
+			<?default:?>
+				onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')" 				
+				data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+			<?}?>
+		</a>
+	</div>
 	
 	<div class="photo"><a data-toggle="modal"
 		<? if (!($this->relation[$count] == 'Fanpage')){?> 
@@ -547,7 +526,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 			<?=  strtotime($last_object->created_time)?>"></li>
 			
 			
-			<li><button id ="more_post" class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>
+			<li id ="more_post"><button  class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>
 			</ul>
 
 
