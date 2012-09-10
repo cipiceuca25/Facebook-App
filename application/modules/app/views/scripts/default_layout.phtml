@@ -36,16 +36,18 @@
 			var fanpageId = "<?= $this->fanpage_id?>";
 			var newuser = "<?= $this->newuser?>";	
 
+			var fb =false;
 			window.fbAsyncInit = function() {
 				FB.init({
 					 appId  : appId,
 					 status : true, // check login status
 					 cookie : true, // enable cookies to allow the server to access the session
 					 xfbml  : true// parse XFBML
+					 
 				});
 				FB.Canvas.setAutoGrow();
+				fb = true;
 			};
-			window.setTimeout(function() { FB.Canvas.setAutoGrow(); }, 200);
 		 </script>
 	 	<!-- End of iframe initialization -->
        
@@ -85,7 +87,7 @@
 	
 				<div id="header">
 			    
-			    	<div id="logo"></div>
+			    	<div id="logo" data-login="true"></div>
 			        
 			    </div><!--/end header -->
 			    <div id="content">

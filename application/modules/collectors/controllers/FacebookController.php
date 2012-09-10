@@ -145,18 +145,18 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     		//imagefilledrectangle ($src, 40, $yim , 75 , $yim+35 , $white );
     		imagecopyresized($src, $pic, 30, 75, 0, 0, 30, 30, 50, 50);//add the facebook pic
     		//echo $topArray[$count];
-    		imagettftext($src, 11, 0, 70, 105, $blue, $font, $text);//file, font, , x, y, color, type , text
+    		imagettftext($src, 10, 0, 70, 105, $blue, $font, $text);//file, font, , x, y, color, type , text
     		
     		if (strlen($level)==1){
     			imagettftext($src, 16, 0, 302, 93, $blue, $font, $level);
     		}else{
     			imagettftext($src, 16, 0, 297, 93, $blue, $font, $level);
     		}
-    		imagettftext($src, 9, 0, 85, 140, $gray, $font2, $stat[0]['total_posts']);
-    		imagettftext($src, 9, 0, 83, 157, $gray, $font2, $stat[0]['total_likes']);
-    		imagettftext($src, 9, 0, 115, 175, $gray, $font2, $stat[0]['total_comments']);
-    		imagettftext($src, 9, 0, 169, 193, $gray, $font2, $stat[0]['total_get_comments']);
-    		imagettftext($src, 9, 0, 137, 211, $gray, $font2, $stat[0]['total_get_likes']);
+    		imagettftext($src, 10, 0, 85, 140, $gray, $font2, $stat[0]['total_posts']);
+    		imagettftext($src, 10, 0, 83, 157, $gray, $font2, $stat[0]['total_likes']);
+    		imagettftext($src, 10, 0, 115, 175, $gray, $font2, $stat[0]['total_comments']);
+    		imagettftext($src, 10, 0, 169, 193, $gray, $font2, $stat[0]['total_get_comments']);
+    		imagettftext($src, 10, 0, 137, 211, $gray, $font2, $stat[0]['total_get_likes']);
     						
     		
     		

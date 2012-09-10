@@ -9,9 +9,7 @@ var tfdb = true;
 var mouseX;
 var mouseY;
 
-$(document).ready(
-		
-	function() {
+$(document).ready(function() {
 		
 // trick to indentify parent container
 		if (window.location != window.parent.location) {
@@ -23,33 +21,40 @@ $(document).ready(
 				'overflow' : 'auto'
 			});
 		}	
-
-		FB.api(fanpageId, function(response) {
-			if (!response || response.error) {
-			} else {
-				var x = 0;
-				var y;
-				try {
-					y = response.cover.offset_y;
-				} catch (err) {
-					y = 0;
-				}
-
-				if (y > 35) {
-					x = -1 * (parseInt(y) + 50);
+		
+		if ($('#logo').attr('data-login') == "true"){
+			
+			$('#logo').html(
+					'<img src ="/img/test.png" />');
+			
+		}else{
+			FB.api(fanpageId, function(response) {
+				if (!response || response.error) {
 				} else {
-					x = 0;
+					var x = 0;
+					var y;
+					try {
+						y = response.cover.offset_y;
+					} catch (err) {
+						y = 0;
+					}
+	
+					if (y > 35) {
+						x = -1 * (parseInt(y) + 50);
+					} else {
+						x = 0;
+					}
+	
+					try {	
+							$('#logo').html(
+							'<img src =" ' + response.cover.source
+								+ '"style=" top:' + x + 'px" />');
+					} catch (err) {
+					}
 				}
-
-				try {
-					$('#logo').html(
-						'<img src =" ' + response.cover.source
-							+ '"style=" top:' + x + 'px" />');
-				} catch (err) {
-			}
+	
+			});
 		}
-
-	});
 
 	getNewsfeed('#news-feed');
 
@@ -617,6 +622,26 @@ function getFancrankfeed(view) {
 		view = 'all';	
 	};
 	setFeed = view;
+	
+	$('#all-title').attr('style', 'font-weight:normal');
+	$('#myfeed-title').attr('style', 'font-weight:normal');
+	$('#pagepost-title').attr('style', 'font-weight:normal');
+	
+	switch(view){
+		case 'all':
+			$('#all-title').attr('style', 'font-weight:bold');
+		break;
+		case 'myfeed':
+			$('#myfeed-title').attr('style', 'font-weight:bold');
+		break;	
+		case 'admin':
+			$('#pagepost-title').attr('style', 'font-weight:bold');
+		break;	
+		default:
+			break;
+	}
+	
+	
 	
 }
 
