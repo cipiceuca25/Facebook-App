@@ -20,17 +20,20 @@ abstract class Fancrank_App_Controller_BaseController extends Fancrank_Controlle
         //$this->data = $this->getSignedRequest($this->_getParam('signed_request'));
         if(!$this->_auth->hasIdentity()) {
         	$this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->_getParam('id')));
-            $this->_redirect('/app/index/index/'.$this->_getParam('id'));  
+            //$this->_redirect('/app/index/index/'.$this->_getParam('id'));
+            exit();  
             //set the proper navbar
         } else {
             //$this->_identity = $this->_auth->getIdentity();
             $this->_facebook_user = $this->_auth->getIdentity();
             // This if statement will prevent cross fanpage visit within same login session
-            if($this->_facebook_user->fanpage_id !== $this->_getParam('id')) {
-            	//$this->_identity = $this->_auth->clearIdentity();
-            	$this->_redirect('/app/app/index/' .$this->_facebook_user->fanpage_id .'?user_id=' .$this->_facebook_user->facebook_user_id);
+            if(isset($this->_facebook_user->fanpage_id) && $this->_facebook_user->fanpage_id !== $this->_getParam('id')) {
+            	$this->_identity = $this->_auth->clearIdentity();
+            	$this->_redirect('/app/index/index/'.$this->_getParam('id'));
+            	//$this->_redirect('/app/app/index/' .$this->_facebook_user->fanpage_id .'?user_id=' .$this->_facebook_user->facebook_user_id);
             }
             $this->view->facebook_user = $this->_facebook_user;
+            
             //set the proper navbar
             $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedin.phtml', array('fanpage_id' => $this->_getParam('id')));
         }

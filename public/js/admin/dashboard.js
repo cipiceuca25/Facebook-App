@@ -32,6 +32,8 @@ jQuery(document).ready(function($){
 				//errors handle here
 				$('.tooltip-inner').html(xhr.responseText);
 				//alert(xhr.responseText);
+			},
+			beforeSend: function() {
 			},			
 			'success': function(xhr) {
 				//update the button class and html

@@ -106,7 +106,7 @@ class Service_FancrankCollectorService {
 		echo '<br/>total likes for ' .count($photoList) . ' photos ' .count($photoLikesList);
 		echo '<br/>Total likes : ' .count($allLikesList);
 		
-		$filePath = DATA_PATH .'/temp/' .$this->_fanpageId .'_last_update.data';
+		$filePath = DATA_PATH .'/temp/' .$this->_fanpageId .'_last_fullscan.data';
 		
 		if (file_exists($filePath)) {
 			//echo "The file $filePath exists";

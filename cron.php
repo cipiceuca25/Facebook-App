@@ -78,9 +78,9 @@ if (count($messages) > 0) {
 		);
         try {
         	// We have processed the message; now we remove it from the queue.
-        	//$queue->deleteMessage($message);
+        	$queue->deleteMessage($message);
 
-        	//Collector::run($job->url, $job->fanpage_id, $job->access_token, $job->type);
+        	Collector::run($job->url, $job->fanpage_id, $job->facebook_user_id, $job->access_token, $job->type);
         	$data['status'] = 'success';
         	$data['end_time'] =	(new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss');
         	$dbLog->insert($data);

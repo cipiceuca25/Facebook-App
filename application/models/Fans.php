@@ -38,7 +38,7 @@ class Model_Fans extends Model_DbTable_Fans
 		if($result) {
 			//Zend_Debug::dump($result->toArray());
 			$this->_isNew = false;
-			$this->_fanProfile = $result;		
+			$this->_fanProfile = $result;
 		}else {
 			$this->_isNew = true;
 			$this->_fanProfile = null;
@@ -115,17 +115,15 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function updateCurrency($newBalance = null) {
-		if(isset($newBalance)) {
+		if(empty($newBalance)) {
 			$this->_fanProfile->fan_currency = $this->_newBalance;
 		}else {
 			$this->_fanProfile->fan_currency = $newBalance;
 		}
 	}
 	
-	
-	
 	public function updateFanPoints($newFanPoints) {
-		$this->_newBalance += $newFanPoints;
+		$this->_fanProfile->fan_currency += $newFanPoints;
 		$this->_fanProfile->fan_points += $newFanPoints;
 	}
 	
@@ -210,7 +208,7 @@ class Model_Fans extends Model_DbTable_Fans
 	
 	public function fetchFansIdListByFanpageId($fanpage_id) {
 		$select = $this->select();
-		$select->from($this, array('fanpage_id', 'facebook_user_id'))->where('fanpage_id = ?', $fanpage_id);
+		$select->from($this, array('facebook_user_id'))->where('fanpage_id = ?', $fanpage_id);
 		return $this->fetchAll($select)->toArray();
 	}
 	

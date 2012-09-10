@@ -578,6 +578,56 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		Zend_Debug::dump($fanStatModel->getFanStatById($fanpage_id, $facebook_user_id));
     }
     
+    public function test14Action() {
+    	$postIds = array('216821905014540_505034479526613', '216821905014540_504975742865820', '216821905014540_504170349613026', '216821905014540_256560081113468');
+    	$access_token = 'AAAFHFbxmJmgBAPUVD7kjQIquRVpaDPJ8TKUPMXqUSD0BuP7F9KhsXtC1uEnWe0eaVTPebNprupHZC4fhNZA0ZAYTQoAjnNM0lG7ZBWQApc3Ttfphz7Dg';
+    	
+    	$tmp = array();
+    	$limit = 10;
+    	foreach ($postIds as $id) {
+    		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$id/likes?limit=$limit");
+    	}
+    	
+    	$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$access_token;
+
+    	$client = new Zend_Http_Client;
+    	$client->setUri("https://graph.facebook.com/?". $batchQueries);
+    	$client->setMethod(Zend_Http_Client::POST);
+    	
+    	$response = $client->request();
+    	
+    	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    	Zend_Debug::dump($result); exit();
+    	$finalResult = array();
+    	foreach ($result as $key=>$post) {
+    		if(!empty($post->code) &&  $post->code === 200 && isset($post->body)) {
+    			$likes = json_decode($post->body);
+    			if(isset($likes->data)) {
+    				$finalResult[] = $likes->data;
+    			}else {
+    				$finalResult[] = array();
+    			}
+    		}else {
+    			$finalResult[] = array();
+    		}
+    	}
+    	Zend_Debug::dump($finalResult);
+    	
+    }
+    
+    public function test15Action() {
+    	$fanpageId = '216821905014540';
+    	 
+    	$fanpageModel = new Model_Fanpages;
+    	
+    	$date = new Zend_Date();
+    	$date->subDay(2);
+    	
+    	$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'), 5);
+    	
+    	Zend_Debug::dump($newFans);
+    }
+    
     public function testmemcacheAction() {
     	$starttime = time();
     	echo $starttime;

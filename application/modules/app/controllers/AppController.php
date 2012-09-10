@@ -441,7 +441,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}
 	   	}
     	 
-    	//Zend_Debug::dump($user); exit();
+    	//Zend_Debug::dump($topPosts); exit();
 
     	$follow = new Model_Subscribes();
     	$likesModel = new Model_Likes();
@@ -462,13 +462,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//}else{
     		//	$picture[$count] = null;
     		//}
-    		$likeslist[$count] = $this->getPostLikes($posts['post_id']);
     		$count++;
     		
     	}
 		
-    	
-    	//Zend_Debug::dump($likeslist);
+    	//$likeslist[$count] = $this->getPostLikes($posts['post_id']);
+    	$likeslist = $this->getPostLikesByBatch($topPosts, 10);
+    	 
+    	//Zend_Debug::dump($likeslist); exit();
     	
     	//Zend_Debug::dump($topPosts);
     //	$this->view->picture = $picture;
@@ -526,7 +527,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$follow = new Model_Subscribes();
     	$likesModel = new Model_Likes();
-    	$likesPost;
+
     	$likes = array();
     	$relation = array();
     	$count=0;
@@ -1148,6 +1149,39 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
     		return $result->data;
     	}
+    }
+    
+    protected function getPostLikesByBatch($posts, $limit=10) {
+    	$tmp = array();
+    	$finalResult = array();
+    	foreach ($posts as $post) {
+    		$id = $post['post_id'];
+    		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$id/likes");
+    	}
+    	 
+    	$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$this->_accessToken;
+    	 
+    	$client = new Zend_Http_Client;
+    	$client->setUri("https://graph.facebook.com/?". $batchQueries);
+    	$client->setMethod(Zend_Http_Client::POST);
+    	 
+    	$response = $client->request();
+    	 
+    	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+
+    	foreach ($result as $post) {
+    		if(!empty($post->code) &&  $post->code === 200 && isset($post->body)) {
+    			$likes = json_decode($post->body);
+    			if(isset($likes->data)) {
+    				$finalResult[] = $likes->data;
+    			}else {
+    				$finalResult[] = array();
+    			}
+    		}else {
+    			$finalResult[] = array();
+    		}
+    	}
+    	return $finalResult;	
     }
     
     protected function getPost($postId){

@@ -62,7 +62,7 @@ foreach($fanpageIdList as $id) {
 		foreach ($fanList as $fan) {
 			try {
 				//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
-					$result = $fanStat->updatedFan($fan['fanpage_id'], $fan['facebook_user_id']);
+					$result = $fanStat->updatedFan($id, $fan['facebook_user_id']);
 				//break;
 			}catch(Exception $e) {
 				$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan['facebook_user_id'], $fan['fanpage_id']);

@@ -420,7 +420,8 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 						'fan_name'			=> trim($facebookUserData['facebook_user_name']),
 						'fan_first_name'	=> $facebookUserData['facebook_user_first_name'],
 						'fan_last_name'		=> $facebookUserData['facebook_user_last_name'],
-						'fan_gender'		=> $facebookUserData['facebook_user_gender']
+						'fan_gender'		=> $facebookUserData['facebook_user_gender'],
+						'updated_time'		=> (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss')
 				);
 	
 				$fansModel = new Model_Fans($facebookUserData['facebook_user_id'], $this->_fanpageId);
@@ -435,12 +436,12 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					$fanProfile->fan_name = $fansData['fan_name'];
 					$fanProfile->fan_first_name = $fansData['fan_first_name'];
 					$fanProfile->fan_last_name = $fansData['fan_last_name'];
+					$fanProfile->updated_time = $fansData['updated_time'];
 					if(isset($pointResult[$facebookUserData['facebook_user_id']])) {
 						//echo $facebookUserData['facebook_user_id'] .'<br/>';
 						$fansModel->updateFanPoints($pointResult[$facebookUserData['facebook_user_id']]);
 					}
-					
-					$fansModel->updateCurrency();
+
 					$fansModel->updateFanProfile();
 				}
 	
