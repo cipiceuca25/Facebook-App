@@ -45,28 +45,7 @@ $fanpageIdList = $fanpageModel->getInstallFanpagesIdList();
 
 foreach($fanpageIdList as $id) {
 
-<<<<<<< HEAD
-if (count($fanList) > 0) {
-	$logger = new Zend_Log();
-	//$writer = new Zend_Log_Writer_Stream('php://output');
-	$writer = new Zend_Log_Writer_Stream('./update_cron_error.log');
-	$logger = new Zend_Log($writer);
 
-	$error = false;
-	$fanStat = new Model_FansObjectsStats();
-	$start = time();
-	foreach ($fanList as $fan) {
-		try {
-			//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
-			//if($fan->fanpage_id === '216821905014540') {
-				$result = $fanStat->updatedFan($fan->fanpage_id, $fan->facebook_user_id);
-			//}
-			//break;
-		}catch(Exception $e) {
-			$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan->facebook_user_id, $fan->fanpage_id);
-			$logger->log('Update fanpage cron Failed: ' .$errMsg .'<br/>' .$e->getMessage(), Zend_Log::INFO);
-			$error = true;
-=======
 	$fan = new Model_Fans();
 	$fanList = $fan->fetchFansIdListByFanpageId($id);
 	Zend_Debug::dump(count($fanList));
@@ -96,7 +75,7 @@ if (count($fanList) > 0) {
 			// send email with attachment
 			echo 'there is error';
 			$logger->log('Update fanpage fans stats failed on: ' .$fan['fanpage_id'], Zend_Log::INFO);
->>>>>>> update code sep-06-2012
+
 		}
 	}
 }
