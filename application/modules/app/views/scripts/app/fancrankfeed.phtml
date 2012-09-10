@@ -108,10 +108,13 @@
 							</div>
 			<?}	?>
 		<div class="graphical">	
-		<?php if (($post->type == 'photo') || ($post->type =='video')) {?>	
+		<?php if ($post->type == 'photo'){?>	
 			<a target="new" href="<?echo $this->escape($post->link)?> "> 
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
 					</a>
+		<?php }elseif ($post->type =='video') { ?>
+
+			<iframe width="640" height="390" src="<?echo $this->escape($post->link)?> "  frameborder="0" allowfullscreen></iframe>
 			
 		<?}elseif ($post->type == 'link') {?>
 			<div class="link">
