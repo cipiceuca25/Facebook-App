@@ -24,20 +24,22 @@
 														</div>
 												
 														<div class="follow">
-														<?php if ($this->topFanArray[$count] != 'You'){?>
-														
-														<a <?if (($this->topFanArray[$count] != 'Following') /*&& ($this->topFanArray[$count] != 'Friends') */) {?>
-																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'follow_<?=$top_fan['facebook_user_id']?>')" class = "follow_<?=$top_fan['facebook_user_id']?>"
-																<?}else{ ?>
-																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'follow_<?=$top_fan['facebook_user_id']?>')" class = "follow_<?=$top_fan['facebook_user_id']?>"
+															<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>"<?php switch($this->relation[$count]) { 
+															
+																case 'You':?>
+																	 data-original-title="This is You"><span class="badge badge-You">You</span>
+																<?break;?>
+																<?case 'Following'?>
+																	onclick="unfollow(<?=$top_fan['facebook_user_id']?> ,'<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
+																	data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+																<?break;?>
+																	
+																<?default:?>
+																	onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
+																	data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
 																<?}?>
-															>
-															<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
-														</a>
-														<?php }else{?>
-															<a ><span class="badge badge-You">You</span></a>
-														
-														<?php }?>	</div>
+															</a>
+														</div>
 													</div>
 											</li>
 											
@@ -67,19 +69,21 @@
 														
 													</div>
 													<div class="follow">
-													<?php if ($this->topFanArray[$count] != 'You'){?>
-														
-														<a <?if (($this->topFanArray[$count] != 'Following')/* && ($this->topFanArray[$count] != 'Friends')*/) {?>
-																onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'follow_<?=$top_fan['facebook_user_id']?>')" class = "follow_<?=$top_fan['facebook_user_id']?>"
-																<?}else{ ?>
-																onclick="unfollow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>', 'follow_<?=$top_fan['facebook_user_id']?>')" class= "follow_<?=$top_fan['facebook_user_id']?>"
+														<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>" <?php switch($this->relation[$count]) { 
+																case 'You':?>
+																	 data-original-title="This is You"><span class="badge badge-You">You</span>
+																<?break;?>
+																<?case 'Following'?>
+																	onclick="unfollow(<?=$top_fan['facebook_user_id']?> ,'<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
+																	data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+																<?break;?>
+																	
+																<?default:?>
+																	onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
+																	data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
 																<?}?>
-															>
-															<span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span></a>
-														<?php }else{?>
-															<a><span class="badge badge-You">You</span></a>
-														
-														<?php }?> </div>
+														</a>
+													</div>
 												</div>
 											</li>
 											
@@ -161,7 +165,7 @@
 													</div>
 													</div>
 													<div class="follow">
-														<a><span class="badge badge-You">You</span></a>
+														<a rel="tooltip-follow" data-original-title="This is You" class="follow_<?= $this->user_id ?>"><span class="badge badge-You">You</span></a>
 													
 													</div>
 												</div>	

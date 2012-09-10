@@ -45,6 +45,7 @@ $fanpageIdList = $fanpageModel->getInstallFanpagesIdList();
 
 foreach($fanpageIdList as $id) {
 
+
 	$fan = new Model_Fans();
 	$fanList = $fan->fetchFansIdListByFanpageId($id);
 	Zend_Debug::dump(count($fanList));
@@ -74,6 +75,7 @@ foreach($fanpageIdList as $id) {
 			// send email with attachment
 			echo 'there is error';
 			$logger->log('Update fanpage fans stats failed on: ' .$fan['fanpage_id'], Zend_Log::INFO);
+
 		}
 	}
 }

@@ -83,12 +83,98 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	
     	imagecopy($dest, $src, 500, 5, 0, 0, 810, 300);
     	imagecopy($dest, $src2, 500, 5, 0, 0, 810, 300);
-    	
-    	
-    	
-    	imagepng($dest,APPLICATION_PATH.'\..\public\img\test.png' );
-    	
 
+    	imagepng($dest,APPLICATION_PATH.'\..\public\img\test.png' );
+
+    }
+    
+    
+    public function testimagecreatetwoAction(){
+    	 
+    	// Create image instances
+    	$dest = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\headermerge.png');
+    	$src = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\topfanoftheweek.png');
+    	
+    	$fanpage_id = '216821905014540';
+    	$model = new Model_Rankings;
+    	$topFans = $model->getTopFans($fanpage_id, 1);
+    	 
+    	// imagettftext ( resource $image , float $size , float $angle , int $x , int $y , int $color , string $fontfile , string $text )
+    	 
+		$blue= imagecolorallocate($src, 89, 116, 154);
+    	$white = imagecolorallocate($src, 255, 255, 255);
+    	$gray = imagecolorallocate($src, 102, 102, 102);
+    	 
+    	$font = APPLICATION_PATH.'\..\public\img\font\arialbd.ttf';
+    	$font2 = APPLICATION_PATH.'\..\public\img\font\arial.ttf';
+
+
+    	foreach ($topFans as $top){
+    		set_time_limit(60);
+    		//echo $top['facebook_user_id'];
+    		$text = $top['fan_first_name'].' '.$top['fan_last_name'];
+    		$point = $top['number_of_posts'];
+    		
+    		$file = 'https://graph.facebook.com/'.$top['facebook_user_id'].'/picture';
+    		$size = getimagesize($file);
+    		switch($size["mime"]){
+    			case "image/jpeg":
+    				$pic = imagecreatefromjpeg($file); //jpeg file
+    				break;
+    			case "image/gif":
+    				$pic = imagecreatefromgif($file); //gif file
+    				break;
+    			case "image/png":
+    				$pic = imagecreatefrompng($file); //png file
+    				break;
+    			default:
+    				$pic=false;
+    				break;
+    		}
+    		
+    		$fan = new Model_Fans($top['facebook_user_id'],$fanpage_id );
+    		
+    		$stat = new Model_FansObjectsStats();
+    		$stat = $stat->findFanRecord($fanpage_id, $top['facebook_user_id']);
+    		
+    	
+    		
+    		$level = $fan->getFanLevel();
+    		
+    		
+    		//imagefilledrectangle ($src, 40, $yim , 75 , $yim+35 , $white );
+    		imagecopyresized($src, $pic, 30, 75, 0, 0, 30, 30, 50, 50);//add the facebook pic
+    		//echo $topArray[$count];
+    		imagettftext($src, 10, 0, 70, 105, $blue, $font, $text);//file, font, , x, y, color, type , text
+    		
+    		if (strlen($level)==1){
+    			imagettftext($src, 16, 0, 302, 93, $blue, $font, $level);
+    		}else{
+    			imagettftext($src, 16, 0, 297, 93, $blue, $font, $level);
+    		}
+    		imagettftext($src, 10, 0, 85, 140, $gray, $font2, $stat[0]['total_posts']);
+    		imagettftext($src, 10, 0, 83, 157, $gray, $font2, $stat[0]['total_likes']);
+    		imagettftext($src, 10, 0, 115, 175, $gray, $font2, $stat[0]['total_comments']);
+    		imagettftext($src, 10, 0, 169, 193, $gray, $font2, $stat[0]['total_get_comments']);
+    		imagettftext($src, 10, 0, 137, 211, $gray, $font2, $stat[0]['total_get_likes']);
+    						
+    		
+    		
+    		if (strlen($point)== 1){
+    			imagettftext($src, 25, 8, 260, 193, $blue, $font, $point);
+    		}else if (strlen($point)== 2){
+    			imagettftext($src, 25, 8, 253, 194, $blue, $font, $point);
+    		}else if (strlen($point) == 3){
+    			imagettftext($src, 25, 8, 244, 196, $blue, $font, $point);
+    		}else if (strlen($point) == 4){
+    			imagettftext($src, 25, 8, 237, 198, $blue, $font,$point);
+    		}
+    	}
+    	 
+    	imagecopy($dest, $src, 439, 5, 0, 0, 810, 300);
+    	//imagecopy($dest, $src2, 500, 5, 0, 0, 810, 300);
+    
+    	imagepng($dest,APPLICATION_PATH.'\..\public\img\test.png' );
     
     }
     

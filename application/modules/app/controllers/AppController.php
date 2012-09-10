@@ -637,6 +637,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
    		
     	$user = $user->find($this->_userId)->current();
     	//Zend_Debug::dump($this->_userId);
+    	
+    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    	$fan_exp = $fan->getCurrentEXP();
+    	$fan_exp_required = $fan->getNextLevelRequiredXP();
     	if($user) {
     		$this->view->facebook_user = $user;
     		//$access_token = $this->facebook_user->facebook_user_access_token;
@@ -645,13 +649,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(3600);
     		$fan = null;
+    		
     		try {
     			$fanProfileId = $this->_fanpageId .'_' .$user->facebook_user_id .'_fan';
-    		
+    			$cache->remove($fanProfileId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanProfileId)){
 	    			//echo 'db look up';
 	    			$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+	    			$fan = $fan->getFanProfile();
 	    			//Save to the cache, so we don't have to look it up next time
 	    			$cache->save($fan, $fanProfileId);
     			}else {
@@ -665,21 +671,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}else {
     		$this->view->facebook_user = null;
     	}
-		
+    	
     	$follow = new Model_Subscribes();
     	$follower = $follow->getFollowers($user->facebook_user_id, $this->_fanpageId);
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
     	//$friends = $follow->getFriends($user->facebook_user_id, $this->_fanpageId);
-    	
-    	$fan_level = null;
-    	$fan_since = null;
-    	$fan_country = null;
-    	 
-    	if(!$fan->isNewFan()) {
-    		$fan_level = $fan->getFanLevel();
-    		$fan_since = $fan->getFanSince();
-    		$fan_country = $fan->getFanCountry();
-    	}
     	
     	$userBadges = new Model_BadgeEvents();
     	$userBadgeCount = $userBadges->getNumBadgesByUser($this->_fanpageId, $user->facebook_user_id);
@@ -695,9 +691,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->all_badge = $allBadges[0]['count'];
     	$this->view->overall_achievement = $overallAchievement;
     	
-    	$this->view->fan_point = $fan->getFanCurrency();
-    	$fan_exp = $fan->getCurrentEXP();
-    	$fan_exp_required = $fan->getNextLevelRequiredXP();
+   
+    	
     	
     	
     	$this->view->fan_exp = $fan_exp;
@@ -705,7 +700,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->fan_level_exp = $fan_exp_required;
     	$this->view->fan_exp_percentage = $fan_exp/$fan_exp_required*100;
     	
-    	//Zend_Debug::dump($fan_level);
+    	
     	
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
@@ -717,9 +712,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$stat_get_like = $stat[0]['total_get_likes'];
     	
     	
-    	$this->view->fan_level = $fan_level;
-    	$this->view->fan_since = $fan_since;
-    	$this->view->fan_country = $fan_country;
+    	$this->view->fan = $fan;
+
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
@@ -740,42 +734,46 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     public function popoverprofileAction(){
     	$this->_helper->layout->disableLayout();
     	$this->_helper->viewRenderer->setNoRender(true);
+    	$user_id = $this->_request->getParam('facebook_user_id');
     	$user = new Model_FacebookUsers();
-    	$user = $user->find($this->_request->getParam('facebook_user_id'))->current();// the target
+    	$user = $user->find($user_id)->current();// the target
     	//Zend_Debug::dump($user);
     	if($user) {
-    		$this->view->facebook_user = $user;
+    		
     		//$access_token = $this->facebook_user->facebook_user_access_token;
     		//$this->view->feed = $this->getFeed($access_token);
     	}else {
     	
     		$client = new Zend_Http_Client;
-    		$client->setUri("https://graph.facebook.com/". $this->_request->getParam('facebook_user_id') );
+    		$client->setUri("https://graph.facebook.com/". $user_id );
     		$client->setMethod(Zend_Http_Client::GET);
     		//$client->setParameterGet('access_token', $this->_accessToken);
     		$response = $client->request(); 
     		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    		//Zend_Debug::dump($result);
     		if(!empty ($result)) {
     			$user = array('facebook_user_id' => $result->id,
     					'facebook_user_first_name'=> $result->first_name,
     					'facebook_user_last_name'=>$result->last_name,
     					'created_time'=> 'Not Available',
     					'hometown' => 'Not Available'
-    			);
-    			$user = (object)$user;
+    			);	
     		}
+    		$user = (object)$user;
+
     		//Zend_Debug::dump($user);
-    		$this->view->facebook_user = $user;
+    		
     		//$this->view->facebook_user = null;
     	} 
-    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    	
     	$follow = new Model_Subscribes();
     	$relation = $follow->getRelation($this->_userId, $user->facebook_user_id, $this->_fanpageId);
-    	 
+    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
     	$fan = $fan->getFanProfile();
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
-    	 
+    	
+    	$this->view->facebook_user = $user;
     	$this->view->relation=$relation;
     	$this->view->stat= $stat;
     	$this->view->fan = $fan;
@@ -838,8 +836,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$following = $follow->getFollowing($user->facebook_user_id, $this->_fanpageId);
 
     	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id, $this->_fanpageId);
-    	
-    	
+    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    	$fan_exp = $fan->getCurrentEXP();
+    	$fan_exp_required = $fan->getNextLevelRequiredXP();
     	$cache = Zend_Registry::get('memcache');
     	$cache->setLifetime(3600);
     	$fan = null;
@@ -861,7 +860,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
     		//echo $e->getMessage();
     	}
-    
+    	
+    	//Zend_Debug::dump($fan);
     	$userBadges = new Model_BadgeEvents();
     	$userBadgeCount = $userBadges->getNumBadgesByUser($this->_fanpageId, $user->facebook_user_id);
 
@@ -892,11 +892,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$activitiesModel = new Model_FancrankActivities();
     	$activity = $activitiesModel->getRecentActivities($user->facebook_user_id, $this->_fanpageId, 20);//$activity->getUserActivity($this->_fanpageId, $user->facebook_user_id, 15);
-    
+    	
     	$this->view->relation = $relation;
     
     	$this->view->fan = $fan;
-
+    	
+    	 
+    	$this->view->fan_exp = $fan_exp;
+    	$this->view->fan_exp_required = $fan_exp_required - $fan_exp;
+    	$this->view->fan_level_exp = $fan_exp_required;
+    	$this->view->fan_exp_percentage = $fan_exp/$fan_exp_required*100;
+    
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
@@ -1425,6 +1431,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		
 		$this->view->result = $result;
 		$this->view->relation= $relation;
+		$this->view->title = 'Likes';
+		
+		
 		
 		$this->render("userlist");
 	}

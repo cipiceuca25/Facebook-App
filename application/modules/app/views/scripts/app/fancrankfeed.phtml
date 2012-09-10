@@ -27,26 +27,29 @@
 	<div class="user" >		
 	
 	<div class="user-badge">
-	<a  <? if (($this->relation[$count] != 'Fanpage')){?>
-					<? if ($this->relation[$count] != 'You') { ?>
-						<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								 onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>" 
-						<?}else{?>
-								onclick="unfollow(<?=$post->from->id?> , '<?=$post->from->name?>', 'follow_<?=$post->from->id?>')" class ="follow_<?=$post->from->id?>"
-						<?}?>
-						>
-							
-						<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
-					<?php }else{?>
-						><span class="badge badge-You">You</span>
-					<?php }?>
-					
-				<?}else{?>
-					rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top" ><span class="badge badge-Fanpage">Admin</span>
-				<?php }?> </a></div>
+		<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" <?php switch($this->relation[$count]) { 
+			case 'Fanpage':?>
+				 data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+			<?break;?>
+			
+			<?case 'You':?>
+				 data-original-title="This is You"><span class="badge badge-You">You</span>
+			<?break;?>
+			
+			<?case 'Following':?>
+				onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
+				data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+			<?break;?>
+				
+			<?default:?>
+				onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')" 				
+				data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+			<?}?>
+		</a>
+	</div>
 	
 	<div class="photo"><a data-toggle="modal"
-		<? if (!($this->relation[$count] == 'Fanpage')){?> 
+		<? if (($this->relation[$count] != 'Fanpage')){?> 
 			onclick="userProfile('<?=$post->from->id?>')"
 			rel="popover" 
 			data-content="" 
@@ -58,7 +61,7 @@
 	</a></div>
 	
 	<div class="name"><a data-toggle="modal"
-		<? if (!($this->relation[$count] == 'Fanpage')){?> 
+		<? if (($this->relation[$count] != 'Fanpage')){?> 
 			onclick="userProfile('<?=$post->from->id?>')"
 			rel="popover" 
 			data-content="" 
@@ -105,10 +108,13 @@
 							</div>
 			<?}	?>
 		<div class="graphical">	
-		<?php if (($post->type == 'photo') || ($post->type =='video')) {?>	
+		<?php if ($post->type == 'photo'){?>	
 			<a target="new" href="<?echo $this->escape($post->link)?> "> 
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
 					</a>
+		<?php }elseif ($post->type =='video') { ?>
+
+			<iframe width="640" height="390" src="<?echo $this->escape($post->link)?> "  frameborder="0" allowfullscreen></iframe>
 			
 		<?}elseif ($post->type == 'link') {?>
 			<div class="link">
@@ -259,4 +265,4 @@
 <?php $last_object = $this->post[count($this->post) - 1] ?>
 <li id="last_post_time" data-time="
 <?=  strtotime($last_object->created_time)?>"></li>
-<li><button id ="more_post" class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>
+<li id ="more_post"><button  class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>

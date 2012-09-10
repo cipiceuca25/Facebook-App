@@ -10,7 +10,7 @@
 			There are no more posts
 			</div>
 		</div>
-	</li>
+	</li> 
 <? }else{?>
 
 
@@ -23,22 +23,25 @@
 
 	<div class="user">	
 	<div class="user-badge">
-	<a <? if (($this->relation[$count] != 'Fanpage')){?>
-			<? if ($this->relation[$count] != 'You') { ?>
-				<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-					 	onclick="follow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>" 
-				<?}else{?>
-					 onclick="unfollow(<?=$post['facebook_user_id']?> , '<?if($post['fan_name']!=null){ echo $post['fan_name']; }else{ echo $post['fanpage_name'];}?>', 'follow_<?=$post['facebook_user_id']?>')" class ="follow_<?=$post['facebook_user_id']?>"
-				<?}?>
-				>
+		<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" <?php switch($this->relation[$count]) { 
+			case 'Fanpage':?>
+				 data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+			<?break;?>
+			<?case 'You':?>
+				 data-original-title="This is You"><span class="badge badge-You">You</span>
+			<?break;?>
+			<?case 'Following':?>
+				onclick="unfollow(<?=$post['facebook_user_id']?> ,'<?= ($post['fan_name']!=null)?$post['fan_name']:$post['fanpage_name']?>')" 
+				data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+			<?break;?>
 				
-				<span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
-			<?php }else{?>
-				><span class="badge badge-You">You</span>
-			<?php }?>
-		<?}else{?>	
-			rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top" ><span class="badge badge-Fanpage">Admin</span>
-		<?php }?></a>
+			<?default:?>
+				onclick="follow(<?=$post['facebook_user_id']?> , '<?= ($post['fan_name']!=null)?$post['fan_name']:$post['fanpage_name']?>')" 				
+				data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+			<?}?>
+		</a>
+	
+
 	</div>
 			
 	

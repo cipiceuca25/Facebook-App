@@ -9,9 +9,7 @@ var tfdb = true;
 var mouseX;
 var mouseY;
 
-$(document).ready(
-		
-	function() {
+$(document).ready(function() {
 		
 // trick to indentify parent container
 		if (window.location != window.parent.location) {
@@ -23,33 +21,40 @@ $(document).ready(
 				'overflow' : 'auto'
 			});
 		}	
-
-		FB.api(fanpageId, function(response) {
-			if (!response || response.error) {
-			} else {
-				var x = 0;
-				var y;
-				try {
-					y = response.cover.offset_y;
-				} catch (err) {
-					y = 0;
-				}
-
-				if (y > 35) {
-					x = -1 * (parseInt(y) + 50);
+		
+		if ($('#logo').attr('data-login') == "true"){
+			
+			$('#logo').html(
+					'<img src ="/img/test.png" />');
+			
+		}else{
+			FB.api(fanpageId, function(response) {
+				if (!response || response.error) {
 				} else {
-					x = 0;
+					var x = 0;
+					var y;
+					try {
+						y = response.cover.offset_y;
+					} catch (err) {
+						y = 0;
+					}
+	
+					if (y > 35) {
+						x = -1 * (parseInt(y) + 50);
+					} else {
+						x = 0;
+					}
+	
+					try {	
+							$('#logo').html(
+							'<img src =" ' + response.cover.source
+								+ '"style=" top:' + x + 'px" />');
+					} catch (err) {
+					}
 				}
-
-				try {
-					$('#logo').html(
-						'<img src =" ' + response.cover.source
-							+ '"style=" top:' + x + 'px" />');
-				} catch (err) {
-			}
+	
+			});
 		}
-
-	});
 
 	getNewsfeed('#news-feed');
 
@@ -58,24 +63,36 @@ $(document).ready(
 $(document).mousemove(function(e) {
 	mouseX = e.pageX;
 	mouseY = e.pageY;
-	$('.popover').css('display', 'none');
+	//$('.popover').css('display', 'none');
+	//FB.Canvas.setAutoGrow();
+	
+	if (fb == false){
+		
+		FB.init({
+			 appId  : appId,
+			 status : true, // check login status
+			 cookie : true, // enable cookies to allow the server to access the session
+			 xfbml  : true// parse XFBML
+			 
+		});
+		fb=true;
+		FB.Canvas.setAutoGrow();	
+	}
+	
 });
 
 $(document).on('mouseover', 'a[rel=popover]', function() {
-	popover($(this));
-
+	
 	if ($(this).data('isPopoverLoaded') == true) {
 		return;
 	}
 	$(this).data('isPopoverLoaded', true).popover({
-		
 		delay : {
 			show : 500,
-			hide : 10
-		},
-		placement : $(this).attr('data-placement')
+			hide : 100
+		}
 	}).trigger('mouseover');
-	
+	popover($(this));
 });
 
 $(document).on('mouseover', 'a[rel=tooltip]', function() {
@@ -90,7 +107,8 @@ $(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
 		return;
 	}
 	$(this).data('isTooltipLoaded', true).tooltip({
-		delay : {show:1000, hide:100}
+		delay : {show:1000, hide:100},
+		placement:'top'
 	}).trigger('mouseover');
 });
 
@@ -224,8 +242,10 @@ function popover(x) {
 				+ '?facebook_user_id=' + $(x).attr('data-userid'),
 		dataType : "html",
 		cache : false,
-		async : true,
-
+		async : false,
+		beforeSend: function(){
+			$(x).attr('data-content', "<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
 		success : function(data) {
 			$(x).attr('data-content', data);
 		},
@@ -557,7 +577,7 @@ function getFancrankfeed(view) {
 	//alert(setFeed);
 	//alert(feedLimit);
 	if((setFeed == view) && (view != 'myfeed')){
-		last = $('#last_post_time').attr('data-time');
+		last = parseInt($('#last_post_time').attr('data-time')) - 1;
 		myfeedoffset = 0;
 	}else if (view == 'myfeed'){
 		
@@ -600,6 +620,26 @@ function getFancrankfeed(view) {
 		view = 'all';	
 	};
 	setFeed = view;
+	
+	$('#all-title').attr('style', 'font-weight:normal');
+	$('#myfeed-title').attr('style', 'font-weight:normal');
+	$('#pagepost-title').attr('style', 'font-weight:normal');
+	
+	switch(view){
+		case 'all':
+			$('#all-title').attr('style', 'font-weight:bold');
+		break;
+		case 'myfeed':
+			$('#myfeed-title').attr('style', 'font-weight:bold');
+		break;	
+		case 'admin':
+			$('#pagepost-title').attr('style', 'font-weight:bold');
+		break;	
+		default:
+			break;
+	}
+	
+	
 	
 }
 
@@ -750,7 +790,8 @@ function getRelation(target, ui) {
 
 }
 
-function follow(target, name, ui) {
+function follow(target, name) {
+	ui = "follow_"+target;
 	if (target != userId) {
 
 		$.ajax({
@@ -766,10 +807,8 @@ function follow(target, name, ui) {
 				//getUserProfile('.profile-content', target);
 				getRelation(target, ui);
 				//alert(relation);
-				$('.' + ui).attr(
-						'onclick',
-						"unfollow('" + target + "','" + name + "','" + ui
-								+ "')");
+				$('.' + ui).attr('onclick',	"unfollow('" + target + "','" + name + "','" + ui + "')");
+				$('.' + ui).attr('data-original-title', 'Click to Unfollow this User');
 				//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
 				feedbackAnimation('#follow-animation');
 			},
@@ -781,8 +820,8 @@ function follow(target, name, ui) {
 	}
 }
 
-function unfollow(target, name, ui) {
-
+function unfollow(target, name) {
+	ui = "follow_"+target;
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/user/' + userId + '/unfollow/?subscribe_to='
@@ -796,8 +835,9 @@ function unfollow(target, name, ui) {
 			//getUserProfile('.profile-content', target);
 			getRelation(target, ui);
 
-			$('.' + ui).attr('onclick',
-					"follow('" + target + "','" + name + "','" + ui + "')");
+			$('.' + ui).attr('onclick',	"follow('" + target + "','" + name + "','" + ui + "')");
+			$('.' + ui).attr('data-original-title', 'Click to Follow this User');
+		
 			//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
 			feedbackAnimation('#unfollow-animation');
 
@@ -910,7 +950,7 @@ function getLikesList(postid, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
@@ -937,7 +977,7 @@ function getFollowingList(targetname, target, limit, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
@@ -966,7 +1006,7 @@ function getFollowersList(targetname, target, limit, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
@@ -1012,7 +1052,7 @@ function getMiniFollowingList(targetname, target) {
 		cache : false,
 		async : true,
 		beforeSend:function(){	
-			$('#followinglist').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+			$('#followinglist').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
 		},
 		success : function(data) {
 			$('#followinglist').html(data);
@@ -1035,7 +1075,7 @@ function getMiniFollowersList(targetname, target) {
 		cache : false,
 		async : true,
 		beforeSend : function() {
-			$('#followerslist').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('#followerslist').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$('#followerslist').html(data);

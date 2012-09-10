@@ -25,18 +25,22 @@
 						
 					<?echo $displayname ?>'s Profile
 					<div class="badge-profile">
-						<a <?php if ($this->relation != 'You') {?>
-								<? if (($this->relation != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-									onclick="follow(<?= $this->facebook_user->facebook_user_id?>, '<?= $username ?>', 'follow_<?= $this->facebook_user->facebook_user_id?>')" class="follow_<?= $this->facebook_user->facebook_user_id?>">
+						<a rel="tooltip-follow" class ="follow_<?= $this->facebook_user->facebook_user_id?>"<?php switch($this->relation) { 
+							case 'You':?>
+								 data-original-title="This is You"><span class="badge badge-You">You</span>
+							<?break;?>
+							<?case 'Following'?>
+								onclick="unfollow(<?= $this->facebook_user->facebook_user_id?> ,'<?= $username ?>')" 
+								data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+							<?break;?>
 								
-								<?php }else{?> 
-									onclick="unfollow(<?= $this->facebook_user->facebook_user_id ?>, '<?= $username ?>','follow_<?= $this->facebook_user->facebook_user_id?>' )" class="follow_<?= $this->facebook_user->facebook_user_id?>">
-								<?}	?> 
-							<span class="badge badge-<?= $this->relation?>"><?= $this->relation?></span>
-							<?}else{?> 
-							<span class="badge badge-<?= $this->relation?>"><?= $this->relation?></span> 
+							<?default:?>
+								onclick="follow(<?= $this->facebook_user->facebook_user_id?> , '<?= $username ?>')" 
+								data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->relation?>"><?=$this->relation?></span>
 							<?}?>
-					 	</a>
+						</a>
+						
+					
 					</div>
 			</div>
 					
@@ -59,7 +63,7 @@
 									
 									<div class="profile-block vertical-center">
 										<h3>
-											<?= isset($this->fan->fan_point)?$this->fan->fan_point:0?>
+											<?= isset($this->fan->fan_point)?$this->fan->fan_currency:0?>
 										</h3> Points
 									</div>
 									
@@ -68,17 +72,17 @@
 		
 										<div class="progress">
 		
-											<div class="bar" style="width: <?= isset($this->fan->fan_exp_percentage)?$this->fan->fan_exp_percentage:0?>%;">
+											<div class="bar" style="width: <?= isset($this->fan_exp_percentage)?$this->fan_exp_percentage:0?>%;">
 		
 											</div>
 		
 										</div>
 										<h5>
-											<?=isset($this->fan->fan_exp)?$this->fan->fan_exp:0?>
+											<?=$this->fan_exp?>
 											/
-											<?=isset($this->fan->fan_level_exp)?$this->fan->fan_level_exp:400?>
+											<?=$this->fan_level_exp?>
 											<br />
-											<?=isset($this->fan->fan_exp_required)?$this->fan->fan_exp_required:400?>
+											<?=$this->fan_exp_required?>
 											Until Next Level
 										</h5>
 									</div>
@@ -122,38 +126,7 @@
 		
 				</div>
 					
-					
-				<!--<div class="title nopic">
-					<div class="title-header nopic">
-						Recent Badges
-					</div>
-				</div>
-			<div class="row box">
-					
-							<div class="post-container">
-					
-								<div class="badge-display">
-									<img src="/img/badges/post_comment_1.png" />
-								</div>
-								<div class="badge-display" >
-									<img src="/img/badges/post_video_1.png" />
-								</div>
-								<div class="badge-display">
-									<img src="/img/badges/post_photo_5.png" />
-								</div>
-								<div class="badge-display">
-									<img src="/img/badges/post_post_1.png" />
-								</div>
-								<div class="badge-display" >
-									<img src="/img/badges/like_post_5.png" />
-								</div>
-								<div class="badge-display" >
-									<img src="/img/badges/like_photo_1.png" />
-								</div>
-							</div>
-					
-				</div>
-				-->	
+
 				<div class="half" >	
 					<div class="title nopic">
 						<div class="title-header nopic">
@@ -208,13 +181,13 @@
 								<?php if (!isset($this->fan->created_time)){?>
 									<h4>Not A Fancrank User</h4>
 								<?}else{?>
-									<h4>Fancrank User Since:<?= date("F Y",strtotime($this->fan->created_time))?></h4>
+									<h4>Fancrank User Since:</h4><?= date("F Y",strtotime($this->fan->first_login_time))?>
 								<?php }?><br /><br />
 								
 								<h4>Location:</h4>
 								<?php if (isset($this->fan->fan_country)) {?>
 									<?php if (isset($this->fan->fan_location)){?>
-										<?= $this->fan->fan_location?>, <?= $this->fan->fan_country?>
+										<?= $this->fan->fan_location?>,
 									<?php }?>
 									<?= $this->fan->fan_country?>
 								<?php }else{?>

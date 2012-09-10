@@ -3,18 +3,33 @@
 
 <div class="title">
 	
-	<div class="title-icon">
-		<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture">
-	</div>
+
+		<?php if ($this->title != 'Likes'){?>
+			<div class="title-icon">
+				<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture">
+			</div>
+		<?php }else{?>
+			
+		<?php }?>
+		
+
 	
-	<div class="title-header">
-		<?=$this->user_name?>'s <?= $this->title?> List
 	
-	</div>
+		<?php if ($this->title != 'Likes'){?>
+			<div class="title-header">
+			<?=$this->user_name?>'s <?= $this->title?> List
+			</div>
+		<?php }else{?>
+			<div class="title-header nopic">
+			People who Like this
+			</div>
+		<?php }?>
+	
 	
 </div>
-
+<?php if ($this->title != 'Likes'){?>
 <div class="link-back">Go back to <a onclick="userProfile('<?= $this->user_id?>', false)"><?= $this->user_name?></a>'s Profile</div>
+<?php }?>
 
 <div class="row box" id="user_list">
 	<ul class="top-list" id="user_list_scroll">
@@ -24,7 +39,7 @@
 				<div class="user">
 					<div class="photo"><img class="face" width="30" height="30" src="/img/profile-picture.png" onerror="ImgError(this);"></div>
 				
-					<div class="name">No users</div>
+					<div class="name">No Users</div>
 				
 				</div>
 			
@@ -40,21 +55,21 @@
 			<div class="ranker" >
 				<div class="user">
 					<div class="photo">
-						<a  data-userid="<?= $user['facebook_user_id'] ?>"
-											<? if (!($this->relation[$count] == 'Fanpage')){?>
+						<a data-userid="<?= $user['facebook_user_id'] ?>"
+											<? if (($this->relation[$count] != 'Fanpage')){?>
 												onclick="userProfile('<?= $user['facebook_user_id'] ?>', false)"
-												<?}?> rel="popover" data-content="" data-original-title=""
-												data-placement="top">
+												 rel="popover" data-content="" data-original-title=""
+												data-placement="top"<?}?>>
 						<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture">
 						</a>
 					</div>
 					
 					<div class="name">
-						<a  data-userid="<?= $user['facebook_user_id'] ?>"
-											<? if (!($this->relation[$count] == 'Fanpage')){?>
+						<a data-userid="<?= $user['facebook_user_id'] ?>"
+											<? if (($this->relation[$count] != 'Fanpage')){?>
 												onclick="userProfile('<?= $user['facebook_user_id'] ?>' , false)"
-												<?}?> rel="popover" data-content="" data-original-title=""
-												data-placement="top"><?= $user['facebook_user_name']?></a>
+												 rel="popover" data-content="" data-original-title=""
+												data-placement="top"<?}?>><?= $user['facebook_user_name']?></a>
 						
 					</div>
 					<!--   <br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?>  since <span class="time"
@@ -64,19 +79,20 @@
 				<div class="badge-profile">
 					
 						<a  <? if (($this->relation[$count] != 'Fanpage')){?>
-								 <?php if ($this->relation != 'You') {?>
-								<? if (($this->relation != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
-								onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')"
+								<?php if ($this->relation[$count] != 'You') {?>
+									<? if (($this->relation[$count] != 'Following') /*&& ($this->relation[$count] != 'Friends')*/){?>
+										onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')"
+									<?}else{?> 
+										onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')"
+									<?}	?> 
+									><span class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?></span>
 								<?}else{?> 
-								onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')"
-								<?}	?> 
-							><span class="badge badge-<?= $this->relation[$count]?> big"><?= $this->relation[$count]?>
-							<?}else{?> 
-							><span class="badge badge-You?> big">You
-							<?}?></span>
+									rel="tooltip-follow" data-original-title="This is You"><span class="badge badge-You big">You</span>
+								<?}?>
 					 		<?}else{?>
-							 rel="tooltip-follow" data-original-title="You can't Follow an Admin" data-placement="top" ><span class="badge badge-Fanpage">Admin</span>
-						<?php }?> </a>
+							 	rel="tooltip-follow" data-original-title="You can't Follow an Admin" ><span class="badge badge-Fanpage">Admin</span>
+							<?php }?>
+						</a>
 
 				</div>
 				
