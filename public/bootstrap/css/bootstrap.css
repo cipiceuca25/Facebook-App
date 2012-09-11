@@ -4280,7 +4280,7 @@ input[type="submit"].btn.btn-mini {
 
 .tooltip.top .tooltip-arrow {
   bottom: 0;
-  left: 50%;
+  left: 25%;
   margin-left: -5px;
   border-top: 5px solid #000000;
   border-right: 5px solid transparent;

@@ -28,6 +28,11 @@ $(document).ready(function() {
 					'<img src ="/img/test.png" />');
 			
 		}else{
+			if(fanpageId == 216821905014540) {
+				$('#logo').html(
+				'<img src ="/img/beach.jpg" />');
+			
+			}else{
 			FB.api(fanpageId, function(response) {
 				if (!response || response.error) {
 				} else {
@@ -53,7 +58,7 @@ $(document).ready(function() {
 					}
 				}
 	
-			});
+			});}
 		}
 
 	getNewsfeed('#news-feed');
@@ -183,7 +188,7 @@ $('#newsfeed-tab').live('click', function() {
 
 	$('#leaderboard').html('');
 	$('#profile').html('');
-	$('#achievements').html('');
+	//$('#achievements').html('');
 	$('#redeem').html('');
 	
 });
@@ -196,7 +201,7 @@ $('#leaderboard-tab').live('click', function() {
 	getLeaderboard();
 
 	$('#profile').html('');
-	$('#achievements').html('');
+	//$('#achievements').html('');
 	$('#news-feed').html('');
 	$('#redeem').html('');
 	//$('.bubble').html('');
@@ -211,7 +216,7 @@ $('#profile-tab').live('click', function() {
 
 	getMyProfile();
 	$('#leaderboard').html('');
-	$('#achievements').html('');
+	//$('#achievements').html('');
 	$('#news-feed').html('');
 	$('#redeem').html('');
 	FB.Canvas.setSize({
@@ -227,7 +232,7 @@ $('#redeem-tab').live('click', function() {
 	$('#leaderboard').html('');
 	$('#profile').html('');
 	$('#news-feed').html('');
-	$('#achievements').html('');
+	//$('#achievements').html('');
 	FB.Canvas.setSize({
 		width : 810,
 		height : 600
@@ -653,7 +658,7 @@ function getTopFan() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#topfan').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('#topfan').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$('#topfan').html(data);
@@ -675,7 +680,7 @@ function getLeaderboard() {
 				+ '?facebook_user_id=' + userId,
 		dataType : "html",
 		cache : false,
-		async : true,
+		async : false,
 		beforeSend: function(){
 			$('#leaderboard').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
@@ -699,7 +704,7 @@ function getMyProfile() {
 				+ '?facebook_user_id=' + userId,
 		dataType : "html",
 		cache : false,
-		async : true,
+		async : false,
 		beforeSend: function(){
 			$('#profile').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
@@ -1160,6 +1165,228 @@ function timeZone(time) {
 		return (date.toDateString());
 	}
 }
+
+function resetTour(){
+	feedLimit = 0;
+	getNewsfeed('#news-feed');
+
+	$('#leaderboard').html('');
+	$('#profile').html('');
+	$('#achievements').html('');
+	$('#redeem').html('');
+	$('.nav.nav-tabs a:first').tab('show');
+	$('.light-box').css('display', 'block');
+	
+	$.fancrankTour(tourOptions);
+}
+
+var tourOptions = {
+		welcomeMessage : '<h2>Welcome to Fancrank</h2><p>Hi ' + userName + ', <br/> Let\'s learn about using Fancrank. <br/> Click Start to begin</p>',
+		data : [
+		        //-1
+		        { element: 	'#pageTabs', 
+		        			'position' : 'TL',
+		        			'tooltip':'Page Tabs',
+		        			'text' : 'These are page tabs, use these to navigate between the pages <br/><br/>'},
+		        //0
+		        { element: 	'#newsfeed-tab', 
+		        			'position' : 'TL',
+		        			'tooltip' : 'News Feed', 
+		        			'text' : 'These are page tabs, use these to navigate between the pages <br/><br/>' },
+    			//1
+		        { element: 	'#leaderboard-tab', 
+		        			'position' : 'TL',
+		        			'tooltip' : 'Leaderboard', 
+		        			'text' : 'This tab brings us to the leaderboard, click Next to go there now <br/><br/>' },	
+		        
+		        //2			
+		        { element: 	'#profile-tab', 
+			       			'position' : 'TL',
+			       			'tooltip' : 'Profile', 
+			       			'text' : 'These are page tabs, use these to navigate between the pages <br/><br/>' },	
+			    //3
+			    { element: 	'#redeem-tab', 
+				   			'position' : 'TL',
+				   			'tooltip' : 'Redeem', 
+				   			'text' : 'These are page tabs, use these to navigate between the pages <br/><br/>' },	
+				//4
+				{ element: 	'#help-tab', 
+				  			'position' : 'TR',
+				   			'tooltip' : 'Help', 
+				   			'text' : 'These are page tabs, use these to navigate between the pages <br/><br/>' },
+				//5
+				{ element: 	'#logout-tab', 
+					  		'position' : 'TR',
+					   		'tooltip' : 'Log Out', 
+					   		'text' : 'These are page tabs, use these to navigate between the pages <br/><br/>' },
+				//6
+				{ element: 	'#latest-post-container', 
+					  		'position' : 'TL',
+					   		'tooltip' : 'News Feed', 
+					   		'text' : 'This is the News Feed page, where you can check out recent information about  <br/><br/>'},   			
+		   		//7
+		   		{ element: 	'#latest-post-container', 
+					  		'position' : 'TL',
+					   		'tooltip' : 'Latest Posts', 
+					   		'text' : 'Latest Posts will always show the most recent post of the '+fanpageName+' has made.<br/><br/>' }, 
+				//8
+				{ element: 	'#latest-post-container .post-container', 
+						  	'position' : 'TL',
+						   	'tooltip' : 'Posts', 
+						   	'text' : 'Let\'s take a moment to talk about posts. <br/><br/>' },      		
+				//9
+				{ element: 	'#latest-post-container .post-container .user', 
+							'position' : 'TL',
+							'tooltip' : 'Poster\'s Information', 
+							'text' : 'Each post had the Poster\'s information <br/><br/>' },  	
+			
+				//10
+				{ element: 	'#latest-post-container .post-container .user .photo', 
+							'position' : 'TL',
+							'tooltip' : ' Facebook Picture and Name', 
+							'text' : 'Their Facebook Picture and Name <br/><br/>' }, 
+				//11
+				{ element: 	'#latest-post-container .post-container .user .user-badge', 
+							'position' : 'TL',
+							'tooltip' : 'Follow Button', 
+							'text' : 'If you can click on this button for a specific user, Fancrank will make it possible to only see posts by this user<br/><br/>' }, 			
+				//12
+				{ element: 	'#latest-post-container  .post-container .post', 
+							'position' : 'TL',
+							'tooltip' : 'Post Contents', 
+							'text' : 'The actual post itself <br/><br/>' },
+				//13
+				{ element: 	'#latest-post-container  .post-container .social', 
+							'position' : 'TL',
+							'tooltip' : 'Post Information', 
+							'text' : 'and information about the post <br/><br/>' },
+				//14		
+				{ element: 	'#latest-post-container  .post-container .social', 
+							'position' : 'TL',
+							'tooltip' : 'Likes', 
+							'text' : 'Click the word [Like] to like something, if you want to know who else has liked a post, hover or click the [X people like this]. <br/><br/>' },	
+				//15					
+				{ element: 	'#latest-post-container  .post-container .social', 
+							'position' : 'TL',
+							'tooltip' : 'Comments', 
+							'text' : 'Click on the comment to post a comment or see comments others have post it.  <br/><br/>' },
+				//16			
+				{ element: 	'#latest-post-container  .post-container .social .time', 
+							'position' : 'TL',
+							'tooltip' : 'Time', 
+							'text' : 'Hover over the time to see the actual time the post was made. <br/><br/>' },	  	   		
+		   		//17
+		   		{ element: 	'#fancrank-feed-container', 
+					  		'position' : 'TL',
+					   		'tooltip' : 'Fancrank Feed', 
+					   		'text' : 'This is the feed, just like in Facebook <br/><br/>' },   
+				//18	   		
+				{ element: 	'#feed-controller', 
+					  		'position' : 'TL',
+					   		'tooltip' : 'Feed Controller', 
+					   		'text' : 'Here you can choose how you want to view your posts, All, My Feed or Page Post <br/> '+
+					   		'All is view all the post on the page, My Feed is view only things related to people You\'ve followed ' +
+							'Page Post is show only post made by ' +fanpageName +
+					   		'<br/><br/>' }, 	   		
+				//19 		
+				{ element: 	'#fancrank-feed-container .submit-form', 
+					  		'position' : 'TL',
+					   		'tooltip' : 'Posting Box', 
+					   		'text' : 'If you want to post something through Fancrank, you can by simply typing here and clicking Share <br/>'+
+					   				'Share will only show up after you\'ve tried to type something'+'<br/><br/>' }, 	   			
+		   		//20
+		   		{ element: 	'#top-fan-container', 
+					  		'position' : 'TR',
+					   		'tooltip' : 'Top Fans This Week', 
+					   		'text' : 'This is a simplifed version of the Top Fans Leaderboard. <br/><br/>' },   
+		   		//21
+		   		{ element: 	'#top-post-container', 
+					  		'position' : 'TR',
+					   		'tooltip' : 'Top Post This Week', 
+					   		'text' : 'Top Posts who you the most interesting posts of the week <br/><br/>' },   
+								
+				//22			
+				{ element: 	'#leaderboard-tab', 
+							'position' : 'TL',
+							'tooltip' : 'Leaderboards Page', 
+							'text' : 'Leaderboards are a way to compete with other fans <br/><br/>' },
+				//23   
+				{ element: 	'.top-fan', 
+							'position' : 'TL',
+							'tooltip' : 'Top Fan', 
+							'text' : '"Top Fans" ranks the users that have the most activity on the page, based on Posts, Likes and Comments. Try to get on the Top Fan to earn awesome prizes! <br/><br/>' },
+				//24
+				{ element: 	'.fan-favorite', 
+							'position' : 'TL',
+							'tooltip' : 'Fan Favorite', 
+							'text' : '"Fan Favorite" ranks users by how much activity they garnered. <br/><br/>' },
+				//25	   			   		
+				{ element: 	'.top-talker', 
+							'position' : 'TL',
+							'tooltip' : 'Top Talker', 
+							'text' : '"Top Talker" are the people that\'ve posted the most <br/><br/>' },
+				//26
+				{ element: 	'.top-clicker', 
+							'position' : 'TL',
+							'tooltip' : 'Top Clicker', 
+							'text' : '"Top Clicker" ranks users by most [Likes] <br/><br/>' },
+				//27
+				{ element: 	'.top-followed', 
+							'position' : 'TL',
+							'tooltip' : 'Top Followed', 
+							'text' : '"Top Followed" ranks people by the amount of people that follow them <br/><br/>' },
+				//28
+				{ element: 	'.top-followed .btn-more', 
+							'position' : 'TL',
+							'tooltip' : 'More', 
+							'text' : 'Click more to see rank 2-4. <br/><br/>' },
+				//29	   			   			   			   			   			   			   			   		
+				{ element: 	'#profile-tab', 
+							'position' : 'TL',
+							'tooltip' : 'Profile Page', 
+							'text' : 'This is your profile, view your Fancrank Information Here <br/><br/>' },	   		
+				//30	   			   			   			   			   			   			   			   		
+				{ element: 	'#general-stats-container', 
+							'position' : 'TL',
+							'tooltip' : 'Fancrank Statistics', 
+							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },		   		
+				//31
+				{ element: 	'#general-stats-container #level-container', 
+							'position' : 'TL',
+							'tooltip' : 'Level', 
+							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
+				//32
+				{ element: 	'#general-stats-container #points-container', 
+							'position' : 'TL',
+							'tooltip' : 'Points', 
+							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
+				//33
+				{ element: 	'#general-stats-container #exp-container', 
+							'position' : 'TL',
+							'tooltip' : 'Experience', 
+							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
+				//34
+				{ element: 	'#general-stats-container #overall-container', 
+							'position' : 'TL',
+							'tooltip' : 'Overall Achievements', 
+							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
+				//35
+				{ element: 	'#general-stats-container #personal-container', 
+							'position' : 'TL',
+							'tooltip' : 'Personal Achievements', 
+							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	
+				//36
+				{ element: 	'#general-stats-container #social-container', 
+							'position' : 'TL',
+							'tooltip' : 'Social Achievements', 
+							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },		   			   			   			   		
+					   		],	   		
+					   		
+				
+			
+		controlsPosition : 'custom'
+	};
+
 
 /*
 function isLogin(data) {

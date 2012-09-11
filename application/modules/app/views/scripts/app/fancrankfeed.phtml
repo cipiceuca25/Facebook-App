@@ -113,9 +113,29 @@
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
 					</a>
 		<?php }elseif ($post->type =='video') { ?>
-
-			<iframe width="640" height="390" src="<?echo $this->escape($post->link)?> "  frameborder="0" allowfullscreen></iframe>
 			
+				<?php if (strstr($this->escape($post->link), 'youtube.com')){
+						$temp=explode("http://www.youtube.com/watch?v=", $this->escape($post->link));?>
+						<iframe width="419" height="236" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
+				
+				<?php }else if (strstr($this->escape($post->link), 'vimeo.com')){
+						$temp=explode("http://vimeo.com/", 	$this->escape($post->link));	?>
+						<iframe width="419" height="236" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
+			
+				<?php }else if (strstr($this->escape($post->link), 'facebook.com')){
+						$temp=explode("v=", $this->escape($post->link));?>
+					 <object width="419" height="236" > 
+					 <param name="allowfullscreen" value="true" /> 
+					 <param name="allowscriptaccess" value="always" /> 
+					 <param name="movie" value="http://www.facebook.com/v/<?= $temp[1]?>" /> 
+					 <embed src="http://www.facebook.com/v/<?= $temp[1]?>" type="application/x-shockwave-flash"  
+					   allowscriptaccess="always" allowfullscreen="true" width="419" height="236"> 
+					 </embed> 
+					</object> 
+				<?php }else if (strstr($this->escape($post->link), 'liveleak.com/view')){ 
+						$temp=explode("view?i=", $this->escape($post->link));?>
+					<iframe width="419" height="236" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
+				<?php }?>
 		<?}elseif ($post->type == 'link') {?>
 			<div class="link">
 			<?php if (isset($post->picture)){?>
@@ -179,7 +199,7 @@
 				
 		&middot;
 
-		<a rel="tooltip" data-placement="right" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
+		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 			
 		<br/>
 	</div>

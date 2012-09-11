@@ -55,30 +55,33 @@ if (count($fanpageList) > 0) {
 	$error = false;
 	foreach ($fanpageList as $fanpage) {
 		//if($fanpage->fanpage_id != '216821905014540') continue;
+		$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
 		$data = array(
 				'fanpage_id'	=> $fanpage->fanpage_id,
 				'access_token'	=> $fanpage->access_token,
 				'url'			=> null,
 				'type'			=> 'update',
-				'start_time' 	=> (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss')
+				'start_time' 	=> $date->toString('YYYY-MM-dd HH:mm:ss')
 		);
 		
 		//collect fanpage yesterday data
 		try {
-			if($fanpage->active && $fanpage->install) {
+			$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
+			if($fanpage->active) {
 				echo $fanpage->fanpage_id .' ' .$fanpage->access_token .PHP_EOL;
 				//update fanpage
 				$collector = new Service_FancrankCollectorService(null, $fanpage->fanpage_id, $fanpage->access_token, 'update');
 				$collector->updateFanpage('yesterday', 'now');
 				
 				$data['status'] = 'success';
-				$data['end_time'] = (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss');
+				$data['end_time'] = $date->toString('YYYY-MM-dd HH:mm:ss');
 				$dbLog->insert($data);
 			}
 		}catch(Exception $e) {
+			$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
 			$data['status'] = 'fail';
 			$data['note'] = $e->getMessage();
-			$data['end_time'] = (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss');
+			$data['end_time'] = $date->toString('YYYY-MM-dd HH:mm:ss');
 			$dbLog->insert($data);
 				
 			$errMsg = sprintf('fanpage_id: %s <br/>access_token: %s<br/> type: update<br/>', $fanpage->fanpage_id, $fanpage->access_token);

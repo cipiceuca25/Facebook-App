@@ -92,7 +92,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     public function testimagecreatetwoAction(){
     	 
     	// Create image instances
-    	$dest = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\headermerge.png');
+    	$dest = imagecreatefromjpeg(APPLICATION_PATH.'\..\public\img\beach.jpg');
     	$src = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\topfanoftheweek.png');
     	
     	$fanpage_id = '216821905014540';

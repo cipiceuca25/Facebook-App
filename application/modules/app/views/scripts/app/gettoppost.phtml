@@ -79,13 +79,15 @@
 								</a>
 							
 						<?}elseif ($topPost['post_type']  == 'link') {?>
+						
 							<div class="link">
+								<?php if ($topPost['picture'] != null) {?>
 								<div class="link-left">
 									<a target="new" href="<?echo $this->escape($topPost['link'])?> "> 
 										<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $topPost['picture']))?> '/>
 									</a>
 								</div>
-							
+								<?php }?>
 								<div class="link-right">
 									<a target="new" class="link-title" href="<?echo $this->escape($topPost['link'])?>">
 										<?= (isset($topPost['name'])?$this->escape($topPost['name']): $this->escape($topPost['link']))?>
@@ -125,7 +127,7 @@
 		
 				&middot;
 				
-				<a rel="tooltip" data-placement="right" class="time" data-original-title="" data-unix-time="<?= strtotime($topPost['created_time'])?>"></a>
+				<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?= strtotime($topPost['created_time'])?>"></a>
 			<br/>
 		</div>
 			

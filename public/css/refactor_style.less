@@ -259,8 +259,40 @@ top:0;
 
 #pageTabs{
 margin-bottom:36px;
+position:relative;
 }
 
+#newsfeed-tab,
+#leaderboard-tab,
+#profile-tab,
+#redeem-tab,
+#help-tab,
+#logout-tab,
+#latest-post-container,
+#fancrank-feed-container,
+#top-fan-container,
+#top-post-container,
+.top-fan,
+.fan-favorite,
+.top-talker,
+.top-clicker,
+.top-followed,
+#myprofile,
+#recent-activities-container,
+#level-container,
+#exp-container,
+#points-container,
+#follow-list-container,
+#overall-container,
+#personal-container,
+#social-container,
+#general-stats-container,{
+	position:relative;
+}
+
+.tab-content{
+	overflow:inherit;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -892,7 +924,7 @@ background:@color-post-background-hover;
 
 .track3 {
 width: 5px;
-margin-top:1px;
+margin-top:10px;
 }
 
 .handle3 {
@@ -912,6 +944,14 @@ margin-top:1px;
 left:-5px;
 }
 
+.track3.userpro {
+width: 0px;
+margin-top:1px;
+}
+
+.handle3.userpro {
+left:0px;
+}
 
 .badge-display{
 display:inline-block;

@@ -30,8 +30,7 @@
 		<script src="/js/libs/enscroll-0.2.6.min.js"></script>
 		<script src="//connect.facebook.net/en_US/all.js"></script>
 		
-		<script src="/js/cranker.js"></script>
-		<script src="/js/app/apptour.js"></script>
+		
 		<!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
 			
@@ -41,9 +40,10 @@
 			var userId = "<?= $this->user_id ?>";
 			
 			var fanpageId = "<?= $this->fanpage_id?>";	
+			var fanpageName = "<?= $this->fanpage_name?>";	
 			var userName = "<?= $this->username?>";
 			var userAccessToken = "<?= $this->facebook_user_access_token?>";
-			var tour = "<?= $this->tour ?>"
+			var tour = "<?= $this->tour ?>";
 			//alert( accessToken);
 			var fb =false;
 			window.fbAsyncInit = function() {
@@ -59,6 +59,8 @@
 			};
 
 		 </script>
+		 <script src="/js/cranker.js"></script>
+		<script src="/js/fancrankTour.js"></script>
 <!-- End of iframe initialization -->
 		
 
@@ -128,8 +130,8 @@
 							<li><a href="#redeem" id="redeem-tab" data-toggle="tab">Redeem</a></li>
 						</ul>
 						<ul class="nav nav-tabs" id="log-in-out">
-							<li><a onclick="">Help</a></li>
-							<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
+							<li><a id="help-tab" onclick="resetTour()">Help</a></li>
+							<li><a id="logout-tab" href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
 						</ul>
 <!--						
 						<a href="#" onclick="colorChange(5)">Ocean</a>
@@ -164,24 +166,7 @@
 	</div>
 	<div class="light-box"></div>
 
-	<ol id="joyRideTipContent">
-      <li data-id="newsfeed-tab" data-text="Next" data-options="tipLocation:top left;tipAnimation:fade">
-        <h2>Fancrank Feed</h2>
-        <p>Fancrank Feed</p>
-      </li>
-      <li data-id="leaderboard-tab" data-text="Next" data-options="tipLocation:top;tipAnimation:fade">
-        <h2>Leaderboard</h2>
-        <p>Check out the ranking</p>
-      </li>
-      <li data-id="topfan-tour" data-text="Next">
-        <h2>Your Rank</h2>
-        <p>Top fans in the week</p>
-      </li>
-      <li data-id="toppost-tour" data-text="Finish">
-        <h2>TOP POST</h2>
-        <p>top post in the week</p>
-      </li>
-    </ol>
+	
 </body>
 
 

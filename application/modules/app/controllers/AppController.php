@@ -2161,7 +2161,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
     private function feedFirstQuery() {
     	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/feed?limit=10");
-    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/posts?limit=1");
+    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/posts?limit=10");
     
     	$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$this->_accessToken;
     

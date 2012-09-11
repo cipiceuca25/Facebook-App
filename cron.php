@@ -68,13 +68,14 @@ if (count($messages) > 0) {
     foreach ($messages as $message) {
         $job = Zend_Json::decode($message->body, Zend_Json::TYPE_OBJECT);
 		Zend_Debug::dump($job);
+		$date = new Zend_Date(time(),Zend_Date::TIMESTAMP);
 		$data = array(
 				'fanpage_id'	=> $job->fanpage_id,
 				'facebook_user_id' => $job->facebook_user_id,
 				'access_token'	=> $job->access_token,
 				'url'			=> $job->url,
 				'type'			=> $job->type,
-				'start_time' 	=> (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss')
+				'start_time' 	=> $date->toString('YYYY-MM-dd HH:mm:ss')
 		);
         try {
         	// We have processed the message; now we remove it from the queue.
@@ -82,7 +83,8 @@ if (count($messages) > 0) {
 
         	Collector::run($job->url, $job->fanpage_id, $job->facebook_user_id, $job->access_token, $job->type);
         	$data['status'] = 'success';
-        	$data['end_time'] =	(new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss');
+        	$date = new Zend_Date(time(),Zend_Date::TIMESTAMP);
+        	$data['end_time'] =	$date->toString('YYYY-MM-dd HH:mm:ss');
         	$dbLog->insert($data);
         	
         	$userModel = new Model_FacebookUsers();
@@ -100,7 +102,8 @@ if (count($messages) > 0) {
         		
         		//log err message into database
         		$data['status'] = 'fail';
-        		$data['end_time'] =	(new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss');
+        		$date = new Zend_Date(time(),Zend_Date::TIMESTAMP);
+        		$data['end_time'] =	$date->toString('YYYY-MM-dd HH:mm:ss');
         		$dbLog->insert($data);
         		
         		//send email notification
