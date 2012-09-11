@@ -1,0 +1,73 @@
+
+<div class="post-container">
+<div class="user">
+	<div class="user-badge">
+		<a rel="tooltip-follow" class ="follow_<?=$this->facebook_user->facebook_user_id?>"<?php switch($this->relation) { 
+			case 'You':?>
+				 data-original-title="This is You"><span class="badge badge-You">You</span>
+			<?break;?>
+			<?case 'Following'?>
+				onclick="unfollow(<?=$this->facebook_user->facebook_user_id?> ,'<?=$this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>')" 
+				data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+			<?break;?>
+				
+			<?default:?>
+				onclick="follow(<?=$this->facebook_user->facebook_user_id?> , '<?=$this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>')" 
+				data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation?>"><?= $this->relation?></span>
+			<?}?>
+		</a>
+	
+	</div>
+	<div class="photo">
+		<a><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id  ?>/picture" onerror="ImgError(this);"></a>
+	</div>
+	<div class="name">
+		<a><?=  $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?></a>
+	</div>
+	
+	<div class="level">
+		?
+	</div>
+	
+</div>
+
+	<div class="post">
+	 	
+				<div class="date">
+					<?php if ($this->fan['created_time'] == null){?>
+						Not A Fancrank User
+					<?}else{?>
+						Fancrank User Since: <br/><?= date("F Y",strtotime($this->fan['created_time']))?>
+					<?}?>
+					<br/>
+					Location: 
+					<?php if ($this->fan['fan_country'] != null ) {?>
+						<?php if ($this->fan['fan_location'] != null){?>
+							<?= $this->fan['fan_location']?>, 
+						<?php }?>
+						<?= $this->fan['fan_country']?>
+					<?php }else{?>
+						Unknown
+					<?php }?>
+				</div>
+			
+			<div class="stats">
+				<img src="/img/post.png" /><h5>Posts:</h5>
+				<?= $this->stat[0]['total_posts']?>
+				<br />
+				<img src="/img/thumbsup.png" /><h5>Likes:</h5>
+				<?= $this->stat[0]['total_likes']?>
+				<br />
+				<img src="/img/comment.png" /><h5>Comments:</h5>
+				<?= $this->stat[0]['total_comments']?>
+				<br />
+				<img src="/img/rthumbsup.png" /><h5>Recieved Comments:</h5>
+				<?= $this->stat[0]['total_get_comments']?>
+				<br />
+				<img src="/img/rcomment.png"/><h5>Recieved Likes:</h5>
+				<?= $this->stat[0]['total_get_likes']?>
+		
+			</div>
+	</div>
+	
+</div>

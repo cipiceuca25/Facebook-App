@@ -27,7 +27,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 	    # of new fans in 24 hours: <?= $this->new_fans ?>;    
 	</div>
 	<div class="num">
-	    Increase: <?= round($this->new_fans / $this->fans, 4) ?> %;    
+	    Increase: <?= round($this->new_fans * 100 / $this->fans, 4) ?> %;    
 	</div>			
 </div>
 

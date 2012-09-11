@@ -52,6 +52,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     public function indexAction()
     {
     	$this->_helper->layout->setLayout('default_layout');
+    	$fanpageModel = new Model_Fanpages();
+    	
     	$model = new Model_Rankings;
     	//$post = new Model_Posts;
     	$follow = new Model_Subscribes();
@@ -85,9 +87,10 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     				'topFollowed'=>array()
     			);
 
+    	$cache = Zend_Registry::get('memcache');
+    	$cache->setLifetime(1800);
+    	 
     	if(!empty($this->data['page']['id'])) {
-    		$cache = Zend_Registry::get('memcache');
-    		$cache->setLifetime(1800);
     		
     		try {
     			$fanpageId = $this->data['page']['id'];
@@ -130,6 +133,36 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$this->view->top_talker = $fanpage['topTalker'];
     	$this->view->top_clicker = $fanpage['topClicker'];
     	$this->view->top_followed = $fanpage['topFollowed'];
+    	
+    	
+//     	try {
+//     		$fanpageProfileId = $this->data['page']['id'] .'_profile';
+    	
+//     		//Check to see if the $fanpageId is cached and look it up if not
+//     		if(isset($cache) && !$cache->load($fanpageProfileId)) {
+//     			//echo 'db look up';
+//     			//Look up the $fanpageId
+//     			$fanpage = $fanpageModel->findRow($this->data['page']['id']);
+    			
+//     			//Save to the cache, so we don't have to look it up next time
+//     			if($fanpage) {
+//     				$cache->save($fanpage, $fanpageProfileId);
+//     			}else {
+//     				throw new Exception('fanpage not found');
+//     			}
+//     		}else {
+//     			//echo 'memcache look up';
+//     			$fanpage = $cache->load($fanpageProfileId);
+//     		}
+//     	} catch (Exception $e) {
+//     		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+//     		//echo $e->getMessage();
+//     	}
+    	
+    	$fanpage = $fanpageModel->findRow($this->data['page']['id']);
+    	if(isset($fanpage->fanpage_level) && $fanpage->fanpage_level == 1) {
+    		$this->render('free');
+    	}
     }
     
     protected function getUserName(){

@@ -54,7 +54,7 @@ if (count($fanpageList) > 0) {
 	
 	$error = false;
 	foreach ($fanpageList as $fanpage) {
-		//if($fanpage->fanpage_id != '216821905014540') continue;
+		if($fanpage->fanpage_id != '216821905014540') continue;
 		$data = array(
 				'fanpage_id'	=> $fanpage->fanpage_id,
 				'access_token'	=> $fanpage->access_token,
@@ -65,7 +65,7 @@ if (count($fanpageList) > 0) {
 		
 		//collect fanpage yesterday data
 		try {
-			if($fanpage->active && $fanpage->install) {
+			if($fanpage->active) {
 				echo $fanpage->fanpage_id .' ' .$fanpage->access_token .PHP_EOL;
 				//update fanpage
 				$collector = new Service_FancrankCollectorService(null, $fanpage->fanpage_id, $fanpage->access_token, 'update');

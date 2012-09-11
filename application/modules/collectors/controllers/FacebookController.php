@@ -370,8 +370,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	//$fanpageId = '178384541065';
     	//$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
     	
-    	$fanpageId = '216821905014540';
-    	$accessToken = 'AAAFHFbxmJmgBAPUVD7kjQIquRVpaDPJ8TKUPMXqUSD0BuP7F9KhsXtC1uEnWe0eaVTPebNprupHZC4fhNZA0ZAYTQoAjnNM0lG7ZBWQApc3Ttfphz7Dg';
+    	$fanpageId = '197221680326345';
+    	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
     	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
     	$yesterday = new Zend_Date();

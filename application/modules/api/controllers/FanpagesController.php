@@ -154,6 +154,26 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 			$this->_response->setHttpResponseCode(403);
 		}
 	}
+	
+	public function upgradeAction() {
+		$fanpage = $this->model->findByFanpageId($this->_getParam('id'))->current();
+		$level = $this->_getParam('level');
+		
+		if (isset($fanpage->fanpage_level) && $fanpage->fanpage_level == 1) {
+			//reuturn success or not
+			try {
+				$fanpage->fanpage_level = 2;
+				$fanpage->save();
+			} catch (Exception $e) {
+				echo 'unable to upgrade';
+				$this->_response->setHttpResponseCode(400);
+			}	
+		} else {
+			//send access deinied 403
+			$this->_response->setHttpResponseCode(403);
+			return;
+		}
+	}
 
 	public function previewAction()
 	{

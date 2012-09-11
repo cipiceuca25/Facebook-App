@@ -19,6 +19,7 @@ jQuery(document).ready(function($){
 				addPreviewButton(this, $(this).attr('data-id'));
 				addInstallButton(this, $(this).attr('data-id'));
 				addAnalyticButton(this, $(this).attr('data-id'));
+				addUpgradeButton(this, $(this).attr('data-id'));
 			}.bind(this)
 		});
 	});
@@ -43,7 +44,8 @@ jQuery(document).ready(function($){
 
 				//remove the install button
 				$(this).closest('tr').find('.preview').find('button').remove();
-				$(this).closest('tr').find('.analytic').find('button').remove();				
+				$(this).closest('tr').find('.analytic').find('button').remove();
+				$(this).closest('tr').find('.upgrade').find('button').remove();
 				$(this).closest('tr').find('.tab').find('button').remove();
 			}.bind(this)
 		});
@@ -87,6 +89,19 @@ jQuery(document).ready(function($){
 
 		        $(this).addClass('disabled');
 				$('.tooltip-inner').html('Fancrank is already installed');
+			}.bind(this)
+		});
+		
+	});
+	
+	$(document).delegate('.btn-upgrade:not(.disabled)', 'click', function(event){
+		//show the install screen in the iframe
+		$.ajax({
+			'url': '/api/fanpages/' + $(this).attr('data-id'),
+			'type': 'UPGRADE',
+			'success': function(xhr) {
+				$(this).html('premium');
+				$(this).addClass('disabled');
 			}.bind(this)
 		});
 		
@@ -147,4 +162,9 @@ function deleteSuccess(page)
 function addAnalyticButton(btn, id)
 {
 	$(btn).closest('tr').find('.analytic').append('<button class="app-analytic btn btn-analytic" rel="tooltip" title="See your fanpage statistics" data-id="' + id + '">Analytic</button>');
+}
+
+function addUpgradeButton(btn, id)
+{
+	$(btn).closest('tr').find('.upgrade').append('<button class="btn btn-upgrade" rel="tooltip" title="Premium" data-id="' + id + '">Upgrade To Premium</button>');
 }

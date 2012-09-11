@@ -56,7 +56,16 @@
 			</td>
 			<td class="analytic">
 				<?php if ( !empty($page['active']) ): ?>
-					<button class="app-analytic btn" rel="tooltip" title="See your fanpage statistics" data-id="<?= $page['fanpage_id'] ?>">Analyst</button>
+					<button class="app-analytic btn" rel="tooltip" title="See your fanpage statistics" data-id="<?= $page['fanpage_id'] ?>">Dashboard</button>
+				<?php endif; ?>
+			</td>
+			<td class="upgrade">
+				<?php if ( !empty($page['active']) ): ?>
+					<?php if ( !empty($page['fanpage_level']) && $page['fanpage_level'] == 1): ?>
+						<button class="btn btn-upgrade" rel="tooltip" title="upgrade to premium fanpage" data-id="<?= $page['fanpage_id'] ?>">Upgrade To Premium</button>
+					<?php else: ?>
+						<button class="btn btn-upgrade disabled" rel="tooltip" title="upgrade to premium fanpage" data-id="<?= $page['fanpage_id'] ?>">Premium</button>
+					<?php endif; ?>
 				<?php endif; ?>
 			</td>			
 		</tr>

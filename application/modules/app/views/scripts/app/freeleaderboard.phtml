@@ -1,0 +1,1100 @@
+
+	<div class="row">
+		<div class="span12">
+			<div class="top-fan">
+				<div class="title">
+					<div class="title-icon">
+						<img src="/img/news-feed/top-fan-icon.jpg" />
+					</div>
+					<div class="title-header">
+						Top Fans
+					</div>
+					<div class="tip">
+							<a rel="tooltip" title="The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!">?</a>
+						</div>
+				</div>
+				
+			
+					<div class="row box">
+						<?php $count = 0; ?> 
+						<?php foreach($this->top_fans as $top_fan):  ?>
+						<?php if ($count == 0){?>
+
+						<ul class="top-list first">
+							<li>
+								<div class="ranker first">
+									<div class="rank first">
+										<h1>
+											<?= $count + 1 ?>
+										</h1>
+									</div>
+
+									<div class="user">
+										<div class="photo">
+											<a  data-userid="<?= $top_fan['facebook_user_id'] ?>"
+										
+												onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
+												 rel="popover" data-content="" data-original-title=""
+												data-placement="top">
+												<img class="face"
+												width="35" height="35"
+												src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
+												onerror="ImgError(this);">
+											</a>
+										</div>		
+												
+										<div class="name first">		
+											<a  data-userid="<?= $top_fan['facebook_user_id'] ?>"
+											
+												onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
+												rel="popover" data-content="" data-original-title=""
+												data-placement="top"><?= $top_fan['fan_first_name'] ?>						
+											</a>
+										</div>
+									</div>
+
+									<div class="points">
+										<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>"<?php switch($this->topFanArray[$count]) { 
+											case 'You':?>
+												 data-original-title="This is You"><span class="badge badge-You">You</span>
+											<?break;?>
+											<?case 'Following'?>
+												onclick="unfollow(<?= $top_fan['facebook_user_id']?> ,'<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
+												data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+											<?break;?>
+												
+											<?default:?>
+												onclick="follow(<?= $top_fan['facebook_user_id']?> , '<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
+												data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->topFanArray[$count]?>"><?=$this->topFanArray[$count]?></span>
+											<?}?>
+										</a>
+								
+									</div>
+								</div>
+							</li>
+
+						</ul>
+						<?php }else{ ?>
+							<?php if ($count == 1){?>
+							<ul id="top-fans-collapse" class="top-list">
+							<?php }?>
+								<li>
+									<div class="ranker ">
+										<div class="rank">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+											<div class="photo"><a  data-userid="<?= $top_fan['facebook_user_id'] ?>"
+									
+												onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
+												rel="popover" data-content="" data-original-title=""
+												data-placement="top"><img class="face"
+													width="35" height="35"
+													src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
+													onerror="ImgError(this);">
+												</a></div>	
+													
+													
+												<div class="name"><a  data-userid="<?= $top_fan['facebook_user_id'] ?>"
+											
+												onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
+												rel="popover" data-content="" data-original-title=""
+												data-placement="top"><?= $top_fan['fan_first_name'] ?>
+											</a></div>
+											
+										</div>
+										<div class="points">
+											<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>"<?php switch($this->topFanArray[$count]) { 
+												case 'You':?>
+													 data-original-title="This is You"><span class="badge badge-You">You</span>
+												<?break;?>
+												<?case 'Following'?>
+													onclick="unfollow(<?= $top_fan['facebook_user_id']?> ,'<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
+													data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+												<?break;?>
+													
+												<?default:?>
+													onclick="follow(<?= $top_fan['facebook_user_id']?> , '<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
+													data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->topFanArray[$count]?>"><?=$this->topFanArray[$count]?></span>
+												<?}?>
+											</a>
+					
+									
+										</div>
+									</div>
+								</li>
+	
+							<?php }?>
+							
+							<?php $count ++; ?>
+					
+							<?php endforeach; ?>
+
+						<?php if ($count < 5){?>
+						<?php if ($count == 0){?>
+							<ul class="top-list first">
+								<li>
+									<div class="ranker first">
+										<div class="rank first">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+										<div class="points"></div>
+									</div>
+								</li>
+								<?php $count++;?>
+							</ul>
+						<?php }?>
+						
+						
+						<?php for ( ;$count<5; $count++){ ?>
+						
+							<?php if ($count == 1){?>
+							<ul  id="top-fans-collapse" class="top-list ">		
+							<?php }?>
+								<li>
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+										<div class="points"></div>
+									</div>
+								</li>
+								
+							
+						<?}?>
+						<?}?>		
+							</ul>
+						
+							<ul class="top-list bottom">
+								<li>
+									<div class="ranker">
+										<div class="rank">
+											<? if (strlen($this->topFanYou['my_rank'])== 1){?>
+											<h1>
+												<?= $this->topFanYou['my_rank']?>
+											</h1>
+											<?php }elseif (strlen($this->topFanYou['my_rank'])== 2) { ?>
+											<h2>
+												<?= $this->topFanYou['my_rank']?>
+											</h2>
+											<?php }elseif (strlen($this->topFanYou['my_rank'])== 3) { ?>
+											<h3>
+												<?= $this->topFanYou['my_rank']?>
+											</h3>
+											<?php }else{?>
+											<h1>*</h1>
+											<?php }?>
+										</div>
+										
+										<div class="user">
+										<div class="photo">
+											<img class="face" width="35" height="35"
+												src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
+												onerror="ImgError(this);">
+										</div>
+										<div class="name">
+											YOU
+										</div>
+										</div>
+										<div class="points">
+											<a rel="tooltip-follow" data-original-title="This is You">
+											<span class="badge badge-You">
+												You
+											</span></a>
+										</div>
+									</div>
+								</li>
+							</ul>
+						
+				</div>
+
+			</div><!-- topfan -->
+		</div><!-- span -->
+	</div><!-- row -->
+	<div class= "row">
+		<div class="span6">
+			<div class="fan-favorite">
+				<div class="title">
+					<div class="title-icon">
+						<img src="/img/news-feed/fan-fav-icon.jpg" />
+					</div>
+					<div class="title-header">
+						Fan Favorite
+						
+					</div>
+					<div class="tip">
+							<a rel="tooltip" title="This list of fans represents the people who have garnered the most activity from others on the page.  Other fans love talking to them!">?</a>
+						</div>
+				</div>
+				<div class="row box">
+					<?php $count = 0; ?>
+					<?php foreach($this->most_popular as $popular):  ?>
+					<?php if ($count == 0){?>
+
+					<ul class="top-list first" >
+						<li>
+							<div class="ranker first">
+								<div class="rank first">
+									<h1>
+										<?= $count + 1 ?>
+									</h1>
+								</div>
+
+								<div class="user">
+									<div class="photo"><a  data-userid="<?= $popular['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $popular['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><img class="face"
+											width="35" height="35"
+											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
+											onerror="ImgError(this);"></a></div>
+											
+											
+											
+											<div class="name first"><a  data-userid="<?= $popular['facebook_user_id'] ?>"
+					
+										onclick="userProfile('<?= $popular['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top">
+											<?= $popular['fan_first_name'] ?></a>
+									</div>
+									
+								</div>
+
+								<div class="points">
+									<a rel="tooltip-follow" class ="follow_<?=$popular['facebook_user_id']?>"<?php switch($this->popularArray[$count]) { 
+										case 'You':?>
+											 data-original-title="This is You"><span class="badge badge-You">You</span>
+										<?break;?>
+										<?case 'Following'?>
+											onclick="unfollow(<?= $popular['facebook_user_id']?> ,'<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
+											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+										<?break;?>
+											
+										<?default:?>
+											onclick="follow(<?= $popular['facebook_user_id']?> , '<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
+											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->popularArray[$count]?>"><?=$this->popularArray[$count]?></span>
+										<?}?>
+									</a>
+								
+								</div>
+							</div>
+						</li>
+
+					</ul>
+					<?php }else{ ?>
+					<?php if ($count == 1){?>
+					<ul id="fan-favorite-collapse" class="top-list collapse">
+						<?php }?>
+						<li>
+							<div class="ranker ">
+								<div class="rank">
+									<h1>
+										<?= $count + 1 ?>
+									</h1>
+								</div>
+								<div class="user">
+									<div class="photo"><a data-userid="<?= $popular['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $popular['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><img class="face"
+											width="35" height="35"
+											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
+											onerror="ImgError(this);"></a></div>
+											
+											
+											
+											<div class="name"><a data-userid="<?= $popular['facebook_user_id'] ?>"
+								
+										onclick="userProfile('<?= $popular['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><?= $popular['fan_first_name'] ?></a></div>
+									
+								</div>
+								<div class="points">
+									<a rel="tooltip-follow" class ="follow_<?=$popular['facebook_user_id']?>"<?php switch($this->popularArray[$count]) { 
+										case 'You':?>
+											 data-original-title="This is You"><span class="badge badge-You">You</span>
+										<?break;?>
+										
+										<?case 'Following'?>
+											onclick="unfollow(<?= $popular['facebook_user_id']?> ,'<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
+											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+										<?break;?>
+											
+										<?default:?>
+											onclick="follow(<?= $popular['facebook_user_id']?> , '<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
+											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->popularArray[$count]?>"><?=$this->popularArray[$count]?></span>
+										<?}?>
+									</a>
+								</div>
+							</div>
+						</li>
+
+						<?php }?>
+
+						<?php $count ++; ?>
+
+						<?php endforeach; ?>
+
+						<?php if ($count < 5){?>
+						<?php if ($count == 0){?>
+						<ul class="top-list first">
+							<li>
+								<div class="ranker first">
+									<div class="rank first">
+										<h1>
+											<?= $count + 1 ?>
+										</h1>
+									</div>
+									<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+									<div class="points"></div>
+								</div>
+							</li>
+							<?php $count++;?>
+							</ul>
+							<?php }?>
+						
+
+						<?php for ( ;$count<5; $count++){ ?>
+	
+							<?php if ($count == 1){?>
+							<ul id="fan-favorite-collapse" class="top-list collapse">
+								<?php }?>
+								<li>
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+										<div class="points"></div>
+									</div>
+								</li>
+
+						<?}	?>
+						<?}	?>
+
+						</ul>
+						<ul class="top-list bottom">
+							<li>
+								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="rank">
+										<? if (strlen($this->popularYou['my_rank'])== 1){?>
+										<h1>
+											<?= $this->popularYou['my_rank']?>
+										</h1>
+										<?php }elseif (strlen($this->popularYou['my_rank'])== 2) { ?>
+										<h2>
+											<?= $this->popularYou['my_rank']?>
+										</h2>
+										<?php }elseif (strlen($this->popularYou['my_rank'])== 3) { ?>
+										<h3>
+											<?= $this->popularYou['my_rank']?>
+										</h3>
+										<?php }else{?>
+										<h1>*</h1>
+										<?php }?>
+									</div>
+									<div class="user">
+									<div class="photo">
+										<img class="face" width="35" height="35"
+											src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
+											onerror="ImgError(this);">
+									</div>
+									<div class="name">
+										YOU
+									</div>
+									</div>
+									<div class="points">
+										<a rel="tooltip-follow" data-original-title="This is You">
+										<span class="badge badge-You">
+											You
+										</span></a>
+									</div>
+								</div>
+							</li>
+						</ul>
+				<button class="btn-more" id="fan-favorite-btn" data-toggle="collapse"
+						data-target="#fan-favorite-collapse">More +</button>
+				</div>
+			
+			</div><!-- fanfav -->
+		</div><!-- span -->
+		<div class="span6">
+			<div class="top-talker">
+				<div class="title">
+					<div class="title-icon">
+						<img src="/img/news-feed/top-talker-icon.jpg" />
+					</div>
+					<div class="title-header">
+					Top Talker
+						
+					</div>
+					<div class="tip">
+							<a rel="tooltip" title="These people have posted the most on the page.  Do they talk too much?  You decide!">?</a>
+						</div>
+				</div>
+				<div class="row box">
+					<?php $count = 0; ?>
+					<?php foreach($this->top_talker as $talker):  ?>
+					<?php if ($count == 0){?>
+
+					<ul class="top-list first">
+						<li>
+							<div class="ranker first">
+								<div class="rank first">
+									<h1>
+										<?= $count + 1 ?>
+									</h1>
+								</div>
+
+								<div class="user">
+									<div class="photo"><a  data-userid="<?= $talker['facebook_user_id'] ?>"
+								
+										onclick="userProfile('<?= $talker['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><img class="face"
+											width="35" height="35"
+											src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"
+											onerror="ImgError(this);"></a></div>
+											
+											
+											<div class="name first"><a  data-userid="<?= $talker['facebook_user_id'] ?>"
+							
+										onclick="userProfile('<?= $talker['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><?= $talker['fan_first_name'] ?>
+									</a></div>
+									
+								</div>
+
+								<div class="points">
+									<a rel="tooltip-follow" class ="follow_<?=$talker['facebook_user_id']?>"<?php switch($this->talkerArray[$count]) { 
+										case 'You':?>
+											 data-original-title="This is You"><span class="badge badge-You">You</span>
+										<?break;?>
+										<?case 'Following'?>
+											onclick="unfollow(<?= $talker['facebook_user_id']?> ,'<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
+											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+										<?break;?>
+											
+										<?default:?>
+											onclick="follow(<?= $talker['facebook_user_id']?> , '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
+											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->talkerArray[$count]?>"><?=$this->talkerArray[$count]?></span>
+										<?}?>
+									</a>
+							
+								</div>
+							</div>
+						</li>
+
+					</ul>
+					<?php }else{ ?>
+					<?php if ($count == 1){?>
+					<ul id="top-talker-collapse" class="top-list collapse">
+						<?php }?>
+						<li>
+							<div class="ranker ">
+								<div class="rank">
+									<h1>
+										<?= $count + 1 ?>
+									</h1>
+								</div>
+								<div class="user">
+									<div class="photo"><a data-userid="<?= $talker['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $talker['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><img class="face"
+											width="35" height="35"
+											src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"
+											onerror="ImgError(this);"></a></div>
+											
+											
+											<div class="name"><a data-userid="<?= $talker['facebook_user_id'] ?>"
+									<? if (!($this->relation[$count] == 'Fanpage')){?>
+										onclick="userProfile('<?= $talker['facebook_user_id'] ?>')"
+										<?}?> rel="popover" data-content="" data-original-title=""
+										data-placement="top"><?= $talker['fan_first_name'] ?></a>
+									</div>
+									
+								</div>
+								<div class="points">
+									<a rel="tooltip-follow" class ="follow_<?=$talker['facebook_user_id']?>"<?php switch($this->talkerArray[$count]) { 
+										case 'You':?>
+											 data-original-title="This is You"><span class="badge badge-You">You</span>
+										<?break;?>
+										<?case 'Following'?>
+											onclick="unfollow(<?= $talker['facebook_user_id']?> ,'<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
+											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+										<?break;?>
+											
+										<?default:?>
+											onclick="follow(<?= $talker['facebook_user_id']?> , '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
+											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->talkerArray[$count]?>"><?=$this->talkerArray[$count]?></span>
+										<?}?>
+									</a>
+								</div>
+							</div>
+						</li>
+
+						<?php }?>
+
+						<?php $count ++; ?>
+
+						<?php endforeach; ?>
+
+						<?php if ($count < 5){?>
+						<?php if ($count == 0){?>
+						<ul class="top-list first">
+							<li>
+								<div class="ranker first">
+									<div class="rank first">
+										<h1>
+											<?= $count + 1 ?>
+										</h1>
+									</div>
+									<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+									<div class="points"></div>
+								</div>
+							</li>
+							<?php $count++;?>
+							</ul>
+						<?php }?>
+						
+
+						<?php for ( ;$count<5; $count++){ ?>
+	
+							<?php if ($count == 1){?>
+							<ul id="top-talker-collapse" class="top-list collapse">
+								<?php }?>
+								<li>
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+										<div class="points"></div>
+									</div>
+								</li>
+
+						<?}	?>
+						<?}	?>
+
+						</ul>
+						<ul class="top-list bottom">
+							<li>
+								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="rank">
+										<? if (strlen($this->talkerYou['my_rank'])== 1){?>
+										<h1>
+											<?= $this->talkerYou['my_rank']?>
+										</h1>
+										<?php }elseif (strlen($this->talkerYou['my_rank'])== 2) { ?>
+										<h2>
+											<?= $this->talkerYou['my_rank']?>
+										</h2>
+										<?php }elseif (strlen($this->talkerYou['my_rank'])== 3) { ?>
+										<h3>
+											<?= $this->talkerYou['my_rank']?>
+										</h3>
+										<?php }else{?>
+										<h1>*</h1>
+										<?php }?>
+									</div>
+									<div class="user">
+									<div class="photo">
+										<img class="face" width="35" height="35"
+											src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
+											onerror="ImgError(this);"> 
+									</div>
+									<div class="name">
+										YOU
+									</div>
+									</div>
+									<div class="points">
+										<a rel="tooltip-follow" data-original-title="This is You">
+										<span class="badge badge-You">
+											You
+										</span></a>
+									</div>
+								</div>
+							</li>
+						</ul>
+						
+						
+				<button class="btn-more" id="top-talker-btn" data-toggle="collapse" data-target="#top-talker-collapse">More +</button>
+				</div>
+
+			</div><!-- toptalker -->
+		</div><!-- span -->
+	</div><!-- row -->
+
+	
+	
+	<div class="row">
+		<div class="span6">
+			<div class="top-clicker">
+				<div class="title">
+					<div class="title-icon">
+						<img src="/img/news-feed/top-clicker-icon.jpg" />
+					</div>
+					<div class="title-header">
+					Top Clicker
+						
+					</div>
+					<div class="tip">
+							<a rel="tooltip" title="Like, like, and like!  These people have clicked Like the most!">?</a>
+						</div>
+				</div>
+				<div class="row box">
+					<?php $count = 0; ?>
+					<?php foreach($this->top_clicker as $clicker):  ?>
+					<?php if ($count == 0){?>
+
+					<ul class="top-list first">
+						<li>
+							<div class="ranker first">
+								<div class="rank first">
+									<h1>
+										<?= $count + 1 ?>
+									</h1>
+								</div>
+
+								<div class="user">
+									<div class="photo"><a  data-userid="<?= $clicker['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $clicker['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><img class="face"
+											width="35" height="35"
+											src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"
+											onerror="ImgError(this);"></a></div>
+											
+											
+											<div class="name first"><a  data-userid="<?= $clicker['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $clicker['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><?= $clicker['fan_first_name'] ?></a>
+									</div>
+									
+								</div>
+
+								<div class="points">
+									<a rel="tooltip-follow" class ="follow_<?=$clicker['facebook_user_id']?>"<?php switch($this->clickerArray[$count]) { 
+										case 'You':?>
+											 data-original-title="This is You"><span class="badge badge-You">You</span>
+										<?break;?>
+										<?case 'Following'?>
+											onclick="unfollow(<?= $clicker['facebook_user_id']?> ,'<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
+											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+										<?break;?>
+											
+										<?default:?>
+											onclick="follow(<?= $clicker['facebook_user_id']?> , '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
+											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->clickerArray[$count]?>"><?=$this->clickerArray[$count]?></span>
+										<?}?>
+									</a>
+									
+									
+								</div>
+							</div>
+						</li>
+
+					</ul>
+					<?php }else{ ?>
+					<?php if ($count == 1){?>
+					<ul id="top-clicker-collapse" class="top-list collapse">
+						<?php }?>
+						<li>
+							<div class="ranker ">
+								<div class="rank">
+									<h1>
+										<?= $count + 1 ?>
+									</h1>
+								</div>
+								<div class="user">
+									<div class="photo"><a  data-userid="<?= $clicker['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $clicker['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><img class="face"
+											width="35" height="35"
+											src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"
+											onerror="ImgError(this);"></a></div>
+											
+										<div class="name"><a  data-userid="<?= $clicker['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $clicker['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><?= $clicker['fan_first_name'] ?></a></div>
+									
+								</div>
+								<div class="points">
+									<a rel="tooltip-follow" class ="follow_<?=$clicker['facebook_user_id']?>"<?php switch($this->clickerArray[$count]) { 
+										case 'You':?>
+											 data-original-title="This is You"><span class="badge badge-You">You</span>
+										<?break;?>
+										<?case 'Following'?>
+											onclick="unfollow(<?= $clicker['facebook_user_id']?> ,'<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
+											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+										<?break;?>
+											
+										<?default:?>
+											onclick="follow(<?= $clicker['facebook_user_id']?> , '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
+											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->clickerArray[$count]?>"><?=$this->clickerArray[$count]?></span>
+										<?}?>
+									</a>
+								</div>
+							</div>
+						</li>
+
+						<?php }?>
+
+						<?php $count ++; ?>
+
+						<?php endforeach; ?>
+
+						<?php if ($count < 5){?>
+						<?php if ($count == 0){?>
+						<ul class="top-list first">
+							<li>
+								<div class="ranker first">
+									<div class="rank first">
+										<h1>
+											<?= $count + 1 ?>
+										</h1>
+									</div>
+									<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+									<div class="points"></div>
+								</div>
+							</li>
+							<?php $count++;?>
+							</ul>
+							<?php }?>
+						
+
+						<?php for ( ;$count<5; $count++){ ?>
+	
+							<?php if ($count == 1){?>
+							<ul id="top-clicker-collapse" class="top-list collapse">
+								<?php }?>
+								<li>
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+									<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+										<div class="points"></div>
+									</div>
+								</li>
+
+						<?}	?>
+						<?}	?>
+
+						</ul>
+						<ul class="top-list bottom">
+							<li>
+								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="rank">
+										<? if (strlen($this->clickerYou['my_rank'])== 1){?>
+										<h1>
+											<?= $this->clickerYou['my_rank']?>
+										</h1>
+										<?php }elseif (strlen($this->clickerYou['my_rank'])== 2) { ?>
+										<h2>
+											<?= $this->clickerYou['my_rank']?>
+										</h2>
+										<?php }elseif (strlen($this->clickerYou['my_rank'])== 3) { ?>
+										<h3>
+											<?= $this->clickerYou['my_rank']?>
+										</h3>
+										<?php }else{?>
+										<h1>*</h1>
+										<?php }?>
+									</div>
+									<div class="user">
+									<div class="photo">
+										<img class="face" width="35" height="35"
+												src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
+												onerror="ImgError(this);">
+									</div>
+									<div class="name">
+										YOU
+									</div>
+									</div>
+									<div class="points">
+										<a rel="tooltip-follow" data-original-title="This is You"><span class="badge badge-You">
+											You
+										</span></a>
+									</div>
+								</div>
+							</li>
+						</ul>
+				<button class="btn-more" id="top-clicker-btn" data-toggle="collapse"
+						data-target="#top-clicker-collapse">More +</button>
+				</div>
+		
+					
+			
+			</div><!-- topclicker -->
+		</div>
+		<div class="span6">
+			<div class="top-followed">
+				<div class="title">
+					<div class="title-icon">
+						<img src="/img/news-feed/fan-fav-icon.jpg" />
+					</div>
+					<div class="title-header">
+					Top Followed
+						
+					</div>
+					<div class="tip">
+							<a rel="tooltip" title="These people have got the most followers!  Talk about being popular!">?</a>
+					</div>
+				</div>
+				<div class="row box">
+					<?php $count = 0; ?>
+					<?php foreach($this->top_followed as $followed):  ?>
+					<?php if ($count == 0){?>
+
+					<ul class="top-list first">
+						<li>
+							<div class="ranker first">
+								<div class="rank first">
+									<h1>
+										<?= $count + 1 ?>
+									</h1>
+								</div>
+
+								<div class="user">
+									<div class="photo"><a data-userid="<?= $followed['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $followed['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><img class="face"
+											width="35" height="35"
+											src="https://graph.facebook.com/<?= $followed['facebook_user_id'] ?>/picture"
+											onerror="ImgError(this);"></a></div>
+											
+											
+											<div class="name first"><a data-userid="<?= $followed['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $followed['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><?= $followed['fan_first_name'] ?></a>
+									</div>
+									
+								</div>
+
+								<div class="points">
+									<a rel="tooltip-follow" class ="follow_<?=$followed['facebook_user_id']?>"<?php switch($this->followedArray[$count]) { 
+										case 'You':?>
+											 data-original-title="This is You"><span class="badge badge-You">You</span>
+										<?break;?>
+										<?case 'Following'?>
+											onclick="unfollow(<?= $followed['facebook_user_id']?> ,'<?= $followed['fan_first_name'].' '.$followed['fan_last_name']?>')" 
+											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+										<?break;?>
+											
+										<?default:?>
+											onclick="follow(<?= $followed['facebook_user_id']?> , '<?= $followed['fan_first_name'].' '.$followed['fan_last_name']?>')" 
+											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->followedArray[$count]?>"><?=$this->followedArray[$count]?></span>
+										<?}?>
+									</a>
+								
+								</div>
+							</div>
+						</li>
+
+					</ul>
+					<?php }else{ ?>
+					<?php if ($count == 1){?>
+					<ul id="top-followed-collapse" class="top-list collapse">
+						<?php }?>
+						<li>
+							<div class="ranker ">
+								<div class="rank">
+									<h1>
+										<?= $count + 1 ?>
+									</h1>
+								</div>
+								<div class="user">
+									<div class="photo"><a  data-userid="<?= $followed['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $followed['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><img class="face"
+											width="35" height="35"
+											src="https://graph.facebook.com/<?= $followed['facebook_user_id'] ?>/picture"
+											onerror="ImgError(this);"></a></div>
+											
+									<div class="name"><a  data-userid="<?= $followed['facebook_user_id'] ?>"
+									
+										onclick="userProfile('<?= $followed['facebook_user_id'] ?>')"
+										rel="popover" data-content="" data-original-title=""
+										data-placement="top"><?= $followed['fan_first_name'] ?></a></div>
+									
+								</div>
+								<div class="points">
+									<a rel="tooltip-follow" class ="follow_<?=$followed['facebook_user_id']?>"<?php switch($this->followedArray[$count]) { 
+										case 'You':?>
+											 data-original-title="This is You"><span class="badge badge-You">You</span>
+										<?break;?>
+										<?case 'Following'?>
+											onclick="unfollow(<?= $followed['facebook_user_id']?> ,'<?= $followed['fan_first_name'].' '.$followed['fan_last_name']?>')" 
+											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+										<?break;?>
+											
+										<?default:?>
+											onclick="follow(<?= $followed['facebook_user_id']?> , '<?= $followed['fan_first_name'].' '.$followed['fan_last_name']?>')" 
+											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->followedArray[$count]?>"><?=$this->followedArray[$count]?></span>
+										<?}?>
+									</a>
+								</div>
+							</div>
+						</li>
+
+						<?php }?>
+
+						<?php $count ++; ?>
+
+						<?php endforeach; ?>
+
+						<?php if ($count < 5){?>
+						<?php if ($count == 0){?>
+						<ul class="top-list first">
+							<li>
+								<div class="ranker first">
+									<div class="rank first">
+										<h1>
+											<?= $count + 1 ?>
+										</h1>
+									</div>
+									<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+									<div class="points"></div>
+								</div>
+							</li>
+							<?php $count++;?>
+							</ul>
+							<?php }?>
+						
+
+						<?php for ( ;$count<5; $count++){ ?>
+	
+							<?php if ($count == 1){?>
+							<ul id="top-followed-collapse" class="top-list collapse">
+								<?php }?>
+								<li>
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+										<div class="photo"></div>
+										<div class="name"></div>
+									</div>
+										<div class="points"></div>
+									</div>
+								</li>
+
+						<?}	?>
+						<?}	?>
+						</ul>
+						
+						<ul class="top-list bottom">
+							<li>
+								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+									<div class="rank">
+										<? if (strlen($this->followedYou['my_rank'])== 1){?>
+										<h1>
+											<?= $this->followedYou['my_rank']?>
+										</h1>
+										<?php }elseif (strlen($this->followedYou['my_rank'])== 2) { ?>
+										<h2>
+											<?= $this->followedYou['my_rank']?>
+										</h2>
+										<?php }elseif (strlen($this->followedYou['my_rank'])== 3) { ?>
+										<h3>
+											<?= $this->followedYou['my_rank']?>
+										</h3>
+										<?php }else{?>
+										<h1>*</h1>
+										<?php }?>
+									</div>
+									<div class="user">
+									<div class="photo">
+										<img class="face" width="35" height="35"
+											src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
+											onerror="ImgError(this);">
+									</div>
+									<div class="name">
+										YOU
+									</div>
+									</div>
+									<div class="points">
+
+										<a rel="tooltip-follow" data-original-title="This is You">
+										<span class="badge badge-You">
+											You
+										</span></a>
+									</div>
+								</div>
+							</li>
+						</ul>
+						
+						<button class="btn-more" id="top-followed-btn" data-toggle="collapse"
+						data-target="#top-followed-collapse">More +</button>
+				</div>
+			
+					
+		
+			</div><!-- topfollowed -->
+		</div>
+	</div><!-- row -->

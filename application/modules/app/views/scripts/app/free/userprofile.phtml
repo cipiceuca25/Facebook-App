@@ -1,0 +1,318 @@
+<div class="row">
+	<div class="span7">
+			<div class="title">
+					<div class="title-icon">
+						<img class="face" width="50" height="50"
+							src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"
+							onerror="ImgError(this);">
+					</div>
+				
+					<div class="title-header"> 
+					
+					<?php $username=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name;?>
+					<?php $displayname= $username;?>
+					
+					<?php 
+					if (strlen($username)>16){
+						if(strlen($this->facebook_user->facebook_user_first_name)>16){
+							$displayname = substr($this->facebook_user->facebook_user_first_name, 0, 13).'...'	;
+						}else if (strlen($this->facebook_user->facebook_user_first_name)>13){
+							$displayname = $this->facebook_user->facebook_user_first_name;
+						}else{
+							$displayname = $this->facebook_user->facebook_user_first_name .' '. substr($this->facebook_user->facebook_user_last_name, 0,1) .'.';
+						}
+					}?>
+						
+					<?echo $displayname ?>'s Profile
+					<div class="badge-profile">
+						<a rel="tooltip-follow" class ="follow_<?= $this->facebook_user->facebook_user_id?>"<?php switch($this->relation) { 
+							case 'You':?>
+								 data-original-title="This is You"><span class="badge badge-You">You</span>
+							<?break;?>
+							<?case 'Following'?>
+								onclick="unfollow(<?= $this->facebook_user->facebook_user_id?> ,'<?= $username ?>')" 
+								data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+							<?break;?>
+								
+							<?default:?>
+								onclick="follow(<?= $this->facebook_user->facebook_user_id?> , '<?= $username ?>')" 
+								data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->relation?>"><?=$this->relation?></span>
+							<?}?>
+						</a>
+						
+					
+					</div>
+			</div>
+					
+				
+				</div>
+		
+		
+		<div id="myprofile">
+			
+				<div class="row box">
+		
+						<div class="half" >
+							<div class="post-container">
+									<div class="profile-block">
+										<h3>Level</h3>
+										<div class="level">
+											?
+										</div>
+									</div>
+									
+									<div class="profile-block vertical-center">
+										<h3>
+											?
+										</h3> Points
+									</div>
+									
+									<div class="profile-block" >
+
+									</div>
+									
+							
+							</div>
+						</div>
+					
+						<div class="half" >
+							<div class="post-container">	
+								<div class="profile-block">
+										<h4>Overall Achievement</h4>
+										<div class="progress">
+											<div class="bar" style="width: <?= $this->overall_achievement?>%;">
+											</div>
+		
+										</div>
+										<h5>
+											<?=$this->user_badge?>
+											/
+											<?=$this->all_badge?>
+										</h5>
+									</div>
+									<div class="profile-block">
+										<h4>Personal Achievement</h4>
+										<div class="progress">
+											<div class="bar" style="width: 60%;"></div>
+										</div>
+										<h5>0/100</h5>
+									</div>
+									<div class="profile-block">
+										<h4>Social Achievement</h4>
+										<div class="progress">
+											<div class="bar" style="width: 60%;"></div>
+										</div>
+										<h5>0/100</h5>
+									</div>
+					
+							</div>
+						</div>
+		
+				</div>
+					
+
+				<div class="half" >	
+					<div class="title nopic">
+						<div class="title-header nopic">
+							Followed by
+	
+										<?= $this->follower['0']['Follower']?>
+										Fans
+									
+						</div>
+					</div>
+					<div class="row box">
+
+						<button class="btn-more"
+										onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)">
+										View Full List</button>	
+					</div>
+					
+				</div>			
+						
+				<div class="half" >
+					<div class="title nopic">
+						<div class="title-header nopic">
+						
+						Following
+
+									<?= $this->following['0']['Following']?>
+									Fans
+						</div>
+					</div>
+					<div class="row box">
+	
+								<button class="btn-more"
+										onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)">
+										View Full List</button>	
+							</div>
+							
+				</div>
+
+			
+			
+				<div class="row box notitle">
+
+						
+							<div class="post-container">
+								
+								<?php if (empty($this->fan)) {?>
+									<br/>
+									<?=$username?> just recently became active on this page, therefore it will take a couple hours for us to gather the corresponding data
+									<br/><br/>
+								<?php }?>
+								<div class="half" >
+								<?php if (!isset($this->fan->created_time)){?>
+									<h4>Not A Fancrank User</h4>
+								<?}else{?>
+									<h4>Fancrank User Since:</h4><?= date("F Y",strtotime($this->fan->first_login_time))?>
+								<?php }?><br /><br />
+								
+								<h4>Location:</h4>
+								<?php if (isset($this->fan->fan_country)) {?>
+									<?php if (isset($this->fan->fan_location)){?>
+										<?= $this->fan->fan_location?>,
+									<?php }?>
+									<?= $this->fan->fan_country?>
+								<?php }else{?>
+									Unknown
+								<?php }?>
+	
+								</div>
+								<div class="half">
+								<h4>Other Statistics:</h4>
+								<img src="/img/post.png" />Total Posts Made :
+								<?=$this->stat_post?>
+								<br /> <img src="/img/thumbsup.png" />Total Likes Made :
+								<?=$this->stat_like?>
+								<br /> <img src="/img/comment.png" />Total Comments Made :
+								<?=$this->stat_comment?>
+								<br /> <img src="/img/rthumbsup.png" />Total Recieved Likes:
+								<?=$this->stat_get_like?>
+								<br /> <img src="/img/rcomment.png" />Total Recieved Comments:
+								<?=$this->stat_get_comment?>
+								<br />
+							</div>
+			
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+
+<div class="row">
+<div class="span7">
+<div class="title nopic">
+	<div class="title-header nopic">
+
+		<?echo $displayname ?>'s Recent Activities
+	</div>
+</div>
+
+
+<div class="row box" >
+	<ul id="user_activities">
+	<?php if(count($this->post)==0){?>
+	<li class="post-container" >
+	<div class="post">
+		<div class="message">
+	No Recent Activities for this Fanpage.
+	</div>
+	</div>
+	</li>
+	<?php }?>
+
+	<?php
+	$count = 0;
+	foreach ($this->post as $act):	
+	?>
+		<li class="post-container" >
+	
+		<div class="post">
+		<div class="message">
+
+		
+		<?switch($act['activity_type']){ 
+		
+			case 'follow': ?>
+				<?echo $displayname ?> followed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> 
+				<?break;
+			case 'unfollow' :?>
+				<?echo $displayname ?> unfollowed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> 
+				<?break;	
+			
+			case 'like-status':?>
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">status post </a> 
+				<?break;
+			case 'unlike-status':?>
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">status post</a> 
+				<?break;
+			case 'like-photo':?>
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, false)">photo post </a> 
+				<?break;
+			case 'unlike-photo':?>
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">photo post</a> 
+				<?break;	
+			case 'like-video':?>
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10,false)">video post </a> 
+				<?break;
+			case 'unlike-video':?>
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">video post</a> 
+				<?break;
+			case 'like-link':?>
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">link post </a> 
+				<?break;
+			case 'unlike-link':?>
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">link post</a> 
+				<?break;
+			case 'like-comment':?>
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); if(isset($temp[1])){echo $temp[0].'_'.$temp[1];} else{ echo $temp[0]; } ?>' , 10,false)">comment</a> 
+				<?break;
+			case 'unlike-comment':?>
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); if(isset($temp[1])){echo $temp[0].'_'.$temp[1];} else{ echo $temp[0]; } ?>' , 10, false)">comment</a> 
+				<?break;
+			case 'comment-status':?>
+				<?echo $displayname ?> posted a comment on <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, false)">status post</a> 
+				<?break;
+			case 'comment-photo':?>
+				<?echo $displayname ?> posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">photo post</a> 
+				<?break;
+			case 'comment-video':?>
+				<?echo $displayname?> posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">video post</a> 
+				<?break;
+			case 'comment-link':?>
+				<?echo $displayname?> posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">link post</a> 
+				<?break;
+			case 'post-status':?>
+				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">status post</a> on <?=$act['target_user_name']?>'s Fanpage 
+				<?break;
+			case 'post-photo':?>
+				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">photo post</a> on <?=$act['target_user_name']?>'s Fanpage 
+				<?break;
+			case 'post-link':?>
+				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">link post</a> on 
+				<?break;
+			case 'post-video':?>
+				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">video post</a> on 
+				<?break;
+			default:
+		}?>
+		<?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+		
+		
+		</div>
+		</div>
+	</li>
+
+<?endforeach; ?>
+
+			</ul>
+</div></div>
+</div>
+<script>
+	$('#user_activities').enscroll({
+	showOnHover: true,
+	clickTrackToScroll: false,
+	verticalTrackClass: 'track3',
+	verticalHandleClass: 'handle3'});
+</script>

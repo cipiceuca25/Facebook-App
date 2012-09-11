@@ -181,7 +181,7 @@ class Service_FancrankCollectorService {
 		//echo $url; exit();
 		$this->getPostsByTimeRange($url, 10, 100, $posts);
 		Zend_Debug::dump($posts);
-		
+
 		echo '---------------';
 
 		if(empty($posts)) {
@@ -937,7 +937,7 @@ class Service_FancrankCollectorService {
 				if(!empty($post->likes->count) && $post->likes->count >= 1) {
 					$totalLikePoints = $post->likes->count;
 					foreach ($postLikeList as $like) {
-						if($like['post_id'] === $post->id) {
+						if($like['post_id'] === $post->id && $like['facebook_user_id'] !== $post->from->id) {
 							$uniqueUser[$like['facebook_user_id']] = 1;
 						}
 					}
@@ -963,9 +963,9 @@ class Service_FancrankCollectorService {
 				
 				//echo $post->from->id .' gain new unique: ' .count($uniqueUser) .' from post ' .$post->id .'<br/>';
 				
-				$totalPoints = $virginity + $totalLikePoints + $totalCommentPoints + count($uniqueUser);
+				$totalPoints = $virginity + $totalLikePoints + $totalCommentPoints + count($uniqueUser) - 5;
 			}else if($oldPost) {
-				
+
 				$likeModel = new Model_Likes();
 				$uniqueUser = array();
 				if(!empty($post->likes->count) && $post->likes->count >= 1) {
@@ -997,8 +997,11 @@ class Service_FancrankCollectorService {
 				$unique = count($uniqueUser) + count($uniqueCommentUser) - count(array_intersect_key($uniqueUser, $uniqueCommentUser));
 				
 				//echo $post->from->id .' gain more unique: ' .$unique .' from post ' .$post->id .'<br/>';
-				
-				$totalPoints = $totalLikePoints + $totalCommentPoints + $unique;
+				$virginity = 0;
+				if(empty($oldPost->post_likes_count) && empty($oldPost->post_comments_count) && !empty($unique)) {
+					$virginity = 4;
+				}
+				$totalPoints = $totalLikePoints + $totalCommentPoints + $unique + $virginity;
 			}
 				
 			if(isset($postPointResult[$post->from->id])) {

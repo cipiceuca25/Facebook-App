@@ -16,7 +16,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	protected $_fanpageId;
 	protected $_userId;
 	protected $_accessToken;
-
+	protected $_fanpageProfile;
 
 	/**
 	 * Initilized fanpage id and login user variables
@@ -45,6 +45,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		if(!empty($this->_fanpageId)) {
 			$fanpage = new Model_Fanpages();
 			$fanpage = $fanpage->find($this->_fanpageId)->current();
+			$this->_fanpageProfile = $fanpage;
 			//Zend_Debug::dump($token);
 			$this->_accessToken = $fanpage ->access_token;
 			$this->view->fanpage_name = $fanpage->fanpage_name;			
@@ -357,7 +358,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->clickerArray = $clickerArray ;
     	$this->view->followedArray = $followedArray ;
     	 
-    	$this->render("leaderboard");
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$this->render('leaderboard');
+    	}else {
+    		$this->render("free/leaderboard");
+    	}
   	}
 
   	/* Action to show login user's wall post */
@@ -727,8 +732,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_comment = $stat_get_comment;
     	$this->view->stat_get_like = $stat_get_like;
     	
-    	
-    	$this->render("myprofile");
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$this->render('myprofile');
+    	}else {
+    		$this->render("free/myprofile");
+    	}
     }
     
     public function popoverprofileAction(){
@@ -777,7 +785,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->relation=$relation;
     	$this->view->stat= $stat;
     	$this->view->fan = $fan;
-    	$this->render("popoverprofile");
+    	
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$this->render('popoverprofile');
+    	}else {
+    		$this->render("free/popoverprofile");
+    	}
     }
     //THIS IS PROBABLY SEARCHING 
     public function userprofileAction() {
@@ -916,7 +929,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_comment = $stat_get_comment;
     	$this->view->stat_get_like = $stat_get_like;
     	 
-    	$this->render("userprofile");
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$this->render('userprofile');
+    	}else {
+    		$this->render("free/userprofile");
+    	}
     }
 
 
