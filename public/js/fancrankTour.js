@@ -12,12 +12,13 @@
 			end : 'End'
 		},
 		controlsColors : {
-			background : 'rgba(8, 68, 142, 0.80)',
+			background : 'rgba(71, 101, 142, 0.80)',
 			color : '#fff'
 		},
 		tooltipColors : {
-			background : 'rgba(0, 0, 0, 0.70)',
-			color : '#fff',
+			background : 'rgba(255,255,255, 0.80)',
+			border : '2px solid #C1CEE0',
+			color : '#111',
 		}
 	};
 
@@ -32,12 +33,13 @@
 		html : ''
 	}).css({
 		'display' : 'none',
-		'padding' : '10px 20px',
+		'padding' : '8px 18px',
 		'position' : 'absolute',
-		'font-family' : 'sans-serif',
+		
 		'border-radius' : '5px',
 		'font-size' : '12px',
-		'box-sizing' : 'border-box'
+		'box-sizing' : 'border-box',
+		'z-index' : 1000
 	});
 
 	var methods = {
@@ -47,9 +49,6 @@
 				options = $.extend(settings, opts);
 
 				controls = '<div id="tourControls">\
-						<div id="tourText">'
-						+ options.welcomeMessage
-						+ '</div>\
 						<div id="tourButtons">\
 						<button id="tourPrev" style="display:none" class="btn">'
 						+ options.buttons.prev
@@ -61,6 +60,9 @@
 						+ options.buttons.end
 						+ '</a>\
 						</div>\
+						<div id="tourText">'
+						+ options.welcomeMessage
+						+ '</div>\
 						</div>';
 				$controlsCss = {
 					'margin-top' : '50px',
@@ -69,7 +71,8 @@
 					'width' : '250px',
 					'padding' : '10px 20px',
 					'border-radius' : '10px',
-					'font-family' : 'sans-serif'
+					'z-index' : 1000,
+					
 				};
 				$controls = $(controls).css($controlsCss).css(
 						options.controlsColors);
@@ -148,10 +151,11 @@
 					
 				});
 				$tooltip.show('fast');
-
-				$.scrollTo($tooltip, 400, {
+				
+				
+				/*$.scrollTo($tooltip, 400, {
 					offset : -100
-				});
+				});*/
 			}
 
 			if (typeof stepData.callback != 'undefined') {
@@ -196,12 +200,12 @@
 			el = $element.offset().left;
 			et = $element.offset().top;
 			tw = $tooltip.width() + parseInt($tooltip.css('padding-left'))
-					+ parseInt($tooltip.css('padding-right'));
-			th = $tooltip.height() + parseInt($tooltip.css('padding-top')) + parseInt($tooltip.css('padding-bottom'));
+					+ parseInt($tooltip.css('padding-right')) + parseInt($tooltip.css('border-width'));
+			th = $tooltip.height() + parseInt($tooltip.css('padding-top')) + parseInt($tooltip.css('padding-bottom'))+ parseInt($tooltip.css('border-width'));
 
 			$('.tourArrow').remove();
-			tbg = $tooltip.css('background-color');
-
+			tbg = '#C1CEE0';//$tooltip.css('background-color');
+			
 			$upArrow = $('<div class="tourArrow"></div>').css({
 				'position' : 'absolute',
 				'display' : 'block',
@@ -262,8 +266,8 @@
 				});
 				$tooltip.prepend($upArrow);
 				break;
-
-			case 'TL':
+				
+			case 'custom':
 				position = {
 					'left' : el,
 					'top' : (et - th) - 10
@@ -274,6 +278,19 @@
 				});
 				$tooltip.append($downArrow);
 				break;
+				
+			case 'TL':
+				position = {
+					'left' : el,
+					'top' : (et - th) - 10
+				};
+				$downArrow.css({
+					top : 33,
+					left : '10%'
+				});
+			
+				$tooltip.append($downArrow);
+				break;
 
 			case 'TR':
 				position = {
@@ -281,9 +298,10 @@
 					'top' : et - th - 10
 				};
 				$downArrow.css({
-					top : th,
-					left : '48%'
+					top : 33,
+					left : '70%'
 				});
+			
 				$tooltip.append($downArrow);
 				break;
 
@@ -377,6 +395,7 @@
 				$tooltip.prepend($leftArrow);
 				break;
 			}
+			
 			return position;
 		},
 		getControlPosition : function(pos) {
@@ -387,7 +406,12 @@
 					'right' : '10px'
 				};
 				break;
-
+			case 'custom':
+				pos = {
+					'top' : '50px',
+					'left' : '10px'
+				};
+				break;
 			case 'TL':
 				pos = {
 					'top' : '10px',
@@ -418,7 +442,7 @@
 				'display' : 'none'
 			}).html('');
 			hideOverlay();
-			$('#dummyPageRow').hide();
+			//$('#dummyPageRow').hide();
 			step = -1;
 			started = false;
 		}
@@ -433,8 +457,154 @@
 		$('#tour_overlay').remove();
 	};
 
-	$('#tourNext').live('click', function() {
+	$('#tourNext').live('click', function() {		
+
+		switch (step){
+			case -1:
+				$('#pageTabs').css('z-index','500');
+				$('#log-in-out').css('z-index','500');
+				
+			break;
+			case 6:
+				$('#pageTabs').css('z-index','');
+				$('#log-in-out').css('z-index','');
+				
+				$('#latest-post-container').css('z-index', '500');
+				$('#fancrank-feed-container').css('z-index', '500');
+				$('#top-post-container').css('z-index', '500');
+				$('#top-fan-container').css('z-index', '500');
+				
+			//	$('#tourControls').css('top', '450px');
+			//	FB.Canvas.setSize({ width: 810, height: 2000 });
+			//	FB.Canvas.scrollTo(0, 500);
+				
+			break;
+			case 7:
+				$('#fancrank-feed-container').css('z-index', '');
+				$('#top-post-container').css('z-index', '');
+				$('#top-fan-container').css('z-index', '');
+			break;
+			case 17:
+				$('#latest-post-container').css('z-index', '');
+				$('#fancrank-feed-container').css('z-index', '500');
+				$('#top-post-container').css('z-index', '');
+				$('#top-fan-container').css('z-index', '');
+			break;
+			case 20:
+
+				$('#latest-post-container').css('z-index', '');
+				$('#fancrank-feed-container').css('z-index', '');
+				$('#top-post-container').css('z-index', '');
+				$('#top-fan-container').css('z-index', '500');
+			break;
+			case 21:
+				$('#latest-post-container').css('z-index', '');
+				$('#fancrank-feed-container').css('z-index', '');
+				$('#top-post-container').css('z-index', '500');
+				$('#top-fan-container').css('z-index', '');
+			break;
+		
+			case 22:
+				ffb = true;
+				ttb = true;
+				tcb = true;
+				tfdb = true;
+				getLeaderboard();
+
+				$('#profile').html('');
+
+				$('#news-feed').html('');
+				$('#redeem').html('');
+				$('.nav.nav-tabs li:eq(1) a').tab('show'); 
+				$('#pageTabs').css('z-index','500');
+				$('.top-fan').css('z-index', '500');
+				$('.fan-favorite').css('z-index', '500');
+				$('.top-talker').css('z-index', '500');
+				$('.top-clicker').css('z-index', '500');
+				$('.top-followed').css('z-index', '500');
+				
+			break;
+			case 23:
+				$('#pageTabs').css('z-index','');
+				$('.top-fan').css('z-index', '500');
+				$('.fan-favorite').css('z-index', '');
+				$('.top-talker').css('z-index', '');
+				$('.top-clicker').css('z-index', '');
+				$('.top-followed').css('z-index', '');
+			break;
+			case 24:
+		
+				$('.top-fan').css('z-index', '');
+				$('.fan-favorite').css('z-index', '500');
+		
+			break;
+			case 25:
+		
+				$('.fan-favorite').css('z-index', '');
+				$('.top-talker').css('z-index', '500');
+			
+			break;
+			case 26:
+				
+				$('.top-talker').css('z-index', '');
+				$('.top-clicker').css('z-index', '500');
+			
+			break;
+			case 27:
+				$('.top-clicker').css('z-index', '');
+				$('.top-followed').css('z-index', '500');
+			break;
+			case 29:
+				$('.top-followed').css('z-index', '');
+				getMyProfile();
+				$('#leaderboard').html('');
+				$('#news-feed').html('');
+				$('#redeem').html('');
+				$('.nav.nav-tabs li:eq(2) a').tab('show'); 
+				$('#pageTabs').css('z-index','500');
+				$('#myprofile').css('z-index', '500');
+				$('#recent-activities-container').css('z-index', '500');
+			break;
+			case 30:
+				$('#pageTabs').css('z-index','');
+				$('#myprofile').css('z-index', '');
+				$('#recent-activities-container').css('z-index', '');
+				$('#general-stats-container').css('z-index','500');
+
+			break;
+			case 31:
+				$('#general-stats-container').css('z-index','');
+				$('#level-container').css('z-index','500');
+				break;
+			case 32:
+				$('#level-container').css('z-index','');
+				$('#points-container').css('z-index','500');
+				break;
+			case 33:
+				$('#points-container').css('z-index','');
+				$('#exp-container').css('z-index','500');
+				break;
+			case 34:
+				$('#exp-container').css('z-index','');
+				$('#overall-container').css('z-index','500');
+				break;
+			case 35:
+				$('#overall-container').css('z-index','');
+				$('#personal-container').css('z-index','500');
+				break;
+			case 36:
+				
+				$('#personal-container').css('z-index','');
+				$('#social-container').css('z-index','500');
+				break;	
+			case 37:
+				$('#social-container').css('z-index','');
+			
+				break;	
+				
+		}
 		methods.next();
+		
 	});
 
 	$('#tourPrev').live('click', function() {
@@ -443,6 +613,9 @@
 
 	$('#tourEnd').live('click', function() {
 		methods.destroy();
+		$('.light-box').css('display', 'none');
+		$('#pageTabs').css('z-index','0');
+		$('#log-in-out').css('z-index','0');
 	});
 
 	$.fn.fancrankTour = function(method) {

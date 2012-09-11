@@ -413,7 +413,9 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	
 				//save facebook user's relative information into facebook_users table
 				$facebookUserModel->saveAndUpdateById($facebookUserData, array('id_field_name'=>'facebook_user_id'));
-	
+				
+				$updateTime = new Zend_Date(time(), Zend_Date::TIMESTAMP);
+				
 				$fansData = array(
 						'facebook_user_id'  => $facebookUserData['facebook_user_id'],
 						'fanpage_id'        => $this->_fanpageId,
@@ -421,7 +423,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 						'fan_first_name'	=> $facebookUserData['facebook_user_first_name'],
 						'fan_last_name'		=> $facebookUserData['facebook_user_last_name'],
 						'fan_gender'		=> $facebookUserData['facebook_user_gender'],
-						'updated_time'		=> (new Zend_Date(time(), Zend_Date::TIMESTAMP))->toString('YYYY-MM-dd HH:mm:ss')
+						'updated_time'		=> $updateTime->toString('YYYY-MM-dd HH:mm:ss')
 				);
 	
 				$fansModel = new Model_Fans($facebookUserData['facebook_user_id'], $this->_fanpageId);

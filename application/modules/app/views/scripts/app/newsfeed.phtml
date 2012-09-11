@@ -1,5 +1,6 @@
 <div class="row">
 	<div class="span7">
+		<div id="latest-post-container">
 		<div class="title">
 			
 			<div class="title-header nopic">
@@ -30,10 +31,15 @@
 				<?}else{?>
 
 
-
+				
 				<?php  $post = $this->latest[0];?>
-
-
+				<?php $story = 1; ?>
+				<?php while (isset($post->story)){
+					$post = $this->latest[$story];
+					$story++;
+				}?>
+				
+	
 				<li class="post-container">
 
 
@@ -83,11 +89,34 @@
 
 
 						<div class="graphical">
-							<?php if (($post->type == 'photo') || ($post->type =='video')) {?>
+							<?php if ($post->type == 'photo') {?>
 							<a target="new" href="<?echo $this->escape($post->link)?> "> <img
 								src='<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> ' />
 							</a>
-
+							<?php }elseif ($post->type =='video') { ?>
+			
+								<?php if (strstr($this->escape($post->link), 'youtube.com')){
+										$temp=explode("http://www.youtube.com/watch?v=", $this->escape($post->link));?>
+										<iframe width="419" height="236" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
+								
+								<?php }else if (strstr($this->escape($post->link), 'vimeo.com')){
+										$temp=explode("http://vimeo.com/", 	$this->escape($post->link));	?>
+										<iframe width="419" height="236" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
+							
+								<?php }else if (strstr($this->escape($post->link), 'facebook.com')){
+										$temp=explode("v=", $this->escape($post->link));?>
+									 <object width="419" height="236" > 
+									 <param name="allowfullscreen" value="true" /> 
+									 <param name="allowscriptaccess" value="always" /> 
+									 <param name="movie" value="http://www.facebook.com/v/<?= $temp[1]?>" /> 
+									 <embed src="http://www.facebook.com/v/<?= $temp[1]?>" type="application/x-shockwave-flash"  
+									   allowscriptaccess="always" allowfullscreen="true" width="419" height="236"> 
+									 </embed> 
+									</object> 
+								<?php }else if (strstr($this->escape($post->link), 'liveleak.com/view')){ 
+										$temp=explode("view?i=", $this->escape($post->link));?>
+									<iframe width="419" height="236" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
+								<?php }?>
 							<?}elseif ($post->type == 'link') {?>
 								<div class="link">
 									<?php if (isset($post->picture)){?>
@@ -139,7 +168,7 @@
 			 		} else {echo '0';} ?> , true )"
 							class="commenthidern_<?= $post->id ?>">Comment </a> 
 							&middot;
-							<a rel="tooltip" data-placement="right" class="time" data-original-title="" data-unix-time="<?= strtotime($post->created_time)?>"> </a> <br />
+							<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?= strtotime($post->created_time)?>"> </a> <br />
 					</div>
 
 					<div class="social like <?=$post->id?>"
@@ -199,7 +228,8 @@
 			</ul>
 
 		</div>
-
+		</div>
+		<div id="fancrank-feed-container">
 		<div class="title">
 			<div class="title-icon">
 				<img src="/img/news-feed/top-fan-icon.jpg" />
@@ -219,7 +249,7 @@
 
 			<ul id="submitfeed">
 				<li class="post-container">
-					<div class="post">
+					<div class="post" id="feed-controller">
 						<span>[ <a rel="tooltip"
 								data-original-title='See all posts on the page.' data-placement='top'
 									onclick="getFancrankfeed('all')"><span id="all-title" style="font-weight:bold">All</span></a> | 
@@ -297,7 +327,9 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 
 <?php foreach ($this->post as $post):?>		
 
-		
+	<?php if (isset($post->story)){?>
+	
+	<?php }else{?>
 	<li class="post-container <?=$post->id?>" >
 	
 	<div class="user" >		
@@ -372,26 +404,43 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 							echo trim($message); 
 								//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
 							
-							?><br/>
+							?>
+							
+							<br/>
 			</div>
 		<?}	?>
 		<div class="graphical">	
+		
 		<?php if (($post->type == 'photo') ) {?>	
+		
 			<a target="new" href="<?echo $this->escape($post->link)?> "> 
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
 					</a>
+					
 		<?php }elseif ($post->type =='video') { ?>
 			
 			<?php if (strstr($this->escape($post->link), 'youtube.com')){
 					$temp=explode("http://www.youtube.com/watch?v=", $this->escape($post->link));?>
-					<iframe width="415" height="233" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
+					<iframe width="419" height="236" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
 			
 			<?php }else if (strstr($this->escape($post->link), 'vimeo.com')){
 					$temp=explode("http://vimeo.com/", 	$this->escape($post->link));	?>
-					<iframe width="415" height="233" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
+					<iframe width="419" height="236" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
 		
+			<?php }else if (strstr($this->escape($post->link), 'facebook.com')){
+					$temp=explode("v=", $this->escape($post->link));?>
+				 <object width="419" height="236" > 
+				 <param name="allowfullscreen" value="true" /> 
+				 <param name="allowscriptaccess" value="always" /> 
+				 <param name="movie" value="http://www.facebook.com/v/<?= $temp[1]?>" /> 
+				 <embed src="http://www.facebook.com/v/<?= $temp[1]?>" type="application/x-shockwave-flash"  
+				   allowscriptaccess="always" allowfullscreen="true" width="419" height="236"> 
+				 </embed> 
+				</object> 
+			<?php }else if (strstr($this->escape($post->link), 'liveleak.com/view')){ 
+					$temp=explode("view?i=", $this->escape($post->link));?>
+				<iframe width="640" height="360" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
 			<?php }?>
-			
 			
 		<?}elseif ($post->type == 'link') {?>
 			<div class="link">
@@ -410,8 +459,8 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 					</a>
 					<?php if(isset($post->caption)){?>
 						<br/>
-						<a target="new" class="link-caption" href="<?echo $this->escape($post->link)?> ">
-							<?php echo $this->escape($post->caption);?>:  
+						<a target="new" class="link-caption" href="<?echo $this->escape($post->link)?>">
+							<?php echo $this->escape($post->caption);?>: 
 						</a>
 					<?php }?>	
 				
@@ -449,7 +498,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 				
 		&middot;
 
-		<a rel="tooltip" data-placement="right" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
+		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 			
 		<br/>
 	</div>
@@ -525,7 +574,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 	
 	<ul class="comments" id="post_<?=$post->id?>" ></ul>
 	</li>	
-			
+	<?php }?><!-- story -->	
 			<?php $count ++;?>
 			 
 			
@@ -543,7 +592,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 
 
 			
-
+			</div>
 		</div>
 	</div>
 
@@ -551,6 +600,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 	<div class="span5">
 		<div class="row">
 			<div class="span5">
+				<div id = "top-fan-container">
 				<div class="title">
 					<div class="title-icon">
 						<img src="/img/news-feed/top-fan-icon.jpg" />
@@ -562,13 +612,14 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 					</div>
 				</div>
 				<div class="row box" id="topfan"></div>
+				</div>
 			</div>
 
 		</div>
 
 		<div class="row">
 			<div class="span5">
-
+				<div id="top-post-container">
 				<div class="title nopic">
 
 
@@ -585,6 +636,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 
 
 					</ul>
+				</div>
 				</div>
 			</div>
 		</div>

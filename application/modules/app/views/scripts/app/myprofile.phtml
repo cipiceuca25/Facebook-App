@@ -1,5 +1,7 @@
 <div class="row">
 	<div class="span7">
+	<div id="myprofile">
+		<div id="general-stats-container">
 		<div class="title">
 			<div class="title-icon">
 				<a href="">
@@ -15,21 +17,21 @@
 				</a>
 			</div>
 		</div>
-		<div id="myprofile">
+		
 			<div class="row box">
 				<div class="half" >
 					<div class="post-container">
-						<div class="profile-block">
+						<div class="profile-block" id="level-container">
 							<h3>Level</h3>
 							<div class="level">
 								<?= $this->fan->fan_level?>
 							</div>
 						</div>
-						<div class="profile-block vertical-center">
+						<div class="profile-block vertical-center" id="points-container">
 							<h3><?= $this->fan->fan_currency?></h3>
 							Points
 						</div>
-						<div class="profile-block" >
+						<div class="profile-block" id="exp-container">
 							<h4>Fan Experience</h4>
 							<div class="progress">
 								<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;"></div>
@@ -43,9 +45,10 @@
 						</div>
 					</div>
 				</div>
+			
 				<div class="half" >
 					<div class="post-container">	
-						<div class="profile-block">
+						<div class="profile-block" id="overall-container">
 							<h4>Overall Achievement</h4>
 							<div class="progress">
 								<div class="bar" style="width: <?= $this->overall_achievement?>%;"></div>
@@ -54,14 +57,14 @@
 								<?=$this->user_badge?>/<?=$this->all_badge?>
 							</h5>
 						</div>
-						<div class="profile-block">
+						<div class="profile-block" id="personal-container">
 							<h4>Personal Achievement</h4>
 							<div class="progress">
 								<div class="bar" style="width: 60%;"></div>
 							</div>
 							<h5>0/100</h5>
 						</div>
-						<div class="profile-block">
+						<div class="profile-block" id="social-container">
 							<h4>Social Achievement</h4>
 							<div class="progress">
 								<div class="bar" style="width: 60%;"></div>
@@ -71,7 +74,8 @@
 					</div>
 				</div>
 			</div>
-					
+		</div>
+		<div id="follow-list-container">		
 			<div class="half" >	
 				<div class="title nopic">
 					<div class="title-header nopic">
@@ -100,7 +104,8 @@
 					</button>	
 				</div>				
 			</div>
-
+		</div>	
+		<div id="other-stats-container">
 			<div class="row box notitle">
 				<div class="post-container">
 					<div class="half" >
@@ -135,7 +140,9 @@
 			</div>
 		</div>
 	</div>
+	</div>
 	<div class="span5">
+		<div id = "recent-activities-container">
 		<div class="title">
 			<div class="title-header nopic">
 				Recent Activities
@@ -149,7 +156,7 @@
 				<ul id="recent_activities"></ul>
 			</div>
 		</div>
-	</div>
+	</div></div>
 </div>
 
 <script>
