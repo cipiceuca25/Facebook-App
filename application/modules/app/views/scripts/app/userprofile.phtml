@@ -1,130 +1,110 @@
 <div id="userprofile">
-<div class="row">
-	<div class="span7">
+	<div class="row">
+		<div class="span7">
 			<div class="title">
-					<div class="title-icon">
-						<img class="face" width="50" height="50"
-							src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"
-							onerror="ImgError(this);">
-					</div>
-				
-					<div class="title-header"> 
+				<div class="title-icon">
+					<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);">
+				</div>
 					
+				<div class="title-header"> 
+						
 					<?php $username=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name;?>
 					<?php $displayname= $username;?>
-					
-					<?php 
-					if (strlen($username)>16){
-						if(strlen($this->facebook_user->facebook_user_first_name)>16){
-							$displayname = substr($this->facebook_user->facebook_user_first_name, 0, 13).'...'	;
-						}else if (strlen($this->facebook_user->facebook_user_first_name)>13){
-							$displayname = $this->facebook_user->facebook_user_first_name;
-						}else{
-							$displayname = $this->facebook_user->facebook_user_first_name .' '. substr($this->facebook_user->facebook_user_last_name, 0,1) .'.';
-						}
-					}?>
 						
+					<?php 
+						if (strlen($username)>16){
+							if(strlen($this->facebook_user->facebook_user_first_name)>16){
+								$displayname = substr($this->facebook_user->facebook_user_first_name, 0, 13).'...'	;
+							}else if (strlen($this->facebook_user->facebook_user_first_name)>13){
+								$displayname = $this->facebook_user->facebook_user_first_name;
+							}else{
+								$displayname = $this->facebook_user->facebook_user_first_name .' '. substr($this->facebook_user->facebook_user_last_name, 0,1) .'.';
+							}
+					}?>
+							
 					<?echo $displayname ?>'s Profile
 					<div class="badge-profile">
-						<a rel="tooltip-follow" class ="follow_<?= $this->facebook_user->facebook_user_id?>"<?php switch($this->relation) { 
-							case 'You':?>
-								 data-original-title="This is You"><span class="badge badge-You">You</span>
-							<?break;?>
-							<?case 'Following'?>
-								onclick="unfollow(<?= $this->facebook_user->facebook_user_id?> ,'<?= $username ?>')" 
-								data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
-							<?break;?>
-								
-							<?default:?>
-								onclick="follow(<?= $this->facebook_user->facebook_user_id?> , '<?= $username ?>')" 
-								data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->relation?>"><?=$this->relation?></span>
-							<?}?>
+						<a rel="tooltip-follow" class ="follow_<?= $this->facebook_user->facebook_user_id?>"
+							<?php switch($this->relation) { 
+								case 'You':?>
+									 data-original-title="This is You"><span class="badge badge-You">You</span>
+								<?break;?>
+								<?case 'Following'?>
+									onclick="unfollow(<?= $this->facebook_user->facebook_user_id?> ,'<?= $username ?>')" 
+									data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+								<?break;?>	
+								<?default:?>
+									onclick="follow(<?= $this->facebook_user->facebook_user_id?> , '<?= $username ?>')" 
+									data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->relation?>"><?=$this->relation?></span>
+								<?}?>
 						</a>
+							
 						
-					
 					</div>
+				</div>	
 			</div>
-					
-				
-				</div>
-		
 		
 
-			
-				<div class="row box">
+			<div class="row box">
 		
-						<div class="half" >
-							<div class="post-container">
-									<div class="profile-block">
-										<h3>Level</h3>
-										<div class="level">
-											<?= isset($this->fan->fan_level)?$this->fan->fan_level:1?>
-										</div>
-									</div>
+				<div class="half" >
+					<div class="post-container">
+						<div class="profile-block">
+							<h3>Level</h3>
+							<div class="level">
+								<?= isset($this->fan->fan_level)?$this->fan->fan_level:1?>
+							</div>
+						</div>	
+						<div class="profile-block vertical-center">
+							<h3>
+								<?= isset($this->fan->fan_currency)?$this->fan->fan_currency:0?>
+							</h3> Points
+						</div>
 									
-									<div class="profile-block vertical-center">
-										<h3>
-											<?= isset($this->fan->fan_point)?$this->fan->fan_currency:0?>
-										</h3> Points
-									</div>
-									
-									<div class="profile-block" >
-										<h4>Fan Experience</h4>
+						<div class="profile-block" >
+							<h4>Fan Experience</h4>
 		
-										<div class="progress">
+							<div class="progress">
 		
-											<div class="bar" style="width: <?= isset($this->fan_exp_percentage)?$this->fan_exp_percentage:0?>%;">
+								<div class="bar" style="width: <?= isset($this->fan_exp_percentage)?$this->fan_exp_percentage:0?>%;"></div>
 		
-											</div>
-		
-										</div>
-										<h5>
-											<?=$this->fan_exp?>
-											/
-											<?=$this->fan_level_exp?>
-											<br />
-											<?=$this->fan_exp_required?>
-											Until Next Level
-										</h5>
-									</div>
-									
-							
+							</div>
+							<h5>
+								<?=$this->fan_exp?>/<?=$this->fan_level_exp?>
+								<br />
+								<?=$this->fan_exp_required?> Until Next Level
+							</h5>
+						</div>		
+					</div>
+				</div>
+					
+				<div class="half" >
+					<div class="post-container">	
+						<div class="profile-block">
+							<h4>Overall Achievement</h4>
+							<div class="progress">
+								<div class="bar" style="width: <?= $this->overall_achievement?>%;"></div>
+							</div>
+							<h5>
+								<?=$this->user_badge?>/<?=$this->all_badge?>
+							</h5>
+						</div>
+						<div class="profile-block">
+							<h4>Personal Achievement</h4>
+							<div class="progress">
+								<div class="bar" style="width: 60%;"></div>
+							</div>
+							<h5>0/100</h5>
+						</div>
+						<div class="profile-block">
+							<h4>Social Achievement</h4>
+								<div class="progress">
+									<div class="bar" style="width: 60%;"></div>
+								</div>
+								<h5>0/100</h5>
 							</div>
 						</div>
-					
-						<div class="half" >
-							<div class="post-container">	
-								<div class="profile-block">
-										<h4>Overall Achievement</h4>
-										<div class="progress">
-											<div class="bar" style="width: <?= $this->overall_achievement?>%;">
-											</div>
-		
-										</div>
-										<h5>
-											<?=$this->user_badge?>
-											/
-											<?=$this->all_badge?>
-										</h5>
-									</div>
-									<div class="profile-block">
-										<h4>Personal Achievement</h4>
-										<div class="progress">
-											<div class="bar" style="width: 60%;"></div>
-										</div>
-										<h5>0/100</h5>
-									</div>
-									<div class="profile-block">
-										<h4>Social Achievement</h4>
-										<div class="progress">
-											<div class="bar" style="width: 60%;"></div>
-										</div>
-										<h5>0/100</h5>
-									</div>
-					
-							</div>
-						</div>
-		
+					</div>
 				</div>
 					
 
@@ -233,7 +213,7 @@
 	<li class="post-container" >
 	<div class="post">
 		<div class="message">
-	No Recent Activities for this Fanpage.
+	No Recent Activities
 	</div>
 	</div>
 	</li>

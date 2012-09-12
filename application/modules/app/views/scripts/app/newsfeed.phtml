@@ -15,7 +15,14 @@
 		</div>
 		
 		<div class="row box">
-			<ul id="latestpost">
+			<?php  $post = $this->latest[0];?>
+			<?php $story = 1; ?>
+			<?php while (isset($post->story)){
+					$post = $this->latest[$story];
+					$story++;
+			}?>
+			
+			<ul id="latestpost" data-post_id="<?=$post->id?>">
 				<?php $count = 0?>
 
 				<?php if(empty($this->latest)){?>
@@ -32,12 +39,8 @@
 
 
 				
-				<?php  $post = $this->latest[0];?>
-				<?php $story = 1; ?>
-				<?php while (isset($post->story)){
-					$post = $this->latest[$story];
-					$story++;
-				}?>
+				
+				
 				
 	
 				<li class="post-container">
@@ -251,12 +254,12 @@
 				<li class="post-container">
 					<div class="post" id="feed-controller">
 						<span>[ <a rel="tooltip"
-								data-original-title='See all posts on the page.' data-placement='top'
+								data-original-title='See all posts on the page.' data-placement='top-left'
 									onclick="getFancrankfeed('all')"><span id="all-title" style="font-weight:bold">All</span></a> | 
-								<a rel="tooltip" data-placement='top'
+								<a rel="tooltip" data-placement='top-left'
 								data-original-title='Only show posts by the page owner and the people you follow.'
 							 onclick="getFancrankfeed('myfeed')"><span id="myfeed-title">My Feed</span></a> | 
-							 	<a  rel="tooltip" data-placement='top'
+							 	<a  rel="tooltip" data-placement='top-left'
 								data-original-title='Only show posts from the page owner'
 							 onclick="getFancrankfeed('admin')"><span id="pagepost-title">Page Post</span></a> ]
 						</span>
@@ -273,7 +276,7 @@
 							<div class="post-button-container">
 								<input type=button class="btn-submit" value="Share"
 									id="post_button"
-									onclick="post('<?= $this->fanpage_name?>' )">
+									onclick="post('<?= $this->fanpage_name?>' )"/>
 							</div>
 						</form>
 					</div>

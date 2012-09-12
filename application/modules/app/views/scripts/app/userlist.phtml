@@ -11,13 +11,27 @@
 		<?php }else{?>
 			
 		<?php }?>
-		
+		<?php $displayname=$this->user_name;?>
+	
+						
+		<?php 
+			if (strlen($displayname)>16){
+				$temp = explode(" ", $displayname);
+
+				if(strlen($temp[0])>16){
+					$displayname = substr($temp[0], 0, 13).'...'	;
+				}else if (strlen($temp[0]>13)){
+					$displayname = $temp[0];
+				}else{
+					$displayname = $temp[0] .' '. substr($temp[0], 0,1) .'.';
+				}
+			}?>
 
 	
 	
 		<?php if ($this->title != 'Likes'){?>
 			<div class="title-header">
-			<?=$this->user_name?>'s <?= $this->title?> List
+			<?=$displayname?>'s <?= $this->title?> List
 			</div>
 		<?php }else{?>
 			<div class="title-header nopic">
@@ -50,6 +64,21 @@
 	
 	<?php $count=0;?>
 	<?php foreach ($this->result as $user):?>	
+		<?php $displayname=$user['facebook_user_name'];?>
+	
+						
+		<?php 
+			if (strlen($displayname)>16){
+				$temp = explode(" ", $displayname);
+
+				if(strlen($temp[0])>16){
+					$displayname = substr($temp[0], 0, 13).'...'	;
+				}else if (strlen($temp[0]>13)){
+					$displayname = $temp[0];
+				}else{
+					$displayname = $temp[0] .' '. substr($temp[0], 0,1) .'.';
+				}
+			}?>
 		<li>
 			
 			<div class="ranker" >
@@ -69,7 +98,7 @@
 											<? if (($this->relation[$count] != 'Fanpage')){?>
 												onclick="userProfile('<?= $user['facebook_user_id'] ?>' , false)"
 												 rel="popover" data-content="" data-original-title=""
-												data-placement="top"<?}?>><?= $user['facebook_user_name']?></a>
+												data-placement="top"<?}?>><?= $displayname?></a>
 						
 					</div>
 					<!--   <br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?>  since <span class="time"

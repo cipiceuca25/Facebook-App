@@ -764,22 +764,34 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	
     	
-    	$this->view->fan_exp = $fan_exp;
-    	$this->view->fan_exp_required = $fan_exp_required - $fan_exp;
-    	$this->view->fan_level_exp = $fan_exp_required;
-    	$this->view->fan_exp_percentage = $fan_exp/$fan_exp_required*100;
+    	
     	
     	
     	
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
     	
-    		$stat_post = $stat[0]['total_posts'];
-    		$stat_comment = $stat[0]['total_comments'];
-    		$stat_like = $stat[0]['total_likes'];
-    		$stat_get_comment = $stat[0]['total_get_comments'];
-    		$stat_get_like = $stat[0]['total_get_likes'];
+    	$stat_post = $stat[0]['total_posts'];
+    	$stat_comment = $stat[0]['total_comments'];
+    	$stat_like = $stat[0]['total_likes'];
+    	$stat_get_comment = $stat[0]['total_get_comments'];
+    	$stat_get_like = $stat[0]['total_get_likes'];
     	
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
+    		$fan->fan_currency = '?';
+    		$fan->fan_level = '?';
+    		$fan_exp = '?';
+    		$fan_exp_required ='?';
+    		$fan_exp_percentage='?';
+    	}
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$fan->fan_currency = '?';
+    	}
+    	
+    	$this->view->fan_exp = $fan_exp;
+    	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
+    	$this->view->fan_level_exp = $fan_exp_required;
+    	$this->view->fan_exp_percentage = ($fan_exp == '?')?'?':$fan_exp/$fan_exp_required*100;
     	
     	$this->view->fan = $fan;
 
@@ -796,11 +808,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_comment = $stat_get_comment;
     	$this->view->stat_get_like = $stat_get_like;
     	
-    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		
-    	}else {
     	
-    	}
     	$this->render('myprofile');
     }
     
@@ -849,13 +857,30 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->facebook_user = $user;
     	$this->view->relation=$relation;
     	$this->view->stat= $stat;
-    	$this->view->fan = $fan;
+    
+    	if ($fan){
+    		
+    		
+    	}else{
+    		$fan['currency'] = 0;
+    		$fan['level']=1;
+    		$fan['created_time']=null;
+    		$fan['fan_country']=null;
     	
-    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		
-    	}else {
-    		
     	}
+    	
+    
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
+    		$fan['fan_currency'] = '?';
+    		$fan['fan_level'] = '?';
+   
+    	}
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$fan['fan_currency'] = '?';
+    	}
+    	
+
+    	$this->view->fan = $fan;
     	$this->render('popoverprofile');
     }
     //THIS IS PROBABLY SEARCHING 
@@ -916,14 +941,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id, $this->_fanpageId);
     	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
-    	$fan_exp = $fan->getCurrentEXP();
-    	$fan_exp_required = $fan->getNextLevelRequiredXP();
+    	
+    	
+    	
     	$cache = Zend_Registry::get('memcache');
     	$cache->setLifetime(3600);
     	$fan = null;
     	try {
     		$fanProfileId = $this->_fanpageId .'_' .$user->facebook_user_id .'_fan';
-    	
+    		
     		//Check to see if the $fanpageId is cached and look it up if not
     		if(isset($cache) && !$cache->load($fanProfileId)){
     			//echo 'db look up';
@@ -940,6 +966,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//echo $e->getMessage();
     	}
     	
+    	try{
+    		$fan_exp = $fan->getCurrentEXP();
+    		$fan_exp_required = $fan->getNextLevelRequiredXP();
+    	}catch(exception $e){
+    		$fan_exp = 0;
+    		$fan_exp_required = 400;
+    	}
     	//Zend_Debug::dump($fan);
     	$userBadges = new Model_BadgeEvents();
     	$userBadgeCount = $userBadges->getNumBadgesByUser($this->_fanpageId, $user->facebook_user_id);
@@ -962,26 +995,38 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
     	
     	
-	    	$stat_post = $stat[0]['total_posts'];
-	    	$stat_comment = $stat[0]['total_comments'];
-	    	$stat_like = $stat[0]['total_likes'];
-	    	$stat_get_comment = $stat[0]['total_get_comments'];
-	    	$stat_get_like = $stat[0]['total_get_likes'];
+	    $stat_post = $stat[0]['total_posts'];
+	    $stat_comment = $stat[0]['total_comments'];
+	    $stat_like = $stat[0]['total_likes'];
+	    $stat_get_comment = $stat[0]['total_get_comments'];
+	    $stat_get_like = $stat[0]['total_get_likes'];
     	
     	
     	$activitiesModel = new Model_FancrankActivities();
     	$activity = $activitiesModel->getRecentActivities($user->facebook_user_id, $this->_fanpageId, 20);//$activity->getUserActivity($this->_fanpageId, $user->facebook_user_id, 15);
     	
-    	$this->view->relation = $relation;
-    
-    	$this->view->fan = $fan;
-    	
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
+    		
+    		$fan->fan_currency = '?';
+    		$fan->fan_level = '?';
+    		$fan_exp = '?';
+    		$fan_exp_required ='?';
+    		$fan_exp_percentage='?';
+    	}
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		
+    		$fan->fan_currency = '?';
+    	}
     	 
     	$this->view->fan_exp = $fan_exp;
-    	$this->view->fan_exp_required = $fan_exp_required - $fan_exp;
+    	$this->view->fan_exp_required = ($fan_exp === '?')?'?':$fan_exp_required - $fan_exp;
     	$this->view->fan_level_exp = $fan_exp_required;
-    	$this->view->fan_exp_percentage = $fan_exp/$fan_exp_required*100;
-    
+    	$this->view->fan_exp_percentage = ($fan_exp === '?')?'?':$fan_exp/$fan_exp_required*100;
+    	 
+    	$this->view->fan = $fan;
+    	
+    	$this->view->relation = $relation;
+
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
@@ -995,11 +1040,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_comment = $stat_get_comment;
     	$this->view->stat_get_like = $stat_get_like;
     	 
-    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		
-    	}else {
-    
-    	}
+
     	$this->render('userprofile');
     }
 
@@ -1240,7 +1281,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$finalResult = array();
     	foreach ($posts as $post) {
     		$id = $post['post_id'];
-    		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$id/likes");
+    		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$id/");
     	}
     	 
     	$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$this->_accessToken;
@@ -1252,20 +1293,46 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$response = $client->request();
     	 
     	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-
+    	
     	foreach ($result as $post) {
     		if(!empty($post->code) &&  $post->code === 200 && isset($post->body)) {
-    			$likes = json_decode($post->body);
-    			if(isset($likes->data)) {
-    				$finalResult[] = $likes->data;
+    			$all = json_decode($post->body);
+    			if(isset($all)) {
+    				$allpost[] = $all;
     			}else {
-    				$finalResult[] = array();
+    				$allpost[] = array();
     			}
     		}else {
-    			$finalResult[] = array();
+    			$allpost[] = array();
     		}
     	}
-    	return $finalResult;	
+    	
+    	foreach ($allpost as $likes){
+    		
+    		$updatingPost = new Model_Posts();
+    		if (isset($likes->id)){
+    			$updatingPost = $updatingPost -> findPost($likes->id);
+    		
+    		
+	    		if(!empty ($updatingPost)){
+			    		if (isset($likes->likes->count)){
+			    			$updatingPost ->post_likes_count = $likes->likes->count;
+			    		}
+			    		if (isset($likes->comments->count)){
+			    			$updatingPost ->post_comments_count = $likes->comments->count;
+			    		}
+		    		$updatingPost->save();
+	    		}
+    		}
+    		if (isset($likes->likes)){
+    			$likeslist[] = $likes->likes->data;
+    		}else{
+    			$likeslist[] = array();
+    		}
+    	}
+    	
+    	
+    	return $likeslist;	
     }
     
     protected function getPost($postId){
