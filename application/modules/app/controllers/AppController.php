@@ -737,22 +737,34 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	
     	
-    	$this->view->fan_exp = $fan_exp;
-    	$this->view->fan_exp_required = $fan_exp_required - $fan_exp;
-    	$this->view->fan_level_exp = $fan_exp_required;
-    	$this->view->fan_exp_percentage = $fan_exp/$fan_exp_required*100;
+    	
     	
     	
     	
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
     	
-    		$stat_post = $stat[0]['total_posts'];
-    		$stat_comment = $stat[0]['total_comments'];
-    		$stat_like = $stat[0]['total_likes'];
-    		$stat_get_comment = $stat[0]['total_get_comments'];
-    		$stat_get_like = $stat[0]['total_get_likes'];
+    	$stat_post = $stat[0]['total_posts'];
+    	$stat_comment = $stat[0]['total_comments'];
+    	$stat_like = $stat[0]['total_likes'];
+    	$stat_get_comment = $stat[0]['total_get_comments'];
+    	$stat_get_like = $stat[0]['total_get_likes'];
     	
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
+    		$fan->fan_currency = '?';
+    		$fan->fan_level = '?';
+    		$fan_exp = '?';
+    		$fan_exp_required ='?';
+    		$fan_exp_percentage='?';
+    	}
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$fan->fan_currency = '?';
+    	}
+    	
+    	$this->view->fan_exp = $fan_exp;
+    	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
+    	$this->view->fan_level_exp = $fan_exp_required;
+    	$this->view->fan_exp_percentage = ($fan_exp == '?')?'?':$fan_exp/$fan_exp_required*100;
     	
     	$this->view->fan = $fan;
 
@@ -769,11 +781,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_comment = $stat_get_comment;
     	$this->view->stat_get_like = $stat_get_like;
     	
-    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		
-    	}else {
     	
-    	}
     	$this->render('myprofile');
     }
     
@@ -822,13 +830,30 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->facebook_user = $user;
     	$this->view->relation=$relation;
     	$this->view->stat= $stat;
-    	$this->view->fan = $fan;
+    
+    	if ($fan){
+    		
+    		
+    	}else{
+    		$fan['currency'] = 0;
+    		$fan['level']=1;
+    		$fan['created_time']=null;
+    		$fan['fan_country']=null;
     	
-    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		
-    	}else {
-    		
     	}
+    	
+    
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
+    		$fan['fan_currency'] = '?';
+    		$fan['fan_level'] = '?';
+   
+    	}
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$fan['fan_currency'] = '?';
+    	}
+    	
+
+    	$this->view->fan = $fan;
     	$this->render('popoverprofile');
     }
     //THIS IS PROBABLY SEARCHING 
@@ -945,15 +970,27 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$activitiesModel = new Model_FancrankActivities();
     	$activity = $activitiesModel->getRecentActivities($user->facebook_user_id, $this->_fanpageId, 20);//$activity->getUserActivity($this->_fanpageId, $user->facebook_user_id, 15);
     	
-    	$this->view->relation = $relation;
-    
-    	$this->view->fan = $fan;
-    	
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
+    		$fan->fan_currency = '?';
+    		$fan->fan_level = '?';
+    		$fan_exp = '?';
+    		$fan_exp_required ='?';
+    		$fan_exp_percentage='?';
+    	}
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$fan->fan_currency = '?';
+    	}
     	 
     	$this->view->fan_exp = $fan_exp;
-    	$this->view->fan_exp_required = $fan_exp_required - $fan_exp;
+    	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
     	$this->view->fan_level_exp = $fan_exp_required;
-    	$this->view->fan_exp_percentage = $fan_exp/$fan_exp_required*100;
+    	$this->view->fan_exp_percentage = ($fan_exp == '?')?'?':$fan_exp/$fan_exp_required*100;
+    	 
+    	$this->view->fan = $fan;
+    	
+    	$this->view->relation = $relation;
+    
+    	
     
     	$this->view->following = $following;
     	$this->view->follower = $follower;
@@ -968,11 +1005,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_comment = $stat_get_comment;
     	$this->view->stat_get_like = $stat_get_like;
     	 
-    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		
-    	}else {
-    
-    	}
+
     	$this->render('userprofile');
     }
 

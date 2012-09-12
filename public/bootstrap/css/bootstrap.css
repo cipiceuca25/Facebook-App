@@ -4262,7 +4262,7 @@ input[type="submit"].btn.btn-mini {
   filter: alpha(opacity=80);
 }
 
-.tooltip.top {
+.tooltip.top, .tooltip.top-left, .tooltip.top-right {
   margin-top: -2px;
 }
 
@@ -4280,7 +4280,25 @@ input[type="submit"].btn.btn-mini {
 
 .tooltip.top .tooltip-arrow {
   bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-top: 5px solid #000000;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+
+.tooltip.top.left .tooltip-arrow {
+  bottom: 0;
   left: 25%;
+  margin-left: -5px;
+  border-top: 5px solid #000000;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+
+.tooltip.top-right .tooltip-arrow {
+  bottom: 0;
+  left: 75%;
   margin-left: -5px;
   border-top: 5px solid #000000;
   border-right: 5px solid transparent;

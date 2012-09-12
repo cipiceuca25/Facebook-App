@@ -24,7 +24,7 @@
 														</div>
 												
 														<div class="follow">
-															<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>"<?php switch($this->relation[$count]) { 
+															<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>" data-placement='top-right'<?php switch($this->relation[$count]) { 
 															
 																case 'You':?>
 																	 data-original-title="This is You"><span class="badge badge-You">You</span>
@@ -69,7 +69,7 @@
 														
 													</div>
 													<div class="follow">
-														<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>" <?php switch($this->relation[$count]) { 
+														<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>"  data-placement='top-right'<?php switch($this->relation[$count]) { 
 																case 'You':?>
 																	 data-original-title="This is You"><span class="badge badge-You">You</span>
 																<?break;?>

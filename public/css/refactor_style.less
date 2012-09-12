@@ -412,7 +412,7 @@ padding:0 3px 0 3px;
 max-height:223px;
 }
 
-#user_list .top-list{
+.top-list{
 max-height:none;
 }
 
@@ -636,12 +636,19 @@ left:37px;
 padding:10px;
 }
 
-.post-container .message{
-word-break:break-all;
+.post-container .message,
+.post-container .link,
+.post-box,
+.comment-box{
+-ms-word-break: break-all;
+word-break: break-all;
+word-break: break-word;
+-webkit-hyphens: auto;
+-moz-hyphens: auto;
+hyphens: auto;
 }
 
 .post-container .link{
-word-wrap:break-word;
 font-size:11px;
 background-color: @color-post-link-background;
 border:1px solid  @color-post-link-border;
@@ -761,7 +768,6 @@ width:312px;
 margin:0 5px 0 5px;
 padding:1px;
 height:14px;
-word-break:hyphenate;
 outline:none;
 }
 

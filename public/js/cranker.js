@@ -113,7 +113,7 @@ $(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
 	}
 	$(this).data('isTooltipLoaded', true).tooltip({
 		delay : {show:1000, hide:100},
-		placement:'top'
+		
 	}).trigger('mouseover');
 });
 
@@ -122,7 +122,7 @@ $(document).on('mouseover', 'a[rel=tooltip-award]', function() {
 		return;
 	}
 	$(this).data('isTooltipLoaded', true).tooltip({
-		'placement' : 'top'
+		'placement' : 'top-left'
 	}).trigger('mouseover');
 
 });
@@ -400,7 +400,7 @@ function popup_post(post_id, limiter, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.profile-content').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$('.profile-content').html(data);

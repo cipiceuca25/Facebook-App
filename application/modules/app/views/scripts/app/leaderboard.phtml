@@ -7,7 +7,7 @@
 						<img src="/img/news-feed/top-fan-icon.jpg" />
 					</div>
 					<div class="title-header">
-						Top Fans
+						Top Fans this Week
 					</div>
 					<div class="tip">
 							<a rel="tooltip" title="The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!">?</a>
@@ -224,7 +224,7 @@
 											<h3>
 												<?= $this->topFanYou['number_of_posts']?>
 											</h3>
-											<span>Points <br />
+											<span>Points<br />
 											</span>
 											<a rel="tooltip-follow" data-original-title="This is You">
 											<span class="badge badge-You">
@@ -248,7 +248,7 @@
 						<img src="/img/news-feed/fan-fav-icon.jpg" />
 					</div>
 					<div class="title-header">
-						Fan Favorite
+						Fan Favorites this Week 
 						
 					</div>
 					<div class="tip">
@@ -295,7 +295,7 @@
 									<h3>
 										<?= $popular['count'] ?>
 									</h3>
-									<span>Points <br/>
+									<span>Props<br/>
 									</span>
 									<a rel="tooltip-follow" class ="follow_<?=$popular['facebook_user_id']?>"<?php switch($this->popularArray[$count]) { 
 										case 'You':?>
@@ -351,7 +351,7 @@
 									<h3>
 										<?= $popular['count'] ?>
 									</h3>
-									<span>Points <br/>
+									<span>Props<br/>
 										</span>
 									<a rel="tooltip-follow" class ="follow_<?=$popular['facebook_user_id']?>"<?php switch($this->popularArray[$count]) { 
 										case 'You':?>
@@ -458,7 +458,7 @@
 										<h3>
 											<?= $this->popularYou['count']?>
 										</h3>
-										<span>Points <br/>
+										<span>Props<br/>
 										</span>
 										<a rel="tooltip-follow" data-original-title="This is You">
 										<span class="badge badge-You">
@@ -481,7 +481,7 @@
 						<img src="/img/news-feed/top-talker-icon.jpg" />
 					</div>
 					<div class="title-header">
-					Top Talker
+					Top Talkers this Week 
 						
 					</div>
 					<div class="tip">
@@ -526,7 +526,7 @@
 									<h3>
 										<?= $talker['number_of_posts'] ?>
 									</h3>
-									<span>Points </span>
+									<span>Posts</span>
 									<br/>
 									<a rel="tooltip-follow" class ="follow_<?=$talker['facebook_user_id']?>"<?php switch($this->talkerArray[$count]) { 
 										case 'You':?>
@@ -582,7 +582,7 @@
 									<h3>
 										<?= $talker['number_of_posts'] ?>
 									</h3>
-									<span>Points</span>
+									<span>Posts</span>
 									<br/>
 									<a rel="tooltip-follow" class ="follow_<?=$talker['facebook_user_id']?>"<?php switch($this->talkerArray[$count]) { 
 										case 'You':?>
@@ -688,8 +688,7 @@
 										<h3>
 											<?= $this->talkerYou['number_of_posts']?>
 										</h3>
-										<span>Points
-										</span> <br/>
+										<span>Posts</span> <br/>
 										<a rel="tooltip-follow" data-original-title="This is You">
 										<span class="badge badge-You">
 											You
@@ -717,7 +716,7 @@
 						<img src="/img/news-feed/top-clicker-icon.jpg" />
 					</div>
 					<div class="title-header">
-					Top Clicker
+					Top Clickers this Week
 						
 					</div>
 					<div class="tip">
@@ -762,8 +761,7 @@
 									<h3>
 										<?= $clicker['number_of_likes'] ?>
 									</h3>
-									<span>Points
-										</span> <br/>
+									<span>Likes</span> <br/>
 									<a rel="tooltip-follow" class ="follow_<?=$clicker['facebook_user_id']?>"<?php switch($this->clickerArray[$count]) { 
 										case 'You':?>
 											 data-original-title="This is You"><span class="badge badge-You">You</span>
@@ -817,8 +815,7 @@
 									<h3>
 										<?= $clicker['number_of_likes'] ?>
 									</h3>
-									<span>Points
-										</span><br/>
+									<span>Likes</span><br/>
 									<a rel="tooltip-follow" class ="follow_<?=$clicker['facebook_user_id']?>"<?php switch($this->clickerArray[$count]) { 
 										case 'You':?>
 											 data-original-title="This is You"><span class="badge badge-You">You</span>
@@ -923,8 +920,7 @@
 										<h3>
 											<?= $this->clickerYou['number_of_likes']?>
 										</h3>
-										<span>Points
-										</span><br/>
+										<span>Likes</span><br/>
 										<a rel="tooltip-follow" data-original-title="This is You"><span class="badge badge-You">
 											You
 										</span></a>
@@ -992,8 +988,7 @@
 									<h3>
 										<?= $followed['count'] ?>
 									</h3>
-									<span>Points
-									</span> <br />
+									<span>Followers</span> <br />
 									<a rel="tooltip-follow" class ="follow_<?=$followed['facebook_user_id']?>"<?php switch($this->followedArray[$count]) { 
 										case 'You':?>
 											 data-original-title="This is You"><span class="badge badge-You">You</span>
@@ -1046,7 +1041,7 @@
 									<h3>
 										<?= $followed['count'] ?>
 									</h3>
-									<span>Points</span>
+									<span>Followers</span>
 									<br/>
 									<a rel="tooltip-follow" class ="follow_<?=$followed['facebook_user_id']?>"<?php switch($this->followedArray[$count]) { 
 										case 'You':?>
@@ -1152,7 +1147,7 @@
 										<h3>
 											<?= $this->followedYou['count']?>
 										</h3>
-										<span>Points</span><br/>
+										<span>Followers</span><br/>
 										<a rel="tooltip-follow" data-original-title="This is You">
 										<span class="badge badge-You">
 											You

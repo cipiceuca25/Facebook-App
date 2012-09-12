@@ -79,7 +79,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}
     	
     	//get top fans list from memcache
-    	$fanpage = array(
+    	$fanpage2 = array(
     				'topFans'=>array(),
     				'mostPopular'=>array(),
     				'topTalker'=>array(),
@@ -89,7 +89,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 
     	$cache = Zend_Registry::get('memcache');
     	$cache->setLifetime(1800);
-    	 
+    	
     	if(!empty($this->data['page']['id'])) {
     		
     		try {
@@ -97,29 +97,30 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanpageId)){
+    				
     				//echo 'db look up';
     				//Look up the $fanpageId
-    				$fanpage['topFans'] = $model->getTopFans($this->data['page']['id'], 5);
+    				$fanpage2['topFans'] = $model->getTopFans($this->data['page']['id'], 5);
     				//Zend_Debug::dump($topFans);
     				
-    				$fanpage['mostPopular'] = $model->getMostPopular($this->data['page']['id'], 5);
+    				$fanpage2['mostPopular'] = $model->getMostPopular($this->data['page']['id'], 5);
     				//Zend_Debug::dump($mostPopular);
     				
-    				$fanpage['topTalker'] = $model->getTopTalker($this->data['page']['id'], 5);
+    				$fanpage2['topTalker'] = $model->getTopTalker($this->data['page']['id'], 5);
     				//Zend_Debug::dump($topTalker);
     				
-    				$fanpage['topClicker'] = $model->getTopClicker($this->data['page']['id'], 5);
+    				$fanpage2['topClicker'] = $model->getTopClicker($this->data['page']['id'], 5);
     				//Zend_Debug::dump($topClicker);
     				 
     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    				$fanpage['topFollowed'] = $follow->getTopFollowed($this->data['page']['id'], 5);
+    				$fanpage2['topFollowed'] = $follow->getTopFollowed($this->data['page']['id'], 5);
     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     				
     				//Save to the cache, so we don't have to look it up next time
-    				$cache->save($fanpage, $fanpageId);
+    				$cache->save($fanpage2, $fanpageId);
     			}else {
     				//echo 'memcache look up';
-    				$fanpage = $cache->load($fanpageId);
+    				$fanpage2 = $cache->load($fanpageId);
     			}
     		} catch (Exception $e) {
     			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
@@ -128,11 +129,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}
     	//Zend_Debug::dump($color); exit();
     	//$this->view->user_name= $this->getUserName();
-    	$this->view->top_fans = $fanpage['topFans'];
-    	$this->view->most_popular = $fanpage['mostPopular'];
-    	$this->view->top_talker = $fanpage['topTalker'];
-    	$this->view->top_clicker = $fanpage['topClicker'];
-    	$this->view->top_followed = $fanpage['topFollowed'];
+    
     	
     	
 //     	try {
@@ -158,11 +155,39 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 //     		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
 //     		//echo $e->getMessage();
 //     	}
-    	
+    
     	$fanpage = $fanpageModel->findRow($this->data['page']['id']);
-    	if(isset($fanpage->fanpage_level) && $fanpage->fanpage_level == 1) {
-    		$this->render('free');
+    	
+    	
+    	if(isset($fanpage->fanpage_level) && $fanpage->fanpage_level != 3) {
+    		for ($i=0; $i<count($fanpage2['topFans']); $i++){
+    			$fanpage2['topFans'][$i]['number_of_posts'] = '?';
+    		}	
+    		for ($i=0; $i<count($fanpage2['mostPopular']); $i++){
+    			$fanpage2['mostPopular'][$i]['count'] = '?';
+    		}	
+    		for ($i=0; $i<count($fanpage2['topTalker']); $i++){
+    			$fanpage2['topTalker'][$i]['number_of_posts'] = '?';
+    		}
+    		for ($i=0; $i<count($fanpage2['topClicker']); $i++){
+    			$fanpage2['topClicker'][$i]['number_of_likes'] = '?';
+    		
+    		}
+    		for ($i=0; $i<count($fanpage2['topFollowed']); $i++){
+    			$fanpage2['topFollowed'][$i]['count'] = '?';
+    		}
+    		
     	}
+    	
+    	
+    	
+    	$this->view->top_fans = $fanpage2['topFans'];
+    	$this->view->most_popular = $fanpage2['mostPopular'];
+    	$this->view->top_talker = $fanpage2['topTalker'];
+    	$this->view->top_clicker = $fanpage2['topClicker'];
+    	$this->view->top_followed = $fanpage2['topFollowed'];
+    	
+    	$this->render('index');
     }
     
     protected function getUserName(){
