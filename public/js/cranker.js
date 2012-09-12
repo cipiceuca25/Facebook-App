@@ -1380,10 +1380,64 @@ var tourOptions = {
 							'position' : 'TL',
 							'tooltip' : 'Social Achievements', 
 							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },		   			   			   			   		
-					   		],	   		
-					   		
+				//37
+				{ element: 	'#follow-list-container', 
+							'position' : 'TL',
+							'tooltip' : 'Following/Followers List', 
+							'text' : 'These two display the list of followers and the list of people you are following <br/><br/>' },		   		
+				//38
+				{ element: 	'#follow-list-container .btn-more', 
+							'position' : 'TL',
+							'tooltip' : 'View more', 
+							'text' : 'Click the [View Full List] button to see the entire list of people <br/><br/>' },			
+				//39
+				{ element: 	'#other-stats-container', 
+							'position' : 'TL',
+							'tooltip' : 'Other Statistics', 
+							'text' : 'Here are a list of other statistics about you! <br/><br/>' },			
+				//40
+				{ element: 	'#recent-activities-container', 
+							'position' : 'TL',
+							'tooltip' : 'Recent Activities', 
+							'text' : ' <br/><br/>' },			
+				//41	   			   			   			   			   			   			   			   		
+				{ element: 	'#redeem-tab', 
+							'position' : 'TL',
+							'tooltip' : 'Redemption Page', 
+							'text' : 'This is the Redemption Page <br/><br/>' },	   					
+				//42	   			   			   			   			   			   			   			   		
+				{ element: 	'', 
+							'position' : 'TL',
+							'tooltip' : '&nbsp;', 
+							'text' : 'There are only a few more things to talk about. <br/><br/>' },				
+				//43	   			   			   			   			   			   			   			   		
+				{ element: 	'#top-post-container #toppost .post-container .user .name', 
+							'position' : 'TL',
+							'tooltip' : 'Click on any Username or Picture', 
+							'text' : 'If you click on a username or picture, it will bring out the user profile screen  <br/><br/>' },
+				//44
+				{ element: 	'', 
+							'position' : 'TL',
+							'tooltip' : '&nbsp;', 
+							'text' : 'You can see it it very similar to your own profile page, with the exception of their recent activities being on the bottom<br/><br/>' },
+				//45		   
+				{ element: 	'', 
+							'position' : 'TL',
+							'tooltip' : '&nbsp;', 
+							'text' : 'If you had only hovered over a name or profile, you will see something similar to this <br/><br/> \
+									  <img src="/img/tutorial1.png"/> <br/> ' },
+				//46					  
+				{ element: 	'', 
+							'position' : 'TL',
+							'tooltip' : '&nbsp;', 
+							'text' : 'If you click on Comments in Top Post or in Recent Activities it will bring out another window showing the  <br/><br/> ' },			  
 				
-			
+				{ element: 	'', 
+							'position' : 'TL',
+							'tooltip' : '&nbsp;', 
+							'text' : 'And that concludes our tutorial of Fancrank, Thanks for going through our tutorial. If you encounter any issues please email help@fancrank.com  <br/><br/> ' },			  
+
+							],	
 		controlsPosition : 'custom'
 	};
 

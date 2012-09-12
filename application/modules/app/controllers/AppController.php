@@ -1254,7 +1254,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$finalResult = array();
     	foreach ($posts as $post) {
     		$id = $post['post_id'];
-    		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$id/likes");
+    		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$id/");
     	}
     	 
     	$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$this->_accessToken;
@@ -1266,20 +1266,46 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$response = $client->request();
     	 
     	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-
+    	
     	foreach ($result as $post) {
     		if(!empty($post->code) &&  $post->code === 200 && isset($post->body)) {
-    			$likes = json_decode($post->body);
-    			if(isset($likes->data)) {
-    				$finalResult[] = $likes->data;
+    			$all = json_decode($post->body);
+    			if(isset($all)) {
+    				$allpost[] = $all;
     			}else {
-    				$finalResult[] = array();
+    				$allpost[] = array();
     			}
     		}else {
-    			$finalResult[] = array();
+    			$allpost[] = array();
     		}
     	}
-    	return $finalResult;	
+    	
+    	foreach ($allpost as $likes){
+    		
+    		$updatingPost = new Model_Posts();
+    		if (isset($likes->id)){
+    			$updatingPost = $updatingPost -> findPost($likes->id);
+    		
+    		
+	    		if(!empty ($updatingPost)){
+			    		if (isset($likes->likes->count)){
+			    			$updatingPost ->post_likes_count = $likes->likes->count;
+			    		}
+			    		if (isset($likes->comments->count)){
+			    			$updatingPost ->post_comments_count = $likes->comments->count;
+			    		}
+		    		$updatingPost->save();
+	    		}
+    		}
+    		if (isset($likes->likes)){
+    			$likeslist[] = $likes->likes->data;
+    		}else{
+    			$likeslist[] = array();
+    		}
+    	}
+    	
+    	
+    	return $likeslist;	
     }
     
     protected function getPost($postId){

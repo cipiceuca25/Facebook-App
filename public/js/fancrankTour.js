@@ -97,8 +97,12 @@
 			} else {
 				$tooltip.hide();
 				stepData = options.data[step];
-
-				if (step <= steps) {
+				
+				if (step+1 == steps){
+					$('#tourPrev').show();
+					$('#tourEnd').show();
+					$('#tourNext').hide();
+				}else if (step <= steps) {
 					$('#tourPrev').show();
 					$('#tourEnd').show();
 					$('#tourNext').show().html(options.buttons.next);
@@ -599,9 +603,57 @@
 				break;	
 			case 37:
 				$('#social-container').css('z-index','');
-			
+				$('#follow-list-container').css('z-index', '500');
 				break;	
-				
+			case 39:
+				$('#follow-list-container').css('z-index','');
+				$('#other-stats-container').css('z-index', '500');
+				break;		
+			case 40:
+				$('#other-stats-container').css('z-index', '');
+				$('#recent-activities-container').css('z-index','500');
+				break;	
+			case 41:
+				getRedeem();
+				$('#leaderboard').html('');
+				$('#news-feed').html('');
+				$('#myprofile').html('');
+				$('.nav.nav-tabs li:eq(3) a').tab('show'); 
+				$('#pageTabs').css('z-index','500');
+				break;
+			case 42:
+				$('#pageTabs').css('z-index','');
+				feedLimit = 0;
+				getNewsfeed('#news-feed');
+				$('.nav.nav-tabs a:first').tab('show');
+				$('#leaderboard').html('');
+				$('#profile').html('');
+				$('#redeem').html('');
+				break;
+			case 43:
+				$('#top-post-container').css('z-index', '500');
+				break;
+			case 44:
+				$('#top-post-container').css('z-index', '');
+				userProfile(userId);
+				$('.user-profile').css('z-index','500');
+				break;
+			case 45:
+				$('.user-profile').css('z-index','25');
+				$('.user-profile').css('display', 'none');
+				$('.profile-content').css('display', 'none');
+				$('.profile-content').html('');
+				break;
+			case 46:
+				popup_post($('#latestpost').attr('data-post_id'), 10, true);
+				$('.user-profile').css('z-index','500');
+				break;
+			case 47:
+				$('.user-profile').css('z-index','25');
+				$('.user-profile').css('display', 'none');
+				$('.profile-content').css('display', 'none');
+				$('.profile-content').html('');
+				break;
 		}
 		methods.next();
 		
