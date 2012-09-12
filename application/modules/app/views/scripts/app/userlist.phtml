@@ -11,13 +11,27 @@
 		<?php }else{?>
 			
 		<?php }?>
-		
+		<?php $displayname=$this->user_name;?>
+	
+						
+		<?php 
+			if (strlen($displayname)>16){
+				$temp = explode(" ", $displayname);
+
+				if(strlen($temp[0])>16){
+					$displayname = substr($temp[0], 0, 13).'...'	;
+				}else if (strlen($temp[0]>13)){
+					$displayname = $temp[0];
+				}else{
+					$displayname = $temp[0] .' '. substr($temp[0], 0,1) .'.';
+				}
+			}?>
 
 	
 	
 		<?php if ($this->title != 'Likes'){?>
 			<div class="title-header">
-			<?=$this->user_name?>'s <?= $this->title?> List
+			<?=$displayname?>'s <?= $this->title?> List
 			</div>
 		<?php }else{?>
 			<div class="title-header nopic">

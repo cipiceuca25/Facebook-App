@@ -914,14 +914,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id, $this->_fanpageId);
     	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
-    	$fan_exp = $fan->getCurrentEXP();
-    	$fan_exp_required = $fan->getNextLevelRequiredXP();
+    	
+    	
+    	
     	$cache = Zend_Registry::get('memcache');
     	$cache->setLifetime(3600);
     	$fan = null;
     	try {
     		$fanProfileId = $this->_fanpageId .'_' .$user->facebook_user_id .'_fan';
-    	
+    		
     		//Check to see if the $fanpageId is cached and look it up if not
     		if(isset($cache) && !$cache->load($fanProfileId)){
     			//echo 'db look up';
@@ -938,6 +939,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//echo $e->getMessage();
     	}
     	
+    	try{
+    		$fan_exp = $fan->getCurrentEXP();
+    		$fan_exp_required = $fan->getNextLevelRequiredXP();
+    	}catch(exception $e){
+    		$fan_exp = 0;
+    		$fan_exp_required = 400;
+    	}
     	//Zend_Debug::dump($fan);
     	$userBadges = new Model_BadgeEvents();
     	$userBadgeCount = $userBadges->getNumBadgesByUser($this->_fanpageId, $user->facebook_user_id);
@@ -960,17 +968,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
     	
     	
-	    	$stat_post = $stat[0]['total_posts'];
-	    	$stat_comment = $stat[0]['total_comments'];
-	    	$stat_like = $stat[0]['total_likes'];
-	    	$stat_get_comment = $stat[0]['total_get_comments'];
-	    	$stat_get_like = $stat[0]['total_get_likes'];
+	    $stat_post = $stat[0]['total_posts'];
+	    $stat_comment = $stat[0]['total_comments'];
+	    $stat_like = $stat[0]['total_likes'];
+	    $stat_get_comment = $stat[0]['total_get_comments'];
+	    $stat_get_like = $stat[0]['total_get_likes'];
     	
     	
     	$activitiesModel = new Model_FancrankActivities();
     	$activity = $activitiesModel->getRecentActivities($user->facebook_user_id, $this->_fanpageId, 20);//$activity->getUserActivity($this->_fanpageId, $user->facebook_user_id, 15);
     	
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
+    		
     		$fan->fan_currency = '?';
     		$fan->fan_level = '?';
     		$fan_exp = '?';
@@ -978,20 +987,19 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$fan_exp_percentage='?';
     	}
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		
     		$fan->fan_currency = '?';
     	}
     	 
     	$this->view->fan_exp = $fan_exp;
-    	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
+    	$this->view->fan_exp_required = ($fan_exp === '?')?'?':$fan_exp_required - $fan_exp;
     	$this->view->fan_level_exp = $fan_exp_required;
-    	$this->view->fan_exp_percentage = ($fan_exp == '?')?'?':$fan_exp/$fan_exp_required*100;
+    	$this->view->fan_exp_percentage = ($fan_exp === '?')?'?':$fan_exp/$fan_exp_required*100;
     	 
     	$this->view->fan = $fan;
     	
     	$this->view->relation = $relation;
-    
-    	
-    
+
     	$this->view->following = $following;
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
