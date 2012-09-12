@@ -179,6 +179,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
      	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 5);
      	$topPostByComment = $fanpageModel->getTopPostsByNumberOfComments($fanpageId, 5);
      	$topFanList = $fanpageModel->getTopFanList($fanpageId, 50);
+     	//Zend_Debug::dump($topFanList); exit();
      	$fansNumberBySex = $fanpageModel->getFansNumberBySex($fanpageId);
     	
     	$this->view->fans = $fanpageModel->getFansNumber($fanpageId);
