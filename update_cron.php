@@ -91,7 +91,7 @@ if (count($fanpageList) > 0) {
 			$logger->log('Update fanpage cron Failed: ' .$errMsg .'<br/>' .$e->getMessage(), Zend_Log::INFO);
 			$error = true;
 		}
-		
+		//hello
 		//update fanpage fans stat
 		$fan = new Model_Fans();
 		$fanList = $fan->fetchFansIdListByFanpageId($fanpage->fanpage_id);
