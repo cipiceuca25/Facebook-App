@@ -116,21 +116,20 @@
 									</div>
 								<?php }?>
 								<div class="link-right">
-									<a target="_new" class="link-title" href="<?echo $this->escape($post->link)?>">
-										<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
-									</a>
-									<?php if(isset($post->caption)){?>
-										<br/>
-										<a target="_new" class="link-caption" href="<?echo $this->escape($post->link)?> ">
-											<?php echo $this->escape($post->caption);?>:  
+										<a target="new" class="link-title" href="<?echo $this->escape($this->post->link)?>">
+											<?= (isset($this->post->name)?$this->escape($this->post->name): $this->escape($$this->post->link))?>
 										</a>
-									<?php }?>	
-							
-									<?php if (isset($post->description)){?>
-										<a target="_new" class="link-caption" href="<?echo $this->escape($post->link)?> ">	
-											<?=$this->escape($post->description)?> 
-										</a>
-									<?php }?>
+										<?php if(isset($this->post->caption)){?>
+											<br/>
+											<a target="new" class="link-caption" href="<?echo $this->escape($$this->post->link)?> ">
+												<?php echo $this->escape($$this->post->caption);?>:  
+											</a>
+										<?php }?>	
+									
+										<?php if (isset($post->description)){?>
+												<?=$this->escape($this->post->description)?> 
+											
+										<?php }?>
 								</div>
 							</div>
 						<?}?>

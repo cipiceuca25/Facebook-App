@@ -303,7 +303,7 @@ function userProfile(user, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.profile-content').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 
@@ -453,7 +453,7 @@ function getTopPost() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#toppost').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('#toppost').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 

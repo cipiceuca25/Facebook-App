@@ -255,12 +255,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		}
   		//Zend_Debug::dump($fanpage);
     	//exit();
-    	$this->view->top_fans = $fanpage['topFans'];
-    	$this->view->most_popular = $fanpage['mostPopular'];
-    	$this->view->top_talker = $fanpage['topTalker'];
-    	$this->view->top_clicker = $fanpage['topClicker'];
-    	$this->view->top_followed = $fanpage['topFollowed'];
-
+    	
     	$topArray = NULL;
     	$popularArray = NULL;
     	$talkerArray = NULL;
@@ -344,8 +339,51 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			//echo $e->getMessage();
     		}
     	}
+		
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level != 3) {
+    		for ($i=0; $i<count($fanpage['topFans']); $i++){
+    			$fanpage['topFans'][$i]['number_of_posts'] = '?';
+    		}	
+    		for ($i=0; $i<count($fanpage['mostPopular']); $i++){
+    			$fanpage['mostPopular'][$i]['count'] = '?';
+    		}	
+    		for ($i=0; $i<count($fanpage['topTalker']); $i++){
+    			$fanpage['topTalker'][$i]['number_of_posts'] = '?';
+    		}
+    		for ($i=0; $i<count($fanpage['topClicker']); $i++){
+    			$fanpage['topClicker'][$i]['number_of_likes'] = '?';
+    		
+    		}
+    		for ($i=0; $i<count($fanpage['topFollowed']); $i++){
+    			$fanpage['topFollowed'][$i]['count'] = '?';
+    		}
+    		
+    		if 	($userLeaderBoardData['topFans'] !=null) {
+    			$userLeaderBoardData['topFans']['number_of_posts'] = '?';
+    		}
+    		if 	($userLeaderBoardData['mostPopular'] !=null) {
+    			$userLeaderBoardData['mostPopular']['count'] = '?';
+    		}	
+    		if 	($userLeaderBoardData['topTalker'] !=null) {
+    			$userLeaderBoardData['topTalker']['number_of_posts'] = '?';
+    		}	
+    		if 	($userLeaderBoardData['topClicker'] !=null) {
+    			$userLeaderBoardData['topClicker']['number_of_likes'] = '?';
+    		}
+    		if 	($userLeaderBoardData['topFollowed'] !=null) {
+    			$userLeaderBoardData['topFollowed']['count'] = '?';
+    		}
+    	}
 
- 
+    	//Zend_Debug::dump($userLeaderBoardData['topFans']);
+    	
+    	$this->view->top_fans = $fanpage['topFans'];
+    	$this->view->most_popular = $fanpage['mostPopular'];
+    	$this->view->top_talker = $fanpage['topTalker'];
+    	$this->view->top_clicker = $fanpage['topClicker'];
+    	$this->view->top_followed = $fanpage['topFollowed'];
+    	 
+    	
     	$this->view->topFanYou =  $userLeaderBoardData['topFans'];
     	$this->view->popularYou = $userLeaderBoardData['mostPopular'];
     	$this->view->talkerYou = $userLeaderBoardData['topTalker'];
@@ -357,12 +395,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->talkerArray = $talkerArray ;
     	$this->view->clickerArray = $clickerArray ;
     	$this->view->followedArray = $followedArray ;
-    	 
-    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$this->render('leaderboard');
-    	}else {
-    		$this->render("free/leaderboard");
-    	}
+    	
+    	
+    	
+    	
+    	$this->render('leaderboard');
   	}
 
   	/* Action to show login user's wall post */
@@ -733,10 +770,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_like = $stat_get_like;
     	
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$this->render('myprofile');
+    		
     	}else {
-    		$this->render("free/myprofile");
+    	
     	}
+    	$this->render('myprofile');
     }
     
     public function popoverprofileAction(){
@@ -787,10 +825,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->fan = $fan;
     	
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$this->render('popoverprofile');
+    		
     	}else {
-    		$this->render("free/popoverprofile");
+    		
     	}
+    	$this->render('popoverprofile');
     }
     //THIS IS PROBABLY SEARCHING 
     public function userprofileAction() {
@@ -930,10 +969,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_like = $stat_get_like;
     	 
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$this->render('userprofile');
+    		
     	}else {
-    		$this->render("free/userprofile");
+    
     	}
+    	$this->render('userprofile');
     }
 
 

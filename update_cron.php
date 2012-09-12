@@ -54,7 +54,7 @@ if (count($fanpageList) > 0) {
 	
 	$error = false;
 	foreach ($fanpageList as $fanpage) {
-		if($fanpage->fanpage_id != '216821905014540') continue;
+		//if($fanpage->fanpage_id != '216821905014540') continue;
 		$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
 		$data = array(
 				'fanpage_id'	=> $fanpage->fanpage_id,
@@ -91,7 +91,7 @@ if (count($fanpageList) > 0) {
 			$logger->log('Update fanpage cron Failed: ' .$errMsg .'<br/>' .$e->getMessage(), Zend_Log::INFO);
 			$error = true;
 		}
-		
+		//hello
 		//update fanpage fans stat
 		$fan = new Model_Fans();
 		$fanList = $fan->fetchFansIdListByFanpageId($fanpage->fanpage_id);
