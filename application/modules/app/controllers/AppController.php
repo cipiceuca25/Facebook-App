@@ -652,22 +652,49 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
     public function redeemAction() {
     	$this->_helper->layout->disableLayout();
-    	//$this->_helper->viewRenderer->setNoRender(true);
-    	//Zend_Debug::dump($this->_facebook_user);
-    	//$this->view->facebook_user = $this->_facebook_user;
     	 
-    	$user = new Model_FacebookUsers();
-    	 
-    	$user = $user->find($this->_userId)->current();
-    	//Zend_Debug::dump($user);
+		$user = $this->_facebook_user;
+		
     	if($user) {
     		$this->view->facebook_user = $user;
-    		//$access_token = $this->facebook_user->facebook_user_access_token;
-    		//$this->view->feed = $this->getFeed($access_token);
     	}else {
     		$this->view->facebook_user = null;
     	}
+
+    	$rankingModel = new Model_Rankings;
+    	$userLeaderBoardData = array();
+    	
+    	$cache = Zend_Registry::get('memcache');
+    	//$cache->remove($this->_fanpageId .'_' .$user->facebook_user_id);
+    	try {
+    		//Check to see if the $fanpageId is cached and look it up if not
+    		if(isset($cache) && !$cache->load($this->_fanpageId .'_' .$user->facebook_user_id)){
+    			//Look up the $fanpageId
+    			$userLeaderBoardData['topFans'] = $rankingModel->getUserTopFansRank($this->_fanpageId, $user->facebook_user_id);
+    	
+    		}else {
+    			//echo 'memcache look up';
+    			$userLeaderBoardData = $cache->load($this->_fanpageId, $user->facebook_user_id);
+    		}
+    	} catch (Exception $e) {
+    		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    		//echo $e->getMessage();
+    	}
+    	
+    	//enable top 5 fan restriction
+//     	$badgesList = array();
+//     	if(!empty($userLeaderBoardData['topFans']['my_rank']) && $userLeaderBoardData['topFans']['my_rank'] < 5) {
+//     		$badgeModel = new Model_Badges();
+//     		$badgesList = $badgeModel->findByFanpageLevel($this->_fanpageProfile->fanpage_level, $this->_fanpageId, $user->facebook_user_id);
+//     	}
+
+    	$badgesList = array();
+    	$badgeModel = new Model_Badges();
+    	$badgesList = $badgeModel->findByFanpageLevel($this->_fanpageProfile->fanpage_level, $this->_fanpageId, $user->facebook_user_id);
     	 
+    	$this->view->badgesList = $badgesList;
+    	//Zend_Debug::dump($badgesList->toArray());
+    	
     	$this->render("redeem");
     }
     

@@ -29,6 +29,21 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	public function hasBadgeEvent($fanpage_id, $facebook_user_id, $badge_id) {
+		$query = $this->select()
+			->from($this, array('id'))
+			->where('fanpage_id = ?', $fanpage_id)
+			->where('facebook_user_id = ?', $facebook_user_id)
+			->where('badge_id = ?', $badge_id)
+			->limit(1);
+		
+		$result = $this->fetchAll($query)->count();
+		
+		if($result) {
+			return true;
+		}
+		return false;
+	}
 }
 
 
