@@ -29,7 +29,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 					l.fanpage_id = $fanpage_id and p.facebook_user_id = $facebook_user_id and l.likes = 1 group by l.post_type 
 					union
 					select 'got_like_comment' as type, count(*) as count from likes l left join comments c on(l.post_id = c.comment_id) where
-					l.fanpage_id = $fanpage_id and c.facebook_user_id = $facebook_user_id and l.likes = 1
+					l.fanpage_id = $fanpage_id and c.facebook_user_id = $facebook_user_id and l.likes = 1 group by 1.post_type
 					union
 					select concat('got_comment_', p.post_type) as type, sum(p.post_comments_count) as count from posts p where p.fanpage_id = $fanpage_id and p.facebook_user_id = $facebook_user_id group by p.post_type
 				";

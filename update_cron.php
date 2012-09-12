@@ -54,7 +54,7 @@ if (count($fanpageList) > 0) {
 	
 	$error = false;
 	foreach ($fanpageList as $fanpage) {
-		//if($fanpage->fanpage_id != '216821905014540') continue;
+		if($fanpage->fanpage_id != '197221680326345') continue;
 		$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
 		$data = array(
 				'fanpage_id'	=> $fanpage->fanpage_id,
@@ -71,7 +71,7 @@ if (count($fanpageList) > 0) {
 				echo $fanpage->fanpage_id .' ' .$fanpage->access_token .PHP_EOL;
 				//update fanpage
 				$collector = new Service_FancrankCollectorService(null, $fanpage->fanpage_id, $fanpage->access_token, 'update');
-				$collector->updateFanpage('yesterday', 'now');
+				$collector->updateFanpage('2+days+ago','now');
 				
 				$data['status'] = 'success';
 				
