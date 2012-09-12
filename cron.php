@@ -55,7 +55,7 @@ $messages = $queue->receive(1);
 $link = 'www.fancrank.local/admin';
 
 if(APPLICATION_ENV === 'production') {
-	$link = 'https://fancranapp.com/admin';
+	$link = 'https://fancrankapp.com/admin';
 }
 
 if (count($messages) > 0) {
