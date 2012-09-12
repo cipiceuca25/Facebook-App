@@ -17,7 +17,7 @@
 		},
 		tooltipColors : {
 			background : 'rgba(255,255,255, 0.80)',
-			border : '2px solid #C1CEE0',
+			border : '2px solid rgba(71, 101, 142, 0.80)',
 			color : '#111',
 		}
 	};
@@ -204,7 +204,7 @@
 			th = $tooltip.height() + parseInt($tooltip.css('padding-top')) + parseInt($tooltip.css('padding-bottom'))+ parseInt($tooltip.css('border-width'));
 
 			$('.tourArrow').remove();
-			tbg = '#C1CEE0';//$tooltip.css('background-color');
+			tbg = 'rgba(71, 101, 142, 0.80)';//$tooltip.css('background-color');
 			
 			$upArrow = $('<div class="tourArrow"></div>').css({
 				'position' : 'absolute',

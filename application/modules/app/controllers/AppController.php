@@ -357,12 +357,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->talkerArray = $talkerArray ;
     	$this->view->clickerArray = $clickerArray ;
     	$this->view->followedArray = $followedArray ;
-    	 
+    	
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$this->render('leaderboard');
+    		
     	}else {
-    		$this->render("free/leaderboard");
+    		
     	}
+    	$this->render('leaderboard');
   	}
 
   	/* Action to show login user's wall post */
@@ -787,10 +788,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->fan = $fan;
     	
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$this->render('popoverprofile');
+    		
     	}else {
-    		$this->render("free/popoverprofile");
+    		
     	}
+    	$this->render('popoverprofile');
     }
     //THIS IS PROBABLY SEARCHING 
     public function userprofileAction() {
@@ -930,10 +932,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_like = $stat_get_like;
     	 
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$this->render('userprofile');
+    		
     	}else {
-    		$this->render("free/userprofile");
+    
     	}
+    	$this->render('userprofile');
     }
 
 
