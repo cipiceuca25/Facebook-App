@@ -13,7 +13,7 @@ class Model_Badges extends Model_DbTable_Badges
 		switch($level) {
 			case 1: $where = "b.name = 'top-fan' or b.name = 'top-post'"; break;
 			case 2: $where = "b.name = 'top-fan' or b.name = 'top-post' or b.name = 'someone-likes-you'"; break;
-			case 3: break;
+			case 3: $where = "b.name = 'top-fan' or b.name = 'top-post' or b.name = 'someone-likes-you'"; break;
 			default: break; 
 		}
 		

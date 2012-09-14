@@ -37,9 +37,9 @@
 			</td>
 			<td class="status">
 				<?php if ( !empty($page['active']) ): ?>
-					<button class="deactivate btn btn-danger" rel="tooltip" title="Turn off data collection for this page" data-id="<?= $page['fanpage_id'] ?>">Deactivate</button>
+					<button class="deactivate btn btn-danger" rel="tooltip" title="Turn off data collection for this page" data-id="<?= $page['fanpage_id'] ?>" data-level=<?= $page['fanpage_level'] ?>>Deactivate</button>
 				<?php else: ?>
-					<button class="activate btn btn-success" rel="tooltip" title="Turn on data collection for this page" data-id="<?= $page['fanpage_id'] ?>">Activate</button>
+					<button class="activate btn btn-success" rel="tooltip" title="Turn on data collection for this page" data-id="<?= $page['fanpage_id'] ?>" data-level=<?= $page['fanpage_level'] ?>>Activate</button>
 				<?php endif; ?>
 			</td>
 			<td class="tab">
@@ -59,15 +59,25 @@
 					<button class="app-analytic btn" rel="tooltip" title="See your fanpage statistics" data-id="<?= $page['fanpage_id'] ?>">Dashboard</button>
 				<?php endif; ?>
 			</td>
-			<td class="upgrade">
+			<td class="upgrade" style="padding-top: 15px;">
 				<?php if ( !empty($page['active']) ): ?>
-					<?php if ( !empty($page['fanpage_level']) && $page['fanpage_level'] == 1): ?>
-						<button class="btn btn-upgrade" rel="tooltip" title="upgrade to premium fanpage" data-id="<?= $page['fanpage_id'] ?>">Upgrade To Premium</button>
-					<?php else: ?>
-						<button class="btn btn-upgrade disabled" rel="tooltip" title="upgrade to premium fanpage" data-id="<?= $page['fanpage_id'] ?>">Premium</button>
+					<?php if ( !empty($page['fanpage_level']) ): ?>
+						<div class="btn-group">
+							<ul class="nav nav-pills">
+								<li class="dropdown"><a class="dropdown-toggle"
+									data-toggle="dropdown" href="#menu2"><span id="<?= $page['fanpage_id'] ?>_level_text"><?php $arr=array(1=>'Free',2=>'Premium',3=>'Enterprise'); echo $arr[$page['fanpage_level']]; ?></span> <b
+										class="caret"></b>
+								</a>
+									<ul class="dropdown-menu level-dropdown">
+										<li><a href="#" data-id="<?= $page['fanpage_id'] ?>" data-level=1>Free</a></li>
+										<li><a href="#" data-id="<?= $page['fanpage_id'] ?>" data-level=2>Premium</a></li>
+										<li><a href="#" data-id="<?= $page['fanpage_id'] ?>" data-level=3>Enterprise</a></li>
+									</ul></li>
+							</ul>
+						</div>
 					<?php endif; ?>
 				<?php endif; ?>
-			</td>			
+			</td>
 		</tr>
 	<?php endforeach; ?>
 	</tbody>	

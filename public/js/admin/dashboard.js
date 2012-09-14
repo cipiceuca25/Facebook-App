@@ -19,7 +19,7 @@ jQuery(document).ready(function($){
 				addPreviewButton(this, $(this).attr('data-id'));
 				addInstallButton(this, $(this).attr('data-id'));
 				addAnalyticButton(this, $(this).attr('data-id'));
-				addUpgradeButton(this, $(this).attr('data-id'));
+				addUpgradeMenu(this, $(this).attr('data-id'), $(this).attr('data-level'));
 			}.bind(this)
 		});
 	});
@@ -45,7 +45,7 @@ jQuery(document).ready(function($){
 				//remove the install button
 				$(this).closest('tr').find('.preview').find('button').remove();
 				$(this).closest('tr').find('.analytic').find('button').remove();
-				$(this).closest('tr').find('.upgrade').find('button').remove();
+				$(this).closest('tr').find('.upgrade').find('.btn-group').remove();
 				$(this).closest('tr').find('.tab').find('button').remove();
 			}.bind(this)
 		});
@@ -94,19 +94,6 @@ jQuery(document).ready(function($){
 		
 	});
 	
-	$(document).delegate('.btn-upgrade:not(.disabled)', 'click', function(event){
-		//show the install screen in the iframe
-		$.ajax({
-			'url': '/api/fanpages/' + $(this).attr('data-id'),
-			'type': 'UPGRADE',
-			'success': function(xhr) {
-				$(this).html('premium');
-				$(this).addClass('disabled');
-			}.bind(this)
-		});
-		
-	});
-
 	/*$(document).delegate('.delete-tab', 'click', function(event){
 		//show the install screen in the iframe
 		$.ajax({
@@ -161,10 +148,24 @@ function deleteSuccess(page)
 
 function addAnalyticButton(btn, id)
 {
-	$(btn).closest('tr').find('.analytic').append('<button class="app-analytic btn btn-analytic" rel="tooltip" title="See your fanpage statistics" data-id="' + id + '">Analytic</button>');
+	$(btn).closest('tr').find('.analytic').append('<button class="app-analytic btn btn-analytic" rel="tooltip" title="See your fanpage statistics" data-id="' + id + '">DashBoard</button>');
 }
 
-function addUpgradeButton(btn, id)
+function addUpgradeMenu(btn, id, level)
 {
-	$(btn).closest('tr').find('.upgrade').append('<button class="btn btn-upgrade" rel="tooltip" title="Premium" data-id="' + id + '">Upgrade To Premium</button>');
+	var text = ['Free', 'Premium', 'Enterprise'];
+	console.log(level);
+	console.log(text[level]);
+
+	$(btn).closest('tr').find('.upgrade').append(
+		'<div class="btn-group">'+
+			'<ul class="nav nav-pills">'+
+				'<li class="dropdown"><a class="dropdown-toggle"'+
+					'data-toggle="dropdown" href="#menu2"><span id="'+id+'_level_text">'+text[level-1]+'</span> <b class="caret"></b></a>'+
+					'<ul class="dropdown-menu level-dropdown">'+
+						'<li><a href="#" data-id="'+id+'" data-level=1>Free</a></li>'+
+						'<li><a href="#" data-id="'+id+'" data-level=2>Premium</a></li>'+
+						'<li><a href="#" data-id="'+id+'" data-level=3>Enterprise</a></li>'+
+					'</ul></li>'+
+		'</ul></div>');
 }

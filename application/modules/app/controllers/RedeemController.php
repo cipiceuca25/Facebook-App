@@ -19,6 +19,10 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 		$this->_helper->layout()->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
 		//check for user authorization
+		if($this->getFrontController()->getRequest()->getActionName() == 'track') {
+			return;
+		}
+		
 		$this->_auth = Zend_Auth::getInstance();
 		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
 		$this->_identity = $this->_auth->getIdentity();
@@ -34,12 +38,12 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 	}
 	
 	public function confirmAction() {
-		$badgeId = $this->_getParam('badgeId');
-		$badgeModel = new Model_Badges();
+		$itemId = $this->_getParam('itemId');
+		$itemModel = new Model_Items();
 		
-		$badge = $badgeModel->findRow($badgeId);
-		$badgeEventsModel = new Model_BadgeEvents();
-
+		$item = $itemModel->findRow($itemId);
+		$redeemModel = new Model_RedeemTransactions();
+		
 		$rankingModel = new Model_Rankings;
 		$userLeaderBoardData = array();
 		
@@ -64,17 +68,53 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 // 			return;
 // 		}
 		
-		if(isset($badge->id) && !$badgeEventsModel->hasBadgeEvent($this->_identity->fanpage_id, $this->_identity->facebook_user_id, $badgeId)) {
+		$date = Zend_Date::now();
+		
+		if(isset($item->id)) {
 			$data = array(
 						'fanpage_id' => $this->_identity->fanpage_id,
 						'facebook_user_id' => $this->_identity->facebook_user_id,
-						'badge_id'	=> $badgeId
+						'item_id'	=> $item->id,
+						'status'	=> 1,
+						'created_time'	=> $date->toString( 'yyyy-MM-dd HH:mm:ss' ),
+						'updated_time'	=> $date->toString( 'yyyy-MM-dd HH:mm:ss' )
 					);
-			$badgeEventsModel->insert($data);
-			echo 'ok';
+			try {
+				$redeemId = $redeemModel->insert($data);
+					
+				$encryptData['redeem_id'] = $redeemId;
+				$encryptData['code'] = 'fancrank';
+				$link = $_SERVER['SERVER_NAME'] .'/app/redeem/track?data=' .Fancrank_Crypt::encrypt($encryptData);
+				$mailModel = new Fancrank_Mail($this->_identity->facebook_user_email);
+				$mailModel->sendMail($link);
+				echo 'ok';				
+			} catch (Exception $e) {
+				echo 'fail';
+			}
 		}
 	}
 	
+	protected function sendMail($link) {
+			
+	}
+	
+	private function encodeLink($data) {
+		
+	}
+	
+	public function trackAction() {
+		$status = array('process', 'pending', 'shipping');
+		try {
+			$data = Fancrank_Crypt::decrypt($this->_getParam('data'));
+			$redeemModel = new Model_RedeemTransactions();
+			if(!empty($data['redeem_id'])) {
+				$redeem = $redeemModel->findRow($data['redeem_id']);
+				Zend_Debug::dump($status[$redeem->status]);
+				
+			}
+		} catch (Exception $e) {
+		}
+	}
 }
 
 ?>

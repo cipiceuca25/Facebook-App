@@ -703,13 +703,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 //     		$badgesList = $badgeModel->findByFanpageLevel($this->_fanpageProfile->fanpage_level, $this->_fanpageId, $user->facebook_user_id);
 //     	}
 
-    	$badgesList = array();
-    	$badgeModel = new Model_Badges();
-    	$badgesList = $badgeModel->findByFanpageLevel($this->_fanpageProfile->fanpage_level, $this->_fanpageId, $user->facebook_user_id);
+//     	$badgesList = array();
+//     	$badgeModel = new Model_Badges();
+//     	$badgesList = $badgeModel->findByFanpageLevel($this->_fanpageProfile->fanpage_level, $this->_fanpageId, $user->facebook_user_id);
+//     	$this->view->badgesList = $badgesList;
     	 
-    	$this->view->badgesList = $badgesList;
-    	//Zend_Debug::dump($badgesList->toArray());
+    	$itemList = array();
+    	$itemModel = new Model_Items();
+    	$itemList = $itemModel->fetchAll();
     	
+    	$this->view->itemList = $itemList;
+
     	$this->render("redeem");
     }
     
