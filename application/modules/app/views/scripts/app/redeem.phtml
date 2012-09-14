@@ -15,14 +15,35 @@
 		</div>
 		<div class="row box">
 			<div class="post-container">
-				<span>Badge List:</span>
-				<div class="badge-section"></div>
-				<ul>
-					<?php foreach ($this->badgesList as $badge) {?>
-						<li class="badge_<?=$badge['id']?>"><span><?=$badge['name']?></span><img class="badge" width="50" height="50" src="<?=$badge['picture']?>"/>
-						<a href="#" onclick="redeem(<?=$badge['id']?>); return false;">Redeem</a></li>
-					<? }?>
-				</ul>
+				<div class="post">
+					Want to use your points to get cool stuff related to this Fanpage?
+					<br/>
+					<br/>
+					Our minions are working non-stop so you can redeem stuff as fast as possible, so go and collect more points!
+					<br/>
+					<br/>
+					<span style="font-weight:bold">Type in your Airmiles Number</span>
+
+					<form action="#" class="submit-form">
+						<input></input>
+
+						<div >
+							<input type=button class="btn-submit" style="display:inline; float:none" value="Submit">
+						</div>
+					</form>
+					<br/><br/>
+					<span>Badge List:</span>
+					<div class="badge-section"></div>
+					<ul>
+						<?php foreach ($this->badgesList as $badge) {?>
+							<li class="badge_<?=$badge['id']?>"><span><?=$badge['name']?></span><img class="badge" width="50" height="50" src="<?=$badge['picture']?>"/>
+							<a href="#" onclick="redeem(<?=$badge['id']?>); return false;">Redeem</a></li>
+						<? }?>
+					</ul>
+				</div>
+				
+			
+				
 			</div>
 		</div>
 	</div>

@@ -34,10 +34,10 @@
 	<div class="post">
 	 	
 				<div class="date">
-					<?php if ($this->fan['created_time'] == null){?>
+					<?php if ($this->fan['first_login_time'] == null){?>
 						Not A Fancrank User
 					<?}else{?>
-						Fancrank User Since: <br/><?= date("F Y",strtotime($this->fan['created_time']))?>
+						Fancrank User Since: <br/><?= date("F Y",strtotime($this->fan['first_login_time']))?>
 					<?}?>
 					<br/>
 					Location: 
@@ -51,7 +51,7 @@
 					<?php }?>
 				</div>
 			
-			<div class="stats">
+			<div>
 				<img src="/img/post.png" /><h5>Posts:</h5>
 				<?= $this->stat[0]['total_posts']?>
 				<br />

@@ -156,7 +156,7 @@
 					</div>
 
 					<div class="social">
-						<a class="like_control_<?= $post->id?>"  data-placement="top" rel="tooltip" 
+						<a class="like_control_<?= $post->id?>"  data-placement="top" rel="tooltip" id="latest-like-container"
 							
 						<?php if ($this->latestlike == 0) {?>
 						   data-original-title="Click to like this" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like
@@ -164,12 +164,12 @@
 						   data-original-title="You like this" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike
 						<?php }?></a>
 
-						&middot; <a
+						&middot; <a id = "latest-comment-container" class="commenthidern_<?= $post->id ?>"
 							onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
 			 		if(isset($post->comments->count)){
 						echo $post->comments->count; 
 			 		} else {echo '0';} ?> , true )"
-							class="commenthidern_<?= $post->id ?>">Comment </a> 
+							>Comment </a> 
 							&middot;
 							<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?= strtotime($post->created_time)?>"> </a> <br />
 					</div>
@@ -223,7 +223,7 @@
 
 
 					</div> 
-					<ul class="comments" id="postn_<?=$post->id?>"></ul>
+					<div id="postn_<?=$post->id?>"></div>
 				</li>
 
 				<?php }?>
@@ -575,7 +575,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 	
 	
 	
-	<ul class="comments" id="post_<?=$post->id?>" ></ul>
+	<div id="post_<?=$post->id?>" ></div>
 	</li>	
 	<?php }?><!-- story -->	
 			<?php $count ++;?>

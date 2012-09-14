@@ -12,13 +12,13 @@
 			end : 'End'
 		},
 		controlsColors : {
-			background : 'rgba(71, 101, 142, 0.80)',
+			background : 'rgba(71, 101, 142, 0.9)',
 			color : '#fff'
 		},
 		tooltipColors : {
-			background : 'rgba(255,255,255, 0.80)',
-			border : '2px solid rgba(71, 101, 142, 0.80)',
-			color : '#111',
+			background : 'rgba(71, 101, 142, 0.9)',//'rgba(255,255,255, 0.80)',
+			border : '2px solid rgb(71, 101, 142)',
+			color : '#fff',
 		}
 	};
 
@@ -74,11 +74,15 @@
 					'z-index' : 1000,
 					
 				};
+				
+				box = '<div id="tourLightBox" style="z-index:999; position:fixed; width:100%;min-height:100%;left:0;top:0"></div>';
+				
 				$controls = $(controls).css($controlsCss).css(
 						options.controlsColors);
 				$cpos = methods.getControlPosition(options.controlsPosition);
 				$controls.css($cpos);
 				$('body').append($controls);
+				$('body').append(box);
 
 				$tooltip.css(options.tooltipColors);
 
@@ -208,7 +212,7 @@
 			th = $tooltip.height() + parseInt($tooltip.css('padding-top')) + parseInt($tooltip.css('padding-bottom'))+ parseInt($tooltip.css('border-width'));
 
 			$('.tourArrow').remove();
-			tbg = 'rgba(71, 101, 142, 0.80)';//$tooltip.css('background-color');
+			tbg = 'rgb(71, 101, 142)';//$tooltip.css('background-color');
 			
 			$upArrow = $('<div class="tourArrow"></div>').css({
 				'position' : 'absolute',
@@ -282,11 +286,22 @@
 				});
 				$tooltip.append($downArrow);
 				break;
-				
+			case 'TL-Lowered':
+				position = {
+					'left' : el,
+					'top' : (et - th) + 25
+				};
+				$downArrow.css({
+					top : 33,
+					left : '10%'
+				});
+			
+				$tooltip.append($downArrow);
+				break;	
 			case 'TL':
 				position = {
 					'left' : el,
-					'top' : (et - th) - 10
+					'top' : (et - th) -10
 				};
 				$downArrow.css({
 					top : 33,
@@ -387,7 +402,17 @@
 				});
 				$tooltip.append($downArrow);
 				break;
-
+			case 'T-Lowered':
+				position = {
+					'left' : el + ew / 2 - tw / 2,
+					'top' : (et - th) + 25
+				};
+				$downArrow.css({
+					top : th,
+					left : '48%'
+				});
+				$tooltip.append($downArrow);
+				break;
 			case 'R':
 				position = {
 					'left' : (el + ew) + 10,
@@ -665,6 +690,7 @@
 
 	$('#tourEnd').live('click', function() {
 		methods.destroy();
+		$('#tourLightBox').remove();
 		$('.light-box').css('display', 'none');
 		$('#pageTabs').css('z-index','0');
 		$('#log-in-out').css('z-index','0');

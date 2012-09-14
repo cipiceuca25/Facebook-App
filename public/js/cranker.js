@@ -326,6 +326,7 @@ function comment_feed(post_id, type, limiter, total, toggle) {
 
 	//$('.social.comment.' + post_id).css('display', 'none');
 	changeTime(ui + ' .time');
+	
 }
 
 function comment_feed2(post_id, type, limiter, total, toggle) {
@@ -367,15 +368,13 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
 		dataType : "html",
 		cache : false,
 		async : false,
+		beforeSend: function(){
+			$('.comments').css('display','block');
+			$(ui).html("<div class='comments' style='text-align:center; padding:10px 0 10px 0'><li><img src='/img/ajax-loader.gif' /></li></div>");
+		},
 		success : function(data) {
 			$(ui).html(data);
-			if (toggle) {
-				$(ui).animate({
-					height : 'toggle',
-				}, 10, 'swing', function() {
-					// Animation complete.
-				});
-			} 
+			
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1033,7 +1032,7 @@ function popup(load){
 	$('.user-profile').css('display', 'block');
 	$('.profile-content').css('height', 'auto');
 	FB.Canvas.getPageInfo(function(info) {
-			$('.user-profile').css('top', info.scrollTop - 100);
+			$('.user-profile').css('top', info.scrollTop - 200);
 	});
 	if (load) {
 		$('.profile-content').animate({
@@ -1185,7 +1184,7 @@ var tourOptions = {
 		data : [
 		        //-1
 		        { element: 	'#pageTabs', 
-		        			'position' : 'TL',
+		        			'position' : 'T',
 		        			'tooltip':'Page Tabs',
 		        			'text' : 'These are page tabs, use these to navigate between the pages <br/><br/>'},
 		        //0
@@ -1226,17 +1225,17 @@ var tourOptions = {
 					   		'text' : 'This is the News Feed page, where you can check out recent information about  <br/><br/>'},   			
 		   		//7
 		   		{ element: 	'#latest-post-container', 
-					  		'position' : 'TL',
+					  		'position' : 'T-Lowered',
 					   		'tooltip' : 'Latest Posts', 
 					   		'text' : 'Latest Posts will always show the most recent post of the '+fanpageName+' has made.<br/><br/>' }, 
 				//8
 				{ element: 	'#latest-post-container .post-container', 
-						  	'position' : 'TL',
+						  	'position' : 'T',
 						   	'tooltip' : 'Posts', 
 						   	'text' : 'Let\'s take a moment to talk about posts. <br/><br/>' },      		
 				//9
 				{ element: 	'#latest-post-container .post-container .user', 
-							'position' : 'TL',
+							'position' : 'TL-Lowered',
 							'tooltip' : 'Poster\'s Information', 
 							'text' : 'Each post had the Poster\'s information <br/><br/>' },  	
 			
@@ -1247,29 +1246,33 @@ var tourOptions = {
 							'text' : 'Their Facebook Picture and Name <br/><br/>' }, 
 				//11
 				{ element: 	'#latest-post-container .post-container .user .user-badge', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Follow Button', 
 							'text' : 'If you can click on this button for a specific user, Fancrank will make it possible to only see posts by this user<br/><br/>' }, 			
 				//12
 				{ element: 	'#latest-post-container  .post-container .post', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Post Contents', 
 							'text' : 'The actual post itself <br/><br/>' },
 				//13
 				{ element: 	'#latest-post-container  .post-container .social', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Post Information', 
 							'text' : 'and information about the post <br/><br/>' },
 				//14		
-				{ element: 	'#latest-post-container  .post-container .social', 
+				{ element: 	'#latest-post-container  #latest-like-container', 
 							'position' : 'TL',
 							'tooltip' : 'Likes', 
-							'text' : 'Click the word [Like] to like something, if you want to know who else has liked a post, hover or click the [X people like this]. <br/><br/>' },	
+							'text' : 'Click the word [Like] to like something, If someone has liked this post you can would see something similar to  <br/> \
+									  <img src="/img/tutorial2.png"/> <br/> If you hover over it, it will show some of the people who liked it. If you click on \
+									  it, it will show you a list of everyone who liked it <br/><br/>'},	
 				//15					
-				{ element: 	'#latest-post-container  .post-container .social', 
+				{ element: 	'#latest-post-container  #latest-comment-container', 
 							'position' : 'TL',
 							'tooltip' : 'Comments', 
-							'text' : 'Click on the comment to post a comment or see comments others have post it.  <br/><br/>' },
+							'text' : 'Click on the comment to post a comment or see comments others have post it.  <br/> \
+									  <img src="/img/tutorial3.png"/> <br/> If you hover over it, it will show some of the people who commented on it. If you click on \
+									  it, it will show you the list of comments <br/><br/>'},	
 				//16			
 				{ element: 	'#latest-post-container  .post-container .social .time', 
 							'position' : 'TL',
@@ -1282,26 +1285,26 @@ var tourOptions = {
 					   		'text' : 'This is the feed, just like in Facebook <br/><br/>' },   
 				//18	   		
 				{ element: 	'#feed-controller', 
-					  		'position' : 'TL',
+					  		'position' : 'T',
 					   		'tooltip' : 'Feed Controller', 
-					   		'text' : 'Here you can choose how you want to view your posts, All, My Feed or Page Post <br/> '+
-					   		'All is view all the post on the page, My Feed is view only things related to people You\'ve followed ' +
-							'Page Post is show only post made by ' +fanpageName +
-					   		'<br/><br/>' }, 	   		
+					   		'text' : 'Here you can choose how you want to view your posts, All, My Feed or Page Post <br/> \
+					   		All is view all the post on the page, My Feed is view only things related to people You\'ve followed \
+					   		Page Post is show only post made by <span style="font-weight:bold">' +fanpageName + '</span \
+					   		<br/><br/>' }, 	   		
 				//19 		
 				{ element: 	'#fancrank-feed-container .submit-form', 
-					  		'position' : 'TL',
+					  		'position' : 'T',
 					   		'tooltip' : 'Posting Box', 
 					   		'text' : 'If you want to post something through Fancrank, you can by simply typing here and clicking Share <br/>'+
 					   				'Share will only show up after you\'ve tried to type something'+'<br/><br/>' }, 	   			
 		   		//20
 		   		{ element: 	'#top-fan-container', 
-					  		'position' : 'TR',
+					  		'position' : 'T',
 					   		'tooltip' : 'Top Fans This Week', 
 					   		'text' : 'This is a simplifed version of the Top Fans Leaderboard. <br/><br/>' },   
 		   		//21
 		   		{ element: 	'#top-post-container', 
-					  		'position' : 'TR',
+					  		'position' : 'T',
 					   		'tooltip' : 'Top Post This Week', 
 					   		'text' : 'Top Posts who you the most interesting posts of the week <br/><br/>' },   
 								

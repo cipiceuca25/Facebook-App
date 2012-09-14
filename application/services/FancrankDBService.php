@@ -75,7 +75,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				'facebook_user_avatar'    	=> sprintf('https://graph.facebook.com/%s/picture', $data->id),
 				'facebook_user_lang'        => implode(',', $lang),
 				'facebook_user_birthday'    => $birthday->toString('yyyy-MM-dd HH:mm:ss'),
-				'facebook_user_access_token'=> $this->_access_token,
+				'facebook_user_access_token'=> $this->_accessToken,
 				'updated_time' 				=> $updated->toString('yyyy-MM-dd HH:mm:ss'),
 				'facebook_user_locale' 		=> !empty($data->locale) ? $data->locale : '',
 				'hometown' 					=> !empty($data->hometown) ? $data->hometown : '',
@@ -343,6 +343,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		$facebookUserModel = new Model_FacebookUsers();
 		$fansModel = new Model_Fans();
 		foreach ($fansList as $data) {
+			
 			$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null, Zend_Date::ISO_8601);
 			
 			try {

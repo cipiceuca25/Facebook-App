@@ -260,12 +260,25 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$popularArray = NULL;
     	$talkerArray = NULL;
     	$clickerArray = NULL;
-    	$followedArray = NULL;
+    	$followedArray = NULL;	
+    	$topFanStats = NULL;
+    
+    	$stat = new Model_FansObjectsStats();
+    	
     	$count=0;
     	foreach ($fanpage['topFans'] as $top){
     		//echo $top['facebook_user_id'];
     		$topArray[$count] = $follow->getRelation($user->facebook_user_id, $top['facebook_user_id'],$this->_fanpageId);
     		//echo $topArray[$count];
+    		$stat = new Model_FansObjectsStats();
+    		$stat = $stat->findFanRecord($this->_fanpageId, $top['facebook_user_id']);
+    		 
+    		$topFanStats[$count]['total_posts'] = $stat[0]['total_posts'];
+    		$topFanStats[$count]['total_comments'] = $stat[0]['total_comments'];
+    		$topFanStats[$count]['total_likes'] = $stat[0]['total_likes'];
+    		$topFanStats[$count]['total_get_comments'] = $stat[0]['total_get_comments'];
+    		$topFanStats[$count]['total_get_likes'] = $stat[0]['total_get_likes'];
+    		
     		$count++;
     		
     	}    	 
@@ -376,6 +389,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
 
     	//Zend_Debug::dump($userLeaderBoardData['topFans']);
+    	
+    	$this->view->top_fans_stat = $topFanStats;
     	
     	$this->view->top_fans = $fanpage['topFans'];
     	$this->view->most_popular = $fanpage['mostPopular'];
@@ -788,6 +803,31 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$fan->fan_currency = '?';
     	}
     	
+    	$badges = $this->badgeArray($this->_fanpageId, $user->facebook_user_id);
+    	//Zend_Debug::dump($badges);
+    	$a =array();
+    	$count =0;
+    	$i=0;
+    	$j=0;
+    	$badgeName = array_keys($badges);
+    	foreach ($badges as $b){
+    		$j=0;
+    		$badgeQuan = array_keys($b);
+    		foreach ($b as $c){
+    			$a[$count] = $c;
+    			$a[$count]['name'] = $badgeName[$i];
+    			$a[$count]['quantity'] = $badgeQuan[$j];
+    			$j++;
+    			$count++;
+    		}
+    		$i++;
+    	}
+    	
+    	//Zend_Debug::dump($a);
+    	
+    	
+    	$this->view->badges = $a;
+    	
     	$this->view->fan_exp = $fan_exp;
     	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
     	$this->view->fan_level_exp = $fan_exp_required;
@@ -796,6 +836,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->fan = $fan;
 
     	$this->view->following = $following;
+    	//Zend_Debug::dump($following);
     	$this->view->follower = $follower;
     	//$this->view->friends = $friends;
     	
@@ -831,16 +872,16 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//$client->setParameterGet('access_token', $this->_accessToken);
     		$response = $client->request(); 
     		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-    		//Zend_Debug::dump($result);
+
     		if(!empty ($result)) {
-    			$user = array('facebook_user_id' => $result->id,
-    					'facebook_user_first_name'=> $result->first_name,
-    					'facebook_user_last_name'=>$result->last_name,
-    					'created_time'=> 'Not Available',
-    					'hometown' => 'Not Available'
-    			);	
+    		
+    			$addUser[] = $result;
+    			
+    			$FDBS = new Service_FancrankDBService(null, null);
+    			$FDBS->saveFans($addUser);
+    			
     		}
-    		$user = (object)$user;
+    		$user = $user->find($user_id)->current();// the target
 
     		//Zend_Debug::dump($user);
     		
@@ -910,14 +951,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		 
     		if(!empty ($result)) {
     		
-    			$user = array('facebook_user_id' => $result->id,
-    							'facebook_user_first_name'=> $result->first_name, 
-    							'facebook_user_last_name'=>$result->last_name,
-    							'created_time'=> 'notuser',
-    							'hometown' => 'Not Avaliable'
-    						);
-    			$user = (object)$user;
+    			$addUser[] = $result;
+    			$FDBS = new Service_FancrankDBService($this->_fanpageId, null);
+    			$FDBS->saveFans($addUser);
+    			
     		}
+    		$user = $user->find( $this->_request->getParam('target'))->current();// the target
     		//Zend_Debug::dump($user);
     		
     		$this->view->facebook_user = $user;
@@ -1244,7 +1283,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$client->setParameterGet('access_token', $this->_accessToken);
     	//echo $limit;
     	//if ($limit !== false){
-    	$client->setParameterGet('limit', $limit);
+    	$client->setParameterGet('limit', 100);
     	//}
     	$response = $client->request();
     
@@ -1307,32 +1346,33 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}
     	}
     	
-    	foreach ($allpost as $likes){
-    		
-    		$updatingPost = new Model_Posts();
-    		if (isset($likes->id)){
-    			$updatingPost = $updatingPost -> findPost($likes->id);
-    		
-    		
-	    		if(!empty ($updatingPost)){
-			    		if (isset($likes->likes->count)){
-			    			$updatingPost ->post_likes_count = $likes->likes->count;
-			    		}
-			    		if (isset($likes->comments->count)){
-			    			$updatingPost ->post_comments_count = $likes->comments->count;
-			    		}
-		    		$updatingPost->save();
+    	if ( !empty($allpost)){
+	    	foreach ($allpost as $likes){
+	    		
+	    		$updatingPost = new Model_Posts();
+	    		if (isset($likes->id)){
+	    			$updatingPost = $updatingPost -> findPost($likes->id);
+	    		
+	    		
+		    		if(!empty ($updatingPost)){
+				    		if (isset($likes->likes->count)){
+				    			$updatingPost ->post_likes_count = $likes->likes->count;
+				    		}
+				    		if (isset($likes->comments->count)){
+				    			$updatingPost ->post_comments_count = $likes->comments->count;
+				    		}
+			    		$updatingPost->save();
+		    		}
 	    		}
-    		}
-    		if (isset($likes->likes)){
-    			$likeslist[] = $likes->likes->data;
-    		}else{
-    			$likeslist[] = array();
-    		}
+	    		if (isset($likes->likes)){
+	    			$likeslist[] = $likes->likes->data;
+	    		}else{
+	    			$likeslist[] = array();
+	    		}
+	    	}
+	    	return $likeslist;
     	}
-    	
-    	
-    	return $likeslist;	
+    	return null;
     }
     
     protected function getPost($postId){
@@ -1637,8 +1677,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     		 
     	}
-    	//Zend_Debug::dump($result);
-    	//Zend_Debug::dump($result);
+    	
     	$this->view->relation= $relation;
     	$this->view->result = $result;
     	$this->view->title = 'Following';
