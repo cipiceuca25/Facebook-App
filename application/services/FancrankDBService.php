@@ -63,7 +63,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		}
 		
 		$birthday = new Zend_Date(!empty($data->birthday) ? $data->birthday : null, Zend_Date::ISO_8601);
-		$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : null, Zend_Date::ISO_8601);
+		$updated = new Zend_Date(!empty($data->updated_time) ? $data->updated_time : time(), Zend_Date::ISO_8601);
 		 
 		$facebookUserData = array(
 				'facebook_user_id' 			=> $data->id,
@@ -75,7 +75,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				'facebook_user_avatar'    	=> sprintf('https://graph.facebook.com/%s/picture', $data->id),
 				'facebook_user_lang'        => implode(',', $lang),
 				'facebook_user_birthday'    => $birthday->toString('yyyy-MM-dd HH:mm:ss'),
-				'facebook_user_access_token'=> $this->_access_token,
+				'facebook_user_access_token'=> !empty($data->access_token) ? $data->access_token : '',
 				'updated_time' 				=> $updated->toString('yyyy-MM-dd HH:mm:ss'),
 				'facebook_user_locale' 		=> !empty($data->locale) ? $data->locale : '',
 				'hometown' 					=> !empty($data->hometown) ? $data->hometown : '',
@@ -85,9 +85,14 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		
 		try {
 			//save facebook user's relative information into facebook_users table
-			$facebookUser = new Model_FacebookUsers();
-			$facebookUser->saveAndUpdate($facebookUserData);
-		
+			$facebookUserModel = new Model_FacebookUsers();
+			$facebookUser = $facebookUserModel->findRow($data->id);
+			if(empty($facebookUser->facebook_user_id)) {
+				$facebookUserModel->insert($facebookUserData);
+			}else {
+				
+			}
+			
 			//echo('user saved\n');
 			return $data->id;
 		} catch (Exception $e) {

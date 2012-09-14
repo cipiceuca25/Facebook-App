@@ -16,11 +16,11 @@
 		<div class="row box">
 			<div class="post-container">
 				<span>Badge List:</span>
-				<div class="badge-section"></div>
+				<div class="item-section"></div>
 				<ul>
-					<?php foreach ($this->badgesList as $badge) {?>
-						<li class="badge_<?=$badge['id']?>"><span><?=$badge['name']?></span><img class="badge" width="50" height="50" src="<?=$badge['picture']?>"/>
-						<a href="#" onclick="redeem(<?=$badge['id']?>); return false;">Redeem</a></li>
+					<?php foreach ($this->itemList as $item) {?>
+						<li class="item_<?=$item['id']?>"><span><?=$item['name']?></span><img class="item" width="50" height="50" src="<?=$item['picture']?>"/>
+						<a href="#" onclick="redeem(<?=$item['id']?>); return false;">Redeem</a></li>
 					<? }?>
 				</ul>
 			</div>
@@ -29,17 +29,17 @@
 </div>
 
 <script>
-function redeem(badgeId) {
+function redeem(itemId) {
 
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/redeem/confirm?badgeId='+badgeId,
+		url : serverUrl + '/app/redeem/confirm?itemId='+itemId,
 		cache : false,
 		async : true,
 		success : function(data) {
 			if($.trim(data) == 'ok') {
-				alert('you redeem a badge');
-				$(".badge_"+badgeId).remove();
+				alert('you redeem an item');
+				$(".item_"+itemId).remove();
 			}
 			//getLatestPost();
 		},
