@@ -16,7 +16,6 @@
 		<div class="post">
 		<div class="message">
 
-		
 		<?switch($act['activity_type']){ 
 		
 			case 'follow': ?>
@@ -26,10 +25,10 @@
 				You unfollowed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;	
 			case 'like-status':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a>. 
+				You liked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a>. 
 				<?break;
 			case 'unlike-status':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">status post</a>. 
+				You unliked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>' , 10, true)">status post</a>. 
 				<?break;
 			case 'like-photo':?>
 				You liked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post</a>. 

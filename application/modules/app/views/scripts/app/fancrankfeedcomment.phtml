@@ -1,4 +1,10 @@
+
+<?php if ($this->popup == 'false' ){?>
 <ul class="comments">
+<?php }else{?>
+<ul class="comments popup_scroll">
+<?php }?>
+
 <?php $count = 0?>
 
 <?php if(!empty($this->comments)){?>
@@ -97,7 +103,8 @@
 		
 		<!--  <img src="/img/news-feed/icon-likes.png" /> -->
 		<span class="likes">
-		<span class="like_<?= $post->id?>"><? if(isset($post->likes)){echo $post->likes;}else{echo '0';} ?> </span>
+	
+		<span class="like_<?= $post->id?>"><?=isset($post->like_count)?$post->like_count:'0'?> </span>
 		
 		<a class="like_control_<?= $post->id?>" rel="tooltip" data-placement="top"
 		<?php if ($this->likes[$count] == 0) {?>
@@ -113,12 +120,17 @@
 										
 <?php $count ++;?>
 <?php endforeach; }?>
+
+<?php if ($this->popup == 'false' ){?>
 </ul>
+
 	<!--  
 	<?if ($this->total > $this->limit){ ?>
 		<button class="btn-more" onclick="comment_feed<?= ($this->latest == 'true')?'2':''?>('<?= $this->postId ?>','<?= $this->postType?>', <?=$this->limit + 5?> , <?= $this->total?> , false)">MORE COMMENTS +</button>
 	<?}?>
 	-->
+	
+
 	<div class="comment-container">
 		<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);"></div>
 	
@@ -130,6 +142,7 @@
 		
 				
 	</div>
+
 <script>
 $('.comments').enscroll({
 	showOnHover: true,
@@ -137,3 +150,16 @@ $('.comments').enscroll({
 	verticalTrackClass: 'track3 popup',
 	verticalHandleClass: 'handle3 popup'});	
 </script>		
+<?php }else{?>
+<script>
+	$('.comments.popup_scroll').enscroll({
+	showOnHover: true,
+	clickTrackToScroll: false,
+	verticalTrackClass: 'track3 popup',
+	verticalHandleClass: 'handle3 popup'
+	});
+</script>
+
+
+
+<?php }?>

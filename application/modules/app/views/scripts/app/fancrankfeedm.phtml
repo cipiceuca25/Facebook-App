@@ -186,13 +186,19 @@
 				</a>   
 		
 				 &middot;
-		
-				 <a  onclick=" comment_feed('<?= $post['post_id'] ?>','<?= $post['post_type']?>', 5,<?php 
+				<a  onclick=" comment_feed('<?= $post['post_id'] ?>','<?= $post['post_type']?>', 5,<?php 
 			 		if($post['post_comments_count']!=null){
 						echo $post['post_comments_count']; 
-			 		} else {echo '0';} ?> , true )" class="commenthider_<?= $post['post-id'] ?>">Comment </a>
+			 		} else {echo '0';} ?> , true )" class="commenthider_<?= $post['post-id'] ?>">Comment</a>
 				&middot;
-			
+				
+				<?php if ($post['post_comments_count']>5){ ?>
+				 <a  onclick=" comment_feed_filter('<?= $post['post_id'] ?>','<?= $post['post_type']?>', 5,<?php 
+			 		if($post['post_comments_count']!=null){
+						echo $post['post_comments_count']; 
+			 		} else {echo '0';} ?> , true )" class="commenthider_<?= $post['post-id'] ?>">My Comment</a>
+				&middot;
+				<?php }?>
 				<a rel="tooltip" data-placement="top" class="time"  data-original-title="" data-unix-time="<?= strtotime($post['created_time'])?>"></a>
 			
 			<br/>
@@ -246,9 +252,17 @@
 					comments 
 				<?php }?>
 				</a>
-			
-	
-	
+				
+				<?php if ($post['post_comments_count'] > 5){?>
+				
+			&middot;
+				 <a  onclick=" comment_feed_filter('<?= $post['post_id'] ?>','<?= $post['post_type']?>', 5,<?php 
+			 		if($post['post_comments_count']!= null){
+						echo $post['post_comments_count']; //echo  $post->comments->count;
+			 	} else {echo '0';} ?> , true )"> <img src="/img/comment.png" />
+			 		View My Comments
+				</a>
+				<?php }?>
 	</div>
 
 	

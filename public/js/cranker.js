@@ -318,22 +318,44 @@ function userProfile(user, load) {
 	});
 }
 
+function comment_feed_filter(post_id, type, limiter, total, toggle) {
+	ui = '#post_' + post_id;
+	//alert(ui);
+	getFeedComment(ui, post_id, type, limiter, total, toggle, false, true,false);
+	//$('.social.comment.' + post_id).css('display', 'none');
+	changeTime(ui + ' .time');
+}
+
+function comment_feed2_filter(post_id, type, limiter, total, toggle) {
+	ui = '#postn_' + post_id;
+	//alert(ui);
+	getFeedComment(ui, post_id, type, limiter, total, toggle, true, true,false);
+	//$('.social.commentn.' + post_id).css('display', 'none');
+	changeTime(ui + ' .time');
+}
+
+function comment_feed3_filter(post_id, type, limiter, total, toggle) {
+	ui = '#popup_post_' + post_id;
+	//alert(ui);
+	getFeedComment(ui, post_id, type, limiter, total, toggle, false, true,true);
+	//$('.social.comment.' + post_id).css('display', 'none');
+	changeTime(ui + ' .time');
+}
+
+
 
 function comment_feed(post_id, type, limiter, total, toggle) {
 	ui = '#post_' + post_id;
 	//alert(ui);
-	getFeedComment(ui, post_id, type, limiter, total, toggle, false);
-
+	getFeedComment(ui, post_id, type, limiter, total, toggle, false, false,false);
 	//$('.social.comment.' + post_id).css('display', 'none');
 	changeTime(ui + ' .time');
-	
 }
 
 function comment_feed2(post_id, type, limiter, total, toggle) {
 	ui = '#postn_' + post_id;
 	//alert(ui);
-	getFeedComment(ui, post_id, type, limiter, total, toggle, true);
-
+	getFeedComment(ui, post_id, type, limiter, total, toggle, true, false,false);
 	//$('.social.commentn.' + post_id).css('display', 'none');
 	changeTime(ui + ' .time');
 }
@@ -341,8 +363,7 @@ function comment_feed2(post_id, type, limiter, total, toggle) {
 function comment_feed3(post_id, type, limiter, total, toggle) {
 	ui = '#popup_post_' + post_id;
 	//alert(ui);
-	getFeedComment(ui, post_id, type, limiter, total, toggle, false);
-
+	getFeedComment(ui, post_id, type, limiter, total, toggle, false, false,true);
 	//$('.social.comment.' + post_id).css('display', 'none');
 	changeTime(ui + ' .time');
 }
@@ -354,8 +375,8 @@ function comment_feed3(post_id, type, limiter, total, toggle) {
 // total = what's the total number of comments
 // toggle = pop up ?
 // is this on the latest
-function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
-	
+function getFeedComment(ui, post_id, type, limiter, total, toggle, latest, filter, popup) {
+	//alert(filter);
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/fancrankfeedcomment/' + fanpageId + 
@@ -363,7 +384,9 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest) {
 				'&post_type=' + type + 
 				'&limit=' + limiter + 
 				'&total=' + total + 
-				'&latest=' + latest
+				'&latest=' + latest +
+				'&filter=' + filter +
+				'&popup=' +popup
 				,
 		dataType : "html",
 		cache : false,
@@ -405,6 +428,7 @@ function popup_post(post_id, limiter, load) {
 			$('.profile-content').html(data);
 
 			changeTime('#popup_post .time');
+			
 			
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -935,6 +959,7 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 			//alert(post_comment_count);
 			$('.comment_'+post_id).html(post_comment_count);
 			
+			
 			popup_post(post_id, post_comment_count, false);
 
 			
@@ -1180,7 +1205,7 @@ function resetTour(){
 }
 
 var tourOptions = {
-		welcomeMessage : '<h2>Welcome to Fancrank</h2><p>Hi ' + userName + ', <br/> Let\'s learn about using Fancrank. <br/> Click Start to begin</p>',
+		welcomeMessage : '<h3>Welcome to Fancrank</h3><p>Hi ' + userName + ', <br/> Let\'s learn about using Fancrank. <br/> Click Start to begin</p>',
 		data : [
 		        //-1
 		        { element: 	'#pageTabs', 
@@ -1219,7 +1244,7 @@ var tourOptions = {
 					   		'tooltip' : 'Log Out', 
 					   		'text' : 'These are page tabs, use these to navigate between the pages <br/><br/>' },
 				//6
-				{ element: 	'#latest-post-container', 
+				{ element: 	'#newsfeed-tab', 
 					  		'position' : 'TL',
 					   		'tooltip' : 'News Feed', 
 					   		'text' : 'This is the News Feed page, where you can check out recent information about  <br/><br/>'},   			
@@ -1235,7 +1260,7 @@ var tourOptions = {
 						   	'text' : 'Let\'s take a moment to talk about posts. <br/><br/>' },      		
 				//9
 				{ element: 	'#latest-post-container .post-container .user', 
-							'position' : 'TL-Lowered',
+							'position' : 'TL',
 							'tooltip' : 'Poster\'s Information', 
 							'text' : 'Each post had the Poster\'s information <br/><br/>' },  	
 			
@@ -1310,37 +1335,37 @@ var tourOptions = {
 								
 				//22			
 				{ element: 	'#leaderboard-tab', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Leaderboards Page', 
 							'text' : 'Leaderboards are a way to compete with other fans <br/><br/>' },
 				//23   
 				{ element: 	'.top-fan', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Top Fan', 
 							'text' : '"Top Fans" ranks the users that have the most activity on the page, based on Posts, Likes and Comments. Try to get on the Top Fan to earn awesome prizes! <br/><br/>' },
 				//24
 				{ element: 	'.fan-favorite', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Fan Favorite', 
 							'text' : '"Fan Favorite" ranks users by how much activity they garnered. <br/><br/>' },
 				//25	   			   		
 				{ element: 	'.top-talker', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Top Talker', 
 							'text' : '"Top Talker" are the people that\'ve posted the most <br/><br/>' },
 				//26
 				{ element: 	'.top-clicker', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Top Clicker', 
 							'text' : '"Top Clicker" ranks users by most [Likes] <br/><br/>' },
 				//27
 				{ element: 	'.top-followed', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Top Followed', 
 							'text' : '"Top Followed" ranks people by the amount of people that follow them <br/><br/>' },
 				//28
 				{ element: 	'.top-followed .btn-more', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'More', 
 							'text' : 'Click more to see rank 2-4. <br/><br/>' },
 				//29	   			   			   			   			   			   			   			   		
@@ -1350,27 +1375,27 @@ var tourOptions = {
 							'text' : 'This is your profile, view your Fancrank Information Here <br/><br/>' },	   		
 				//30	   			   			   			   			   			   			   			   		
 				{ element: 	'#general-stats-container', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Fancrank Statistics', 
 							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },		   		
 				//31
 				{ element: 	'#general-stats-container #level-container', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Level', 
 							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
 				//32
 				{ element: 	'#general-stats-container #points-container', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Points', 
 							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
 				//33
 				{ element: 	'#general-stats-container #exp-container', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Experience', 
 							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
 				//34
 				{ element: 	'#general-stats-container #overall-container', 
-							'position' : 'TL',
+							'position' : 'T',
 							'tooltip' : 'Overall Achievements', 
 							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
 				//35

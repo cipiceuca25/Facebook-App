@@ -402,25 +402,28 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 				f.fan_comment_photo_count + 
 				f.fan_comment_video_count + 
 				f.fan_comment_link_count	as total_comments,
+				
 				f.fan_like_status_count + 
 				f.fan_like_photo_count + 
 				f.fan_like_video_count + 
 				f.fan_like_link_count + 
 				f.fan_like_comment_count	as total_likes,
+				
 				f.fan_get_like_status_count + 
 				f.fan_get_like_photo_count + 
 				f.fan_get_like_video_count + 
 				f.fan_get_like_link_count + 
 				f.fan_get_like_comment_count as total_get_likes	,
+				
 				f.fan_get_comment_status_count + 
 				f.fan_get_comment_photo_count + 
 				f.fan_get_comment_video_count + 
 				f.fan_get_comment_link_count as total_get_comments,
 				
-				f.fan_comment_link_count 							as link_comments,
+				f.fan_comment_link_count 						as link_comments,
 				f.fan_comment_video_count						as video_comments,
-				f.fan_comment_photo_count 							as photo_comments,
-				f.fan_comment_status_count				as status_comments,
+				f.fan_comment_photo_count 						as photo_comments,
+				f.fan_comment_status_count						as status_comments,
 				
 				f.fan_like_link_count 								as link_likes,
 				f.fan_like_video_count 							as video_likes,

@@ -775,13 +775,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->all_badge = $allBadges[0]['count'];
     	$this->view->overall_achievement = $overallAchievement;
     	
-   
-    	
-    	
-    	
-    	
-    	
-    	
     	
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
@@ -792,6 +785,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$stat_get_comment = $stat[0]['total_get_comments'];
     	$stat_get_like = $stat[0]['total_get_likes'];
     	
+    	
+    	//Zend_Debug::dump($stat);
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
     		$fan->fan_currency = '?';
     		$fan->fan_level = '?';
@@ -803,30 +798,33 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$fan->fan_currency = '?';
     	}
     	
-    	$badges = $this->badgeArray($this->_fanpageId, $user->facebook_user_id);
-    	//Zend_Debug::dump($badges);
-    	$a =array();
-    	$count =0;
-    	$i=0;
-    	$j=0;
-    	$badgeName = array_keys($badges);
-    	foreach ($badges as $b){
-    		$j=0;
-    		$badgeQuan = array_keys($b);
-    		foreach ($b as $c){
-    			$a[$count] = $c;
-    			$a[$count]['name'] = $badgeName[$i];
-    			$a[$count]['quantity'] = $badgeQuan[$j];
-    			$j++;
-    			$count++;
+    	$badges = $this->badgeArray2D($this->_fanpageId, $user->facebook_user_id);
+    	$upcoming_badges = array();
+    	function badge_cmp($a, $b){
+    		if ($a['percentage'] == $b['percentage']){
+    			return 0;
     		}
-    		$i++;
+    		if ($a['percentage'] > $b['percentage']){
+    			return -1;
+    		}
+    		return 1;
     	}
     	
-    	//Zend_Debug::dump($a);
+    	usort($badges, 'badge_cmp');
+    	$j=0; 
+    	$i=0;
+    	while ($i < 5){
+    		if($badges[$j]['percentage']<100){
+    			$upcoming_badges[] = $badges[$j];
+    			$i++;
+    		}
+    		$j++;
+    	}
+    	
+    	//Zend_Debug::dump($upcoming_badges);
     	
     	
-    	$this->view->badges = $a;
+    	$this->view->badges = $upcoming_badges;
     	
     	$this->view->fan_exp = $fan_exp;
     	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
@@ -852,6 +850,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$this->render('myprofile');
     }
+
     
     public function popoverprofileAction(){
     	$this->_helper->layout->disableLayout();
@@ -1145,12 +1144,19 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$postType = $this->_request->getParam('post_type');
     	$limit = $this->_request->getParam('limit');
     	$total = $this->_request->getParam('total');
-    	
     	$latest = $this->_request->getParam('latest');
+    	$filter = $this->_request->getParam('filter');
+    	$popup = $this->_request->getParam('popup');
+    	//echo $filter;
     	
     	$result = array();
     	//Zend_Debug::dump($limit);
-    	$result = $this->getFeedComment($postId, $limit);
+    	if ($filter == 'true'){
+    		
+    		$result = $this->filterComments($this->getFeedComment($postId, $limit));
+    	}else{
+    		$result = $this->getFeedComment($postId, $limit);
+    	}
     	//$result = json_encode($result);
 		
     	
@@ -1194,7 +1200,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if($latest){
     		$this->view->latest = $latest;
     	}
-    	
+    	$this->view->popup = $popup;
     	$this->render("fancrankfeedcomment");
     }
     
@@ -1293,6 +1299,42 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     		return $result->data;
     	}
+    }
+    
+    
+    protected function filterComments($comments){
+    	$following = new Model_Subscribes;
+    	$following = $following->getFollowingList($this->_userId, $this->_fanpageId, false);
+    	
+    	$f = array();
+    	if ($following){
+    		foreach($following as $fol){
+    			$f[] = $fol['facebook_user_id_subscribe_to'];
+    		}
+    	}
+    	$f[] = $this->_fanpageId;
+    	$f[] = $this->_userId;
+    	//Zend_Debug::dump($f);
+    	$filteredComments = array();
+    	
+    	if($comments){
+    		foreach($comments as $c){
+    			//Zend_Debug::dump($c);
+    			if(in_array($c->from->id,$f)){	
+    				$filteredComments[] = $c;
+    			}else{
+    				if ($c->like_count > 0){
+    					$filteredComments[] = $c;
+    				}
+    			}
+    		}
+    	}
+    	
+    	
+    
+    	
+    	
+    	return $filteredComments;
     }
     
     protected function getPostLikes($postId) {
@@ -1725,14 +1767,612 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->setLayout('insights_layout');
     }
     
-    public function badgetestAction(){
-    	$this->_helper->layout->setLayout('default_layout');
-    	echo $this->badgeArray('197221680326345', '28117303');
-    	$this->render("badgetest");
+
     
+    protected function badgeArray2D($fanpage_id, $facebook_user_id){
+    	$badge = new Model_Badges();
+    	$fan = new Model_FansObjectsStats();
+    	$follow = new Model_Subscribes();
+    	$fanRecord = $fan->findFanRecord($fanpage_id, $facebook_user_id);
+    	$badge = $badge->findAll();
+    	//Zend_Debug::dump($badge);
+    	$array = array();
+    
+    	 
+    	$cg10s =  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'all');
+    	$cg1m =  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'all');
+    	$cl10s =  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'link');
+    	$cl1m =  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'link');
+    	$cp10s=  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'photo');
+    	$cp1m =  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'photo');
+    	$cs10s=  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'status');
+    	$cs1m =  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'status');
+    	$cv10s = $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'video');
+    	$cv1m =  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'video');
+    	$gcg10s =  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'all');
+    	$gcg1m =  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'all');
+    	$gcl10s =  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'link');
+    	$gcg1m =  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'link');
+    	$gcp10s =  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'photo');
+    	$gcp1m =  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'photo');
+    	$gcs10s =  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'status');
+    	$gcs1m =  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'status');
+    	$gcv10s =  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'status');
+    	$gcv1m=  $fan->getNumberOfCommentOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'status');
+    	$lg10s =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'all');
+    	$lg1m =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'all');
+    	$lp10s =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'photo');
+    	$ll1m =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'link');
+    	$ll10s =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'link');
+    	$lp1m =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'photo');
+    	$ls10s =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'status');
+    	$ls1m =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'status');
+    	$lv10s =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'video');
+    	$lv1m =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'video');
+    	$lc10s =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'comment');
+    	$lc1m =  $fan->getNumberOfLikesOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'comment');
+    	$glg10s =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'all');
+    	$glg1m =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'all');
+    	$glg10s =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'link');
+    	$gll1m =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'link');
+    	$glp10s =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'photo');
+    	$glp1m =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'photo');
+    	$gls10s =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'status');
+    	$gls1m =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'status');
+    	$glv10s =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 10 second', 'video');
+    	$glv1m =  $fan->getNumberOfLikesOnPostInTimeRecieved($fanpage_id, $facebook_user_id, 'interval 1 minute', 'video');
+    	$fw = $follow -> getFollowing($facebook_user_id, $fanpage_id);
+    	$fwd = $follow -> getFollowers($facebook_user_id, $fanpage_id);
+    	 
+    	
+    	//Zend_Debug::dump($badge);
+    	$count = 0;
+    	foreach ($badge as $b){
+    		$array[$count]['name'] = $b['name'];
+    		$array[$count]['stylename'] = $b['stylename'];
+    		$array[$count]['quantity'] = $b['quantity'];
+    		$array[$count]['description'] = str_replace('[quantity]',$b['quantity'] ,$b['description']);
+    		$array[$count]['picture'] = $b['picture'];
+    		$array[$count]['weight'] = $b['weight'];
+    		$array[$count]['percentage'] = 'none';
+			
+    		switch ($b['name']){
+    			case 'Comment-General':
+    				//$temp =  $fan->getTotalComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['total_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-General-10sec':
+    		
+    				$temp =  $cg10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    					
+    			case 'Comment-General-1min':
+    				//Zend_Debug::dump($temp);
+    				$temp =  $cg1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Link':
+    				//$temp =  $fan->getLinkComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['link_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    		
+    			case 'Comment-Link-10sec':
+    					
+    				$temp =  $cl10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Link-1min':
+    				//Zend_Debug::dump($temp);
+    				$temp =  $cl1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Photo':
+    				//$temp =  $fan->getPhotoComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['photo_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Photo-10sec':
+    					
+    				$temp =  $cp10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Photo-1min':
+    		
+    				//Zend_Debug::dump($temp);
+    					
+    				$temp =  $cp1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Status':
+    				//$temp =  $fan->getStatusComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['status_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Status-10sec':
+    					
+    				$temp =  $cs10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Status-1min':
+    				//Zend_Debug::dump($temp);
+    				$temp =  $cs1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Video':
+    				//$temp =  $fan->getVideoComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['video_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Video-10sec':
+    					
+    				$temp =  $cv10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-Video-1min':
+    				//Zend_Debug::dump($temp);
+    				$temp =  $cv1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    		
+    			case 'Follow' :
+    					
+    				$temp =  $fw[0]['Following'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Followed':
+    					
+    				$temp =  $fwd[0]['Follower'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-General':
+    				//$temp =  $fan->getTotalGetComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['total_get_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-General-10sec':
+    					
+    				$temp =  $gcg10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-General-1min':
+    				//Zend_Debug::dump($temp);
+    				$temp =  $gcg1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Link':
+    				//$temp =  $fan->getLinkGetComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['get_link_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Link-10sec':
+    					
+    				$temp =  $gcl10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Link-1min':
+    				//Zend_Debug::dump($temp);
+    				$temp =  $gcg1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Photo':
+    				//$temp =  $fan->getPhotoGetComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['get_photo_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Photo-10sec':
+    				$temp =  $gcp10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Photo-1min':
+    				//Zend_Debug::dump($temp);
+    				$temp =  $gcp1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Status':
+    				//$temp =  $fan->getStatusGetComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['get_status_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Status-10sec':
+    					
+    				$temp =  $gcs10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Status-1min':
+    				//Zend_Debug::dump($temp);
+    				$temp =  $gcs1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Video':
+    				//$temp =  $fan->getVideoGetComments($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['get_video_comments'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Video-10sec':
+    					
+    				$temp =  $gcv10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Comment-Video-1min':
+    				//Zend_Debug::dump($temp);
+    				$temp =  $gcv1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-General':
+    				//$temp =  $fan->getTotalLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['total_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-General-10sec':
+    					
+    		
+    				$temp =  $lg10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-General-1min':
+    					
+    				//Zend_Debug::dump($temp);
+    				$temp =  $lg1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Link':
+    				//$temp =  $fan->getLinkLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['link_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Link-10sec':
+    					
+    				$temp =  $ll10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Link-1min':
+    					
+    				//Zend_Debug::dump($temp);
+    				$temp =  $ll1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Photo':
+    				//$temp =  $fan->getPhotoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['photo_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Photo-10sec':
+    					
+    				$temp =  $lp10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Photo-1min':
+    					
+    				//Zend_Debug::dump($temp);
+    				$temp =  $lp1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Status':
+    				//$temp =  $fan->getStatusLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['status_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Status-10sec':
+    					
+    				$temp =  $ls10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Status-1min':
+    					
+    				//Zend_Debug::dump($temp);
+    				$temp =  $ls1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Video':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['video_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Video-10sec':
+    					
+    				$temp =  $lv10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Video-1min':
+    					
+    				//Zend_Debug::dump($temp);
+    				$temp =  $lv1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Comment':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['comment_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Comment-10sec':
+    					
+    				$temp =  $lc10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-Comment-1min':
+    		
+    				//Zend_Debug::dump($temp);
+    				$temp =  $lc1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    					
+    		
+    		
+    			case 'Get-Like-General':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['total_get_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    		
+    			case 'Get-Like-General-10sec':
+    					
+    				$temp =  $glg10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-General-1min':
+    					
+    				//Zend_Debug::dump($temp);
+    				$temp =  $glg1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Link':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['get_link_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    					
+    			case 'Get-Like-Link-10sec':
+    		
+    				//Zend_Debug::dump($temp);
+    				$temp =  $glg10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Link-1min':
+    					
+    				$temp =  $gll1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Photo':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['get_photo_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Photo-10sec':
+    					
+    				$temp =  $glp10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Photo-1min':
+    					
+    				//Zend_Debug::dump($temp);
+    				$temp =  $glp1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Status':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['get_status_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Status-10sec':
+    					
+    				$temp =  $gls10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Status-1min':
+    					
+    				//Zend_Debug::dump($temp);
+    				$temp =  $gls1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Video':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['get_video_likes'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Video-10sec':
+    					
+    				$temp =  $glv10s[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Like-Video-1min':
+    					
+    				//Zend_Debug::dump($temp);
+    				$temp =  $glv1m[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Post-General':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['total_posts'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Post-Link':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['post_link'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Post-Photo':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['post_photo'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Post-Status':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['post_status'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Post-Video':
+    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    				$temp =  $fanRecord[0]['post_video'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-on-Post':
+    				$temp =  $fan->getHighestLikeOnPostCount($fanpage_id, $facebook_user_id);
+    				if ($temp == null){
+    					$temp = 0;
+    				}
+    				//Zend_Debug::dump($temp);
+    				$temp =  $temp[0]['post_likes_count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Comment-on-Post':
+    				$temp =  $fan->getHighestCommentOnPostCount($fanpage_id, $facebook_user_id);
+    				//$temp = $temp->current();
+    				if ($temp == null){
+    					$temp = 0;
+    				}
+    				$temp =  $temp[0]['post_comments_count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Like-on-Comment':
+    				$temp =  $fan->getHighestLikeOnCommentCount($fanpage_id, $facebook_user_id);
+    				//Zend_Debug::dump($temp);
+    				if ($temp == null){
+    					$temp = 0;
+    				}
+    				$temp =  $temp[0]['comment_likes_count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Admin-Comment':
+    				$temp =  $fan->getAdminComment($fanpage_id, $facebook_user_id);
+    				//Zend_Debug::dump($temp);
+    				$temp =  $temp[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    			case 'Get-Admin-Like':
+    				$temp =  $fan->getAdminComment($fanpage_id, $facebook_user_id);
+    				//Zend_Debug::dump($temp);
+    				$temp =  $temp[0]['count'] / $b['quantity'];
+    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    		
+    			case 'Multiple-Comment':
+    				$temp =	( ($fanRecord[0]['video_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['video_comments']/$b['quantity'] ) +
+    						( ($fanRecord[0]['status_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['status_comments']/$b['quantity'] ) +
+    						( ($fanRecord[0]['photo_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['photo_comments']/$b['quantity'] ) +
+    						( ($fanRecord[0]['link_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['link_comments']/$b['quantity'] ) +
+    						( ($fanRecord[0]['total_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['video_comments']/$b['quantity'] ) ;
+    						
+    				//Zend_Debug::dump($temp);
+    				$temp =  $temp/5  ;
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    		
+    			case 'Multiple-Like':
+    				$temp = ( ($fanRecord[0]['video_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['video_likes']/$b['quantity'] ) +
+    						( ($fanRecord[0]['status_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['status_likes']/$b['quantity'] ) +
+    						( ($fanRecord[0]['photo_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['photo_likes']/$b['quantity'] ) +
+    						( ($fanRecord[0]['link_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['link_likes']/$b['quantity'] ) +
+    						( ($fanRecord[0]['total_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['video_likes']/$b['quantity'] ) ;
+    				//Zend_Debug::dump($temp);
+    				$temp =  $temp/5 ;
+    				$array[$count]['percentage'] = $temp;
+    				break;
+    		
+    			/*
+    			case 'Fan-Favorite-Month': $array[$count]['percentage'] = 'none';break;
+    			case 'Fan-Favorite-Week': $array[$count]['percentage'] ='none';break;
+    			case 'Fan-Favorite-Year':$array[$count]['percentage'] ='none'; break;
+    			case 'Top-Clicker-Month': $array[$count]['percentage'] ='none'; break;
+    			case 'Top-Clicker-Week':$array[$count]['percentage'] ='none';  break;
+    			case 'Top-Clicker-Year': $array[$count]['percentage'] ='none'; break;
+    			case 'Top-Fan-Month':$array[$count]['percentage'] ='none';  break;
+    			case 'Top-Fan-Week':$array[$count]['percentage'] ='none';  break;
+    			case 'Top-Fan-Year':$array[$count]['percentage'] ='none';  break;
+    			case 'Top-Talker-Month':$array[$count]['percentage'] ='none';  break;
+    			case 'Top-Talker-Week': $array[$count]['percentage'] ='none'; break;
+    			case 'Top-Talker-Year':$array[$count]['percentage'] ='none';  break;
+    			case 'Watched-Tutorial':$array[$count]['percentage'] ='none';  break;
+    			*/
+    			case 'default':
+    				break;
+    		
+    		}
+    		
+    		
+    		
+    		$count++;
+    	}
+    	
+    	return $array;
     }
-    
-    
     protected function badgeArray($fanpage_id, $facebook_user_id){
     		$badge = new Model_Badges();
     		$fan = new Model_FansObjectsStats();
@@ -1799,51 +2439,51 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				case 'Comment-General':
     				//$temp =  $fan->getTotalComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['total_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    				break;
     				case 'Comment-General-10sec':
     				
 	    				$temp =  $cg10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    				break;
 	    				
 	    			case 'Comment-General-1min':
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $cg1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Link':
 	    				//$temp =  $fan->getLinkComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['link_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			
 	    			case 'Comment-Link-10sec':
 	    				
 	    				$temp =  $cl10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Link-1min':
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $cl1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Photo':
 	    				//$temp =  $fan->getPhotoComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['photo_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Photo-10sec':
 	    				
 	    				$temp =  $cp10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Photo-1min':
@@ -1851,260 +2491,260 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    				//Zend_Debug::dump($temp);
 	    				
 	    				$temp =  $cp1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Status':
 	    				//$temp =  $fan->getStatusComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['status_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Status-10sec':
 	    				
 	    				$temp =  $cs10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Status-1min':
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $cs1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Video':
 	    				//$temp =  $fan->getVideoComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['video_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Video-10sec':
 	    				
 	    				$temp =  $cv10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-Video-1min':
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $cv1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			
 	    			case 'Follow' :
 	    				
 	    				 $temp =  $fw[0]['Following'] / $b['quantity'];
-	    				 $temp = ($temp> 1)? 1 : $temp;
+	    				 $temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				 $array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Followed':
 	    				
 	    				$temp =  $fwd[0]['Follower'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-General':
 	    				//$temp =  $fan->getTotalGetComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['total_get_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-General-10sec':
 	    				
 	    				$temp =  $gcg10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-General-1min':
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $gcg1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break; 
 	    			case 'Get-Comment-Link':
 	    				//$temp =  $fan->getLinkGetComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['get_link_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Link-10sec':
 	    				
 	    				$temp =  $gcl10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Link-1min':
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $gcg1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Photo':
 	    				//$temp =  $fan->getPhotoGetComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['get_photo_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Photo-10sec':
 	    				$temp =  $gcp10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Photo-1min':
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $gcp1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Status':
 	    				//$temp =  $fan->getStatusGetComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['get_status_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Status-10sec':
 	    				
 	    				$temp =  $gcs10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Status-1min':
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $gcs1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Video':
 	    				//$temp =  $fan->getVideoGetComments($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['get_video_comments'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Video-10sec':
 	    				
 	    				$temp =  $gcv10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Comment-Video-1min':
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $gcv1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-General':
 	    				//$temp =  $fan->getTotalLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['total_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-General-10sec':
 	    				
 	    			
 	    				$temp =  $lg10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-General-1min':
 	    				
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $lg1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Link':
 	    				//$temp =  $fan->getLinkLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['link_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Link-10sec':
 	    				
 	    				$temp =  $ll10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Link-1min':
 	    				
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $ll1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Photo':
 	    				//$temp =  $fan->getPhotoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['photo_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Photo-10sec':
 	    				
 	    				$temp =  $lp10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Photo-1min':
 	    				
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $lp1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Status':
 	    				//$temp =  $fan->getStatusLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['status_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Status-10sec':
 	    				
 	    				$temp =  $ls10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Status-1min':
 	    				
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $ls1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Video':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['video_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Video-10sec':
 	    				
 	    				$temp =  $lv10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Video-1min':
 	    				
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $lv1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Comment':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['comment_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Comment-10sec':
 	    				
 	    				$temp =  $lc10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-Comment-1min':
 	    			
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $lc1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    		
@@ -2113,27 +2753,27 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    			case 'Get-Like-General':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['total_get_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			
 	    			case 'Get-Like-General-10sec':
 	    				
 	    				$temp =  $glg10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-General-1min':
 	    				
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $glg1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Link':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['get_link_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			 
@@ -2141,100 +2781,100 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	   
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $glg10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Link-1min':
 	    				
 	    				$temp =  $gll1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Photo':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['get_photo_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Photo-10sec':
 	    				
 	    				$temp =  $glp10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Photo-1min':
 	    				
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $glp1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Status':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['get_status_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Status-10sec':
 	    				
 	    				$temp =  $gls10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Status-1min':
 	    				
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $gls1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Video':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['get_video_likes'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Video-10sec':
 	    				
 	    				$temp =  $glv10s[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Like-Video-1min':
 	    				
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $glv1m[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Post-General':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['total_posts'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Post-Link':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['post_link'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Post-Photo':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['post_photo'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Post-Status':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['post_status'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Post-Video':
 	    				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
 	    				$temp =  $fanRecord[0]['post_video'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-on-Post':
@@ -2244,7 +2884,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    				}
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $temp[0]['post_likes_count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Comment-on-Post':
@@ -2254,7 +2894,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    					$temp = 0;
 	    				}
 	    				$temp =  $temp[0]['post_comments_count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Like-on-Comment':
@@ -2264,21 +2904,21 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    					$temp = 0;
 	    				}
 	    				$temp =  $temp[0]['comment_likes_count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Admin-Comment':
 	    				$temp =  $fan->getAdminComment($fanpage_id, $facebook_user_id);
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $temp[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			case 'Get-Admin-Like':
 	    				$temp =  $fan->getAdminComment($fanpage_id, $facebook_user_id);
 	    				//Zend_Debug::dump($temp);
 	    				$temp =  $temp[0]['count'] / $b['quantity'];
-	    				$temp = ($temp> 1)? 1 : $temp;
+	    				$temp = ($temp>= 1)? 100 : round($temp*100, 0 ,PHP_ROUND_HALF_DOWN);
 	    				$array[$b['name']][(string)$b['quantity']]['percentage'] = $temp;
 	    			break;
 	    			
@@ -2327,8 +2967,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			*/
     			}
     		}
-    		//Zend_Debug::dump($array);
-    		//exit();
+    		Zend_Debug::dump($array);
+    		exit();
     		return $array;
     }
     

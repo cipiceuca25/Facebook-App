@@ -368,6 +368,7 @@ margin:-14px 0 0 8px;
 
 .title-icon img {
 border:5px solid @color-main-photo-border;
+background-color:@color-main-photo-border;
 .border-radius(3px);
 } 
 
@@ -856,7 +857,7 @@ display:block;
 
 .comments.popup_scroll{
 overflow: auto;
-max-height: 400px;
+max-height: 300px;
 width:439px;
 }
 
@@ -902,11 +903,13 @@ text-align:center;
 
 .progress{
 margin-bottom:0;
+background:@color-more-button-background;
+border:2px solid @color-main-container;
 }
 
 .progress .bar{
-background-color:@color-fan-experience-bar;
-#gradient > .vertical(@color-overall-achievement-bar, @color-fan-experience-bar);
+background:@color-main-container;
+.box-shadow(0 0 0 0 );
 }
 
 .row.box .half{
@@ -931,7 +934,7 @@ background-color:@color-userlist-background;
 #recent_activities{
 overflow: auto;
 padding-left:5px;
-height: 675px;
+height: 845px;
 .border-radius(3px);
 margin-top:9px;
 }
@@ -987,6 +990,17 @@ display:inline-block;
 padding:9px;
 }
 
+.upcoming-badges .progress{
+height:50px;
+width:50px;
+display:inline-block;
+margin:10px 15px 6px;
+}
+
+.upcoming-badges .bar{
+height:50px;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -1014,7 +1028,7 @@ text-align:right;
 #user_activities{
 overflow: auto;
 padding-left:5px;
-max-height: 200px;
+max-height: 300px;
 }
     
 #user_list .badge-profile{
@@ -1023,7 +1037,7 @@ top:17px;
 
 #user_list_scroll{
 overflow: auto;
-max-height: 500px;
+max-height: 300px;
 width:441px;
 }
 

@@ -4,7 +4,7 @@
 		data : [],
 		autoStart : false,
 		controlsPosition : 'TR',
-		welcomeMessage : '<h2>Tour</h2><p>Welcome to Fancrank App</p>',
+		welcomeMessage : '<h3>Tour</h3><p>Welcome to Fancrank App</p>',
 		buttons : {
 			next : 'Next',
 			prev : 'Previous',
@@ -17,7 +17,7 @@
 		},
 		tooltipColors : {
 			background : 'rgba(71, 101, 142, 0.9)',//'rgba(255,255,255, 0.80)',
-			border : '2px solid rgb(71, 101, 142)',
+			border : '2px solid rgba(71, 101, 142, 0.9)',
 			color : '#fff',
 		}
 	};
@@ -60,7 +60,7 @@
 						+ options.buttons.end
 						+ '</a>\
 						</div>\
-						<div id="tourText">'
+						<div id="tourText" style="padding:5px">'
 						+ options.welcomeMessage
 						+ '</div>\
 						</div>';
@@ -68,7 +68,7 @@
 					'margin-top' : '50px',
 					'display' : 'block',
 					'position' : 'fixed',
-					'width' : '250px',
+					'width' : '350px',
 					'padding' : '10px 20px',
 					'border-radius' : '10px',
 					'z-index' : 1000,
@@ -207,12 +207,13 @@
 			eh = $element.outerHeight();
 			el = $element.offset().left;
 			et = $element.offset().top;
+			
 			tw = $tooltip.width() + parseInt($tooltip.css('padding-left'))
 					+ parseInt($tooltip.css('padding-right')) + parseInt($tooltip.css('border-width'));
-			th = $tooltip.height() + parseInt($tooltip.css('padding-top')) + parseInt($tooltip.css('padding-bottom'))+ parseInt($tooltip.css('border-width'));
-
+			th = 33;//$tooltip.height() + parseInt($tooltip.css('padding-top')) + parseInt($tooltip.css('padding-bottom'))+ parseInt($tooltip.css('border-width'));
+			
 			$('.tourArrow').remove();
-			tbg = 'rgb(71, 101, 142)';//$tooltip.css('background-color');
+			tbg = 'rgba(71, 101, 142, 0.9)';//$tooltip.css('background-color');
 			
 			$upArrow = $('<div class="tourArrow"></div>').css({
 				'position' : 'absolute',
@@ -405,7 +406,7 @@
 			case 'T-Lowered':
 				position = {
 					'left' : el + ew / 2 - tw / 2,
-					'top' : (et - th) + 25
+					'top' : (et - th) + 10
 				};
 				$downArrow.css({
 					top : th,
@@ -495,7 +496,7 @@
 				
 			break;
 			case 6:
-				$('#pageTabs').css('z-index','');
+				
 				$('#log-in-out').css('z-index','');
 				
 				$('#latest-post-container').css('z-index', '500');
@@ -509,6 +510,7 @@
 				
 			break;
 			case 7:
+				$('#pageTabs').css('z-index','');
 				$('#fancrank-feed-container').css('z-index', '');
 				$('#top-post-container').css('z-index', '');
 				$('#top-fan-container').css('z-index', '');
@@ -518,6 +520,9 @@
 				$('#fancrank-feed-container').css('z-index', '500');
 				$('#top-post-container').css('z-index', '');
 				$('#top-fan-container').css('z-index', '');
+				$('#tourControls').css('top', '350px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 350);
 			break;
 			case 20:
 
@@ -525,15 +530,24 @@
 				$('#fancrank-feed-container').css('z-index', '');
 				$('#top-post-container').css('z-index', '');
 				$('#top-fan-container').css('z-index', '500');
+				$('#tourControls').css('top', '50px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 0);
 			break;
 			case 21:
 				$('#latest-post-container').css('z-index', '');
 				$('#fancrank-feed-container').css('z-index', '');
 				$('#top-post-container').css('z-index', '500');
 				$('#top-fan-container').css('z-index', '');
+				$('#tourControls').css('top', '350px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 350);
 			break;
 		
 			case 22:
+				$('#tourControls').css('top', '50px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 0);
 				ffb = true;
 				ttb = true;
 				tcb = true;
@@ -554,6 +568,7 @@
 				
 			break;
 			case 23:
+				
 				$('#pageTabs').css('z-index','');
 				$('.top-fan').css('z-index', '500');
 				$('.fan-favorite').css('z-index', '');
@@ -562,7 +577,9 @@
 				$('.top-followed').css('z-index', '');
 			break;
 			case 24:
-		
+				$('#tourControls').css('top', '450px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 450);
 				$('.top-fan').css('z-index', '');
 				$('.fan-favorite').css('z-index', '500');
 		
@@ -574,7 +591,9 @@
 			
 			break;
 			case 26:
-				
+				$('#tourControls').css('top', '750px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 750);
 				$('.top-talker').css('z-index', '');
 				$('.top-clicker').css('z-index', '500');
 			
@@ -584,6 +603,9 @@
 				$('.top-followed').css('z-index', '500');
 			break;
 			case 29:
+				$('#tourControls').css('top', '50px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 0);
 				$('.top-followed').css('z-index', '');
 				getMyProfile();
 				$('#leaderboard').html('');
@@ -603,10 +625,13 @@
 			break;
 			case 31:
 				$('#general-stats-container').css('z-index','');
+				$('#level-container h3').css('color', 'white');
 				$('#level-container').css('z-index','500');
+				
 				break;
 			case 32:
 				$('#level-container').css('z-index','');
+				$('#level-container h3').css('color', '');
 				$('#points-container').css('z-index','500');
 				break;
 			case 33:

@@ -4,9 +4,9 @@
 		<div id="general-stats-container">
 		<div class="title">
 			<div class="title-icon">
-				<a href="">
+				
 					<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);">
-				</a>
+				
 			</div>
 			<div class="title-header">
 				<?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile
@@ -48,72 +48,36 @@
 			</div>
 		</div>
 		<div id ="upcoming-badges-container">
-		<div class="title nopic">
-	
-			<div class="title-header nopic">
-				Upcoming Badges
+			<div class="title nopic">
+		
+				<div class="title-header nopic">
+					Upcoming Badges
+				</div>
+				<div class="tip">
+					<a rel="tooltip" data-original-title='These are your upcoming badges'>
+						?
+					</a>
+				</div>
 			</div>
-			<div class="tip">
-				<a rel="tooltip" data-original-title='These are your upcoming badges'>
-					?
-				</a>
+			<div class="row box">
+				<div class="post-container">
+					<div class="upcoming-badges">
+						<?php foreach ($this->badges as $b){?>
+						
+							<div class="progress">
+								<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
+								<a data-original-title="<?= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
+									
+									<img src="<?= $b['picture']?>" />
+								</a>
+							</div>
+							
+						<?php }?>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="row box">
-			<div class="post-container">
-					<?php $badge = $this->badges?>
-					
-					<? function cmp($a, $b){
-						
-							if ($a['percentage'] == $b['percentage']){
-								return 0;
-							}
-							if ($a['percentage'] > $b['percentage']){
-								return -1;
-							}
-							return 1;
-						}?>
-					
-					
-					<? usort($badge, 'cmp')?>
-					
-					<? $j=0; $i=0?>
-					<? while ($i < 5){
-						if($badge[$j]['percentage']!=1){
-							Zend_Debug::dump($badge[$j]);
-							$i++;
-						}
-						$j++;
-					}?>
-				
-					<!--
-					<?php $badgeName = array_keys($this->badges)?>
-					
-					<?php for($i = 0 ; $i < count($badgeName); $i++){?> 
-					
-						<?php $badgeQuantity = array_keys($badge[$badgeName[$i]]);?> 
-							<?php for($j = 0 ; $j < count($badgeQuantity); $j++){?>
-							
-							<?php if (($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] != 0 ) && ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] != 1 )){?>
-							<a class="badge_container" rel="tooltip" data-placement="top" 
-							data-original-title="<img src='<?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['picture']?>' >
-							<?= str_replace('[quantity]',  $badgeQuantity[$j], $badge[$badgeName[$i]][$badgeQuantity[$j]]['description'])?>">
-							
-							<img src="<?= $badge[$badgeName[$i]][$badgeQuantity[$j]]['picture']?>"
-							<?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] != 1){?> style="opacity:0.5" <?php }?>/>
-							
-							<?php if ($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] != 1){?>
-							<span><?= $badgeName[$i]?>-<?=$badgeQuantity[$j]?> <?= round($badge[$badgeName[$i]][$badgeQuantity[$j]]['percentage'] *100)?>% Completed</span>
-							<?php $j = count($badgeQuantity) +1;?><?php }?>
-							</a><br/>
-							
-						<?}?>
-					
-					
-				<?}?><?}?>
-				-->
-			</div>
-		</div></div>
 		<div id="follow-list-container">		
 			<div class="half" >	
 				<div class="title nopic">
