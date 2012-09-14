@@ -47,7 +47,7 @@
 
 			<div class="row box">
 		
-				<div class="half" >
+				<div class="stats" >
 					<div class="post-container">
 						<div class="profile-block">
 							<h3>Level</h3>
@@ -78,34 +78,7 @@
 					</div>
 				</div>
 					
-				<div class="half" >
-					<div class="post-container">	
-						<div class="profile-block">
-							<h4>Overall Achievement</h4>
-							<div class="progress">
-								<div class="bar" style="width: <?= $this->overall_achievement?>%;"></div>
-							</div>
-							<h5>
-								<?=$this->user_badge?>/<?=$this->all_badge?>
-							</h5>
-						</div>
-						<div class="profile-block">
-							<h4>Personal Achievement</h4>
-							<div class="progress">
-								<div class="bar" style="width: 60%;"></div>
-							</div>
-							<h5>0/100</h5>
-						</div>
-						<div class="profile-block">
-							<h4>Social Achievement</h4>
-								<div class="progress">
-									<div class="bar" style="width: 60%;"></div>
-								</div>
-								<h5>0/100</h5>
-							</div>
-						</div>
-					</div>
-				</div>
+				
 					
 
 				<div class="half" >	
@@ -159,23 +132,23 @@
 									<br/><br/>
 								<?php }?>
 								<div class="half" >
-								<?php if (!isset($this->fan->created_time)){?>
+								<?php if (($this->fan->first_login_time==null)){?>
 									<h4>Not A Fancrank User</h4>
 								<?}else{?>
 									<h4>Fancrank User Since:</h4><?= date("F Y",strtotime($this->fan->first_login_time))?>
-								<?php }?><br /><br />
+								<?php }?><br />
 								
 								<h4>Location:</h4>
-								<?php if (isset($this->fan->fan_country)) {?>
-									<?php if (isset($this->fan->fan_location)){?>
+								<?php if (!($this->fan->fan_country==null)) {?>
+									<?php if (!($this->fan->fan_location==null)){?>
 										<?= $this->fan->fan_location?>,
 									<?php }?>
 									<?= $this->fan->fan_country?>
 								<?php }else{?>
 									Unknown
 								<?php }?>
-	
 								</div>
+								
 								<div class="half">
 								<h4>Other Statistics:</h4>
 								<img src="/img/post.png" />Total Posts Made :
@@ -232,69 +205,69 @@
 		<?switch($act['activity_type']){ 
 		
 			case 'follow': ?>
-				<?echo $displayname ?> followed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> 
+				<?echo $displayname ?> followed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			case 'unfollow' :?>
-				<?echo $displayname ?> unfollowed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> 
+				<?echo $displayname ?> unfollowed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;	
 			
 			case 'like-status':?>
-				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">status post </a> 
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">status post</a>. 
 				<?break;
 			case 'unlike-status':?>
-				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">status post</a> 
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">status post</a>. 
 				<?break;
 			case 'like-photo':?>
-				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, false)">photo post </a> 
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, false)">photo post</a>. 
 				<?break;
 			case 'unlike-photo':?>
-				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">photo post</a> 
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">photo post</a>. 
 				<?break;	
 			case 'like-video':?>
-				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10,false)">video post </a> 
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10,false)">video post</a>. 
 				<?break;
 			case 'unlike-video':?>
-				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">video post</a> 
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">video post</a>. 
 				<?break;
 			case 'like-link':?>
-				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">link post </a> 
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">link post</a>. 
 				<?break;
 			case 'unlike-link':?>
-				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">link post</a> 
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, false)">link post</a>.
 				<?break;
 			case 'like-comment':?>
-				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); if(isset($temp[1])){echo $temp[0].'_'.$temp[1];} else{ echo $temp[0]; } ?>' , 10,false)">comment</a> 
+				<?echo $displayname ?> liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); if(isset($temp[1])){echo $temp[0].'_'.$temp[1];} else{ echo $temp[0]; } ?>' , 10,false)">comment</a>. 
 				<?break;
 			case 'unlike-comment':?>
-				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); if(isset($temp[1])){echo $temp[0].'_'.$temp[1];} else{ echo $temp[0]; } ?>' , 10, false)">comment</a> 
+				<?echo $displayname ?> unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); if(isset($temp[1])){echo $temp[0].'_'.$temp[1];} else{ echo $temp[0]; } ?>' , 10, false)">comment</a>. 
 				<?break;
 			case 'comment-status':?>
-				<?echo $displayname ?> posted a comment on <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, false)">status post</a> 
+				<?echo $displayname ?> posted a comment on <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, false)">status post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			case 'comment-photo':?>
-				<?echo $displayname ?> posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">photo post</a> 
+				<?echo $displayname ?> posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">photo post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			case 'comment-video':?>
-				<?echo $displayname?> posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">video post</a> 
+				<?echo $displayname?> posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">video post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			case 'comment-link':?>
-				<?echo $displayname?> posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">link post</a> 
+				<?echo $displayname?> posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">link post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			case 'post-status':?>
-				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">status post</a> on <?=$act['target_user_name']?>'s Fanpage 
+				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">status post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			case 'post-photo':?>
-				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">photo post</a> on <?=$act['target_user_name']?>'s Fanpage 
+				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">photo post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			case 'post-link':?>
-				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">link post</a> on 
+				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">link post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			case 'post-video':?>
-				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">video post</a> on 
+				<?echo $displayname?> made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, false)">video post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			default:
 		}?>
-		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+		
 		
 		
 		</div>

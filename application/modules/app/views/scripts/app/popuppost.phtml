@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row"> 
 	<div class="span7">
 		<div class="row box notitle">
 			<?php $count = 0?>
@@ -169,17 +169,58 @@
 						</a>		
 					</div>
 					<div class="social comment <?=$this->post->id?>" <?php if(!isset($this->post->comments->count) || ($this->post->comments->count == 0)){?>style="display:none"<?}?>>
-						<img src="/img/comment.png" />
-						<a>
-							There <?php if($this->post->comments->count == 1){?>is<?php }else{?>are<?php }?> 
-							<span class="comment_<?= $this->post->id?>" data-comment-count= <? if(isset($this->post->comments->count)){echo $this->post->comments->count;}else{echo '0';} ?>>
-								<? if(isset($this->post->comments->count)){echo $this->post->comments->count;}else{echo '0';} ?>
-							</span>
-							comment<?php if($this->post->comments->count != 1){?>s<?php }?> on this post.
-						</a>	
+						
+						 <a  onclick=" comment_feed3_filter('<?= $this->post->id ?>',
+			 							'<?= $this->post->type?>', 
+			 							10,
+			 							<?= (isset($this->post->comments->count)? $this->post->comments->count : '0')?> , 
+								 		false )"> 
+										<img src="/img/comment.png" />
+								 		<?php if($this->post->comments->count != 1){?> 
+								 		View all <span class="comment_<?= $this->post->id?>" data-comment-count=<?php if(isset($this->post->comments->count)){
+											echo $this->post->comments->count; //echo  $post->comments->count;
+										 	} else {
+												echo '0'; 
+											}?>>
+								 		<?php if(isset($this->post->comments->count)){
+											echo $this->post->comments->count; //echo  $post->comments->count;
+										 	} else {
+												echo '0'; 
+											}?>
+										</span> 
+										comments 
+									<?php }else { ?>
+										View all<span class="comment_<?= $this->post->id?>" data-comment-count=<?php if(isset($this->post->comments->count)){
+											echo $this->post->comments->count; //echo  $post->comments->count;
+										 	} else {
+												echo '0'; 
+											}?>>
+								 		
+										 
+										
+										</span>
+										comments 
+									<?php }?>
+									</a>
+									<?php if($this->post->comments->count > 5){?> 
+						
+						
+						&middot;
+					
+						<a  onclick=" comment_feed3_filter('<?= $this->post->id ?>',
+			 						'<?= $this->post->type?>', 
+			 						10,
+			 						<?= (isset($this->post->comments->count)? $this->post->comments->count : '0')?> , 
+								 	false)"
+								class="comment<?= $this->post->id ?>">My Comment
+						
+						
+						</a>
+						<?php }?>
 					</div>
 					<?php $count = 1?>
-					<ul class="comments popup_scroll" id="popup_post_<?=$this->post->id?>" >
+					<div id="popup_post_<?=$this->post->id?>" >
+					<ul class="comments popup_scroll" >
 						<?php if(empty($this->comments)){
 							//echo "Missing Access Token";
 						}else{?>
@@ -274,6 +315,7 @@
 						<?php $count ++;?>
 						<?php endforeach; }?>
 					</ul>
+					</div>
 					<div class="comment-container">
 						<div class="photo">
 							<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);">

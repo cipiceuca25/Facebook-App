@@ -156,7 +156,7 @@
 					</div>
 
 					<div class="social">
-						<a class="like_control_<?= $post->id?>"  data-placement="top" rel="tooltip" 
+						<a class="like_control_<?= $post->id?>"  data-placement="top-left" rel="tooltip" id="latest-like-container"
 							
 						<?php if ($this->latestlike == 0) {?>
 						   data-original-title="Click to like this" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like
@@ -164,12 +164,23 @@
 						   data-original-title="You like this" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike
 						<?php }?></a>
 
-						&middot; <a
-							onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
-			 		if(isset($post->comments->count)){
-						echo $post->comments->count; 
-			 		} else {echo '0';} ?> , true )"
-							class="commenthidern_<?= $post->id ?>">Comment </a> 
+						&middot; 
+						<a id = "latest-comment-container" class="commenthidern_<?= $post->id ?>"
+							onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 10,
+							<?php if(isset($post->comments->count)){
+									echo $post->comments->count; 
+						 		} else {echo '0';} ?> , true )"
+										>Comment</a> 
+							
+						<?php if ((isset($post->comments->count) && $post->comments->count>5)){?>	
+						&middot; 
+						<a id = "latest-comment-container" class="commenthidern_<?= $post->id ?>"
+							onclick=" comment_feed2_filter('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
+			 				if(isset($post->comments->count)){
+							echo $post->comments->count; 
+			 			} else {echo '0';} ?> , true )"
+							>My Comment</a> 	
+							<?php }?>
 							&middot;
 							<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?= strtotime($post->created_time)?>"> </a> <br />
 					</div>
@@ -219,11 +230,22 @@
 							echo '0'; 
 						}?>> </span> comments <?php }?>
 						</a>
-
-
+						
+						<?php if($post->comments->count > 5){?> 
+						&middot; 
+						
+						<a onclick=" comment_feed2_filter('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
+			 			if(isset($post->comments->count)){
+						echo $post->comments->count; //echo  $post->comments->count;
+			 			} else {echo '0';} ?> , true )"> 
+			 			<img src="/img/comment.png" />
+			 			
+							View My Comments
+						</a>
+						<?php }?>
 
 					</div> 
-					<ul class="comments" id="postn_<?=$post->id?>"></ul>
+					<div id="postn_<?=$post->id?>"></div>
 				</li>
 
 				<?php }?>
@@ -482,7 +504,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 	<div class="social"> 
 			
 			
-		<a class="like_control_<?= $post->id?>"  rel="tooltip" data-placement="top"
+		<a class="like_control_<?= $post->id?>"  rel="tooltip" data-placement="top-left"
 							
 						<?php if ($this->likes[$count] == 0) {?>
 						  data-original-title="Click to like this"  onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like
@@ -498,12 +520,22 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 			 						<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
 								 	true )"
 			class="commenthider_<?= $post->id ?>">Comment</a>
-				
+		
+		
+		<?php if(isset($post->comments->count) && ($post->comments->count > 5)){?>
+		&middot;
+		
+		<a  onclick=" comment_feed_filter('<?= $post->id ?>',
+			 						'<?= $post->type?>', 
+			 						10,
+			 						<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
+								 	true )"
+			class="commenthider_<?= $post->id ?>">My Comment</a>
+		<?php }?>		
 		&middot;
 
 		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
-			
-		<br/>
+
 	</div>
 	<div class="social like <?=$post->id?>"  <?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>style="display:none"<?php }?>>
 		
@@ -567,7 +599,19 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 					comments 
 				<?php }?>
 				</a>
-			
+				<?php if($post->comments->count > 5){?> 
+				&middot;	
+				
+				<a  onclick=" comment_feed_filter('<?= $post->id ?>',
+				 							'<?= $post->type?>', 
+				 							10,
+				 							<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
+									 		true )"> 
+						<img src="/img/comment.png" />
+				 	
+				 		View My Comments
+				</a>
+				<?php }?>
 	
 	
 	</div>
@@ -575,7 +619,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 	
 	
 	
-	<ul class="comments" id="post_<?=$post->id?>" ></ul>
+	<div id="post_<?=$post->id?>" ></div>
 	</li>	
 	<?php }?><!-- story -->	
 			<?php $count ++;?>

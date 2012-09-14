@@ -4,9 +4,9 @@
 		<div id="general-stats-container">
 		<div class="title">
 			<div class="title-icon">
-				<a href="">
+				
 					<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);">
-				</a>
+				
 			</div>
 			<div class="title-header">
 				<?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile
@@ -18,8 +18,8 @@
 			</div>
 		</div>
 		
-			<div class="row box">
-				<div class="half" >
+		<div class="row box">
+			<div class="stats" >
 					<div class="post-container">
 						<div class="profile-block" id="level-container">
 							<h3>Level</h3>
@@ -45,32 +45,35 @@
 						</div>
 					</div>
 				</div>
-			
-				<div class="half" >
-					<div class="post-container">	
-						<div class="profile-block" id="overall-container">
-							<h4>Overall Achievement</h4>
+			</div>
+		</div>
+		<div id ="upcoming-badges-container">
+			<div class="title nopic">
+		
+				<div class="title-header nopic">
+					Upcoming Badges
+				</div>
+				<div class="tip">
+					<a rel="tooltip" data-original-title='These are your upcoming badges'>
+						?
+					</a>
+				</div>
+			</div>
+			<div class="row box">
+				<div class="post-container">
+					<div class="upcoming-badges">
+						<?php foreach ($this->badges as $b){?>
+						
 							<div class="progress">
-								<div class="bar" style="width: <?= $this->overall_achievement?>%;"></div>
+								<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
+								<a data-original-title="<?= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
+									
+									<img src="<?= $b['picture']?>" />
+								</a>
 							</div>
-							<h5>
-								<?=$this->user_badge?>/<?=$this->all_badge?>
-							</h5>
-						</div>
-						<div class="profile-block" id="personal-container">
-							<h4>Personal Achievement</h4>
-							<div class="progress">
-								<div class="bar" style="width: 60%;"></div>
-							</div>
-							<h5>0/100</h5>
-						</div>
-						<div class="profile-block" id="social-container">
-							<h4>Social Achievement</h4>
-							<div class="progress">
-								<div class="bar" style="width: 60%;"></div>
-							</div>
-							<h5>0/100</h5>
-						</div>				
+							
+						<?php }?>
 					</div>
 				</div>
 			</div>
@@ -106,7 +109,18 @@
 			</div>
 		</div>	
 		<div id="other-stats-container">
-			<div class="row box notitle">
+			<div class="title nopic">
+	
+				<div class="title-header nopic">
+					Other Statistics
+				</div>
+				<div class="tip">
+					<a rel="tooltip" data-original-title="These are some of your other statistics. Such as how many posts, comments and likes you've given and likes and comment's you've recieved.">
+						?
+					</a>
+				</div>
+			</div>
+			<div class="row box">
 				<div class="post-container">
 					<div class="half" >
 						<h4>Fancrank User Since:</h4>
@@ -142,6 +156,7 @@
 	</div>
 	</div>
 	<div class="span5">
+	
 		<div id = "recent-activities-container">
 		<div class="title">
 			<div class="title-header nopic">

@@ -3,9 +3,9 @@
 	<div class="span12">
 		<div class="title">
 			<div class="title-icon">
-				<a href=""><img class="face" width="50" height="50"
+				<img class="face" width="50" height="50"
 					src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture"
-					onerror="ImgError(this);"> </a>
+					onerror="ImgError(this);">
 			</div>
 			<div class="title-header">
 		
@@ -15,6 +15,7 @@
 		</div>
 		<div class="row box">
 			<div class="post-container">
+
 				<span>Badge List:</span>
 				<div class="item-section"></div>
 				<ul>
@@ -23,6 +24,25 @@
 						<a href="#" onclick="redeem(<?=$item['id']?>); return false;">Redeem</a></li>
 					<? }?>
 				</ul>
+
+				<div class="post">
+					Want to use your points to get cool stuff related to this Fanpage?
+					<br/>
+					<br/>
+					Our minions are working non-stop so you can redeem stuff as fast as possible, so go and collect more points!
+					<br/>
+					<br/>
+					<span style="font-weight:bold">Type in your Airmiles Number</span>
+
+					<form action="#" class="submit-form">
+						<input></input>
+
+						<div >
+							<input type=button class="btn-submit" style="display:inline; float:none" value="Submit">
+						</div>
+					</form>
+					<br/><br/>
+				</div>
 			</div>
 		</div>
 	</div>

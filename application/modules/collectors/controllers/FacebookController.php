@@ -30,7 +30,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	// Create image instances
     	$dest = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\headermerge.png');
     	$src = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\topfan-mini.png');
-    	$src2 = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\checkrank.png');
+    	//$src2 = imagecreatefrompng(APPLICATION_PATH.'\..\public\img\checkrank.png');
     	
     	
     	$model = new Model_Rankings;
@@ -47,7 +47,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	
     	$font = APPLICATION_PATH.'\..\public\img\font\arialbd.ttf';
     	$font2 = APPLICATION_PATH.'\..\public\img\font\arial.ttf';
-    	$yim = 47;
+    	$yim = 88;
     
     	$count = 0;
     	foreach ($topFans as $top){
@@ -71,20 +71,20 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     				$pic=false;
     				break;
     		}
-    		imagefilledrectangle ($src, 40, $yim , 75 , $yim+35 , $white );
-    		imagecopyresized($src, $pic, 43, $yim+3, 0, 0, 30, 30, 50, 50);
+    		//imagefilledrectangle ($src, 45, $yim , 75 , $yim+35 , $white );
+    		imagecopyresized($src, $pic, 48, $yim+3, 0, 0, 30, 30, 50, 50);
     		//echo $topArray[$count];
-    		imagettftext($src, 16, 0, 87, $yim+25, $blue, $font, $text);
-    		imagettftext($src, 14, 0, 210, $yim+25, $gray, $font, $point);
-    		imagettftext($src, 9, 0, 245, $yim+23, $gray, $font2, 'Points');
+    		imagettftext($src, 16, 0, 92, $yim+25, $blue, $font, $text);
+    		imagettftext($src, 14, 0, 215, $yim+25, $gray, $font, $point);
+    		imagettftext($src, 9, 0, 250, $yim+23, $gray, $font2, 'Points');
     		$count++;
     		$yim +=37;
     	}
     	
     	imagecopy($dest, $src, 500, 5, 0, 0, 810, 300);
-    	imagecopy($dest, $src2, 500, 5, 0, 0, 810, 300);
+    	//imagecopy($dest, $src2, 500, 5, 0, 0, 810, 300);
 
-    	imagepng($dest,APPLICATION_PATH.'\..\public\img\test.png' );
+    	imagepng($dest,APPLICATION_PATH.'\..\public\img\autogencover.png' );
 
     }
     
@@ -143,9 +143,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     		
     		
     		//imagefilledrectangle ($src, 40, $yim , 75 , $yim+35 , $white );
-    		imagecopyresized($src, $pic, 30, 75, 0, 0, 30, 30, 50, 50);//add the facebook pic
+    		imagecopyresized($src, $pic, 30, 67, 0, 0, 40, 40, 50, 50);//add the facebook pic
     		//echo $topArray[$count];
-    		imagettftext($src, 10, 0, 70, 105, $blue, $font, $text);//file, font, , x, y, color, type , text
+    		imagettftext($src, 14, 0, 75, 107, $blue, $font, $text);//file, font, , x, y, color, type , text
     		
     		if (strlen($level)==1){
     			imagettftext($src, 16, 0, 302, 93, $blue, $font, $level);

@@ -179,7 +179,7 @@
 	
 	<div class="social">
 
-		<a class="like_control_<?= $post->id?>" data-placement="top" rel="tooltip"
+		<a class="like_control_<?= $post->id?>" data-placement="top-left" rel="tooltip"
 		<?php if ($this->likes[$count] == 0) {?> 
 			data-original-title="Click to like this" 
 			onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like
@@ -196,12 +196,21 @@
 			 						<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
 								 	true )"
 			class="commenthider_<?= $post->id ?>">Comment</a>
-				
+		
+		<?php if (isset($post->comments->count) && ($post->comments->count>5 ) ){?>
+		&middot;
+		
+		<a  onclick=" comment_feed_filter('<?= $post->id ?>',
+			 						'<?= $post->type?>', 
+			 						10,
+			 						<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
+								 	true )"
+			class="commenthider_<?= $post->id ?>">My Comment</a>
+		<?php }?>
 		&middot;
 
 		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
-			
-		<br/>
+
 	</div>
 	<div class="social like <?=$post->id?>"  <?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>style="display:none"<?php }?>>
 		
@@ -264,15 +273,29 @@
 					comments 
 				<?php }?>
 				</a>
-			
-	
+				
+				<?php if (($post->comments->count)>5){?>
+				
+			&middot;
+				
+				
+				 <a  onclick=" comment_feed_filter('<?= $post->id ?>',
+			 							'<?= $post->type?>', 
+			 							10,
+			 							<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
+								 		true )"> 
+					<img src="/img/comment.png" />
+			 		View My Comments
+				</a>
+				
+				<?php }?>
 	
 	</div>
 
 	
 	
 	
-	<ul class="comments" id="post_<?=$post->id?>" ></ul>
+	<div id="post_<?=$post->id?>" ></div>
 	</li>	
 			
 <?php $count ++;?>

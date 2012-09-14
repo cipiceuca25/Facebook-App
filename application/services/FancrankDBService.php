@@ -464,5 +464,4 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	}
 	
 }
-
 ?>

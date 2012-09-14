@@ -18,8 +18,26 @@
 					<div class="row box">
 						<?php $count = 0; ?> 
 						<?php foreach($this->top_fans as $top_fan):  ?>
+						
+						<?php $username= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name'];?>
+						<?php $displayname= $username;?>
+							
+						<?php 
+							if (strlen($username)>16){
+								if(strlen($top_fan['fan_first_name'])>16){
+									$displayname = substr($top_fan['fan_first_name'], 0, 13).'...'	;
+								}else if (strlen($top_fan['fan_first_name'])>13){
+									$displayname = $top_fan['fan_first_name'];
+								}else{
+									$displayname = $top_fan['fan_first_name'] .' '. substr($top_fan['fan_last_name'], 0,1) .'.';
+								}
+						}?>
+						
+						
+						
+						
 						<?php if ($count == 0){?>
-
+						
 						<ul class="top-list first">
 							<li>
 								<div class="ranker first">
@@ -48,11 +66,29 @@
 											
 												onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
 												rel="popover" data-content="" data-original-title=""
-												data-placement="top"><?= $top_fan['fan_first_name'] ?>						
+												data-placement="top"><?= $displayname ?>						
 											</a>
 										</div>
 									</div>
-
+			
+    		
+									<div class="stats">
+										<h5><?= $this->top_fans_stat[0]['total_posts']?></h5><img src="/img/post.png" />  /
+								
+									
+										<h5><?= $this->top_fans_stat[0]['total_comments']?></h5><img src="/img/thumbsup.png" />/
+									
+										
+										<h5><?= $this->top_fans_stat[0]['total_likes']?></h5><img src="/img/comment.png" />/
+									
+										
+										<h5><?= $this->top_fans_stat[0]['total_get_comments']?></h5><img src="/img/rthumbsup.png" />/
+								
+										
+										<h5><?= $this->top_fans_stat[0]['total_get_likes']?></h5><img src="/img/rcomment.png"/>  
+									</div>
+									
+									
 									<div class="points">
 										<h3>
 											<?= $top_fan['number_of_posts'] ?>
@@ -106,10 +142,27 @@
 											
 												onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
 												rel="popover" data-content="" data-original-title=""
-												data-placement="top"><?= $top_fan['fan_first_name'] ?>
+												data-placement="top"><?= $displayname ?>
 											</a></div>
 											
 										</div>
+										
+										<div class="stats">
+											<h5><?= $this->top_fans_stat[$count]['total_posts']?></h5><img src="/img/post.png" />  /
+								
+									
+											<h5><?= $this->top_fans_stat[$count]['total_comments']?></h5><img src="/img/thumbsup.png" />/
+										
+											
+											<h5><?= $this->top_fans_stat[$count]['total_likes']?></h5><img src="/img/comment.png" />/
+										
+											
+											<h5><?= $this->top_fans_stat[$count]['total_get_comments']?></h5><img src="/img/rthumbsup.png" />/
+									
+											
+											<h5><?= $this->top_fans_stat[$count]['total_get_likes']?></h5><img src="/img/rcomment.png"/> 
+										</div>
+										
 										<div class="points">
 											<h3>
 												<?= $top_fan['number_of_posts'] ?>
