@@ -157,8 +157,8 @@
 
 					<div class="social">
 						<a class="like_control_<?= $post->id?>"  data-placement="top-left" rel="tooltip" id="latest-like-container"
-							
-						<?php if ($this->latestlike == 0) {?>
+					
+						<?php if ($this->latestlike[$story] == 0) {?>
 						   data-original-title="Click to like this" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like
 						<?}else{?>
 						   data-original-title="You like this" onclick="unlike('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike

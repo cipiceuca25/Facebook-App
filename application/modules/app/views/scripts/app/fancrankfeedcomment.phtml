@@ -12,7 +12,7 @@
 <?php foreach ($this->comments as $post): ?>		
 
 		
-	<li class="comment-container" >
+	<li class="comment-container <?= $post->id?>" >
 
 		<div class="photo"><a  
 			<? if (!($this->relation[$count] == 'Fanpage')){?> 
@@ -104,7 +104,7 @@
 		<!--  <img src="/img/news-feed/icon-likes.png" /> -->
 		<span class="likes">
 	
-		<span class="like_<?= $post->id?>"><?=isset($post->like_count)?$post->like_count:'0'?> </span>
+		<span class="like_<?= $post->id?>" data-like-count=<?=isset($post->like_count)?$post->like_count:'0'?> ><?=isset($post->like_count)?$post->like_count:'0'?> </span>
 		
 		<a class="like_control_<?= $post->id?>" rel="tooltip" data-placement="top"
 		<?php if ($this->likes[$count] == 0) {?>
