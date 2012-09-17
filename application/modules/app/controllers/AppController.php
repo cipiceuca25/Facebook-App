@@ -3023,5 +3023,21 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	return $finalResult;
     }
     
+    public function fanrequestAction() {
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	
+    	$fanRequestModel = new Model_FanRequests();
+    	 
+    	if ($this->_fanpageProfile->fanpage_level != 3 && ! $fanRequestModel->hasFanRequest($this->_fanpageId, $this->_facebook_user->facebook_user_id)) {
+    		$data = array (
+    				'facebook_user_id' => $this->_facebook_user->facebook_user_id,
+    				'fanpage_id' => $this->_fanpageId,
+    				'type' => 'enterprise'
+    		);
+    		$fanRequestModel->insert($data);
+    	}
+    }
+    
 }
 

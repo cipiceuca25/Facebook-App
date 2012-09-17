@@ -191,6 +191,12 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$this->view->topFanList = $topFanList;
     	$this->view->topPostByLike = $topPostByLike;
     	$this->view->topPostByComment = $topPostByComment;
+    	
+    	$redeemTransactionModel = new Model_RedeemTransactions();
+    	$this->view->pending_orders_count = $redeemTransactionModel->getPendingOrdersCountByFanpageId($fanpageId);
+    	
+    	$fanRequestModel = new Model_FanRequests();
+    	$this->view->fan_requests_count = $fanRequestModel->getFanRequestCount();
 	}
     
 	public function fanprofileAction() {

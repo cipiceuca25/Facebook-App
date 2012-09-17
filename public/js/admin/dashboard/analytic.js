@@ -1,12 +1,24 @@
 jQuery(document).ready(function($){
 
+	$(".mini > li > a").hover(function(e){
+		e.stopPropagation();
+		if(!$(this).parent().hasClass("open")) {
+			$(this).find(".label").stop().animate({
+				top: '-10px'
+			},200, function(){
+				$(this).stop().animate({top: '-6px'},100);
+			});
+		}
+	}, function(){});
+	
 	/**************** Analytic Table Section *******************************/
 	var topFanTable = $('#topFanTable').dataTable();
 
-    $('#topPostByLike').dataTable();
+    var topFanTable = $('#topPostByLike').dataTable();
 
-    $('#topPostByComment').dataTable();
+    var topFanTable = $('#topPostByComment').dataTable();
     
+    /*******************************************************************/
     $( "#userprofile" ).dialog( "destroy" );
     
 	$('#userprofile').dialog({

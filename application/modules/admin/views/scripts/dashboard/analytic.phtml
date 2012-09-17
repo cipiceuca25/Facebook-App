@@ -1,4 +1,4 @@
-<? $this->headLink()->headLink(array('id'=>'stylesheet', 'rel'=>'stylesheet/less', 'href'=>'/css/dashboard/analytic.less')) ?>
+<? $this->headLink()->headLink(array('rel'=>'stylesheet', 'href'=>'/css/dashboard/analytic.css', 'type'=>'text/css')) ?>
 
 <script>
 var fanpageId = <?= $this->page_id ?>;
@@ -11,25 +11,89 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 <? $this->headScript()->appendFile('/js/libs/jquery.dataTables.min.js') ?>
 <? $this->headScript()->appendFile('/js/admin/dashboard/analytic.js') ?>
 
-<div>
-	<ul class="nav pull-left">
-          <li><a class="model-btn" href="#myFanpageSettingModel"><i class="icon-home"></i> home</a></li>
-          <li><a class="model-btn" href="#myFanpageSettingModel"><i class="icon-cog"></i> page stats</a></li>
-          <li><a class="model-btn" href="#myFanpageSettingModel"><i class="icon-cog"></i> top fans</a></li>
+<div class="breadcrumbs">
+	<div class="container-fluid">
+		<ul class="bread pull-left">
+			<li>
+				<a href="#"><i class="icon-home"></i></a>
+			</li>
+			<li>
+				<a href="#">
+					Dashboard
+				</a>
+			</li>
+		</ul>
+	<div class="topbar">
+	<ul class="mini">
+		<li class="dropdown pendingContainer">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				<i class="icon-barcode"></i>
+				Pending orders
+				<span class="label label-important" style="top: -6px;"><?=$this->pending_orders_count ?></span>
+			</a>
+			<ul class="dropdown-menu pull-right custom custom-dark">
+				<li class="custom">
+					<div class="title">
+						Pending order #1 
+					</div>
+					<div class="action">
+						<div class="btn-group">
+							<a class="tip btn btn-mini" href="#" data-original-title="Show order"><i class="icon-search"></i></a>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</li>
+		<li class="dropdown messageContainer">
+			<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+				<i class="icon-check"></i>
+				Fan Request
+				<span class="label label-info" style="top: -6px;"><?=$this->fan_requests_count?></span>
+			</a>
+			<ul class="dropdown-menu pull-right custom custom-dark">
+				<li class="custom">
+					<div class="title">
+						Show fan's request objects
+					</div>
+					<div class="action">
+						<div class="btn-group">
+							<a class="tip btn btn-mini" href="#" data-original-title="Show message"><i class="icon-search"></i></a>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</li>
 	</ul>
+	</div>
+	</div>
 </div>
 
 <div class="span12">
-	<div class="num">
-	    # of fans: <?= $this->fans ?>;    
-	</div>
-	<div class="num">
-	    # of new fans in 24 hours: <?= $this->new_fans ?>;    
-	</div>
-	<div class="num">
-	    Increase: <?= round($this->new_fans * 100 / $this->fans, 4) ?> %;    
-	</div>			
+	<ul class="quickstats">
+		<li>
+			<div class="small-chart" data-color="6a9d29" data-stroke="345010" data-type="line"><span style="display: none;">5,3,9,6,5,9,7,3,5,10</span><canvas height="32" width="60"></canvas></div>
+			<div class="chart-detail">
+				<span class="amount green"><?= $this->fans ?></span>
+				<span class="description"># of fans: </span>
+			</div>
+		</li>
+		<li>
+			<div class="small-chart" data-color="962c2c" data-stroke="651111" data-type="pie"><span style="display: none;">6/10</span><canvas height="32" width="32"></canvas></div>
+			<div class="chart-detail">
+				<span class="amount"><?= round($this->new_fans * 100 / $this->fans, 4) ?> %</span>
+				<span class="description">Increase</span>
+			</div>
+		</li>
+		<li>
+			<div class="small-chart" data-color="2c5b96" data-stroke="102c50" data-type="line"><span style="display: none;">521,500,481,429,550,521</span><canvas height="32" width="60"></canvas></div>
+			<div class="chart-detail">
+				<span class="amount"><?= $this->new_fans ?></span>
+				<span class="description"># of new fans in 24 hours:</span>
+			</div>
+		</li>
+	</ul>
 </div>
+			
 
 <div class="btn-group">
 	<ul class="nav nav-pills">
