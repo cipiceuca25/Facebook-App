@@ -16,7 +16,7 @@
 		<div class="row box">
 			<div class="post-container">
 
-				<span>Badge List:</span>
+				<span>Item List:</span>
 				<div class="item-section"></div>
 				<ul>
 					<?php foreach ($this->itemList as $item) {?>
@@ -56,6 +56,9 @@ function redeem(itemId) {
 		url : serverUrl + '/app/redeem/confirm?itemId='+itemId,
 		cache : false,
 		async : true,
+		beforeSend : function() {
+			$(".item_"+itemId).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
 		success : function(data) {
 			if($.trim(data) == 'ok') {
 				alert('you redeem an item');
