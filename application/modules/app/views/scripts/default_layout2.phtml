@@ -29,7 +29,7 @@
 		<script src="/bootstrap/js/bootstrap.js"></script>
 		<script src="/js/libs/enscroll-0.2.6.min.js"></script>
 		<script src="//connect.facebook.net/en_US/all.js"></script>
-		
+		<script src="/js/app/index/login.js"></script>
 		
 		<!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
@@ -44,6 +44,9 @@
 			var userName = "<?= $this->username?>";
 			var userAccessToken = "<?= $this->facebook_user_access_token?>";
 			var tour = "<?= $this->tour ?>";
+
+			var images = new Array('','post_post', 'Like_comment', 'Like_photo', 'post_photo');
+			var titles = new Array('','Made A Post', 'Liked A Comment', 'Liked A Photo', 'Posted A Photo');
 			//alert( accessToken);
 			var fb =false;
 			window.fbAsyncInit = function() {
@@ -60,6 +63,7 @@
 
 		 </script>
 		 <script src="/js/cranker.js"></script>
+		  <script src="/js/badgeAnimation.js"></script>
 		<script src="/js/fancrankTour.js"></script>
 <!-- End of iframe initialization -->
 		
@@ -79,9 +83,9 @@
             <link href="/css/refactor_style.css" rel="stylesheet" type="text/css"/>
         <? endif ?>
 		 
-		  <link rel="stylesheet/less" href="/css/badgestyle.less">
+		  
         <?= $this->headScript(); ?>
-
+		
 		<link rel="stylesheet" href="/css/app/joyride-1.0.5.css" />
         <!--<?php // $this->selectTheme(5, APPLICATION_ENV); ?>-->
 

@@ -435,9 +435,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//Zend_Debug::dump($result);
     	
     	if ($latest != null ){
-    		$latestlike = $likesModel->getLikes($this->_fanpageId, $latest[0]->id, $this->_userId );
+    		foreach ($latest as $l){
+    			$latestlike[] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
+    		}
     	}
-    	//Zend_debug::dump($latest);
+    	
+    	
+    	
+    	
     	$this->view->latestlike = $latestlike;
     	$this->view->latest = $latest ;
     	
@@ -983,6 +988,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     	$relation = $follow->getRelation($user2->facebook_user_id, $user->facebook_user_id, $this->_fanpageId);
     	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    	$fan_exp = $fan->getCurrentEXP();
+    	$fan_exp_required = $fan->getNextLevelRequiredXP();
     	
     	
     	
@@ -1008,13 +1015,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//echo $e->getMessage();
     	}
     	
-    	try{
-    		$fan_exp = $fan->getCurrentEXP();
-    		$fan_exp_required = $fan->getNextLevelRequiredXP();
-    	}catch(exception $e){
-    		$fan_exp = 0;
-    		$fan_exp_required = 400;
-    	}
+    	
     	//Zend_Debug::dump($fan);
     	$userBadges = new Model_BadgeEvents();
     	$userBadgeCount = $userBadges->getNumBadgesByUser($this->_fanpageId, $user->facebook_user_id);
@@ -1218,10 +1219,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($this->_fanpageId ) && !empty($this->_userId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(3600);
-    	
+    		
     		try {
     			$fanActivityId = $this->_fanpageId .'_' .$this->_userId. '_fan_activity';
-    			 
+    			$cache->remove($fanActivityId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanActivityId)){
     				//echo 'db look up';
@@ -1740,7 +1741,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     }
     
     
-    
+    public function badgesnotificationAction(){
+    	$this->_helper->layout->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender(true);
+    	
+    	$this->render("badgetest");
+    }
     
     /*
     public function adminfeedAction() {
@@ -2992,6 +2998,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->_facebook_user->fancrankAppTour = 0;
     	}
     }
+    
+    
     
     private function feedFirstQuery() {
     	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/feed?limit=10");

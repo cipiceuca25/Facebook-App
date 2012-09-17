@@ -41,7 +41,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 							p.post_id as event_object, 
 							p.facebook_user_id as target_user_id,
 							(select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as target_user_name,
-							c.created_time
+							c.created_time, c.comment_message as message
 							from 
 							comments c, posts p 
 							where c.fanpage_id =  $fanpage_id  and c.facebook_user_id = $facebook_user_id and c.comment_post_id = p.post_id
@@ -50,7 +50,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 					
 					union 
 					
-					(SELECT p.fanpage_id, p.facebook_user_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as facebook_user_name, concat('post-', p.post_type)as activity_type, post_id as event_object, p.fanpage_id as target_user_id, (select fp.fanpage_name from fanpages fp where fp.fanpage_id = p.fanpage_id) as target_user_name , p.created_time
+					(SELECT p.fanpage_id, p.facebook_user_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as facebook_user_name, concat('post-', p.post_type)as activity_type, post_id as event_object, p.fanpage_id as target_user_id, (select fp.fanpage_name from fanpages fp where fp.fanpage_id = p.fanpage_id) as target_user_name , p.created_time, p.post_message as message
 							FROM posts p
 							where p.facebook_user_id = $facebook_user_id and p.fanpage_id = $fanpage_id
 					 		order by created_time DESC
@@ -59,7 +59,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 					union 
 					
 					
-					(select liketable.fanpage_id, liketable.facebook_user_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = liketable.facebook_user_id) as facebook_user_name, activity_type, p.post_id as event_object, p.facebook_user_id as target_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as target_user_name, liketable.updated_time as created_time 
+					(select liketable.fanpage_id, liketable.facebook_user_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = liketable.facebook_user_id) as facebook_user_name, activity_type, p.post_id as event_object, p.facebook_user_id as target_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as target_user_name, liketable.updated_time as created_time, p.post_message as message
 							from
 							(select *, concat('like-', l.post_type) as activity_type from likes l where l.likes = 1 and  l.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id  and not (l.post_type REGEXP '_comment[[:>:]]')
 							union 
@@ -71,7 +71,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 					
 					union 
 					
-					(select liketable.fanpage_id, liketable.facebook_user_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = liketable.facebook_user_id) as facebook_user_name, activity_type, c.comment_post_id as event_object, c.facebook_user_id as target_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = c.facebook_user_id) as target_user_name, liketable.updated_time as created_time 
+					(select liketable.fanpage_id, liketable.facebook_user_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = liketable.facebook_user_id) as facebook_user_name, activity_type, c.comment_post_id as event_object, c.facebook_user_id as target_id, (select f.facebook_user_name from facebook_users f where f.facebook_user_id = c.facebook_user_id) as target_user_name, liketable.updated_time as created_time, c.comment_message as message 
 						from
 						(select *, concat('like-comment') as activity_type from likes l where l.likes = 1 and  l.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id  and (l.post_type REGEXP '_comment[[:>:]]')
 						union 
@@ -84,7 +84,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 					
 					union 
 					
-					(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time  
+					(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message  
 						from fancrank_activities 
 						where fanpage_id = $fanpage_id && facebook_user_id = $facebook_user_id
 						order by created_time DESC
@@ -112,7 +112,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 	}
 	
 	public function getRecentActivitiesSince($facebook_user_id, $fanpage_id, $limit, $since) {
-		$select = "select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time  
+		$select = "select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message 
 					from fancrank_activities 
 					where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id and created_time > '" .$since ."'
 					order by created_time DESC

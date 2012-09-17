@@ -1,7 +1,6 @@
 tog = true;
 pnext = false;
-images = new Array('','post_post', 'Like_comment', 'Like_photo', 'post_photo');
-titles = new Array('','Made A Post', 'Liked A Comment', 'Liked A Photo', 'Posted A Photo');
+
 count = 0;
 clr = null;
 
@@ -29,14 +28,9 @@ function next(){
 
 function play(){
 	$('.light-box').css('display','block');
-	if (tog) {
-		$('.flare').css("-webkit-animation-play-state", "paused");
-		$('.flare').css("-moz-animation-play-state", "paused");
-	}else{
-		$('.flare').css("-webkit-animation-play-state", "running");	
-		$('.flare').css("-moz-animation-play-state", "running");	
-	}
-	tog = !tog;
+
+	$('.flare').css("-webkit-animation-play-state", "running");	
+	$('.flare').css("-moz-animation-play-state", "running");	
 
 }
 
@@ -67,7 +61,7 @@ function resetLeft(ui) {
 	}
 	
 	$(ui).animate({
-		left : '-=1000px'
+		left : '-=1170px'
 	}, 500, function() {
 		
 	});

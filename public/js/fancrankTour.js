@@ -633,45 +633,60 @@
 				$('#level-container').css('z-index','');
 				$('#level-container h3').css('color', '');
 				$('#points-container').css('z-index','500');
+				$('#points-container h3').css('color', 'white');
+				$('#points-container').css('color', 'white');
 				break;
 			case 33:
 				$('#points-container').css('z-index','');
+				$('#points-container h3').css('color', '');
+				$('#points-container').css('color', '');
 				$('#exp-container').css('z-index','500');
+				$('#exp-container h4').css('color', 'white');
+				$('#exp-container h5').css('color', 'white');
 				break;
 			case 34:
 				$('#exp-container').css('z-index','');
-				$('#overall-container').css('z-index','500');
+				$('#exp-container h4').css('color', '');
+				$('#exp-container h5').css('color', '');
+				$('#tourControls').css('top', '450px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 450);
+				$('#upcoming-badges-container').css('z-index','500');
 				break;
 			case 35:
-				$('#overall-container').css('z-index','');
-				$('#personal-container').css('z-index','500');
+				$('#upcoming-badges-container').css('z-index','');
+				$('.upcoming-badges').css('z-index','500');
 				break;
 			case 36:
 				
-				$('#personal-container').css('z-index','');
-				$('#social-container').css('z-index','500');
-				break;	
-			case 37:
-				$('#social-container').css('z-index','');
+				$('.upcoming-badges').css('z-index','')
 				$('#follow-list-container').css('z-index', '500');
 				break;	
-			case 39:
+			case 38:
+				$('#tourControls').css('top', '750px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 750);
 				$('#follow-list-container').css('z-index','');
 				$('#other-stats-container').css('z-index', '500');
 				break;		
-			case 40:
+			case 39:
+				$('#tourControls').css('top', '50px');
+				FB.Canvas.setSize({ width: 810, height: 2000 });
+				FB.Canvas.scrollTo(0, 0)
 				$('#other-stats-container').css('z-index', '');
 				$('#recent-activities-container').css('z-index','500');
 				break;	
-			case 41:
+			case 40:
 				getRedeem();
 				$('#leaderboard').html('');
 				$('#news-feed').html('');
 				$('#myprofile').html('');
 				$('.nav.nav-tabs li:eq(3) a').tab('show'); 
 				$('#pageTabs').css('z-index','500');
+				$('#redeem').css('z-index', '500');
 				break;
-			case 42:
+			case 41:
+				$('#redeem').css('z-index', '');
 				$('#pageTabs').css('z-index','');
 				feedLimit = 0;
 				getNewsfeed('#news-feed');
@@ -680,25 +695,25 @@
 				$('#profile').html('');
 				$('#redeem').html('');
 				break;
-			case 43:
+			case 42:
 				$('#top-post-container').css('z-index', '500');
 				break;
-			case 44:
+			case 43:
 				$('#top-post-container').css('z-index', '');
 				userProfile(userId);
 				$('.user-profile').css('z-index','500');
 				break;
-			case 45:
+			case 44:
 				$('.user-profile').css('z-index','25');
 				$('.user-profile').css('display', 'none');
 				$('.profile-content').css('display', 'none');
 				$('.profile-content').html('');
 				break;
-			case 46:
+			case 45:
 				popup_post($('#latestpost').attr('data-post_id'), 10, true);
 				$('.user-profile').css('z-index','500');
 				break;
-			case 47:
+			case 46:
 				$('.user-profile').css('z-index','25');
 				$('.user-profile').css('display', 'none');
 				$('.profile-content').css('display', 'none');

@@ -69,7 +69,7 @@
 								<a data-original-title="<?= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
 								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
 									
-									<img src="<?= $b['picture']?>" />
+									<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
 								</a>
 							</div>
 							

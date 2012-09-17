@@ -9,6 +9,8 @@ var tfdb = true;
 var mouseX;
 var mouseY;
 
+var backgroundcolor;
+
 $(document).ready(function() {
 		
 // trick to indentify parent container
@@ -60,8 +62,15 @@ $(document).ready(function() {
 	
 			});}
 		}
-
+		
+	backgroundcolor = $('.profile-content').css('background-color');
 	getNewsfeed('#news-feed');
+	
+	if(images.length > 0){
+		setTimeout( function(){;
+		getBadgeNotification();
+		}, 3000);
+	}
 
 });
 
@@ -83,6 +92,7 @@ $(document).mousemove(function(e) {
 		fb=true;
 		FB.Canvas.setAutoGrow();	
 	}
+	
 	
 });
 
@@ -282,6 +292,7 @@ function closeProfile() {
 	$('.light-box').css('display', 'none');
 	$('.user-profile').css('display', 'none');
 	$('.profile-content').css('display', 'none');
+	$('.profile-content').css('background-color', backgroundcolor);
 	$('.profile-content').html('');
 	
 }
@@ -504,9 +515,17 @@ function like(post_id, post_type, target_id, target_name) {
 					//alert("target followed")
 					//alert(post_id + 'liked');
 					feedbackAnimation('#like-animation');
-
+					
+					if(post_type =='comment'){
+						mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
+					}else{
+						mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
+					}
+				
+			
+					
 					addActivities('like-' + post_type, post_id,
-							target_id, target_name);
+							target_id, target_name, mes);
 
 					num = parseInt($('.like_' + post_id).attr('data-like-count')) + 1;
 					$('.like_' + post_id).attr('data-like-count', num);
@@ -557,8 +576,16 @@ function unlike(post_id, post_type, target_id, target_name) {
 					//alert("target followed")
 					//alert(post_id + 'liked');
 					feedbackAnimation('#unlike-animation');
+					
+					if(post_type =='comment'){
+						mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
+					}else{
+						mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
+					}
+				
+					
 					addActivities('unlike-' + post_type, post_id,
-							target_id, target_name);
+							target_id, target_name, mes);
 
 					num = parseInt($('.like_' + post_id).attr('data-like-count')) - 1;
 					if (num < 1){
@@ -766,7 +793,34 @@ function getRedeem() {
 	});
 }
 
-
+function getBadgeNotification(){
+	load = typeof load !== 'undefined' ? load : true;
+	popup(load);
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/badgesnotification/' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : false,
+		beforeSend: function(){
+			$('.profile-content').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			
+		},
+		success : function(data) {
+			$('.profile-content').css('background-color', 'transparent');
+			$('.profile-content').html(data);
+			play();
+			next();
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting badges notification');
+		}
+	});
+	
+	
+	
+}
 
 function getRecentActivities() {
 	$.ajax({
@@ -831,7 +885,7 @@ function follow(target, name) {
 			cache : false,
 			success : function(data) {
 				//alert("target followed")
-				addActivities('follow', target, target, name);
+				addActivities('follow', target, target, name, null);
 				//getUserProfile('.profile-content', target);
 				getRelation(target, ui);
 				//alert(relation);
@@ -859,7 +913,7 @@ function unfollow(target, name) {
 		cache : false,
 		success : function(data) {
 			//alert("target unfollowed")
-			addActivities('unfollow', target, target, name);
+			addActivities('unfollow', target, target, name, null);
 			//getUserProfile('.profile-content', target);
 			getRelation(target, ui);
 
@@ -877,13 +931,13 @@ function unfollow(target, name) {
 	});
 }
 
-function addActivities(act_type, event, target_id, target_name) {
+function addActivities(act_type, event, target_id, target_name, message) {
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/user/' + userId + '/addactivity/?owner_name='
 				+ userName + '&activity_type=' + act_type + '&event=' + event
 				+ '&fanpage_id=' + fanpageId + '&target_id=' + target_id
-				+ '&target_name=' + target_name,
+				+ '&target_name=' + target_name + '&message=' + message,
 		dataType : "html",
 		cache : false,
 		success : function(data) {
@@ -908,8 +962,9 @@ function post(fanpage_name) {
 					alert(response.error.message);
 				} else {
 					//alert('Post ID: ' + response.id)
+					
+					addActivities('post-status', response.id, fanpageId, fanpage_name, $('#post_box').val('').substring(0,99) );
 					$('#post_box').val('');
-					addActivities('post-status', response.id, fanpageId, fanpage_name);
 					getFancrankfeed('post');
 				}
 			});
@@ -924,10 +979,10 @@ function commentSubmit(post_id, post_type, sage_id, post_owner_id, post_owner_na
 		if (!response || response.error) {
 			alert(response.error.message);
 		} else {
+			
+			
+			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, $('#comment_box_'+post_id).val('').substring(0,99));
 			$('#comment_box_'+post_id).val('');
-			
-			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name);
-			
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 			//alert(post_comment_count);
 			$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
@@ -951,10 +1006,10 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 		if (!response || response.error) {
 			alert(response.error.message);
 		} else {
+			
+			
+			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, $('#comment_box_'+post_id).val('').substring(0,99));
 			$('#comment_box_popup_'+post_id).val('');
-			
-			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name);
-			
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 			//alert(post_comment_count);
 			$('.comment_'+post_id).html(post_comment_count);
@@ -1305,7 +1360,7 @@ var tourOptions = {
 							'text' : 'Hover over the time to see the actual time the post was made. <br/><br/>' },	  	   		
 		   		//17
 		   		{ element: 	'#fancrank-feed-container', 
-					  		'position' : 'TL',
+					  		'position' : 'T',
 					   		'tooltip' : 'Fancrank Feed', 
 					   		'text' : 'This is the feed, just like in Facebook <br/><br/>' },   
 				//18	   		
@@ -1394,67 +1449,62 @@ var tourOptions = {
 							'tooltip' : 'Experience', 
 							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
 				//34
-				{ element: 	'#general-stats-container #overall-container', 
+				{ element: 	'#upcoming-badges-container', 
 							'position' : 'T',
-							'tooltip' : 'Overall Achievements', 
-							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	   		
+							'tooltip' : 'Upcoming Badges', 
+							'text' : 'These are your upcoming badges <br/><br/>' },	   		
 				//35
-				{ element: 	'#general-stats-container #personal-container', 
+				{ element: 	'.upcoming-badges', 
 							'position' : 'TL',
-							'tooltip' : 'Personal Achievements', 
-							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },	
+							'tooltip' : 'Badges', 
+							'text' : 'These show how close you are to obtaining a new badge<br/><br/>' },	
 				//36
-				{ element: 	'#general-stats-container #social-container', 
-							'position' : 'TL',
-							'tooltip' : 'Social Achievements', 
-							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },		   			   			   			   		
-				//37
 				{ element: 	'#follow-list-container', 
 							'position' : 'TL',
 							'tooltip' : 'Following/Followers List', 
 							'text' : 'These two display the list of followers and the list of people you are following <br/><br/>' },		   		
-				//38
+				//37
 				{ element: 	'#follow-list-container .btn-more', 
-							'position' : 'TL',
-							'tooltip' : 'View more', 
+							'position' : 'T',
+							'tooltip' : 'View More', 
 							'text' : 'Click the [View Full List] button to see the entire list of people <br/><br/>' },			
-				//39
+				//38
 				{ element: 	'#other-stats-container', 
 							'position' : 'TL',
 							'tooltip' : 'Other Statistics', 
 							'text' : 'Here are a list of other statistics about you! <br/><br/>' },			
-				//40
+				//39
 				{ element: 	'#recent-activities-container', 
-							'position' : 'TL',
+							'position' : 'T-Lowered',
 							'tooltip' : 'Recent Activities', 
-							'text' : ' <br/><br/>' },			
-				//41	   			   			   			   			   			   			   			   		
+							'text' : 'This is a list of activities of things you did, you can go back to view specific comments or posts by clicking on them.<br/><br/>' },			
+				//40	   			   			   			   			   			   			   			   		
 				{ element: 	'#redeem-tab', 
 							'position' : 'TL',
 							'tooltip' : 'Redemption Page', 
 							'text' : 'This is the Redemption Page <br/><br/>' },	   					
-				//42	   			   			   			   			   			   			   			   		
+				//41	   			   			   			   			   			   			   			   		
 				{ element: 	'', 
 							'position' : 'TL',
 							'tooltip' : '&nbsp;', 
 							'text' : 'There are only a few more things to talk about. <br/><br/>' },				
-				//43	   			   			   			   			   			   			   			   		
+				//42	   			   			   			   			   			   			   			   		
 				{ element: 	'#top-post-container #toppost .post-container .user .name', 
 							'position' : 'TL',
 							'tooltip' : 'Click on any Username or Picture', 
 							'text' : 'If you click on a username or picture, it will bring out the user profile screen  <br/><br/>' },
-				//44
+				//43
 				{ element: 	'', 
 							'position' : 'TL',
 							'tooltip' : '&nbsp;', 
 							'text' : 'You can see it it very similar to your own profile page, with the exception of their recent activities being on the bottom<br/><br/>' },
-				//45		   
+				//44		   
 				{ element: 	'', 
 							'position' : 'TL',
 							'tooltip' : '&nbsp;', 
 							'text' : 'If you had only hovered over a name or profile, you will see something similar to this <br/><br/> \
 									  <img src="/img/tutorial1.png"/> <br/> ' },
-				//46					  
+				//45					  
 				{ element: 	'', 
 							'position' : 'TL',
 							'tooltip' : '&nbsp;', 
