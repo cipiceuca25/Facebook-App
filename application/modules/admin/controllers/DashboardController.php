@@ -218,6 +218,14 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$this->render("fanprofile");
 	}
 	
+	public function badgewizzardAction() {
+		if($this->_getParam('name')) {
+			$this->_helper->layout()->disableLayout();
+			$this->_helper->viewRenderer->setNoRender();
+			Zend_Debug::dump($this->_getAllParams());
+		}
+	}
+	
 	private function array_2_csv($array) {
 		$csv = array();
 		foreach ($array as $item) {

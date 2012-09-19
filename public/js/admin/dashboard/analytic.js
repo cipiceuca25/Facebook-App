@@ -1,5 +1,24 @@
 jQuery(document).ready(function($){
 
+	$('.progress-preview').each(function(){
+		var el = $(this);
+		function up(){
+			var width = el.find('.bar').width();
+			var parentWidth = el.width();
+			var percent = Math.round((100*width/parentWidth));
+			var plus = Math.round(Math.random() * 10);
+			var newPercent = percent + plus;
+			if(newPercent > 100){
+				newPercent = 0;
+				el.find('.bar').width("100%").html("Finish Loading 100%");
+				return;
+			}
+			el.find('.bar').width(newPercent+"%").html('Loading '+newPercent+"%");
+			setTimeout(up, 100);
+		}
+		up();
+	});
+	
 	$(".mini > li > a").hover(function(e){
 		e.stopPropagation();
 		if(!$(this).parent().hasClass("open")) {
@@ -14,9 +33,9 @@ jQuery(document).ready(function($){
 	/**************** Analytic Table Section *******************************/
 	var topFanTable = $('#topFanTable').dataTable();
 
-    var topFanTable = $('#topPostByLike').dataTable();
+    var topPostTable = $('#topPostByLike').dataTable();
 
-    var topFanTable = $('#topPostByComment').dataTable();
+    var topCommentTable = $('#topPostByComment').dataTable();
     
     /*******************************************************************/
     $( "#userprofile" ).dialog( "destroy" );

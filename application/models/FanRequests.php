@@ -22,7 +22,7 @@ class Model_FanRequests extends Model_DbTable_FanRequests
 	public function __construct1($fanpageId) {
 		parent::__construct();
 		$this->_fanpageId = $fanpageId;
-		if(!empty($fanpage_id)) {
+		if(!empty($fanpageId)) {
 			$where = $this->quoteInto('fanpage_id = ?', $fanpageId);
 			$this->_fanRequestList = $this->findAll($where);
 		}else {

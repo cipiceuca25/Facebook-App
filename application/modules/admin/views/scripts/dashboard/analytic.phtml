@@ -11,6 +11,10 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 <? $this->headScript()->appendFile('/js/libs/jquery.dataTables.min.js') ?>
 <? $this->headScript()->appendFile('/js/admin/dashboard/analytic.js') ?>
 
+<div class="progress progress-striped progress-info progress-preview active">
+								<div style="width: 1%;" class="bar">load 0%</div>
+</div>
+
 <div class="breadcrumbs">
 	<div class="container-fluid">
 		<ul class="bread pull-left">
