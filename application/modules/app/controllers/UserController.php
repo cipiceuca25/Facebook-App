@@ -13,9 +13,9 @@
  */
 class App_UserController extends Fancrank_App_Controller_BaseController
 {
+	protected $_user;
+	
 	public function preDispatch() {
-		$this->_helper->layout()->disableLayout();
-		$this->_helper->viewRenderer->setNoRender(true);
 		//check for user authorization
 		$this->_auth = Zend_Auth::getInstance();
 		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
@@ -24,6 +24,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			$this->_helper->json(array('message'=>'authentication failed'));
 			//set the proper navbar
 		}
+		$this->_helper->layout()->disableLayout();
+		$this->_helper->viewRenderer->setNoRender();
+		$this->_user = $this->_auth->getIdentity();
 	}
 	
 	public function indexAction() {
@@ -326,8 +329,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 	}
 	
-	
-
+	public function notificationAction() {
+		$this->_helper->json(array('message'=>'ok'));
+	}
 	
 	public function uploadAction() {
 		$fc = $this->_getParam('fanpage_id');

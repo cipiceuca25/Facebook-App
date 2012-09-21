@@ -327,9 +327,8 @@ class Service_FancrankCollectorService {
 		$baseUrl = $this->_facebookGraphAPIUrl . $this->_fanpageId;
 		switch ($type) {
 			case 'likes' 	: $url =  $baseUrl .'/insights/page_fans/lifetime' . '?' .http_build_query($params); break;
-			case 'comments' : $url =  $baseUrl .'/insights/page_like_adds/day' . '?' .http_build_query($params); break;
-			case 'posts' 	: $url =  $baseUrl .'/insights/page_discussions/day' . '?' .http_build_query($params); break;
-			case 'story'    : $url =  $baseUrl .'/insights/page_story_adds/day' . '?' .http_build_query($params); break;
+			case 'comments' : $url =  $baseUrl .'/insights/page_fan_adds/day' . '?' .http_build_query($params); break;
+			case 'posts' 	: $url =  $baseUrl .'/insights/page_story_adds_unique/day' . '?' .http_build_query($params); break;
 			default			: break;
 		}
 		
