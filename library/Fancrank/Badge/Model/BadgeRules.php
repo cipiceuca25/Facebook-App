@@ -40,24 +40,12 @@ class Fancrank_Badge_Model_BadgeRules extends Fancrank_Db_Table
     	}
     }
     
-    public function removeRule($ruleId) {
-    	unset($this->_ruleList[$ruleId]);	
+    public function getOperator($index=0) {
+    	return is_numeric($index) && $index < 6 ? $this->_DEFAULT_OPERATOR_LIST[$index] : '>';
     }
     
-    public function queryGenerate($type=null) {
-    	if($type) {
-    		return;
-    	}
-    	
-    	$selects = array();
-    	
-    	foreach ($this->_ruleList as $rule) {
-    		if(in_array($rule['table_name'], $this->_DEFAULT_TABLE_NAME_LIST)) {
-    			$select = "select count(*) from " .$rule['table_name']  ." where " .$rule['table_field'] . $rule['operator'] .$rule['argument'];
-    			$selects[] = $select;
-    		}
-    	}
-    	return implode(" union all ", $selects); 
+    public function removeRule($ruleId) {
+    	unset($this->_ruleList[$ruleId]);	
     }
     
     public function getJsonRules() {

@@ -218,12 +218,50 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$this->render("fanprofile");
 	}
 	
-	public function badgewizzardAction() {
-		if($this->_getParam('name')) {
+	public function badgewizardAction() {
+		if($this->_getParam('confirm')) {
 			$this->_helper->layout()->disableLayout();
-			$this->_helper->viewRenderer->setNoRender();
-			Zend_Debug::dump($this->_getAllParams());
+			$this->_helper->viewRenderer->setNoRender(true);
+			$badgeRuleModel = new Fancrank_Badge_Model_BadgeRules();
+			$rule1 = array(
+						'table_name'=>$this->_getParam('target'),
+						'table_field'=>$this->_getParam('target'),
+						'operator'=>$badgeRuleModel->getOperator($this->_getParam('operator')),
+						'argument'=>$this->_getParam('argument')
+					);
+			
+			$badgeRuleModel->addRule($rule1);
+			
+			$stylename = $this->_getParam('name');
+			$data = array(
+						'name'=> $this->_getParam('name'),
+						'stylename'=> empty($stylename) ? $this->_getParam('name') : $stylename,
+						'description' => $this->_getParam('description'),
+						'weight' => $this->_getParam('weight'),
+						'quantity' => $this->_getParam('weight'),
+						'picture' => $this->_getParam('picture'),
+						'rules' => $badgeRuleModel->getJsonRules()
+					);
+			
+			$badgeModel = Fancrank_BadgeFactory::factory('custom');
+			
+			try {
+				$badgeId = $badgeModel->insert($data);
+				//$badge = $badgeModel->findrow($badgeId);
+
+				$fanpageBadgeModel = new Model_FanpageBadges();
+				$fanpageBadgeModel->insert(array('fanpage_id'=>$this->_getParam('id'), 'badge_id'=>$badgeId));
+				
+				$this->_helper->json(array('message'=>'ok'));
+			} catch (Exception $e) {
+				$this->_helper->json(array('message'=>'fail'));
+				
+			}
+				
 		}
+		
+		//Zend_Debug::dump($this->_getAllParams());
+		$this->view->page_id = $this->_getParam('id');
 	}
 	
 	private function array_2_csv($array) {

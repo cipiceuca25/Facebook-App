@@ -632,10 +632,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$badgeModel = Fancrank_BadgeFactory::factory('custom');
     	$badgeRuleModel = new Fancrank_Badge_Model_BadgeRules();
     	
-    	$rule1 = array('table_name'=>'posts', 'table_field'=>'posts', 'operator'=>'>=' ,'argument'=>'100');
-    	$rule2 = array('table_name'=>'comments', 'table_field'=>'comments', 'operator'=>'>=' ,'argument'=>'100');
+    	$rule1 = array('table_name'=>'posts', 'table_field'=>'posts', 'operator'=>'>' ,'argument'=>'10');
     	$badgeRuleModel->addRule($rule1);
-    	$badgeRuleModel->addRule($rule2);
+    	//$badgeRuleModel->addRule($rule2);
     	//$badgeRuleModel->addRule($rule3);
     	
     	$rules = $badgeRuleModel->getJsonRules();
