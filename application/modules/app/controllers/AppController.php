@@ -1233,14 +1233,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			}else {
     				//echo 'memcache look up';
     				$activities = $cache->load($fanActivityId);
+    			
     				// merge new activity
     			    $newActivity = array();
 				    if(!empty($activities[0]['created_time'])) {
 				    	$newActivity = $activitiesModel->getRecentActivitiesSince($this->_userId, $this->_fanpageId, $limit, $activities[0]['created_time']);
 				    }
-			    	
+				    
 			    	if(count($newActivity) >= $limit) {
-			    		//Zend_Debug::dump($newActivity);
+			    		
 			    		$activities = $newActivity;
 			    		$cache->save($activities, $fanActivityId);
 			    		
@@ -1259,7 +1260,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->activities = $activities;
     	$this->view->user_id = $this->_userId;
     	
-    	//Zend_Debug::dump($activities);
+    	
     	
     	$this->render("recentactivities");
     }

@@ -128,11 +128,11 @@
 						<br />
 						<br />
 						<h4>Location</h4>
-						<?php if (isset($this->fan->fan_country)) {?>
-							<?php if (isset($this->fan->fan_location)){?>
-								<?= $this->fan->fan_location?>,
+						<?php if ($this->fan['fan_country'] != null ) {?>
+							<?php if ($this->fan['fan_location'] != null){?>
+								<?= $this->fan['fan_location']?>, 
 							<?php }?>
-							<?= $this->fan->fan_country?>
+							<?= $this->fan['fan_country']?>
 						<?php }else{?>
 							Unknown
 						<?php }?>							

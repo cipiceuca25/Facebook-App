@@ -23,7 +23,7 @@
         <script src="/js/libs/jquery-1.7.2.min.js"></script>
 		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
     	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
-        <script src="/bootstrap/js/bootstrap.min.js"></script>
+      	<script src="/bootstrap/js/bootstrap.js"></script>
         <script src="//connect.facebook.net/en_US/all.js"></script>
       	<script src="/js/startcrank.js"></script>
 
@@ -46,6 +46,7 @@
 					 
 				});
 				FB.Canvas.setAutoGrow();
+		
 				fb = true;
 			};
 		 </script>
@@ -80,8 +81,12 @@
     </head>
 
     <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
-
+		<div class="user-profile">
+					<div class="tip"><a onclick="closeProfile()">X</a></div>
+					<div class="profile-content"></div>
+		</div>
 		<div class="container" role="main"> 
+		
 			<div id="wrapper">
 	
 				<div id="header">
@@ -107,6 +112,7 @@
         		
         	</div>
          </div>
+         <div class="light-box"></div>
         <div id="fb-root"></div>
     </body>	
 </html>
