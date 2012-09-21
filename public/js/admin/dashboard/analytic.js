@@ -53,7 +53,7 @@ jQuery(document).ready(function($){
 				placement:'top',
 				delay : {
 					show : 500,
-					hide : 100
+					hide : 1000000
 				}
 			}).trigger('mouseover');
 			popover(this);

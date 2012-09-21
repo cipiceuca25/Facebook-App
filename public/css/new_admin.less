@@ -1,8 +1,8 @@
-
+@import url('/bootstrap/css/bootstrap.css');
 @import url(../bootstrap/less/mixin.less);
 
 body {
-	background:white !important;
+	background:black !important;
 }
 
 .navbar .nav li a,
@@ -131,4 +131,88 @@ margin-bottom:5px;width:150px;
 
 .widget .label{
 float:right;
+}
+
+///////////////////////////////////////////////////////////////
+
+.popover-inner{
+.span5;
+.border-radius(3px);
+border:5px solid @color-popover-border;
+padding:0;
+background-color:@color-popover-background;
+}
+
+.popover-title{
+display:none;
+}
+
+.popover-content{
+padding:0;
+margin-top:-8px;
+}
+
+
+.popover-content .post-container .user{
+overflow:visible;
+}
+
+.popover-content .level{
+float:right;
+text-align:center;
+font:bold 20px/25px Arial, Helvetica, sans-serif;
+color:@color-level-text;
+width:25px;
+height:25px;
+border: 3px solid @color-level-border;
+.border-radius(2px);
+position:relative;	
+top:-45px;
+}
+
+.popover-content .post .date{
+font-size:11px;
+float:Right;
+}
+
+
+
+.popover-content h5{
+display:inline;
+}
+
+.popover.top .arrow{
+border-top: 5px solid @color-popover-border;
+margin-left:-104px;
+}
+
+.popover.left .arrow{
+border-left: 5px solid @color-popover-border;
+}
+
+.popover.right .arrow{	
+border-right: 5px solid @color-popover-border;
+}
+ 
+.popover.toppost .arrow{
+top: 50%;
+right: 0;
+margin-top: -5px;
+border-top: 5px solid transparent;
+border-bottom: 5px solid transparent;
+border-left: 5px solid @color-popover-border;
+}
+
+.popover.top{
+margin-left:99px;
+margin-top:-10px;	
+}
+
+.popover.left{
+margin-left:0;
+margin-top:0;
+}
+
+.popover.toppost{
+.popover.left;
 }
