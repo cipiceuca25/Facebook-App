@@ -952,7 +952,7 @@ function addActivities(act_type, event, target_id, target_name, message) {
 }
 
 function post(fanpage_name) {
-
+	mes =  $('#post_box').val();
 	FB.api('/' + fanpageId + '/feed', 'post', {
 		'message' : $('#post_box').val(),
 		'access_token' : userAccessToken
@@ -963,7 +963,7 @@ function post(fanpage_name) {
 				} else {
 					//alert('Post ID: ' + response.id)
 					
-					addActivities('post-status', response.id, fanpageId, fanpage_name, $('#post_box').val('').substring(0,99) );
+					addActivities('post-status', response.id, fanpageId, fanpage_name,mes.substring(0,99) );
 					$('#post_box').val('');
 					getFancrankfeed('post');
 				}
@@ -971,7 +971,9 @@ function post(fanpage_name) {
 
 }
 
-function commentSubmit(post_id, post_type, sage_id, post_owner_id, post_owner_name, isLatestAdminPost){
+function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLatestAdminPost){
+	
+	mes= $('#comment_box_'+post_id).val();
 	FB.api('/' + post_id + '/comments', 'post', {
 		'message' : $('#comment_box_'+post_id).val(),
 		'access_token' : userAccessToken
@@ -981,7 +983,7 @@ function commentSubmit(post_id, post_type, sage_id, post_owner_id, post_owner_na
 		} else {
 			
 			
-			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, $('#comment_box_'+post_id).val('').substring(0,99));
+			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 			$('#comment_box_'+post_id).val('');
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 			//alert(post_comment_count);

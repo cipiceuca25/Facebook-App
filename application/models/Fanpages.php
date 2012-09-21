@@ -145,6 +145,24 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $row['count'];
 	}
 	
+	public function getFanpageLevel($fanpage_id){
+		
+		$select = $this->getAdapter()->select();
+		$select->from(array('fanpages' => 'fanpages') )
+		->where($this->quoteInto('fanpage_id = ?', $fanpage_id));
+		
+		$row = $this->getAdapter()->fetchRow($select);
+		
+		if(empty($row['fanpage_level'])) {
+			return 0;
+		}
+		
+		return $row['fanpage_level'];
+		
+		
+		
+	}
+	
 	public function getActiveFanpageByFanpageId($fanpage_id, $user_id)
 	{
 		$select = $this->getAdapter()->select();

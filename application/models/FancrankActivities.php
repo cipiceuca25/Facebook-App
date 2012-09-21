@@ -107,8 +107,10 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 			}
 			$finalResult[] = $row;
 		}
+		
 		return $finalResult;
-	
+		
+		
 	}
 	
 	public function getRecentActivitiesSince($facebook_user_id, $fanpage_id, $limit, $since) {

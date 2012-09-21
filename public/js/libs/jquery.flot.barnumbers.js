@@ -11,7 +11,8 @@
 (function ($) {
     var options = {
         bars: { showNumbers: false },
-    	showNumbers: false
+    	showNumbers: false,
+    	font:"12px Verdana"
     };
 
     function init(plot) {
@@ -23,6 +24,7 @@
                 var offset = plot.getPlotOffset();
                 ctx.textBaseline = "top";
                 ctx.textAlign = "center";
+                ctx.font=series.font;
                 if(series.bars.align == "left")
                     alignOffset = series.bars.barWidth / 2;
                 else

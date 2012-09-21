@@ -36,19 +36,50 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 	});
 	
-	$(".dataTable tbody tr").live('click', function(event) {
+	$(".dataTable tbody tr").live('mouseover', function(event) {
 
 		var aData = topFanTable.fnGetData( this );
 		var iId = aData[0];
-		
+		$(".dataTable tbody tr").attr('data-userid', aData[0]);
 		//alert(iId);
 		$(this).toggleClass('row_selected');
 		if(iId) {
 			event.preventDefault();
-			popover(iId);
+			if ($(this).data('isPopoverLoaded') == true) {
+				return;
+			}
+			$(this).data('isPopoverLoaded', true).popover({
+				placement:'top',
+				delay : {
+					show : 500,
+					hide : 100
+				}
+			}).trigger('mouseover');
+			popover(this);
 		}
 	});
 	
+	
+	function popover(x) {
+		$.ajax({
+			type : "GET",
+			url : serverUrl + '/admin/dashboard/fanprofile/' + fanpageId
+					+ '?facebook_user_id=' + $(x).attr('data-userid'),
+			dataType : "html",
+			cache : false,
+			async : false,
+			beforeSend: function(){
+				$(x).attr('data-content', "<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			},
+			success : function(data) {
+				$(x).attr('data-content', data);
+			},
+			error : function(xhr, errorMessage, thrownErro) {
+				console.log(xhr.statusText, errorMessage);
+			}
+		});
+	}
+/*
 	function popover(x){
 		//alert ('getting info for '+ id);
 		$.ajax({
@@ -68,6 +99,7 @@ jQuery(document).ready(function($){
     		}
     	});
 	}
+	*/
 
 	/* Get the rows which are currently selected */
 	function fnGetSelected( oTableLocal )
@@ -211,21 +243,27 @@ jQuery(document).ready(function($){
     });
 
     /***************************post graph*****************************/
-	$('#postStat').css({'width':'600px', 'height':'400px'});
-	$('#postByLikeStat').css({'width':'600px', 'height':'400px'});
-	$('#postByCommentStat').css({'width':'600px', 'height':'400px'});
+	$('#postStat').css({'width':'600px', 'height':'600px'});
+	$('#postByLikeStat').css({'width':'600px', 'height':'500px'});
+	$('#postByCommentStat').css({'width':'600px', 'height':'500px'});
 
-	var postDataSet = jsonToDataSet(postData, 1);
-	
-	//alert(postDataSet);
+	var postDataSet = jsonToDataSet(postData[0], 1);
+	var postDataSet2 = jsonToDataSet(postData, 1);
+	//console.log(postData[0]);
 		
 	var postData1 = [[1, 3], [4, 8], [7, 5], [10, 13]];
 	
 	var postData2 = [[1, 5], [4, 7], [7, 5], [10, 13]];
 	
 	var postData3 = [[1, 12], [4, 8], [7, 5], [10, 2]];
-
-	var barData1 = [{ label: 'Post Overall Stat',  data:postDataSet}];
+	//console.log(postDataSet);
+	var barData1 = [{ label: 'Status',  data:[[1 , postData[3]['count']]]  },
+	                { label: 'Link',     data:[[4, postData[0]['count']]]   },
+	                { label: 'Photo',   data:[[7,  postData[1]['count']]] },	
+	                { label: 'Video',  data:[ [10, postData[2]['count'] ] ]   }
+	                
+	
+					];
 	
 	var barData2 = [{ label: 'Top Post By # Of Likes',  data:postData2}];
 	
@@ -234,39 +272,49 @@ jQuery(document).ready(function($){
     var barOptions = {
     		xaxis: {
     			min : 0,
-    			max : 12,
+    			max : 11,
     			ticks:[[1,'status'],[4,'link'],[7,'photo'], [10, 'video']],
-                axisLabelUseCanvas: true,
-                axisLabelFontSizePixels: 12,
-                axisLabelPadding: 25,
-                axisLabel: 'type',
-                tickLength: 0 // hide gridlines
+    			font:{size:14},
+                tickLength: 0, // hide gridlines
+                color:'red',
+               
+             
     		},
             yaxis: {
                 axisLabel: 'Value',
-                axisLabelUseCanvas: true,
-                axisLabelFontSizePixels: 12,
-                axisLabelFontFamily: 'Verdana, Arial, Helvetica, Tahoma, sans-serif',
-                axisLabelPadding: 5,
+                font:{size:14},
+         
+              
+           
                 tickLength: 0 // hide gridlines
             },    		
             series: {
                 bars: { 
-                		show: true
+                		show: true,
+                		lineWidth:0,
+                		fillColor: { colors: [ { opacity: 0.8 }, { opacity: 0.3 } ] },
+                        barWidth:1,
+                        align:'center',
+                        
                 },
-                showNumbers: true,	
-                shadowSize : 1
+                showNumbers:true,	
+                font:"14px Verdana",
+                shadowSize : 1,
+
             },
+            
+            colors: ['black', 'white'],
             grid: {
             	hoverable: true, 
             	clickable: true,
                 backgroundColor: { colors: ["#fff", "#eee"] }
             },
             legend: {
-                labelBoxBorderColor: "none",
+            	
+                labelBoxBorderColor: "black",
                 labelFormatter: function(label, series) {
                 	$(".legendColorBox").css({'width':'100px'});
-                	return '<a href="#' + label + '">' + label + '</a>';
+                	return '<a href="#' + label + '" >' + label + '</a>';
                 },
                 position: "ne"
             }
@@ -274,15 +322,51 @@ jQuery(document).ready(function($){
     
     $.plot($("#postStat"), barData1, barOptions);
     
-    //$.plot($("#postByLikeStat"), barData2, barOptions);
+   // $.plot($("#postByLikeStat"), barData2, barOptions);
     
-   //$.plot($("#postByCommentStat"), barData3, barOptions);
+  // $.plot($("#postByCommentStat"), barData3, barOptions);
+    /****************************Pie Graph**************************/
+    $('#sexPieGraph2').css({'width':'400px', 'height':'200px'});
+
+	var pieData =getSexPieData2(postData);
+	
+    $.plot($("#sexPieGraph2"), pieData,
+	{
+	        series: {
+	            pie: {
+	                show: true,
+	                radius: 1,
+	                tilt: 0.5,
+	                label: {
+	                    show: true,
+	                    radius: 1,
+	                    formatter: function(label, series){
+	                        return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+	                    },
+	                    background: { opacity: 0.8 }
+	                },
+	                combine: {
+	                    color: '#999',
+	                    threshold: 0.1
+	                }
+	            }
+	        },
+	        grid: {
+	            hoverable: true,
+	            clickable: true
+	        },	        
+	        legend: {
+	            show: false
+	        }
+	});
     
+    $("#sexPieGraph2").bind("plothover", pieHover);
+
     /****************************Pie Graph**************************/
     $('#sexPieGraph').css({'width':'400px', 'height':'200px'});
 
 	var pieData = getSexPieData(sexPieData); 
-	
+
     $.plot($("#sexPieGraph"), pieData,
 	{
 	        series: {
@@ -395,3 +479,13 @@ function getSexPieData(source) {
 	    		{ label: "female",  data: [[1, source.female]]}];
 	return data;
 }
+
+function getSexPieData2(source) {
+	var data = [{ label: 'Status',  data:[[1 , postData[3]['count']]]  },
+	                { label: 'Link',     data:[[1, postData[0]['count']]]   },
+	                { label: 'Photo',   data:[[1,  postData[1]['count']]] },	
+	                { label: 'Video',  data:[ [1, postData[2]['count'] ] ]   }];
+	
+	return data;
+}
+
