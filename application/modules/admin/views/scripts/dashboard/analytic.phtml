@@ -1,3 +1,4 @@
+
 <? //$this->headLink()->headLink(array('rel'=>'stylesheet', 'href'=>'/css/dashboard/analytic.css', 'type'=>'text/css')) ?>
 
 <script>
@@ -5,11 +6,12 @@ var fanpageId = <?= $this->page_id ?>;
 var postData = <?= $this->post_data ?>;
 var sexPieData = <?= $this->fansNumberBySex ?>;
 </script>
-<? $this->headScript()->appendFile('/js/libs/jquery.flot.min.js') ?>
+<? $this->headScript()->appendFile('/js/libs/jquery.flot.js') ?>
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.barnumbers.js') ?>
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.pie.min.js') ?>
 <? $this->headScript()->appendFile('/js/libs/jquery.dataTables.min.js') ?>
 <? $this->headScript()->appendFile('/js/admin/dashboard/analytic.js') ?>
+
 
 
 <ul class="breadcrumb">
@@ -137,7 +139,6 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 		</div>
 	</div>
 
-
 <div class="span12">
 	<ul class="quickstats">
 		<li>
@@ -205,7 +206,61 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="box">
-						
+						<div class="box-head tabs">
+							<h3>Fan dataTables with tabs</h3>
+							<ul class='nav nav-tabs'>
+								<li class='active'>
+									<a href="#basic" data-toggle="tab">Top fan list</a>
+								</li>
+								<li>
+									<a href="#nohead" data-toggle="tab">Top talker</a>
+								</li>
+								<li>
+									<a href="#nohead" data-toggle="tab">Top advocates</a>
+								</li>
+								<li>
+									<a href="#nohead" data-toggle="tab">Top influencer</a>
+								</li>
+							</ul>
+						</div>
+						<div class="box-content box-nomargin">
+							<div class="tab-content">
+									<div class="tab-pane active" id="basic">
+										<table id="topFanTable" class='table analyticTableView table-striped table-bordered'>
+											<thead>
+												<tr>
+													<th>id</th>
+													<th>name</th>
+													<th>points</th>
+													<th>level</th>
+													<th>Total # of posts</th>
+													<th>Total # of comments</th>
+													<th>Total # of likes</th>
+													<th>Total # of likes received</th>
+													<th>Total # Followers</th>
+													<th>Total # Following</th>
+												</tr>
+											</thead>
+											<tbody>
+												<?php foreach($this->topFanList as $fan): ?>
+													<tr>
+														<td><?=$fan['facebook_user_id']?></td>
+														<td><?=$fan['fan_name']?></td>
+														<td><?=$fan['fan_points']?></td>
+														<td><?=$fan['fan_level']?></td>
+														<td><?=$fan['post_count']?></td>
+														<td><?=$fan['comment_count']?></td>
+														<td><?=$fan['like_count']?></td>
+														<td><?=$fan['got_like_count']?></td>	
+														<td><?=$fan['follower']?></td>
+														<td><?=$fan['following']?></td>													
+													</tr>
+												<?php endforeach; ?>
+										</tbody>
+										</table>
+									</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -272,16 +327,9 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 <!-- top post bar graph -->    
 
 <div id="postStat"></div>
-
+<div id="sexPieGraph2"></div>
 <div id="sexPieGraph"></div>
 <div id="piehover"></div>
 
 <!-- user profile -->
-<div class="modal" id="userprofile">
-	    <div class="modal-header">
-	    <button type="button" class="close model-btn-close" data-dismiss="modal">x</button>
-	    <h3>fan profile</h3>
-	    </div>
-	    <div class="modal-body" id="fan-profile-content">
-		</div>
-</div>
+

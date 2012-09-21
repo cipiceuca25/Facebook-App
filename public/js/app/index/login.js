@@ -3,6 +3,31 @@ jQuery(document).ready(function($){
 		event.preventDefault();
 		//confirmFunction();
 		if(newuser) {
+			$(".profile-content").html("<div class='title '>" +
+					"						<div class='title-header nopic' style='text-align:center'>" +
+					"							Policy Message" +
+					"						</div>" +
+					"					</div>" +
+					"					<div class='row box'> " +
+					"						<div class='post-container'>" +
+					"							<div class='post' style='text-align:center'>" +
+					"							Hello, You're about to use Fancrank. <br/>" +
+					"							We're going to be needing some of your information:<br/>" +
+					"							" +
+					"								Your Basic Information,<br/> Birthday,<br/> Hometown,<br/> Locale,<br/>" +
+					"								Your Friends List <br/>" +
+					"								Also, we're going to be posting on your behalf, don't worry though its only on this Fanpage. <br/>We won't post on your feed<br/>" +
+					"							" +
+					"							</div>" +
+					"						</div><button  class='btn-more' onclick=confirmFunction()>Login To Fancrank</button> " +
+					"					</div>" +
+					""
+					);
+			popup();
+			
+			
+			
+			/*
 			var message = 'Fancrank will access the following information: ' +
 							'<ul><li>Basic Information</li><li>Friend Lists</li><li>Post on your behalf</li></ul>';
 			var title = 'Policy Message';
@@ -16,7 +41,7 @@ jQuery(document).ready(function($){
 				visible: true
 			});
 			dialog.style.width='250px';
-			dialog.style.height='150px';
+			dialog.style.height='150px';*/
 		}else {
 			confirmFunction();
 		}
@@ -58,3 +83,25 @@ function confirmFunction() {
         }, 1000);
     };
 })(jQuery);
+
+
+function popup(){
+	$('.light-box').css('display', 'block');
+	$('.user-profile').css('display', 'block');
+	$('.profile-content').css('height', 'auto');
+	
+	$('.user-profile').css('top', 200);
+	
+	FB.Canvas.getPageInfo(function(info) {
+		$('.user-profile').css('top', info.scrollTop + 200);
+	});
+
+		$('.profile-content').animate({
+			height : 'toggle',
+		//top:'20px'
+		}, 10, function() {
+	
+		});
+
+	
+}

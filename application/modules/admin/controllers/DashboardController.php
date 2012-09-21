@@ -2,14 +2,26 @@
 
 class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 {
+	
+
+		
 	public function preDispatch()
 	{
 		parent::preDispatch();
-		$fanapgeId = $this->_getParam('id');
+		$fanpageId = $this->_getParam('id');
 		$uid = $this->_identity->facebook_user_id;
 		$fanpage_admin_model = new Model_FanpageAdmins;
-		if(!empty($fanapgeId) && ! $fanpage_admin_model->findRow($uid, $fanapgeId)) {
+		if(!empty($fanpageId) && ! $fanpage_admin_model->findRow($uid, $fanpageId)) {
 			$this->_helper->redirector('index', 'index');
+		}
+		if(!empty($fanpageId)) {
+			$fanpage = new Model_Fanpages();
+			$fanpage = $fanpage->find($this->_getParam('id'))->current();
+		
+			
+			$this->view->fanpage_name = $fanpage->fanpage_name;
+		}else {
+			//$this->_redirect('http://www.fancrank.com');
 		}
 	}
 	
@@ -20,7 +32,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
     public function fanpagesAction() 
     {
-    	//Zend_Debug::dump($this->_getParam('id'));
+    
     	$uid = $this->_identity->facebook_user_id;
     	$access_token= $this->_identity->facebook_user_access_token;
     	
@@ -31,6 +43,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         $fanpages_model = new Model_Fanpages;
         $pages = $fanpages_model->getActiveFanpagesByUserId($uid);
         //$pages = $this->getUserPagesList($uid, $access_token);
+  
         $this->view->pages = $pages;
     }
 
@@ -176,12 +189,28 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
      	$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'), 5);
      	
     	
-     	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 5);
-     	$topPostByComment = $fanpageModel->getTopPostsByNumberOfComments($fanpageId, 5);
+     	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 50);
+     	$topPostByComment = $fanpageModel->getTopPostsByNumberOfComments($fanpageId, 50);
      	$topFanList = $fanpageModel->getTopFanList($fanpageId, 50);
      	//Zend_Debug::dump($topFanList); exit();
+     	$follow = new Model_Subscribes();
+     	for ($count = 0 ;$count <count($topFanList); $count ++ ){
+     		
+     		
+     		$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+     		$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+     		$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+     		$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+	     	if ($fanpageModel->getFanpageLevel($fanpageId) != 3) {
+	     		
+	     		
+	     			$topFanList[$count]['fan_points'] = '?';
+	     			
+	     	}
+     	}
+     	//Zend_Debug::dump($topFanList); //exit();
      	$fansNumberBySex = $fanpageModel->getFansNumberBySex($fanpageId);
-    	
+    	//Zend_Debug::dump($fansNumberBySex);
     	$this->view->fans = $fanpageModel->getFansNumber($fanpageId);
     	$this->view->new_fans = $newFans;
     	$this->view->page_id = $fanpageId;
@@ -212,10 +241,76 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$fan = $fan->getFanProfile();
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($fanpageId, $userId);
+    	if ($fan){
     	
+    	
+    	}else{
+    		$fan['currency'] = 0;
+    		$fan['level']=1;
+    		$fan['created_time']=null;
+    		$fan['fan_country']=null;
+    		 
+    	}
+    	 
+    	
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
+    		$fan['fan_currency'] = '?';
+    		$fan['fan_level'] = '?';
+    		 
+    	}
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
+    		$fan['fan_currency'] = '?';
+    	}
     	$this->view->stat= $stat;
     	$this->view->fan = $fan;
     	$this->render("fanprofile");
+
+	}
+	
+	public function badgewizardAction() {
+		if($this->_getParam('confirm')) {
+			$this->_helper->layout()->disableLayout();
+			$this->_helper->viewRenderer->setNoRender(true);
+			$badgeRuleModel = new Fancrank_Badge_Model_BadgeRules();
+			$rule1 = array(
+						'table_name'=>$this->_getParam('target'),
+						'table_field'=>$this->_getParam('target'),
+						'operator'=>$badgeRuleModel->getOperator($this->_getParam('operator')),
+						'argument'=>$this->_getParam('argument')
+					);
+			
+			$badgeRuleModel->addRule($rule1);
+			
+			$stylename = $this->_getParam('name');
+			$data = array(
+						'name'=> $this->_getParam('name'),
+						'stylename'=> empty($stylename) ? $this->_getParam('name') : $stylename,
+						'description' => $this->_getParam('description'),
+						'weight' => $this->_getParam('weight'),
+						'quantity' => $this->_getParam('weight'),
+						'picture' => $this->_getParam('picture'),
+						'rules' => $badgeRuleModel->getJsonRules()
+					);
+			
+			$badgeModel = Fancrank_BadgeFactory::factory('custom');
+			
+			try {
+				$badgeId = $badgeModel->insert($data);
+				//$badge = $badgeModel->findrow($badgeId);
+
+				$fanpageBadgeModel = new Model_FanpageBadges();
+				$fanpageBadgeModel->insert(array('fanpage_id'=>$this->_getParam('id'), 'badge_id'=>$badgeId));
+				
+				$this->_helper->json(array('message'=>'ok'));
+			} catch (Exception $e) {
+				$this->_helper->json(array('message'=>'fail'));
+				
+			}
+				
+		}
+		
+		//Zend_Debug::dump($this->_getAllParams());
+		$this->view->page_id = $this->_getParam('id');
 	}
 	
 	private function array_2_csv($array) {

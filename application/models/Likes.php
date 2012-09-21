@@ -5,13 +5,16 @@ class Model_Likes extends Model_DbTable_Likes
 	public function insertNewLikes($fanpage_id, $post_id, $facebook_user_id, $post_type) {
 		$found = $this->find ( $fanpage_id, $post_id, $facebook_user_id )->current ();
 		// zend_debug::dump($found);
+		$dateObject = new Zend_Date();
+		
 		if (empty ( $found )) {
 			$data = array (
 					'fanpage_id' => $fanpage_id,
 					'post_id' => $post_id,
 					'facebook_user_id' => $facebook_user_id,
 					'post_type' => $post_type,
-					'likes' => 1 
+					'likes' => 1 ,
+					'updated_time' => $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' )
 			);
 
 			$this->insert ( $data );

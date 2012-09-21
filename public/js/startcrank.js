@@ -2,8 +2,7 @@ var ffb = true;
 var ttb = true;
 var tcb = true;
 var tfdb = true;
-var mouseX;
-var mouseY;
+
 
 $(document).ready(function() {
 	
@@ -60,8 +59,6 @@ $(document).ready(function() {
 	});
 
 $(document).mousemove(function(e) {
-	mouseX = e.pageX;
-	mouseY = e.pageY;
 	//$('.popover').css('display', 'none');
 	//FB.Canvas.setAutoGrow();
 	
@@ -75,7 +72,8 @@ $(document).mousemove(function(e) {
 			 
 		});
 		fb=true;
-		FB.Canvas.setAutoGrow();	
+		FB.Canvas.setAutoGrow();
+	
 	}
 	
 	
@@ -123,3 +121,17 @@ $('#top-followed-btn').live('click', function() {
 	}
 	tfdb = !tfdb;
 });
+
+function ImgError(source) {
+	source.src = "/img/profile-picture.png";
+	source.onerror = "";
+	return true;
+}
+function closeProfile() {
+	$('.light-box').css('display', 'none');
+	$('.user-profile').css('display', 'none');
+	$('.profile-content').css('display', 'none');
+	$('.profile-content').css('background-color', backgroundcolor);
+	$('.profile-content').html('');
+	
+}
