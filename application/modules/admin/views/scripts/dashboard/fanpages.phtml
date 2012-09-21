@@ -1,12 +1,13 @@
-<h2>Fanpages</h2>
-<table class="fanpage-table table-striped">
-	<thead>
-		<th>Name</th>
-		<th>Category</th>
-		<th></th>
-		<th></th>
-		<th></th>
-	</thead>
+<ul class="breadcrumb">
+  <li><a href="#"><i class="icon-home"></i></a> <span class="divider">/</span></li>
+  <li class="active">Your Fanpages</li>
+</ul>
+
+<div class="box">
+
+<h2>Your Fanpages</h2>
+<table class="table fanpage">
+
 	<tbody>
 	<tr id="dummyPageRow" style="display:none">
 		<td id="dummyName" class="name"><a href="#"><img src=""/>dummy page</a></td>
@@ -15,13 +16,13 @@
 			<button id="dummyStatus" class="btn" rel="tooltip" title="Turn on data collection for this page" data-id="">Activate</button>
 		</td>
 		<td class="tab">
-			<button id="dummyTab" class="btn" rel="tooltip" title="Install the fancrank app on you page" data-id="">Install Tab</button>
+			<button id="dummyTab" class="btn" rel="tooltip" title="Install the FanCrank app on your Facebook page" data-id="">Install Tab</button>
 		</td>
 		<td class="preview">
-			<button id="dummyPreview" class="btn" rel="tooltip" title="See fancrank working with your data" data-id="">Preview</button>
+			<button id="dummyPreview" class="btn" rel="tooltip" title="See FanCrank working with your data" data-id="">Preview</button>
 		</td>
 		<td class="analytic">
-			<button id="dummyAnalytic" class="btn" rel="tooltip" title="See your fanpage statistics" data-id="">Analytic</button>
+			<button id="dummyAnalytic" class="btn" rel="tooltip" title="See your Fanpage's statistics" data-id="">Analytic</button>
 		</td>
 	</tr>
 	<?php foreach($this->pages as $page): ?>
@@ -31,8 +32,8 @@
 		<tr id="<?= $page['fanpage_id'] ?>">
 			<td class="name"><a href="<?= $url ?>"><img src="http://graph.facebook.com/<?=  $page['fanpage_id'] ?>/picture"></a><a href="<?= $url ?>"><?= $page['fanpage_name'] ?></a></td>
 			<td class="category">
-				<?php if ( !empty($page['category']) ): ?>
-					<span><?= $page['category'] ?></span>
+				<?php if ( !empty($page['fanpage_category']) ): ?>
+					<span><?= $page['fanpage_category'] ?></span>
 				<?php endif; ?>
 			</td>
 			<td class="status">
@@ -46,20 +47,20 @@
 				<?php if ( !empty($page['installed']) ): ?>
 					<button class="install-tab btn btn-success disabled" rel="tooltip" title="Fancrank is already installed" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
 				<?php elseif( !empty($page['active']) ): ?>
-					<button class="install-tab btn btn-success" rel="tooltip" title="Install the fancrank app on you page" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
+					<button class="install-tab btn btn-success" rel="tooltip" title="Install the Fancrank app on you page" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
 				<?php endif; ?>
 			</td>
 			<td class="preview">
 				<?php if ( !empty($page['active']) ): ?>
-					<button class="app btn btn-success" rel="tooltip" title="See fancrank working with your data" data-id="<?= $page['fanpage_id'] ?>">Preview</button>
+					<button class="app btn btn-success" rel="tooltip" title="See Fancrank working with your data" data-id="<?= $page['fanpage_id'] ?>">Preview</button>
 				<?php endif; ?>
 			</td>
 			<td class="analytic">
 				<?php if ( !empty($page['active']) ): ?>
-					<button class="app-analytic btn" rel="tooltip" title="See your fanpage statistics" data-id="<?= $page['fanpage_id'] ?>">Dashboard</button>
+					<button class="app-analytic btn" rel="tooltip" title="See your Fanpage's statistics" data-id="<?= $page['fanpage_id'] ?>">Dashboard</button>
 				<?php endif; ?>
 			</td>
-			<td class="upgrade" style="padding-top: 15px;">
+			<td class="upgrade">
 				<?php if ( !empty($page['active']) ): ?>
 					<?php if ( !empty($page['fanpage_level']) ): ?>
 						<div class="btn-group">
@@ -82,3 +83,5 @@
 	<?php endforeach; ?>
 	</tbody>	
 </table>
+
+</div>

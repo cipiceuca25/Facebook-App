@@ -37,25 +37,20 @@
 					 cookie : true, // enable cookies to allow the server to access the session
 					 xfbml  : true// parse XFBML
 				});
-				FB.Canvas.setAutoGrow(91);
+				
 			
 				//FB.Canvas.setSize();
 			};
         </script>
         <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+        <!--  <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>-->
         
         <?= $this->adminTheme($this->fanpageTheme, APPLICATION_ENV) ?>
-        
-		<style>
-            .container {
-                width: 840px;
-            }
-        </style>
+   
     </head>
 
     <body controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>">
-        <div class="adminTopNavbar navbar navbar-fixed-top">
+        <div class="navbar navbar-fixed-top">
             <?= $this->layout()->navbar ?>
         </div>
 

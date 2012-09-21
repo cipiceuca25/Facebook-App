@@ -18,7 +18,7 @@ class Admin_View_Helper_AdminTheme extends Zend_View_Helper_Abstract
 			->appendFile('/js/libs/less-1.3.0.min.js', 'text/javascript');
 		}else {
 			echo $this->_view->headScript();
-			echo $this->_view->headLink()->headLink(array('type'=>'text/css', 'rel'=>'stylesheet', 'href'=>'/css/style.css'));
+			echo $this->_view->headLink()->headLink(array('type'=>'text/css', 'rel'=>'stylesheet', 'href'=>'/css/new_admin.css'));
 		}
 	}
 }

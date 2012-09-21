@@ -1,4 +1,4 @@
-<? $this->headLink()->headLink(array('rel'=>'stylesheet', 'href'=>'/css/dashboard/analytic.css', 'type'=>'text/css')) ?>
+<? //$this->headLink()->headLink(array('rel'=>'stylesheet', 'href'=>'/css/dashboard/analytic.css', 'type'=>'text/css')) ?>
 
 <script>
 var fanpageId = <?= $this->page_id ?>;
@@ -11,62 +11,132 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 <? $this->headScript()->appendFile('/js/libs/jquery.dataTables.min.js') ?>
 <? $this->headScript()->appendFile('/js/admin/dashboard/analytic.js') ?>
 
-<div class="breadcrumbs">
-	<div class="container-fluid">
-		<ul class="bread pull-left">
-			<li>
-				<a href="#"><i class="icon-home"></i></a>
-			</li>
-			<li>
-				<a href="#">
-					Dashboard
-				</a>
+
+<ul class="breadcrumb">
+  <li><a href="#"><i class="icon-home"></i></a> <span class="divider">/</span></li>
+  <li class="active">Name of this fanpage</li>
+</ul>
+<ul class="widget">
+<li class="dropdown pendingContainer">
+		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			<i class="icon-barcode"></i>
+			Pending Orders</a><div class="label label-important"><?=$this->pending_orders_count ?></div>
+		<ul class="dropdown-menu pull-right custom custom-dark">
+			<li class="custom">
+				<div class="title">
+					Pending order #1 
+				</div>
+				<div class="action">
+					<div class="btn-group">
+						<a class="tip btn btn-mini" href="#" data-original-title="Show order"><i class="icon-search"></i></a>
+					</div>
+				</div>
 			</li>
 		</ul>
-	<div class="topbar">
-	<ul class="mini">
-		<li class="dropdown pendingContainer">
-			<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-				<i class="icon-barcode"></i>
-				Pending orders
-				<span class="label label-important" style="top: -6px;"><?=$this->pending_orders_count ?></span>
-			</a>
-			<ul class="dropdown-menu pull-right custom custom-dark">
-				<li class="custom">
-					<div class="title">
-						Pending order #1 
+	</li>
+	<li class="dropdown messageContainer">
+		<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+			<i class="icon-check"></i>
+			Fan Points Request</a><div class="label label-info"><?=$this->fan_requests_count?></div>
+		<ul class="dropdown-menu pull-right custom custom-dark">
+			<li class="custom">
+				<div class="title">
+					Show fan's request objects
+				</div>
+				<div class="action">
+					<div class="btn-group">
+						<a class="tip btn btn-mini" href="#" data-original-title="Show message"><i class="icon-search"></i></a>
 					</div>
-					<div class="action">
-						<div class="btn-group">
-							<a class="tip btn btn-mini" href="#" data-original-title="Show order"><i class="icon-search"></i></a>
+				</div>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+
+	<div class="row">
+		<div class="span2">
+			<div class="box">
+				<ul class="nav nav-list">
+					<li class="active"><a>General</a></li>
+					<li>Fan Data</li>
+					<li>Fan Data</li>
+					<li class="divider"></li>
+					<li>Fan Data</li>
+					<li>Fan Data</li>
+					<li>Fan Data</li>
+					<li>Fan Data</li>
+					<li>Fan Data</li>
+				</ul>
+			</div>
+		</div>
+		<div class="span10">
+			<div class="box">
+				<div class="box-head tabs">
+							<h3>Fan Data By Leaderboards</h3>
+							<ul class='nav nav-tabs'>
+								<li class='active'>
+									<a href="#basic" data-toggle="tab">Top Fans</a>
+								</li>
+								<li>
+									<a href="#nohead" data-toggle="tab">Fan Favorites</a>
+								</li>
+								<li>
+									<a href="#nohead" data-toggle="tab">Top Talkers</a>
+								</li>
+								<li>
+									<a href="#nohead" data-toggle="tab">Top Clicker</a>
+								</li>
+								<li>
+									<a href="#nohead" data-toggle="tab">Top Followed</a>
+								</li>
+							</ul>
 						</div>
-					</div>
-				</li>
-			</ul>
-		</li>
-		<li class="dropdown messageContainer">
-			<a data-toggle="dropdown" class="dropdown-toggle" href="#">
-				<i class="icon-check"></i>
-				Fan Request
-				<span class="label label-info" style="top: -6px;"><?=$this->fan_requests_count?></span>
-			</a>
-			<ul class="dropdown-menu pull-right custom custom-dark">
-				<li class="custom">
-					<div class="title">
-						Show fan's request objects
-					</div>
-					<div class="action">
-						<div class="btn-group">
-							<a class="tip btn btn-mini" href="#" data-original-title="Show message"><i class="icon-search"></i></a>
+						<div class="box-content box-nomargin">
+							<div class="tab-content">
+									<div class="tab-pane active" id="basic">
+										<table  class='table' id="topFanTable">
+											<thead>
+												<tr>
+													<th>ID</th>
+													<th>Name</th>
+													<th>Points</th>
+													<th>Level</th>
+													<th><img src="/img/post.png" rel="tooltip" title="Total # of Posts"/></th>
+													<th><img src="/img/thumbsup.png" rel="tooltip" title="Total # of Likes"/></th>
+													<th><img src="/img/comment.png" rel="tooltip" title="Total # of Comments"/></th>
+													<th><img src="/img/rthumbsup.png" rel="tooltip" title="Total # of Recieved Likes"/></th>
+													<th><img src="/img/rcomment.png"rel="tooltip" title="Total # of Recieved Comments"/></th>
+													
+												</tr>
+											</thead>
+											<tbody>
+												<?php foreach($this->topFanList as $fan): ?>
+													<tr>
+														<td><?=$fan['facebook_user_id']?></td>
+														<td><?=$fan['fan_name']?></td>
+														<td><?=$fan['fan_points']?></td>
+														<td><?=$fan['fan_level']?></td>
+														<td><?=$fan['post_count']?></td>
+														<td><?=$fan['like_count']?></td>
+														<td><?=$fan['comment_count']?></td>
+														<td><?=$fan['got_like_count']?></td>
+														<td><?=$fan['got_comment_count']?></td>
+																												
+													</tr>
+												<?php endforeach; ?>
+										</tbody>
+										</table>
+									</div>
+							</div>
 						</div>
-					</div>
-				</li>
-			</ul>
-		</li>
-	</ul>
+			
+			
+			
+			</div>
+		</div>
 	</div>
-	</div>
-</div>
+
 
 <div class="span12">
 	<ul class="quickstats">
@@ -135,57 +205,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="box">
-						<div class="box-head tabs">
-							<h3>Fan dataTables with tabs</h3>
-							<ul class='nav nav-tabs'>
-								<li class='active'>
-									<a href="#basic" data-toggle="tab">Top fan list</a>
-								</li>
-								<li>
-									<a href="#nohead" data-toggle="tab">Top talker</a>
-								</li>
-								<li>
-									<a href="#nohead" data-toggle="tab">Top advocates</a>
-								</li>
-								<li>
-									<a href="#nohead" data-toggle="tab">Top influencer</a>
-								</li>
-							</ul>
-						</div>
-						<div class="box-content box-nomargin">
-							<div class="tab-content">
-									<div class="tab-pane active" id="basic">
-										<table id="topFanTable" class='table analyticTableView table-striped table-bordered'>
-											<thead>
-												<tr>
-													<th>id</th>
-													<th>name</th>
-													<th>points</th>
-													<th>level</th>
-													<th>Total # of posts</th>
-													<th>Total # of comments</th>
-													<th>Total # of likes</th>
-													<th>Total # of likes received</th>
-												</tr>
-											</thead>
-											<tbody>
-												<?php foreach($this->topFanList as $fan): ?>
-													<tr>
-														<td><?=$fan['facebook_user_id']?></td>
-														<td><?=$fan['fan_name']?></td>
-														<td><?=$fan['fan_points']?></td>
-														<td><?=$fan['fan_level']?></td>
-														<td><?=$fan['post_count']?></td>
-														<td><?=$fan['comment_count']?></td>
-														<td><?=$fan['like_count']?></td>
-														<td><?=$fan['got_like_count']?></td>														
-													</tr>
-												<?php endforeach; ?>
-										</tbody>
-										</table>
-									</div>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 			</div>

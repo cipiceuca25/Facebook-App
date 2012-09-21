@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
 	}, function(){});
 	
 	/**************** Analytic Table Section *******************************/
-	var topFanTable = $('#topFanTable').dataTable();
+	var topFanTable = $('#topFanTable').dataTable({"sDom":'<"filter"f><"length"l>t<"info"i><"processing"p>'});
 
     var topFanTable = $('#topPostByLike').dataTable();
 
