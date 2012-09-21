@@ -66,13 +66,14 @@
 						<div class="btn-group">
 							<ul class="nav nav-pills">
 								<li class="dropdown"><a class="dropdown-toggle"
-									data-toggle="dropdown" href="#menu2"><span id="<?= $page['fanpage_id'] ?>_level_text"><?php $arr=array(1=>'Free',2=>'Premium',3=>'Enterprise'); echo $arr[$page['fanpage_level']]; ?></span> <b
+									data-toggle="dropdown" href="#menu2"><span id="<?= $page['fanpage_id'] ?>_level_text"><?php $arr=array(1=>'Free',2=>'Premium',3=>'Professional', 4=>'Enterprise'); echo $arr[$page['fanpage_level']]; ?></span> <b
 										class="caret"></b>
 								</a>
 									<ul class="dropdown-menu level-dropdown">
-										<li><a href="#" data-id="<?= $page['fanpage_id'] ?>" data-level=1>Free</a></li>
-										<li><a href="#" data-id="<?= $page['fanpage_id'] ?>" data-level=2>Premium</a></li>
-										<li><a href="#" data-id="<?= $page['fanpage_id'] ?>" data-level=3>Enterprise</a></li>
+										<li><a  data-id="<?= $page['fanpage_id'] ?>" data-level=1>Free</a></li>
+										<li><a  data-id="<?= $page['fanpage_id'] ?>" data-level=2>Premium</a></li>
+										<li><a  data-id="<?= $page['fanpage_id'] ?>" data-level=3>Professional</a></li>
+										<li><a  data-id="<?= $page['fanpage_id'] ?>" data-level=4>Enterprise</a></li>
 									</ul></li>
 							</ul>
 						</div>

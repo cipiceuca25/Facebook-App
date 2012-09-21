@@ -20,7 +20,7 @@ jQuery(document).ready(function($){
 	});
 		  
 	var tourOptions = {
-		welcomeMessage : '<h2>Tour</h2><p>Welcome to Fancrank Admin Page</p>',
+		welcomeMessage : '<h2>Tour</h2><p>Welcome to FanCrank Admin Page</p>',
 		data : [
 		        { element: '#dummyName', 'tooltip' : 'This is current target page' },
 		        { element: '#dummyStatus', 'tooltip' : 'This is page current status' },

@@ -165,7 +165,8 @@ function addUpgradeMenu(btn, id, level)
 					'<ul class="dropdown-menu level-dropdown">'+
 						'<li><a href="#" data-id="'+id+'" data-level=1>Free</a></li>'+
 						'<li><a href="#" data-id="'+id+'" data-level=2>Premium</a></li>'+
-						'<li><a href="#" data-id="'+id+'" data-level=3>Enterprise</a></li>'+
+						'<li><a href="#" data-id="'+id+'" data-level=3>Professional</a></li>'+
+						'<li><a href="#" data-id="'+id+'" data-level=4>Enterprise</a></li>'+
 					'</ul></li>'+
 		'</ul></div>');
 }

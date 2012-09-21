@@ -1,14 +1,14 @@
 <?php
 /**
- * Francrank
+ * FanCrank
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Fancrank OEM license
+ * This source file is subject to the FanCrank OEM license
  *
  * @category    app
  * @package     app
- * @copyright   Copyright (c) 2012 Francrank
+ * @copyright   Copyright (c) 2012 FanCrank
  * @license     
  */
 class App_AppController extends Fancrank_App_Controller_BaseController
@@ -353,7 +353,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}
     	}
 		
-    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level != 3) {
+    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level < 3) {
     		for ($i=0; $i<count($fanpage['topFans']); $i++){
     			$fanpage['topFans'][$i]['number_of_posts'] = '?';
     		}	
@@ -3039,7 +3039,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$fanRequestModel = new Model_FanRequests();
     	 
-    	if ($this->_fanpageProfile->fanpage_level != 3 && ! $fanRequestModel->hasFanRequest($this->_fanpageId, $this->_facebook_user->facebook_user_id)) {
+    	if ($this->_fanpageProfile->fanpage_level < 3 && ! $fanRequestModel->hasFanRequest($this->_fanpageId, $this->_facebook_user->facebook_user_id)) {
     		$data = array (
     				'facebook_user_id' => $this->_facebook_user->facebook_user_id,
     				'fanpage_id' => $this->_fanpageId,

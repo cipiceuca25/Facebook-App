@@ -1,8 +1,138 @@
 @import url('/bootstrap/css/bootstrap.css');
-@import url(../bootstrap/less/mixin.less);
+@import url('../bootstrap/less/mixin.less');
+@color-background-blue: 			#E7EBF2; // background color, follow hover, tip border
+@color-container-blue: 				#C1CEE0; // container blue
+@color-link-blue: 					#3B5998; // links color
+@color-link-hover:					#0a1b31;	//link hover
+@color-tab-border-blue:				#173D71; // tab dark blue, rank first, follow text hover,button hover , fan exp bar
+@color-tab-back-blue:				#47658E; // unselected blue, rank numbers , button text, tip, other exp bars
+@color-tab-hover:					#eeeeee; // the hover color
+@color-photo-border-blue:			#7D98BE; // the border on the icons, follow button
+@color-social-bar-blue:				#EDEFF4; // social bar color
+@color-user-border-gray:			#E5E5E5;//flag bottom border color
+@color-text:						#666666; //text color
+@color-post-border-thing:			#8194BD; //post border
+@color-post-border-hover-thing:		#5a6d99;
+@color-post-shadow-thing:			#A5B4CE;
+@color-post-hover:					#f7f7f7; // the color of the post on hover
+@color-post:						#ffffff;
+@color-admin:						#09937C;
+@color-unfollow:					#BD362F;
+@color-following:					#56A556;
+@color-you:							#F7CB1E;
+@color-link:						#F6F7F9; //color of link box
+@color-link-border:					#D3DAE8; // the border of the link
+@color-button:						#dddddd; //post button back
+@color-rank-border:					#C4CDE0; //ranking border
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//main 
+@color-main-background:@color-background-blue;
+@color-main-header-picture-border:@color-photo-border-blue;
+@color-main-container:@color-container-blue;
+@color-main-text:@color-text;
+@color-main-title:@color-post;
+@color-main-link-text:@color-link-blue;
+@color-main-link-text-hover:@color-link-hover;
+@color-main-content:@color-post;
+@color-main-split-line:@color-container-blue;
+@color-main-title-text:@color-post;
+@color-main-photo-border:@color-photo-border-blue;
 
+//tabs
+@color-tab-background:@color-tab-back-blue;
+@color-tab-text:@color-post;
+@color-tab-border:@color-tab-back-blue;
+@color-tab-border-bottom:@color-tab-border-blue;
+@color-tab-border-bottom-hover:@color-tab-hover;
+@color-tab-background-hover:@color-tab-hover;
+@color-tab-border-hover:@color-tab-hover;
+@color-tab-text-hover:@color-tab-border-blue;
+@color-tab-select-background:@color-background-blue;
+@color-tab-select-text:@color-tab-border-blue;
+@color-tab-select-border:@color-tab-border-blue;
+@color-tab-select-border-bottom:@color-background-blue;
+
+//tips
+@color-tip-border:@color-post;
+@color-tip-background:@color-tab-back-blue;
+@color-tip-question-mark:@color-post;
+@color-tip-background-hover:@color-post;
+@color-tip-question-mark-hover:@color-tab-back-blue;
+@color-tip-border-hover:@color-tab-back-blue;
+
+//rank
+@color-ranking-first:@color-tab-border-blue;
+@color-ranking-number:@color-tab-back-blue;
+@color-ranking-border:@color-rank-border;
+@color-ranking-number-text:@color-post;
+@color-ranking-border-hover:@color-rank-border;
+@color-ranking-number-hover:@color-tab-back-blue;
+@color-ranking-background:@color-post;
+
+//follow tags
+@color-tag-text:@color-post;
+@color-tag-text-hover:@color-tab-border-blue;
+@color-tag-admin:@color-admin;
+@color-tag-follow:@color-photo-border-blue;
+@color-tag-follow-hover:@color-background-blue;
+@color-tag-follower:@color-background-blue;
+@color-tag-you:@color-you;
+@color-tag-following:@color-following;
+@color-tag-unfollow:@color-unfollow;
+
+//posts
+@color-post-background:@color-post;
+@color-post-border:@color-post-border-thing;
+@color-post-text:@color-text;
+@color-post-social-background:@color-social-bar-blue;
+@color-post-comment-background:@color-social-bar-blue;
+@color-post-user-border:@color-user-border-gray;
+@color-post-background-hover:@color-post-hover;
+@color-post-border-hover:@color-post-border-hover-thing;
+@color-post-shadow:@color-post-shadow-thing;
+@color-post-link-background:@color-link;
+@color-post-link-border:@color-link-border;
+
+//buttons
+@color-more-button-background:@color-tab-hover;
+@color-more-button-text:@color-tab-back-blue;
+@color-more-button-background-hover:@color-tab-border-blue;			
+@color-more-button-text-hover:@color-post;
+@color-more-button-border:@color-container-blue;
+
+@color-post-button-background:@color-container-blue;
+@color-post-button-background-hover:@color-tab-border-blue;
+@color-post-button-text:@color-tab-border-blue;			
+@color-post-button-text-hover:@color-post;
+@color-post-button-border:@color-tab-border-blue;
+
+@color-userlist-button-background:@color-tab-hover;
+@color-userlist-button-background-hover:@color-tab-border-blue;
+@color-userlist-button-text:@color-tab-back-blue;
+@color-userlist-button-text-hover:@color-post;
+
+//userlist
+@color-userlist-background:@color-background-blue;
+@color-userlist-border:@color-post;
+
+//scrollbar 
+@color-scrollbar:@color-tab-border-blue;
+
+//my profile
+@color-level-border:@color-tab-back-blue;
+@color-level-background:@color-post;
+@color-level-text:@color-tab-back-blue;
+@color-fan-experience-bar:@color-tab-border-blue;
+@color-overall-achievement-bar:@color-tab-back-blue;
+@color-personal-achievement-bar:@color-tab-back-blue;
+@color-social-achievement-bar:@color-tab-back-blue;
+
+//popover
+@color-popover-background:@color-container-blue;
+@color-popover-border:@color-container-blue;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 body {
-	background:black !important;
+	background:white !important;
 }
 
 .navbar .nav li a,
@@ -76,7 +206,9 @@ border-bottom-color:grey;
 }
 
 /////////////////////////////////////////////////////////////////////////
-
+.container{
+	width:940px;
+}	
 .box{
 #gradient > .vertical(white, #F7f7f7 );
 border:1px solid #DDD;
@@ -136,7 +268,7 @@ float:right;
 ///////////////////////////////////////////////////////////////
 
 .popover-inner{
-.span5;
+width:323px;
 .border-radius(3px);
 border:5px solid @color-popover-border;
 padding:0;
@@ -149,7 +281,6 @@ display:none;
 
 .popover-content{
 padding:0;
-margin-top:-8px;
 }
 
 
@@ -215,4 +346,28 @@ margin-top:0;
 
 .popover.toppost{
 .popover.left;
+}
+
+.post-container .user{
+font: bold 11px Helvetica, Arial, sans-serif;
+border-bottom:1px solid @color-post-user-border;
+padding-top: 10px;
+margin: 0 10px 0 10px;
+overflow:hidden;
+}
+
+.post-container .user .user-badge{
+position:absolute;
+top:13px;
+left:50px;
+}	
+
+.post-container .user .name{
+position:relative;
+top:-13px;
+left:37px;
+}	
+
+.post-container .post{
+padding:10px;
 }

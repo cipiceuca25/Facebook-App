@@ -13,11 +13,17 @@ jQuery(document).ready(function($){
 	}, function(){});
 	
 	/**************** Analytic Table Section *******************************/
-	var topFanTable = $('#topFanTable').dataTable();
+	getTopFanTable()
+	
+	var fanfavoriteTable = $('#fanfavoriteTable').dataTable();
+	var toptalkersTable = $('#toptalkersTable').dataTable();
+	var topclickersTable = $('#topclickersTable').dataTable();
+	var topfollowedTable = $('#topfollowedTable').dataTable();
+	
 
-    var topFanTable = $('#topPostByLike').dataTable();
+   // var topFanTable = $('#topPostByLike').dataTable();
 
-    var topFanTable = $('#topPostByComment').dataTable();
+   // var topFanTable = $('#topPostByComment').dataTable();
     
     /*******************************************************************/
     $( "#userprofile" ).dialog( "destroy" );
@@ -39,9 +45,10 @@ jQuery(document).ready(function($){
 	
 	$(".dataTable tbody tr").live('mouseover', function(event) {
 
-		var aData = topFanTable.fnGetData( this );
-		var iId = aData[0];
-		$(".dataTable tbody tr").attr('data-userid', aData[0]);
+		//var aData = topFanTable.fnGetData( this );
+		//var iId = aData[0];
+		//console.log(aData[0]);
+		$(".dataTable tbody tr").attr('data-userid','1');
 		//alert(iId);
 		$(this).toggleClass('row_selected');
 		if(iId) {
@@ -53,7 +60,7 @@ jQuery(document).ready(function($){
 				placement:'top',
 				delay : {
 					show : 500,
-					hide : 1000000
+					hide : 100
 				}
 			}).trigger('mouseover');
 			popover(this);
@@ -80,6 +87,39 @@ jQuery(document).ready(function($){
 			}
 		});
 	}
+	
+	function getTopFanTable() {
+		$.ajax({
+			type : "GET",
+			url : serverUrl + '/admin/dashboard/fantable'+ '?id=' + fanpageId + '&type=fanfavorite',
+			dataType : "html",
+			cache : false,
+			async : true,
+			beforeSend:function(){	
+				$('#topFanTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+			},
+			success : function(data) {
+				$('#topFanTable').html(data);
+				var topFanTable = $('#topFanTable').dataTable();
+			},
+			error : function(xhr, errorMessage, thrownErro) {
+				console.log(xhr.statusText, errorMessage);
+				console.log('error getting the topfan table');
+			}
+		});
+
+	}
+	
+	$(document).on('mouseover', 'a[rel=tooltip]', function() {
+		if ($(this).data('isTooltipLoaded') == true) {
+			return;
+		}
+		$(this).data('isTooltipLoaded', true).tooltip({placement:'left'}).trigger('mouseover');
+	});
+	
+	
+	
+	
 /*
 	function popover(x){
 		//alert ('getting info for '+ id);

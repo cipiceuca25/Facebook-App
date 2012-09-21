@@ -16,7 +16,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 
 <ul class="breadcrumb">
   <li><a href="#"><i class="icon-home"></i></a> <span class="divider">/</span></li>
-  <li class="active">Name of this fanpage</li>
+  <li class="active"><?=$this->fanpage_name?></li>
 </ul>
 <ul class="widget">
 <li class="dropdown pendingContainer">
@@ -56,7 +56,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 </ul>
 
 
-	<div class="row">
+	<div class="row-fluid">
 		<div class="span2">
 			<div class="box">
 				<ul class="nav nav-list">
@@ -78,56 +78,47 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 							<h3>Fan Data By Leaderboards</h3>
 							<ul class='nav nav-tabs'>
 								<li class='active'>
-									<a href="#basic" data-toggle="tab">Top Fans</a>
+									<a href="#topfan" data-toggle="tab">Top Fans</a>
 								</li>
 								<li>
-									<a href="#nohead" data-toggle="tab">Fan Favorites</a>
+									<a href="#fanfavorite" data-toggle="tab">Fan Favorites</a>
 								</li>
 								<li>
-									<a href="#nohead" data-toggle="tab">Top Talkers</a>
+									<a href="#toptalkers" data-toggle="tab">Top Talkers</a>
 								</li>
 								<li>
-									<a href="#nohead" data-toggle="tab">Top Clicker</a>
+									<a href="#topclickers" data-toggle="tab">Top Clicker</a>
 								</li>
 								<li>
-									<a href="#nohead" data-toggle="tab">Top Followed</a>
+									<a href="#topfollowed" data-toggle="tab">Top Followed</a>
 								</li>
 							</ul>
 						</div>
 						<div class="box-content box-nomargin">
 							<div class="tab-content">
-									<div class="tab-pane active" id="basic">
+									<div class="tab-pane active" id="topfan">
 										<table  class='table' id="topFanTable">
-											<thead>
-												<tr>
-													<th>ID</th>
-													<th>Name</th>
-													<th>Points</th>
-													<th>Level</th>
-													<th><img src="/img/post.png" rel="tooltip" title="Total # of Posts"/></th>
-													<th><img src="/img/thumbsup.png" rel="tooltip" title="Total # of Likes"/></th>
-													<th><img src="/img/comment.png" rel="tooltip" title="Total # of Comments"/></th>
-													<th><img src="/img/rthumbsup.png" rel="tooltip" title="Total # of Recieved Likes"/></th>
-													<th><img src="/img/rcomment.png"rel="tooltip" title="Total # of Recieved Comments"/></th>
-													
-												</tr>
-											</thead>
-											<tbody>
-												<?php foreach($this->topFanList as $fan): ?>
-													<tr>
-														<td><?=$fan['facebook_user_id']?></td>
-														<td><?=$fan['fan_name']?></td>
-														<td><?=$fan['fan_points']?></td>
-														<td><?=$fan['fan_level']?></td>
-														<td><?=$fan['post_count']?></td>
-														<td><?=$fan['like_count']?></td>
-														<td><?=$fan['comment_count']?></td>
-														<td><?=$fan['got_like_count']?></td>
-														<td><?=$fan['got_comment_count']?></td>
-																												
-													</tr>
-												<?php endforeach; ?>
-										</tbody>
+											
+										</table>
+									</div>
+									<div class="tab-pane" id="fanfavorite">
+										<table  class='table' id="fanfavoriteTable">
+											
+										</table>
+									</div>
+									<div class="tab-pane" id="toptalkers">
+										<table  class='table' id="toptalkersTable">
+											
+										</table>
+									</div>
+									<div class="tab-pane" id="topclickers">
+										<table  class='table' id="topclickersTable">
+											
+										</table>
+									</div>
+									<div class="tab-pane" id="topfollowed">
+										<table  class='table' id="topfollowedTable">
+											
 										</table>
 									</div>
 							</div>
@@ -231,7 +222,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 												<tr>
 													<th>id</th>
 													<th>name</th>
-													<th>points</th>
+													<th>count</th>
 													<th>level</th>
 													<th>Total # of posts</th>
 													<th>Total # of comments</th>
@@ -246,7 +237,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 													<tr>
 														<td><?=$fan['facebook_user_id']?></td>
 														<td><?=$fan['fan_name']?></td>
-														<td><?=$fan['fan_points']?></td>
+														<td><?=$fan['count']?></td>
 														<td><?=$fan['fan_level']?></td>
 														<td><?=$fan['post_count']?></td>
 														<td><?=$fan['comment_count']?></td>

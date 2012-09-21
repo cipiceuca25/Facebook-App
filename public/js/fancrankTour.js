@@ -4,7 +4,7 @@
 		data : [],
 		autoStart : false,
 		controlsPosition : 'TR',
-		welcomeMessage : '<h3>Tour</h3><p>Welcome to Fancrank App</p>',
+		welcomeMessage : '<h3>Tour</h3><p>Welcome to FanCrank App</p>',
 		buttons : {
 			next : 'Next',
 			prev : 'Previous',

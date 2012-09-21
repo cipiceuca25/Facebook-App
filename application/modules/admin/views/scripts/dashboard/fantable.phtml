@@ -1,0 +1,32 @@
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Points</th>
+		<th>Level</th>
+		<th><img src="/img/post.png" rel="tooltip" title="Total # of Posts"/></th>
+		<th><img src="/img/thumbsup.png" rel="tooltip" title="Total # of Likes"/></th>
+		<th><img src="/img/comment.png" rel="tooltip" title="Total # of Comments"/></th>
+		<th><img src="/img/rthumbsup.png" rel="tooltip" title="Total # of Recieved Likes"/></th>
+		<th><img src="/img/rcomment.png"rel="tooltip" title="Total # of Recieved Comments"/></th>
+		<th><img src="/img/eye_arrow.png"rel="tooltip" title="Total Followers"/></th>
+		<th><img src="/img/eye_arrow2.png"rel="tooltip" title="Total Following"/></th>
+	</tr>
+</thead>
+<tbody>
+	<?php foreach($this->topFanList as $fan): ?>
+		<tr>
+			<td><?=$fan['facebook_user_id']?></td>
+			<td><?=$fan['fan_name']?></td>
+			<td><?=$fan['count']?></td>
+			<td><?=$fan['fan_level']?></td>
+			<td><?=$fan['post_count']?></td>
+			<td><?=$fan['like_count']?></td>
+			<td><?=$fan['comment_count']?></td>
+			<td><?=$fan['got_like_count']?></td>
+			<td><?=$fan['got_comment_count']?></td>
+			<td><?=$fan['follower']?></td>
+			<td><?=$fan['following']?></td>															
+		</tr>
+	<?php endforeach; ?>
+</tbody>

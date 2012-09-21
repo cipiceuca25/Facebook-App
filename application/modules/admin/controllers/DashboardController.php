@@ -191,23 +191,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	
      	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 50);
      	$topPostByComment = $fanpageModel->getTopPostsByNumberOfComments($fanpageId, 50);
-     	$topFanList = $fanpageModel->getTopFanList($fanpageId, 50);
-     	//Zend_Debug::dump($topFanList); exit();
-     	$follow = new Model_Subscribes();
-     	for ($count = 0 ;$count <count($topFanList); $count ++ ){
-     		
-     		
-     		$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
-     		$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
-     		$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
-     		$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
-	     	if ($fanpageModel->getFanpageLevel($fanpageId) != 3) {
-	     		
-	     		
-	     			$topFanList[$count]['fan_points'] = '?';
-	     			
-	     	}
-     	}
+     	
      	//Zend_Debug::dump($topFanList); //exit();
      	$fansNumberBySex = $fanpageModel->getFansNumberBySex($fanpageId);
     	//Zend_Debug::dump($fansNumberBySex);
@@ -217,7 +201,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	//Zend_Debug::dump($this->_getParam('id')); exit();
     	$this->view->post_data = json_encode($postDataByType);
     	$this->view->fansNumberBySex = json_encode($fansNumberBySex);
-    	$this->view->topFanList = $topFanList;
+    	
     	$this->view->topPostByLike = $topPostByLike;
     	$this->view->topPostByComment = $topPostByComment;
     	
@@ -228,6 +212,58 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$this->view->fan_requests_count = $fanRequestModel->getFanRequestCount();
 	}
     
+	public function fantableAction(){
+		$this->_helper->layout->disableLayout();
+
+		$fanpageId = $this->_getParam('id');
+		$tableType = $this->_getParam('type');
+		$fanpageModel = new Model_Fanpages;
+		
+		$fans_model = new Model_Fans;
+		
+		
+		switch ($tableType){
+		
+			case 'topfan':
+				$topFanList = $fanpageModel->getTopFanList($fanpageId, 50, 30);
+				//Zend_Debug::dump($topPostByComment);
+				$follow = new Model_Subscribes();
+				for ($count = 0 ;$count <count($topFanList); $count ++ ){
+					 
+					$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+					if ($fanpageModel->getFanpageLevel($fanpageId) < 3) {
+						$topFanList[$count]['fan_points'] = '?';
+					}
+				}
+				break;
+				
+			case 'fanfavorite':
+				
+				
+				$topFanList = $fanpageModel->getFanFavoriteList($fanpageId, 50, 30);
+				//Zend_Debug::dump($topPostByComment);
+				$follow = new Model_Subscribes();
+				for ($count = 0 ;$count <count($topFanList); $count ++ ){
+				
+					$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+					if ($fanpageModel->getFanpageLevel($fanpageId) < 3 ) {
+						$topFanList[$count]['fan_points'] = '?';
+					}
+				}
+				break;
+		}	
+		
+		Zend_Debug::dump($topFanList);
+		
+		$this->view->topFanList = $topFanList;
+	}
+	
 	public function fanprofileAction() {
 	
 		$fanpageId = $this->_getParam('id');

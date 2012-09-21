@@ -981,8 +981,7 @@ function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLat
 		if (!response || response.error) {
 			alert(response.error.message);
 		} else {
-			
-			
+
 			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 			$('#comment_box_'+post_id).val('');
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
@@ -1008,18 +1007,15 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 		if (!response || response.error) {
 			alert(response.error.message);
 		} else {
-			
-			
+
 			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, $('#comment_box_'+post_id).val('').substring(0,99));
 			$('#comment_box_popup_'+post_id).val('');
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 			//alert(post_comment_count);
 			$('.comment_'+post_id).html(post_comment_count);
-			
-			
+
 			popup_post(post_id, post_comment_count, false);
 
-			
 		}
 	});
 }
@@ -1037,11 +1033,9 @@ function getLikesList(postid, load) {
 		async : true,
 		beforeSend: function(){
 			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-		
 		},
 		success : function(data) {
 			$('.profile-content').html(data);
-			
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1262,7 +1256,7 @@ function resetTour(){
 }
 
 var tourOptions = {
-		welcomeMessage : '<h3>Welcome to Fancrank</h3><p>Hi ' + userName + ', <br/> Let\'s learn about using Fancrank. <br/> Click Start to begin</p>',
+		welcomeMessage : '<h3>Welcome to FanCrank</h3><p>Hi ' + userName + ', <br/> Let\'s learn about using FanCrank. <br/> Click Start to begin</p>',
 		data : [
 		        //-1
 		        { element: 	'#pageTabs', 
@@ -1330,7 +1324,7 @@ var tourOptions = {
 				{ element: 	'#latest-post-container .post-container .user .user-badge', 
 							'position' : 'T',
 							'tooltip' : 'Follow Button', 
-							'text' : 'If you can click on this button for a specific user, Fancrank will make it possible to only see posts by this user<br/><br/>' }, 			
+							'text' : 'If you can click on this button for a specific user, FanCrank will make it possible to only see posts by this user<br/><br/>' }, 			
 				//12
 				{ element: 	'#latest-post-container  .post-container .post', 
 							'position' : 'T',
@@ -1363,7 +1357,7 @@ var tourOptions = {
 		   		//17
 		   		{ element: 	'#fancrank-feed-container', 
 					  		'position' : 'T',
-					   		'tooltip' : 'Fancrank Feed', 
+					   		'tooltip' : 'FanCrank Feed', 
 					   		'text' : 'This is the feed, just like in Facebook <br/><br/>' },   
 				//18	   		
 				{ element: 	'#feed-controller', 
@@ -1377,7 +1371,7 @@ var tourOptions = {
 				{ element: 	'#fancrank-feed-container .submit-form', 
 					  		'position' : 'T',
 					   		'tooltip' : 'Posting Box', 
-					   		'text' : 'If you want to post something through Fancrank, you can by simply typing here and clicking Share <br/>'+
+					   		'text' : 'If you want to post something through FanCrank, you can by simply typing here and clicking Share <br/>'+
 					   				'Share will only show up after you\'ve tried to type something'+'<br/><br/>' }, 	   			
 		   		//20
 		   		{ element: 	'#top-fan-container', 
@@ -1429,11 +1423,11 @@ var tourOptions = {
 				{ element: 	'#profile-tab', 
 							'position' : 'TL',
 							'tooltip' : 'Profile Page', 
-							'text' : 'This is your profile, view your Fancrank Information Here <br/><br/>' },	   		
+							'text' : 'This is your profile, view your FanCrank Information Here <br/><br/>' },	   		
 				//30	   			   			   			   			   			   			   			   		
 				{ element: 	'#general-stats-container', 
 							'position' : 'T',
-							'tooltip' : 'Fancrank Statistics', 
+							'tooltip' : 'FanCrank Statistics', 
 							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },		   		
 				//31
 				{ element: 	'#general-stats-container #level-container', 
@@ -1515,7 +1509,7 @@ var tourOptions = {
 				{ element: 	'', 
 							'position' : 'TL',
 							'tooltip' : '&nbsp;', 
-							'text' : 'And that concludes our tutorial of Fancrank, Thanks for going through our tutorial. If you encounter any issues please email help@fancrank.com  <br/><br/> ' },			  
+							'text' : 'And that concludes our tutorial of FanCrank, Thanks for going through our tutorial. If you encounter any issues please email help@fancrank.com  <br/><br/> ' },			  
 
 							],	
 		controlsPosition : 'custom'
