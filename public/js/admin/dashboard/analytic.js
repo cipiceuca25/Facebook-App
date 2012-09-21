@@ -488,4 +488,3 @@ function getSexPieData2(source) {
 	
 	return data;
 }
-

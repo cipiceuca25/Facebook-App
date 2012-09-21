@@ -628,6 +628,36 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	Zend_Debug::dump($newFans);
     }
     
+    public function test16Action() {
+    	$badgeModel = Fancrank_BadgeFactory::factory('custom');
+    	$badgeRuleModel = new Fancrank_Badge_Model_BadgeRules();
+    	
+    	$rule1 = array('table_name'=>'posts', 'table_field'=>'posts', 'operator'=>'>' ,'argument'=>'10');
+    	$badgeRuleModel->addRule($rule1);
+    	//$badgeRuleModel->addRule($rule2);
+    	//$badgeRuleModel->addRule($rule3);
+    	
+    	$rules = $badgeRuleModel->getJsonRules();
+
+    	if(empty($rules)) exit();
+    	
+    	$data = array ('name'=>'my post and comments', 'description' => '100 posts and comments', 'weight'=>'100', 'picture'=>'/use/abb', 'rules'=>$rules);
+    	
+    	$badgeId = $badgeModel->insert($data);
+    	echo $badgeId;
+    	
+//     	Zend_Debug::dump($badgeRuleModel->_DEFAULT_TABLE_NAME_LIST);
+//     	Zend_Debug::dump($badgeRuleModel->_DEFAULT_TABLE_FIELD_LIST);
+//     	Zend_Debug::dump($badgeRuleModel->_DEFAULT_OPERATOR_LIST);
+
+    	$badge = $badgeModel->findrow($badgeId);
+    	
+    	$fanpageId = '216821905014540';
+    	$facebookUserId = '216821905014540';
+    	echo $badgeModel->isFanEligible($fanpageId, $facebookUserId, $badgeId);
+    	//Zend_Debug::dump($badge);
+    }
+    
     public function testmemcacheAction() {
     	$starttime = time();
     	echo $starttime;
