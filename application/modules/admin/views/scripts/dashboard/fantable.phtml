@@ -1,32 +1,42 @@
+
 <thead>
 	<tr>
-		<th>ID</th>
-		<th>Name</th>
-		<th>Points</th>
-		<th>Level</th>
-		<th><img src="/img/post.png" rel="tooltip" title="Total # of Posts"/></th>
-		<th><img src="/img/thumbsup.png" rel="tooltip" title="Total # of Likes"/></th>
-		<th><img src="/img/comment.png" rel="tooltip" title="Total # of Comments"/></th>
-		<th><img src="/img/rthumbsup.png" rel="tooltip" title="Total # of Recieved Likes"/></th>
-		<th><img src="/img/rcomment.png"rel="tooltip" title="Total # of Recieved Comments"/></th>
-		<th><img src="/img/eye_arrow.png"rel="tooltip" title="Total Followers"/></th>
-		<th><img src="/img/eye_arrow2.png"rel="tooltip" title="Total Following"/></th>
+		<th><a >ID <?php echo $this->tabletype;?></a></th>
+		<th><a >Name</a></th>
+		<?php if ($this->tabletype == 'fanfavorite'){?>
+		<th><a >Props</a></th>
+		<?php }else{?>
+		<th><a >thing</a></th>
+		<?php }?>
+		<th><a >Level</a></th>
+		<th><a rel="tooltip"  data-original-title="Total # of Posts" data-placement="top"><img src="/img/post.png" /></a></th>
+		<th><a rel="tooltip"  data-original-title="Total # of Likes" data-placement="top"><img src="/img/thumbsup.png"/></a></th>
+		<th><a rel="tooltip" data-original-title="Total # of Comments" data-placement="top"><img src="/img/comment.png" /></a></th>
+		<th><a rel="tooltip"  data-original-title="Total # of Recieved Likes" data-placement="top"><img src="/img/rthumbsup.png" /></a></th>
+		<th><a rel="tooltip" data-original-title="Total # of Recieved Comments" data-placement="top"><img src="/img/rcomment.png" /></a></th>
+		<th><a rel="tooltip" data-original-title="Total Followers" data-placement="top"><img src="/img/eye_arrow.png" /></a></th>
+		<th><a rel="tooltip" data-original-title="Total Following" data-placement="top"><img src="/img/eye_arrow2.png" /></a></th>
 	</tr>
 </thead>
 <tbody>
 	<?php foreach($this->topFanList as $fan): ?>
 		<tr>
-			<td><?=$fan['facebook_user_id']?></td>
-			<td><?=$fan['fan_name']?></td>
-			<td><?=$fan['count']?></td>
-			<td><?=$fan['fan_level']?></td>
-			<td><?=$fan['post_count']?></td>
-			<td><?=$fan['like_count']?></td>
-			<td><?=$fan['comment_count']?></td>
-			<td><?=$fan['got_like_count']?></td>
-			<td><?=$fan['got_comment_count']?></td>
-			<td><?=$fan['follower']?></td>
-			<td><?=$fan['following']?></td>															
+			<td class="id"><?=$fan['facebook_user_id']?></td>
+			<td class="name"><a rel="popover" data-userid="<?=$fan['facebook_user_id']?>"><?=$fan['fan_name']?></a></td>
+			
+			<?php if ($this->tabletype == 'fanfavorite'){?>
+			<td class="prop"><?=$fan['props']?></td>
+			<?php }else{?>
+			<td class="prop"><?=$fan['props']?></td>
+			<?php }?>
+			<td class="level"><?=$fan['fan_level']?></td>
+			<td class="posts"><?=$fan['post_count']?></td>
+			<td class="likes"><?=$fan['like_count']?></td>
+			<td class="comments"><?=$fan['comment_count']?></td>
+			<td class="rlikes"><?=$fan['got_like_count']?></td>
+			<td class="rcomments"><?=$fan['got_comment_count']?></td>
+			<td class="followers"><?=$fan['follower']?></td>
+			<td class="followings"><?=$fan['following']?></td>															
 		</tr>
 	<?php endforeach; ?>
 </tbody>

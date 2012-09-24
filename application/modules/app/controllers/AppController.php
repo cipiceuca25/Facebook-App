@@ -1656,6 +1656,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
 		$postid = $this->_request->getParam('post_id');
+
 		$follow = new Model_Subscribes();
 		$count = 0;
 		

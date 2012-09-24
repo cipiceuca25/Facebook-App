@@ -10,7 +10,7 @@
 	<div class="post_container">
 		<div class="post">
 			<div class="message">
-			Feed Empty/Feed not Available
+			No More Posts
 			</div>
 		</div>
 		</div>
@@ -20,7 +20,9 @@
 
 
 <?php foreach ($this->post as $post):?>		
-
+	<?php if (isset($post->story)){?>
+	
+	<?php }else{?>
 		
 	<li class="post-container <?=$post->id?>" >
 	
@@ -298,14 +300,16 @@
 	<div id="post_<?=$post->id?>" ></div>
 	</li>	
 			
-<?php $count ++;?>
- 
 
+ <?php }?>
+<?php $count ++;?>
 
 <?php endforeach; ?>
 				
-<?php }?>					
+				
 <?php $last_object = $this->post[count($this->post) - 1] ?>
 <li id="last_post_time" data-time="
 <?=  strtotime($last_object->created_time)?>"></li>
 <li id ="more_post"><button  class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>
+
+<?php }?>	

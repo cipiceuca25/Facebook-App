@@ -217,6 +217,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
 		$fanpageId = $this->_getParam('id');
 		$tableType = $this->_getParam('type');
+		$time = $this->_getParam('time');
 		$fanpageModel = new Model_Fanpages;
 		
 		$fans_model = new Model_Fans;
@@ -225,7 +226,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		switch ($tableType){
 		
 			case 'topfan':
-				$topFanList = $fanpageModel->getTopFanList($fanpageId, 50, 30);
+				$topFanList = $fanpageModel->getTopFanList($fanpageId, 100, $time);
 				//Zend_Debug::dump($topPostByComment);
 				$follow = new Model_Subscribes();
 				for ($count = 0 ;$count <count($topFanList); $count ++ ){
@@ -243,7 +244,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			case 'fanfavorite':
 				
 				
-				$topFanList = $fanpageModel->getFanFavoriteList($fanpageId, 50, 30);
+				$topFanList = $fanpageModel->getFanFavoriteList($fanpageId, 100, $time);
 				//Zend_Debug::dump($topPostByComment);
 				$follow = new Model_Subscribes();
 				for ($count = 0 ;$count <count($topFanList); $count ++ ){
@@ -257,10 +258,67 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 					}
 				}
 				break;
+
+			case 'toptalkers':
+				$topFanList = $fanpageModel->getFanFavoriteList($fanpageId, 100, $time);
+				//Zend_Debug::dump($topPostByComment);
+				$follow = new Model_Subscribes();
+				for ($count = 0 ;$count <count($topFanList); $count ++ ){
+				
+					$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+					if ($fanpageModel->getFanpageLevel($fanpageId) < 3 ) {
+						$topFanList[$count]['fan_points'] = '?';
+					}
+				}
+			
+				break;
+			
+			case 'topclickers':
+				$topFanList = $fanpageModel->getFanFavoriteList($fanpageId, 100, $time);
+				//Zend_Debug::dump($topPostByComment);
+				$follow = new Model_Subscribes();
+				for ($count = 0 ;$count <count($topFanList); $count ++ ){
+				
+					$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+					if ($fanpageModel->getFanpageLevel($fanpageId) < 3 ) {
+						$topFanList[$count]['fan_points'] = '?';
+					}
+				}
+				break;
+			
+				
+			case 'topfollowed':
+				
+				$topFanList = $fanpageModel->getFanFavoriteList($fanpageId, 100, $time);
+				//Zend_Debug::dump($topPostByComment);
+				$follow = new Model_Subscribes();
+				for ($count = 0 ;$count <count($topFanList); $count ++ ){
+				
+					$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+					if ($fanpageModel->getFanpageLevel($fanpageId) < 3 ) {
+						$topFanList[$count]['fan_points'] = '?';
+					}
+				}
+		
+				break;
+				
+				
+				
+				
+				
 		}	
 		
-		Zend_Debug::dump($topFanList);
-		
+		//Zend_Debug::dump($topFanList);
+		$this->view->tabletype = $tableType;
 		$this->view->topFanList = $topFanList;
 	}
 	
@@ -299,6 +357,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	}
     	$this->view->stat= $stat;
     	$this->view->fan = $fan;
+    	
     	$this->render("fanprofile");
 
 	}

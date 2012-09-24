@@ -33,6 +33,7 @@ body {
 a {
   color: #3B5998;
   text-shadow: none;
+  cursor: pointer;
 }
 .navbar .nav li a:hover,
 a:hover {
@@ -196,7 +197,6 @@ input[type="text"] {
 }
 .popover.top .arrow {
   border-top: 5px solid #c1cee0;
-  margin-left: -104px;
 }
 .popover.left .arrow {
   border-left: 5px solid #c1cee0;
@@ -204,23 +204,11 @@ input[type="text"] {
 .popover.right .arrow {
   border-right: 5px solid #c1cee0;
 }
-.popover.toppost .arrow {
-  top: 50%;
-  right: 0;
-  margin-top: -5px;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-left: 5px solid #c1cee0;
-}
 .popover.top {
-  margin-left: 99px;
+  margin-left: 0px;
   margin-top: -10px;
 }
 .popover.left {
-  margin-left: 0;
-  margin-top: 0;
-}
-.popover.toppost {
   margin-left: 0;
   margin-top: 0;
 }
