@@ -498,10 +498,8 @@ function popover(x) {
 }
 function changeTimeLimit(){
 	t = $("select#timelimit option:selected").val();
-	topFanTable.fnDestroy();
-	$('#topFanTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
-	
-	
+	destroyAll();
+	alert(t);
 	getTopFanTable('fanfavorite',t);
 	
 
@@ -541,8 +539,10 @@ function getTopFanTable(type, time) {
 				case 'fanfavorite':
 					
 					$('#fanfavoriteTable').html(data);
-					fanfavoriteTable = $('#fanfavoriteTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					fanfavoriteTable = $('#fanfavoriteTable').dataTable({"sDom" : "<'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+
 					break;
+				
 				case 'toptalkers':
 					
 					$('#toptalkersTable').html(data);
@@ -602,6 +602,9 @@ $('#topfollowed-tab').live('click', function() {
 	getTopFanTable('topfollowed', 30);
 });
 
+$("#fanfavoriteTable_filter").live('keyup', function () {
+	fanfavoriteTable.fnFilter(this.value );
+} );
 
 function destroyAll(){
 	

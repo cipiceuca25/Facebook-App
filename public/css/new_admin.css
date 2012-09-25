@@ -110,16 +110,16 @@ label,
 input[type="text"] {
   margin-bottom: 0px;
 }
-#topFanTable_wrapper .processing {
+.processing {
   float: right;
 }
-#topFanTable_wrapper .info {
+.info {
   float: left;
 }
-#topFanTable_wrapper .length {
+.length {
   float: right;
 }
-#topFanTable_wrapper .filter {
+.filter {
   float: left;
 }
 #topFanTable_next {
