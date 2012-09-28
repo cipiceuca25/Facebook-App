@@ -79,6 +79,7 @@ $(document).mousemove(function(e) {
 	mouseX = e.pageX;
 	mouseY = e.pageY;
 	$('.popover').css('display', 'none');
+
 	//FB.Canvas.setAutoGrow();
 	
 	if (fb == false){
@@ -99,16 +100,8 @@ $(document).mousemove(function(e) {
 
 $(document).on('mouseover', 'a[rel=popover]', function() {
 	
-	if ($(this).data('isPopoverLoaded') == true) {
-		return;
-	}
-	$(this).data('isPopoverLoaded', true).popover({
-		delay : {
-			show : 500,
-			hide : 100
-		}
-	}).trigger('mouseover');
-	popover($(this));
+		popover($(this));
+
 });
 
 $(document).on('mouseover', 'a[rel=tooltip]', function() {
@@ -140,17 +133,21 @@ $(document).on('mouseover', 'a[rel=tooltip-award]', function() {
 
 $('.badge-Following').live("mouseenter", function() {
 	$(this).text('Unfollow');
+	$(this).css('background-color', '#BD362F');
 });
 
 $('.badge-Following').live("mouseleave", function() {
 	$(this).text('Following');
+	$(this).css('background-color', '#56A556');
 });
 
 $('.badge-Follower').live("mouseenter", function() {
 	$(this).text('Follow');
+	$(this).css('background-color', '#BD362F');
 });
 $('.badge-Follower').live("mouseleave", function() {
 	$(this).text('Follower');
+	$(this).css('background-color', '#56A556');
 });
 
 $('#fan-favorite-btn').live('click', function() {
@@ -254,13 +251,12 @@ function popover(x) {
 		url : serverUrl + '/app/app/popoverprofile/' + fanpageId
 				+ '?facebook_user_id=' + $(x).attr('data-userid'),
 		dataType : "html",
-		cache : false,
-		async : false,
-		beforeSend: function(){
-			$(x).attr('data-content', "<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-		},
+		cache : true,
+		async : true,
 		success : function(data) {
+			
 			$(x).attr('data-content', data);
+			$(x).popover('show');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);

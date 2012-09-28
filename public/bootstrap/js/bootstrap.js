@@ -1219,7 +1219,7 @@
       $tip.find('.popover-title')[this.isHTML(title) ? 'html' : 'text'](title)
       $tip.find('.popover-content > *')[this.isHTML(content) ? 'html' : 'text'](content)
 
-      $tip.removeClass('fade top bottom left right toppost in')
+      $tip.removeClass('fade top bottom left right toppost in top-left top-right')
     }
 
   , hasContent: function () {

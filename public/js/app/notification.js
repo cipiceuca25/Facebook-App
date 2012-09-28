@@ -33,7 +33,7 @@ function isLoginNotification() {
 				$('.notification').css('background-color','#56A556');
 				$('.notification a').css('color',color2);
 				$('.notification').effect("pulsate", { times:3 }, 300);
-				$('.notification').effect("bounce", { times:3 }, 300);
+				
 				//$('.notification').animate({'background-color':color2 , 'color': color1});
 			}
 		},
