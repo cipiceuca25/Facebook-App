@@ -1,16 +1,18 @@
 <div class="row">
-<div class="span7">
+<div class="span8">
+
+<div class="row box" id="user_list">
 
 <div class="title">
 	
 
-		<?php if ($this->title != 'Likes'){?>
+		<!--<?php if ($this->title != 'Likes'){?>
 			<div class="title-icon">
 				<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture">
 			</div>
 		<?php }else{?>
 			
-		<?php }?>
+		<?php }?>-->
 		<?php $displayname=$this->user_name;?>
 	
 						
@@ -38,14 +40,13 @@
 			People who Like this
 			</div>
 		<?php }?>
-	
+			<?php if ($this->title != 'Likes'){?>
+		<div class="link-back">Go back to <a onclick="userProfile('<?= $this->user_id?>', false)"><?= $this->user_name?></a>'s Profile</div>
+		<?php }?>
 	
 </div>
-<?php if ($this->title != 'Likes'){?>
-<div class="link-back">Go back to <a onclick="userProfile('<?= $this->user_id?>', false)"><?= $this->user_name?></a>'s Profile</div>
-<?php }?>
 
-<div class="row box" id="user_list">
+
 	<ul class="top-list" id="user_list_scroll">
 	<?php if(count($this->result)==0){?>
 		<li >
