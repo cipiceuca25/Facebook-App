@@ -21,7 +21,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
 		//
 		if(!$this->_auth->hasIdentity()) {
-			$this->_helper->json(array('message'=>'authentication failed'));
+			$this->_helper->json(array('message'=>'authentication failed','code'=>400));
 			//set the proper navbar
 		}
 		$this->_helper->layout()->disableLayout();
@@ -329,10 +329,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 	}
 	
-	public function notificationAction() {
-		$this->_helper->json(array('message'=>'ok'));
-	}
-	
 	public function uploadAction() {
 		$fc = $this->_getParam('fanpage_id');
 		
@@ -395,6 +391,16 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		}
 	}
 	
+	public function notificationAction() {
+		$userBadges = new Model_BadgeEvents();
+		$userBadgeCount = $userBadges->getNonNotifiedBadgesCountByUser($this->_user->fanpage_id, $this->_user->facebook_user_id);
+		
+		$this->_helper->json(array('message'=>'ok', 'notification'=>array('newBadgeCount'=>$userBadgeCount)));
+	}
+	
+	public function mybadgesAction() {
+		
+	}
 }
 
 ?>

@@ -745,7 +745,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     		try {
     			$fanProfileId = $this->_fanpageId .'_' .$user->facebook_user_id .'_fan';
-    			$cache->remove($fanProfileId);
+    			//$cache->remove($fanProfileId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanProfileId)){
 	    			//echo 'db look up';
@@ -1222,7 +1222,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     		try {
     			$fanActivityId = $this->_fanpageId .'_' .$this->_userId. '_fan_activity';
-    			$cache->remove($fanActivityId);
+    			//$cache->remove($fanActivityId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanActivityId)){
     				//echo 'db look up';

@@ -25,7 +25,10 @@ class Fancrank_Badge_Model_Badges extends Fancrank_Db_Table
     public function isFanEligible($fanpage_id, $facebook_user_id, $badgeId) {
     	
     	//Zend_Debug::dump($this->queryGenerate($fanpage_id, $facebook_user_id, $badgeId));
-    	$results = $this->getAdapter()->fetchAll($this->queryGenerate($fanpage_id, $facebook_user_id, $badgeId));
+    	$query = $this->queryGenerate($fanpage_id, $facebook_user_id, $badgeId);
+    	if(empty($query)) return false;
+    	
+    	$results = $this->getAdapter()->fetchAll($query);
     	//Zend_Debug::dump($results);
     	foreach($results as $result) {
     		if(empty($result['flag'])) return false;
@@ -37,12 +40,17 @@ class Fancrank_Badge_Model_Badges extends Fancrank_Db_Table
     	$selects = array();
 
     	$this->_badge = $this->findRow($badgeId);
+    	
+    	if(empty($this->_badge->rules)) return null;
+    	
     	$ruleList = Zend_Json::decode($this->_badge->rules, Zend_Json::TYPE_ARRAY);
     	
-    	Zend_Debug::dump($ruleList);
+    	
+    	
+    	//Zend_Debug::dump($ruleList);
     	foreach ($ruleList as $rule) {
     		if($rule['table_name'] == $rule['table_field']) {
-    			$selects[] = "select count(*) > 0 as flag from " .$rule['table_name']  ." where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id";
+    			$selects[] = "select count(*) >= ". $rule['argument'] ." as flag from " .$rule['table_name']  ." where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id";
     		}else {
     			$selects[] = "select count(*) > 0 as flag from " .$rule['table_name']  ." where " .$rule['table_field'] . $rule['operator'] .$rule['argument'] ." and fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id";
     		}

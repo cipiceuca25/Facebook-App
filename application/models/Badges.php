@@ -32,5 +32,29 @@ class Model_Badges extends Model_DbTable_Badges
 		
 		return;
 	}
+	
+	public function getBadgeNameList() {
+		$query = $this->select()
+					->from($this, array('id','name'))
+					->where('type = ?', 'default')
+					->group('name')
+					->order('id');
+		
+		$result = $this->fetchAll($query);
+		
+		$finalList = array();
+		foreach ($result as $key => $list) {
+			$finalList[$list['id']] = $list['name'];
+		}
+		return $finalList;
+	}
+	
+	public function getBadgesByType($type) {
+		$query = $this->select()
+			->where('type = ?', $type)
+			->order('id');
+		
+		return $this->fetchAll($query);
+	}
 }
 

@@ -103,6 +103,44 @@ if (count($fanpageList) > 0) {
 			try {
 				//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
 				$result = $fanStat->updatedFan($fanpage->fanpage_id, $fan['facebook_user_id']);
+				
+				//check badge
+				$badgeDefaultModel = Fancrank_BadgeFactory::factory('default');
+				$badgeModel = new Model_Badges();
+				$badgeEventModel = new Model_BadgeEvents();
+				$badgeList = $badgeEventModel->getRemaindDefaultBadgeByUser($fanpage->fanpage_id, $fan['facebook_user_id']);
+				//Zend_Debug::dump($badgeList); exit();
+				$tmpName = $badgeList[0]['name'];
+				$flag = true;
+				foreach ($badgeList as $badge) {
+					if($badge['name'] == $tmpName) {
+						if($flag) {
+							$flag = $badgeDefaultModel->isFanEligible($fanpage->fanpage_id, $fan['facebook_user_id'], $badge['id']);
+						}else {
+							//
+						}
+					}else {
+						$tmpName = $badge['name'];
+						$flag = $badgeDefaultModel->isFanEligible($fanpage->fanpage_id, $fan['facebook_user_id'], $badge['id']);
+					}
+					if($flag) {
+						//echo $badge['id'] .': '.$flag .'<br/>';
+						$data = array(
+								'fanpage_id'		=> $fanpage->fanpage_id,
+								'facebook_user_id'	=> $fan['facebook_user_id'],
+								'badge_id'		 	=> $badge['id']
+						);
+						try {
+							$badgeEventModel = new Model_BadgeEvents();
+							$badgeEventModel->insert($data);
+						} catch (Exception $e) {
+							echo $e->getMessage();
+							$errMsg = sprintf('badge insert error: badgeId:%s facebookUserId:%s fanpageId:%s', $badge['id'], $fan['facebook_user_id'], $fan['fanpage_id']);
+							$logger->log('Update fanpage user badge failed: ' .$errMsg .' ' .$e->getMessage(), Zend_Log::INFO);
+						}
+					}
+				}
+								
 				//break;
 			}catch(Exception $e) {
 				$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan['facebook_user_id'], $fan['fanpage_id']);
@@ -118,5 +156,9 @@ if (count($fanpageList) > 0) {
 	}
     echo 'job done'.PHP_EOL;
     exit();
+}
+
+function checkEligibleBadge() {
+	
 }
 

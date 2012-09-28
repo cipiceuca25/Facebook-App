@@ -13,8 +13,11 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 				$fanStat->{$key} = $value;
 			}
 			$fanStat->save();
+			return $fanStat->toArray();
 		}else {
-			$this->insert($data);
+			if($this->insert($data)) {
+				return $data;
+			}
 		}
 	}
 	

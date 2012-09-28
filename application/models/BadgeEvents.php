@@ -29,6 +29,26 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	public function getNonNotifiedBadgesCountByUser($fanpage_id, $facebook_user_id) {
+		$query = $this->select()
+			->from($this)
+			->where('facebook_user_id = ?', $facebook_user_id)
+			->where('fanpage_id = ?', $fanpage_id)
+			->where('notification_read = ?', 0);
+		
+		return $this->fetchAll($query)->count();
+	}
+	
+	public function getNonNotifiedBadgesByUser($fanpage_id, $facebook_user_id) {
+		$query = $this->select()
+		->from($this)
+		->where('facebook_user_id = ?', $facebook_user_id)
+		->where('fanpage_id = ?', $fanpage_id)
+		->where('notification_read > ?', 0);
+	
+		return $this->fetchAll($query);
+	}
+	
 	public function hasBadgeEvent($fanpage_id, $facebook_user_id, $badge_id) {
 		$query = $this->select()
 			->from($this, array('id'))
@@ -44,6 +64,15 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		}
 		return false;
 	}
+	
+	public function getRemaindDefaultBadgeByUser($fanpage_id, $facebook_user_id) {
+		$query = $this->getDefaultAdapter()->select()
+			->from(array('b' => 'badges'))
+			->where('b.type = ?', 'default')
+			->where("b.id not in (select e.badge_id from badge_events e where e.fanpage_id = $fanpage_id and e.facebook_user_id = $facebook_user_id)");
+		
+		return $this->getDefaultAdapter()->fetchAll($query);
+	}	
 }
 
 

@@ -55,7 +55,7 @@ function sendNotification() {
 	$since = new Zend_Date();
 	$sql = "SELECT e.id as event_id, e.fanpage_id, e.facebook_user_id, e.badge_id, e.created_time, b.name, b.description, b.weight, b.picture  FROM badge_events e inner join badges b on(b.id=e.badge_id) where e.created_time >= '" .$since->toString ( 'yyyy-MM-dd' ) ."' order by facebook_user_id";
 	$badgeEventsList = $adapter->query($sql)->fetchAll();
-	//Zend_Debug::dump($badgeEventsList); exit();
+	Zend_Debug::dump($badgeEventsList); exit();
 	
 // 	$badgeEventModel = new Model_BadgeEvents();
 // 	$badgeModel = new Model_Badges();
