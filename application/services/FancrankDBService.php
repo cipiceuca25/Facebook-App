@@ -313,22 +313,22 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		return $rows;
 	}
 
-	public function saveLikes($likesList) {
-		if(empty($likesList)) {
-			return;
-		}
-		$likes_model = new Model_Likes;
-		$cols = array('fanpage_id', 'post_id', 'facebook_user_id', 'post_type', 'updated_time');
-		$update = array('post_type');
-		try {
-			$likes_model->insertMultiple($likesList, $cols, $update);
-		} catch (Exception $e) {
-			$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
-			$collectorLogger->log ( sprintf ( 'Unable to save likes %s',  $e->getMessage ()), Zend_log::ERR);
-		}
-	}
+// 	public function saveLikes($likesList) {
+// 		if(empty($likesList)) {
+// 			return;
+// 		}
+// 		$likes_model = new Model_Likes;
+// 		$cols = array('fanpage_id', 'post_id', 'facebook_user_id', 'post_type', 'updated_time');
+// 		$update = array('post_type');
+// 		try {
+// 			Zend_Debug::dump($likes_model->insertMultiple($likesList, $cols, $update));
+// 		} catch (Exception $e) {
+// 			$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
+// 			$collectorLogger->log ( sprintf ( 'Unable to save likes %s',  $e->getMessage ()), Zend_log::ERR);
+// 		}
+// 	}
 	
-	public function saveLikesIterate($likesList) {
+	public function saveLikes($likesList) {
 		$likeModel = new Model_Likes();
 		foreach ($likesList as $like) {
 			$found = $likeModel->find($like['fanpage_id'], $like['post_id'], $like['facebook_user_id'])->current();
@@ -338,7 +338,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				}				
 			} catch (Exception $e) {
 				$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
-				$collectorLogger->log ( sprintf ( 'Unable to save likes %s',  $e->getMessage ()), Zend_log::ERR);
+				$collectorLogger->log ( sprintf ( 'Unable to save likes %s %s',  $e->getMessage ()), implode(' ', $like), Zend_log::ERR);
 			}
 		}	
 	}
@@ -398,7 +398,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		return $result;
 	}
 
-	public function saveAndUpdateFans($fansList, $pointResult) {
+	public function saveAndUpdateFans($fansList, $pointResult, $pointLogEnable=false) {
 		$result = array();
 		$facebookUserModel = new Model_FacebookUsers();
 		$fansModel = new Model_Fans();
@@ -435,7 +435,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				
 				if ($fansModel->isNewFan()) {
 					if(isset($pointResult[$facebookUserData['facebook_user_id']])) {
-						$fansData['fan_points'] = $pointResult[$facebookUserData['facebook_user_id']];
+						$fansData['fan_points'] = $pointResult[$facebookUserData['facebook_user_id']]['total_points'];
 					}
 					$fansModel->insertNewFan($fansData);
 				}else {
@@ -446,12 +446,20 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					$fanProfile->updated_time = $fansData['updated_time'];
 					if(isset($pointResult[$facebookUserData['facebook_user_id']])) {
 						//echo $facebookUserData['facebook_user_id'] .'<br/>';
-						$fansModel->updateFanPoints($pointResult[$facebookUserData['facebook_user_id']]);
+						$fansModel->updateFanPoints($pointResult[$facebookUserData['facebook_user_id']]['total_points']);
 					}
 
 					$fansModel->updateFanProfile();
 				}
-	
+
+				if($pointLogEnable && isset($pointResult[$facebookUserData['facebook_user_id']]['point_log'])) {
+					$pointLogModel = new Model_PointLog();
+					foreach ($pointResult[$facebookUserData['facebook_user_id']]['point_log'] as $pointLog) {
+						$pointLog['fanpage_id'] = $this->_fanpageId;
+						$pointLog['facebook_user_id'] = $facebookUserData['facebook_user_id'];
+						$pointLogModel->insert($pointLog);
+					}
+				}
 				$result[] = $fansData;
 			} catch (Exception $e) {
 				print $e->getMessage();

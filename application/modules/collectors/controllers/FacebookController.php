@@ -370,7 +370,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	//$fanpageId = '178384541065';
     	//$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
     	
-    	$fanpageId = '197221680326345';
+    	$fanpageId = '216821905014540';
     	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
     	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
@@ -513,10 +513,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     
     public function test7Action() {
     	$activity = new Model_FancrankActivities();
-    	$fanpage_id = '178384541065';
-    	$facebook_user_id = '664609767';
-    	    	
-    	$result = $activity->getRecentActivitiesInRealTime($facebook_user_id, $fanpage_id, 10);
+
+    	$since = new Zend_Date(time());
+    	$since->subDay(30);
+    	$result = $activity->getAllActivitiesSince($since->toString('yyyy-MM-dd HH:mm:ss'));
     	
     	Zend_Debug::dump($result);
     	
@@ -656,6 +656,68 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$facebookUserId = '216821905014540';
     	echo $badgeModel->isFanEligible($fanpageId, $facebookUserId, $badgeId);
     	//Zend_Debug::dump($badge);
+    }
+    
+    public function test17Action() {
+    	$fanpageId = '197221680326345';
+    	$message = 'this is a test comment';
+    	$accessToken = 'AAAFHFbxmJmgBAM6lldcZAZCggKej98EhT9n4hAcuDfpIQVB7nHKIuGNOZAQ2rprCeFEBk3tDZApEb8KUJZBuFR8lIUTvKE4yW3amNYmJMWgZDZD';
+    	
+    	$client = new Zend_Http_Client;
+		$client->setUri("https://graph.facebook.com/197221680326345_419358148112696/likes");
+		$client->setMethod(Zend_Http_Client::GET);
+		
+		//$client->setParameterGet('message', $message);
+		$client->setParameterGet('access_token', $accessToken);
+		$client->setParameterGet('method', 'post');
+		
+		$response = $client->request();
+		
+		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+		Zend_Debug::dump($result);
+		
+    }
+    
+    public function test18Action() {
+    	$badgeDefaultModel = Fancrank_BadgeFactory::factory('default');
+    	$badgeModel = new Model_Badges();
+    	$badgeEventModel = new Model_BadgeEvents();
+    	
+    	$fanpageId = '216821905014540';
+    	$facebookUserId = '1826347152';
+    	
+    	$badgeList = $badgeEventModel->getRemaindDefaultBadgeByUser($fanpageId, $facebookUserId);
+    	//Zend_Debug::dump($badgeList); exit();
+    	$tmpName = $badgeList[0]['name'];
+    	$flag = true;
+
+    	foreach ($badgeList as $badge) {
+    		if($badge['name'] == $tmpName) {
+    			if($flag) {
+    				$flag = $badgeDefaultModel->isFanEligible($fanpageId, $facebookUserId, $badge['id']);
+    			}else {
+					//
+    			}
+    		}else {
+    			$tmpName = $badge['name'];
+    			$flag = $badgeDefaultModel->isFanEligible($fanpageId, $facebookUserId, $badge['id']);
+    		}
+    		if($flag) {
+    			echo $badge['id'] .': '.$flag .'<br/>';
+				$data = array(
+							'fanpage_id'		=> $fanpageId,
+							'facebook_user_id'	=> $facebookUserId,
+							'badge_id'		 	=> $badge['id']
+						);
+				try {
+					$badgeEventModel = new Model_BadgeEvents();
+					$badgeEventModel->insert($data);
+				} catch (Exception $e) {
+					echo $e->getMessage();
+				}
+    		}
+    	}
+    	//echo $badgeModel->isFanEligible($fanpageId, $facebookUserId, $badgeId);
     }
     
     public function testmemcacheAction() {

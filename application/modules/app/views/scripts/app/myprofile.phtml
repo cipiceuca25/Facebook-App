@@ -1,4 +1,87 @@
+<style>
+/****************************/
+
+.notification .mini {
+  margin-top: 12px;
+  float: right;
+  list-style-type: none;
+  padding: 0;
+}
+
+.notification .mini > li {
+  float: left;
+  margin-left: 20px;
+  background: white;
+  position: relative;
+  -webkit-border-radius: 3px 3px 3px 3px;
+  -moz-border-radius: 3px 3px 3px 3px;
+  border-radius: 3px 3px 3px 3px;
+  -webkit-box-shadow: 1px 1px 1px #4b4b4b, inset 1px 1px 0px 1px #222222;
+  -moz-box-shadow: 1px 1px 1px #4b4b4b, inset 1px 1px 0px 1px #222222;
+  box-shadow: 1px 1px 1px #4b4b4b, inset 1px 1px 0px 1px #222222;
+}
+
+.notification .mini > li:hover {
+  background: #222222;
+}
+.notification .mini > li.open {
+  margin-left: 18px;
+}
+.notification .mini > li.open > a {
+  color: #080808;
+  background: #ffffff;
+  border: 1px solid #222222;
+  border-bottom: 0;
+}
+
+.notification .mini > li.open > a img {
+  opacity: 1;
+  filter: alpha(opacity=1);
+}
+.notification .mini > li.open > a:hover {
+  color: #080808;
+}
+.notification .mini > li > a {
+  color: #888888;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 5px 8px 3px 8px;
+  display: block;
+  position: relative;
+  z-index: 1001;
+}
+
+.notification .mini > li > a img {
+  margin-bottom: 2px;
+  margin-right: 2px;
+  opacity: 0.3;
+  filter: alpha(opacity=3);
+}
+
+.notification .mini > li > a .label {
+  position: absolute;
+  top: -5px;
+  left: 93%;
+}
+.notification .mini > li > a:hover {
+  text-decoration: none;
+  color: #ffffff;
+}
+.notification .mini > li > a:hover img {
+  opacity: 1;
+  filter: alpha(opacity=1);
+}
+</style>
 <div class="row">
+	<div class="notification">
+		<ul class="mini widget">
+			<li class="dropdown pendingContainer">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="icon-exclamation-sign"></i>
+						Badge Notification: </a><div class="label label-important"><span id="badge-notification-count">0</span></div>
+				</li>
+		</ul>					
+	</div>
 	<div class="span8">
 	<div id="myprofile">
 		<div id="general-stats-container">

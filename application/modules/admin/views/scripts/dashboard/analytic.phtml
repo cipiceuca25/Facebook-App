@@ -7,6 +7,7 @@ var postData = <?= $this->post_data ?>;
 var sexPieData = <?= $this->fansNumberBySex ?>;
 </script>
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.js') ?>
+<? $this->headScript()->appendFile('/js/libs/jquery.flot.time.min.js') ?>
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.barnumbers.js') ?>
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.pie.min.js') ?>
 <? $this->headScript()->appendFile('/js/libs/jquery.dataTables.min.js') ?>
@@ -18,7 +19,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
   <li><a href="#"><i class="icon-home"></i></a> <span class="divider">/</span></li>
   <li class="active"><?=$this->fanpage_name?></li>
 </ul>
-<ul class="widget">
+<ul class="mini widget">
 <li class="dropdown pendingContainer">
 		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 			<i class="icon-barcode"></i>
