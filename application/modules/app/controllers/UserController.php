@@ -338,7 +338,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$message = $this->_getParam('message');
 		$fan = new Model_Fans($userId, $fanpageId);
 		$fan->updateDescription(substr( trim($message), 0, 160));
-		echo 'ok';
+		
+		$cache = Zend_Registry::get('memcache');
+		$fanProfileId = $fanpageId.'_' .$userId.'_fan';
+		$cache->remove($fanProfileId);
+		
+		echo 'ok description saved';
 	}
 	
 

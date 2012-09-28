@@ -233,7 +233,6 @@ border:0px;
 
 .tab-container{
 border-bottom: 1px solid @color-main-container;
-.border-radius(2px);
 background-color: @color-main-background;
 height:28px;
 margin-bottom:15px;
@@ -244,8 +243,7 @@ margin-right:4px;
 .toolbar{
 	float:left;
 	position:absolute;
-	left:514px;
-	width:166px;
+	left:480px;
 	font-size:13px;
 	border:1px solid @color-main-container;
 	border-left:0px;
@@ -341,9 +339,8 @@ right:8px;
 
 background-color:@color-main-container;
 height:28px;
-padding-left:1px;
 margin-bottom:0px;
-
+border-right:1px solid @color-main-container;
 
 }
 
@@ -352,10 +349,10 @@ margin-bottom:0px;
 position:relative;
 float:left;
 background-color:@color-main-container;
-height:27px;
+height:28px;
 left:3px;
 margin-bottom:0px;
-width:349px;
+border-right:1px solid @color-main-container;
 
 }
 
@@ -459,6 +456,7 @@ padding-top:0;
 .user-description{
 	margin-left:5px;
 	margin-right:5px;
+
 }
 
 .title-header{
@@ -524,7 +522,7 @@ float:right;
 background-color:@color-ranking-background;
 overflow:hidden;
 
-max-height:223px;
+max-height:224px;
 }
 
 .top-list li:hover{
@@ -551,7 +549,8 @@ background-color: @color-post-background-hover;
 #myprofile .stats{
 	height:60px;
 	border-top: 1px solid @color-post-user-border;
-	border-bottom: 1px solid @color-post-user-border;
+	//border-bottom: 1px solid @color-post-user-border;
+	margin-bottom:-5px;
 }
 
 
@@ -567,7 +566,13 @@ background-color: @color-post-background-hover;
 .stats-block{
 	text-align:center;
 	position:relative;
-	top:16px;
+	top:12px;
+}
+
+
+.linktofb{
+	margin-top:21px;	
+	font-size:11px;
 }
 
 .h3{
@@ -609,16 +614,12 @@ background-color: @color-post-background-hover;
 
 #whatisfancrank,
 .top-list.first{
-padding-top:3px;
+margin-top:8px;
+}
 
-}
-	
-.top-list.bottom{
-padding-bottom:3px;
-}
 
 .top-list .ranker{
-border-top:1px solid @color-ranking-border;
+border-bottom:1px solid @color-ranking-border;
 height:55px;
 }	
 
@@ -898,7 +899,7 @@ line-height:25px;
 font-size:11px;
 background-color:@color-post-social-background;
 padding-left:10px;
-margin-top:1px;
+margin-bottom:1px;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -922,7 +923,7 @@ min-height:30px;
 position:relative;
 left:0;
 top:0;
-float:left;
+
 }
 
 .comment-container .user{
@@ -939,7 +940,6 @@ float:left;
 }
 
 .comment-container .user .name{
-top:0;
 left:0;
 float:left;
 margin-right:5px;
@@ -948,6 +948,7 @@ font-size:11px;
 
 .comment-container .user .message{
 font-size:11px;
+font-weight:normal;
 }
 
 .comment-container .social{
@@ -1212,17 +1213,13 @@ height:50px;
 .badge-profile{
 float:right;
 position:absolute;
-right:9px;
+right:20px;
 top:13px;
 }
 
-
 .link-back{
 font-size:11px;
-position:absolute;
-top:4px;
-left:77px;
-text-align:right;
+
 }
 
 #user_activities{
@@ -1231,14 +1228,21 @@ padding-left:5px;
 max-height: 200px;
 }
     
-#user_list .badge-profile{
-top:17px;
+#user_list  .badge-profile{
+top:21px;
+
+}
+    
+#user_list .top-list .badge-profile{
+top:18px;
+position:relative;
+right:8px;
 }
 
 #user_list_scroll{
 overflow: auto;
-max-height: 300px;
-width:441px;
+min-height: 300px;
+width:508px;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1260,10 +1264,9 @@ display:none;
 }
 
 .popover-content{
-
+.border-radius(0px);
 padding:0 8px 0;
 }
-
 
 .popover-content .post-container .user{
 overflow:visible;
@@ -1390,6 +1393,7 @@ background:url(../img/commented.png) no-repeat center center;
 .user-description-button{
 	float:right;
 	margin-right:4px;
+	margin-top:30px;
 }
 
 .exp-text{
@@ -1398,8 +1402,12 @@ background:url(../img/commented.png) no-repeat center center;
 	top:-15px;
 }
 
+.notification a{
+	text-decoration:none;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////
-.notification{
+.notification-badges{
 	z-index:50;
 }
 

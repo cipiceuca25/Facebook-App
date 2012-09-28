@@ -54,7 +54,7 @@
 								</div>
 								
 								<div class="name">
-									<a><?echo $displayname?></a>
+									<a><?= $displayname?></a>
 								
 								</div>	
 								
@@ -64,7 +64,9 @@
 								
 								</div>
 						</div>
-					
+						<div class="linktofb">
+							Go to <?= $displayname?>'s <a href="http://www.facebook.com/<?=$this->facebook_user->facebook_user_id?> " target="_new" >Facebook Profile</a>
+						</div>
 					</div>
 					<div class="span6">
 						<div style="padding:5px; margin-top:29px">

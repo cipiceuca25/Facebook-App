@@ -1664,11 +1664,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     	
     	}
+    	$relationTarget = $follow->getRelation($this->_userId, $target, $this->_fanpageId);
+    	
     	//Zend_Debug::dump($result);
     	$this->view->relation= $relation;
+    	$this->view->relationTarget= $relationTarget;
     	$this->view->result = $result;
     	
-
+		$this->view->this_user_id = $this->_userId;
     	$this->view->title = 'Followers';
     	$this->view->user_name = $userName;
     	$this->view->user_id = $target;
@@ -1701,7 +1704,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$this->view->result = $result;
 		$this->view->relation= $relation;
 		$this->view->title = 'Likes';
-		
+		$this->view->this_user_id = $this->_userId;
 		
 		
 		$this->render("userlist");
@@ -1755,14 +1758,16 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     		 
     	}
-    	
+    	$relationTarget = $follow->getRelation($this->_userId, $target, $this->_fanpageId);
     	$this->view->relation= $relation;
     	$this->view->result = $result;
     	$this->view->title = 'Following';
+    	$this->view->relationTarget = $relationTarget;
+    	
     	
     	$this->view->user_name = $userName;
     	$this->view->user_id = $target;
-    	
+    	$this->view->this_user_id = $this->_userId;
     	if ($mini){
     		$this->render("miniuserlist");
     	}else{

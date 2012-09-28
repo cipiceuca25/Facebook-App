@@ -78,7 +78,7 @@ $(document).ready(function() {
 $(document).mousemove(function(e) {
 	mouseX = e.pageX;
 	mouseY = e.pageY;
-	//$('.popover').css('display', 'none');
+	$('.popover').css('display', 'none');
 	//FB.Canvas.setAutoGrow();
 	
 	if (fb == false){
