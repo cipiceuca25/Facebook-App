@@ -11,11 +11,11 @@
 @color-photo-border-blue:			#7D98BE; // the border on the icons, follow button
 @color-social-bar-blue:				#EDEFF4; // social bar color
 @color-user-border-gray:			#E5E5E5;//flag bottom border color
-@color-text:						#666666; //text color
+@color-text:						#575757; //text color
 @color-post-border-thing:			#8194BD; //post border
 @color-post-border-hover-thing:		#5a6d99;
 @color-post-shadow-thing:			#A5B4CE;
-@color-post-hover:					#f7f7f7; // the color of the post on hover
+@color-post-hover:					#f9f9f9; // the color of the post on hover
 @color-post:						#ffffff;
 @color-admin:						#09937C;
 @color-unfollow:					#BD362F;
@@ -157,7 +157,7 @@ width:392px;
 width:323px;
 }
 .span4 {
-width:253px;
+width:257px;
 }
 .span3 {
 width:184px;
@@ -173,7 +173,7 @@ width:47px;
 body{
 background-color:@color-main-background;
 color:@color-main-text;
-font:13px Helvetica, Arial sans-serif;
+font:12px Helvetica, Arial sans-serif;
 }
 
 a, 
@@ -196,7 +196,8 @@ width:810px;
 
 #content{
 position:relative;
-top:-36px;
+top:10px;
+background-color:@color-main-background;
 }
 
 ul, ol { 
@@ -207,59 +208,154 @@ padding:0;
 
 #logo{
 display:block;
-max-height:300px;
-min-height:250px;
-width:810px;
+height:150px;
+width:790px;
 overflow:hidden;
+background-color:white;
+padding:5px;
+border:1px solid @color-main-container;
+margin-left:3px;
+margin-right:3px;
+margin-top:6px;
 }
 
 #logo img{
-width:810px;
+width:100%;
 position:relative;
 top:0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-.nav-tabs,
-.nav-tabs:hover{
-border-bottom:0;
+.nav-tabs{
+border:0px;
 }
+
+.tab-container{
+border-bottom: 1px solid @color-main-container;
+.border-radius(2px);
+background-color: @color-main-background;
+height:28px;
+margin-bottom:15px;
+margin-left:3px;
+margin-right:4px;
+}
+
+.toolbar{
+	float:left;
+	position:absolute;
+	left:514px;
+	width:166px;
+	font-size:13px;
+	border:1px solid @color-main-container;
+	border-left:0px;
+}
+
+
+.toolbar li{
+	float:left;
+	padding:3px 10px 3px;
+	font-weight:bold;
+	color:@color-tab-select-text;
+	background-color:white;
+	border-left:1px solid @color-main-container;
+	height:18px;
+}
+
+
+.toolbar-title{
+	font:9px/100%  Helvetica, Arial sans-serif;
+	text-align:center;
+}
+
+.follow-title{
+	font:10px/100%  Helvetica, Arial sans-serif;
+	text-align:center;
+}
+
+.toolbar .ub{
+	display:inline-block;
+}
+
+
+.toolbar .ub .progress{
+height:15px;
+width:15px;
+border:1px solid @color-main-container;
+position:relative;
+top:1px;
+}
+
+.toolbar .ub .bar{
+height:15px;
+}
+
+.toolbar .ub img{
+height:15px;
+width:15px;
+}
+
 
 .nav-tabs .active  a, 
-.nav-tabs .active a:hover{
-border:1px solid @color-tab-select-border;
-border-bottom-color:@color-tab-select-border-bottom;
-background-color:@color-tab-select-background;
+.nav-tabs .active a:hover,
+.nav-tabs li a:hover{
+border:1px solid @color-main-container;
+border-bottom:1px solid @color-main-background;
+background-color:@color-main-background;
 color:@color-tab-select-text;
-}
-
-.nav-tabs li a{
-color:@color-tab-text;
-border-bottom:1px solid @color-tab-border-bottom;
-background-color:@color-tab-background;
+font-weight:bold;
+padding-top:6px;
+padding-left:13px;
+padding-right:13px;
+padding-bottom:4px;
+bottom:1px;
+margin-right:1px;
 }
 
 .nav-tabs li a:hover{
-color:@color-tab-text-hover;
-border:1px solid @color-tab-border;
-background-color:@color-tab-background-hover;
-border-bottom-color:@color-tab-border-bottom-hover;
+border:1px solid @color-main-container;
+
+background-color:@color-tab-select-text;
+color:white;
+
 }
 
-.login{
-height:70px;
+.nav-tabs li a{
+.border-radius(1px);
+color:@color-tab-select-text;
+background-color:white;
+border-bottom-color:@color-main-container;
+padding-top:4px;
+padding-bottom:4px;
+margin-right:1px;
+bottom:-1px;
 }
+
+
+
 
 #log-in-out{
 position:absolute;
-right:0;
-top:0;
+right:8px;
+
+background-color:@color-main-container;
+height:28px;
+padding-left:1px;
+margin-bottom:0px;
+
+
 }
 
 #pageTabs{
-margin-bottom:36px;
+
 position:relative;
+float:left;
+background-color:@color-main-container;
+height:27px;
+left:3px;
+margin-bottom:0px;
+
+
 }
 
 #newsfeed-tab,
@@ -268,6 +364,7 @@ position:relative;
 #redeem-tab,
 #help-tab,
 #logout-tab,
+.fancrank_login,
 #latest-post-container,
 #fancrank-feed-container,
 #top-fan-container,
@@ -333,44 +430,59 @@ filter:alpha(opacity=95);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-.row.box{	
+.box{	
 margin:0 1px 20px 3px;
-background-color:@color-main-container;
-.border-radius(3px);
-padding:30px 5px 5px 5px;
+background-color:white;
+.border-radius(1px);
+padding:30px 8px 8px 8px;
+border: 1px solid  @color-main-container;
 }
 
-.row.box.notitle{
+.box.notitle{
 padding-top:0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+.title{
+	border-bottom:2px solid @color-main-container;
+	
+}	
+
+.tip2{
+	color:#999999;
+	margin-top:8px;
+	font: 11px/130% Helvetica, Arial,  sans-serif;
+}
+
+.user-description{
+	margin-left:5px;
+	margin-right:5px;
+}
+
 .title-header{
-font:bold 18px/100% Helvetica, Arial,  sans-serif;
+font:bold 13px/100% Helvetica, Arial,  sans-serif;
 position:relative;
-top:27px;
-margin-left:75px;
-color:@color-main-title;
+margin-left:38px;
+top:-13px;
 }
 
 .title.nopic{
 margin-top:-20px;
+padding-bottom:10px;
 }
 
 .title-header.nopic{
-margin-left:9px;
+margin-left:0px;
+top:0px;
 }
 
 .title-icon{
 position:absolute;
-margin:-14px 0 0 8px;
+margin:-22px 0 0 0;
 }
 
-.title-icon img {
-border:5px solid @color-main-photo-border;
-background-color:@color-main-photo-border;
-.border-radius(3px);
-} 
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -378,28 +490,28 @@ background-color:@color-main-photo-border;
 width:100%;
 height:30px;
 font-size:11px;
-background-color:@color-more-button-background;
+background-color:transparent;
 color:@color-more-button-text;
 font-weight:bold;
 border:0;
-.border-radius(0 0 3px 3px);
+.border-radius(1px);
 margin-top:5px;
 }
 
 .btn-submit:hover,
 .btn-more:hover,
 .comments .btn-more:hover{
-background-color:@color-more-button-background-hover;
+background-color:@color-more-button-text;
 color:@color-more-button-text-hover;
 }
 
 .btn-submit{
-font-size:11px;
+font:bold 11px/100%  Helvetica, Arial,  sans-serif;
 border:1px solid @color-post-button-border;
 color:@color-post-button-text;
 font-weight:bold;
 width:51px;
-height:22px;
+height:20px;
 .border-radius(1px);
 background-color:@color-post-button-background;
 float:right;
@@ -410,34 +522,94 @@ float:right;
 .top-list{
 background-color:@color-ranking-background;
 overflow:hidden;
-padding:0 3px 0 3px;
+
 max-height:223px;
 }
 
+.top-list li:hover{
+background-color: @color-post-background-hover;
+}
+
+.popover .stats li,
+.user-profile .stats li,
+#myprofile .stats li{
+	font:10px/100% Helvetica, Arial,  sans-serif;
+	border-right: 1px solid @color-post-user-border;
+	height:60px;
+	float:left;
+	width:16.505906105%;
+}
+.user-profile .stats li{
+	width:14.1174530982%;
+}
+.popover .stats li{
+	width:19.1174530982%;
+}
+.popover .stats,
+.user-profile .stats,
+#myprofile .stats{
+	height:60px;
+	border-top: 1px solid @color-post-user-border;
+	border-bottom: 1px solid @color-post-user-border;
+}
+
+
+
+.user-profile .stats.fol{
+	border-top: 0px solid;
+}
+
+.user-profile .stats.fol li {
+	width:49.79285%;
+}
+
+.stats-block{
+	text-align:center;
+	position:relative;
+	top:16px;
+}
+
+.h3{
+	font-size:18px;
+	font-weight:bold;
+	text-rendering:optimizelegibility;
+	margin:0;
+}
+
+.popover .stats h5,
+.popover .stats h3,
+.user-profile .stats h5,
+.user-profile .stats h3,
+#myprofile .stats h5,
+#myprofile .stats h3,
+.h3,
 .top-list .stats h5{
 	display:inline-block;
 	line-height:18px;
 	text-align:right;
-	width:25px;
+
 	padding-right:2px;
 }
-
+.popover .stats h3,
+.user-profile .stats h3,
+#myprofile .stats h3,
+.h3,
 .top-list .stats img{
-	vertical-align:top;
+	vertical-align:bottom;
 }
 
 .top-list .stats{
 	float:left;
-	margin-left:200px;
+	margin-left:295px;
 	position:relative;
-	top:34px;
+	top:32px;
 	
 }
 
 #whatisfancrank,
 .top-list.first{
 padding-top:3px;
-margin-top:10px;
+
 }
 	
 .top-list.bottom{
@@ -482,8 +654,7 @@ text-align:right;
 
 .top-list.mini .follow{
 position:relative;
-right:5px;
-top:8px;
+top:9px;
 float:right;
 }
 
@@ -525,7 +696,7 @@ width:auto;
 font:18px Helvetica,Arial,  sans-serif;
 margin-left:10px;
 position:relative;
-top:5px;
+top:7px;
 float:left;
 }
 
@@ -534,7 +705,7 @@ float:left;
 }
 
 .top-list.mini .user .name{
-top:7px;
+top:8px;
 font:12px Helvetica,Arial,  sans-serif;
 }
 .top-list .user .name.first{
@@ -544,14 +715,14 @@ top:4px;
 
 .top-list.mini .user .name.first{
 font:14px Helvetica,Arial,  sans-serif;
-top:6px;
+top:7px;
 }
 
 .top-list .points{
 position:relative;
-top:6px;
+top:4px;
 text-align:right;
-margin-right:10px;
+
 float:right;
 }
 
@@ -575,7 +746,7 @@ display:inline-block;
 color:@color-tab-text;
 width:59px;
 text-align:center;
-padding: 0 9px 0;
+padding: 2px;
 }
 
 .badge-Follow{
@@ -616,44 +787,63 @@ text-decoration:none;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#feed-controller{
+padding-top:2px;
+padding-bottom:2px;
+}
+
+
+.post-container.noline{
+border:0px;
+padding-bottom:5px;
+}
+
+
 
 .post-container{
-background:@color-post-background;
-padding:3px;
+
 position:relative;
-border:1px solid @color-post-border;
-.border-radius(3px);
-.box-shadow(3px 3px 3px 1px @color-post-shadow);
-margin-top:8px;
+border-bottom:1px solid @color-main-container;
+padding-bottom:10px;
+padding-top:10px;
 }
 
 .post-container:hover{
 background-color: @color-post-background-hover;
-border:1px solid @color-post-border-hover;
 }
 
 .post-container .user{
-font: bold 11px Helvetica, Arial, sans-serif;
+font: bold 13px Helvetica, Arial, sans-serif;
 border-bottom:1px solid @color-post-user-border;
-padding-top: 10px;
-margin: 0 10px 0 10px;
+padding-bottom:10px;
 overflow:hidden;
 }
 
+.post-container .user.noline{
+border:0px;
+}
+
 .post-container .user .user-badge{
-position:absolute;
-top:13px;
-left:50px;
+position:relative;
+top:6px;
+float:right;
+z-index:1;
 }	
 
+.post-container .user .photo{
+display:inline-block;
+
+}	
 .post-container .user .name{
 position:relative;
-top:-13px;
-left:37px;
+top:2px;
+left:5px;
+display:inline-block;
 }	
 
 .post-container .post{
-padding:10px;
+padding-top:8px;
+padding-bottom:8px;
 }
 
 .post-container .message,
@@ -724,6 +914,7 @@ background-color:@color-post-comment-background;
 margin-top:1px;
 padding:5px;
 min-height:30px;
+
 }
 
 .comment-container .user .user-badge{
@@ -735,8 +926,12 @@ float:left;
 
 .comment-container .user{
 border-bottom:0 solid;
-margin:-10px 0 0 35px;
+margin:0 0 0 35px;
+padding-bottom:0px;
 }
+
+
+
 
 .comment-container .photo{
 float:left;
@@ -747,10 +942,11 @@ top:0;
 left:0;
 float:left;
 margin-right:5px;
+font-size:11px;
 }
 
 .comment-container .user .message{
-font-weight:normal;
+font-size:11px;
 }
 
 .comment-container .social{
@@ -772,32 +968,40 @@ display:none;
 border:1px solid #ddd;
 background-color:#f7f7f7;
 border-top:0;
-width:406px;
-height:22px;
-padding:5px;
+width:501px;
+height:20px;
+padding:3px;
 }
 
 .submit-form{
 margin:0;
 }
 
+#user-description-box,
 .post-box,
 .comment-box	{
 resize: none; 
 overflow:hidden;
 .border-radius(0);
-width:312px;
+width:382px;
 margin:0 5px 0 5px;
 padding:1px;
 height:14px;
 outline:none;
 }
 
+#user-description-box{
+width:230px;
+height:70px;
+margin-bottom:4px;
+font-size:12px;
+}
+
 .post-box{
-width:414px;
+width:505px;
 margin-left:0;
-padding-bottom:10px;
-height:10px;
+
+height:20px;
 }
 
 .post-box:focus,
@@ -823,12 +1027,12 @@ display:none;
 .profile-content{
 .border-radius(3px);
 padding:3px 2px 0 0;
-margin:0 0 0 160px;
+margin:0 0 0 144px;
 z-index:51;
 position:absolute;
 display:none;
 background-color:@color-main-background;
-width:461px;
+width:530px;
 }
 
 .profile-content .row.box{
@@ -850,7 +1054,7 @@ display:none;
 .user-profile .tip{
 z-index:52;
 position:absolute;
-right:180px;
+right:125px;
 top:-10px;
 }
 
@@ -868,9 +1072,13 @@ width:439px;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .half{
-width:228px;
+width:229px;
 display:inline-block;
 vertical-align:top;
+}
+
+.half.center{
+text-align:center;
 }
 
 .level{
@@ -899,11 +1107,6 @@ position:relative;
 top:15px;
 }
 
-#profile .stats,
-.user-profile .stats{
-vertical-align:top;
-text-align:center;
-}
 
 
 .progress{
@@ -922,7 +1125,7 @@ width:221px;
 }
 
 .row.box .post-container .half{
-width:210px;
+width:218px;
 }
 
 #followerslist .top-list.mini,
@@ -932,16 +1135,15 @@ padding:3px;
 
 #followinglist .top-list.mini .ranker,
 #followerslist .top-list.mini .ranker{
-border-color:@color-userlist-border;
-background-color:@color-userlist-background;
+border-bottom:1px solid @color-post-user-border;
+border-top:0px solid;
 }
 
 #recent_activities{
 overflow: auto;
 padding-left:5px;
-height: 845px;
+height: 720px;
 .border-radius(3px);
-margin-top:9px;
 }
 
 #user_activities .post-container,
@@ -949,10 +1151,8 @@ margin-top:9px;
 font-size:11px;
 background:@color-post-background;
 padding:3px;
-border:0px solid @color-post-border;
 .border-radius(0px);
 margin:1px -5px 0px;
-width:448px;
 }
 
 #user_activities .post-container:hover,
@@ -962,7 +1162,7 @@ background:@color-post-background-hover;
 
 .track3 {
 width: 5px;
-margin-top:10px;
+margin-top:-1px;
 }
 
 .handle3 {
@@ -984,7 +1184,6 @@ left:-5px;
 
 .track3.userpro {
 width: 0px;
-margin-top:1px;
 }
 
 .handle3.userpro {
@@ -999,8 +1198,7 @@ padding:9px;
 .upcoming-badges .progress{
 height:50px;
 width:50px;
-display:inline-block;
-margin:10px 15px 6px;
+margin:0px 8px 0px;
 }
 
 .upcoming-badges .bar{
@@ -1012,16 +1210,11 @@ height:50px;
 
 .badge-profile{
 float:right;
-position:relative;
-left:-5px;
-top:-2px;
+position:absolute;
+right:9px;
+top:13px;
 }
 
-.badge-profile .badge{
-font-size: 20px;
-width:90px;
-padding: 4px 18px 6px 18px;
-}
 
 .link-back{
 font-size:11px;
@@ -1034,7 +1227,7 @@ text-align:right;
 #user_activities{
 overflow: auto;
 padding-left:5px;
-max-height: 300px;
+max-height: 200px;
 }
     
 #user_list .badge-profile{
@@ -1049,9 +1242,13 @@ width:441px;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+.tooltip-inner{
+	.border-radius(0px);
+}
+
 .popover-inner{
 .span5;
-.border-radius(3px);
+.border-radius(0px);
 border:5px solid @color-popover-border;
 padding:0;
 background-color:@color-popover-background;
@@ -1062,15 +1259,18 @@ display:none;
 }
 
 .popover-content{
-padding:0;
-margin-top:-8px;
+
+padding:0 8px 0;
 }
 
 
 .popover-content .post-container .user{
 overflow:visible;
+.border-radius(0px);
 }
 
+.user-profile .level,
+#myprofile .level,
 .popover-content .level{
 float:right;
 text-align:center;
@@ -1081,15 +1281,17 @@ height:25px;
 border: 3px solid @color-level-border;
 .border-radius(2px);
 position:relative;	
-top:-45px;
+
 }
 
+.user-profile h1,
+#myprofile h1{
+	font-size:40px;
+}
 .popover-content .post .date{
 font-size:11px;
 float:Right;
 }
-
-
 
 .popover-content h5{
 display:inline;
@@ -1166,10 +1368,34 @@ background:url(../img/commented.png) no-repeat center center;
 /////////////////////////////////////////////////////////////////////////////////////
 
 #whatisfancrank{
-	background:url(../img/whatisfancrank.jpg);
-	height:337px;
+	margin-top:3px;
+	background:url(../img/whatisfancrank.jpg) no-repeat;
+	background-size:100% 350px;
+	height:401px;
+	width:370px;
 }
 
+
+
+
+.italic{
+	font-style:italic;
+}	
+
+.bold{
+	font-weight:bold;
+}	
+
+.user-description-button{
+	float:right;
+	margin-right:4px;
+}
+
+.exp-text{
+	font-weight:bold;
+	position:relative;
+	top:-15px;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////
 .notification{

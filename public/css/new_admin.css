@@ -1,3 +1,4 @@
+@import url('/bootstrap/css/bootstrap.css');
 .clearfix {
   *zoom: 1;
 }
@@ -5,6 +6,7 @@
 .clearfix:after {
   display: table;
   content: "";
+  line-height: 0;
 }
 .clearfix:after {
   clear: both;
@@ -19,10 +21,9 @@
 .input-block-level {
   display: block;
   width: 100%;
-  min-height: 28px;
+  min-height: 30px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
   box-sizing: border-box;
 }
 body {
@@ -32,6 +33,7 @@ body {
 a {
   color: #3B5998;
   text-shadow: none;
+  cursor: pointer;
 }
 .navbar .nav li a:hover,
 a:hover {
@@ -85,16 +87,18 @@ ol {
   border-top-color: grey;
   border-bottom-color: grey;
 }
+.container {
+  width: 940px;
+}
 .box {
   background-color: #fcfcfc;
   background-image: -moz-linear-gradient(top, #ffffff, #f7f7f7);
-  background-image: -ms-linear-gradient(top, #ffffff, #f7f7f7);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f7f7f7));
   background-image: -webkit-linear-gradient(top, #ffffff, #f7f7f7);
   background-image: -o-linear-gradient(top, #ffffff, #f7f7f7);
-  background-image: linear-gradient(top, #ffffff, #f7f7f7);
+  background-image: linear-gradient(to bottom, #ffffff, #f7f7f7);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f7f7f7', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff7f7f7', GradientType=0);
   border: 1px solid #DDD;
   padding: 10px;
   -webkit-border-radius: 3px;
@@ -106,16 +110,16 @@ label,
 input[type="text"] {
   margin-bottom: 0px;
 }
-#topFanTable_wrapper .processing {
+.processing {
   float: right;
 }
-#topFanTable_wrapper .info {
+.info {
   float: left;
 }
-#topFanTable_wrapper .length {
+.length {
   float: right;
 }
-#topFanTable_wrapper .filter {
+.filter {
   float: left;
 }
 #topFanTable_next {
@@ -136,13 +140,12 @@ input[type="text"] {
   display: block;
   background-color: #fcfcfc;
   background-image: -moz-linear-gradient(top, #ffffff, #f7f7f7);
-  background-image: -ms-linear-gradient(top, #ffffff, #f7f7f7);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f7f7f7));
   background-image: -webkit-linear-gradient(top, #ffffff, #f7f7f7);
   background-image: -o-linear-gradient(top, #ffffff, #f7f7f7);
-  background-image: linear-gradient(top, #ffffff, #f7f7f7);
+  background-image: linear-gradient(to bottom, #ffffff, #f7f7f7);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f7f7f7', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff7f7f7', GradientType=0);
   border: 1px solid #DDD;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -152,4 +155,80 @@ input[type="text"] {
 }
 .widget .label {
   float: right;
+}
+.popover-inner {
+  width: 323px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 5px solid #c1cee0;
+  padding: 0;
+  background-color: #c1cee0;
+}
+.popover-title {
+  display: none;
+}
+.popover-content {
+  padding: 0;
+}
+.popover-content .post-container .user {
+  overflow: visible;
+}
+.popover-content .level {
+  float: right;
+  text-align: center;
+  font: bold 20px/25px Arial, Helvetica, sans-serif;
+  color: #47658e;
+  width: 25px;
+  height: 25px;
+  border: 3px solid #47658e;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  position: relative;
+  top: -45px;
+}
+.popover-content .post .date {
+  font-size: 11px;
+  float: Right;
+}
+.popover-content h5 {
+  display: inline;
+}
+.popover.top .arrow {
+  border-top: 5px solid #c1cee0;
+}
+.popover.left .arrow {
+  border-left: 5px solid #c1cee0;
+}
+.popover.right .arrow {
+  border-right: 5px solid #c1cee0;
+}
+.popover.top {
+  margin-left: 0px;
+  margin-top: -10px;
+}
+.popover.left {
+  margin-left: 0;
+  margin-top: 0;
+}
+.post-container .user {
+  font: bold 11px Helvetica, Arial, sans-serif;
+  border-bottom: 1px solid #e5e5e5;
+  padding-top: 10px;
+  margin: 0 10px 0 10px;
+  overflow: hidden;
+}
+.post-container .user .user-badge {
+  position: absolute;
+  top: 13px;
+  left: 50px;
+}
+.post-container .user .name {
+  position: relative;
+  top: -13px;
+  left: 37px;
+}
+.post-container .post {
+  padding: 10px;
 }

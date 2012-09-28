@@ -82,179 +82,213 @@
 				</li>
 		</ul>					
 	</div>
-	<div class="span7">
+	<div class="span8">
 	<div id="myprofile">
 		<div id="general-stats-container">
-		<div class="title">
-			<div class="title-icon">
-				
-					<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);">
-				
-			</div>
-			<div class="title-header">
-				<?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?>'s Profile
-			</div>
-			<div class="tip">
-				<a rel="tooltip" data-original-title='This is your FanCrank Profile! Check out your points, experience, badges, and other statistics here.'>
-					?
-				</a>
-			</div>
-		</div>
 		
-		<div class="row box">
-			<div class="stats" >
-					<div class="post-container">
-						<div class="profile-block" id="level-container">
-							<h3>Level</h3>
-							<div class="level">
-								<?= $this->fan->fan_level?>
-							</div>
+		
+			<div class="row box">
+				<div class="title nopic">
+					
+					<div class="title-header nopic">
+						Your Profile
+					</div>
+					<!--  <div class="tip">
+						<a rel="tooltip" data-original-title='This is your FanCrank Profile! Check out your points, experience, badges, and other statistics here.'>
+							?
+						</a>
+					</div>-->
+				</div>
+				<div class="row-fluid">
+					<div class="span6 post-container noline">
+						<div class="user noline">
+						
+								<div class="photo">
+									<a><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
+						
+								</div>
+								<div class="level">
+									<?= $this->fan->fan_level?>
+								</div>
+								<div class="name">
+									<a><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?></a>
+								
+								</div>	
+								
+								<div class="user-description tip2 italic" onkeyup="charcheck()">
+							
+								<?= substr($this->fan->message, 0, 160)?>
+								
+								</div><a class="user-description-button" onclick="editdescription()">Edit</a>	
+								
 						</div>
-						<div class="profile-block vertical-center" id="points-container">
-							<h3><?= $this->fan->fan_currency?></h3>
-							Points
-						</div>
-						<div class="profile-block" id="exp-container">
-							<h4>Fan Experience</h4>
-							<div class="progress">
-								<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;"></div>
+					
+					</div>
+					<div class="span6">
+						<div style="padding:5px; margin-top:29px">
+							<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
+								<div class="bar" style="width: 100%;height:50px"></div>
+								<a data-original-title="Some Badge" 
+								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
+									<img src="/img/badges/generic.png"/>
+								</a>
 							</div>
-							<h5>
-								<?=$this->fan_exp?>/<?=$this->fan_level_exp?>
-								<br />
-								<?=$this->fan_exp_required?>
-								Until Next Level
-							</h5>
+							<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
+								<div class="bar" style="width: 100%;height:50px"></div>
+								<a data-original-title="Some Badge" 
+								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
+									<img src="/img/badges/generic.png"/>
+								</a>
+							</div>
+							<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
+								<div class="bar" style="width: 100%;height:50px"></div>
+								<a data-original-title="Some Badge" 
+								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
+									<img src="/img/badges/generic.png"/>
+								</a>
+							</div>
+						
 						</div>
 					</div>
 				</div>
+				
+				<div class="post-container noline">
+					<div class="row-fluid ">
+						
+						<div class="span12" id="exp-container" style="text-align:center">
+							<h4>Fan Experience</h4>
+							<div class="progress">
+								<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;"></div>
+								
+							</div>
+							
+								<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?></h5>
+								<?=$this->fan_exp_required?> Until Next Level
+							
+						</div>
+					</div>
+				</div>
+				<div class="post-container noline">
+					<ul class="stats">
+					<li >
+						<div class="stats-block"><img src="/img/coins.png" /><h3><?= $this->fan->fan_currency?></h3>	<br/>
+						Points</div>
+					</li>
+					<li >
+						<div class="stats-block"><img src="/img/post.png" /><h3><?=$this->stat_post?></h3>	<br/>
+						Posts</div>
+					</li>
+					<li >
+						<div class="stats-block"><img src="/img/thumbsup.png" /><h3><?=$this->stat_like?></h3><br/>
+						Likes</div>
+					</li>
+					<li >
+						<div class="stats-block"><img src="/img/comment.png" /><h3><?=$this->stat_comment?></h3><br/>
+						Comments</div>
+					</li>
+					<li >
+						<div class="stats-block"><img src="/img/rthumbsup.png" /><h3><?=$this->stat_get_like?></h3><br/>
+						Recieved Likes</div>
+					</li>
+					<li style="border:0px">
+						<div class="stats-block"><img src="/img/rcomment.png" /><h3><?=$this->stat_get_comment?></h3><br/>
+						Recieved Comments </div> 
+					</li>
+					</ul>
+				</div>	
+		
+			
+				
+				
+			
+			
 			</div>
 		</div>
 		<div id ="upcoming-badges-container">
-			<div class="title nopic">
-		
-				<div class="title-header nopic">
-					Upcoming Badges
-				</div>
-				<div class="tip">
-					<a rel="tooltip" data-original-title='These are your upcoming badges'>
-						?
-					</a>
-				</div>
-			</div>
+			
 			<div class="row box">
-				<div class="post-container">
-					<div class="upcoming-badges">
+				<div class="title nopic">
+		
+					<div class="title-header nopic">
+						Upcoming Badges
+					</div>
+					<!--  <div class="tip">
+						<a rel="tooltip" data-original-title='These are your upcoming badges'>
+							?
+						</a>
+					</div>-->
+				</div>
+				<div class="post-container noline">
+					<div class="row-fluid post">
 						<?php foreach ($this->badges as $b){?>
-						
-							<div class="progress">
-								<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
-								<a data-original-title="<?= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
-								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
-									
-									<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
-								</a>
+							<div class="span2 upcoming-badges">
+								<div class="progress">
+									<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
+									<a data-original-title="<?= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+									rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
+										
+										<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
+									</a>
+								</div>
 							</div>
-							
 						<?php }?>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div id="follow-list-container">		
-			<div class="half" >	
-				<div class="title nopic">
-					<div class="title-header nopic">
-						Followed by	<?= $this->follower['0']['Follower']?> Fans
+		<div class="row-fluid" id="follow-list-container">		
+			<div class="row box">
+				<div class="span6" >	
+				
+				
+					<div class="title nopic">
+						<div class="title-header nopic">
+							 <div class="follow-title"><a onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow.png" /><span class="h3"><?= $this->follower['0']['Follower']?></span><br/>
+							Followers</a></div>
+						</div>
 					</div>
-				</div>
-				<div class="row box">
 					<div id="followerslist"></div>
-					<button class="btn-more" onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)">
-						View Full List
-					</button>	
+					
 				</div>
 					
-			</div>			
 						
-			<div class="half" >
-				<div class="title nopic">
-					<div class="title-header nopic">
-						Following <?= $this->following['0']['Following']?> Fans
+						
+				<div class="span6" >
+			
+			
+					<div class="title nopic">
+						<div class="title-header nopic">
+							 <div class="follow-title"><a onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow2.png" /><span class="h3"><?= $this->following['0']['Following']?></span><br/>
+						Following</a></div>
+						</div>
 					</div>
-				</div>
-				<div class="row box">
 					<div id="followinglist"></div>
-					<button class="btn-more" onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)">
-						View Full List
-					</button>	
+				
 				</div>				
 			</div>
 		</div>	
-		<div id="other-stats-container">
-			<div class="title nopic">
-	
-				<div class="title-header nopic">
-					Other Statistics
-				</div>
-				<div class="tip">
-					<a rel="tooltip" data-original-title="These are some of your other statistics. Such as how many posts, comments and likes you've given and likes and comment's you've recieved.">
-						?
-					</a>
-				</div>
-			</div>
-			<div class="row box">
-				<div class="post-container">
-					<div class="half" >
-						<h4>Fancrank User Since:</h4>
-						<?= date("F d Y", strtotime($this->fan->first_login_time))?>
-						<br />
-						<br />
-						<h4>Location</h4>
-						<?php if ($this->fan['fan_country'] != null ) {?>
-							<?php if ($this->fan['fan_location'] != null){?>
-								<?= $this->fan['fan_location']?>, 
-							<?php }?>
-							<?= $this->fan['fan_country']?>
-						<?php }else{?>
-							Unknown
-						<?php }?>							
-					</div>
-					<div class="half">
-						<h4>Other Statistics:</h4>
-						<img src="/img/post.png" />Total Posts Made: <?=$this->stat_post?>
-						<br />
-						<img src="/img/thumbsup.png" />Total Likes Made: <?=$this->stat_like?>
-						<br />
-						<img src="/img/comment.png" />Total Comments Made: <?=$this->stat_comment?>
-						<br />
-						<img src="/img/rthumbsup.png" />Total Recieved Likes: <?=$this->stat_get_like?>
-						<br />
-						<img src="/img/rcomment.png" />Total Recieved Comments: <?=$this->stat_get_comment?>
-						<br />
-					</div>
-				</div>
-			</div>
-		</div>
+		
 	</div>
 	</div>
-	<div class="span5">
+	<div class="span4">
 	
 		<div id = "recent-activities-container">
-		<div class="title">
-			<div class="title-header nopic">
-				Recent Activities
-			</div>
-			<div class="tip">
-				<a rel="tooltip" data-original-title='This is your list of recent actitivies, remember that it may not be accurate as it does require time for it to sync up with Facebook'>?</a>
+		
+			<div class="row box">
+				<div class="title nopic">
+					<div class="title-header nopic">
+						Recent Activities
+					</div>
+					<!--  <div class="tip">
+						<a rel="tooltip" data-original-title='This is your list of recent actitivies, remember that it may not be accurate as it does require time for it to sync up with Facebook'>?</a>
+					</div>-->
+				</div>
+				<div class="scrollbox">
+					<ul id="recent_activities"></ul>
+				</div>
 			</div>
 		</div>
-		<div class="row box">
-			<div class="scrollbox">
-				<ul id="recent_activities"></ul>
-			</div>
-		</div>
-	</div></div>
+	</div>
 </div>
 
 <script>

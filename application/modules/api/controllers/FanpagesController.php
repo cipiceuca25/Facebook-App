@@ -166,6 +166,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 					case 1: $fanpage->fanpage_level = 1; break;
 					case 2: $fanpage->fanpage_level = 2; break;
 					case 3: $fanpage->fanpage_level = 3; break;
+					case 4: $fanpage->fanpage_level = 4; break;
 					default: throw new Fancrank_Exception_InvalidParameterException('invalid parameter'); break;
 				}
 				$fanpage->save();

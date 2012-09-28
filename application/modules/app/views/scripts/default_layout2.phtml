@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--  THIS LAYOUT IS FOR THE MULTIPLE PAGES-->
 <html lang="en">
@@ -64,8 +63,6 @@
 		 <script src="/js/cranker.js"></script>
 		  <script src="/js/badgeAnimation.js"></script>
 		<script src="/js/fancrankTour.js"></script>
-		<script src="/js/app/notification.js"></script>
-		
 <!-- End of iframe initialization -->
 		
 
@@ -106,7 +103,7 @@
 			<div id="header">
 
 				<div id="logo"></div>
-				
+
 			</div>
 			<!--/end header -->
 
@@ -125,19 +122,43 @@
 				</div>
 				<div class="container">
 
-
 					<div class="tabbable">
-						<ul class="nav nav-tabs" id="pageTabs">
-							<li class="active"><a href="#news-feed" id="newsfeed-tab" data-toggle="tab">News Feed</a></li>
-							<li><a href="#leaderboard" id="leaderboard-tab" data-toggle="tab">Leaderboard</a></li>
-							<li><a href="#profile" id="profile-tab" data-toggle="tab" >My Profile</a></li>
-							<!--  <li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>-->
-							<li><a href="#redeem" id="redeem-tab" data-toggle="tab">Redeem</a></li>
-						</ul>
-						<ul class="nav nav-tabs" id="log-in-out">
-							<li><a id="help-tab" onclick="resetTour()">Help</a></li>
-							<li><a id="logout-tab" href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
-						</ul>
+						<div class="tab-container">
+							
+							<ul class="nav nav-tabs" id="pageTabs">
+								<li class="active"><a href="#news-feed" id="newsfeed-tab" data-toggle="tab">News Feed</a></li>
+								<li><a href="#leaderboard" id="leaderboard-tab" data-toggle="tab">Leaderboard</a></li>
+								<li><a href="#profile" id="profile-tab" data-toggle="tab" >My Profile</a></li>
+								<!--  <li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>-->
+								<li><a href="#redeem" id="redeem-tab" data-toggle="tab">Redeem</a></li>
+							</ul>
+							<ul class="toolbar">
+								
+								<li><div><img src="/img/coins.png" /><?= $this->notifan->fan_currency?></div></li>
+								<li>
+
+								<?php foreach ($this->notibadges as $b){?>
+									<div class="ub">
+										<div class="progress">
+											<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
+											<a data-original-title="<?= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+											rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-19px;" >
+												
+												<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
+											</a>
+										</div>
+									</div>
+								<?php }?>
+
+								</li>
+								<li><div>0</div></li>
+							
+							</ul>
+							<ul class="nav nav-tabs" id="log-in-out">
+								<li><a id="help-tab" onclick="resetTour()">Help</a></li>
+								<li><a id="logout-tab" href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
+							</ul>
+						</div>
 <!--						
 						<a href="#" onclick="colorChange(5)">Ocean</a>
 				
@@ -173,6 +194,4 @@
 
 	
 </body>
-
-
 </html>

@@ -43,6 +43,8 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     	Zend_Controller_Action_HelperBroker::addHelper($viewRenderer);
     }
     
+    //log app traffic
+    /*
     protected function _initAppLogTraffic() {
     	if (php_sapi_name() != 'cli') {
     		$log = new Zend_Log();
@@ -52,4 +54,5 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     		$log->log($info, Zend_Log::NOTICE, 'traffic info');    		
     	}
     }
+    */
 }

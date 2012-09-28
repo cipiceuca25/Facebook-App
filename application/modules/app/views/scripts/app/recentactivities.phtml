@@ -1,15 +1,17 @@
 <?php if(count($this->activities)==0){?>
 	<li class="post-container">
-	<div class="post">
-		<div class="message">
-	No Recent Activities
-	</div>
+		<div class="post">
+			<div class="message">
+		No Recent Activities
+			</div>	
+		</div>
 	</li>
 <?php }?>
 
 	<?php
 	$count = 0;
 	foreach ($this->activities as $act):	
+	$isFanpage = ($act['target_user_id'] == $this->fanpage_id)?true:false;
 	?>
 		<li class="post-container" >
 	
@@ -19,64 +21,196 @@
 		<?switch($act['activity_type']){ 
 		
 			case 'follow': ?>
-				You followed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You followed <a href="#" onclick="userProfile('<?=$act['event_object']?>')" data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"><?=$act['target_user_name']?></a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;
 			case 'unfollow' :?>
-				You unfollowed <a href="#" onclick="userProfile('<?=$act['event_object']?>')"><?=$act['target_user_name']?></a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You unfollowed <a href="#" onclick="userProfile('<?=$act['event_object']?>')" data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"><?=$act['target_user_name']?></a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;	
 			case 'like-status':?>
-				You liked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a>. 
+				You liked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a>:<span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
 				<?break;
 			case 'unlike-status':?>
-				You unliked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>' , 10, true)">status post</a>. 
+				You unliked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a onclick="popup_post('<?=$act['event_object']?>' , 10, true)">status post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
 				<?break;
 			case 'like-photo':?>
-				You liked <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post</a>. 
+				You liked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post</a>. 
 				<?break;
 			case 'unlike-photo':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">photo post</a>. 
+				You unliked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">photo post</a>. 
 				<?break;	
 			case 'like-video':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">video post</a>. 
+				You liked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">video post</a>. 
 				<?break;
 			case 'unlike-video':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">video post</a>. 
+				You unliked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">video post</a>. 
 				<?break;
 			case 'like-link':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">link post</a>. 
+				You liked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">link post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			case 'unlike-link':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">link post</a>. 
+				You unliked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a  onclick="popup_post('<?=$act['event_object']?>' , 10, true)">link post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
 				<?break;
 			case 'like-comment':?>
-				You liked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 10, true)">comment</a>. 
+				You liked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 10, true)">comment</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
 				<?break;
 			case 'unlike-comment':?>
-				You unliked <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 10, true)">comment</a>. 
+				You unliked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' , 10, true)">comment</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
 				<?break;
 			case 'comment-status':?>
-				You posted a comment on <?=$act['target_user_name']?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You commented on <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s  <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			case 'comment-photo':?>
-				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You commented on <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s  <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			case 'comment-video':?>
-				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">video post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You commented on <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s  <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">video post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			case 'comment-link':?>
-				You posted a comment on <?=$act['target_user_name']?>'s <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">link post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You commented on <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"
+																		rel="popover" 
+																		data-content="" 
+																		data-original-title="" 
+																		data-placement="left" 
+																		data-userid="<?=$act['target_user_id']?>"
+																		><?php }?>
+																		<?=$act['target_user_name']?>
+																		<?php if (!$isFanpage){?></a>
+																		<?php }?>'s  <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">link post</a> <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			case 'post-status':?>
-				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			case 'post-photo':?>
-				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">photo post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			case 'post-link':?>
-				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">link post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">link post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			case 'post-video':?>
-				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">video post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				You made a <a  onclick="popup_post('<?=$act['event_object']?>', 10, true)">video post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			default:
 		}?>

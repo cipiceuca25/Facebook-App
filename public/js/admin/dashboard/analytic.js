@@ -20,6 +20,8 @@ jQuery(document).ready(function($){
 		up();
 	});
 	
+	var topFanTable,fanfavoriteTable,toptalkersTable,topclickersTable,topfollowedTable;
+	
 	$(".mini > li > a").hover(function(e){
 		e.stopPropagation();
 		if(!$(this).parent().hasClass("open")) {
@@ -32,11 +34,14 @@ jQuery(document).ready(function($){
 	}, function(){});
 	
 	/**************** Analytic Table Section *******************************/
-	var topFanTable = $('#topFanTable').dataTable();
+	getTopFanTable('topfan', 30);
+	
 
-    var topFanTable = $('#topPostByLike').dataTable();
+	
 
-    var topFanTable = $('#topPostByComment').dataTable();
+   // var topFanTable = $('#topPostByLike').dataTable();
+
+   // var topFanTable = $('#topPostByComment').dataTable();
     
     /*******************************************************************/
     $( "#userprofile" ).dialog( "destroy" );
@@ -56,49 +61,11 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 	});
 	
-	$(".dataTable tbody tr").live('mouseover', function(event) {
-
-		var aData = topFanTable.fnGetData( this );
-		var iId = aData[0];
-		$(".dataTable tbody tr").attr('data-userid', aData[0]);
-		//alert(iId);
-		$(this).toggleClass('row_selected');
-		if(iId) {
-			event.preventDefault();
-			if ($(this).data('isPopoverLoaded') == true) {
-				return;
-			}
-			$(this).data('isPopoverLoaded', true).popover({
-				placement:'top',
-				delay : {
-					show : 500,
-					hide : 100
-				}
-			}).trigger('mouseover');
-			popover(this);
-		}
-	});
 	
 	
-	function popover(x) {
-		$.ajax({
-			type : "GET",
-			url : serverUrl + '/admin/dashboard/fanprofile/' + fanpageId
-					+ '?facebook_user_id=' + $(x).attr('data-userid'),
-			dataType : "html",
-			cache : false,
-			async : false,
-			beforeSend: function(){
-				$(x).attr('data-content', "<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-			},
-			success : function(data) {
-				$(x).attr('data-content', data);
-			},
-			error : function(xhr, errorMessage, thrownErro) {
-				console.log(xhr.statusText, errorMessage);
-			}
-		});
-	}
+	
+	
+	
 /*
 	function popover(x){
 		//alert ('getting info for '+ id);
@@ -509,3 +476,186 @@ function getSexPieData2(source) {
 	return data;
 }
 
+$(document).on('mouseover',".dataTable tbody tr", function(event) {
+	$(this).toggleClass('row_selected');
+});
+
+$(document).on('mouseover', 'a[rel=popover]', function() {
+	
+	if ($(this).data('isPopoverLoaded') == true) {
+		return;
+	}
+	$(this).data('isPopoverLoaded', true).popover({
+		delay : {
+			show : 500,
+			hide : 100
+		}
+	}).trigger('mouseover');
+	popover($(this));
+});
+
+
+function popover(x) {
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/fanprofile/' + fanpageId
+				+ '?facebook_user_id=' + $(x).attr('data-userid'),
+		dataType : "html",
+		cache : false,
+		async : false,
+		beforeSend: function(){
+			$(x).attr('data-content', "<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$(x).attr('data-content', data);
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
+}
+function changeTimeLimit(){
+	t = $("select#timelimit option:selected").val();
+	destroyAll();
+	alert(t);
+	getTopFanTable('fanfavorite',t);
+	
+
+}
+
+
+function getTopFanTable(type, time) {
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/fantable'+ '?id=' + fanpageId + '&type='+ type + '&time=' + time,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend:function(){	
+		
+					$('#topFanTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+				
+					$('#fanfavoriteTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+				
+					$('#toptalkersTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+				
+					$('#topclickersTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+				
+					$('#topfollowedTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+		
+					
+
+		},
+		success : function(data) {
+	
+			switch(type){
+				case 'topfan':
+				
+					$('#topFanTable').html(data);
+					topFanTable = $('#topFanTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					break;
+				case 'fanfavorite':
+					
+					$('#fanfavoriteTable').html(data);
+					fanfavoriteTable = $('#fanfavoriteTable').dataTable({"sDom" : "<'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+
+					break;
+				
+				case 'toptalkers':
+					
+					$('#toptalkersTable').html(data);
+					toptalkersTable = $('#toptalkersTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					break;	
+					;
+				case 'topclickers':
+					
+					$('#topclickersTable').html(data);
+					topclickersTable = $('#topclickersTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					break;		
+				case 'topfollowed':
+					
+					$('#topfollowedTable').html(data);
+					topfollowedTable = $('#topfollowedTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					break;		
+			}
+		
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the topfan table');
+		}
+	});
+}
+
+$(document).on('mouseover', 'a[rel=tooltip]', function() {
+	if ($(this).data('isTooltipLoaded') == true) {
+		return;
+	}
+	$(this).data('isTooltipLoaded', true).tooltip({placement:'left'}).trigger('mouseover');
+});
+
+$('#topfan-tab').live('click', function() {
+
+	destroyAll();
+	getTopFanTable('topfan', 30);
+});
+$('#fanfavorites-tab').live('click', function() {
+
+	destroyAll();
+	getTopFanTable('fanfavorite', 30);
+});
+$('#toptalkers-tab').live('click', function() {
+
+	destroyAll();
+	getTopFanTable('toptalkers', 30);
+});
+$('#topclicker-tab').live('click', function() {
+
+	destroyAll();
+	getTopFanTable('topclickers', 30);
+});
+$('#topfollowed-tab').live('click', function() {
+	
+	destroyAll();
+	getTopFanTable('topfollowed', 30);
+});
+
+$("#fanfavoriteTable_filter").live('keyup', function () {
+	fanfavoriteTable.fnFilter(this.value );
+} );
+
+function destroyAll(){
+	
+	try{
+		topFanTable.fnDestroy();
+		
+	}catch(exception){
+		
+	}
+	try{
+		fanfavoriteTable.fnDestroy();
+		
+	}catch(exception){
+		
+	}
+	
+	try{
+		toptalkersTable.fnDestroy();
+		
+	}catch(exception){
+		
+	}
+	try{
+		topclickersTable.fnDestroy();
+		
+	}catch(exception){
+		
+	}
+	try{
+		topfollowedTable.fnDestroy();
+		
+	}catch(exception){
+		
+	}
+
+}

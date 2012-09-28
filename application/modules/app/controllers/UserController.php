@@ -290,6 +290,8 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$fancrankFB->api("/$postId/comments", 'POST', $params);
 	}
 	
+	
+	
 	public function relationAction(){
 		$follow = new Model_Subscribes();
 		$user= $this->_getParam('id');
@@ -328,6 +330,18 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 		
 	}
+	
+	public function saveuserdescriptionAction(){
+		
+		$fanpageId = $this->_getParam('fanpage_id');
+		$userId =  $this->_getParam('id');
+		$message = $this->_getParam('message');
+		$fan = new Model_Fans($userId, $fanpageId);
+		$fan->updateDescription(substr( trim($message), 0, 160));
+		echo 'ok';
+	}
+	
+
 	
 	public function uploadAction() {
 		$fc = $this->_getParam('fanpage_id');
@@ -394,13 +408,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	public function notificationAction() {
 		$userBadges = new Model_BadgeEvents();
 		$userBadgeCount = $userBadges->getNonNotifiedBadgesCountByUser($this->_user->fanpage_id, $this->_user->facebook_user_id);
-		
+	
 		$this->_helper->json(array('message'=>'ok', 'notification'=>array('newBadgeCount'=>$userBadgeCount)));
 	}
 	
 	public function mybadgesAction() {
-		
+	
 	}
+	
 }
-
-?>

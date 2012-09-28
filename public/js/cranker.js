@@ -23,16 +23,15 @@ $(document).ready(function() {
 				'overflow' : 'auto'
 			});
 		}	
-		
+		$('#logo').html('<img src ="/img/thin-banner.jpg" />');
+		/*
 		if ($('#logo').attr('data-login') == "true"){
 			
-			$('#logo').html(
-					'<img src ="/img/test.png" />');
+			$('#logo').html('<img src ="/img/test.png" />');
 			
 		}else{
 			if(fanpageId == 216821905014540) {
-				$('#logo').html(
-				'<img src ="/img/beach.jpg" />');
+				$('#logo').html('<img src ="/img/beach.jpg" />');
 			
 			}else{
 			FB.api(fanpageId, function(response) {
@@ -61,17 +60,19 @@ $(document).ready(function() {
 				}
 	
 			});}
-		}
+		}*/
 		
 	backgroundcolor = $('.profile-content').css('background-color');
 	getNewsfeed('#news-feed');
 	
+	
+	/*
 	if(images.length > 0){
 		setTimeout( function(){;
 		getBadgeNotification();
 		}, 3000);
 	}
-
+*/
 });
 
 $(document).mousemove(function(e) {
@@ -114,7 +115,7 @@ $(document).on('mouseover', 'a[rel=tooltip]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;
 	}
-	$(this).data('isTooltipLoaded', true).tooltip({placement:'left'}).trigger('mouseover');
+	$(this).data('isTooltipLoaded', true).tooltip({placement:'left' }).trigger('mouseover');
 });
 
 $(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
@@ -136,9 +137,6 @@ $(document).on('mouseover', 'a[rel=tooltip-award]', function() {
 	}).trigger('mouseover');
 
 });
-
-
-
 
 $('.badge-Following').live("mouseenter", function() {
 	$(this).text('Unfollow');
@@ -631,9 +629,13 @@ function getFancrankfeed(view) {
 	//alert(serverUrl + '/app/app/fancrankfeed/' + fanpageId + '?viewAs='+ view + '&limit=' + feedLimit);
 	//alert(setFeed);
 	//alert(feedLimit);
-	if((setFeed == view) && (view != 'myfeed')){
-		last = parseInt($('#last_post_time').attr('data-time')) - 1;
+	if (view != 'myfeed'){
 		myfeedoffset = 0;
+		
+	}
+	if((setFeed == view) && ((view == 'all') || (view =='admin'))){
+		last = parseInt($('#last_post_time').attr('data-time')) - 1;
+		
 	}else if (view == 'myfeed'){
 		
 		last = myfeedoffset;
@@ -641,7 +643,7 @@ function getFancrankfeed(view) {
 	}else{
 		last = undefined;
 	}
-
+	
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/fancrankfeed/' + fanpageId + '?viewAs='
@@ -981,8 +983,7 @@ function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLat
 		if (!response || response.error) {
 			alert(response.error.message);
 		} else {
-			
-			
+
 			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 			$('#comment_box_'+post_id).val('');
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
@@ -1008,18 +1009,15 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 		if (!response || response.error) {
 			alert(response.error.message);
 		} else {
-			
-			
+
 			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, $('#comment_box_'+post_id).val('').substring(0,99));
 			$('#comment_box_popup_'+post_id).val('');
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 			//alert(post_comment_count);
 			$('.comment_'+post_id).html(post_comment_count);
-			
-			
+
 			popup_post(post_id, post_comment_count, false);
 
-			
 		}
 	});
 }
@@ -1037,11 +1035,9 @@ function getLikesList(postid, load) {
 		async : true,
 		beforeSend: function(){
 			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-		
 		},
 		success : function(data) {
 			$('.profile-content').html(data);
-			
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1114,7 +1110,8 @@ function popup(load){
 	$('.user-profile').css('display', 'block');
 	$('.profile-content').css('height', 'auto');
 	FB.Canvas.getPageInfo(function(info) {
-			$('.user-profile').css('top', info.scrollTop - 200);
+			//alert(info.scrollTop);
+			$('.user-profile').css('top', info.scrollTop);
 	});
 	if (load) {
 		$('.profile-content').animate({
@@ -1247,6 +1244,58 @@ function timeZone(time) {
 	}
 }
 
+function editdescription(){
+	msg = $('.user-description').html();
+	
+	$('.user-description').html("<textarea id='user-description-box'>"+$.trim(msg)+"</textarea><input type=button class='btn-submit' value='Save Description' onclick='submit_user_description()' />");
+	$('.user-description-button').remove();
+	$('.user-description').after('<div id="charcount" style="margin-left:9px; color:#bbb">160 Characters Left</div>');
+	charcheck();
+
+}
+
+function submit_user_description(){
+	
+	msg = $('#user-description-box').val();
+	if ((msg).length > 160){
+		alert("Your description is too long, please reduce it to 160 characters");	
+	}else{
+		$('.user-description').html($.trim(msg));
+		$('.user-description').after('<a class="user-description-button" onclick="editdescription()">Edit</a>');
+		$('#charcount').remove();
+		$.ajax({
+			type : "GET",
+			url : serverUrl + '/app/user/' + userId + '/saveuserdescription/' + '?fanpage_id='+ fanpageId+ '&message=' + $.trim(msg),
+
+			dataType : "html",
+			cache : false,
+			async : true,
+			success : function(data) {
+				//alert($.trim(data));
+			},
+			error : function(xhr, errorMessage, thrownErro) {
+				console.log(xhr.statusText, errorMessage);
+				console.log('error saving user description');
+			}
+		});
+	}
+	
+}
+
+function charcheck(){
+	
+	msg = $('#user-description-box').val();
+	
+	if (msg.length < 161){
+		$('#charcount').html(160-msg.length + ' characters left.');
+	}else{
+		$('#charcount').html('0 characters left.');
+		//alert(msg.substring(0,160));
+		$('#user-description-box').val(msg.substring(0,160));
+	}
+	
+}
+
 function resetTour(){
 	feedLimit = 0;
 	getNewsfeed('#news-feed');
@@ -1262,7 +1311,7 @@ function resetTour(){
 }
 
 var tourOptions = {
-		welcomeMessage : '<h3>Welcome to Fancrank</h3><p>Hi ' + userName + ', <br/> Let\'s learn about using Fancrank. <br/> Click Start to begin</p>',
+		welcomeMessage : '<h3>Welcome to FanCrank</h3><p>Hi ' + userName + ', <br/> Let\'s learn about using FanCrank. <br/> Click Start to begin</p>',
 		data : [
 		        //-1
 		        { element: 	'#pageTabs', 
@@ -1330,7 +1379,7 @@ var tourOptions = {
 				{ element: 	'#latest-post-container .post-container .user .user-badge', 
 							'position' : 'T',
 							'tooltip' : 'Follow Button', 
-							'text' : 'If you can click on this button for a specific user, Fancrank will make it possible to only see posts by this user<br/><br/>' }, 			
+							'text' : 'If you can click on this button for a specific user, FanCrank will make it possible to only see posts by this user<br/><br/>' }, 			
 				//12
 				{ element: 	'#latest-post-container  .post-container .post', 
 							'position' : 'T',
@@ -1363,7 +1412,7 @@ var tourOptions = {
 		   		//17
 		   		{ element: 	'#fancrank-feed-container', 
 					  		'position' : 'T',
-					   		'tooltip' : 'Fancrank Feed', 
+					   		'tooltip' : 'FanCrank Feed', 
 					   		'text' : 'This is the feed, just like in Facebook <br/><br/>' },   
 				//18	   		
 				{ element: 	'#feed-controller', 
@@ -1377,7 +1426,7 @@ var tourOptions = {
 				{ element: 	'#fancrank-feed-container .submit-form', 
 					  		'position' : 'T',
 					   		'tooltip' : 'Posting Box', 
-					   		'text' : 'If you want to post something through Fancrank, you can by simply typing here and clicking Share <br/>'+
+					   		'text' : 'If you want to post something through FanCrank, you can by simply typing here and clicking Share <br/>'+
 					   				'Share will only show up after you\'ve tried to type something'+'<br/><br/>' }, 	   			
 		   		//20
 		   		{ element: 	'#top-fan-container', 
@@ -1429,11 +1478,11 @@ var tourOptions = {
 				{ element: 	'#profile-tab', 
 							'position' : 'TL',
 							'tooltip' : 'Profile Page', 
-							'text' : 'This is your profile, view your Fancrank Information Here <br/><br/>' },	   		
+							'text' : 'This is your profile, view your FanCrank Information Here <br/><br/>' },	   		
 				//30	   			   			   			   			   			   			   			   		
 				{ element: 	'#general-stats-container', 
 							'position' : 'T',
-							'tooltip' : 'Fancrank Statistics', 
+							'tooltip' : 'FanCrank Statistics', 
 							'text' : 'This table displays your level , experience, points and achievement progress <br/><br/>' },		   		
 				//31
 				{ element: 	'#general-stats-container #level-container', 
@@ -1515,7 +1564,7 @@ var tourOptions = {
 				{ element: 	'', 
 							'position' : 'TL',
 							'tooltip' : '&nbsp;', 
-							'text' : 'And that concludes our tutorial of Fancrank, Thanks for going through our tutorial. If you encounter any issues please email help@fancrank.com  <br/><br/> ' },			  
+							'text' : 'And that concludes our tutorial of FanCrank, Thanks for going through our tutorial. If you encounter any issues please email help@fancrank.com  <br/><br/> ' },			  
 
 							],	
 		controlsPosition : 'custom'

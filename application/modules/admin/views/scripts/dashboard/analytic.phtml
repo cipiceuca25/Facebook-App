@@ -17,7 +17,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 
 <ul class="breadcrumb">
   <li><a href="#"><i class="icon-home"></i></a> <span class="divider">/</span></li>
-  <li class="active">Name of this fanpage</li>
+  <li class="active"><?=$this->fanpage_name?></li>
 </ul>
 <ul class="mini widget">
 <li class="dropdown pendingContainer">
@@ -57,7 +57,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 </ul>
 
 
-	<div class="row">
+	<div class="row-fluid">
 		<div class="span2">
 			<div class="box">
 				<ul class="nav nav-list">
@@ -79,56 +79,128 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 							<h3>Fan Data By Leaderboards</h3>
 							<ul class='nav nav-tabs'>
 								<li class='active'>
-									<a href="#basic" data-toggle="tab">Top Fans</a>
+									<a href="#topfan" data-toggle="tab" id="topfan-tab">Top Fans</a>
 								</li>
 								<li>
-									<a href="#nohead" data-toggle="tab">Fan Favorites</a>
+									<a href="#fanfavorite" data-toggle="tab" id="fanfavorites-tab">Fan Favorites</a>
 								</li>
 								<li>
-									<a href="#nohead" data-toggle="tab">Top Talkers</a>
+									<a href="#toptalkers" data-toggle="tab" id="toptalkers-tab">Top Talkers</a>
 								</li>
 								<li>
-									<a href="#nohead" data-toggle="tab">Top Clicker</a>
+									<a href="#topclickers" data-toggle="tab" id="topclicker-tab">Top Clicker</a>
 								</li>
 								<li>
-									<a href="#nohead" data-toggle="tab">Top Followed</a>
+									<a href="#topfollowed" data-toggle="tab" id="topfollowed-tab">Top Followed</a>
 								</li>
 							</ul>
 						</div>
 						<div class="box-content box-nomargin">
 							<div class="tab-content">
-									<div class="tab-pane active" id="basic">
-										<table  class='table' id="topFanTable">
-											<thead>
-												<tr>
-													<th>ID</th>
-													<th>Name</th>
-													<th>Points</th>
-													<th>Level</th>
-													<th><img src="/img/post.png" rel="tooltip" title="Total # of Posts"/></th>
-													<th><img src="/img/thumbsup.png" rel="tooltip" title="Total # of Likes"/></th>
-													<th><img src="/img/comment.png" rel="tooltip" title="Total # of Comments"/></th>
-													<th><img src="/img/rthumbsup.png" rel="tooltip" title="Total # of Recieved Likes"/></th>
-													<th><img src="/img/rcomment.png"rel="tooltip" title="Total # of Recieved Comments"/></th>
-													
-												</tr>
-											</thead>
-											<tbody>
-												<?php foreach($this->topFanList as $fan): ?>
-													<tr>
-														<td><?=$fan['facebook_user_id']?></td>
-														<td><?=$fan['fan_name']?></td>
-														<td><?=$fan['fan_points']?></td>
-														<td><?=$fan['fan_level']?></td>
-														<td><?=$fan['post_count']?></td>
-														<td><?=$fan['like_count']?></td>
-														<td><?=$fan['comment_count']?></td>
-														<td><?=$fan['got_like_count']?></td>
-														<td><?=$fan['got_comment_count']?></td>
-																												
-													</tr>
-												<?php endforeach; ?>
-										</tbody>
+									<div class="tab-pane active" id="topfan">
+										<div class="time">
+										<label>View for 
+											<select id='timelimit' onchange='changeTimeLimit()'>
+												<option value=30>30 Days</option>
+												<option value=14>14 Days</option>
+												<option value=7>7 Days</option>
+												<option value=1>1 Day</option>
+												<option value=all>All Time</option>
+											</select>
+										</label>
+										</div>
+									
+										<table  class='table' id="topfan">
+											
+										</table>
+									</div>
+									<div class="tab-pane" id="fanfavorite">
+								
+										<div class="time">
+										<label>View for 
+											<select id='timelimit' onchange='changeTimeLimit()'>
+												<option value=30>30 Days</option>
+												<option value=14>14 Days</option>
+												<option value=7>7 Days</option>
+												<option value=1>1 Day</option>
+												<option value=all>All Time</option>
+											</select>
+										</label>
+										</div>
+										<div class="length">
+										
+												<label>
+													Show
+													<select size="1" name="fanfavoriteTable_length" aria-controls="fanfavoriteTable">
+														<option value="10" selected="selected">10</option>
+														<option value="25">25</option>
+														<option value="50">50</option>
+														<option value="100">100</option>
+													</select>	
+													entries
+												</label>
+									
+										</div>
+										<div class="filter">
+										
+												<label>
+													Search:
+													<input type="text" id="fanfavoriteTable_filter">
+												</label>
+									
+										</div>
+							
+										<table  class='table' id="fanfavoriteTable">
+											
+										</table>
+									</div>
+									<div class="tab-pane" id="toptalkers">
+										<div class="time">
+										<label>View for 
+											<select id='timelimit' onchange='changeTimeLimit()'>
+												<option value=30>30 Days</option>
+												<option value=14>14 Days</option>
+												<option value=7>7 Days</option>
+												<option value=1>1 Day</option>
+												<option value=all>All Time</option>
+											</select>
+										</label>
+										</div>
+									
+										<table  class='table' id="toptalkersTable">
+											
+										</table>
+									</div>
+									<div class="tab-pane" id="topclickers">
+										<div class="time">
+										<label>View for 
+											<select id='timelimit' onchange='changeTimeLimit()'>
+												<option value=30>30 Days</option>
+												<option value=14>14 Days</option>
+												<option value=7>7 Days</option>
+												<option value=1>1 Day</option>
+												<option value=all>All Time</option>
+											</select>
+										</label>
+										</div>
+										<table  class='table' id="topclickersTable">
+											
+										</table>
+									</div>
+									<div class="tab-pane" id="topfollowed">
+										<div class="time">
+										<label>View for 
+											<select id='timelimit' onchange='changeTimeLimit()'>
+												<option value=30>30 Days</option>
+												<option value=14>14 Days</option>
+												<option value=7>7 Days</option>
+												<option value=1>1 Day</option>
+												<option value=all>All Time</option>
+											</select>
+										</label>
+										</div>
+										<table  class='table' id="topfollowedTable">
+											
 										</table>
 									</div>
 							</div>
@@ -202,71 +274,6 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 
 <div id="placeholder"></div>
 
-<div style="width:1000px;" class="container-fluid">
-		<div class="content">
-			<div class="row-fluid">
-				<div class="span12">
-					<div class="box">
-						<div class="box-head tabs">
-							<h3>Fan dataTables with tabs</h3>
-							<ul class='nav nav-tabs'>
-								<li class='active'>
-									<a href="#basic" data-toggle="tab">Top fan list</a>
-								</li>
-								<li>
-									<a href="#nohead" data-toggle="tab">Top talker</a>
-								</li>
-								<li>
-									<a href="#nohead" data-toggle="tab">Top advocates</a>
-								</li>
-								<li>
-									<a href="#nohead" data-toggle="tab">Top influencer</a>
-								</li>
-							</ul>
-						</div>
-						<div class="box-content box-nomargin">
-							<div class="tab-content">
-									<div class="tab-pane active" id="basic">
-										<table id="topFanTable" class='table analyticTableView table-striped table-bordered'>
-											<thead>
-												<tr>
-													<th>id</th>
-													<th>name</th>
-													<th>points</th>
-													<th>level</th>
-													<th>Total # of posts</th>
-													<th>Total # of comments</th>
-													<th>Total # of likes</th>
-													<th>Total # of likes received</th>
-													<th>Total # Followers</th>
-													<th>Total # Following</th>
-												</tr>
-											</thead>
-											<tbody>
-												<?php foreach($this->topFanList as $fan): ?>
-													<tr>
-														<td><?=$fan['facebook_user_id']?></td>
-														<td><?=$fan['fan_name']?></td>
-														<td><?=$fan['fan_points']?></td>
-														<td><?=$fan['fan_level']?></td>
-														<td><?=$fan['post_count']?></td>
-														<td><?=$fan['comment_count']?></td>
-														<td><?=$fan['like_count']?></td>
-														<td><?=$fan['got_like_count']?></td>	
-														<td><?=$fan['follower']?></td>
-														<td><?=$fan['following']?></td>													
-													</tr>
-												<?php endforeach; ?>
-										</tbody>
-										</table>
-									</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>	
-</div>
 
 <div style="width:600px;" class="container-fluid">
 	<h3>Top Post By # Of Likes</h3>

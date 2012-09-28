@@ -122,6 +122,12 @@ class Model_Fans extends Model_DbTable_Fans
 		}
 	}
 	
+	public function updateDescription($message){
+		
+		$this->_fanProfile->message = $this->getAdapter()->quote($message);
+		$this->_fanProfile->save();
+	}
+	
 	public function updateFanPoints($newFanPoints) {
 		$this->_fanProfile->fan_currency += $newFanPoints;
 		$this->_fanProfile->fan_points += $newFanPoints;
@@ -247,5 +253,8 @@ class Model_Fans extends Model_DbTable_Fans
 	
 		return true;
 	}
+	
+	
+	
 }
 
