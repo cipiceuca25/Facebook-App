@@ -23,16 +23,15 @@ $(document).ready(function() {
 				'overflow' : 'auto'
 			});
 		}	
-		
+		$('#logo').html('<img src ="/img/thin-banner.jpg" />');
+		/*
 		if ($('#logo').attr('data-login') == "true"){
 			
-			$('#logo').html(
-					'<img src ="/img/test.png" />');
+			$('#logo').html('<img src ="/img/test.png" />');
 			
 		}else{
 			if(fanpageId == 216821905014540) {
-				$('#logo').html(
-				'<img src ="/img/beach.jpg" />');
+				$('#logo').html('<img src ="/img/beach.jpg" />');
 			
 			}else{
 			FB.api(fanpageId, function(response) {
@@ -61,17 +60,19 @@ $(document).ready(function() {
 				}
 	
 			});}
-		}
+		}*/
 		
 	backgroundcolor = $('.profile-content').css('background-color');
 	getNewsfeed('#news-feed');
 	
+	
+	/*
 	if(images.length > 0){
 		setTimeout( function(){;
 		getBadgeNotification();
 		}, 3000);
 	}
-
+*/
 });
 
 $(document).mousemove(function(e) {
@@ -114,7 +115,7 @@ $(document).on('mouseover', 'a[rel=tooltip]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;
 	}
-	$(this).data('isTooltipLoaded', true).tooltip({placement:'left'}).trigger('mouseover');
+	$(this).data('isTooltipLoaded', true).tooltip({placement:'left' }).trigger('mouseover');
 });
 
 $(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
@@ -136,9 +137,6 @@ $(document).on('mouseover', 'a[rel=tooltip-award]', function() {
 	}).trigger('mouseover');
 
 });
-
-
-
 
 $('.badge-Following').live("mouseenter", function() {
 	$(this).text('Unfollow');
@@ -631,9 +629,13 @@ function getFancrankfeed(view) {
 	//alert(serverUrl + '/app/app/fancrankfeed/' + fanpageId + '?viewAs='+ view + '&limit=' + feedLimit);
 	//alert(setFeed);
 	//alert(feedLimit);
-	if((setFeed == view) && (view != 'myfeed')){
-		last = parseInt($('#last_post_time').attr('data-time')) - 1;
+	if (view != 'myfeed'){
 		myfeedoffset = 0;
+		
+	}
+	if((setFeed == view) && ((view == 'all') || (view =='admin'))){
+		last = parseInt($('#last_post_time').attr('data-time')) - 1;
+		
 	}else if (view == 'myfeed'){
 		
 		last = myfeedoffset;
@@ -641,7 +643,7 @@ function getFancrankfeed(view) {
 	}else{
 		last = undefined;
 	}
-
+	
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/fancrankfeed/' + fanpageId + '?viewAs='
@@ -1108,7 +1110,8 @@ function popup(load){
 	$('.user-profile').css('display', 'block');
 	$('.profile-content').css('height', 'auto');
 	FB.Canvas.getPageInfo(function(info) {
-			$('.user-profile').css('top', info.scrollTop - 200);
+			//alert(info.scrollTop);
+			$('.user-profile').css('top', info.scrollTop);
 	});
 	if (load) {
 		$('.profile-content').animate({
@@ -1239,6 +1242,58 @@ function timeZone(time) {
 	}else{
 		return (date.toDateString());
 	}
+}
+
+function editdescription(){
+	msg = $('.user-description').html();
+	
+	$('.user-description').html("<textarea id='user-description-box'>"+$.trim(msg)+"</textarea><input type=button class='btn-submit' value='Save Description' onclick='submit_user_description()' />");
+	$('.user-description-button').remove();
+	$('.user-description').after('<div id="charcount" style="margin-left:9px; color:#bbb">160 Characters Left</div>');
+	charcheck();
+
+}
+
+function submit_user_description(){
+	
+	msg = $('#user-description-box').val();
+	if ((msg).length > 160){
+		alert("Your description is too long, please reduce it to 160 characters");	
+	}else{
+		$('.user-description').html($.trim(msg));
+		$('.user-description').after('<a class="user-description-button" onclick="editdescription()">Edit</a>');
+		$('#charcount').remove();
+		$.ajax({
+			type : "GET",
+			url : serverUrl + '/app/user/' + userId + '/saveuserdescription/' + '?fanpage_id='+ fanpageId+ '&message=' + $.trim(msg),
+
+			dataType : "html",
+			cache : false,
+			async : true,
+			success : function(data) {
+				//alert($.trim(data));
+			},
+			error : function(xhr, errorMessage, thrownErro) {
+				console.log(xhr.statusText, errorMessage);
+				console.log('error saving user description');
+			}
+		});
+	}
+	
+}
+
+function charcheck(){
+	
+	msg = $('#user-description-box').val();
+	
+	if (msg.length < 161){
+		$('#charcount').html(160-msg.length + ' characters left.');
+	}else{
+		$('#charcount').html('0 characters left.');
+		//alert(msg.substring(0,160));
+		$('#user-description-box').val(msg.substring(0,160));
+	}
+	
 }
 
 function resetTour(){

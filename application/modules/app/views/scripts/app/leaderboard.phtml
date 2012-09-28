@@ -2,20 +2,24 @@
 	<div class="row">
 		<div class="span12">
 			<div class="top-fan">
-				<div class="title">
-					<div class="title-icon">
-						<img src="/img/news-feed/top-fan-icon.jpg" />
-					</div>
-					<div class="title-header">
-						Top Fans this Week
-					</div>
-					<div class="tip">
-							<a rel="tooltip" title="The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!">?</a>
-						</div>
-				</div>
+				
 				
 			
 					<div class="row box">
+					<div class="title nopic">
+						<!--  <div class="title-icon">
+							<img src="/img/news-feed/top-fan-icon.jpg" />
+						</div>-->
+						<div class="title-header nopic">
+							Top Fans this Week
+						</div>
+						<div class="tip2">
+							The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
+						</div>
+						<!--  <div class="tip">
+								<a rel="tooltip" title="The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!">?</a>
+							</div>-->
+					</div>
 						<?php $count = 0; ?> 
 						<?php foreach($this->top_fans as $top_fan):  ?>
 						
@@ -73,19 +77,19 @@
 			
     		
 									<div class="stats">
-										<h5><?= $this->top_fans_stat[0]['total_posts']?></h5><img src="/img/post.png" />  /
+										<img src="/img/post.png" /> <h5><?= $this->top_fans_stat[0]['total_posts']?></h5>/
 								
 									
-										<h5><?= $this->top_fans_stat[0]['total_comments']?></h5><img src="/img/thumbsup.png" />/
+										<img src="/img/thumbsup.png" /> <h5><?= $this->top_fans_stat[0]['total_comments']?></h5>/
 									
 										
-										<h5><?= $this->top_fans_stat[0]['total_likes']?></h5><img src="/img/comment.png" />/
+										<img src="/img/comment.png" /> <h5><?= $this->top_fans_stat[0]['total_likes']?></h5>/
 									
 										
-										<h5><?= $this->top_fans_stat[0]['total_get_comments']?></h5><img src="/img/rthumbsup.png" />/
+										<img src="/img/rthumbsup.png" /> <h5><?= $this->top_fans_stat[0]['total_get_comments']?></h5>/
 								
 										
-										<h5><?= $this->top_fans_stat[0]['total_get_likes']?></h5><img src="/img/rcomment.png"/>  
+										<img src="/img/rcomment.png"/> <h5><?= $this->top_fans_stat[0]['total_get_likes']?></h5>  
 									</div>
 									
 									
@@ -148,19 +152,19 @@
 										</div>
 										
 										<div class="stats">
-											<h5><?= $this->top_fans_stat[$count]['total_posts']?></h5><img src="/img/post.png" />  /
+											<img src="/img/post.png" /> <h5><?= $this->top_fans_stat[$count]['total_posts']?></h5>/
 								
 									
-											<h5><?= $this->top_fans_stat[$count]['total_comments']?></h5><img src="/img/thumbsup.png" />/
+											<img src="/img/thumbsup.png" /> <h5><?= $this->top_fans_stat[$count]['total_comments']?></h5>/
 										
 											
-											<h5><?= $this->top_fans_stat[$count]['total_likes']?></h5><img src="/img/comment.png" />/
+											<img src="/img/comment.png" /> <h5><?= $this->top_fans_stat[$count]['total_likes']?></h5>/
 										
 											
-											<h5><?= $this->top_fans_stat[$count]['total_get_comments']?></h5><img src="/img/rthumbsup.png" />/
+											<img src="/img/rthumbsup.png" /> <h5><?= $this->top_fans_stat[$count]['total_get_comments']?></h5>/
 									
 											
-											<h5><?= $this->top_fans_stat[$count]['total_get_likes']?></h5><img src="/img/rcomment.png"/> 
+											<img src="/img/rcomment.png"/> <h5><?= $this->top_fans_stat[$count]['total_get_likes']?></h5> 
 										</div>
 										
 										<div class="points">
@@ -242,7 +246,7 @@
 						<?}?>		
 							</ul>
 						
-							<ul class="top-list bottom">
+							<ul class="top-list">
 								<li>
 									<div class="ranker">
 										<div class="rank">
@@ -275,7 +279,7 @@
 										</div>
 										<div class="points">
 											<h3>
-												<?= $this->topFanYou['number_of_posts']?>
+												<?= isset( $this->topFanYou['number_of_posts'])?$this->topFanYou['number_of_posts']:'?'?>
 											</h3>
 											<span>Points<br />
 											</span>
@@ -296,19 +300,24 @@
 	<div class= "row">
 		<div class="span6">
 			<div class="fan-favorite">
-				<div class="title">
-					<div class="title-icon">
-						<img src="/img/news-feed/fan-fav-icon.jpg" />
-					</div>
-					<div class="title-header">
-						Fan Favorites this Week 
-						
-					</div>
-					<div class="tip">
-							<a rel="tooltip" title="This list of fans represents the people who have garnered the most activity from others on the page.  Other fans love talking to them!">?</a>
-						</div>
-				</div>
+				
 				<div class="row box">
+				
+					<div class="title nopic">
+						<!--  <div class="title-icon">
+							<img src="/img/news-feed/fan-fav-icon.jpg" />
+						</div>-->
+						<div class="title-header nopic">
+							Fan Favorites this Week 
+							
+						</div>
+						<div class="tip2">
+							This list of fans represents the people who have garnered the most activity from others on the page.  Other fans love talking to them!
+						</div>
+						<!--  <div class="tip">
+								<a rel="tooltip" title="This list of fans represents the people who have garnered the most activity from others on the page.  Other fans love talking to them!">?</a>
+						</div>-->
+					</div>
 					<?php $count = 0; ?>
 					<?php foreach($this->most_popular as $popular):  ?>
 					<?php if ($count == 0){?>
@@ -477,7 +486,7 @@
 						<?}	?>
 
 						</ul>
-						<ul class="top-list bottom">
+						<ul class="top-list">
 							<li>
 								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 									<div class="rank">
@@ -509,7 +518,7 @@
 									</div>
 									<div class="points">
 										<h3>
-											<?= $this->popularYou['count']?>
+											<?= isset($this->popularYou['count'])? $this->popularYou['count']:'?'?>
 										</h3>
 										<span>Props<br/>
 										</span>
@@ -529,19 +538,23 @@
 		</div><!-- span -->
 		<div class="span6">
 			<div class="top-talker">
-				<div class="title">
-					<div class="title-icon">
-						<img src="/img/news-feed/top-talker-icon.jpg" />
-					</div>
-					<div class="title-header">
-					Top Talkers this Week 
-						
-					</div>
-					<div class="tip">
-							<a rel="tooltip" title="These people have posted the most on the page.  Do they talk too much?  You decide!">?</a>
-						</div>
-				</div>
+				
 				<div class="row box">
+					<div class="title nopic">
+						<!--  <div class="title-icon">
+							<img src="/img/news-feed/top-talker-icon.jpg" />
+						</div>-->
+						<div class="title-header nopic">
+						Top Talkers this Week 
+							
+						</div>
+						<!--  <div class="tip">
+								<a rel="tooltip" title="These people have posted the most on the page.  Do they talk too much?  You decide!">?</a>
+							</div>-->
+						<div class="tip2">
+							These people have posted the most on the page.  Do they talk too much?  You decide!
+						</div>
+					</div>
 					<?php $count = 0; ?>
 					<?php foreach($this->top_talker as $talker):  ?>
 					<?php if ($count == 0){?>
@@ -707,7 +720,7 @@
 						<?}	?>
 
 						</ul>
-						<ul class="top-list bottom">
+						<ul class="top-list">
 							<li>
 								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 									<div class="rank">
@@ -739,7 +752,7 @@
 									</div>
 									<div class="points">
 										<h3>
-											<?= $this->talkerYou['number_of_posts']?>
+											<?= isset($this->talkerYou['number_of_posts'])?$this->talkerYou['number_of_posts']:'?'?>
 										</h3>
 										<span>Posts</span> <br/>
 										<a rel="tooltip-follow" data-original-title="This is You">
@@ -764,19 +777,24 @@
 	<div class="row">
 		<div class="span6">
 			<div class="top-clicker">
-				<div class="title">
-					<div class="title-icon">
-						<img src="/img/news-feed/top-clicker-icon.jpg" />
-					</div>
-					<div class="title-header">
-					Top Clickers this Week
-						
-					</div>
-					<div class="tip">
-							<a rel="tooltip" title="Like, like, and like!  These people have clicked Like the most!">?</a>
-						</div>
-				</div>
+				
 				<div class="row box">
+					<div class="title nopic">
+						<!-- <div class="title-icon">
+							<img src="/img/news-feed/top-clicker-icon.jpg" />
+						</div>-->
+						<div class="title-header nopic">
+						Top Clickers this Week
+							
+						</div>
+						<!-- <div class="tip">
+								<a rel="tooltip" title="Like, like, and like!  These people have clicked Like the most!">?</a>
+							</div> -->
+						<div class="tip2">
+							Like, like, and like!  These people have clicked Like the most!
+						
+						</div>
+					</div>
 					<?php $count = 0; ?>
 					<?php foreach($this->top_clicker as $clicker):  ?>
 					<?php if ($count == 0){?>
@@ -939,7 +957,7 @@
 						<?}	?>
 
 						</ul>
-						<ul class="top-list bottom">
+						<ul class="top-list">
 							<li>
 								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 									<div class="rank">
@@ -971,7 +989,7 @@
 									</div>
 									<div class="points">
 										<h3>
-											<?= $this->clickerYou['number_of_likes']?>
+											<?= (isset($this->clickerYou['number_of_likes']))?$this->clickerYou['number_of_likes']:'?'?>
 										</h3>
 										<span>Likes</span><br/>
 										<a rel="tooltip-follow" data-original-title="This is You"><span class="badge badge-You">
@@ -991,19 +1009,25 @@
 		</div>
 		<div class="span6">
 			<div class="top-followed">
-				<div class="title">
-					<div class="title-icon">
-						<img src="/img/news-feed/fan-fav-icon.jpg" />
-					</div>
-					<div class="title-header">
-					Top Followed
-						
-					</div>
-					<div class="tip">
-							<a rel="tooltip" title="These people have got the most followers!  Talk about being popular!">?</a>
-					</div>
-				</div>
+				
 				<div class="row box">
+					<div class="title nopic">
+						<!-- <div class="title-icon">
+							<img src="/img/news-feed/fan-fav-icon.jpg" />
+						</div> -->
+						<div class="title-header nopic">
+						Top Followed
+							
+						</div>
+						
+						<div class="tip2">
+							These people have got the most followers!  Talk about being popular!
+						</div>
+						
+						<!--  <div class="tip">
+								<a rel="tooltip" title="These people have got the most followers!  Talk about being popular!">?</a>
+						</div>-->
+					</div>
 					<?php $count = 0; ?>
 					<?php foreach($this->top_followed as $followed):  ?>
 					<?php if ($count == 0){?>
@@ -1078,7 +1102,7 @@
 									
 										onclick="userProfile('<?= $followed['facebook_user_id'] ?>')"
 										rel="popover" data-content="" data-original-title=""
-										data-placement="top"><img class="face"
+										data-placement="top-right"><img class="face"
 											width="35" height="35"
 											src="https://graph.facebook.com/<?= $followed['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);"></a></div>
@@ -1087,7 +1111,7 @@
 									
 										onclick="userProfile('<?= $followed['facebook_user_id'] ?>')"
 										rel="popover" data-content="" data-original-title=""
-										data-placement="top"><?= $followed['fan_first_name'] ?></a></div>
+										data-placement="top-right"><?= $followed['fan_first_name'] ?></a></div>
 									
 								</div>
 								<div class="points">
@@ -1166,7 +1190,7 @@
 						<?}	?>
 						</ul>
 						
-						<ul class="top-list bottom">
+						<ul class="top-list">
 							<li>
 								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 									<div class="rank">
@@ -1198,7 +1222,7 @@
 									</div>
 									<div class="points">
 										<h3>
-											<?= $this->followedYou['count']?>
+											<?= isset($this->followedYou['count'])?$this->followedYou['count']:'?'?>
 										</h3>
 										<span>Followers</span><br/>
 										<a rel="tooltip-follow" data-original-title="This is You">

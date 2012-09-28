@@ -1017,9 +1017,14 @@
           case 'top':
               tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth/2}
               break
-          case 'top-left':
-            tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth/4}
+          case 'top-left-left':
+            tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth/7};
+        
             break
+          case 'top-left':
+              tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth/4};
+          
+              break
           case 'top-right':
               tp = {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth*3/4}
               break
@@ -1055,7 +1060,7 @@
         , title = this.getTitle()
 
       $tip.find('.tooltip-inner')[this.isHTML(title) ? 'html' : 'text'](title)
-      $tip.removeClass('fade in top bottom left right toppost')
+      $tip.removeClass('fade in top bottom left right toppost top-left top-left-left top-right')
     }
 
   , hide: function () {

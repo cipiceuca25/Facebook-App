@@ -81,11 +81,8 @@
     </head>
 
     <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
-		<div class="user-profile">
-					<div class="tip"><a onclick="closeProfile()">X</a></div>
-					<div class="profile-content"></div>
-		</div>
-		<div class="container" role="main"> 
+		
+		<div class="container" > 
 		
 			<div id="wrapper">
 	
@@ -95,21 +92,32 @@
 			        
 			    </div><!--/end header -->
 			    <div id="content">
-			    	<div class="login">
-				    	<ul class="nav nav-tabs" id="log-in-out">
-							<li ><a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>">Login to FanCrank</a></li>
-						</ul>
-	        		</div>
-				   	<div>
-				   	    	      
-						<?= $this->layout()->content ?>
-					
-		        		<div id="powered">
-							<a href="http://www.fancrank.com" target=_new><img src="/img/fan-footer.png" /></a>
-						</div>
-	        		</div>
-	        	</div>
-        		
+			    	<div class="user-profile">
+						<div class="tip"><a onclick="closeProfile()">X</a></div>
+						<div class="profile-content"></div>
+					</div>
+					<div class="container">
+				    	<div class="tabbable">
+				    		<div class="tab-container">
+						    	
+								
+								<ul class="nav nav-tabs" id="log-in-out">
+								<li><a class="fancrank_login" href="/app/login/<?= $this->fanpage_id ?>">Login to FanCrank</a></li>
+								</ul>
+							</div>
+		        		
+					   		<div>
+					   	    	      
+							<?= $this->layout()->content ?>
+						
+			        		
+		        			</div>
+		        			<div id="powered">
+								<a href="http://www.fancrank.com" target=_new><img src="/img/fan-footer.png" /></a>
+							</div>
+		        		</div>
+		        	</div>
+        		</div>
         	</div>
          </div>
          <div class="light-box"></div>

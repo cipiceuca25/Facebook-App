@@ -287,6 +287,8 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$fancrankFB->api("/$postId/comments", 'POST', $params);
 	}
 	
+	
+	
 	public function relationAction(){
 		$follow = new Model_Subscribes();
 		$user= $this->_getParam('id');
@@ -326,6 +328,15 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 	}
 	
+	public function saveuserdescriptionAction(){
+		
+		$fanpageId = $this->_getParam('fanpage_id');
+		$userId =  $this->_getParam('id');
+		$message = $this->_getParam('message');
+		$fan = new Model_Fans($userId, $fanpageId);
+		$fan->updateDescription(substr( trim($message), 0, 160));
+		echo 'ok';
+	}
 	
 
 	

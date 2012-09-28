@@ -1,13 +1,14 @@
 <div class="panel">
 	<div class="row">
 		<div class="span6">
-			<div class="title">
-				
-				<div class="title-header nopic">What is Fancrank?</div>
-				
-			</div>
+			
 			
 			<div class="row box">
+				<div class="title nopic">
+					
+					<div class="title-header nopic">What is Fancrank?</div>
+					
+				</div>
 				<div id="whatisfancrank">
 				</div>
 			</div>
@@ -15,21 +16,19 @@
 		<div class="span6">
 			<div class="top-fan" id="login">
 				
-				<div class="title">
-							<div class="title-icon">
-								<img src="/img/news-feed/top-fan-icon.jpg" />
-							</div>
-							<div class="title-header">
-								Top Fans this Week
-							</div>
-							<div class="tip">
-								<a rel="tooltip"  title="The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!">?</a>
-							</div>
-						</div>
+				
 			
 					<div class="row box">
-						
-						
+						<div class="title nopic">
+							
+							<div class="title-header nopic">
+								Top Fans this Week
+							</div>
+							<div class="tip2">
+								The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
+							</div>
+						</div>
+							
 						<?php $count = 0; ?> 
 						<?php foreach($this->top_fans as $top_fan):  ?>
 						<?php if ($count == 0){?>
@@ -206,24 +205,22 @@
 			</div><!-- topfan -->
 		</div><!-- span -->
 	</div><!-- row -->
-	<div class="feed_spacer_top">
+
 	</div>
 	<div class= "row">
 		<div class="span6">
 			<div class="fan-favorite">
-				<div class="title">
-					<div class="title-icon">
-						<img src="/img/news-feed/fan-fav-icon.jpg" />
-					</div>
-					<div class="title-header">
-						Fan Favorites this Week 
-					</div>
-					<div class="tip">
-							<a rel="tooltip"  title="This list of fans represents the people who have garnered the most activity from others on the page.  Other fans love talking to them!">?</a>
-					</div>
-				</div>
-				<div class="row box">
 				
+				<div class="row box">
+					<div class="title  nopic">
+					
+						<div class="title-header nopic">
+							Fan Favorites this Week 
+						</div>
+						<div class="tip2">
+							This list of fans represents the people who have garnered the most activity from others on the page.  Other fans love talking to them!
+						</div>
+					</div>
 					<?php $count = 0; ?>
 					<?php foreach($this->most_popular as $popular):  ?>
 					<?php if ($count == 0){?>
@@ -400,20 +397,18 @@
 		</div><!-- span -->
 		<div class="span6">
 			<div class="top-talker">
-				<div class="title">
-					<div class="title-icon">
-						<img src="/img/news-feed/top-talker-icon.jpg" />
-					</div>
-					<div class="title-header">
-						Top Talkers this Week
-						
-					</div>
-					<div class="tip">
-							<a rel="tooltip" title="These people have posted the most on the page.  Do they talk too much?  You decide!">?</a>
-						</div>
-				</div>
-				<div class="row box">
 				
+				<div class="row box">
+					<div class="title nopic">
+				
+						<div class="title-header nopic">
+							Top Talkers this Week
+							
+						</div>
+						<div class="tip2">
+							These people have posted the most on the page.  Do they talk too much?  You decide!
+						</div>
+					</div>
 					<?php $count = 0; ?>
 					<?php foreach($this->top_talker as $talker):  ?>
 					<?php if ($count == 0){?>
@@ -590,25 +585,21 @@
 			</div><!-- toptalker -->
 		</div><!-- span -->
 	</div><!-- row -->
-	<div class="feed_spacer_top">
+
 	</div>
 	<div class="row">
 		<div class="span6">
 			<div class="top-clicker">
-				<div class="title">
-					<div class="title-icon">
-						<img src="/img/news-feed/top-clicker-icon.jpg" />
-					</div>
-					<div class="title-header">
-						Top Clickers this Week
-						
-					</div>
-					<div class="tip">
-							<a rel="tooltip" title="Like, like, and like!  These people have clicked Like the most!">?</a>
-						</div>
-				</div>
-				<div class="row box">
 				
+				<div class="row box">
+					<div class="title nopic">
+						<div class="title-header nopic">
+							Top Clickers this Week
+						</div>
+						<div class="tip2">
+							Like, like, and like!  These people have clicked Like the most!
+						</div>
+					</div>
 					<?php $count = 0; ?>
 					<?php foreach($this->top_clicker as $clicker):  ?>
 					<?php if ($count == 0){?>
@@ -786,20 +777,17 @@
 		</div>
 		<div class="span6">
 			<div class="top-followed">
-				<div class="title">
-					<div class="title-icon">
-						<img src="/img/news-feed/fan-fav-icon.jpg" />
-					</div>
-					<div class="title-header">
-						Top Followed
-						
-					</div>
-					<div class="tip">
-							<a rel="tooltip" title="These people have got the most followers!  Talk about being popular!">?</a>
-					</div>
-				</div>
-				<div class="row box">
 				
+				<div class="row box">
+					<div class="title nopic">
+				
+						<div class="title-header nopic">
+							Top Followed
+						</div>
+						<div class="tip2">
+							These people have got the most followers!  Talk about being popular!
+						</div>
+					</div>
 					<?php $count = 0; ?>
 					<?php foreach($this->top_followed as $followed):  ?>
 					<?php if ($count == 0){?>

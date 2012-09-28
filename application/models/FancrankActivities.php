@@ -30,7 +30,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 	}
 	
 	public function getRecentActivities($facebook_user_id, $fanpage_id, $limit){
-		
+		$limit *=2;
 		$select= "
 					select * from 
 					
@@ -91,6 +91,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 						limit $limit)
 					
 					) as act
+					group by fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, created_time, message
 					
 					order by created_time DESC
 					limit $limit ";

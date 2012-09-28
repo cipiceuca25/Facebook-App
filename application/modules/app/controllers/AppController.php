@@ -17,7 +17,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	protected $_userId;
 	protected $_accessToken;
 	protected $_fanpageProfile;
-
+	protected $_lastUpdateTime;
 	/**
 	 * Initilized fanpage id and login user variables
 	 */
@@ -41,14 +41,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				$this->_fanpageId = $this->_getParam('id');
 			}
 		}
-
+		
 		if(!empty($this->_fanpageId)) {
 			$fanpage = new Model_Fanpages();
 			$fanpage = $fanpage->find($this->_fanpageId)->current();
 			$this->_fanpageProfile = $fanpage;
 			//Zend_Debug::dump($token);
 			$this->_accessToken = $fanpage ->access_token;
-			$this->view->fanpage_name = $fanpage->fanpage_name;			
+			$this->view->fanpage_name = $fanpage->fanpage_name;	
+			$update_time = new Model_CronLog();
+			$update_time = $update_time->getLastUpdate($this->_fanpageId);
+			$this->_lastUpdateTime = $update_time[0]['end_time'];
 		}else {
 			//$this->_redirect('http://www.fancrank.com');
 		}
@@ -66,6 +69,46 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		}else {
 			$this->_facebook_user->fancrankAppTour = 0;
 		}
+		
+		
+		
+		
+		$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 3);
+	
+		
+		$fan = new Model_Fans($this->_userId, $this->_fanpageId);
+    	
+    	if($this->_userId) {
+    		
+    		//$access_token = $this->facebook_user->facebook_user_access_token;
+    		//$this->view->feed = $this->getFeed($access_token);
+    		// aplly memcache
+			$cache = Zend_Registry::get('memcache');
+    		$cache->setLifetime(3600);
+    		$fan = null;
+    		
+    		try {
+    			$fanProfileId = $this->_fanpageId .'_' .$this->_userId .'_fan';
+    			
+    			//Check to see if the $fanpageId is cached and look it up if not
+    			if(isset($cache) && !$cache->load($fanProfileId)){
+	    			//echo 'db look up';
+	    			$fan = new Model_Fans($this->_userId, $this->_fanpageId);
+	    			$fan = $fan->getFanProfile();
+	    			//Save to the cache, so we don't have to look it up next time
+	    			$cache->save($fan, $fanProfileId);
+    			}else {
+    			//echo 'memcache look up';
+    				$fan = $cache->load($fanProfileId);
+    			}
+    		} catch (Exception $e) {
+    			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    			//echo $e->getMessage();
+   			}
+    	}
+		 
+		$this->view->notifan = $fan;
+		$this->view->notibadges = $badges;
 	}
 
     public function indexAction()
@@ -745,7 +788,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     		try {
     			$fanProfileId = $this->_fanpageId .'_' .$user->facebook_user_id .'_fan';
-    			$cache->remove($fanProfileId);
+    		
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanProfileId)){
 	    			//echo 'db look up';
@@ -807,33 +850,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$fan->fan_currency = '?';
     	}
     	
-    	$badges = $this->badgeArray2D($this->_fanpageId, $user->facebook_user_id);
-    	$upcoming_badges = array();
-    	function badge_cmp($a, $b){
-    		if ($a['percentage'] == $b['percentage']){
-    			return 0;
-    		}
-    		if ($a['percentage'] > $b['percentage']){
-    			return -1;
-    		}
-    		return 1;
-    	}
+    	$badges = $this->badgeArray2D($this->_fanpageId, $user->facebook_user_id, 6);
     	
-    	usort($badges, 'badge_cmp');
-    	$j=0; 
-    	$i=0;
-    	while ($i < 5){
-    		if($badges[$j]['percentage']<100){
-    			$upcoming_badges[] = $badges[$j];
-    			$i++;
-    		}
-    		$j++;
-    	}
     	
     	//Zend_Debug::dump($upcoming_badges);
     	
     	
-    	$this->view->badges = $upcoming_badges;
+    	$this->view->badges = $badges;
     	
     	$this->view->fan_exp = $fan_exp;
     	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
@@ -848,7 +871,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->view->friends = $friends;
     	
     	
-    	//Zend_Debug::dump($stat_post);
+    	//Zend_Debug::dump($fan);
     	
     	$this->view->stat_post = $stat_post;
     	$this->view->stat_comment = $stat_comment;
@@ -856,6 +879,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_comment = $stat_get_comment;
     	$this->view->stat_get_like = $stat_get_like;
     	
+    	//Zend_Debug::dump($this->_lastUpdateTime);
+    	$this->view->update_time = $this->_lastUpdateTime;
     	
     	$this->render('myprofile');
     }
@@ -1083,7 +1108,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->stat_get_comment = $stat_get_comment;
     	$this->view->stat_get_like = $stat_get_like;
     	 
-
+    	$this->view->fanpage_id = $this->_fanpageId ;
     	$this->render('userprofile');
     }
 
@@ -1158,9 +1183,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//Zend_Debug::dump($limit);
     	if ($filter == 'true'){
     		
-    		$result = $this->filterComments($this->getFeedComment($postId, $limit));
+    		$result = $this->filterComments($this->getFeedComment($postId, $total));
     	}else{
-    		$result = $this->getFeedComment($postId, $limit);
+    		$result = $this->getFeedComment($postId, $total);
     	}
     	//$result = json_encode($result);
 		
@@ -1222,7 +1247,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     		try {
     			$fanActivityId = $this->_fanpageId .'_' .$this->_userId. '_fan_activity';
-    			$cache->remove($fanActivityId);
+    			//$cache->remove($fanActivityId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanActivityId)){
     				//echo 'db look up';
@@ -1250,6 +1275,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			    	}else if(count($newActivity) > 0){
 			    		//echo"there are new activities";
 			    		$activities = array_merge($newActivity, array_slice($activities, count($newActivity)));
+			    		
 			    	}
     			}
     		} catch (Exception $e) {
@@ -1261,7 +1287,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$this->view->activities = $activities;
     	$this->view->user_id = $this->_userId;
-    	
+    	$this->view->fanpage_id = $this->_fanpageId ;
 
     	//Zend_Debug::dump($activities);
 
@@ -1299,12 +1325,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$client->setParameterGet('access_token', $this->_accessToken);
     	//echo $limit;
     	//if ($limit !== false){
-    	$client->setParameterGet('limit', 100);
+    	$client->setParameterGet('limit', $limit);
     	//}
     	$response = $client->request();
-    
+   
     	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-		//Zend_Debug::dump($result->data);	
+		
+    	
+    	//Zend_Debug::dump($result->data);	
 		if(!empty ($result->data)) {    
 
     		return $result->data;
@@ -1782,7 +1810,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
 
     
-    protected function badgeArray2D($fanpage_id, $facebook_user_id){
+    protected function badgeArray2D($fanpage_id, $facebook_user_id, $limit){
     	$badge = new Model_Badges();
     	$fan = new Model_FansObjectsStats();
     	$follow = new Model_Subscribes();
@@ -2384,8 +2412,36 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     	}
     	
-    	return $array;
+    	$upcoming_badges = array();
+    	
+    	if(!function_exists('badge_cmp')){
+	    	function badge_cmp($a, $b){
+	    	if ($a['percentage'] == $b['percentage']){
+	    		return 0;
+	    	}
+	    	if ($a['percentage'] > $b['percentage']){
+	    		return -1;
+	    	}
+	    	return 1;
+	    	}
+    	}
+    
+    	 
+    	usort($array, 'badge_cmp');
+    	$j=0;
+    	$i=0;
+    	while ($i < $limit){
+    		if($array[$j]['percentage']<100){
+    			$upcoming_badges[] = $array[$j];
+    			$i++;
+    		}
+    		$j++;
+    	}
+    	return $upcoming_badges;
     }
+    
+	
+    
     protected function badgeArray($fanpage_id, $facebook_user_id){
     		$badge = new Model_Badges();
     		$fan = new Model_FansObjectsStats();

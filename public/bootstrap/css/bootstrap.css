@@ -4287,6 +4287,15 @@ input[type="submit"].btn.btn-mini {
   border-left: 5px solid transparent;
 }
 
+.tooltip.top-left-left .tooltip-arrow {
+  bottom: 0;
+  left: 13%;
+  margin-left: -5px;
+  border-top: 5px solid #000000;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+
 .tooltip.top-left .tooltip-arrow {
   bottom: 0;
   left: 25%;
