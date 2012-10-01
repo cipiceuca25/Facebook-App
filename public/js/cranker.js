@@ -61,7 +61,7 @@ $(document).ready(function() {
 	
 			});}
 		}*/
-		
+	
 	backgroundcolor = $('.profile-content').css('background-color');
 	getNewsfeed('#news-feed');
 	
@@ -78,8 +78,8 @@ $(document).ready(function() {
 $(document).mousemove(function(e) {
 	mouseX = e.pageX;
 	mouseY = e.pageY;
+	
 	$('.popover').css('display', 'none');
-
 	//FB.Canvas.setAutoGrow();
 	
 	if (fb == false){
@@ -99,10 +99,19 @@ $(document).mousemove(function(e) {
 });
 
 $(document).on('mouseover', 'a[rel=popover]', function() {
-	
-		popover($(this));
 
+	popover(this);
+	if ($(this).data('isPopoverLoaded') == true) {
+		return;
+	}
+	$(this).data('isPopoverLoaded', true).popover({
+		delay : {show:1000, hide:100},
+		
+	}).trigger('mouseover');
+	
 });
+
+
 
 $(document).on('mouseover', 'a[rel=tooltip]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
@@ -251,10 +260,10 @@ function popover(x) {
 		url : serverUrl + '/app/app/popoverprofile/' + fanpageId
 				+ '?facebook_user_id=' + $(x).attr('data-userid'),
 		dataType : "html",
-		cache : true,
+		cache : false,
 		async : true,
+	
 		success : function(data) {
-			
 			$(x).attr('data-content', data);
 			$(x).popover('show');
 		},
@@ -328,7 +337,7 @@ function comment_feed_filter(post_id, type, limiter, total, toggle) {
 	//alert(ui);
 	getFeedComment(ui, post_id, type, limiter, total, toggle, false, true,false);
 	//$('.social.comment.' + post_id).css('display', 'none');
-	changeTime(ui + ' .time');
+	//changeTime(ui + ' .time');
 }
 
 function comment_feed2_filter(post_id, type, limiter, total, toggle) {
@@ -336,7 +345,7 @@ function comment_feed2_filter(post_id, type, limiter, total, toggle) {
 	//alert(ui);
 	getFeedComment(ui, post_id, type, limiter, total, toggle, true, true,false);
 	//$('.social.commentn.' + post_id).css('display', 'none');
-	changeTime(ui + ' .time');
+	//changeTime(ui + ' .time');
 }
 
 function comment_feed3_filter(post_id, type, limiter, total, toggle) {
@@ -344,7 +353,7 @@ function comment_feed3_filter(post_id, type, limiter, total, toggle) {
 	//alert(ui);
 	getFeedComment(ui, post_id, type, limiter, total, toggle, false, true,true);
 	//$('.social.comment.' + post_id).css('display', 'none');
-	changeTime(ui + ' .time');
+	//changeTime(ui + ' .time');
 }
 
 
@@ -354,7 +363,7 @@ function comment_feed(post_id, type, limiter, total, toggle) {
 	//alert(ui);
 	getFeedComment(ui, post_id, type, limiter, total, toggle, false, false,false);
 	//$('.social.comment.' + post_id).css('display', 'none');
-	changeTime(ui + ' .time');
+	
 }
 
 function comment_feed2(post_id, type, limiter, total, toggle) {
@@ -362,7 +371,7 @@ function comment_feed2(post_id, type, limiter, total, toggle) {
 	//alert(ui);
 	getFeedComment(ui, post_id, type, limiter, total, toggle, true, false,false);
 	//$('.social.commentn.' + post_id).css('display', 'none');
-	changeTime(ui + ' .time');
+	//changeTime(ui + ' .time');
 }
 
 function comment_feed3(post_id, type, limiter, total, toggle) {
@@ -370,7 +379,7 @@ function comment_feed3(post_id, type, limiter, total, toggle) {
 	//alert(ui);
 	getFeedComment(ui, post_id, type, limiter, total, toggle, false, false,true);
 	//$('.social.comment.' + post_id).css('display', 'none');
-	changeTime(ui + ' .time');
+	//changeTime(ui + ' .time');
 }
 
 //ui where is this going 
@@ -395,14 +404,14 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest, filte
 				,
 		dataType : "html",
 		cache : false,
-		async : false,
+		async : true,
 		beforeSend: function(){
 			$('.comments').css('display','block');
-			$(ui).html("<div class='comments' style='text-align:center; padding:10px 0 10px 0'><li><img src='/img/ajax-loader.gif' /></li></div>");
+			$(ui).html("<div class='comments' style='text-align:center; padding:10px 0 10px 0'><li class='comment-container'><img src='/img/ajax-loader.gif' /></li></div>");
 		},
 		success : function(data) {
 			$(ui).html(data);
-			
+			changeTime(ui + ' .time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -625,36 +634,44 @@ function getFancrankfeed(view) {
 	//alert(serverUrl + '/app/app/fancrankfeed/' + fanpageId + '?viewAs='+ view + '&limit=' + feedLimit);
 	//alert(setFeed);
 	//alert(feedLimit);
-	if (view != 'myfeed'){
-		myfeedoffset = 0;
+	//if (view != 'myfeed'){
+	//	myfeedoffset = 0;
 		
-	}
+	//}
 	if((setFeed == view) && ((view == 'all') || (view =='admin'))){
 		last = parseInt($('#last_post_time').attr('data-time')) - 1;
 		
-	}else if (view == 'myfeed'){
+	//}else if (view == 'myfeed'){
 		
-		last = myfeedoffset;
-		myfeedoffset +=10;
+		//last = myfeedoffset;
+		//myfeedoffset +=10;
 	}else{
 		last = undefined;
 	}
-	
+
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/fancrankfeed/' + fanpageId + '?viewAs='
 				+ view + '&until=' + last ,
 		dataType : "html",
 		cache : false,
-		async :  false,
+		async :  true,
 		beforeSend: function(){
-			$('#fancrankfeed').append("<div id='loader' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			if((setFeed != view)){
+				$('#fancrankfeed').html("<div id='loader' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' style='margin-top:20px'/></div>");
+			}else{
+				$('#fancrankfeed').append("<div id='loader' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' style='margin-top:20px'/></div>");
+				
+				
+			}
+			
 		},
 		success : function(data) {
 			//alert(data);
 			$('#loader').remove();
 			$('#last_post_time').remove();
 			$('#more_post').remove();
+			//alert(view + ' ' + setFeed);
 			if((setFeed != view)){
 				//alert(last);
 				$(ui).html(data);
@@ -662,6 +679,10 @@ function getFancrankfeed(view) {
 				$(ui).append(data);
 				
 			}
+			if(view == 'post'){
+				view = 'all';	
+			};
+			setFeed = view;
 			changeTime('#fancrankfeed .time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -669,10 +690,8 @@ function getFancrankfeed(view) {
 			console.log('error getting the feed');
 		}
 	});
-	if(view == 'post'){
-		view = 'all';	
-	};
-	setFeed = view;
+	
+	
 	
 	$('#all-title').attr('style', 'font-weight:normal');
 	$('#myfeed-title').attr('style', 'font-weight:normal');

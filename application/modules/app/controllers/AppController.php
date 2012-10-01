@@ -480,12 +480,16 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if ($latest != null ){
     		foreach ($latest as $l){
     			$latestlike[] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
+    			$yourpointslatest[$count] = 0;
+    			$yourpointslatest[$count] = $this->postPointsCalculate($l);
+    			$count++;
     		}
+    		
     	}
     	
     	
     	
-    	
+    	$this->view->yourpointslatest = $yourpointslatest;
     	$this->view->latestlike = $latestlike;
     	$this->view->latest = $latest ;
     	
@@ -502,12 +506,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
     				$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
     				//echo $likes[$count];
+    				$yourpoints[$count] = 0;
+    				$yourpoints[$count] = $this->postPointsCalculate($posts);
     				$count++;
     	
     			}
     		
     	}
     	
+    	$this->view->yourpoints = $yourpoints;
     	$this->view->relation = $relation;
     	
     	$this->view->likes = $likes;
@@ -943,7 +950,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	}
     	
-    
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
     		$fan['fan_currency'] = '?';
     		$fan['fan_level'] = '?';
@@ -1130,41 +1136,315 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$likes = array();
 		$relation = array();
     	$count=0;
+		$totalpoints = array();
+		$yourpoints = array();
 		
 		if ($result != null){
-		if ($viewAs == 'myfeed'){
-			foreach ($result as $posts){
-				//Zend_Debug::dump($posts);
-				//echo $top['facebook_user_id'];
-				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts['post_id'], $this->_userId );
-				$relation[$count] = $follow->getRelation($this->_userId, $posts['facebook_user_id'],$this->_fanpageId);
-				//echo $likes[$count];
-				$count++;
-			}	
-		
-		}else{
-			foreach ($result as $posts){
-				//echo $top['facebook_user_id'];
-				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
-				$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
-				//echo $likes[$count];
-				$count++;
+			if ($viewAs == 'myfeed'){
+				$result = $this->filterPosts($result);
 				
+				//Zend_Debug::dump($result);
 			}
-		}
-		}
+			/*
+				foreach ($result as $posts){
+					//Zend_Debug::dump($posts);
+					//echo $top['facebook_user_id'];
+					$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts['post_id'], $this->_userId );
+					$relation[$count] = $follow->getRelation($this->_userId, $posts['facebook_user_id'],$this->_fanpageId);
 	
+					//echo $likes[$count];
+					$count++;
+				}	
+			
+			}else{*/
+				foreach ($result as $posts){
+					//echo $top['facebook_user_id'];
+					
+					$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+					$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
+					//Zend_Debug::dump($posts);
+					$yourpoints[$count] = 0;
+					$yourpoints[$count] = $this->postPointsCalculate($posts);
+					//echo $likes[$count];
+					$count++;
+					
+				}
+			//}
+		}
+		//Zend_Debug::dump($yourpoints);
+		
+		$this->view->yourpoints = $yourpoints;
 		$this->view->relation = $relation;
 
     	$this->view->likes = $likes;
     	$this->view->post = $result;
-    	if($viewAs == 'myfeed'){
+    	/*if($viewAs == 'myfeed'){
     		$this->view->myfeedcount = $count;
     		$this->render("fancrankfeedm");
-    	}else{
+    	}else{*/
     		$this->render("fancrankfeed");
-    	}
+    	//}
     	
+    }
+    
+    protected function postPointsCalculate($posts){
+    	$yourpoints = 0;
+    	
+    	//if this is your post
+    	if($this->_userId == $posts->from->id){
+    		$yourpoints -= 5;
+    		$uniquereply = array();
+    		//if your posts has comments and don't need additional api call
+    		if (isset($posts->comments->data)){
+    			if (count($posts->comments->data) == $posts->comments->count){
+    				foreach($posts->comments->data as $c){
+    	
+    					//echo $posts->id.'-'.$c->from->id;
+    					// if comment not from you, add points
+    					if ($c->from->id != $this->_userId){
+    							
+    						$yourpoints +=2;
+    						$uniquereply[] = $c->from->id;
+    					}else{
+    						//if comment is users, check for likes
+    						if (isset($c->like_count)){
+    							if ($c->like_count != 0){
+    								$ls = $this->getPostLikes($posts->id);
+    								foreach($ls as $l){
+    									if($l->id != $this->_userId){
+    										$yourpoints +=1;
+    									}
+    								}
+    									
+    							}
+    						}
+    						
+    						
+    					}
+    				}
+    			}else{//api called required to get other comments
+    				$comm = $this->getFeedComment($posts->id, $posts->comments->count);
+    				foreach($comm as $c){
+    						
+    					//echo $posts->id.'-'.$c->from->id;
+    					if ($c->from->id != $this->_userId){
+    	
+    						$yourpoints +=2;
+    						$uniquereply[] = $c->from->id;
+    					}else{
+    						if (isset($c->like_count)){
+    							if ($c->like_count != 0){
+    								$ls = $this->getPostLikes($posts->id);
+    								foreach($ls as $l){
+    									if($l->id != $this->_userId){
+    										$yourpoints +=1;
+    									}
+    								}
+    									
+    							}
+    						}
+    					}
+    				}
+    			}
+    		}
+    		//if your post has likes
+    		if (isset($posts->likes->data )){ // if dont need api call for likes list
+    			if (count($posts->likes->data) == $posts->likes->count){
+    				foreach ($posts->likes->data as $l){
+    					if($l->id != $this->_userId){
+    						$yourpoints +=1;
+    						$uniquereply[] = $l->id;
+    					}
+    				}
+    			}else{ // if need api call for complete likes list
+    				$ls = $this->getPostLikes($posts->id);
+    				foreach($ls as $l){
+    					if($l->id != $this->_userId){
+    						$yourpoints +=1;
+    	
+    					}
+    				}
+    					
+    			}
+    		}
+    		
+    		//apply unique count and virginity
+    		$uniquereply = array_unique($uniquereply);
+    		//Zend_Debug::dump($uniquereply);
+    		$yourpoints += count($uniquereply);
+    		if (count($uniquereply)>0){
+    			$yourpoints += 4;
+    		}
+    			
+    	//if post is by admin
+    	}else if ($this->_fanpageId == $posts->from->id)	{
+    		// does the admin post have comments
+    		if (isset($posts->comments->data)){
+    			$limit = 5; // limits of 5 for getting time bonus
+    			$post_time = new Zend_Date($posts->created_time);
+    			//do we need extra api call for admin comments
+    			if (count($posts->comments->data) == $posts->comments->count){
+    				foreach($posts->comments->data as $c){
+    						
+    					//echo $posts->id.'-'.$c->from->id;
+    					if ($c->from->id == $this->_userId){
+    	
+    						$yourpoints +=2;
+    	
+    					
+	    					$comment_time = new Zend_date($c->created_time);
+	    	
+	    					//Zend_Debug::dump($post_time);
+	    					
+	    					//give bonus points for before 1 hour difference
+	    					$comment_time->sub('1', Zend_Date::HOUR);
+	    					if ($comment_time->isEarlier($post_time)){
+	    						$yourpoints += ($limit>0)?$limit:0;
+	    						$limit--;
+	    							
+	    					}
+	    					
+	    					//did your comment get likes
+	    					if (isset($c->like_count)){
+	    						if ($c->like_count != 0){
+	    							$ls = $this->getPostLikes($posts->id);
+	    							foreach($ls as $l){
+	    								if($l->id != $this->_userId){
+	    									$yourpoints +=1;
+	    								}
+	    							}
+	    								
+	    						}
+	    					}
+    					}	
+    				}
+    			}else{
+    				$comm = $this->getFeedComment($posts->id, $posts->comments->count);
+    				foreach($comm as $c){
+    						
+    					//echo $posts->id.'-'.$c->from->id;
+    					if ($c->from->id == $this->_userId){
+    							
+    						$yourpoints +=2;
+    							
+    					
+	    					$comment_time = new Zend_date($c->created_time);
+	    	
+	    					//Zend_Debug::dump($post_time);
+	    					$comment_time->sub('1', Zend_Date::HOUR);
+	    					if ($comment_time->isEarlier($post_time)){
+	    						$yourpoints += ($limit>0)?$limit:0;
+	    						$limit--;
+	    	
+	    					}
+	    					
+	    					//did comment get likes
+	    					if (isset($c->like_count)){
+	    						if ($c->like_count != 0){
+	    							$ls = $this->getPostLikes($posts->id);
+	    							foreach($ls as $l){
+	    								if($l->id != $this->_userId){
+	    									$yourpoints +=1;
+	    								}
+	    							}
+	    								
+	    						}
+	    					}
+	    					
+    					}
+    				}
+    			}
+    		}
+    			
+    		//////LIKE TIME BONUS IS STILL MISSING YO.
+    		if (isset($posts->likes->data )){
+    			if (count($posts->likes->data) == $posts->likes->count){
+    				foreach ($posts->likes->data as $l){
+    					if($l->id == $this->_userId){
+    						$yourpoints +=1;
+    							
+    					}
+    				}
+    			}else{
+    				$ls = $this->getPostLikes($posts->id);
+    				foreach($ls as $l){
+    					if($l->id == $this->_userId){
+    						$yourpoints +=1;
+    							
+    					}
+    				}
+    	
+    			}
+    		}
+    			
+    			
+    	}else{//for other user posts
+    			
+    		//did you like it?
+    		if (isset($posts->likes->data )){
+    			if (count($posts->likes->data) == $posts->likes->count){
+    				foreach ($posts->likes->data as $l){
+    					if($l->id == $this->_userId){
+    						$yourpoints +=1;
+    	
+    					}
+    				}
+    			}else{
+    				$ls = $this->getPostLikes($posts->id);
+    				foreach($ls as $l){
+    					if($l->id == $this->_userId){
+    						$yourpoints +=1;
+    	
+    					}
+    				}
+    					
+    			}
+    		}
+    		
+    		// did you comment on a user post and get likes on your comments
+	    	if (isset($posts->comments->data)){
+	    			if (count($posts->comments->data) == $posts->comments->count){
+	    				foreach($posts->comments->data as $c){
+	    					//echo $posts->id.'-'.$c->from->id;
+	    					if ($c->from->id == $this->_userId){
+	 							if (isset($c->like_count)){
+		    						if ($c->like_count != 0){
+		    							$ls = $this->getPostLikes($posts->id);
+		    							foreach($ls as $l){
+		    								if($l->id != $this->_userId){
+		    									$yourpoints +=1;
+		    								}
+		    							}
+		    								
+		    						}
+		    					}
+	    					}	
+	    				}
+	    			}else{
+	    				$comm = $this->getFeedComment($posts->id, $posts->comments->count);
+	    				foreach($comm as $c){
+	    					//echo $posts->id.'-'.$c->from->id;
+	    					if ($c->from->id == $this->_userId){
+								if (isset($c->like_count)){
+		    						if ($c->like_count != 0){
+		    							$ls = $this->getPostLikes($posts->id);
+		    							foreach($ls as $l){
+		    								if($l->id != $this->_userId){
+		    									$yourpoints +=1;
+		    								}
+		    							}
+		    								
+		    						}
+		    					}
+		    					
+	    					}
+	    				}
+	    			}
+	    		}
+	    			
+    	}
+    	//echo $posts->id.' - '.$yourpoints .'<br/>';
+    	return $yourpoints;
     }
     
     public function fancrankfeedcommentAction() {
@@ -1339,6 +1619,37 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     }
     
+    protected function filterPosts($posts){
+    	$following = new Model_Subscribes;
+    	$following = $following->getFollowingList($this->_userId, $this->_fanpageId, false);
+    	 
+    	$f = array();
+    	if ($following){
+    		foreach($following as $fol){
+    			$f[] = $fol['facebook_user_id_subscribe_to'];
+    		}
+    	}
+    	$f[] = $this->_fanpageId;
+    	$f[] = $this->_userId;
+    	
+    	$filteredPosts = array();
+    	if($posts){
+    		foreach($posts as $p){
+    			Zend_Debug::dump($p);
+    			if(in_array($p->from->id,$f)){
+    				$filteredPosts[] = $p;
+    			}else{
+    				if ($p->likes->count > 0){
+    					$filteredPosts[] = $p;
+    				}
+    			}
+    		}
+    	}
+    	
+    	return $filteredPosts;
+    }
+    
+    
     
     protected function filterComments($comments){
     	$following = new Model_Subscribes;
@@ -1480,15 +1791,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$client->setMethod(Zend_Http_Client::GET);
     	$client->setParameterGet('access_token', $this->_accessToken);
     	$client->setParameterGet('limit', 10);
-    	if($view != 'myfeed'){
+    	//if($view != 'myfeed'){
 	    	if ($until != 'undefined'){
 	    		$client->setParameterGet('until', $until);
 	    	}
-    	}
+    	//}
     	$response = $client->request();
     	 
     	$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-    	//Zend_Debug::dump($result->data);
+    	Zend_Debug::dump($result->data);
     	if(!empty ($result->data)) {
 
     		switch ($view){
@@ -1500,10 +1811,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				return $result->data;
     			case 'all':
     					return $result->data;
-    			case 'user':
-    				return $this->feedFilterByUser($result->data, $this->_fanpageId);
+    			/*case 'user':
+    				return $this->feedFilterByUser($result->data, $this->_fanpageId);*/
     			case 'myfeed':
-    				return $this->feedFilterByMyFeed($this->_fanpageId, $until);
+    				
+    				
+    			
+    				return $result->data;
+    				
+    				//return $this->feedFilterByMyFeed($this->_fanpageId, $until);
     			default:
     				return $result->data;
     		}

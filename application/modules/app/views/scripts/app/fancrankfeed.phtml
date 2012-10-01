@@ -4,15 +4,13 @@
 <?php if(empty($this->post)){?>
 	
 	<li class="post-container">
-	<div class="user">
-	
-	</div>
-	<div class="post_container">
-		<div class="post">
-			<div class="message">
-			No More Posts
+
+		<div class="post_container">
+			<div class="post">
+				<div class="message">
+				No More Posts
+				</div>
 			</div>
-		</div>
 		</div>
 	</li>
 <?}else{?>
@@ -73,6 +71,8 @@
 		<?php }?>
 	><?=  $post->from->name?>
 	</a></div>
+	
+		
 	
 	</div>
 	
@@ -213,6 +213,9 @@
 
 		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 
+		&middot;
+		<?= $this->yourpoints[$count]?> pts earned from this post.
+		
 	</div>
 	<div class="social like <?=$post->id?>"  <?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>style="display:none"<?php }?>>
 		

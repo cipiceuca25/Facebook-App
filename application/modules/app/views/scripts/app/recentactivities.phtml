@@ -42,7 +42,7 @@
 																		><?php }?>
 																		<?=$act['target_user_name']?>
 																		<?php if (!$isFanpage){?></a>
-																		<?php }?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a>:<span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
+																		<?php }?>'s <a onclick="popup_post('<?=$act['event_object']?>', 10, true)">status post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
 				<?break;
 			case 'unlike-status':?>
 				You unliked <?php if (!$isFanpage){?><a onclick="userProfile('<?=$act['target_user_id']?>')"

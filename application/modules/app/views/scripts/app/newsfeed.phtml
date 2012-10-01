@@ -19,7 +19,7 @@
 			</div>
 		
 			<?php  $post = $this->latest[0];?>
-			<?php $story = 1; ?>
+			<?php $story = 0; ?>
 			<?php while (isset($post->story)){
 					$post = $this->latest[$story];
 					$story++;
@@ -62,6 +62,7 @@
 								
 						<div class="name"><a><?=  $post->from->name?></a> 
 						</div>
+					
 					</div>
 
 					<div class="post">
@@ -185,7 +186,11 @@
 							>My Comment</a> 	
 							<?php }?>
 							&middot;
-							<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?= strtotime($post->created_time)?>"> </a> <br />
+							<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?= strtotime($post->created_time)?>"> </a>
+					
+							&middot;
+			
+							<?= $this->yourpointslatest[$story]?> points earned from this post.
 					</div>
 
 					<div class="social like <?=$post->id?>"
@@ -405,7 +410,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 		<?php }?>
 	><?=  $post->from->name?>
 	</a></div>
-	
+		
 	</div>
 
 	<div class="post">
@@ -538,7 +543,10 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 		&middot;
 
 		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
-
+		&middot;
+		
+		
+		<?= $this->yourpoints[$count]?> points earned from this post.
 	</div>
 	<div class="social like <?=$post->id?>"  <?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>style="display:none"<?php }?>>
 		
