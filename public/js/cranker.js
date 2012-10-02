@@ -64,7 +64,7 @@ $(document).ready(function() {
 	
 	backgroundcolor = $('.profile-content').css('background-color');
 	getNewsfeed('#news-feed');
-	
+	getUpcomingBadges('#notification_upcoming_badges' ,3);
 	
 	/*
 	if(images.length > 0){
@@ -312,7 +312,7 @@ function userProfile(user, load) {
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/userprofile/' + fanpageId + '/?target='
-				+ user + '&facebook_user_id=' + userId,
+				+ user,
 		dataType : "html",
 		cache : false,
 		async : true,
@@ -322,6 +322,7 @@ function userProfile(user, load) {
 		success : function(data) {
 
 			$('.profile-content').html(data);
+			getRecentActivities('#user_activities', user); 
 			changeTime('.profile-content .time');
 			
 		},
@@ -330,6 +331,32 @@ function userProfile(user, load) {
 			console.log('error getting popup profile');
 		}
 	});
+}
+
+function getUpcomingBadges(ui, limit){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/upcomingbadges/' + fanpageId + '/?limit='
+				+ limit,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+			$(ui).html("<div style='text-align:center;margin-top:-1px; padding: 0 25px 0 ' ><img src='/img/ajax-loader2.gif' /></div>");
+		},
+		success : function(data) {
+
+			$(ui).html(data);
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting upcoming');
+		}
+	});
+	
+	
+	
 }
 
 function comment_feed_filter(post_id, type, limiter, total, toggle) {
@@ -407,7 +434,7 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest, filte
 		async : true,
 		beforeSend: function(){
 			$('.comments').css('display','block');
-			$(ui).html("<div class='comments' style='text-align:center; padding:10px 0 10px 0'><li class='comment-container'><img src='/img/ajax-loader.gif' /></li></div>");
+			$(ui).html("<div class='comments' style='text-align:center;'><li class='comment-container'><img src='/img/ajax-loader.gif' /></li></div>");
 		},
 		success : function(data) {
 			$(ui).html(data);
@@ -470,6 +497,7 @@ function getNewsfeed() {
 			
 			getTopFan();
 			getTopPost();
+			
 			changeTime('.time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -747,7 +775,7 @@ function getLeaderboard() {
 				+ '?facebook_user_id=' + userId,
 		dataType : "html",
 		cache : false,
-		async : false,
+		async : true,
 		beforeSend: function(){
 			$('#leaderboard').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
@@ -771,16 +799,17 @@ function getMyProfile() {
 				+ '?facebook_user_id=' + userId,
 		dataType : "html",
 		cache : false,
-		async : false,
+		async : true,
 		beforeSend: function(){
 			$('#profile').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			//alert("rdy");
 			$('#profile').html(data);
-			getRecentActivities();
+			getRecentActivities('#recent_activities',userId);
 			getMiniFollowingList(userName, userId);
 			getMiniFollowersList(userName, userId);
+			getUpcomingBadges('#profile_upcoming_badges',6);
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -839,20 +868,20 @@ function getBadgeNotification(){
 	
 }
 
-function getRecentActivities() {
+function getRecentActivities(ui, user_id) {
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/app/recentactivities/' + fanpageId,
+		url : serverUrl + '/app/app/recentactivities/' + fanpageId + '?userid=' + user_id,
 		dataType : "html",
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#recent_activities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$(ui).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
 			
-			$('#recent_activities').html(data);
+			$(ui).html(data);
 			changeTime('.time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -1038,13 +1067,13 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 }
 
 
-function getLikesList(postid, load) {
+function getLikesList(postid, limit, load) {
 	load = typeof load !== 'undefined' ? load : true;
 	popup(load);
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/getlikeslist/' + fanpageId + '?post_id='
-				+ postid ,
+				+ postid + '&limit=' + limit,
 		dataType : "html",
 		cache : false,
 		async : true,
@@ -1314,7 +1343,7 @@ function charcheck(){
 function resetTour(){
 	feedLimit = 0;
 	getNewsfeed('#news-feed');
-
+	
 	$('#leaderboard').html('');
 	$('#profile').html('');
 	$('#achievements').html('');

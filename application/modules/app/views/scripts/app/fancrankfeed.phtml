@@ -219,7 +219,7 @@
 	</div>
 	<div class="social like <?=$post->id?>"  <?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>style="display:none"<?php }?>>
 		
-			<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$post->id?>', true)" data-original-title="
+			<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$post->id?>',<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>, true)" data-original-title="
 						<?php 	$likeslist = $post->likes->data;
 								$countlikes = count($likeslist);
 								for($i = 0; $i < $countlikes - 1; $i++){

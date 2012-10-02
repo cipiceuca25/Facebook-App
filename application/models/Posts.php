@@ -154,43 +154,79 @@ class Model_Posts extends Model_DbTable_Posts
 
 	
 	public function getMyFeedPost($fanpage_id, $user_id, $limit, $myfeedoffset){
-		$select="Select h.*, fan_name, fanpage_name from(
-		
-				SELECT p.*
-				FROM subscribes s , posts p
-				where s.facebook_user_id = '".$user_id."' && s.fanpage_id = '".$fanpage_id."' && s.follow_enable = 1
-				&& p.facebook_user_id = s.facebook_user_id_subscribe_to && s.fanpage_id = p.fanpage_id
+		$select="Select h.* from(
 				
-				union
-				
-				SELECT p.*
-				FROM subscribes sub ,likes likes, posts p
-				where sub.facebook_user_id = '".$user_id."' && sub.fanpage_id = '".$fanpage_id."'  && sub.follow_enable = 1
-				&& sub.facebook_user_id_subscribe_to = likes.facebook_user_id && likes.fanpage_id = sub.fanpage_id
-				&& likes.post_id = p.post_id && likes.post_type != 'comment'
-				
-				union
-				
-				SELECT p.*
-				FROM subscribes sub , comments com, posts p
-				where sub.facebook_user_id = '".$user_id."' && sub.fanpage_id = '".$fanpage_id."'  && sub.follow_enable = 1
-				&& sub.facebook_user_id_subscribe_to = com.facebook_user_id && com.fanpage_id = sub.fanpage_id
-				&& p.post_id = com.comment_post_id && p.fanpage_id = sub.fanpage_id
-				
-				union
-				
-				SELECT p.*
-				FROM subscribes sub , likes likes, comments com, posts p
-				where sub.facebook_user_id = '".$user_id."' && sub.fanpage_id = '".$fanpage_id."'  && sub.follow_enable = 1
-				&& sub.facebook_user_id_subscribe_to = likes.facebook_user_id && likes.fanpage_id = sub.fanpage_id
-				&& likes.post_id = com.comment_id && likes.post_type = 'comment' && com.comment_post_id = p.post_id
-				)as h 
-				left join fans
-				on (h.facebook_user_id = fans.facebook_user_id && fans.fanpage_id = h.fanpage_id)
-			 	left join fanpages
-				on (h.fanpage_id = fanpages.fanpage_id)
+	/*JUST POSTS FROM SELF, ADMIN, FOLLOW*/
+
+	select p.*
+	from posts p
+	where (p.facebook_user_id =197221680326345 || p.facebook_user_id =28117303) && p.fanpage_id = 197221680326345
+	
+	union
+
+	SELECT p.*
+	FROM subscribes s , posts p
+	where s.facebook_user_id = 28117303 && s.fanpage_id = 197221680326345 && s.follow_enable = 1
+	&& p.facebook_user_id = s.facebook_user_id_subscribe_to && s.fanpage_id = p.fanpage_id
+	
+	union
+
+	/*posts with comments that are by admin, self or follow*/
+	
+	Select P.*
+	from posts p, comments c 
+	where (c.facebook_user_id = 197221680326345 || c.facebook_user_id = 28117303 ) && c.comment_post_id = p.post_id && p.fanpage_id = 197221680326345 && c.fanpage_id = 197221680326345
+	
+	union 
+	SELECT p.*
+	FROM subscribes s , posts p, comments c
+	where s.facebook_user_id = 28117303 && s.fanpage_id = 197221680326345 && s.follow_enable = 1
+	&& c.facebook_user_id = s.facebook_user_id_subscribe_to && s.fanpage_id = p.fanpage_id && p.fanpage_id = c.fanpage_id && c.fanpage_id = 197221680326345
+
+	union
+	/*posts with likes that are by admin self or follow*/
+	
+	select p.*
+	from likes l, posts p
+	where (l.facebook_user_id = 28117303 || l.facebook_user_id = 197221680326345) && p.post_id = l.post_id && l.fanpage_id = 197221680326345
+
+	union
+	
+	select p.*
+	from likes l, posts p, subscribes s
+	where s.facebook_user_id = 28117303 and l.facebook_user_id = s.facebook_user_id_subscribe_to and s.follow_enable = 1 and p.post_id = l.post_id
+		and s.fanpage_id = l.fanpage_id and l.fanpage_id = p.fanpage_id and l.fanpage_id = 197221680326345
+	
+	union
+	/*post with comments that have likes by admin self or follow*/
+
+	select p.*
+	from likes l , posts p, comments c
+	where (l.facebook_user_id = 28117303 || l.facebook_user_id = 197221680326345) and l.post_id = c.comment_id and c.comment_post_id = p.post_id
+		and l.fanpage_id = 197221680326345 and l.fanpage_id = c.fanpage_id and c.fanpage_id = p.fanpage_id 
+
+	union
+
+	select p.*
+	from likes l , posts p, comments c, subscribes s
+	where l.facebook_user_id = s.facebook_user_id_subscribe_to and s.facebook_user_id = 28117303  and l.post_id = c.comment_id and c.comment_post_id = p.post_id
+		and l.fanpage_id = 197221680326345 and l.fanpage_id = c.fanpage_id and c.fanpage_id = p.fanpage_id and s.fanpage_id = p.fanpage_id
+
+	union
+	
+	select * from
+	(SELECT DISTINCT p.*
+					FROM posts p 
+					WHERE  p.fanpage_id = 197221680326345
+					AND p.created_time < '2012-10-02' 	
+					AND p.created_time > '2012-09-20'
+					ORDER BY (post_comments_count + post_likes_count)*1000000/TIMESTAMPDIFF(SECOND, created_time, NOW())  DESC
+					limit 5) as q
+	
+	)as h 
+
 						
-				order by h.created_time DESC";
+order by h.created_time DESC";
 						
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";

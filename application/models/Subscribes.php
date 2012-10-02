@@ -44,7 +44,10 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 	}
 	
 	public function getFollowersList($user, $fanpage, $limit){
-		$select = "select s.*,f.facebook_user_id, f.facebook_user_name, f.facebook_user_last_name, f.facebook_user_first_name from subscribes s, facebook_users f where s.follow_enable=1 AND f.facebook_user_id=s.facebook_user_id AND s.facebook_user_id_subscribe_to =".$user." AND s.fanpage_id=".$fanpage ;
+		$select = "select s.*,f.facebook_user_id, f.facebook_user_name, f.facebook_user_last_name, f.facebook_user_first_name 
+				from subscribes s, facebook_users f 
+				where s.follow_enable=1 AND f.facebook_user_id=s.facebook_user_id AND 
+				s.facebook_user_id_subscribe_to =".$user." AND s.fanpage_id=".$fanpage ;
 		
 		if(($limit !== false) && ($limit !=0))
 			$select = $select . " LIMIT $limit";
@@ -53,7 +56,10 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 	}
 	
 	public function getFollowingList($user, $fanpage, $limit){
-		$select = "select s.*,f.facebook_user_id, f.facebook_user_name, f.facebook_user_last_name, f.facebook_user_first_name from subscribes s, facebook_users f where s.follow_enable=1  AND f.facebook_user_id =s.facebook_user_id_subscribe_to AND s.facebook_user_id =".$user." AND s.fanpage_id=".$fanpage ;
+		$select = "select s.*,f.facebook_user_id, f.facebook_user_name, f.facebook_user_last_name, f.facebook_user_first_name 
+				from subscribes s, facebook_users f 
+				where s.follow_enable=1  AND f.facebook_user_id =s.facebook_user_id_subscribe_to AND
+				 s.facebook_user_id =".$user." AND s.fanpage_id=".$fanpage ;
 		
 		if(($limit !== false) && ($limit !=0))
 			$select = $select . " LIMIT $limit";

@@ -56,6 +56,8 @@ class Model_Fans extends Model_DbTable_Fans
 			$data['fan_points']	+= $this->_newBalance;
 			$data['fan_level'] = $this->calculateLevel($data['fan_points']);
 		}
+
+		//Zend_Debug::dump($data);
 		$this->insert($data);
 	}
 	

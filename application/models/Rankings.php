@@ -153,7 +153,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 					WHERE  p.fanpage_id = '".$page_id."' AND f.fanpage_id = '".$page_id ."' 
 					AND p.created_time < '". $today->toString('yyyy-MM-dd HH:mm:ss') ." ' 	
 					AND p.created_time > '". $date->toString('yyyy-MM-dd HH:mm:ss') ." '
-							 ORDER BY count DESC";
+					ORDER BY count DESC";
 		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
