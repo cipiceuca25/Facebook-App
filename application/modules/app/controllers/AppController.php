@@ -1863,7 +1863,16 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    	//if($view != 'myfeed'){
 		    if ($until != 'undefined'){
 		    	$client->setParameterGet('until', $until);
+		    	
+		    }else{
+		    	
 		    }
+		   
+		}
+		if ($until != 'undefined'){ 
+			$until = date("Y-m-d h:i:s", $until);
+		}else{
+			$until = 0;
 		}
     	switch ($view){
     		case 'admin':
@@ -1881,6 +1890,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				return $this->feedFilterByUser($result->data, $this->_fanpageId);*/
     		case 'myfeed':   			
     				$post = new Model_Posts();
+    				
     				$post = $post->getMyFeedPost($this->_fanpageId, $this->_userId , 10, $until);
     				$myfeed = array();
     				$myfeed = array_merge($this->getPostLikesByBatch(array_slice($post, 0,5)),$this->getPostLikesByBatch(array_slice($post, 5,5)));
