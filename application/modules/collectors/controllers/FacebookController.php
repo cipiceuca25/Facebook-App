@@ -896,7 +896,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     
     public function testsecurityAction() {
     	print $_GET['a'] .'</br>';
-    	$data = array('username'=>'stephen', 'points'=>123, 'email'=>'stephen@gmail.com', 'access_token'=>'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno', 'created_time'=>(new Zend_Date())->toString());
+    	//$data = array('username'=>'stephen', 'points'=>123, 'email'=>'stephen@gmail.com', 'access_token'=>'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno', 'created_time'=>(new Zend_Date())->toString());
     	$encryptData = Fancrank_Crypt::encrypt($data, 'hello');
     	print $encryptData;
     	$decryptData = Fancrank_Crypt::decrypt($encryptData, 'hello');
@@ -931,7 +931,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$mailModel = new Fancrank_Mail('stephen@fancrank.com');
     	$date = Zend_Date::now();
     	$mailModel->setSubject('Redeem Tracking: ' .$date->toString(Zend_date::ISO_8601).PHP_EOL);
-    	$data = array('username'=>'stephen', 'points'=>123, 'email'=>'stephen@gmail.com', 'access_token'=>'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno', 'created_time'=>(new Zend_Date())->toString());
+    	//$data = array('username'=>'stephen', 'points'=>123, 'email'=>'stephen@gmail.com', 'access_token'=>'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno', 'created_time'=>(new Zend_Date())->toString());
     	$link = 'www.fancrank.local/app/redeem/track?data=' .Fancrank_Crypt::encrypt($data);
     	$mailModel->sendMail($link);
     	
@@ -963,5 +963,3 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	return $result;
     }
 }
-
-?>
