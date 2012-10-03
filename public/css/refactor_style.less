@@ -271,24 +271,36 @@ margin-right:4px;
 	text-align:center;
 }
 
-.toolbar .ub{
-	display:inline-block;
+.toolbar #notification_upcoming_badges .upcoming-badges{
+	
+	width:20px;
+	margin:0 1px 0;
 }
 
+#notification_upcoming_badges{
+	width:auto;
+}
 
-.toolbar .ub .progress{
+.toolbar #notification_upcoming_badges .upcoming-badges .progress{
 height:15px;
 width:15px;
 border:1px solid @color-main-container;
 position:relative;
 top:1px;
+margin:0;
 }
 
-.toolbar .ub .bar{
+.toolbar #notification_upcoming_badges .upcoming-badges .progress a{
+	float:left;
+	position:relative;
+	top:-19px;
+}
+
+.toolbar #notification_upcoming_badges .upcoming-badges .bar{
 height:15px;
 }
 
-.toolbar .ub img{
+.toolbar #notification_upcoming_badges .upcoming-badges img{
 height:15px;
 width:15px;
 }
@@ -605,10 +617,10 @@ background-color: @color-post-background-hover;
 }
 
 .top-list .stats{
-	float:left;
-	margin-left:295px;
-	position:relative;
-	top:32px;
+
+	right:75px;
+	position:absolute;
+	top:30px;
 	
 }
 
@@ -621,6 +633,8 @@ margin-top:8px;
 .top-list .ranker{
 border-bottom:1px solid @color-ranking-border;
 height:55px;
+width:100%;
+position:relative;
 }	
 
 .top-list.mini .ranker{
@@ -686,7 +700,11 @@ font:bold 35px/55px Helvetica, Arial,sans-serif;
 .top-list .user{
 margin:10px 0 0 10px;
 float:left;
-width:160px;
+width:180px;
+}
+
+#user_list .top-list .user{
+width:auto;
 }
 
 .top-list.mini .user{
@@ -1069,7 +1087,7 @@ display:block;
 .comments.popup_scroll{
 overflow: auto;
 max-height: 300px;
-width:439px;
+width:508px;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1144,7 +1162,7 @@ border-top:0px solid;
 #recent_activities{
 overflow: auto;
 padding-left:5px;
-height: 720px;
+height: 703px;
 .border-radius(3px);
 }
 
@@ -1155,8 +1173,11 @@ background:@color-post-background;
 padding:3px;
 .border-radius(0px);
 margin:1px -5px 0px;
-}
 
+}
+#recent_activities .post-container{
+width:229px;
+}
 #user_activities .post-container:hover,
 #recent_activities .post-container:hover{
 background:@color-post-background-hover;
@@ -1177,7 +1198,7 @@ left:5px;
 
 .track3.popup {
 width: 0px;
-margin-top:1px;
+
 }
 
 .handle3.popup {
@@ -1201,6 +1222,12 @@ padding:9px;
 height:50px;
 width:50px;
 margin:0px 8px 0px;
+}
+.upcoming-badges .progress a{
+position:relative;
+top:-50px;
+float:left;
+
 }
 
 .upcoming-badges .bar{

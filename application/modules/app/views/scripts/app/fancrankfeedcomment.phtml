@@ -104,7 +104,7 @@
 		<!--  <img src="/img/news-feed/icon-likes.png" /> -->
 		<span class="likes">
 	
-		<span class="like_<?= $post->id?>" data-like-count=<?=isset($post->like_count)?$post->like_count:'0'?> ><?=isset($post->like_count)?$post->like_count:'0'?> </span>
+		<a class="like_<?= $post->id?>" data-like-count=<?=isset($post->like_count)?$post->like_count:'0'?>  onclick="getLikesList('<?=$post->id?>',<?=isset($post->like_count)?$post->like_count:'0'?>, true)" rel="tooltip" data-placement="top" data-original-title="Click to See who likes this"><?=isset($post->like_count)?$post->like_count:'0'?> </a>
 		
 		<a class="like_control_<?= $post->id?>" rel="tooltip" data-placement="top"
 		<?php if ($this->likes[$count] == 0) {?>

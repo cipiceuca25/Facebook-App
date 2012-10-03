@@ -963,3 +963,5 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	return $result;
     }
 }
+
+?>

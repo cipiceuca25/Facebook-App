@@ -148,7 +148,7 @@
 						<a rel="tooltip" data-placement="right" class="time" data-original-title="" data-unix-time="<?=  strtotime($this->post->created_time)?>"></a>
 					</div>
 					<div class="social like <?=$this->post->id?>"  <?php if(!isset($this->post->likes->count) || ($this->post->likes->count == 0)){?>style="display:none"<?php }?>>
-						<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$this->post->id?>', false)" data-original-title="
+						<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$this->post->id?>',<? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>, false)" data-original-title="
 							<?php 	$likeslist = $this->post->likes->data;
 									$countlikes = count($likeslist);
 										for($i = 0; $i < $countlikes - 1; $i++){
@@ -306,7 +306,7 @@
 										<?php if ($this->likes[$count] == 0) {?>
 									  		data-original-title="Click to like this" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')">Like
 										<?}else{?>
-									  		data-original-title="You like this" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')" >Unlike
+									  		data-original-title="You like this" onclick="unlike('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')"> Unlike
 										<?php }?>
 									</a> 
 							 	</span>	 

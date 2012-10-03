@@ -35,10 +35,11 @@
 			var baseAppUrl = "<?= $this->url() ?>";
 			var serverUrl = "<?= $this->fullServerUrl()?>";
 			var appId = "<?= $this->layout()->appKey ?>";
-			var userId = "<?= $this->user_id ?>";
 			
 			var fanpageId = "<?= $this->fanpage_id?>";	
 			var fanpageName = "<?= $this->fanpage_name?>";	
+			
+			var userId = "<?= $this->user_id ?>";
 			var userName = "<?= $this->username?>";
 			var userAccessToken = "<?= $this->facebook_user_access_token?>";
 			var tour = "<?= $this->tour ?>";
@@ -135,22 +136,22 @@
 							</ul>
 							<ul class="toolbar">
 								
-								<li><div><img src="/img/coins.png" /><?= $this->notifan->fan_currency?></div></li>
-								<li>
-
-								<?php foreach ($this->notibadges as $b){?>
+								<li><div><img src="/img/coins.png" /><?= $this->fan->fan_currency?></div></li>
+								<li class="row-fluid" id='notification_upcoming_badges'>
+								<!--  
+								<?php // foreach ($this->notibadges as $b){?>
 									<div class="ub">
 										<div class="progress">
-											<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
-											<a data-original-title="<?= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+											<div class="bar" style="width: <? //= $b['percentage']?>%;"></div>
+											<a data-original-title="<?//= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
 											rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-19px;" >
 												
-												<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
+												<img src="<?//= $b['picture']?>" style="opacity:<?//= $b['percentage']/100?>"/>
 											</a>
 										</div>
 									</div>
-								<?php }?>
-
+								<?php // }?>
+								-->
 								</li>
 								<li class="notification "><a rel="tooltip" data-original-title="You have no new Notifications" data-placement="top"><i class="icon-exclamation-sign"></i> <span id="badge-notification-count">0</span></a></li>
 							

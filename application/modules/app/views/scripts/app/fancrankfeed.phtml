@@ -4,16 +4,14 @@
 <?php if(empty($this->post)){?>
 	
 	<li class="post-container">
-	<div class="user">
-	
-	</div>
-	<div class="post_container">
-		<div class="post">
-			<div class="message">
-			No More Posts
+
+		
+			<div class="post">
+				<div class="message">
+				No More Posts
+				</div>
 			</div>
-		</div>
-		</div>
+		
 	</li>
 <?}else{?>
 
@@ -73,6 +71,8 @@
 		<?php }?>
 	><?=  $post->from->name?>
 	</a></div>
+	
+		
 	
 	</div>
 	
@@ -213,10 +213,13 @@
 
 		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 
+		&middot;
+		<?= $this->yourpoints[$count]?> pts earned from this post.
+		
 	</div>
 	<div class="social like <?=$post->id?>"  <?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>style="display:none"<?php }?>>
 		
-			<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$post->id?>', true)" data-original-title="
+			<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$post->id?>',<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>, true)" data-original-title="
 						<?php 	$likeslist = $post->likes->data;
 								$countlikes = count($likeslist);
 								for($i = 0; $i < $countlikes - 1; $i++){
@@ -307,7 +310,8 @@
 <?php endforeach; ?>
 				
 				
-<?php $last_object = $this->post[count($this->post) - 1] ?>
+<?php  $last_object = $this->post[count($this->post) - 1] ?>
+
 <li id="last_post_time" data-time="
 <?=  strtotime($last_object->created_time)?>"></li>
 <li id ="more_post"><button  class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>

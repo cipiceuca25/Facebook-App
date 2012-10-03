@@ -4,7 +4,7 @@ jQuery(document).ready(function($){
 	color2 = $('.toolbar li').css("background-color");
 	//alert(color1 + color2);
 	
-	setInterval(isLoginNotification, 15000);
+	setInterval(isLoginNotification, 150000);
 	
 	$('.notification').live('click', function(){
 		$('.notification').css('background-color',color2);
