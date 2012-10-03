@@ -5,13 +5,13 @@
 	
 	<li class="post-container">
 
-		<div class="post_container">
+		
 			<div class="post">
 				<div class="message">
 				No More Posts
 				</div>
 			</div>
-		</div>
+		
 	</li>
 <?}else{?>
 
@@ -310,7 +310,8 @@
 <?php endforeach; ?>
 				
 				
-<?php $last_object = $this->post[count($this->post) - 1] ?>
+<?php  $last_object = $this->post[count($this->post) - 1] ?>
+
 <li id="last_post_time" data-time="
 <?=  strtotime($last_object->created_time)?>"></li>
 <li id ="more_post"><button  class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>

@@ -154,84 +154,93 @@ class Model_Posts extends Model_DbTable_Posts
 
 	
 	public function getMyFeedPost($fanpage_id, $user_id, $limit, $myfeedoffset){
-		$select="Select h.* from(
+		
+		$date = new Zend_Date();
+		$today = new Zend_Date();
+		$today->now();
+		//echo $today->toString('yyyy-MM-dd HH:mm:ss');
+		$date->sub('7', Zend_Date::DAY);
+		
+		$select="Select distinct h.* from(
 				
-	/*JUST POSTS FROM SELF, ADMIN, FOLLOW*/
-
-	select p.*
-	from posts p
-	where (p.facebook_user_id =197221680326345 || p.facebook_user_id =28117303) && p.fanpage_id = 197221680326345
-	
-	union
-
-	SELECT p.*
-	FROM subscribes s , posts p
-	where s.facebook_user_id = 28117303 && s.fanpage_id = 197221680326345 && s.follow_enable = 1
-	&& p.facebook_user_id = s.facebook_user_id_subscribe_to && s.fanpage_id = p.fanpage_id
-	
-	union
-
-	/*posts with comments that are by admin, self or follow*/
-	
-	Select P.*
-	from posts p, comments c 
-	where (c.facebook_user_id = 197221680326345 || c.facebook_user_id = 28117303 ) && c.comment_post_id = p.post_id && p.fanpage_id = 197221680326345 && c.fanpage_id = 197221680326345
-	
-	union 
-	SELECT p.*
-	FROM subscribes s , posts p, comments c
-	where s.facebook_user_id = 28117303 && s.fanpage_id = 197221680326345 && s.follow_enable = 1
-	&& c.facebook_user_id = s.facebook_user_id_subscribe_to && s.fanpage_id = p.fanpage_id && p.fanpage_id = c.fanpage_id && c.fanpage_id = 197221680326345
-
-	union
-	/*posts with likes that are by admin self or follow*/
-	
-	select p.*
-	from likes l, posts p
-	where (l.facebook_user_id = 28117303 || l.facebook_user_id = 197221680326345) && p.post_id = l.post_id && l.fanpage_id = 197221680326345
-
-	union
-	
-	select p.*
-	from likes l, posts p, subscribes s
-	where s.facebook_user_id = 28117303 and l.facebook_user_id = s.facebook_user_id_subscribe_to and s.follow_enable = 1 and p.post_id = l.post_id
-		and s.fanpage_id = l.fanpage_id and l.fanpage_id = p.fanpage_id and l.fanpage_id = 197221680326345
-	
-	union
-	/*post with comments that have likes by admin self or follow*/
-
-	select p.*
-	from likes l , posts p, comments c
-	where (l.facebook_user_id = 28117303 || l.facebook_user_id = 197221680326345) and l.post_id = c.comment_id and c.comment_post_id = p.post_id
-		and l.fanpage_id = 197221680326345 and l.fanpage_id = c.fanpage_id and c.fanpage_id = p.fanpage_id 
-
-	union
-
-	select p.*
-	from likes l , posts p, comments c, subscribes s
-	where l.facebook_user_id = s.facebook_user_id_subscribe_to and s.facebook_user_id = 28117303  and l.post_id = c.comment_id and c.comment_post_id = p.post_id
-		and l.fanpage_id = 197221680326345 and l.fanpage_id = c.fanpage_id and c.fanpage_id = p.fanpage_id and s.fanpage_id = p.fanpage_id
-
-	union
-	
-	select * from
-	(SELECT DISTINCT p.*
-					FROM posts p 
-					WHERE  p.fanpage_id = 197221680326345
-					AND p.created_time < '2012-10-02' 	
-					AND p.created_time > '2012-09-20'
-					ORDER BY (post_comments_count + post_likes_count)*1000000/TIMESTAMPDIFF(SECOND, created_time, NOW())  DESC
-					limit 5) as q
-	
-	)as h 
-
-						
-order by h.created_time DESC";
+				/*JUST POSTS FROM SELF, ADMIN, FOLLOW*/
+			
+				select p.post_id ,p.created_time
+				from posts p
+				where (p.facebook_user_id =$fanpage_id || p.facebook_user_id = $user_id) && p.fanpage_id = $fanpage_id
+				
+				union
+			
+				SELECT p.post_id ,p.created_time
+				FROM subscribes s , posts p
+				where s.facebook_user_id =  $user_id && s.fanpage_id = $fanpage_id && s.follow_enable = 1
+				&& p.facebook_user_id = s.facebook_user_id_subscribe_to && s.fanpage_id = p.fanpage_id
+				
+				union
+			
+				/*posts with comments that are by admin, self or follow*/
+				
+				Select p.post_id ,p.created_time
+				from posts p, comments c 
+				where (c.facebook_user_id = $fanpage_id || c.facebook_user_id =  $user_id ) && c.comment_post_id = p.post_id && p.fanpage_id = $fanpage_id && c.fanpage_id = $fanpage_id
+				
+				union 
+				SELECT p.post_id ,p.created_time
+				FROM subscribes s , posts p, comments c
+				where s.facebook_user_id =  $user_id && s.fanpage_id = $fanpage_id && s.follow_enable = 1
+				&& c.facebook_user_id = s.facebook_user_id_subscribe_to && s.fanpage_id = p.fanpage_id && p.fanpage_id = c.fanpage_id && c.fanpage_id = $fanpage_id && c.comment_post_id = p.post_id
+			
+				union
+				/*posts with likes that are by admin self or follow*/
+				
+				select p.post_id ,p.created_time
+				from likes l, posts p
+				where (l.facebook_user_id =$user_id || l.facebook_user_id = $fanpage_id) && p.post_id = l.post_id && l.fanpage_id = $fanpage_id
+			
+				union
+				
+				select p.post_id ,p.created_time
+				from likes l, posts p, subscribes s
+				where s.facebook_user_id = $user_id and l.facebook_user_id = s.facebook_user_id_subscribe_to and s.follow_enable = 1 and p.post_id = l.post_id
+					and s.fanpage_id = l.fanpage_id and l.fanpage_id = p.fanpage_id and l.fanpage_id =$fanpage_id
+				
+				union
+				/*post with comments that have likes by admin self or follow*/
+			
+				select p.post_id ,p.created_time
+				from likes l , posts p, comments c
+				where (l.facebook_user_id = $user_id || l.facebook_user_id = $fanpage_id) and l.post_id = c.comment_id and c.comment_post_id = p.post_id
+					and l.fanpage_id = $fanpage_id and l.fanpage_id = c.fanpage_id and c.fanpage_id = p.fanpage_id 
+			
+				union
+			
+				select p.post_id ,p.created_time
+				from likes l , posts p, comments c, subscribes s
+				where l.facebook_user_id = s.facebook_user_id_subscribe_to and s.facebook_user_id = $user_id  and l.post_id = c.comment_id and c.comment_post_id = p.post_id
+					and l.fanpage_id = $fanpage_id and l.fanpage_id = c.fanpage_id and c.fanpage_id = p.fanpage_id and s.fanpage_id = p.fanpage_id
+			
+				union
+				
+				select post_id ,created_time from
+				(SELECT DISTINCT p.post_id ,p.created_time
+								FROM posts p 
+								WHERE  p.fanpage_id = $fanpage_id and p.facebook_user_id != $fanpage_id
+								AND p.created_time < '".$today->toString('yyyy-MM-dd HH:mm:ss')."'	
+								AND p.created_time > '".$date->toString('yyyy-MM-dd HH:mm:ss')."'
+								ORDER BY (post_comments_count + post_likes_count)*1000000/TIMESTAMPDIFF(SECOND, created_time, NOW())  DESC
+								limit 5) as q
+				
+				)as h ";
+			
+			if($myfeedoffset > 0)
+				$select = $select . "where h.created_time < '$myfeedoffset' ";
+		
+			$select = $select ."order by h.created_time DESC";
 						
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
-		if($myfeedoffset != 0)
-			$select = $select . " OFFSET $myfeedoffset";
+	
+		
 		
 		return $this->getAdapter()->fetchAll($select);
 	

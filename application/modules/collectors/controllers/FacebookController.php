@@ -370,19 +370,21 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	//$fanpageId = '178384541065';
     	//$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
     	
-    	$fanpageId = '216821905014540';
-    	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
-    	   
+    	//$fanpageId = '216821905014540';
+    	//$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
+    	$fanpageId =  '197221680326345';
+    	$accessToken = 'AAAFHFbxmJmgBAP7pwKeGSqDypLsvmWcsLLt5HUMf87MnMoItg9T2PzvuLUOGeRl3Vzs7mLVZCvyOB30kIC1ZBKhKCSOCdub0oVXmrznghHoRMGpyHZB';
+    	
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
     	$yesterday = new Zend_Date();
-    	$yesterday->sub(2, Zend_Date::DAY);
+    	$yesterday->sub(7, Zend_Date::DAY);
     	//echo $yesterday->getTimestamp();
     	//echo $yesterday->toString('yyyy-MM-dd');
     	$since = new Zend_Date($yesterday->toString('yyyy-MM-dd'), 'yyyy-MM-dd');
     	echo $since->toString('yyyy-MM-dd');    	
     	$until = $since->getTimestamp();
     	$since = $until-3600*24;
-		$collector->updateFanpage('yesterday', 'now');
+		$collector->updateFanpage($since, 'now');
     }
     
     public function test3Action () {
@@ -840,7 +842,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     
     public function testsecurityAction() {
     	print $_GET['a'] .'</br>';
-    	$data = array('username'=>'stephen', 'points'=>123, 'email'=>'stephen@gmail.com', 'access_token'=>'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno', 'created_time'=>(new Zend_Date())->toString());
+    	//$data = array('username'=>'stephen', 'points'=>123, 'email'=>'stephen@gmail.com', 'access_token'=>'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno', 'created_time'=>(new Zend_Date())->toString());
     	$encryptData = Fancrank_Crypt::encrypt($data, 'hello');
     	print $encryptData;
     	$decryptData = Fancrank_Crypt::decrypt($encryptData, 'hello');
@@ -875,7 +877,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$mailModel = new Fancrank_Mail('stephen@fancrank.com');
     	$date = Zend_Date::now();
     	$mailModel->setSubject('Redeem Tracking: ' .$date->toString(Zend_date::ISO_8601).PHP_EOL);
-    	$data = array('username'=>'stephen', 'points'=>123, 'email'=>'stephen@gmail.com', 'access_token'=>'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno', 'created_time'=>(new Zend_Date())->toString());
+    	//$data = array('username'=>'stephen', 'points'=>123, 'email'=>'stephen@gmail.com', 'access_token'=>'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno', 'created_time'=>(new Zend_Date())->toString());
     	$link = 'www.fancrank.local/app/redeem/track?data=' .Fancrank_Crypt::encrypt($data);
     	$mailModel->sendMail($link);
     	

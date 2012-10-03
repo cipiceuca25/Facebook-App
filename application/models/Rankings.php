@@ -138,7 +138,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 	
 	}
 
-	public function getTopPosts($page_id, $limit=5) {
+	public function getTopPosts($page_id, $limit) {
 		$date = new Zend_Date();
 		$today = new Zend_Date();
 		$today->now();
@@ -157,7 +157,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
-		
+	
 		return $this->getAdapter()->fetchAll($select);
 	}
 	

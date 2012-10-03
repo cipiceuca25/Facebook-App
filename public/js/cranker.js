@@ -265,7 +265,7 @@ function popover(x) {
 	
 		success : function(data) {
 			$(x).attr('data-content', data);
-			$(x).popover('show');
+			//$(x).popover('show');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -666,7 +666,7 @@ function getFancrankfeed(view) {
 	//	myfeedoffset = 0;
 		
 	//}
-	if((setFeed == view) && ((view == 'all') || (view =='admin'))){
+	if(setFeed == view){
 		last = parseInt($('#last_post_time').attr('data-time')) - 1;
 		
 	//}else if (view == 'myfeed'){
