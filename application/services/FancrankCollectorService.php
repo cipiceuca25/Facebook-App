@@ -842,7 +842,7 @@ class Service_FancrankCollectorService {
 		return array_unique($fansIdList);
 	}
 	
-	private function getFansList($fansIdsList, $access_token) {
+	public function getFansList($fansIdsList, $access_token) {
 		$results = array();
 		$fansIdsGroup = $this->arrayToGroups($fansIdsList, 500);
 		//Zend_Debug::dump($fansIdsGroup);

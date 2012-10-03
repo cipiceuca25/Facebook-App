@@ -18,4 +18,3 @@ class Model_DbTable_PointLog extends Fancrank_Db_Table
     }
     
 }
-

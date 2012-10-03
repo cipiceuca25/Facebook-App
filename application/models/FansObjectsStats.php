@@ -21,6 +21,27 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		}
 	}
 	
+	public function updatedFanWithPoint($fanpage_id, $facebook_user_id, $xp=0, $points=0) {
+		$date = new Zend_Date();
+		$fanStat = $this->findFan($fanpage_id, $facebook_user_id);
+	
+		$data = $this->getFanStatById($fanpage_id, $facebook_user_id);
+		$data['xp'] = $xp;
+		$data['points'] = $points;
+	
+		if($fanStat) {
+			foreach ($data as $key => $value) {
+				$fanStat->{$key} = $value;
+			}
+			$fanStat->save();
+			return $fanStat->toArray();
+		}else {
+			if($this->insert($data)) {
+				return $data;
+			}
+		}
+	}
+	
 	public function getFanStatById($fanpage_id, $facebook_user_id) {
 		$select = "select concat('post_', post_type) as type, count(*) as count from posts where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id group by post_type
 					union

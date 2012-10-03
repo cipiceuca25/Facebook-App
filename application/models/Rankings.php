@@ -64,6 +64,19 @@ class Model_Rankings extends Model_DbTable_Rankings
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	public function getTopFansByWeek($page_id, $limit = 5)
+	{
+		$lastSunday = new Zend_Date();
+		
+		$select = "
+				";
+	
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+	
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
 	public function getTopTalker($page_id, $limit = 5)
 	{
 		//$relevant_period = new Zend_Date(time() - 15552000);
