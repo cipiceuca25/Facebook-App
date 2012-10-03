@@ -96,13 +96,13 @@ if (count($fanpageList) > 0) {
 		//hello
 		//update fanpage fans stat
 		$fan = new Model_Fans();
-		$fanList = $fan->fetchFansIdListByFanpageId($fanpage->fanpage_id);
+		$fanList = $fan->fetchFanFieldsByFanpageId($fanpage->fanpage_id, array('facebook_user_id', 'fan_points', 'fan_currency'));
 		$fanStat = new Model_FansObjectsStats();
 		
 		foreach ($fanList as $fan) {
 			try {
 				//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
-				$result = $fanStat->updatedFan($fanpage->fanpage_id, $fan['facebook_user_id']);
+				$result = $fanStat->updatedFanWithPoint($fanpage->fanpage_id, $fan['facebook_user_id'], $fan['fan_points'], $fan['fan_currency']);
 				
 				//check badge
 				$badgeDefaultModel = Fancrank_BadgeFactory::factory('default');

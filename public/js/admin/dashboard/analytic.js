@@ -1,6 +1,56 @@
 
 jQuery(document).ready(function($){
 
+	/**************** Fanpage Setting Section *******************************/
+	$( "#myFanpageSettingModel" ).dialog( "destroy" );
+
+	$('#myFanpageSettingModel').dialog({
+		autoOpen: false,
+		height: 350,
+		width: 400,
+		modal: true,
+		close: function() {
+			$( this ).dialog( "close" );
+		}
+	});
+
+	$(".model-btn").click(function (e) {
+		$('#myFanpageSettingModel').dialog( "open" );
+		e.preventDefault();
+	});
+	
+	$(".model-btn-close").click(function (e) {
+		$('#myFanpageSettingModel').dialog( "close" );
+		e.preventDefault();
+	});
+
+	$(".btn-primary").click(function (e) {
+		e.preventDefault();
+
+		var fanpageId = $(this).attr('data-id');
+		
+		var enableProfileImage = $('#enableProfileImage').val();
+		var topPostBy = $('#topPostBy').val();
+	    if(fanpageId) {
+	        $.ajax({
+	            url: '/api/fanpages/' + fanpageId+ '?top_post_choice=' +topPostBy+'&profile_image_enable='+enableProfileImage,
+	            type: 'change',
+	            dataType: 'json',
+	            error: function( res ) {
+	            	alert('error');
+	            },
+	            success: function( data ) {
+	            	if(data.code == '200') {
+		            	alert(data.message + ' ' + profile_image_enable);
+	            		//$('#myFanpageSettingModel').dialog( "close" );
+	            	}
+	            }
+	        });            
+	    }
+		$('#myFanpageSettingModel').dialog( "close" );
+	});
+
+	/***********************************************/
 	$('.progress-preview').each(function(){
 		var el = $(this);
 		function up(){
@@ -659,3 +709,54 @@ function destroyAll(){
 	}
 
 }
+
+function fileUpload(form, action_url, div_id) {
+    // Create the iframe...
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("id", "upload_iframe");
+    iframe.setAttribute("name", "upload_iframe");
+    iframe.setAttribute("style", "width: 100; height: 50; border: 1; display:none");
+ 
+    // Add to document...
+    form.parentNode.appendChild(iframe);
+    window.frames['upload_iframe'].name = "upload_iframe";
+ 
+    iframeId = document.getElementById("upload_iframe");
+ 
+    // Add event...
+    var eventHandler = function () {
+ 
+            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
+            else iframeId.removeEventListener("load", eventHandler, false);
+ 
+            // Message from server...
+            if (iframeId.contentDocument) {
+                content = iframeId.contentDocument.body.innerHTML;
+            } else if (iframeId.contentWindow) {
+                content = iframeId.contentWindow.document.body.innerHTML;
+            } else if (iframeId.document) {
+                content = iframeId.document.body.innerHTML;
+            }
+ 
+            document.getElementById(div_id).innerHTML = content;
+ 
+            // Del the iframe...
+            setTimeout('iframeId.parentNode.removeChild(iframeId)', 250);
+        }
+ 
+    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
+    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+ 
+    // Set properties of form...
+    form.setAttribute("target", "upload_iframe");
+    form.setAttribute("action", action_url);
+    form.setAttribute("method", "post");
+    form.setAttribute("enctype", "multipart/form-data");
+    form.setAttribute("encoding", "multipart/form-data");
+ 
+    // Submit the form...
+    form.submit();
+ 
+    document.getElementById(div_id).innerHTML = "Uploading...";
+}
+

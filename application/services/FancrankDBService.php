@@ -247,9 +247,9 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 					'post_likes_count'      => isset($post->likes) && isset($post->likes->count) ? $post->likes->count : 0
 			);
 
-			if (property_exists($post, 'application') && isset($post->application_id)) {
-				$row['post_application_id'] = $post->application->application_id;
-				$row['post_application_name'] = $post->application->application_name;
+			if (property_exists($post, 'application') && isset($post->application->id)) {
+				$row['post_application_id'] = $post->application->id;
+				$row['post_application_name'] = $post->application->name;
 			} else {
 				$row['post_application_id'] = null;
 				$row['post_application_name'] = null;
@@ -338,7 +338,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 				}				
 			} catch (Exception $e) {
 				$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
-				$collectorLogger->log ( sprintf ( 'Unable to save likes %s %s',  $e->getMessage ()), implode(' ', $like), Zend_log::ERR);
+				$collectorLogger->log ( sprintf ( 'Unable to save likes %s %s',  $e->getMessage (), implode(' ', $like)), Zend_log::ERR);
 			}
 		}	
 	}

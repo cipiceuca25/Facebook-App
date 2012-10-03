@@ -108,7 +108,7 @@ function sendNotification() {
 				}			
 			}			
 		} catch (Exception $e) {
-			
+			echo $e->getMessage();
 		}
 	}
 }

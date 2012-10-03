@@ -64,6 +64,19 @@ class Model_Rankings extends Model_DbTable_Rankings
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	public function getTopFansByWeek($page_id, $limit = 5)
+	{
+		$lastSunday = new Zend_Date();
+		
+		$select = "
+				";
+	
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+	
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
 	public function getTopTalker($page_id, $limit = 5)
 	{
 		//$relevant_period = new Zend_Date(time() - 15552000);
@@ -138,7 +151,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 	
 	}
 
-	public function getTopPosts($page_id, $limit) {
+	public function getTopPosts($page_id, $limit=5) {
 		$date = new Zend_Date();
 		$today = new Zend_Date();
 		$today->now();
@@ -153,11 +166,11 @@ class Model_Rankings extends Model_DbTable_Rankings
 					WHERE  p.fanpage_id = '".$page_id."' AND f.fanpage_id = '".$page_id ."' 
 					AND p.created_time < '". $today->toString('yyyy-MM-dd HH:mm:ss') ." ' 	
 					AND p.created_time > '". $date->toString('yyyy-MM-dd HH:mm:ss') ." '
-					ORDER BY count DESC";
+							 ORDER BY count DESC";
 		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
-	
+		
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
@@ -308,4 +321,3 @@ class Model_Rankings extends Model_DbTable_Rankings
 	}
 	
 }
-

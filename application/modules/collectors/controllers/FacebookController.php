@@ -370,21 +370,19 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	//$fanpageId = '178384541065';
     	//$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
     	
-    	//$fanpageId = '216821905014540';
-    	//$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
-    	$fanpageId =  '197221680326345';
-    	$accessToken = 'AAAFHFbxmJmgBAP7pwKeGSqDypLsvmWcsLLt5HUMf87MnMoItg9T2PzvuLUOGeRl3Vzs7mLVZCvyOB30kIC1ZBKhKCSOCdub0oVXmrznghHoRMGpyHZB';
-    	
+    	$fanpageId = '216821905014540';
+    	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
+    	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
     	$yesterday = new Zend_Date();
-    	$yesterday->sub(7, Zend_Date::DAY);
+    	$yesterday->sub(2, Zend_Date::DAY);
     	//echo $yesterday->getTimestamp();
     	//echo $yesterday->toString('yyyy-MM-dd');
     	$since = new Zend_Date($yesterday->toString('yyyy-MM-dd'), 'yyyy-MM-dd');
     	echo $since->toString('yyyy-MM-dd');    	
     	$until = $since->getTimestamp();
     	$since = $until-3600*24;
-		$collector->updateFanpage($since, 'now');
+		$collector->updateFanpage('5+days+ago', 'now');
     }
     
     public function test3Action () {
@@ -722,6 +720,62 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	//echo $badgeModel->isFanEligible($fanpageId, $facebookUserId, $badgeId);
     }
     
+    public function test19Action() {
+    	$badgeModel = new Model_Badges();
+
+    	$select = $badgeModel->getAdapter()->select();
+    	
+    	$arr = array(
+    				'from'=>array('p'=>'posts', 'c'=>'comments'),
+    				'join'=>array('p.post_id = c.comment_post_id'),
+    				'where'=>array('p.facebook_user_id = 65558608937', 'p.fanpage_id = 65558608937'),
+    				'order'=>array('p.post_id desc'),
+    				'limit'=> 10
+    			);
+		
+    	$arr1 = Zend_Json::encode($arr);
+    	$arr2 = Zend_Json::decode($arr1);
+    	//call_user_func_array(array($select, 'from'), array(array('p' => 'posts')));
+    	//echo $select->assemble(); exit();
+    	//Zend_Debug::dump(implode(',', array(array('c' => 'comments'), 'p.post_id = c.comment', array()))); exit();
+    	$preSelect = 'SELECT count(*) > 0 AS flag ';
+    	foreach ($arr2 as $key=>$statement) {
+    		//$select->{$key}($key == 'from' ? $statement : implode(',' ,$statement));
+    		switch ($key) {
+    			case 'from' : 
+    			    foreach ($statement as $key=>$v) {
+	    				$select->from(array($key=>$v), array());
+	    			}
+    				break;
+    			case 'join' :
+    				//call_user_func_array(array($select, $key), $statement);
+    				foreach ($statement as $v) {
+    					$select->where($v);
+    				}
+    				break;
+    			case 'where' :
+	    			foreach ($statement as $v) {
+	    					$select->where($v);
+	    			}
+    				break;
+    			case 'order' :
+    				call_user_func_array(array($select, $key), $statement);
+    				break;
+    			case 'limit' :
+    				call_user_func_array(array($select, $key), array($statement));
+    				break;		
+    			default : break;			
+    		}
+    	}
+    	echo $preSelect .$select->assemble();
+    }
+    
+    public function test20Action() {
+    	$date = new Zend_Date();
+		echo $date->get(Zend_Date::WEEKDAY_DIGIT);
+		$pointLogModel = new Model_PointLog();
+    }
+    
     public function testmemcacheAction() {
     	$starttime = time();
     	echo $starttime;
@@ -909,3 +963,4 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	return $result;
     }
 }
+

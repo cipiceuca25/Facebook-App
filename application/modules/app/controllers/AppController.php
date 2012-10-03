@@ -610,7 +610,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     		
     	}
-    	
+
     	//$likeslist[$count] = $this->getPostLikes($posts['post_id']);
     	
     	
