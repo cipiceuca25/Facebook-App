@@ -612,9 +612,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
 
     	//$likeslist[$count] = $this->getPostLikes($posts['post_id']);
-    	
-    	
-    	 
     	//Zend_Debug::dump($likeslist); exit();
     	
     	//Zend_Debug::dump($topPosts);
@@ -1580,7 +1577,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     		try {
     			$fanActivityId = $this->_fanpageId .'_' .$userid. '_fan_activity';
-    			$cache->remove($fanActivityId);
+    			//$cache->remove($fanActivityId);
     			//$cache->remove($fanActivityId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanActivityId)){
