@@ -343,7 +343,12 @@ function getUpcomingBadges(ui, limit){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$(ui).html("<div style='text-align:center;margin-top:-1px; padding: 0 25px 0 ' ><img src='/img/ajax-loader2.gif' /></div>");
+			if (ui == '#profile_upcoming_badges'){
+				$(ui).html("<div style='text-align:center;margin-top:-1px; padding: 0 25px 0 ' ><img src='/img/ajax-loader.gif' /></div>");
+			}else{
+				$(ui).html("<div style='text-align:center;margin-top:-1px; padding: 0 25px 0 ' ><img src='/img/ajax-loader2.gif' /></div>");
+				
+			}
 		},
 		success : function(data) {
 

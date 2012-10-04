@@ -2245,6 +2245,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	
     
+    	$timearray['likes']['all']['no-time'] += $timearray['likes']['comment']['no-time'];
+    	$timearray['likes']['all']['1-minute'] += $timearray['likes']['comment']['1-minute'];
+    	$timearray['likes']['all']['10-second'] += $timearray['likes']['comment']['10-second'];
+    	$timearray['get-likes']['all']['no-time'] += $timearray['get-likes']['comment']['no-time'];
+    	$timearray['get-likes']['all']['1-minute'] += $timearray['get-likes']['comment']['1-minute'];
+    	$timearray['get-likes']['all']['10-second'] += $timearray['get-likes']['comment']['10-second'];
     	/* 
     	$cg10s =  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 10 second', 'all');
     	$cg1m =  $fan->getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, 'interval 1 minute', 'all');
