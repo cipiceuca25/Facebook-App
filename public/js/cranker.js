@@ -343,7 +343,12 @@ function getUpcomingBadges(ui, limit){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$(ui).html("<div style='text-align:center;margin-top:-1px; padding: 0 25px 0 ' ><img src='/img/ajax-loader2.gif' /></div>");
+			if (ui == '#profile_upcoming_badges'){
+				$(ui).html("<div style='text-align:center;margin-top:-1px; padding: 0 25px 0 ' ><img src='/img/ajax-loader.gif' /></div>");
+			}else{
+				$(ui).html("<div style='text-align:center;margin-top:-1px; padding: 0 25px 0 ' ><img src='/img/ajax-loader2.gif' /></div>");
+				
+			}
 		},
 		success : function(data) {
 
@@ -359,52 +364,52 @@ function getUpcomingBadges(ui, limit){
 	
 }
 
-function comment_feed_filter(post_id, type, limiter, total, toggle) {
+function comment_feed_filter(post_id, type, total, toggle) {
 	ui = '#post_' + post_id;
 	//alert(ui);
-	getFeedComment(ui, post_id, type, limiter, total, toggle, false, true,false);
+	getFeedComment(ui, post_id, type,  total, toggle, false, true,false);
 	//$('.social.comment.' + post_id).css('display', 'none');
 	//changeTime(ui + ' .time');
 }
 
-function comment_feed2_filter(post_id, type, limiter, total, toggle) {
+function comment_feed2_filter(post_id, type, total, toggle) {
 	ui = '#postn_' + post_id;
 	//alert(ui);
-	getFeedComment(ui, post_id, type, limiter, total, toggle, true, true,false);
+	getFeedComment(ui, post_id, type,total, toggle, true, true,false);
 	//$('.social.commentn.' + post_id).css('display', 'none');
 	//changeTime(ui + ' .time');
 }
 
-function comment_feed3_filter(post_id, type, limiter, total, toggle) {
+function comment_feed3_filter(post_id, type, total, toggle) {
 	ui = '#popup_post_' + post_id;
 	//alert(ui);
-	getFeedComment(ui, post_id, type, limiter, total, toggle, false, true,true);
+	getFeedComment(ui, post_id, type, total, toggle, false, true,true);
 	//$('.social.comment.' + post_id).css('display', 'none');
 	//changeTime(ui + ' .time');
 }
 
 
 
-function comment_feed(post_id, type, limiter, total, toggle) {
+function comment_feed(post_id, type, total, toggle) {
 	ui = '#post_' + post_id;
 	//alert(ui);
-	getFeedComment(ui, post_id, type, limiter, total, toggle, false, false,false);
+	getFeedComment(ui, post_id, type, total, toggle, false, false,false);
 	//$('.social.comment.' + post_id).css('display', 'none');
 	
 }
 
-function comment_feed2(post_id, type, limiter, total, toggle) {
+function comment_feed2(post_id, type,  total, toggle) {
 	ui = '#postn_' + post_id;
 	//alert(ui);
-	getFeedComment(ui, post_id, type, limiter, total, toggle, true, false,false);
+	getFeedComment(ui, post_id, type, total, toggle, true, false,false);
 	//$('.social.commentn.' + post_id).css('display', 'none');
 	//changeTime(ui + ' .time');
 }
 
-function comment_feed3(post_id, type, limiter, total, toggle) {
+function comment_feed3(post_id, type,total, toggle) {
 	ui = '#popup_post_' + post_id;
 	//alert(ui);
-	getFeedComment(ui, post_id, type, limiter, total, toggle, false, false,true);
+	getFeedComment(ui, post_id, type, total, toggle, false, false,true);
 	//$('.social.comment.' + post_id).css('display', 'none');
 	//changeTime(ui + ' .time');
 }
@@ -416,14 +421,14 @@ function comment_feed3(post_id, type, limiter, total, toggle) {
 // total = what's the total number of comments
 // toggle = pop up ?
 // is this on the latest
-function getFeedComment(ui, post_id, type, limiter, total, toggle, latest, filter, popup) {
+function getFeedComment(ui, post_id, type, total, toggle, latest, filter, popup) {
 	//alert(filter);
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/fancrankfeedcomment/' + fanpageId + 
 				'?post_id=' + post_id + 
 				'&post_type=' + type + 
-				'&limit=' + limiter + 
+			
 				'&total=' + total + 
 				'&latest=' + latest +
 				'&filter=' + filter +
@@ -452,13 +457,13 @@ function getFeedComment(ui, post_id, type, limiter, total, toggle, latest, filte
 // post_id = 
 
 
-function popup_post(post_id, limiter, load) {
+function popup_post(post_id, load) {
 	load = typeof load !== 'undefined' ? load : true;
 	popup(load);
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/popuppost/' + fanpageId + '?post_id='
-				+ post_id + '&limit=' + limiter,
+				+ post_id,
 		dataType : "html",
 		cache : false,
 		async : true,
@@ -869,9 +874,11 @@ function getBadgeNotification(){
 }
 
 function getRecentActivities(ui, user_id) {
+	x=(ui == '#recent_activities')?true:false;
+
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/app/recentactivities/' + fanpageId + '?userid=' + user_id,
+		url : serverUrl + '/app/app/recentactivities/' + fanpageId + '?userid=' + user_id + '&source=' + x,
 		dataType : "html",
 		cache : false,
 		async : true,
@@ -880,7 +887,7 @@ function getRecentActivities(ui, user_id) {
 		
 		},
 		success : function(data) {
-			
+	
 			$(ui).html(data);
 			changeTime('.time');
 		},
@@ -1036,9 +1043,9 @@ function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLat
 			$('.comment_'+post_id).html(' '+post_comment_count);
 			
 			if (isLatestAdminPost){
-				comment_feed2(post_id, post_type, 10, post_comment_count, false);
+				comment_feed2(post_id, post_type,  post_comment_count, false);
 			}else{
-				comment_feed(post_id, post_type, 10, post_comment_count, false);
+				comment_feed(post_id, post_type,  post_comment_count, false);
 			}
 		}
 	});
@@ -1060,7 +1067,7 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 			//alert(post_comment_count);
 			$('.comment_'+post_id).html(post_comment_count);
 
-			popup_post(post_id, post_comment_count, false);
+			popup_post(post_id, false);
 
 		}
 	});

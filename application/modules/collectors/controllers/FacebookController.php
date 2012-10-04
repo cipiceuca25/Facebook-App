@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 require_once APPLICATION_PATH .'/../library/Facebook/facebook.php';
 
