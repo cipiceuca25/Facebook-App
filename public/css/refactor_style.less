@@ -540,7 +540,7 @@ max-height:224px;
 .top-list li:hover{
 background-color: @color-post-background-hover;
 }
-
+.top-list .stats li,
 .popover .stats li,
 .user-profile .stats li,
 #myprofile .stats li{
@@ -553,9 +553,16 @@ background-color: @color-post-background-hover;
 .user-profile .stats li{
 	width:14.1174530982%;
 }
+.top-list .stats li,
 .popover .stats li{
 	width:19.1174530982%;
 }
+
+.top-list .stats li{
+	height:20px;
+}
+
+.top-list .stats,
 .popover .stats,
 .user-profile .stats,
 #myprofile .stats{
@@ -563,9 +570,8 @@ background-color: @color-post-background-hover;
 	border-top: 1px solid @color-post-user-border;
 	//border-bottom: 1px solid @color-post-user-border;
 	margin-bottom:-5px;
+	
 }
-
-
 
 .user-profile .stats.fol{
 	border-top: 0px solid;
@@ -581,7 +587,9 @@ background-color: @color-post-background-hover;
 	top:12px;
 }
 
-
+.top-list .stats .stats-block{
+	top:0px;
+}
 .linktofb{
 	margin-top:21px;	
 	font-size:11px;
@@ -593,7 +601,7 @@ background-color: @color-post-background-hover;
 	text-rendering:optimizelegibility;
 	margin:0;
 }
-
+.top-list .stats h5,
 .popover .stats h5,
 .popover .stats h3,
 .user-profile .stats h5,
@@ -617,11 +625,12 @@ background-color: @color-post-background-hover;
 }
 
 .top-list .stats{
-
-	right:75px;
+	height:18px;
+	right:66px;
 	position:absolute;
 	top:30px;
-	
+	border-top: 0px;
+	min-width:280px;
 }
 
 #whatisfancrank,

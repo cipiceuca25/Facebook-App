@@ -75,22 +75,30 @@
 										</div>
 									</div>
 			
-    		
-									<div class="stats">
-										<img src="/img/post.png" /> <h5><?= $this->top_fans_stat[0]['total_posts']?></h5>/
-								
+    								<ul class="stats">
+										<li >
+											<div class="stats-block"><img src="/img/post.png" /><h5><?= $this->top_fans_stat[0]['total_posts']?></h5>	
+											</div>
+										</li>
+										<li >
+											<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= $this->top_fans_stat[0]['total_likes']?></h5>
+											</div>
+										</li>
+										<li>
+											<div class="stats-block"><img src="/img/comment.png" /><h5><?= $this->top_fans_stat[0]['total_comments']?></h5>
+											</div>
+										</li>
+										<li >
+											<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= $this->top_fans_stat[0]['total_get_comments']?></h5>
+											</div>
+										</li>
+										<li  >
+											<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= $this->top_fans_stat[0]['total_get_likes']?></h5>
+											</div> 
+										</li>
 									
-										<img src="/img/thumbsup.png" /> <h5><?= $this->top_fans_stat[0]['total_comments']?></h5>/
-									
-										
-										<img src="/img/comment.png" /> <h5><?= $this->top_fans_stat[0]['total_likes']?></h5>/
-									
-										
-										<img src="/img/rthumbsup.png" /> <h5><?= $this->top_fans_stat[0]['total_get_comments']?></h5>/
-								
-										
-										<img src="/img/rcomment.png"/> <h5><?= $this->top_fans_stat[0]['total_get_likes']?></h5>  
-									</div>
+									</ul>
+							
 									
 									
 									<div class="points">
@@ -151,21 +159,29 @@
 											
 										</div>
 										
-										<div class="stats">
-											<img src="/img/post.png" /> <h5><?= $this->top_fans_stat[$count]['total_posts']?></h5>/
-								
-									
-											<img src="/img/thumbsup.png" /> <h5><?= $this->top_fans_stat[$count]['total_comments']?></h5>/
+										<ul class="stats">
+											<li >
+												<div class="stats-block"><img src="/img/post.png" /><h5><?= $this->top_fans_stat[$count]['total_posts']?></h5>	
+												</div>
+											</li>
+											<li >
+												<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= $this->top_fans_stat[$count]['total_likes']?></h5>
+												</div>
+											</li>
+											<li>
+												<div class="stats-block"><img src="/img/comment.png" /><h5><?= $this->top_fans_stat[$count]['total_comments']?></h5>
+												</div>
+											</li>
+											<li >
+												<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= $this->top_fans_stat[$count]['total_get_comments']?></h5>
+												</div>
+											</li>
+											<li  >
+												<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= $this->top_fans_stat[$count]['total_get_likes']?></h5>
+												</div> 
+											</li>
 										
-											
-											<img src="/img/comment.png" /> <h5><?= $this->top_fans_stat[$count]['total_likes']?></h5>/
-										
-											
-											<img src="/img/rthumbsup.png" /> <h5><?= $this->top_fans_stat[$count]['total_get_comments']?></h5>/
-									
-											
-											<img src="/img/rcomment.png"/> <h5><?= $this->top_fans_stat[$count]['total_get_likes']?></h5> 
-										</div>
+										</ul>
 										
 										<div class="points">
 											<h3>
@@ -268,15 +284,38 @@
 										</div>
 										
 										<div class="user">
-										<div class="photo">
-											<img class="face" width="35" height="35"
-												src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
-												onerror="ImgError(this);">
+											<div class="photo">
+												<img class="face" width="35" height="35"
+													src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
+													onerror="ImgError(this);">
+											</div>
+											<div class="name">
+												YOU
+											</div>
 										</div>
-										<div class="name">
-											YOU
-										</div>
-										</div>
+										<ul class="stats">
+											<li >
+												<div class="stats-block"><img src="/img/post.png" /><h5><?= $this->your_stat[0]['total_posts']?></h5>	
+												</div>
+											</li>
+											<li >
+												<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= $this->your_stat[0]['total_likes']?></h5>
+												</div>
+											</li>
+											<li>
+												<div class="stats-block"><img src="/img/comment.png" /><h5><?=$this->your_stat[0]['total_comments']?></h5>
+												</div>
+											</li>
+											<li >
+												<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= $this->your_stat[0]['total_get_comments']?></h5>
+												</div>
+											</li>
+											<li  >
+												<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= $this->your_stat[0]['total_get_likes']?></h5>
+												</div> 
+											</li>
+										
+										</ul>
 										<div class="points">
 											<h3>
 												<?= isset( $this->topFanYou['number_of_posts'])?$this->topFanYou['number_of_posts']:'?'?>

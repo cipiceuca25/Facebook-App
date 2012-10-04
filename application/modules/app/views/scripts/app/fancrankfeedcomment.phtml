@@ -124,15 +124,10 @@
 <?php if ($this->popup == 'false' ){?>
 </ul>
 
-	<!--  
-	<?if ($this->total > $this->limit){ ?>
-		<button class="btn-more" onclick="comment_feed<?= ($this->latest == 'true')?'2':''?>('<?= $this->postId ?>','<?= $this->postType?>', <?=$this->limit + 5?> , <?= $this->total?> , false)">MORE COMMENTS +</button>
-	<?}?>
-	-->
-	
+
 
 	<div class="comment-container">
-		<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);"></div>
+		<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->user_id?>/picture" onerror="ImgError(this);"></div>
 	
 		<form action="#" class="submit-form" >
 		

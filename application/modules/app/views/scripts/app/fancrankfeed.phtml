@@ -194,7 +194,6 @@
 		
 		<a  onclick=" comment_feed('<?= $post->id ?>',
 			 						'<?= $post->type?>', 
-			 						10,
 			 						<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
 								 	true )"
 			class="commenthider_<?= $post->id ?>">Comment</a>
@@ -204,11 +203,11 @@
 		
 		<a  onclick=" comment_feed_filter('<?= $post->id ?>',
 			 						'<?= $post->type?>', 
-			 						10,
 			 						<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
 								 	true )"
 			class="commenthider_<?= $post->id ?>">My Comment</a>
 		<?php }?>
+		
 		&middot;
 
 		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
@@ -248,7 +247,6 @@
 	
 			 <a  onclick=" comment_feed('<?= $post->id ?>',
 			 							'<?= $post->type?>', 
-			 							10,
 			 							<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
 								 		true )"> 
 					<img src="/img/comment.png" />
@@ -286,8 +284,7 @@
 				
 				 <a  onclick=" comment_feed_filter('<?= $post->id ?>',
 			 							'<?= $post->type?>', 
-			 							10,
-			 							<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
+										<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
 								 		true )"> 
 					<img src="/img/comment.png" />
 			 		View My Comments

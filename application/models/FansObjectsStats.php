@@ -1172,6 +1172,161 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 	
 	}
 	*/
+	
+	public function getStatsByTime( $fanpage_id, $facebook_user_id){
+		$select = "			select 'comments' as 'check', 'all' as post_type, 
+							count(*) as 'no-time',
+							count( case when ((comment_created_time - interval 1 minute) < created_time && created_time < comment_created_time) then 1 end) as '1-minute',
+							count(case when ((comment_created_time - interval 10 second) < created_time && created_time < comment_created_time ) then 1 end) as '10-second' from
+							
+							(SELECT p.*, c.created_time as comment_created_time 
+							from posts p, comments c 
+							where p.post_id = c.comment_post_id && p.fanpage_id = $fanpage_id && c.facebook_user_id = $facebook_user_id
+							&& c.facebook_user_id != p.facebook_user_id
+							&& p.fanpage_id= c.fanpage_id ) as temp
+							
+							union all
+							
+							select 'comments' as 'check', post_type, 
+							
+							count(*) as 'no-time',
+							count( case when ((comment_created_time - interval 1 minute) < created_time && created_time < comment_created_time) then 1 end) as '1-minute',
+							count(case when ((comment_created_time - interval 10 second) < created_time && created_time < comment_created_time ) then 1 end) as '10-second'
+							 from
+							
+							(SELECT p.*, c.created_time as comment_created_time 
+							from posts p, comments c 
+							where p.post_id = c.comment_post_id && p.fanpage_id = $fanpage_id && c.facebook_user_id = $facebook_user_id
+							&& c.facebook_user_id != p.facebook_user_id
+							&& p.fanpage_id= c.fanpage_id  ) as temp
+							group by post_type
+							
+							union all
+							
+							select 'get-comments' as 'check', 'all' as post_type, 
+							count(*) as 'no-time',
+							count( case when ((comment_created_time - interval 1 minute) < created_time && created_time < comment_created_time) then 1 end) as '1-minute',
+							count(case when ((comment_created_time - interval 10 second) < created_time && created_time < comment_created_time ) then 1 end) as '10-second'
+							from
+							
+							(SELECT p.*, c.created_time as comment_created_time 
+							from posts p, comments c 
+							where p.post_id = c.comment_post_id && p.fanpage_id = $fanpage_id && p.facebook_user_id =  $facebook_user_id
+							&& c.facebook_user_id != p.facebook_user_id
+							&& p.fanpage_id= c.fanpage_id  ) as temp
+							
+							union all
+							
+							select 'get-comments' as 'check', post_type, 
+							count(*) as 'no-time',
+							count( case when ((comment_created_time - interval 1 minute) < created_time && created_time < comment_created_time) then 1 end) as '1-minute',
+							count(case when ((comment_created_time - interval 10 second) < created_time && created_time < comment_created_time ) then 1 end) as '10-second'
+							
+							 from
+							
+							(SELECT p.*, c.created_time as comment_created_time 
+							from posts p, comments c 
+							where p.post_id = c.comment_post_id && p.fanpage_id = $fanpage_id && p.facebook_user_id =  $facebook_user_id
+							&& c.facebook_user_id != p.facebook_user_id
+							&& p.fanpage_id= c.fanpage_id ) as temp
+							group by post_type 
+							
+							union all
+							
+							select 'likes' as 'check', 'all'  as post_type, 
+							count(*) as 'no-time',
+							count( case when ((like_created_time - interval 1 minute) < created_time && created_time < like_created_time) then 1 end) as '1-minute',
+							count(case when ((like_created_time - interval 10 second) < created_time && created_time < like_created_time ) then 1 end) as '10-second'
+							
+							 from
+							
+							(SELECT p.*, l.created_time as like_created_time 
+							from posts p, likes l 
+							where p.post_id = l.post_id && p.fanpage_id = $fanpage_id && l.facebook_user_id =  $facebook_user_id
+							&& l.facebook_user_id != p.facebook_user_id
+							&& p.fanpage_id= l.fanpage_id  ) as temp
+							 
+							
+							union all
+							
+							select 'likes' as 'check', post_type, 
+							count(*) as 'no-time',
+							count( case when ((like_created_time - interval 1 minute) < created_time && created_time < like_created_time) then 1 end) as '1-minute',
+							count(case when ((like_created_time - interval 10 second) < created_time && created_time < like_created_time ) then 1 end) as '10-second'
+							 from
+							
+							(SELECT p.*, l.created_time as like_created_time 
+							from posts p, likes l 
+							where p.post_id = l.post_id && p.fanpage_id = $fanpage_id && l.facebook_user_id =  $facebook_user_id
+							&& l.facebook_user_id != p.facebook_user_id
+							&& p.fanpage_id= l.fanpage_id  ) as temp
+							group by post_type 
+							
+							union all
+							
+							select 'likes' as 'check', 'comment' as post_type, 
+							count(*) as 'no-time',
+							count( case when ((like_created_time - interval 1 minute) < created_time && created_time < like_created_time) then 1 end) as '1-minute',
+							count(case when ((like_created_time - interval 10 second) < created_time && created_time < like_created_time ) then 1 end) as '10-second'
+							 from
+							
+							(SELECT c.*,l.post_type, l.created_time as like_created_time 
+							from comments c, likes l 
+							where c.comment_id = l.post_id && c.fanpage_id = $fanpage_id && l.facebook_user_id =  $facebook_user_id
+							&& l.facebook_user_id != c.facebook_user_id
+							&& c.fanpage_id= l.fanpage_id  ) as temp
+							
+							union all
+							
+							select 'get-likes' as 'check', 'all' as post_type,
+							count(*) as 'no-time',
+							count( case when ((like_created_time - interval 1 minute) < created_time && created_time < like_created_time) then 1 end) as '1-minute',
+							count(case when ((like_created_time - interval 10 second) < created_time && created_time < like_created_time ) then 1 end) as '10-second'
+							 from
+							
+							(SELECT p.*, l.created_time as like_created_time 
+							from posts p, likes l 
+							where p.post_id = l.post_id && p.fanpage_id = $fanpage_id && p.facebook_user_id =  $facebook_user_id
+							&& l.facebook_user_id != p.facebook_user_id
+							&& p.fanpage_id= l.fanpage_id  ) as temp
+							
+							union all
+							
+							select 'get-likes' as 'check', post_type, 
+							count(*) as 'no-time',
+							count( case when ((like_created_time - interval 1 minute) < created_time && created_time < like_created_time) then 1 end) as '1-minute',
+							count(case when ((like_created_time - interval 10 second) < created_time && created_time < like_created_time ) then 1 end) as '10-second'
+							
+							 from
+							
+							(SELECT p.*, l.created_time as like_created_time 
+							from posts p, likes l 
+							where p.post_id = l.post_id && p.fanpage_id = $fanpage_id && p.facebook_user_id =  $facebook_user_id
+							&& l.facebook_user_id != p.facebook_user_id
+							&& p.fanpage_id= l.fanpage_id ) as temp
+							group by post_type 
+							
+							union all
+							
+							select 'get-likes' as 'check', 'comment' as post_type, 
+							count(*) as 'no-time',
+							count( case when ((like_created_time - interval 1 minute) < created_time && created_time < like_created_time) then 1 end) as '1-minute',
+							count(case when ((like_created_time - interval 10 second) < created_time && created_time < like_created_time ) then 1 end) as '10-second'
+							 from
+							
+							(SELECT c.*,l.post_type, l.created_time as like_created_time 
+							from comments c, likes l 
+							where c.comment_id = l.post_id && c.fanpage_id = $fanpage_id && c.facebook_user_id =  $facebook_user_id
+							&& l.facebook_user_id != c.facebook_user_id
+							&& c.fanpage_id= l.fanpage_id  ) as temp";
+													
+		
+		return $this->getAdapter()->fetchAll($select);
+		
+		
+	}
+	
+	
 	public function getNumberOfCommentOnPostInTimeByUser($fanpage_id, $facebook_user_id, $time, $type){
 		$select = "SELECT count(*) as count from posts p, comments c 
 					where p.post_id = c.comment_post_id && p.fanpage_id = ".$fanpage_id." && c.facebook_user_id =".$facebook_user_id."
