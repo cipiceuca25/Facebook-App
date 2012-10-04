@@ -365,8 +365,38 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		return $this->getFanGotCommentFrom($fanpage_id, $facebook_user_id, 'photo');
 	}
 	
-	public function getTopFanListByFanpageId($fanpage_id) {
+	public function getTopFanListByFanpageId($fanpage_id, $limit=100, $fields=null) {
+    	$select = "select ? from fans_objects_stats s,
+			(
+			select max(id) as id from fans_objects_stats where fanpage_id = $fanpage_id group by facebook_user_id
+			) s1, fans f
+			where s.id = s1.id and s.facebook_user_id = f.facebook_user_id and s.fanpage_id = f.fanpage_id
+			order by f.fan_points desc";
+		$extra = '';
 		
+		if(empty($fields)) {
+			$extra = "f.facebook_user_id, f.fanpage_id, f.fan_name, f.fan_points, f.fan_level,
+				(s.fan_post_status_count+s.fan_post_photo_count+s.fan_post_video_count+s.fan_post_link_count) as post_count, 
+				(s.fan_comment_status_count+s.fan_comment_photo_count+s.fan_comment_video_count+s.fan_comment_link_count) as comment_count,
+				(s.fan_like_status_count+s.fan_like_photo_count+s.fan_like_video_count+s.fan_like_link_count) as like_count,
+				(s.fan_get_like_status_count+s.fan_get_like_photo_count+s.fan_get_like_video_count+s.fan_get_like_link_count+s.fan_get_like_comment_count) as got_like_count,
+				(s.fan_get_comment_status_count+s.fan_get_comment_photo_count+s.fan_get_comment_video_count+s.fan_get_comment_link_count) as got_comment_count
+				";
+		}else {
+			$extra = '';
+			foreach ($fields as $field) {
+				$extra .= 's1.' .$field .',';
+			}
+			$extra = rtrim($extra, ',');
+		}
+		
+		$select = str_replace('?', $extra, $select);
+		
+		if($limit !== false) {
+			$select = $select . " LIMIT $limit";			
+		}
+		
+		return $this->getDefaultAdapter()->fetchAll($select);
 	}
 	
 	//////////////////////////////////////////////////////////////

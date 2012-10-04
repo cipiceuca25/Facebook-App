@@ -724,16 +724,23 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$badgeModel = new Model_Badges();
 
     	$select = $badgeModel->getAdapter()->select();
+    	$fanpage_id = '65558608937';
+    	$facebook_user_id = '';
     	
     	$arr = array(
     				'from'=>array('p'=>'posts', 'c'=>'comments'),
     				'join'=>array('p.post_id = c.comment_post_id'),
-    				'where'=>array('p.facebook_user_id = 65558608937', 'p.fanpage_id = 65558608937'),
-    				'order'=>array('p.post_id desc'),
-    				'limit'=> 10
+    				'where'=>array('p.facebook_user_id = ?', 'p.fanpage_id = ?'),
+    				'order'=>array('p.post_id desc')
     			);
 		
+    	$arr = array(
+    				'from'=>array('posts'),
+    				'where'=>array('post_likes_count > 25')
+    			);
     	$arr1 = Zend_Json::encode($arr);
+    	
+    	echo $arr1;
     	$arr2 = Zend_Json::decode($arr1);
     	//call_user_func_array(array($select, 'from'), array(array('p' => 'posts')));
     	//echo $select->assemble(); exit();
@@ -742,6 +749,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	foreach ($arr2 as $key=>$statement) {
     		//$select->{$key}($key == 'from' ? $statement : implode(',' ,$statement));
     		switch ($key) {
+    			case 'select' :
+    				break;
     			case 'from' : 
     			    foreach ($statement as $key=>$v) {
 	    				$select->from(array($key=>$v), array());
@@ -755,7 +764,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     				break;
     			case 'where' :
 	    			foreach ($statement as $v) {
-	    					$select->where($v);
+	    				$select->where($v);
 	    			}
     				break;
     			case 'order' :
@@ -771,9 +780,11 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test20Action() {
-    	$date = new Zend_Date();
-		echo $date->get(Zend_Date::WEEKDAY_DIGIT);
-		$pointLogModel = new Model_PointLog();
+		$fanpage_id = '216821905014540';
+		$fanStatModel = new Model_FansObjectsStats();
+		
+		$result = $fanStatModel->getTopFanListByFanpageId($fanpage_id);
+		Zend_Debug::dump($result);
     }
     
     public function testmemcacheAction() {

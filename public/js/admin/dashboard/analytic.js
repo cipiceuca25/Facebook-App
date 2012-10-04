@@ -583,7 +583,7 @@ function getTopFanTable(type, time) {
 		async : true,
 		beforeSend:function(){	
 		
-					$('#topFanTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+					$('#topfanTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
 				
 					$('#fanfavoriteTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
 				
@@ -601,8 +601,8 @@ function getTopFanTable(type, time) {
 			switch(type){
 				case 'topfan':
 				
-					$('#topFanTable').html(data);
-					topFanTable = $('#topFanTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					$('#topfanTable').html(data);
+					topFanTable = $('#topfanTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
 					break;
 				case 'fanfavorite':
 					

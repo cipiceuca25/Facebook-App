@@ -226,7 +226,10 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		switch ($tableType){
 		
 			case 'topfan':
-				$topFanList = $fanpageModel->getTopFanList($fanpageId, 100, $time);
+				//$topFanList = $fanpageModel->getTopFanList($fanpageId, 100, $time);
+				$fanStatModel = new Model_FansObjectsStats();
+				$topFanList = $fanStatModel->getTopFanListByFanpageId($fanpageId);
+				
 				//Zend_Debug::dump($topPostByComment);
 				$follow = new Model_Subscribes();
 				for ($count = 0 ;$count <count($topFanList); $count ++ ){
@@ -390,6 +393,9 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			$badgeModel = Fancrank_BadgeFactory::factory('custom');
 			
 			try {
+				if(!$badgeModel->isDataValid($data)) {
+					throw new Exception('invalid badge input data');				
+				}
 				$badgeId = $badgeModel->insert($data);
 				//$badge = $badgeModel->findrow($badgeId);
 

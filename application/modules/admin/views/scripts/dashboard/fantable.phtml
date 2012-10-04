@@ -27,7 +27,7 @@
 			<?php if ($this->tabletype == 'fanfavorite'){?>
 			<td class="prop"><?=$fan['props']?></td>
 			<?php }else{?>
-			<td class="prop"><?=$fan['props']?></td>
+			<td class="prop"><?php empty($fan['props']) ? 0 : $fan['props']; ?></td>
 			<?php }?>
 			<td class="level"><?=$fan['fan_level']?></td>
 			<td class="posts"><?=$fan['post_count']?></td>

@@ -61,7 +61,7 @@ $writer = new Zend_Log_Writer_Stream('./monitor_cron_error.log');
 $logger = new Zend_Log($writer);
 
 foreach ($messages as $i => $message) {
-	//$queue->deleteMessage($message);
+	$queue->deleteMessage($message);
 	$likesList = array();
 	$job = Zend_Json::decode($message->body, Zend_Json::TYPE_OBJECT);
 	$url = 'https://graph.facebook.com/' .$job->id .'/likes?limit=500&access_token=' .$job->access_token;

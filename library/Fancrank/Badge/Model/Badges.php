@@ -91,5 +91,19 @@ class Fancrank_Badge_Model_Badges extends Fancrank_Db_Table
 
     	return implode(" union all ", $selects);
     }
+    
+	public function isDataValid($data) {
+		if(empty($data['name']) || empty($data['rules'])) {
+			return false;
+		}
+	
+		$valid = true;
+	
+		if((isset($data['weight']) && !is_numeric($data['weight'])) || (isset($data['quantity']) && !is_numeric($data['quantity']))) {
+			$valid = false;
+		}
+		
+		return $valid;
+	}
 }
 

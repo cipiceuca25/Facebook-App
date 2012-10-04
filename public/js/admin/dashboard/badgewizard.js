@@ -59,6 +59,15 @@ jQuery(document).ready(function($) {
 				});
 	}
 	
+	$('#badgeForm').validate({
+		rules: {
+			weight: {
+				required: true,
+				number: true
+			}
+		}
+	});
+	
 	$('.remove-badge').live('click', function(e){
 		e.preventDefault();
 		var badgeId = $(this).attr('data-id');
