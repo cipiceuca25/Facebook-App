@@ -6,8 +6,7 @@ var ttb = true;
 var tcb = true;
 var tfdb = true;
 
-var mouseX;
-var mouseY;
+
 
 var backgroundcolor;
 
@@ -76,8 +75,6 @@ $(document).ready(function() {
 });
 
 $(document).mousemove(function(e) {
-	mouseX = e.pageX;
-	mouseY = e.pageY;
 	
 	$('.popover').css('display', 'none');
 	//FB.Canvas.setAutoGrow();
@@ -105,7 +102,7 @@ $(document).on('mouseover', 'a[rel=popover]', function() {
 		return;
 	}
 	$(this).data('isPopoverLoaded', true).popover({
-		delay : {show:1000, hide:100},
+		delay : {show:2000, hide:100},
 		
 	}).trigger('mouseover');
 	
@@ -125,7 +122,7 @@ $(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
 		return;
 	}
 	$(this).data('isTooltipLoaded', true).tooltip({
-		delay : {show:1000, hide:100},
+		delay : {show:3000, hide:100},
 		
 	}).trigger('mouseover');
 });
@@ -273,20 +270,41 @@ function popover(x) {
 	});
 }
 
-function feedbackAnimation(ui) {
-	$(ui).css({
-		'top' : mouseY - 16,
-		'left' : mouseX - 62,
-		'opacity' : '1',
-		'display' : 'block'
-	});
-	$(ui).animate({
-		opacity : '0',
-		top : "-=30px",
-	}, 1000, function() {
-	});
+function feedbackAnimation(ui, type) {
+
+	switch(type){
 	
-	$(ui).delay(500).hide(0);
+	case 'like':
+		$(ui).before('<div class = "like-animation" style="width:60px; left:-7px"></div>')
+		setTimeout(function(){
+			$('.like-animation').remove();
+		}, 2000);
+		break;
+	case 'unlike':
+		$(ui).before('<div class = "unlike-animation" style="width:75px; left:-11px"></div>')
+		setTimeout(function(){
+			$('.unlike-animation').remove();
+		}, 2000);
+		break;
+	case 'follow':
+		$(ui).before('<div class = "follow-animation" style=" left:-20px; width:86px"></div>')
+		setTimeout(function(){
+			$('.follow-animation').remove();
+		}, 2000);
+		break;
+	case 'unfollow':
+		$(ui).before('<div class = "unfollow-animation" style="left:-38px; width:102px;"></div>')
+		setTimeout(function(){
+			$('.unfollow-animation').remove();
+		}, 2000);
+		break;
+
+	
+	}
+	
+	
+	
+	
 	
 }
 
@@ -547,10 +565,11 @@ function like(post_id, post_type, target_id, target_name) {
 						+ post_type + '&access_token=' + userAccessToken,
 				dataType : "html",
 				cache : false,
+				async: true,
 				success : function(data) {
 					//alert("target followed")
 					//alert(post_id + 'liked');
-					feedbackAnimation('#like-animation');
+					feedbackAnimation('.like_control_' + post_id, 'like');
 					
 					if(post_type =='comment'){
 						mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
@@ -590,7 +609,13 @@ function like(post_id, post_type, target_id, target_name) {
 									+ target_id + "','" + target_name + "')");
 					$('.like_control_' + post_id).html('Unlike');
 					$('.like_control_' + post_id).attr('data-original-title', 'You like this');
-
+					
+					temp=$('.social.like.'+post_id+ ' a').attr('data-original-title');
+	
+					if (num == 1){
+						$('.social.like.'+post_id+ ' a').attr('data-original-title', target_name + temp);
+					}
+					
 				},
 				error : function(xhr, errorMessage, thrownErro) {
 					console.log(xhr.statusText, errorMessage);
@@ -611,7 +636,7 @@ function unlike(post_id, post_type, target_id, target_name) {
 				success : function(data) {
 					//alert("target followed")
 					//alert(post_id + 'liked');
-					feedbackAnimation('#unlike-animation');
+					feedbackAnimation('.like_control_' + post_id, 'unlike');
 					
 					if(post_type =='comment'){
 						mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
@@ -652,7 +677,19 @@ function unlike(post_id, post_type, target_id, target_name) {
 									+ target_id + "','" + target_name + "')");
 					$('.like_control_' + post_id).html('Like');
 					$('.like_control_' + post_id).attr('data-original-title', 'Click to like this');
-
+					
+					
+					temp=$('.social.like.'+post_id+ ' a').attr('data-original-title');
+					
+					
+					if (num > 0){
+						temp = temp.replace(target_name+',', "");
+						temp = temp.replace(', '+target_name, "");
+						$('.social.like.'+post_id+ ' a').attr('data-original-title',temp);
+					} else {
+						$('.social.like.'+post_id+ ' a').attr('data-original-title', 'No one likes this yet');
+					}
+					
 				},
 				error : function(xhr, errorMessage, thrownErro) {
 					console.log(xhr.statusText, errorMessage);
@@ -945,7 +982,7 @@ function follow(target, name) {
 				$('.' + ui).attr('onclick',	"unfollow('" + target + "','" + name + "','" + ui + "')");
 				$('.' + ui).attr('data-original-title', 'Click to Unfollow this User');
 				//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
-				feedbackAnimation('#follow-animation');
+				feedbackAnimation('.' + ui, 'follow');
 			},
 			error : function(xhr, errorMessage, thrownErro) {
 				console.log(xhr.statusText, errorMessage);
@@ -974,7 +1011,7 @@ function unfollow(target, name) {
 			$('.' + ui).attr('data-original-title', 'Click to Follow this User');
 		
 			//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
-			feedbackAnimation('#unfollow-animation');
+			feedbackAnimation('.'+ui, 'unfollow');
 
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -993,7 +1030,9 @@ function addActivities(act_type, event, target_id, target_name, message) {
 				+ '&target_name=' + target_name + '&message=' + message,
 		dataType : "html",
 		cache : false,
+		async: true,
 		success : function(data) {
+			console.log('activity recorded');
 			//alert('adding act');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
