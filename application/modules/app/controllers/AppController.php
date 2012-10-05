@@ -1575,7 +1575,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     		try {
     			$fanActivityId = $this->_fanpageId .'_' .$userid. '_fan_activity';
-    			//$cache->remove($fanActivityId);
+    			
+    			$cache->remove($fanActivityId);
     			//$cache->remove($fanActivityId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanActivityId)){
@@ -1614,11 +1615,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}
     	}
     	
-    	if (count($activities) > $limit){
-    		
-    		$activities = array_slice($activities, 0, 19);
-    		
-    	}
+    
   
     	
     	$this->view->activities = $activities;

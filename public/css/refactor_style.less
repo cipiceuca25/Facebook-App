@@ -790,7 +790,11 @@ background-color:@color-tag-follower;
 .badge-Follow:hover{
 color:@color-tag-text-hover;
 background-color:@color-tag-follow-hover;
-
+-webkit-transition: background-color 500ms linear;
+-moz-transition: background-color 500ms linear;
+-o-transition: background-color 500ms linear;
+ -ms-transition: background-color 500ms linear;
+transition: background-color 500ms linear;
 }
 
 .badge-Following{
@@ -800,6 +804,11 @@ background-color:@color-tag-following;
 
 .badge-Following:hover{
 background-color:@color-tag-unfollow;
+-webkit-transition: background-color 500ms linear;
+-moz-transition: background-color 500ms linear;
+-o-transition: background-color 500ms linear;
+-ms-transition: background-color 500ms linear;
+ transition: background-color 500ms linear;
 
 }
 
@@ -1395,38 +1404,80 @@ margin-top:0;
 .popover.left;
 }
 ///////////////////////////////////////////////////////////////////////////////
-#follow-animation,
-#like-animation,
-#unfollow-animation,
-#unlike-animation,
-#comment-animation{
+.follow-animation,
+.like-animation,
+.unfollow-animation,
+.unlike-animation,
+.comment-animation{
 z-index:99;
-position:fixed;
+position:absolute;
 height:25px;
 width:125px;
-display:none;
+
+animation:rise 2s;
+-moz-animation:rise 2s;
+-webkit-animation:rise 2s;
+-o-animation:rise 2s;
 }
 
-#follow-animation{
+@keyframes rise{
+
+	100%{
+	transform:matrix(2,0,0,2,0, -75);
+	opacity:0;
+	}
+}
+
+@-moz-keyframes rise{
+
+	100%{
+	-moz-transform:matrix(2,0,0,2,0, -75);
+	opacity:0;
+	}
+}
+@-webkit-keyframes rise{
+
+	
+	100%{
+	-webkit-transform:matrix(2,0,0,2,0, -30);
+
+	opacity:0;
+	}
+}
+@-o-keyframes rise{
+
+	100%{
+	-o-transform:matrix(2,0,0,2,0px, -75px);
+	opacity:0;
+	}
+}
+
+.follow-animation{
 background:url(../img/followed.png) no-repeat center center;
 }
 
-#like-animation{
+.like-animation{
 background:url(../img/liked.png) no-repeat center center;
 }
 
-#unfollow-animation{
+.unfollow-animation{
 background:url(../img/unfollowed.png) no-repeat center center;
 }
 
-#unlike-animation{
+.unlike-animation{
 background:url(../img/unliked.png) no-repeat center center;
 }
 
-#comment-animation{
+.comment-animation{
 background:url(../img/commented.png) no-repeat center center;
 }
 
+
+.point-display{
+margin-right:10px;
+float:right;
+
+}
 /////////////////////////////////////////////////////////////////////////////////////
 
 #whatisfancrank{

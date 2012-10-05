@@ -90,6 +90,65 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 						order by created_time DESC
 						limit $limit)
 					
+					union
+
+					/* activities done to target user*/
+					(Select c.fanpage_id, c.facebook_user_id, 
+							(select f.facebook_user_name from facebook_users f where f.facebook_user_id = c.facebook_user_id) as facebook_user_name, 
+							concat('comment-', c.comment_type)as activity_type, 
+							p.post_id as event_object, 
+							p.facebook_user_id as target_user_id,
+							(select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as target_user_name,
+							c.created_time, c.comment_message as message
+							from 
+							comments c, posts p 
+							where c.fanpage_id = $fanpage_id  and p.facebook_user_id = $facebook_user_id and c.comment_post_id = p.post_id
+							order by created_time DESC
+							limit $limit)
+
+					union
+
+					(select p.fanpage_id, 
+						   l.facebook_user_id,
+						   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+						   (case when (l.likes = 1) then concat('like-', p.post_type) else concat('unlike-', p.post_type) end ) as activity_type,
+						   p.post_id as event_object,
+						   p.facebook_user_id as target_user_id,
+						   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+						   l.created_time as created_time,
+						   p.post_message as message
+					from posts p, likes l 
+					where l.post_id = p.post_id and p.facebook_user_id = $facebook_user_id
+							and l.fanpage_id = $fanpage_id and l.fanpage_id = p.fanpage_id
+							
+					order by l.created_time DESC
+					limit $limit	)
+
+					union 
+
+					(select c.fanpage_id, 
+						   l.facebook_user_id,
+						   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+						   (case when (l.likes = 1) then concat('like-', c.comment_type) else concat('unlike-', c.comment_type) end ) as activity_type,
+						   c.comment_post_id as event_object,
+						   c.facebook_user_id as target_user_id,
+						   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+						   l.created_time as created_time,
+						   c.comment_message as message
+					from comments c, likes l 
+					where l.post_id = c.comment_id and c.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id and l.fanpage_id = c.fanpage_id
+					order by l.created_time DESC
+					limit $limit)
+
+					union
+
+					(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message  
+						from fancrank_activities 
+						where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id
+						order by created_time DESC
+						limit $limit)	
+						
+						
 					) as act
 					group by fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, created_time, message
 					
@@ -98,7 +157,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 		
 		$result = $this->getAdapter()->fetchAll($select);
 		//return $result;
-		
+		//Zend_Debug::dump($result);
 		$fanpageModel = new Model_Fanpages();
 		$fanpageName = $fanpageModel->findRow($fanpage_id)->fanpage_name;
 		$finalResult = array();
@@ -106,8 +165,20 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 			if($row['target_user_id'] === $fanpage_id) {
 				$row['target_user_name'] = $fanpageName;
 			}
+			if($row['facebook_user_id'] === $fanpage_id) {
+				$row['facebook_user_name'] = $fanpageName;
+			}
+			
 			$finalResult[] = $row;
 		}
+		
+		if (count($finalResult) > $limit){
+		
+			$activities = array_slice($activities, 0, $limit);
+		
+		}
+		
+		
 		
 		return $finalResult;
 		
@@ -115,9 +186,22 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 	}
 	
 	public function getRecentActivitiesSince($facebook_user_id, $fanpage_id, $limit, $since) {
-		$select = "select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message 
-					from fancrank_activities 
-					where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id and created_time > '" .$since ."'
+		$select = "select * from (
+
+					(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message 
+										from fancrank_activities 
+										where fanpage_id = $fanpage_id and facebook_user_id = $facebook_user_id and created_time > $since
+										order by created_time DESC
+										limit $limit)
+					union 
+					
+					(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message  
+											from fancrank_activities 
+											where fanpage_id = $fanpage_id and target_user_id = $facebook_user_id and created_time > $since
+											order by created_time DESC
+											limit $limit)
+					) as act
+					
 					order by created_time DESC
 					limit $limit";
 		

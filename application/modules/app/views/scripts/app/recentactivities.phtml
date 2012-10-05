@@ -35,17 +35,23 @@
 	
 	foreach ($this->activities as $act):	
 	$isFanpage = ($act['target_user_id'] == $this->fanpage_id)?true:false;
-	$isSelf = ($act['target_user_id'] == $this->act_userid)?true:false;	
+	$isSelf = ($act['target_user_id'] == $this->user_id)?true:false;	
 	?>
 	<li class="post-container" >
 	
 		<div class="post">
 		<div class="message">
 		<? if ($act['facebook_user_id'] == $this->user_id) {?>
-		You
-		<?php }else{?>
-		<?echo $displayname ?>
-		<?php }?>
+			 You 
+		<?}else{?>
+			 <?// if ($isSelf) {?>
+				<?//echo $displayname ?>
+			<?//php }else{?>
+				<?echo $act['facebook_user_name']?>
+			<?//php }?>
+		<? }?>
+		
+	
 		<?switch($act['activity_type']){ 
 		
 			case 'follow': ?>
@@ -55,7 +61,7 @@
 																		data-userid="<?=$act['target_user_id']?>">
 																		<?=$act['target_user_name']?>
 						</a> <?php }?>
-						on
+
 						<a rel="tooltip" class="time" data-placement="top"  
 													data-original-title="" 
 													data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
@@ -68,7 +74,7 @@
 																		data-userid="<?=$act['target_user_id']?>">
 																		<?=$act['target_user_name']?>
 							</a> <?php }?>
-							on 
+					
 						<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 				<?break;	
 				

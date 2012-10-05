@@ -788,6 +788,22 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		Zend_Debug::dump($result);
     }
     
+    public function test21Action(){
+    	
+    	$fanpage_id = '197221680326345';
+    	$facebook_user_id = '28117303';
+    	 
+    	$badgeEventModel = new Model_BadgeEvents();
+    	 
+    	$defaultBadgeList = $badgeEventModel->getRemaindDefaultBadgeByUser($fanpage_id, $facebook_user_id);
+    	 
+    	Zend_Debug::dump($defaultBadgeList);
+    	 
+    	$badgeModel = Fancrank_BadgeFactory::factory('default');
+    	echo $badgeModel->isFanEligible($fanpage_id, $facebook_user_id, 3);
+    	
+    }
+    
     public function testmemcacheAction() {
     	$starttime = time();
     	echo $starttime;
