@@ -246,7 +246,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 				
 			case 'fanfavorite':
 				
-				
 				$topFanList = $fanpageModel->getFanFavoriteList($fanpageId, 100, $time);
 				//Zend_Debug::dump($topPostByComment);
 				$follow = new Model_Subscribes();
@@ -276,7 +275,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 						$topFanList[$count]['fan_points'] = '?';
 					}
 				}
-			
 				break;
 			
 			case 'topclickers':
@@ -294,7 +292,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 					}
 				}
 				break;
-			
 				
 			case 'topfollowed':
 				
@@ -311,13 +308,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 						$topFanList[$count]['fan_points'] = '?';
 					}
 				}
-		
 				break;
-				
-				
-				
-				
-				
 		}	
 		
 		//Zend_Debug::dump($topFanList);

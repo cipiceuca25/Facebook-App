@@ -11,6 +11,5 @@ class Fancrank_Badge_Model_DefaultBadges extends Fancrank_Badge_Model_Badges
 		
 	}
 	
-	
 }
 

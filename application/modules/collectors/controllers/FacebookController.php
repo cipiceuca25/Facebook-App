@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 require_once APPLICATION_PATH .'/../library/Facebook/facebook.php';
 
@@ -725,35 +724,72 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$badgeModel = new Model_Badges();
 
     	$select = $badgeModel->getAdapter()->select();
-    	$fanpage_id = '65558608937';
-    	$facebook_user_id = '';
+    	$fanpage_id = '216821905014540';
+    	$facebook_user_id = '100000027416934';
     	
-    	$arr = array(
-    				'from'=>array('p'=>'posts', 'c'=>'comments'),
-    				'join'=>array('p.post_id = c.comment_post_id'),
-    				'where'=>array('p.facebook_user_id = ?', 'p.fanpage_id = ?'),
-    				'order'=>array('p.post_id desc')
+    	$sub1 = array(
+	    			'select'=>'SELECT count(*) > 0 AS flag',
+	    			'from'=>array('p'=>'posts', 'c'=>'comments'),
+	    			'join'=>array('p.post_id = c.comment_post_id'),
+	    			'where'=>array('p.facebook_user_id = 100000027416934', 'p.fanpage_id = :fanpage_id'),
+	    			'order'=>array('p.post_id desc')
     			);
-		
-    	$arr = array(
-    				'from'=>array('posts'),
-    				'where'=>array('post_likes_count > 25')
-    			);
+
+    	$sub2 = array(
+    			'select'=>'SELECT count(*) > 0 AS flag',
+    			'from'=>array('p'=>'posts', 'c'=>'comments'),
+    			'join'=>array('p.post_id = c.comment_post_id'),
+    			'where'=>array('p.facebook_user_id = 100000027416934', 'p.fanpage_id = :fanpage_id'),
+    			'order'=>array('p.post_id desc')
+    	);
+    	
+    	$arr = array('sql'=>' select (case when ((a.a + b.b) >= 34) then 1 else 0 end ) as flag from
+							(select count(*) as a
+							from posts p , likes l 
+							where l.facebook_user_id != p.facebook_user_id &&
+							         l.post_id = p.post_id &&
+							         l.fanpage_id = p.fanpage_id &&
+							         l.facebook_user_id = :facebook_user_id &&
+							         l.fanpage_id = :fanpage_id
+							) as a,
+							
+							(
+							select count(*) as b
+							from likes l , comments c
+							where l.facebook_user_id != c.facebook_user_id &&
+							         l.post_id = c.comment_id &&
+							         l.fanpage_id = c.fanpage_id &&
+							         l.facebook_user_id = :facebook_user_id &&
+							         l.fanpage_id = :fanpage_id
+							) as b');
     	$arr1 = Zend_Json::encode($arr);
     	
     	echo $arr1;
     	$arr2 = Zend_Json::decode($arr1);
+    	echo $arr2;
+    	$badgeModel = Fancrank_BadgeFactory::factory('default');
     	//call_user_func_array(array($select, 'from'), array(array('p' => 'posts')));
     	//echo $select->assemble(); exit();
     	//Zend_Debug::dump(implode(',', array(array('c' => 'comments'), 'p.post_id = c.comment', array()))); exit();
+    	
+		if($arr2['sql']) {
+			$v = str_replace(':facebook_user_id', $facebook_user_id, $arr2['sql']);
+			$v = str_replace(':fanpage_id', $fanpage_id, $v);
+			echo $v;
+			exit();
+		}
+		
     	$preSelect = 'SELECT count(*) > 0 AS flag ';
     	foreach ($arr2 as $key=>$statement) {
     		//$select->{$key}($key == 'from' ? $statement : implode(',' ,$statement));
     		switch ($key) {
     			case 'select' :
+    				$preSelect = $statement .' ';
     				break;
     			case 'from' : 
     			    foreach ($statement as $key=>$v) {
+    			    	$v = str_replace(':facebook_user_id', $facebook_user_id, $v);
+    			    	$v = str_replace(':fanpage_id', $fanpage_id, $v);
 	    				$select->from(array($key=>$v), array());
 	    			}
     				break;
@@ -765,9 +801,18 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     				break;
     			case 'where' :
 	    			foreach ($statement as $v) {
+	    				$v = str_replace(':facebook_user_id', $facebook_user_id, $v);
+	    				$v = str_replace(':fanpage_id', $fanpage_id, $v);
 	    				$select->where($v);
 	    			}
     				break;
+    			case 'orWhere' :
+    				foreach ($statement as $v) {
+    					$v = str_replace(':facebook_user_id', $facebook_user_id, $v);
+    					$v = str_replace(':fanpage_id', $fanpage_id, $v);
+    					$select->orWhere($v);
+    				}    				
+    				break;	
     			case 'order' :
     				call_user_func_array(array($select, $key), $statement);
     				break;
@@ -786,6 +831,55 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 		
 		$result = $fanStatModel->getTopFanListByFanpageId($fanpage_id);
 		Zend_Debug::dump($result);
+    }
+    
+    public function test21Action() {
+    	$arr = array('sql'=>' select (case when ((a.a + b.b) >= 34) then 1 else 0 end ) as flag from 
+    						(select count(*) as a
+							from posts p , likes l
+							where l.facebook_user_id != p.facebook_user_id &&
+							         l.post_id = p.post_id &&
+							         l.fanpage_id = p.fanpage_id &&
+							         l.facebook_user_id = :facebook_user_id &&
+							         l.fanpage_id = :fanpage_id
+							) as a,
+				
+							(
+							select count(*) as b
+							from likes l , comments c
+							where l.facebook_user_id != c.facebook_user_id &&
+							         l.post_id = c.comment_id &&
+							         l.fanpage_id = c.fanpage_id &&
+							         l.facebook_user_id = :facebook_user_id &&
+							         l.fanpage_id = :fanpage_id
+							) as b');
+    	//filter \t\r\n
+     	$arr1 = Zend_Json::encode($arr);
+     	$arr2 = Zend_Json::decode($arr1);
+     	echo $arr2['sql'];
+    	
+    	$fanpage_id = '216821905014540';
+    	$facebook_user_id = '100000027416934';
+    	$badgeId = 3;
+    	
+    	$badgeEventModel = new Model_BadgeEvents();
+    	
+    	$badgeModel = new Model_Badges();
+    	$badge = $badgeModel->findRow($badgeId)->toArray();
+    	Zend_Debug::dump($badge);
+    	
+    	$badgeModel = Fancrank_BadgeFactory::factory('default');
+    	if($badgeModel->isFanEligible($fanpage_id, $facebook_user_id, $badgeId)) {
+    		echo 'yes';
+    	}else {
+    		echo 'no';
+    	}
+    }
+    
+    public function test22Action() {
+		$pointLog = new Model_PointLog();
+		$fanpage_id = '216821905014540';
+		echo $pointLog->getAwardPointsByFanpgeIdAndTime($fanpage_id, 'yesterday');
     }
     
     public function testmemcacheAction() {

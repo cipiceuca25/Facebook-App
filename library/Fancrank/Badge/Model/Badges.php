@@ -47,12 +47,21 @@ class Fancrank_Badge_Model_Badges extends Fancrank_Db_Table
     	
     	$selects = array();
     	
-    	if(isset($ruleList['from'])) {
+    	if(isset($ruleList['sql'])) {
+			$v = str_replace(':facebook_user_id', $facebook_user_id, $ruleList['sql']);
+			$v = str_replace(':fanpage_id', $fanpage_id, $v);
+			return $v;
+		}else if(isset($ruleList['from'])) {
     		$preSelect = 'SELECT count(*) > 0 AS flag';
     		foreach ($ruleList as $key=>$statement) {
     			switch ($key) {
+    				case 'select' :
+    					$preSelect = $statement .' ';
+    					break;
     				case 'from' :
     					foreach ($statement as $key=>$v) {
+    						$v = str_replace(':facebook_user_id', $facebook_user_id, $v);
+    						$v = str_replace(':fanpage_id', $fanpage_id, $v);
     						$select->from(array($key=>$v), array());
     					}
     					break;
@@ -64,7 +73,16 @@ class Fancrank_Badge_Model_Badges extends Fancrank_Db_Table
     					break;
     				case 'where' :
     					foreach ($statement as $v) {
+    						$v = str_replace(':facebook_user_id', $facebook_user_id, $v);
+    						$v = str_replace(':fanpage_id', $fanpage_id, $v);
     						$select->where($v);
+    					}
+    					break;
+    				case 'orWhere' :
+    					foreach ($statement as $v) {
+    						$v = str_replace(':facebook_user_id', $facebook_user_id, $v);
+    						$v = str_replace(':fanpage_id', $fanpage_id, $v);
+    						$select->orWhere($v);
     					}
     					break;
     				case 'order' :
