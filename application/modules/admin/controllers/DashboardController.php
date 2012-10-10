@@ -405,6 +405,36 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$this->view->page_id = $this->_getParam('id');
 	}
 	
+	public function showlogAction() {
+		$activityModel = new Model_FancrankActivities();
+		$logType = $this->_getParam('logType');
+		$fanpageId = $this->_getParam('id');
+		if(empty($fanpageId)) {
+			return;
+		}
+		switch($logType) {
+			case 'like' :
+				$result = $activityModel->getRecentFanpageLikeActivities($fanpageId);
+				Zend_Debug::dump($result);
+				break;
+			case 'comment' :
+				$result = $activityModel->getRecentFanpageCommentActivities($fanpageId);
+				Zend_Debug::dump($result);
+				break;
+			case 'post' :
+				$result = $activityModel->getRecentFanpagePostActivities($fanpageId);
+				Zend_Debug::dump($result);
+				break;
+			case 'subscribe' : break;
+			case 'overall' :
+				$result = $activityModel->getRecentFanpageActivities($fanpageId);
+				Zend_Debug::dump($result);
+				break;
+		}
+		
+		$this->view->page_id = $fanpageId;
+	}
+	
 	private function array_2_csv($array) {
 		$csv = array();
 		foreach ($array as $item) {

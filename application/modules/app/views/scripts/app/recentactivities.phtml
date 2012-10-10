@@ -53,7 +53,18 @@
 		
 	
 		<?switch($act['activity_type']){ 
-		
+			
+			case 'admin_add_point': ?> 
+				awarded you some points
+				<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				(note: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>)
+				<?break;
+				
+			case 'admin_subtract_point': ?> 
+				removed some points from your account
+				<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				(note: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>)
+				<?break;		
 			case 'follow': ?>
 				followed <?if ($isSelf){?>you<?php }else{?><a onclick="userProfile('<?=$act['event_object']?>')" data-content="" 
 																		data-original-title="" 

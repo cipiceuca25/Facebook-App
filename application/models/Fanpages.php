@@ -283,9 +283,21 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		}
 		
 		return $row['fanpage_level'];
+	}
+	
+	public function getFanpageName($fanpage_id){
+	
+		$select = $this->select();
+		$select->from($this, array('fanpage_name'))
+				->where('fanpage_id = ?', $fanpage_id);
+	
+		$row = $this->fetchRow($select);
+
+		if(empty($row['fanpage_name'])) {
+			return;
+		}
 		
-		
-		
+		return $row['fanpage_name'];
 	}
 	
 	public function getActiveFanpageByFanpageId($fanpage_id, $user_id)

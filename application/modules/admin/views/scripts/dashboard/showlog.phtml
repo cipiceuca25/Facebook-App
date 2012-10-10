@@ -1,0 +1,15 @@
+<ul class="breadcrumb">
+  <li><a href="http://www.fancrank.local/admin/dashboard/fanpages"><i class="icon-home"></i></a> <span class="divider">/</span></li>
+  <li><a href="/admin/dashboard/analytic/<?= $this->page_id ?>">dashboard</a><span class="divider">/</span></li>
+  <li class="active">View Logs</li>
+</ul>
+
+<div style="padding: 10px 0;" class="well">
+	<ul class="nav nav-list">
+	    <li class="nav-header">View Logs By</li>
+	    <li><a href="/admin/dashboard/showlog/<?= $this->page_id ?>?logType=overall"><i class="icon-list-alt"></i> Over All</a></li>
+	    <li><a href="/admin/dashboard/showlog/<?= $this->page_id ?>?logType=like"><i class="icon-list-alt"></i> Like</a></li>
+	    <li><a href="/admin/dashboard/showlog/<?= $this->page_id ?>?logType=comment"><i class="icon-list-alt"></i> Comment</a></li>
+	    <li><a href="/admin/dashboard/showlog/<?= $this->page_id ?>?logType=post"><i class="icon-list-alt"></i> Post</a></li>
+    </ul>
+</div>

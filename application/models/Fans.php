@@ -124,6 +124,18 @@ class Model_Fans extends Model_DbTable_Fans
 		}
 	}
 	
+	public function addPoint($point) {
+		if($this->_isNew || empty($point)) return;
+		$this->_fanProfile->fan_currency += $point;
+		return $this->_fanProfile->save();
+	}
+	
+	public function subtractPoint($point) {
+		if($this->_isNew || empty($point)) return;
+		$this->_fanProfile->fan_currency = $this->_fanProfile->fan_currency - $point;
+		return $this->_fanProfile->save();
+	}
+	
 	public function updateDescription($message){
 		
 		$this->_fanProfile->message = $this->getAdapter()->quote($message);

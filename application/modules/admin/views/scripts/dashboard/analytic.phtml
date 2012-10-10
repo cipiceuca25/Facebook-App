@@ -58,13 +58,6 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 						<span class="description"># of visits</span>
 					</div>
 				</li>
-				<li>
-					<div class="small-chart"></div>
-					<div class="chart-detail">
-						<span class="amount"><?= $this->new_fans ?></span>
-						<span class="description"> new fans in 24 hours:</span>
-					</div>
-				</li>				
 			</ul>
 		</div>
 	  </li>
@@ -119,6 +112,8 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 					<li><a href="/admin/dashboard/preview/<?= $this->page_id ?>"><i class="icon-eye-open"></i> Preview</a></li>
 					<li><a class="model-btn" href="#myFanpageSettingModel"><i class="icon-cog"></i> Settings</a></li>
 					<li><a href="/admin/dashboard/badgewizard/<?= $this->page_id ?>"><i class="icon-pencil"></i> BadgeWizard</a></li>
+					<li class="divider"></li>
+					<li><a href="/admin/dashboard/showlog/<?= $this->page_id ?>?logType=overall"><i class="icon-list-alt"></i> View Logs</a></li>
 					<li class="divider"></li>
 					<li>
 						<!-- likes graph -->
@@ -362,7 +357,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 
     <div class="modal" id="myFanpageSettingModel" style="display: none">
 	    <div class="modal-header">
-	    <button type="button" class="close model-btn-close" data-dismiss="modal">x</button>
+	    <button type="button" class="close setting-btn-close" data-dismiss="modal">x</button>
 	    <h3>Fanpage Setting</h3>
 	    </div>
 	    <div class="modal-body">
@@ -391,6 +386,39 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 	            </div>
 	          </div>
 	
+			<h3>Point Setting Section</h3>
+			<div>
+				<div class="control-group">
+					<label class="control-label" for="point_like_normal">point for like on user object</label>
+					<div class="controls">
+					<input type="text" id="point_like_normal">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_comment_normal">point for comment on user post</label>
+					<div class="controls">
+					<input type="text" id="point_comment_normal">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_post_normal">point for post on fanpage</label>
+					<div class="controls">
+					<input type="text" id="point_post_normal">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_like_admin">point for like on admin post</label>
+					<div class="controls">
+					<input type="text" id="point_like_admin">
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_comment_admin">point for comment on admin post</label>
+					<div class="controls">
+					<input type="text" id="point_comment_admin">
+					</div>
+				</div>
+			</div>
 			<div class="control-group upload_image">
 	    		<input type="hidden" name="MAX_FILE_SIZE" value="100000" />
 	        	<span class="control-label">Select an image</span>
@@ -404,8 +432,42 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
       </form>
 	    </div>
 	    <div class="modal-footer">
-	    <a href="#" class="btn model-btn-close" data-dismiss="modal">Close</a>
-	    <a href="#" class="btn btn-primary" data-id="<?= $this->page_id ?>">Save changes</a>
+	    <a href="#" class="btn model-btn-close setting-btn-close" data-dismiss="modal">Close</a>
+	    <a href="#" class="btn btn-primary setting-btn-primary" data-id="<?= $this->page_id ?>">Save changes</a>
+	    </div>
+    </div>
+
+<!-- modify user points -->
+    <div class="modal" id="pointModifyModel" style="display: none">
+	    <div class="modal-header">
+	    <button type="button" class="close user-btn-close" data-dismiss="modal">x</button>
+	    <h3>Modify User: <span id="modify_user_id"></span></h3>
+	    </div>
+	    <div class="modal-body">
+		<form class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label" for="add_point">add point:</label>
+				<div class="controls">
+				<input type="text" id="add_point" name="add_point">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="subtract_point">subtract point:</label>
+				<div class="controls">
+				<input type="text" id="subtract_point" name="subtract_point">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="message">message</label>
+				<div class="controls">
+				<textarea rows="3" id="modifiedPointMessage" name="modifiedPointMessage"></textarea>
+				</div>
+			</div>							
+	    </form>
+	    </div>
+	    <div class="modal-footer">
+	    <a href="#" class="btn model-btn-close user-btn-close" data-dismiss="modal">Close</a>
+	    <a href="#" class="btn btn-primary user-btn-primary" data-id="<?= $this->page_id ?>">Submit</a>
 	    </div>
     </div>
     

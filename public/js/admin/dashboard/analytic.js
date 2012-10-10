@@ -2,15 +2,15 @@
 jQuery(document).ready(function($){
 
 	/**************** Fanpage Setting Section *******************************/
-	$( "#myFanpageSettingModel" ).dialog( "destroy" );
+	$( "#myFanpageSettingModel" ).dialog("destroy");
 
 	$('#myFanpageSettingModel').dialog({
 		autoOpen: false,
-		height: 350,
+		height: 650,
 		width: 400,
 		modal: true,
 		close: function() {
-			$( this ).dialog( "close" );
+			$( this ).dialog("close");
 		}
 	});
 
@@ -19,12 +19,12 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 	});
 	
-	$(".model-btn-close").click(function (e) {
+	$(".setting-btn-close").click(function (e) {
 		$('#myFanpageSettingModel').dialog( "close" );
 		e.preventDefault();
 	});
 
-	$(".btn-primary").click(function (e) {
+	$(".setting-btn-primary").click(function (e) {
 		e.preventDefault();
 
 		var fanpageId = $(this).attr('data-id');
@@ -50,6 +50,91 @@ jQuery(document).ready(function($){
 		$('#myFanpageSettingModel').dialog( "close" );
 	});
 
+	/**************** User Point Modify Model Section *******************************/
+	$( "#pointModifyModel" ).dialog( "destroy" );
+
+	$('#pointModifyModel').dialog({
+		autoOpen: false,
+		height: 350,
+		width: 400,
+		modal: true,
+		close: function() {
+			$('#add_point').val('').removeAttr('disabled');
+			$('#subtract_point').val('').removeAttr('disabled');
+			$('#modifiedPointMessage').val('');
+			$( this ).dialog( "close" );
+		}
+	});
+	
+	$( ".user-btn-close" ).live('click', function(){
+		$('#pointModifyModel').dialog( "close" );
+	});
+	
+	$(".user-btn-primary").click(function (e) {
+		e.preventDefault();
+
+		var userId = $('#modify_user_id').html();
+		var fanpageId = $(this).attr('data-id');
+		var addPoint = $('#add_point').val();
+		var subtractPoint = $('#subtract_point').val();
+		var pointMsg = $('#modifiedPointMessage').val();
+		
+	    if(fanpageId) {
+	    	if(addPoint.match(/^\d+$/)) {
+	    		//alert(addPoint);
+		        $.ajax({
+		            url: '/admin/user/addpoint?',
+		            type: 'POST',
+		            data: 'fanpage_id='+fanpageId+'&user_id='+userId+'&point='+addPoint+'&pointMsg='+pointMsg,
+		            dataType: 'json',
+		            error: function( res ) {
+		            	alert('error'+res.message);
+		            },
+		            success: function( data ) {
+		            	if(data.message == 'ok') {
+			            	alert(data.message);
+		            	}
+		            }
+		        }); 
+	    	}else if(subtractPoint.match(/^\d+$/)) {
+	    		//alert(subtractPoint);
+		        $.ajax({
+		            url: '/admin/user/subtractpoint?',
+		            type: 'POST',
+		            data: 'fanpage_id='+fanpageId+'&user_id='+userId+'&point='+subtractPoint+'&pointMsg='+pointMsg,
+		            dataType: 'json',
+		            error: function( res ) {
+		            	alert('error'+res.message);
+		            },
+		            success: function( data ) {
+		            	if(data.message == 'ok') {
+			            	alert(data.message);
+		            	}
+		            }
+		        }); 
+	    	}else {
+	    		alert('invalid input');
+	    	}
+	    }
+		$('#pointModifyModel').dialog( "close" );
+	});
+	
+	$('#add_point').live('change', function() {
+		if($(this).val().length > 0) {
+			$('#subtract_point').attr('disabled', 'disabled');
+		}else {
+			$('#subtract_point').removeAttr('disabled');
+		}
+	});
+	
+	$('#subtract_point').live('change', function() {
+		if($(this).val().length > 0) {
+			$('#add_point').attr('disabled', 'disabled');
+		}else {
+			$('#add_point').removeAttr('disabled');
+		}
+	});
+	
 	/***********************************************/
 	$('.progress-preview').each(function(){
 		var el = $(this);
@@ -448,28 +533,6 @@ function pieHover(event, pos, obj)
 	$("#piehover").html('<span style="padding-left: 50px; font-weight: bold; color: '+obj.series.color+'"> Total number of '+obj.series.label + ': ' +number+' ('+percent+'%)</span>');
 }
 
-function getData() {
-	$.ajax({
-		type: "GET",
-		url: '/collectors/facebook/view',
-		dataType: "json",
-		cache: false,
-		success: function( data ) {
-			try{
-				//var data = jQuery.parseJSON(data);
-				alert(data);
-			}	
-			catch(e){
-				return false;
-			}
-		},	
-		error: function( xhr, errorMessage, thrownErro ) {
-			alert(errorMessage);
-			console.log(xhr.statusText, errorMessage);
-		}
-	});
-}
-
 function utcformat(d){
     d= new Date(d);
     var tail= 'GMT', D= [d.getUTCFullYear(), d.getUTCMonth()+1, d.getUTCDate()],
@@ -544,6 +607,11 @@ $(document).on('mouseover', 'a[rel=popover]', function() {
 	popover($(this));
 });
 
+//modify user point popup
+$(document).on('click', 'a[rel=popover]', function() {
+	$('#modify_user_id').html($(this).attr('data-userid'));	
+	$('#pointModifyModel').dialog( "open" );
+});
 
 function popover(x) {
 	$.ajax({
