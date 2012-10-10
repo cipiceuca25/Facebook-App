@@ -61,7 +61,7 @@ foreach($fanpageIdList as $id) {
 	
 		foreach ($fanList as $fan) {
 			try {
-				//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
+					echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
 					$result = $fanStat->updatedFan($id, $fan['facebook_user_id']);
 				//break;
 			}catch(Exception $e) {

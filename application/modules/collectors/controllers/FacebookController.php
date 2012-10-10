@@ -834,45 +834,24 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test21Action() {
-    	$arr = array('sql'=>' select (case when ((a.a + b.b) >= 34) then 1 else 0 end ) as flag from 
-    						(select count(*) as a
-							from posts p , likes l
-							where l.facebook_user_id != p.facebook_user_id &&
-							         l.post_id = p.post_id &&
-							         l.fanpage_id = p.fanpage_id &&
-							         l.facebook_user_id = :facebook_user_id &&
-							         l.fanpage_id = :fanpage_id
-							) as a,
-				
-							(
-							select count(*) as b
-							from likes l , comments c
-							where l.facebook_user_id != c.facebook_user_id &&
-							         l.post_id = c.comment_id &&
-							         l.fanpage_id = c.fanpage_id &&
-							         l.facebook_user_id = :facebook_user_id &&
-							         l.fanpage_id = :fanpage_id
-							) as b');
-    	//filter \t\r\n
-     	$arr1 = Zend_Json::encode($arr);
-     	$arr2 = Zend_Json::decode($arr1);
-     	echo $arr2['sql'];
-    	
-    	$fanpage_id = '216821905014540';
-    	$facebook_user_id = '100000027416934';
-    	$badgeId = 3;
-    	
-    	$badgeEventModel = new Model_BadgeEvents();
-    	
-    	$badgeModel = new Model_Badges();
-    	$badge = $badgeModel->findRow($badgeId)->toArray();
-    	Zend_Debug::dump($badge);
-    	
-    	$badgeModel = Fancrank_BadgeFactory::factory('default');
-    	if($badgeModel->isFanEligible($fanpage_id, $facebook_user_id, $badgeId)) {
-    		echo 'yes';
-    	}else {
-    		echo 'no';
+    
+    	$fanpage_id = '197221680326345';
+    	$facebook_user_id = '28117303';
+    	for ($i =331 ;$i< 332; $i++){
+	    	$badgeId = $i;
+	    	
+	    	$badgeEventModel = new Model_BadgeEvents();
+	    	
+	    	$badgeModel = new Model_Badges();
+	    	$badge = $badgeModel->findRow($badgeId)->toArray();
+	    	Zend_Debug::dump($badge);
+	    	
+	    	$badgeModel = Fancrank_BadgeFactory::factory('default');
+	    	if($badgeModel->isFanEligible($fanpage_id, $facebook_user_id, $badgeId)) {
+	    		echo 'yes';
+	    	}else {
+	    		echo 'no';
+	    	}
     	}
     }
     

@@ -131,8 +131,28 @@
 @color-popover-background:@color-container-blue;
 @color-popover-border:@color-container-blue;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
+html{
+	min-height:100%;
+}
 body {
-	background:white !important;
+	//background:white !important;
+/* IE10 Consumer Preview */ 
+background-image: -ms-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #d3d3d3 100%);
+
+/* Mozilla Firefox */ 
+background-image: -moz-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #d3d3d3 100%);
+
+/* Opera */ 
+background-image: -o-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #d3d3d3 100%);
+
+/* Webkit (Safari/Chrome 10) */ 
+background-image: -webkit-gradient(radial, center center, 0, center center, 506, color-stop(0, #FFFFFF), color-stop(1, #d3d3d3));
+
+/* Webkit (Chrome 11+) */ 
+background-image: -webkit-radial-gradient(center, circle farthest-corner, #FFFFFF 0%, #d3d3d3 100%);
+
+/* W3C Markup, IE10 Release Preview */ 
+background-image: radial-gradient(circle farthest-corner at center, #FFFFFF 0%, #d3d3d3 100%);
 }
 
 .navbar .nav li a,
@@ -149,7 +169,7 @@ a:hover{
 }
 
 .navbar-inner{
-	background:white;
+	background:lightgrey;
 	box-shadow:none;
 }
 
@@ -185,7 +205,7 @@ table.fanpage img{
 }
 
 [role="main"]{
-	margin-top:60px;
+	margin-top:80px;
 }
 
 .upgrade ul, ol{
@@ -208,7 +228,13 @@ border-bottom-color:grey;
 
 /////////////////////////////////////////////////////////////////////////
 .container{
-	width:940px;
+	min-width:1000px;
+	width:100%;
+
+}
+
+.padding{
+	padding:20px;
 }
 
 .box{
@@ -218,9 +244,7 @@ padding:10px;
 .border-radius(3px);
 }
 
-.left-sidebar-wrapper {
-	width: 130px;	
-}
+
 
 select, label, input[type="text"]{
 margin-bottom:0px;
@@ -251,11 +275,9 @@ padding-right:2px;
 }
 
 .widget{
-position:relative;
+
 list-style:none;
 margin:0;
-margin-top:-68px;
-left:770px;
 
 }
 
@@ -265,7 +287,8 @@ display:block;
 #gradient > .vertical(white, #F7f7f7 );
 border:1px solid #DDD;
 .border-radius(3px);
-margin-bottom:5px;width:150px;
+margin-bottom:5px;
+
 }
 
 .widget .label{

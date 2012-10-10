@@ -29,10 +29,12 @@ class Fancrank_Badge_Model_Badges extends Fancrank_Db_Table
     	if(empty($query)) return false;
     	
     	$results = $this->getAdapter()->fetchAll($query);
+    	if (empty($results)) return false;
     	//Zend_Debug::dump($results);
     	foreach($results as $result) {
     		if(empty($result['flag'])) return false;
     	}
+    	
     	return true;
     }
     

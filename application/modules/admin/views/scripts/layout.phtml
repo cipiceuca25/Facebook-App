@@ -31,7 +31,7 @@
 			var appId = "<?= $this->layout()->appKey ?>";
 			var serverUrl = "<?= $this->fullServerUrl() ?>";
         </script>
-        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <!--  <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>-->
         
         <?= $this->adminTheme($this->fanpageTheme, APPLICATION_ENV) ?>
@@ -44,8 +44,9 @@
         </div>
 
         <div class="container" role="main">
-                <?= APPLICATION_ENV ?>
+               <!-- <?= APPLICATION_ENV ?> --> 
                 <?= $this->layout()->content ?>
+      
         </div>
 
         <div id="fb-root"></div>

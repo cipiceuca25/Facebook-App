@@ -40,13 +40,18 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	}
 	
 	public function getNonNotifiedBadgesByUser($fanpage_id, $facebook_user_id) {
-		$query = $this->select()
+		/*$query = $this->select()
 		->from($this)
+	
 		->where('facebook_user_id = ?', $facebook_user_id)
 		->where('fanpage_id = ?', $fanpage_id)
-		->where('notification_read > ?', 0);
+		->where('notification_read = ?', 0);
 	
-		return $this->fetchAll($query);
+		return $this->fetchAll($query);*/
+		$select = "SELECT b.name, b.description, b.picture, b.quantity, b.id from badges b, badge_events e where e.badge_id = b.id && e.facebook_user_id = $facebook_user_id && e.fanpage_id = $fanpage_id";
+		
+		
+		return $this->getAdapter()->fetchAll($select);
 	}
 	
 	public function hasBadgeEvent($fanpage_id, $facebook_user_id, $badge_id) {

@@ -898,7 +898,7 @@ function getBadgeNotification(){
 			$('.profile-content').css('background-color', 'transparent');
 			$('.profile-content').html(data);
 			play();
-			next();
+		
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);

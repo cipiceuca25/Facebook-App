@@ -510,7 +510,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		foreach ($latest as $l){
     			$latestlike[] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
     			$yourpointslatest[$count] = 0;
-    			//$yourpointslatest[$count] = $this->postPointsCalculate($l);
+    			$yourpointslatest[$count] = $this->postPointsCalculate($l);
+    			
+    
     			$count++;
     		}
     		
@@ -536,7 +538,16 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
     				//echo $likes[$count];
     				$yourpoints[$count] = 0;
-    				//$yourpoints[$count] = $this->postPointsCalculate($posts);
+    				//$points =  new Model_PointLog();
+    				
+    				//$points  = $points->getPointsByPost($this->_fanpageId,  $this->_userId, $posts->id );
+    				//echo $posts->id;
+    			//	if ($points['point']!=null){
+    					//echo 'replacing point'. $points['point']. '<br/>';
+    				//	$yourpoints[$count] = $points['point'];
+    				//}
+    				//Zend_Debug::dump( $points);
+    				$yourpoints[$count] = $this->postPointsCalculate($posts);
     				$count++;
     	
     			}
@@ -1191,7 +1202,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 					$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 					//Zend_Debug::dump($posts);
 					$yourpoints[$count] = 0;
-					//$yourpoints[$count] = $this->postPointsCalculate($posts);
+					$yourpoints[$count] = $this->postPointsCalculate($posts);
 					//echo $likes[$count];
 					$count++;
 					
@@ -1215,7 +1226,28 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     }
     
     protected function postPointsCalculate($posts){
+    	
     	$yourpoints = 0;
+    	$c = isset($posts->comments->count)?$posts->comments->count:0;
+    	$l = isset($posts->likes->count)?$posts->likes->count:0;
+    	$y = ($this->_userId == $posts->from->id)?1:0;
+    	//echo $c .'..'.$l.'..'.$y.'<br/>';
+    	if ($c+$l+$y > 0){
+	    	$points =  new Model_PointLog();
+	    	//Zend_Debug::dump($posts->id);
+	    	$points  = $points->getPointsByPost($this->_fanpageId,  $this->_userId, $posts->id );
+	    	//echo $posts->id;
+	    	if ($points['point']!=null){
+	    	//echo 'replacing point'. $points['point']. '<br/>';
+	    		$yourpoints = $points['point'];
+	    	}
+    	}
+    	
+    	
+    	return $yourpoints;
+    	/////////////////////////////////NOTHING BEYOND THIS LINE RUNS
+    	//Zend_Debug::dump( $points);
+    	
     	
     	//if this is your post
     	if($this->_userId == $posts->from->id){
@@ -2720,6 +2752,25 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				$temp = ($temp>= 1)? 100 : round($temp*100, 2 ,PHP_ROUND_HALF_DOWN);
     				$array[$count]['percentage'] = $temp;
     				break;
+    			case 'Get-Like-Comment':
+    					//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
+    					$temp =  $timearray['get-likes']['comment']['no-time'] / $b['quantity'];
+    					$temp = ($temp>= 1)? 100 : round($temp*100, 2 ,PHP_ROUND_HALF_DOWN);
+    					$array[$count]['percentage'] = $temp;
+    					break;
+    			case 'Get-Like-Comment-10sec':
+    						
+    					$temp =   $timearray['get-likes']['comment']['10-second'] / $b['quantity'];
+    					$temp = ($temp>= 1)? 100 : round($temp*100, 2 ,PHP_ROUND_HALF_DOWN);
+    					$array[$count]['percentage'] = $temp;
+    					break;
+    			case 'Get-Like-Comment-1min':
+    						
+    					//Zend_Debug::dump($temp);
+    					$temp =   $timearray['get-likes']['comment']['1-minute'] / $b['quantity'];
+    					$temp = ($temp>= 1)? 100 : round($temp*100, 2 ,PHP_ROUND_HALF_DOWN);
+    					$array[$count]['percentage'] = $temp;
+    					break;
     			case 'Post-General':
     				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
     				$temp =  $fanRecord[0]['total_posts'] / $b['quantity'];

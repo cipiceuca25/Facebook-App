@@ -226,8 +226,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 		$likeModel = new Model_Likes();
 		$data['facebook_user_id'] = $this->_getParam('id');
-		$data['post_id'] = $this->_getParam('post_id');
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
+		$data['post_id'] = $this->_getParam('post_id');
+		
 		$data['post_type'] = $this->_getParam('post_type');
 		$data['likes'] = 0;
 		
@@ -411,10 +412,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	}
 	
 	public function notificationAction() {
+		
+		$fp = $this->_getParam('fanpage_id');
 		$userBadges = new Model_BadgeEvents();
-		$userBadgeCount = $userBadges->getNonNotifiedBadgesCountByUser($this->_user->fanpage_id, $this->_user->facebook_user_id);
-	
-		$this->_helper->json(array('message'=>'ok', 'notification'=>array('newBadgeCount'=>$userBadgeCount)));
+		$userBadgeCount = $userBadges->getNonNotifiedBadgesByUser($fp, $this->_user->facebook_user_id);
+		//Zend_Debug::dump($userBadgeCount);
+		$this->_helper->json(array('message'=>'ok', 'notification'=>array('newBadgeCount'=>$userBadgeCount), 'count'=> count($userBadgeCount)));
 	}
 	
 	public function mybadgesAction() {
