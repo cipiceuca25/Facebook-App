@@ -55,7 +55,7 @@ if (count($fanpageList) > 0) {
 	$error = false;
 	foreach ($fanpageList as $fanpage) {
 
-		if($fanpage->fanpage_id != '216821905014540') continue;
+		//if($fanpage->fanpage_id != '216821905014540') continue;
 		//if(!$fanpage->installed) continue;
 
 		$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
@@ -74,7 +74,7 @@ if (count($fanpageList) > 0) {
 				echo $fanpage->fanpage_id .' ' .$fanpage->access_token .PHP_EOL;
 				//update fanpage
 				$collector = new Service_FancrankCollectorService(null, $fanpage->fanpage_id, $fanpage->access_token, 'update');
-				$collector->updateFanpage('2+days+ago','now');
+				$collector->updateFanpage('1+days+ago','now');
 				
 				$data['status'] = 'success';
 				
@@ -144,7 +144,7 @@ if (count($fanpageList) > 0) {
 								
 				//break;
 			}catch(Exception $e) {
-				$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan['facebook_user_id'], $fan['fanpage_id']);
+				$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan['facebook_user_id'], $fanpage->fanpage_id);
 				$logger->log('Update fanpage cron Failed: ' .$errMsg .' ' .$e->getMessage(), Zend_Log::INFO);
 				$error = true;
 			}

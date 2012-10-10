@@ -15,6 +15,8 @@ abstract class Fancrank_Admin_Controller_BaseController extends Fancrank_Control
             $this->_helper->redirector('index', 'index');   
 
             //set the proper navbar
+            
+            //this line isnt going to run
             $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array());
         } else {
             $this->_identity = $this->_auth->getIdentity();

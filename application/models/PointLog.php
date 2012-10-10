@@ -23,5 +23,17 @@ class Model_PointLog extends Model_DbTable_PointLog
 		Zend_Debug::dump($result);
 		return empty($result[0]['point']) ? 0 : $result[0]['point'];
 	}
+	
+	public function getPointsByPost($fanpageId, $facebook_user_id, $post_id){
+		
+		$query = $this->select()
+		->from($this, array('sum(giving_points) as point'))
+		->where('facebook_user_id = ?', $facebook_user_id)
+		->where('fanpage_id = ?', $fanpageId)
+		->where('object_id = ?', $post_id);
+		
+		$result = $this->fetchAll($query)->current();
+		return $result;
+	}
 }
 

@@ -13,40 +13,47 @@ function loop() {
 }
 
 function next(){
-	moveLeft('.holder');
-
-	
-	
-	exp = 0;
-	loop();
-	
-	if ( count >= images.length){
+	if ( count > images.length){
 		$('.next').css('display','none');
-		$('.holder').css('display','none');
+		$('#holder').css('display','none');
+		close();
+	}else{
+		moveLeft('#holder');
+		exp = 0;
+		
+		
+		
+		$('.outof').html(experience[count]);
+		loop();
 	}
+	
 }
 
 function play(){
+	count = 0;
+	exp = 0;
 	$('.light-box').css('display','block');
 
 	$('.flare').css("-webkit-animation-play-state", "running");	
 	$('.flare').css("-moz-animation-play-state", "running");	
-
+	$('.badgeAni').css('background-image',
+				'url('+images[count]+')');
+	$('.badge_title').html(titles[count]);
+	$('.outof').html(experience[count]);
+	loop();
 }
 
 function moveLeft(ui){
-	$(ui).animate({
-		left: '-=1500px'
-	   },500, function(){
-		 $('.holder').css('opacity',0.1);
-		 resetLeft(ui);
-	});
+	
+	$(ui).css('opacity',0.1);
+	
+	resetLeft(ui);
+
 	
 }
 
 function resetLeft(ui) {
-	$(ui).css('left', 1270);
-
+	//$(ui).css('left',1310);
 	count++;
 	if (count >= images.length) {
 		$('.badge_title').html('No More Notifications');
@@ -54,31 +61,35 @@ function resetLeft(ui) {
 				'none');
 		$('.flare').css('background-image',
 		'none');
+		$('#holder').css('opacity','1');
+		$('.next').remove();
+		$('.exp_count').remove();
 	} else {
+		setTimeout($(ui).removeClass('holder-animate').animate({'nothing':null}, 1, function () {
+			$(ui).addClass('holder-animate');
+			}), 500);
 		$('.badgeAni').css('background-image',
-				'url(/img/badges/test/' + images[count] + '.png)');
+				'url('+images[count]+')');
 		$('.badge_title').html(titles[count]);
 	}
 	
-	$(ui).animate({
-		left : '-=1170px'
-	}, 500, function() {
-		
-	});
 	
 }
 
 
 function inloop() {
-    $('.increasing').html(exp+= 1);
-    if (exp>=50) {
-    	$('.holder').animate({
+    
+    if (exp>=experience[count]) {
+    	$('#holder').animate({
 		opacity: 1.0
-	}, 3000, function() {
+	}, 500, function() {
 		
 	});
         return;
+    }else{
+    	$('.increasing').html(exp+= 1);
+    	 clr = setTimeout(inloop, 30); //call 'inloop()' after 30 milliseconds
     }
-    clr = setTimeout(inloop, 30); //call 'inloop()' after 30 milliseconds
+   
 }
 
