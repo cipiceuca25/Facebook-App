@@ -25,11 +25,10 @@ class Admin_UserController extends Fancrank_Admin_Controller_BaseController
 			//set the proper navbar
 		}
 		//check admin permission
-		$userId = $this->_getParam('user_id');		
 		$fanpageId = $this->_getParam('fanpage_id');
 		
 		$fanpageAdminModel = new Model_FanpageAdmins;
-		$admins = $fanpageAdminModel->find($userId, $fanpageId)->count();
+		$admins = $fanpageAdminModel->find($this->_auth->getIdentity()->facebook_user_id, $fanpageId)->count();
 		
 		if(empty($admins) || $admins < 1) {
 			$this->_helper->json(array('message'=>'authentication failed'));
