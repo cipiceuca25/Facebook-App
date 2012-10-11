@@ -37,7 +37,7 @@
 		<?php if ($this->tabletype == 'fanfavorite'){?>
 		<th><a>Props</a></th>
 		<?php }else if ($this->tabletype == 'topfan'){?>
-		<th><a>Points</a></th>
+		<th><a>EXP</a></th>
 		<?php }else{?>
 		<th><a>thing</a></th>
 		<?php }?>
@@ -60,7 +60,7 @@
 			<?php if ($this->tabletype == 'fanfavorite'){?>
 			<td class="prop"><?=$fan['props']?></td>
 			<?php }else{?>
-			<td class="points"><?=$fan['fan_points']; ?></td>
+			<td class="points"><?=$fan['fan_exp']; ?></td>
 			<?php }?>
 			<td class="level"><?=$fan['fan_level']?></td>
 			<td class="posts"><?=$fan['post_count']?></td>

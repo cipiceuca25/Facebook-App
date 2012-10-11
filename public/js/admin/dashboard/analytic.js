@@ -299,7 +299,6 @@ jQuery(document).ready(function($){
 
     // export ajax call
     $(".export-dropdown a").click(function () {
-
 		var type;
 		switch($(this).html()) {
 			case 'Top fans list': type = 'topfans'; break;

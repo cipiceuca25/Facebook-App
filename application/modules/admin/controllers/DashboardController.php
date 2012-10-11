@@ -14,7 +14,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		if(!empty($fanpageId)) {
 			$fanpage = new Model_Fanpages();
 			$fanpage = $fanpage->find($this->_getParam('id'))->current();
-		
 			
 			$this->view->fanpage_name = $fanpage->fanpage_name;
 		}else {
@@ -148,16 +147,15 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	
      	$exportType = $this->_getParam('queryType');
 
-     	$fanpageId = $this->_getParam('id');
      	$fanpageModel = new Model_Fanpages;
      	$result = array();
-     	
+
      	switch ($exportType) {
      		case 'topfans' :      	
-		     	$result = $fanpageModel->getTopFanList($fanpageId, 50);
+		     	$result = $fanpageModel->getTopFanList($fanpageId, 1000, 50);
 		     	break;
      		case 'topposts' : 
-     			$result = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 50);
+     			$result = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 1000, 50);
      			break;
      		default : break;
      	}
@@ -167,7 +165,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 //     			array('suffix' => 'csv',
 //     					'headers' => array('Content-Type' => 'application/csv',
 //     							'Content-Disposition:' => 'attachment; filename="'. $filename.'"')))->initContext('csv');
-    					 
     	print_r($this->array_to_scv($result));
     }
     
@@ -423,6 +420,11 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 				Zend_Debug::dump($result);
 				break;
 			case 'subscribe' : break;
+			case 'pointlog' :
+				$pointLogModel = new Model_PointLog();
+				$result = $pointLogModel->getFanpagePointLog($fanpageId, 100);
+				Zend_Debug::dump($result);
+				break;
 			case 'overall' :
 				$result = $activityModel->getRecentFanpageActivities($fanpageId);
 				Zend_Debug::dump($result);
