@@ -1,77 +1,4 @@
-<<<<<<< Updated upstream
-<?php $count=0;?>
 
-<ul class="top-list mini">
-<?php if(count($this->result)==0){?>
-	<li>
-		<div class="ranker">
-			<div class="user">
-				<div class="photo"><img class="face" width="30" height="30" src="/img/profile-picture.png" onerror="ImgError(this);"></div>
-				
-				<div class="name">No users</div>
-			</div>
-		</div>
-	</li>
-	<?php $count++;?>
-<?php }?>
-
-
-
-<?php foreach ($this->result as $user):?>	
-	
-
-		<li  >
-		<div class="ranker">
-		<div class="user">
-			<div class="photo">
-				<a  data-userid="<?= $user['facebook_user_id'] ?>"
-					<? if (!($this->relation[$count] == 'Fanpage')){?>
-						onclick="userProfile('<?= $user['facebook_user_id'] ?>', true)"
-						 rel="popover" data-content="" data-original-title=""
-						data-placement="top"
-					<?}else{?>
-						class="noclick"
-					<? }?>>
-					<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
-				</a>
-			</div>
-			<div class="name">
-				<a  data-userid="<?= $user['facebook_user_id'] ?>"
-					<? if (!($this->relation[$count] == 'Fanpage')){?>
-						onclick="userProfile('<?= $user['facebook_user_id'] ?>', true)"
-						 rel="popover" data-content="" data-original-title=""
-						data-placement="top"<?}else{?> class="noclick" <? }?>>
-					<?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?>
-				</a>
-			</div>
-	
-		</div>
-		</div>
-	</li>
-<?php $count++;?>
-<?php endforeach; ?>
-
-	<?php if ($count < 5){?>
-
-	<?php for (;$count<5; $count++){ ?>
-
-		<li>
-			<div class="ranker">
-				
-				
-			
-				<div class="user">
-					<div class="photo"></div>
-					<div class="name"></div>
-				</div>
-			</div>
-		
-		</li>
-	<?}?>
-<?}?>
-	</ul>
-	
-=======
 <?php $count=0;?>
 
 <ul class="top-list mini">
@@ -144,4 +71,4 @@
 <?}?>
 	</ul>
 	
->>>>>>> Stashed changes
+

@@ -1149,15 +1149,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	for($count=0;$count < 6; $count++){
     		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
     	}
-<<<<<<< Updated upstream
-    	
-    	$badges = new Model_BadgeEvents() ;
-    	$badges = $badges -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $user->facebook_user_id, 6);
-    	for($count=0;$count < 6; $count++){
-    		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
-    	}
-=======
->>>>>>> Stashed changes
+
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
     	
     	$this->view->badges = $badges;
