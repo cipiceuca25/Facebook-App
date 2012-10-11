@@ -55,14 +55,18 @@
 		<?switch($act['activity_type']){ 
 			
 			case 'admin_add_point': ?> 
-				awarded you some points
-				<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+
+				awarded you <?=$act['event_object']?> points
+				<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+
 				(note: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>)
 				<?break;
 				
 			case 'admin_subtract_point': ?> 
-				removed some points from your account
-				<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+
+				removed <?=$act['event_object']?> points from your account
+				<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+
 				(note: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>)
 				<?break;		
 			case 'follow': ?>

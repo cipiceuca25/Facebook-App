@@ -84,13 +84,13 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 	}
 	
 	public function getTopFanList($fanpage_id, $limit, $days) {
-		$select = "select distinct f.facebook_user_id, f.fanpage_id, f.fan_name, f.fan_points, f.fan_level, 
+		$select = "select distinct f.facebook_user_id, f.fanpage_id, f.fan_name, f.fan_exp, f.fan_level, 
 			(s.fan_post_status_count+s.fan_post_photo_count+s.fan_post_video_count+s.fan_post_link_count) as post_count, 
 			(s.fan_comment_status_count+s.fan_comment_photo_count+s.fan_comment_video_count+s.fan_comment_link_count) as comment_count,
 			(s.fan_like_status_count+s.fan_like_photo_count+s.fan_like_video_count+s.fan_like_link_count) as like_count,
 			(s.fan_get_like_status_count+s.fan_get_like_photo_count+s.fan_get_like_video_count+s.fan_get_like_link_count+s.fan_get_like_comment_count) as got_like_count,
 			(s.fan_get_comment_status_count+s.fan_get_comment_photo_count+s.fan_get_comment_video_count+s.fan_get_comment_link_count) as got_comment_count
-			from fans f, fans_objects_stats s where s.facebook_user_id = f.facebook_user_id and s.fanpage_id = f.fanpage_id and f.fanpage_id = $fanpage_id and datediff(s.updated_time, now()) < $days group by s.facebook_user_id order by fan_points desc";
+			from fans f, fans_objects_stats s where s.facebook_user_id = f.facebook_user_id and s.fanpage_id = f.fanpage_id and f.fanpage_id = $fanpage_id and datediff(s.updated_time, now()) < $days group by s.facebook_user_id order by fan_exp desc";
 		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";

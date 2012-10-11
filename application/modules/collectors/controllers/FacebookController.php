@@ -400,7 +400,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     			Zend_Debug::dump($fanProfile);
     			echo 'current level: ' .$fan->getFanLevel() .PHP_EOL;
     			
-    			echo 'fan_points: ' .$fan->getFanPoints() .PHP_EOL;
+    			echo 'fan_exp: ' .$fan->getFanPoints() .PHP_EOL;
     			
     			echo 'next level: ' .$fan->getNextLevelRequiredXP();
     			

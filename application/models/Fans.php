@@ -47,14 +47,14 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function insertNewFan($data) {
-		if(empty($data['fan_points'])) {
-			$data['fan_currency'] = $this->_newBalance;
-			$data['fan_points']	= $this->_newBalance;
+		if(empty($data['fan_exp'])) {
+			$data['fan_point'] = $this->_newBalance;
+			$data['fan_exp']	= $this->_newBalance;
 			$data['fan_level'] = 1;
 		}else {
-			$data['fan_currency'] = $this->_newBalance;
-			$data['fan_points']	+= $this->_newBalance;
-			$data['fan_level'] = $this->calculateLevel($data['fan_points']);
+			$data['fan_point'] = $this->_newBalance;
+			$data['fan_exp']	+= $this->_newBalance;
+			$data['fan_level'] = $this->calculateLevel($data['fan_exp']);
 		}
 
 		//Zend_Debug::dump($data);
@@ -79,7 +79,7 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function getFanCurrency() {
-		return $this->_fanProfile->fan_currency;
+		return $this->_fanProfile->fan_point;
 	}
 	
 	public function getFanCountry() {
@@ -95,19 +95,19 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function updateLevel() {
-		$newLevel = $this->calculateLevel($this->_fanProfile->fan_points);
+		$newLevel = $this->calculateLevel($this->_fanProfile->fan_exp);
 		if($this->_fanProfile->fan_level > $newLevel) {
 			return;
 		}
 		
-		//$newLevel = floor(pow($this->_fanProfile->fan_points / self::BASE_XP, 1 / self::LEVEL_FACTOR));
+		//$newLevel = floor(pow($this->_fanProfile->fan_exp / self::BASE_XP, 1 / self::LEVEL_FACTOR));
 		//$this->_fanProfile->fan_level = $newLevel < self::MAX_LEVEL ? $newLevel : self::MAX_LEVEL;
 		$this->_fanProfile->fan_level = $newLevel;
 	}
 	
 	
 	public function getCurrentEXP(){
-		return $this->_fanProfile->fan_points;
+		return $this->_fanProfile->fan_exp;
 	}
 	
 	protected function calculateLevel($points) {
@@ -118,21 +118,21 @@ class Model_Fans extends Model_DbTable_Fans
 	
 	public function updateCurrency($newBalance = null) {
 		if(empty($newBalance)) {
-			$this->_fanProfile->fan_currency = $this->_newBalance;
+			$this->_fanProfile->fan_point = $this->_newBalance;
 		}else {
-			$this->_fanProfile->fan_currency = $newBalance;
+			$this->_fanProfile->fan_point = $newBalance;
 		}
 	}
 	
 	public function addPoint($point) {
 		if($this->_isNew || empty($point)) return;
-		$this->_fanProfile->fan_currency += $point;
+		$this->_fanProfile->fan_point += $point;
 		return $this->_fanProfile->save();
 	}
 	
 	public function subtractPoint($point) {
 		if($this->_isNew || empty($point)) return;
-		$this->_fanProfile->fan_currency = $this->_fanProfile->fan_currency - $point;
+		$this->_fanProfile->fan_point = $this->_fanProfile->fan_point - $point;
 		return $this->_fanProfile->save();
 	}
 	
@@ -143,8 +143,8 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function updateFanPoints($newFanPoints) {
-		$this->_fanProfile->fan_currency += $newFanPoints;
-		$this->_fanProfile->fan_points += $newFanPoints;
+		$this->_fanProfile->fan_point += $newFanPoints;
+		$this->_fanProfile->fan_exp += $newFanPoints;
 	}
 	
 	public function getNextLevelRequiredXP() {
@@ -170,16 +170,16 @@ class Model_Fans extends Model_DbTable_Fans
 		return $this->_isNew;	
 	}
 	
-	public function getFanCurrencyByFanIdAndFanpageId($facebook_user_id, $fanpage_id) {
+	public function getFanPointByFanIdAndFanpageId($facebook_user_id, $fanpage_id) {
 		$query = $this->select()
-		->from($this, array('fan_currency'))
+		->from($this, array('fan_point'))
 		->where('facebook_user_id = ?', $facebook_user_id)
 		->where('fanpage_id =?', $fanpage_id);
 		$result = $this->fetchAll($query)->toArray();
 	
 		//Zend_Debug::dump($result); exit();
 		if(!empty($result[0])) {
-			return $result[0]['fan_currency'];
+			return $result[0]['fan_point'];
 		}
 	
 		return;
@@ -202,16 +202,16 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	
-	public function getFanPointsByFanIdAndFanpageId($facebook_user_id, $fanpage_id) {
+	public function getFanExpByFanIdAndFanpageId($facebook_user_id, $fanpage_id) {
 		$query = $this->select()
-		->from($this, array('fan_points'))
+		->from($this, array('fan_exp'))
 		->where('facebook_user_id = ?', $facebook_user_id)
 		->where('fanpage_id =?', $fanpage_id);
 		$result = $this->fetchAll($query)->toArray();
 	
 		//Zend_Debug::dump($result); exit();
 		if(!empty($result[0])) {
-			return $result[0]['fan_points'];
+			return $result[0]['fan_exp'];
 		}
 	
 		return;

@@ -1,10 +1,10 @@
 <?php
 /**
- * Francrank
+ * FanCrank
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Fancrank OEM license
+ * This source file is subject to the FanCrank OEM license
  *
  * @category    app
  * @package     app
@@ -25,12 +25,10 @@ class Admin_UserController extends Fancrank_Admin_Controller_BaseController
 			//set the proper navbar
 		}
 		//check admin permission
-		$userId = $this->_getParam('user_id');		
 		$fanpageId = $this->_getParam('fanpage_id');
 		
 		$fanpageAdminModel = new Model_FanpageAdmins;
-		$admins = $fanpageAdminModel->find($userId, $fanpageId)->count();
-
+		$admins = $fanpageAdminModel->find($this->_auth->getIdentity()->facebook_user_id, $fanpageId)->count();
 		
 		if(empty($admins) || $admins < 1) {
 			$this->_helper->json(array('message'=>'authentication failed'));
@@ -78,22 +76,19 @@ class Admin_UserController extends Fancrank_Admin_Controller_BaseController
 			//add points
 			$result = $fanModel->addPoint($point);
 			
-			$fanpageModel = new Model_Fanpages();
-			$fanpageName = $fanpageModel->getFanpageName($fanpageId);
-			
 			//update fancrank activity log
 			$data = array();
 			$data['activity_type'] = 'admin_add_point';
-			$data['event_object'] = $fanpageId;
-			$data['facebook_user_id'] = $fanpageId;
-			$data['facebook_user_name'] = $fanpageName;
+			$data['event_object'] = $point;
+			$data['facebook_user_id'] = $this->_auth->getIdentity()->facebook_user_id;
+			$data['facebook_user_name'] = $this->_auth->getIdentity()->facebook_user_name;
 			$data['fanpage_id'] = $fanpageId;
 			$data['target_user_id'] = $userId;
 			$data['target_user_name'] = $fanModel->getFanProfile()->fan_name;
 			$data['message'] = $msg;
 			
-			$fancrankActivityModel = new Model_FancrankActivities();
-			$result = $fancrankActivityModel->insert($data);
+			$adminActivityModel = new Model_AdminActivities();
+			$result = $adminActivityModel->insert($data);
 			
 			//udpate point log
 			$pointLog = array();
@@ -150,22 +145,18 @@ class Admin_UserController extends Fancrank_Admin_Controller_BaseController
 			}
 			$fanModel->subtractPoint($point);
 			
-			$fanpageModel = new Model_Fanpages();
-			$fanpageName = $fanpageModel->getFanpageName($fanpageId);
-			
-			//update fancrank activity log
 			$data = array();
 			$data['activity_type'] = 'admin_subtract_point';
-			$data['event_object'] = $fanpageId;
-			$data['facebook_user_id'] = $fanpageId;
-			$data['facebook_user_name'] = $fanpageName;
+			$data['event_object'] = $point;
+			$data['facebook_user_id'] = $this->_auth->getIdentity()->facebook_user_id;
+			$data['facebook_user_name'] = $this->_auth->getIdentity()->facebook_user_name;
 			$data['fanpage_id'] = $fanpageId;
 			$data['target_user_id'] = $userId;
 			$data['target_user_name'] = $fanModel->getFanProfile()->fan_name;
 			$data['message'] = $msg;
 			
-			$fancrankActivityModel = new Model_FancrankActivities();
-			$fancrankActivityModel->insert($data);
+			$adminActivityModel = new Model_AdminActivities();
+			$result = $adminActivityModel->insert($data);
 			
 			//udpate point log
 			$pointLog = array();
@@ -189,3 +180,4 @@ class Admin_UserController extends Fancrank_Admin_Controller_BaseController
 }
 
 ?>
+
