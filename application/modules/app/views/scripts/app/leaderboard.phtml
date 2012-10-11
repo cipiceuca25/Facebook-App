@@ -107,16 +107,23 @@
 										</h3>
 										<span>Points <br/>
 										</span>
-										<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>"<?php switch($this->topFanArray[$count]) { 
+										<a rel="tooltip-follow" <?php switch($this->topFanArray[$count]) { 
 											case 'You':?>
+<<<<<<< Updated upstream
 												class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+												class ="noclick"
+												data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 											<?break;?>
 											<?case 'Following'?>
+												class ="follow_<?=$top_fan['facebook_user_id']?>"
 												onclick="unfollow(<?= $top_fan['facebook_user_id']?> ,'<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
 												data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 											<?break;?>
 												
 											<?default:?>
+												class ="follow_<?=$top_fan['facebook_user_id']?>"
 												onclick="follow(<?= $top_fan['facebook_user_id']?> , '<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
 												data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->topFanArray[$count]?>"><?=$this->topFanArray[$count]?></span>
 											<?}?>
@@ -189,16 +196,23 @@
 											</h3>
 											<span>Points <br/>
 											</span>
-											<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>"<?php switch($this->topFanArray[$count]) { 
+											<a rel="tooltip-follow" <?php switch($this->topFanArray[$count]) { 
 												case 'You':?>
+<<<<<<< Updated upstream
 													class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+													class ="noclick"
+													data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 												<?break;?>
 												<?case 'Following'?>
+													class ="follow_<?=$top_fan['facebook_user_id']?>"
 													onclick="unfollow(<?= $top_fan['facebook_user_id']?> ,'<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
 													data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 												<?break;?>
 													
 												<?default:?>
+													class ="follow_<?=$top_fan['facebook_user_id']?>"
 													onclick="follow(<?= $top_fan['facebook_user_id']?> , '<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
 													data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->topFanArray[$count]?>"><?=$this->topFanArray[$count]?></span>
 												<?}?>
@@ -322,7 +336,7 @@
 											</h3>
 											<span>Points<br />
 											</span>
-											<a rel="tooltip-follow" data-original-title="This is You">
+											<a rel="tooltip-follow" data-original-title="This is You" class="noclick">
 											<span class="badge badge-You">
 												You
 											</span></a>
@@ -398,16 +412,23 @@
 									</h3>
 									<span>Props<br/>
 									</span>
-									<a rel="tooltip-follow" class ="follow_<?=$popular['facebook_user_id']?>"<?php switch($this->popularArray[$count]) { 
+									<a rel="tooltip-follow" <?php switch($this->popularArray[$count]) { 
 										case 'You':?>
+<<<<<<< Updated upstream
 											 class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+											class ="noclick"
+											data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 										<?break;?>
 										<?case 'Following'?>
+											class ="follow_<?=$popular['facebook_user_id']?>"
 											onclick="unfollow(<?= $popular['facebook_user_id']?> ,'<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
 											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
+											class ="follow_<?=$popular['facebook_user_id']?>"
 											onclick="follow(<?= $popular['facebook_user_id']?> , '<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
 											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->popularArray[$count]?>"><?=$this->popularArray[$count]?></span>
 										<?}?>
@@ -454,17 +475,24 @@
 									</h3>
 									<span>Props<br/>
 										</span>
-									<a rel="tooltip-follow" class ="follow_<?=$popular['facebook_user_id']?>"<?php switch($this->popularArray[$count]) { 
+									<a rel="tooltip-follow" <?php switch($this->popularArray[$count]) { 
 										case 'You':?>
+<<<<<<< Updated upstream
 											 class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+											class ="noclick"
+											data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 										<?break;?>
 										
 										<?case 'Following'?>
+											class ="follow_<?=$popular['facebook_user_id']?>"
 											onclick="unfollow(<?= $popular['facebook_user_id']?> ,'<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
 											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
+											class ="follow_<?=$popular['facebook_user_id']?>"
 											onclick="follow(<?= $popular['facebook_user_id']?> , '<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
 											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->popularArray[$count]?>"><?=$this->popularArray[$count]?></span>
 										<?}?>
@@ -561,7 +589,7 @@
 										</h3>
 										<span>Props<br/>
 										</span>
-										<a rel="tooltip-follow" data-original-title="This is You">
+										<a rel="tooltip-follow" data-original-title="This is You" class="noclick">
 										<span class="badge badge-You">
 											You
 										</span></a>
@@ -633,16 +661,23 @@
 									</h3>
 									<span>Posts</span>
 									<br/>
-									<a rel="tooltip-follow" class ="follow_<?=$talker['facebook_user_id']?>"<?php switch($this->talkerArray[$count]) { 
+									<a rel="tooltip-follow" <?php switch($this->talkerArray[$count]) { 
 										case 'You':?>
+<<<<<<< Updated upstream
 											  class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+											class ="noclick"
+											data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 										<?break;?>
 										<?case 'Following'?>
+											class ="follow_<?=$talker['facebook_user_id']?>"
 											onclick="unfollow(<?= $talker['facebook_user_id']?> ,'<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
 											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
+											class ="follow_<?=$talker['facebook_user_id']?>"
 											onclick="follow(<?= $talker['facebook_user_id']?> , '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
 											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->talkerArray[$count]?>"><?=$this->talkerArray[$count]?></span>
 										<?}?>
@@ -689,16 +724,23 @@
 									</h3>
 									<span>Posts</span>
 									<br/>
-									<a rel="tooltip-follow" class ="follow_<?=$talker['facebook_user_id']?>"<?php switch($this->talkerArray[$count]) { 
+									<a rel="tooltip-follow" <?php switch($this->talkerArray[$count]) { 
 										case 'You':?>
+<<<<<<< Updated upstream
 											class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+											class ="noclick "
+											data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 										<?break;?>
 										<?case 'Following'?>
+											class ="follow_<?=$talker['facebook_user_id']?>"
 											onclick="unfollow(<?= $talker['facebook_user_id']?> ,'<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
 											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
+											class ="follow_<?=$talker['facebook_user_id']?>"
 											onclick="follow(<?= $talker['facebook_user_id']?> , '<?= $talker['fan_first_name'].' '.$talker['fan_last_name']?>')" 
 											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->talkerArray[$count]?>"><?=$this->talkerArray[$count]?></span>
 										<?}?>
@@ -794,7 +836,7 @@
 											<?= isset($this->talkerYou['number_of_posts'])?$this->talkerYou['number_of_posts']:'?'?>
 										</h3>
 										<span>Posts</span> <br/>
-										<a rel="tooltip-follow" data-original-title="This is You">
+										<a class="noclick" rel="tooltip-follow" data-original-title="This is You">
 										<span class="badge badge-You">
 											You
 										</span></a>
@@ -872,16 +914,23 @@
 										<?= $clicker['number_of_likes'] ?>
 									</h3>
 									<span>Likes</span> <br/>
-									<a rel="tooltip-follow" class ="follow_<?=$clicker['facebook_user_id']?>"<?php switch($this->clickerArray[$count]) { 
+									<a rel="tooltip-follow" <?php switch($this->clickerArray[$count]) { 
 										case 'You':?>
+<<<<<<< Updated upstream
 											class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+											class ="noclick"
+											data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 										<?break;?>
 										<?case 'Following'?>
+											class ="follow_<?=$clicker['facebook_user_id']?>"
 											onclick="unfollow(<?= $clicker['facebook_user_id']?> ,'<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
 											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
+											class ="follow_<?=$clicker['facebook_user_id']?>"
 											onclick="follow(<?= $clicker['facebook_user_id']?> , '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
 											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->clickerArray[$count]?>"><?=$this->clickerArray[$count]?></span>
 										<?}?>
@@ -926,16 +975,23 @@
 										<?= $clicker['number_of_likes'] ?>
 									</h3>
 									<span>Likes</span><br/>
-									<a rel="tooltip-follow" class ="follow_<?=$clicker['facebook_user_id']?>"<?php switch($this->clickerArray[$count]) { 
+									<a rel="tooltip-follow" <?php switch($this->clickerArray[$count]) { 
 										case 'You':?>
+<<<<<<< Updated upstream
 											class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+											class ="noclick"
+											data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 										<?break;?>
 										<?case 'Following'?>
+											class ="follow_<?=$clicker['facebook_user_id']?>"
 											onclick="unfollow(<?= $clicker['facebook_user_id']?> ,'<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
 											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
+											class ="follow_<?=$clicker['facebook_user_id']?>"
 											onclick="follow(<?= $clicker['facebook_user_id']?> , '<?= $clicker['fan_first_name'].' '.$clicker['fan_last_name']?>')" 
 											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->clickerArray[$count]?>"><?=$this->clickerArray[$count]?></span>
 										<?}?>
@@ -1031,7 +1087,7 @@
 											<?= (isset($this->clickerYou['number_of_likes']))?$this->clickerYou['number_of_likes']:'?'?>
 										</h3>
 										<span>Likes</span><br/>
-										<a rel="tooltip-follow" data-original-title="This is You"><span class="badge badge-You">
+										<a class="noclick" rel="tooltip-follow" data-original-title="This is You"><span class="badge badge-You">
 											You
 										</span></a>
 									</div>
@@ -1105,16 +1161,23 @@
 										<?= $followed['count'] ?>
 									</h3>
 									<span>Followers</span> <br />
-									<a rel="tooltip-follow" class ="follow_<?=$followed['facebook_user_id']?>"<?php switch($this->followedArray[$count]) { 
+									<a rel="tooltip-follow" <?php switch($this->followedArray[$count]) { 
 										case 'You':?>
+<<<<<<< Updated upstream
 											class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+											class ="noclick"
+											data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 										<?break;?>
 										<?case 'Following'?>
+											class ="follow_<?=$followed['facebook_user_id']?>"
 											onclick="unfollow(<?= $followed['facebook_user_id']?> ,'<?= $followed['fan_first_name'].' '.$followed['fan_last_name']?>')" 
 											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
+											class ="follow_<?=$followed['facebook_user_id']?>"
 											onclick="follow(<?= $followed['facebook_user_id']?> , '<?= $followed['fan_first_name'].' '.$followed['fan_last_name']?>')" 
 											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->followedArray[$count]?>"><?=$this->followedArray[$count]?></span>
 										<?}?>
@@ -1159,16 +1222,23 @@
 									</h3>
 									<span>Followers</span>
 									<br/>
-									<a rel="tooltip-follow" class ="follow_<?=$followed['facebook_user_id']?>"<?php switch($this->followedArray[$count]) { 
+									<a rel="tooltip-follow" <?php switch($this->followedArray[$count]) { 
 										case 'You':?>
+<<<<<<< Updated upstream
 											class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+=======
+											class ="noclick"
+											data-original-title="This is You"><span class="badge badge-You">You</span>
+>>>>>>> Stashed changes
 										<?break;?>
 										<?case 'Following'?>
+											class ="follow_<?=$followed['facebook_user_id']?>"
 											onclick="unfollow(<?= $followed['facebook_user_id']?> ,'<?= $followed['fan_first_name'].' '.$followed['fan_last_name']?>')" 
 											data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
+											class ="follow_<?=$followed['facebook_user_id']?>"
 											onclick="follow(<?= $followed['facebook_user_id']?> , '<?= $followed['fan_first_name'].' '.$followed['fan_last_name']?>')" 
 											data-original-title="Click to Follow this User"><span class="badge badge-<?=$this->followedArray[$count]?>"><?=$this->followedArray[$count]?></span>
 										<?}?>
@@ -1264,7 +1334,7 @@
 											<?= isset($this->followedYou['count'])?$this->followedYou['count']:'?'?>
 										</h3>
 										<span>Followers</span><br/>
-										<a rel="tooltip-follow" data-original-title="This is You">
+										<a class="noclick" rel="tooltip-follow" data-original-title="This is You">
 										<span class="badge badge-You">
 											You
 										</span></a>

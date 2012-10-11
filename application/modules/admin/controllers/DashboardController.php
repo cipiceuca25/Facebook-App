@@ -260,7 +260,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 					}
 				}
 				break;
-
+ 
 			case 'toptalkers':
 				$topFanList = $fanpageModel->getFanFavoriteList($fanpageId, 100, $time);
 				//Zend_Debug::dump($topPostByComment);

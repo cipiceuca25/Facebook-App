@@ -24,17 +24,20 @@
 							</div>
 					
 							<div class="follow">
-								<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>" data-placement='top-right'<?php switch($this->relation[$count]) { 
+								<a rel="tooltip-follow"  data-placement='top-right'<?php switch($this->relation[$count]) { 
 								
 									case 'You':?>
+										class ="noclick"
 										 data-original-title="This is You"><span class="badge badge-You">You</span>
 									<?break;?>
 									<?case 'Following'?>
+										class ="follow_<?=$top_fan['facebook_user_id']?>"
 										onclick="unfollow(<?=$top_fan['facebook_user_id']?> ,'<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
 										data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 									<?break;?>
 										
 									<?default:?>
+										class ="follow_<?=$top_fan['facebook_user_id']?>"
 										onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
 										data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
 									<?}?>
@@ -69,16 +72,19 @@
 							
 						</div>
 						<div class="follow">
-							<a rel="tooltip-follow" class ="follow_<?=$top_fan['facebook_user_id']?>"  data-placement='top-right'<?php switch($this->topFanArray[$count]) { 
+							<a rel="tooltip-follow"   data-placement='top-right'<?php switch($this->topFanArray[$count]) { 
 									case 'You':?>
+										class ="noclick"	
 										 data-original-title="This is You"><span class="badge badge-You">You</span>
 									<?break;?>
 									<?case 'Following'?>
+										class ="follow_<?=$top_fan['facebook_user_id']?>"
 										onclick="unfollow(<?=$top_fan['facebook_user_id']?> ,'<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
 										data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 									<?break;?>
 										
 									<?default:?>
+										class ="follow_<?=$top_fan['facebook_user_id']?>"
 										onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
 										data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
 									<?}?>
@@ -165,7 +171,7 @@
 						</div>
 						</div>
 						<div class="follow">
-							<a rel="tooltip-follow" data-original-title="This is You" class="follow_<?= $this->user_id ?>"><span class="badge badge-You">You</span></a>
+							<a rel="tooltip-follow" data-original-title="This is You" class="noclick"><span class="badge badge-You">You</span></a>
 						
 						</div>
 					</div>	

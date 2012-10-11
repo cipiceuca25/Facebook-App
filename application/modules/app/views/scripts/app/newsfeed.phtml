@@ -50,7 +50,11 @@
 
 					<div class="user">
 						<div class="user-badge">
+<<<<<<< Updated upstream
 							<a class="noclick" rel="tooltip-follow" data-original-title="You can't Follow an Admin" class="follow_<?= $post->from->id ?>">
+=======
+							<a class="noclick" rel="tooltip-follow" data-original-title="You can't Follow an Admin" >
+>>>>>>> Stashed changes
 								<span class="badge badge-Fanpage">Admin</span>
 							</a>
 						</div>
@@ -59,7 +63,7 @@
 								src="https://graph.facebook.com/<?= $post->from->id ?>/picture"
 								onerror="ImgError(this);"></a> </div> 
 								
-						<div class="name"><a><?=  $post->from->name?></a> 
+						<div class="name"><a class="noclick"><?=  $post->from->name?></a> 
 						</div>
 					
 					</div>
@@ -372,7 +376,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 	<div class="user" >		
 	
 	<div class="user-badge">
-		<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" <?php switch($this->relation[$count]) { 
+		<a rel="tooltip-follow"  <?php switch($this->relation[$count]) { 
 			case 'Fanpage':?>
 				 class="noclick" data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
 			<?break;?>
@@ -380,11 +384,13 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 				 class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
 			<?break;?>
 			<?case 'Following':?>
+				class= "follow_<?=$post->from->id?>"
 				onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
 				data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 			<?break;?>
 				
 			<?default:?>
+				class="follow_<?=$post->from->id?>"
 				onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')" 				
 				data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 			<?}?>
@@ -694,7 +700,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 			<div class="span4">
 				<div id="top-post-container">
 				
-
+ 
 				<div class="row box">
 				<div class="title nopic">
 

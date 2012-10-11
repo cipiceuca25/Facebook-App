@@ -29,17 +29,19 @@
 		<li class="post-container <?=$post->id?>" >
 			<div class="user">
 				<div class="user-badge">
-						<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" <?php switch($this->relation[$count]) { 
+						<a rel="tooltip-follow"  <?php switch($this->relation[$count]) { 
 						case 'You':?>
 							 class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
 						<?break;?>
 						
 						<?case 'Following'?>
+							class ="follow_<?=$post->from->id?>"
 							onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
 							data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
 						<?break;?>
 							
 						<?default:?>
+							class ="follow_<?=$post->from->id?>"
 							onclick="follow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
 							data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 						<?}?>
@@ -168,7 +170,7 @@
 					<?php }?>
 				</a>
 	
-				&middot;
+				&middot; 
 			
 				<a  onclick=" popup_post('<?= $post->id ?>',true )"
 					class="commenthider_<?= $post->id ?>">Comment</a>

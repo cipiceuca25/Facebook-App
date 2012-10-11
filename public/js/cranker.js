@@ -739,7 +739,7 @@ function getFancrankfeed(view) {
 			}
 			
 		},
-		success : function(data) {
+		success : function(data) { 
 			//alert(data);
 			$('#loader').remove();
 			$('#last_post_time').remove();
