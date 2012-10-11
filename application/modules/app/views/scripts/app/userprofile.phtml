@@ -27,7 +27,7 @@
 							<a rel="tooltip-follow" class ="follow_<?= $this->facebook_user->facebook_user_id?>"
 								<?php switch($this->relation) { 
 									case 'You':?>
-										 data-original-title="This is You"><span class="badge badge-You">You</span>
+										class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
 									<?break;?>
 									<?case 'Following'?>
 										onclick="unfollow(<?= $this->facebook_user->facebook_user_id?> ,'<?= $username ?>')" 
@@ -49,12 +49,12 @@
 								</div>
 								
 								<div class="photo">
-									<a><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
+									<a class="noclick"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
 						
 								</div>
 								
 								<div class="name">
-									<a><?= $displayname?></a>
+									<a class="noclick"><?= $displayname?></a>
 								
 								</div>	
 								
@@ -69,29 +69,17 @@
 						</div>
 					</div>
 					<div class="span6">
-						<div style="padding:5px; margin-top:29px">
-							<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
+						<div style="padding:0 5px 0 5px; ">
+							<?php foreach ($this->badges as $b): ?>
+								<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
 								<div class="bar" style="width: 100%;height:50px"></div>
-								<a data-original-title="Some Badge" 
-								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
-									<img src="/img/badges/generic.png"/>
+								<a data-original-title="<?= $b['name']. '<br/>'.$b['description']?>" 
+								class=noclick rel="tooltip" data-placement="top" style="float:left; position:relative;top:-50px;" >
+									<img src="<?= $b['picture']?>"/>
 								</a>
 							</div>
-							<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
-								<div class="bar" style="width: 100%;height:50px"></div>
-								<a data-original-title="Some Badge" 
-								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
-									<img src="/img/badges/generic.png"/>
-								</a>
-							</div>
-							<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
-								<div class="bar" style="width: 100%;height:50px"></div>
-								<a data-original-title="Some Badge" 
-								rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-50px;" >
-									<img src="/img/badges/generic.png"/>
-								</a>
-							</div>
-					
+						
+							<?php endforeach;?>
 						</div>
 					</div>
 				</div>

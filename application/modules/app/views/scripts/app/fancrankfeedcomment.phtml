@@ -32,10 +32,10 @@
 		<div class="user-badge">
 			<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" <?php switch($this->relation[$count]) { 
 				case 'Fanpage':?>
-					 data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+					 class="noclick" data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
 				<?break;?>
 				<?case 'You':?>
-					 data-original-title="This is You"><span class="badge badge-You">You</span>
+					 class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
 				<?break;?>
 				<?case 'Following':?>
 					onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
@@ -59,7 +59,9 @@
 				data-original-title="" 
 				data-placement="right" 
 				data-userid="<?=$post->from->id?>"
-			<?php }?> 
+			<?php }else{?>
+				class="noclick"
+			<?}?> 
 		><?=  $post->from->name?></a></div>
 		
 		
@@ -97,7 +99,7 @@
 	</div>
 	<div class="social"> 
 	 	
-		<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
+		<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 		
 		&middot;
 		

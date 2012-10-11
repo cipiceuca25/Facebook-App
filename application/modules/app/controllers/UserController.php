@@ -213,6 +213,10 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 				echo 'inserting data to like.';
 				//$likeModel->insert($data);		
 				$likeModel->insertNewLikes($data['fanpage_id'], $data['post_id'], $data['facebook_user_id'], $data['post_type'] );
+				
+				//ADDING POINTS NOW
+				
+				//ADD TO POINT LOG
 			} catch (Exception $e) {
 				//TO LOG
 				

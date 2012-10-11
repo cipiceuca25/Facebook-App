@@ -1,12 +1,46 @@
+<div class="time">
+										<label>View for 
+											<select id='timelimit' onchange='changeTimeLimit()'>
+												<option value=30>30 Days</option>
+												<option value=14>14 Days</option>
+												<option value=7>7 Days</option>
+												<option value=1>1 Day</option>
+												<option value=all>All Time</option>
+											</select>
+										</label>
+										</div>
+										
+<table  class='table' 
+<? switch($this->tabletype){?>
+<? case 'topfan':?>
+	id="topfanTable"
+	<?break;?>
+<? case 'fanfavorite': ?>
+	id="fanfavoriteTable"
+	<?break;?>
+<? case 'toptalker': ?>
+	id="toptalkerTable"
+	<?break;?>
+<? case 'topclicker': ?>
+	id="topclickerTable"
+	<?break;?>
+<? case 'topfollowed': ?>
+	id="topfollowedTable"
+	<?break;?>
+<?}?>
 
+
+>
 <thead>
 	<tr>
-		<th><a >ID <?php echo $this->tabletype;?></a></th>
-		<th><a >Name</a></th>
+		<th><a>ID</a></th>
+		<th><a>Name</a></th>
 		<?php if ($this->tabletype == 'fanfavorite'){?>
-		<th><a >Props</a></th>
+		<th><a>Props</a></th>
+		<?php }else if ($this->tabletype == 'topfan'){?>
+		<th><a>Points</a></th>
 		<?php }else{?>
-		<th><a >thing</a></th>
+		<th><a>thing</a></th>
 		<?php }?>
 		<th><a >Level</a></th>
 		<th><a rel="tooltip"  data-original-title="Total # of Posts" data-placement="top"><img src="/img/post.png" /></a></th>
@@ -27,7 +61,7 @@
 			<?php if ($this->tabletype == 'fanfavorite'){?>
 			<td class="prop"><?=$fan['props']?></td>
 			<?php }else{?>
-			<td class="prop"><?php empty($fan['props']) ? 0 : $fan['props']; ?></td>
+			<td class="points"><?=$fan['fan_points']; ?></td>
 			<?php }?>
 			<td class="level"><?=$fan['fan_level']?></td>
 			<td class="posts"><?=$fan['post_count']?></td>
@@ -40,3 +74,4 @@
 		</tr>
 	<?php endforeach; ?>
 </tbody>
+</table>

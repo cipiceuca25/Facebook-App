@@ -836,8 +836,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     public function test21Action() {
     
     	$fanpage_id = '197221680326345';
-    	$facebook_user_id = '28117303';
-    	for ($i =331 ;$i< 332; $i++){
+    	$facebook_user_id = '48911310';
+    	for ($i =711 ;$i< 717; $i++){
 	    	$badgeId = $i;
 	    	
 	    	$badgeEventModel = new Model_BadgeEvents();

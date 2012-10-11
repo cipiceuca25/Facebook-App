@@ -95,7 +95,7 @@ $(document).mousemove(function(e) {
 	
 });
 
-$(document).on('mouseover', 'a[rel=popover]', function() {
+$(document).on('mouseover', '[rel=popover]', function() {
 
 	popover(this);
 	if ($(this).data('isPopoverLoaded') == true) {
@@ -110,14 +110,14 @@ $(document).on('mouseover', 'a[rel=popover]', function() {
 
 
 
-$(document).on('mouseover', 'a[rel=tooltip]', function() {
+$(document).on('mouseover', '[rel=tooltip]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;
 	}
 	$(this).data('isTooltipLoaded', true).tooltip({placement:'left' }).trigger('mouseover');
 });
 
-$(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
+$(document).on('mouseover', '[rel=tooltip-follow]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;
 	}
@@ -127,7 +127,7 @@ $(document).on('mouseover', 'a[rel=tooltip-follow]', function() {
 	}).trigger('mouseover');
 });
 
-$(document).on('mouseover', 'a[rel=tooltip-award]', function() {
+$(document).on('mouseover', '[rel=tooltip-award]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;
 	}
@@ -727,9 +727,12 @@ function getFancrankfeed(view) {
 		cache : false,
 		async :  true,
 		beforeSend: function(){
+			
+			
 			if((setFeed != view)){
 				$('#fancrankfeed').html("<div id='loader' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' style='margin-top:20px'/></div>");
 			}else{
+				$('#more_post').remove();
 				$('#fancrankfeed').append("<div id='loader' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' style='margin-top:20px'/></div>");
 				
 				

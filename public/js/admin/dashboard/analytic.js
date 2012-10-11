@@ -635,7 +635,7 @@ function popover(x) {
 function changeTimeLimit(){
 	t = $("select#timelimit option:selected").val();
 	destroyAll();
-	alert(t);
+	//alert(t);
 	getTopFanTable('fanfavorite',t);
 	
 
@@ -651,15 +651,15 @@ function getTopFanTable(type, time) {
 		async : true,
 		beforeSend:function(){	
 		
-					$('#topfanTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+					$('#topfan').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
 				
-					$('#fanfavoriteTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+					$('#fanfavorite').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
 				
-					$('#toptalkersTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+					$('#toptalkers').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
 				
-					$('#topclickersTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+					$('#topclickers').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
 				
-					$('#topfollowedTable').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
+					$('#topfollowed').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");		
 		
 					
 
@@ -669,31 +669,31 @@ function getTopFanTable(type, time) {
 			switch(type){
 				case 'topfan':
 				
-					$('#topfanTable').html(data);
-					topFanTable = $('#topfanTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					$('#topfan').html(data);
+					topFanTable = $('#topfanTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
 					break;
 				case 'fanfavorite':
 					
-					$('#fanfavoriteTable').html(data);
-					fanfavoriteTable = $('#fanfavoriteTable').dataTable({"sDom" : "<'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
-
+					$('#fanfavorite').html(data);
+					fanfavoriteTable = $('#fanfavoriteTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+						
 					break;
 				
 				case 'toptalkers':
 					
-					$('#toptalkersTable').html(data);
-					toptalkersTable = $('#toptalkersTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					$('#toptalkers').html(data);
+					toptalkersTable = $('#toptalkersTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
 					break;	
 					;
 				case 'topclickers':
 					
-					$('#topclickersTable').html(data);
-					topclickersTable = $('#topclickersTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					$('#topclickers').html(data);
+					topclickersTable = $('#topclickersTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
 					break;		
 				case 'topfollowed':
 					
-					$('#topfollowedTable').html(data);
-					topfollowedTable = $('#topfollowedTable').dataTable({"sDom" : "<'uptodate'><'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
+					$('#topfollowed').html(data);
+					topfollowedTable = $('#topfollowedTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );	
 					break;		
 			}
 		

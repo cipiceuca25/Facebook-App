@@ -1332,3 +1332,8 @@ ol {
   color: white;
   text-decoration: none;
 }
+.noclick:hover {
+  text-decoration: none;
+  color: #3b5998;
+  cursor: default;
+}

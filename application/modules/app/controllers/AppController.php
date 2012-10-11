@@ -606,7 +606,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$likes = array();
     	$relation = array();
     	$likeslist = array();
+    	$yourpoints = array();
     	$count=0;
+    	
+    	
+    	
 		//Zend_Debug::dump($topPosts);
     	foreach ($topPosts as $posts){
     		//echo $top['facebook_user_id'];
@@ -620,6 +624,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//}else{
     		//	$picture[$count] = null;
     		//}
+    		$yourpoints[$count] = 0;
+    		$yourpoints[$count] = $this->postPointsCalculate($posts);
     		$count++;
     		
     	}
@@ -631,6 +637,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     //	$this->view->picture = $picture;
     	//$this->view->likeslist = $likeslist;
     	$this->view->likes = $likes;
+    	$this->view->yourpointslatest = $yourpoints;
     	$this->view->top_post = $topPosts;
     	$this->view->relation = $relation;
     	$this->render("gettoppost");
@@ -902,13 +909,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$fan->fan_currency = '?';
     	}
     	
+    	$badges = new Model_BadgeEvents() ;
+    	$badges = $badges -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 6);
+    	for($count=0;$count < 6; $count++){
+    		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
+    	}
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
     	
     	
-    	//Zend_Debug::dump($upcoming_badges);
+
     	
     	
-    	//$this->view->badges = $badges;
+    	$this->view->badges = $badges;
     	
     	$this->view->fan_exp = $fan_exp;
     	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
@@ -1102,6 +1114,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     
     	//Zend_Debug::dump($fan_level);
+
+    	
     	
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
@@ -1129,7 +1143,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     		$fan->fan_currency = '?';
     	}
-    	 
+    	
+    	$badges = new Model_BadgeEvents() ;
+    	$badges = $badges -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $user->facebook_user_id, 6);
+    	for($count=0;$count < 6; $count++){
+    		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
+    	}
+    	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
+    	
+    	$this->view->badges = $badges;
     	$this->view->fan_exp = $fan_exp;
     	$this->view->fan_exp_required = ($fan_exp === '?')?'?':$fan_exp_required - $fan_exp;
     	$this->view->fan_level_exp = $fan_exp_required;

@@ -9,11 +9,11 @@
 						<a rel="tooltip-follow" class ="follow_<?=$this->post->from->id?>"
 							<?php switch($this->relation[$count]) { 
 								case 'Fanpage':?>
-									data-original-title="You can't Follow an Admin">
+									class="noclick" data-original-title="You can't Follow an Admin">
 										<span class="badge badge-Fanpage">Admin</span>
 								<?break;?>
 								<?case 'You':?>
-									data-original-title="This is You">
+									class="noclick" data-original-title="This is You">
 										<span class="badge badge-You">You</span>
 								<?break;?>
 								<?case 'Following':?>
@@ -37,7 +37,9 @@
 								data-original-title="" 
 								data-placement="right" 
 								data-userid="<?=$this->post->from->id?>"
-							<?php }?> 
+							<?php }else{?>
+								class="noclick"
+							<? }?> 
 						>
 							<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->post->from->id ?>/picture" onerror="ImgError(this);"></a>
 					</div>
@@ -50,7 +52,9 @@
 								data-original-title="" 
 								data-placement="right" 
 								data-userid="<?=$this->post->from->id?>"
-							<?php }?> 
+							<?php }else{?>
+								class="noclick"
+							<? }?>  
 						>
 							<?=  $this->post->from->name?>
 						</a>
@@ -145,7 +149,7 @@
 							<?php }?>
 						</a>
 						&middot;
-						<a rel="tooltip" data-placement="right" class="time" data-original-title="" data-unix-time="<?=  strtotime($this->post->created_time)?>"></a>
+						<a rel="tooltip" data-placement="right" class="time noclick" data-original-title="" data-unix-time="<?=  strtotime($this->post->created_time)?>"></a>
 					</div>
 					<div class="social like <?=$this->post->id?>"  <?php if(!isset($this->post->likes->count) || ($this->post->likes->count == 0)){?>style="display:none"<?php }?>>
 						<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$this->post->id?>',<? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>, false)" data-original-title="
@@ -230,7 +234,9 @@
 										data-original-title="" 
 										data-placement="right" 
 										data-userid="<?=$post->from->id?>"
-									<?php }?> 
+									<?php }else{?>
+										class="noclick"
+									<? }?>  
 								>
 									<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);">
 								</a>
@@ -240,10 +246,10 @@
 									<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" 
 										<?php switch($this->relation[$count]) { 
 											case 'Fanpage':?>
-										 		data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+										 		class="noclick" data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
 											<?break;?>
 											<?case 'You':?>
-										 		data-original-title="This is You"><span class="badge badge-You">You</span>
+										 		class="noclick"  data-original-title="This is You"><span class="badge badge-You">You</span>
 											<?break;?>
 											<?case 'Following':?>
 												onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
@@ -264,7 +270,9 @@
 										data-original-title="" 
 										data-placement="right" 
 										data-userid="<?=$post->from->id?>"
-										<?php }?> 
+										<?php }else{?> 
+										class="noclick"
+										<?}?>
 									>
 										<?=  $post->from->name?>
 									</a>
@@ -292,7 +300,7 @@
 								</span>
 							</div>
 							<div class="social"> 
-								<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
+								<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 								&middot;
 								<span class="likes">
 									
