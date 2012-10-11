@@ -144,7 +144,14 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 						order by created_time DESC
 						limit $limit)	
 						
-						
+					union
+					
+					(select fanpage_id, facebook_user_id, (select fanpage_name from fanpages where fanpage_id = $fanpage_id) as facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message
+					from admin_activities
+					where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id
+					order by created_time DESC
+					limit $limit)
+								
 					) as act
 					group by fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, created_time, message
 					
@@ -615,5 +622,11 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 		return $this->fetchAll($query);
 	}
 	
+	public function getAllNonAdminActivitiesSince($since) {
+		$query = $this->select()
+			->where('created_time > ?', $since)
+			->where('fanpage_id != facebook_user_id')->limit(1000);
+		return $this->fetchAll($query);
+	}
 }
 

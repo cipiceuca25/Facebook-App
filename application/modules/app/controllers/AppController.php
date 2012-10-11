@@ -892,14 +892,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	//Zend_Debug::dump($stat);
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
-    		$fan->fan_currency = '?';
+    		$fan->fan_point = '?';
     		$fan->fan_level = '?';
     		$fan_exp = '?';
     		$fan_exp_required ='?';
     		$fan_exp_percentage='?';
     	}
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$fan->fan_currency = '?';
+    		$fan->fan_point = '?';
     	}
     	
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
@@ -997,12 +997,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
-    		$fan['fan_currency'] = '?';
+    		$fan['fan_point'] = '?';
     		$fan['fan_level'] = '?';
    
     	}
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$fan['fan_currency'] = '?';
+    		$fan['fan_point'] = '?';
     	}
     	
 
@@ -1119,7 +1119,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
     		
-    		$fan->fan_currency = '?';
+    		$fan->fan_point = '?';
     		$fan->fan_level = '?';
     		$fan_exp = '?';
     		$fan_exp_required ='?';
@@ -1127,7 +1127,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
     		
-    		$fan->fan_currency = '?';
+    		$fan->fan_point = '?';
     	}
     	 
     	$this->view->fan_exp = $fan_exp;

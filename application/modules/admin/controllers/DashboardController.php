@@ -2,9 +2,6 @@
 
 class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 {
-	
-
-		
 	public function preDispatch()
 	{
 		parent::preDispatch();
@@ -239,7 +236,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
 					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
 					if ($fanpageModel->getFanpageLevel($fanpageId) < 3) {
-						$topFanList[$count]['fan_points'] = '?';
+						$topFanList[$count]['fan_exp'] = '?';
 					}
 				}
 				break;
@@ -256,7 +253,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
 					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
 					if ($fanpageModel->getFanpageLevel($fanpageId) < 3 ) {
-						$topFanList[$count]['fan_points'] = '?';
+						$topFanList[$count]['fan_exp'] = '?';
 					}
 				}
 				break;
@@ -272,7 +269,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
 					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
 					if ($fanpageModel->getFanpageLevel($fanpageId) < 3 ) {
-						$topFanList[$count]['fan_points'] = '?';
+						$topFanList[$count]['fan_exp'] = '?';
 					}
 				}
 				break;
@@ -288,7 +285,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
 					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
 					if ($fanpageModel->getFanpageLevel($fanpageId) < 3 ) {
-						$topFanList[$count]['fan_points'] = '?';
+						$topFanList[$count]['fan_exp'] = '?';
 					}
 				}
 				break;
@@ -305,7 +302,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 					$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
 					$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
 					if ($fanpageModel->getFanpageLevel($fanpageId) < 3 ) {
-						$topFanList[$count]['fan_points'] = '?';
+						$topFanList[$count]['fan_exp'] = '?';
 					}
 				}
 				break;
@@ -342,12 +339,12 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	 
     	
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 1) {
-    		$fan['fan_currency'] = '?';
+    		$fan['fan_point'] = '?';
     		$fan['fan_level'] = '?';
     		 
     	}
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level == 2) {
-    		$fan['fan_currency'] = '?';
+    		$fan['fan_point'] = '?';
     	}
     	$this->view->stat= $stat;
     	$this->view->fan = $fan;

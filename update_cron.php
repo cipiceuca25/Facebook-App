@@ -55,7 +55,7 @@ if (count($fanpageList) > 0) {
 	$error = false;
 	foreach ($fanpageList as $fanpage) {
 
-		//if($fanpage->fanpage_id != '216821905014540') continue;
+		if($fanpage->fanpage_id != '197221680326345') continue;
 		//if(!$fanpage->installed) continue;
 
 		$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
@@ -74,7 +74,7 @@ if (count($fanpageList) > 0) {
 				echo $fanpage->fanpage_id .' ' .$fanpage->access_token .PHP_EOL;
 				//update fanpage
 				$collector = new Service_FancrankCollectorService(null, $fanpage->fanpage_id, $fanpage->access_token, 'update');
-				$collector->updateFanpage('1+days+ago','now');
+				$collector->updateFanpage('2+days+ago','now');
 				
 				$data['status'] = 'success';
 				
@@ -97,13 +97,13 @@ if (count($fanpageList) > 0) {
 		//hello
 		//update fanpage fans stat
 		$fan = new Model_Fans();
-		$fanList = $fan->fetchFanFieldsByFanpageId($fanpage->fanpage_id, array('facebook_user_id', 'fan_points', 'fan_currency'));
+		$fanList = $fan->fetchFanFieldsByFanpageId($fanpage->fanpage_id, array('facebook_user_id', 'fan_exp', 'fan_point'));
 		$fanStat = new Model_FansObjectsStats();
 		
 		foreach ($fanList as $fan) {
 			try {
 				//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
-				$result = $fanStat->updatedFanWithPoint($fanpage->fanpage_id, $fan['facebook_user_id'], $fan['fan_points'], $fan['fan_currency']);
+				$result = $fanStat->updatedFanWithPoint($fanpage->fanpage_id, $fan['facebook_user_id'], $fan['fan_exp'], $fan['fan_point']);
 				
 				//check badge
 				$badgeDefaultModel = Fancrank_BadgeFactory::factory('default');
