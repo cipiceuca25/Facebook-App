@@ -460,7 +460,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 								$pointLog['fanpage_id'] = $data['fanpage_id'];
 								$pointLog['facebook_user_id'] =  $post['facebook_user_id'];
 								$pointLog['object_id'] =  $data['post_id'];
-								$pointLog['object_type'] = 'get likes';
+								$pointLog['object_type'] = 'recieve a like';
 								$pointLog['giving_points'] = 1 +(($virgin)?4:0);
 								$pointLog['note'] = 'get like on object'.(($virgin)?', viriginity broken':'');
 							
