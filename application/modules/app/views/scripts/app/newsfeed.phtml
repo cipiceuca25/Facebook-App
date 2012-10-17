@@ -182,7 +182,7 @@
 			 				if(isset($post->comments->count)){
 							echo $post->comments->count; 
 			 			} else {echo '0';} ?> , true )"
-							>My Comment</a> 	
+							>Top Comments</a> 	
 							<?php }?>
 							&middot;
 							<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?= strtotime($post->created_time)?>"> </a>
@@ -254,7 +254,7 @@
 			 			} else {echo '0';} ?> , true )"> 
 			 			<img src="/img/comment.png" />
 			 			
-							View My Comments
+							Top Comments
 						</a>
 						<?php }?>
 
@@ -312,7 +312,7 @@
 							<div class="post-button-container">
 								<input type=button class="btn-submit" value="Share"
 									id="post_button"
-									onclick="post('<?= $this->fanpage_name?>' )"/>
+									onclick="post()"/>
 							</div>
 						</form>
 					</div>
@@ -466,25 +466,25 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 			
 			<?php if (strstr($this->escape($post->link), 'youtube.com')){
 					$temp=explode("http://www.youtube.com/watch?v=", $this->escape($post->link));?>
-					<iframe width="419" height="236" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
+					<iframe width="508" height="286" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
 			
 			<?php }else if (strstr($this->escape($post->link), 'vimeo.com')){
 					$temp=explode("http://vimeo.com/", 	$this->escape($post->link));	?>
-					<iframe width="419" height="236" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
+					<iframe width="508" height="286" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
 		
 			<?php }else if (strstr($this->escape($post->link), 'facebook.com')){
 					$temp=explode("v=", $this->escape($post->link));?>
-				 <object width="419" height="236" > 
+				 <object width="508" height="286"> 
 				 <param name="allowfullscreen" value="true" /> 
 				 <param name="allowscriptaccess" value="always" /> 
 				 <param name="movie" value="http://www.facebook.com/v/<?= $temp[1]?>" /> 
 				 <embed src="http://www.facebook.com/v/<?= $temp[1]?>" type="application/x-shockwave-flash"  
-				   allowscriptaccess="always" allowfullscreen="true" width="419" height="236"> 
+				   allowscriptaccess="always" allowfullscreen="true" width="508" height="286"> 
 				 </embed> 
 				</object> 
 			<?php }else if (strstr($this->escape($post->link), 'liveleak.com/view')){ 
 					$temp=explode("view?i=", $this->escape($post->link));?>
-				<iframe width="640" height="360" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
+				<iframe width="508" height="286" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
 			<?php }?>
 			
 		<?}elseif ($post->type == 'link') {?>
@@ -548,7 +548,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 			 						10,
 			 						<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
 								 	true )"
-			class="commenthider_<?= $post->id ?>">My Comment</a>
+			class="commenthider_<?= $post->id ?>">Top Comments</a>
 		<?php }?>		
 		&middot;
 
@@ -633,7 +633,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 									 		true )"> 
 						<img src="/img/comment.png" />
 				 	
-				 		View My Comments
+				 		Top Comments
 				</a>
 				<?php }?>
 	

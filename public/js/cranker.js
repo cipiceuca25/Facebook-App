@@ -275,25 +275,25 @@ function feedbackAnimation(ui, type) {
 	switch(type){
 	
 	case 'like':
-		$(ui).before('<div class = "like-animation" style="width:60px; left:-7px"></div>')
+		$(ui).before('<div class = "like-animation" style="width:60px; left:-7px; z-index:100;"></div>')
 		setTimeout(function(){
 			$('.like-animation').remove();
 		}, 2000);
 		break;
 	case 'unlike':
-		$(ui).before('<div class = "unlike-animation" style="width:75px; left:-11px"></div>')
+		$(ui).before('<div class = "unlike-animation" style="width:75px; left:-11px; z-index:100;"></div>')
 		setTimeout(function(){
 			$('.unlike-animation').remove();
 		}, 2000);
 		break;
 	case 'follow':
-		$(ui).before('<div class = "follow-animation" style=" left:-20px; width:86px"></div>')
+		$(ui).before('<div class = "follow-animation" style=" left:-20px; width:86px; z-index:100;"></div>')
 		setTimeout(function(){
 			$('.follow-animation').remove();
 		}, 2000);
 		break;
 	case 'unfollow':
-		$(ui).before('<div class = "unfollow-animation" style="left:-38px; width:102px;"></div>')
+		$(ui).before('<div class = "unfollow-animation" style="left:-38px; width:102px;z-index:100;"></div>')
 		setTimeout(function(){
 			$('.unfollow-animation').remove();
 		}, 2000);
@@ -557,36 +557,33 @@ function getTopPost() {
 }
 
 function like(post_id, post_type, target_id, target_name) {
+	
+	if(post_type.indexOf('comment') != -1){
+		mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
+	}else{
+		mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
+	}
+	
 	$
 			.ajax({
 				type : "GET",
 				url : serverUrl + '/app/user/' + userId + '/likes/?post_id='
 						+ post_id + '&fanpage_id=' + fanpageId + '&post_type='
-						+ post_type + '&access_token=' + userAccessToken,
+						+ post_type + '&target_id='+target_id + '&target_name='+ target_name + '&mes='+mes,
 				dataType : "html",
 				cache : false,
 				async: true,
 				success : function(data) {
 					//alert("target followed")
 					//alert(post_id + 'liked');
-					feedbackAnimation('.like_control_' + post_id, 'like');
-					
-					if(post_type =='comment'){
-						mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
-					}else{
-						mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
-					}
-				
-			
-					
-					addActivities('like-' + post_type, post_id,
-							target_id, target_name, mes);
+					//feedbackAnimation('.like_control_' + post_id, 'like');
+					//addActivities('like-' + post_type, post_id, target_id, target_name, mes);
 
 					num = parseInt($('.like_' + post_id).attr('data-like-count')) + 1;
 					$('.like_' + post_id).attr('data-like-count', num);
 					
 					
-					if (post_type == 'comment') {
+					if (post_type.indexOf('comment') != -1) {
 						
 						$('.like_' + post_id).html(num);
 						
@@ -613,7 +610,9 @@ function like(post_id, post_type, target_id, target_name) {
 					temp=$('.social.like.'+post_id+ ' a').attr('data-original-title');
 	
 					if (num == 1){
-						$('.social.like.'+post_id+ ' a').attr('data-original-title', target_name + temp);
+						$('.social.like.'+post_id+ ' a').attr('data-original-title', target_name +' likes this');
+					}else{
+						$('.social.like.'+post_id+ ' a').attr('data-original-title', target_name + ', ' + temp);
 					}
 					
 				},
@@ -625,12 +624,18 @@ function like(post_id, post_type, target_id, target_name) {
 }
 
 function unlike(post_id, post_type, target_id, target_name) {
-	$
-			.ajax({
+	if(post_type.indexOf('comment') != -1){
+		mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
+	}else{
+		mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
+	}
+	$.ajax({
 				type : "GET",
+		
 				url : serverUrl + '/app/user/' + userId + '/unlike/?post_id='
 						+ post_id + '&fanpage_id=' + fanpageId + '&post_type='
-						+ post_type + '&access_token=' + userAccessToken,
+						+ post_type + '&target_id='+target_id + '&target_name='+ target_name + '&mes='+mes ,
+				
 				dataType : "html",
 				cache : false,
 				success : function(data) {
@@ -638,15 +643,10 @@ function unlike(post_id, post_type, target_id, target_name) {
 					//alert(post_id + 'liked');
 					feedbackAnimation('.like_control_' + post_id, 'unlike');
 					
-					if(post_type =='comment'){
-						mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
-					}else{
-						mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
-					}
+					
 				
 					
-					addActivities('unlike-' + post_type, post_id,
-							target_id, target_name, mes);
+					//addActivities('unlike-' + post_type, post_id,target_id, target_name, mes);
 
 					num = parseInt($('.like_' + post_id).attr('data-like-count')) - 1;
 					if (num < 1){
@@ -655,7 +655,7 @@ function unlike(post_id, post_type, target_id, target_name) {
 					$('.like_' + post_id).attr('data-like-count', num);
 					
 					
-					if (post_type == 'comment') {
+					if (post_type.indexOf('comment') != -1) {
 						
 						$('.like_' + post_id).html(num);
 						
@@ -781,6 +781,7 @@ function getFancrankfeed(view) {
 			$('#pagepost-title').attr('style', 'font-weight:bold');
 		break;	
 		default:
+			$('#all-title').attr('style', 'font-weight:bold');
 			break;
 	}
 	
@@ -955,7 +956,6 @@ function getRelation(target, ui) {
 					$('.' + ui).html(
 							'<span class="badge badge-' + data + '">' + data
 									+ '</span>');
-
 				},
 				error : function(xhr, errorMessage, thrownErro) {
 					console.log(xhr.statusText, errorMessage);
@@ -971,14 +971,14 @@ function follow(target, name) {
 
 		$.ajax({
 			type : "GET",
-			url : serverUrl + '/app/user/' + userId + '/follow/?subscribe_to='
-					+ target + '&facebook_user_id=' + userId + '&fanpage_id='
+			url : serverUrl + '/app/user/' + userId + '/follow/?subscribe_to=' 
+					+ target + '&target_name='+ name + '&fanpage_id='
 					+ fanpageId + '&subscribe_ref_id=1',
 			dataType : "html",
 			cache : false,
 			success : function(data) {
 				//alert("target followed")
-				addActivities('follow', target, target, name, null);
+				//addActivities('follow', target, target, name, null);
 				//getUserProfile('.profile-content', target);
 				getRelation(target, ui);
 				//alert(relation);
@@ -1000,13 +1000,13 @@ function unfollow(target, name) {
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/user/' + userId + '/unfollow/?subscribe_to='
-				+ target + '&facebook_user_id=' + userId + '&fanpage_id='
+				+ target + '&target_name='+ name + '&fanpage_id='
 				+ fanpageId + '&subscribe_ref_id=1',
 		dataType : "html",
 		cache : false,
 		success : function(data) {
 			//alert("target unfollowed")
-			addActivities('unfollow', target, target, name, null);
+			//addActivities('unfollow', target, target, name, null);
 			//getUserProfile('.profile-content', target);
 			getRelation(target, ui);
 
@@ -1024,6 +1024,7 @@ function unfollow(target, name) {
 	});
 }
 
+/*
 function addActivities(act_type, event, target_id, target_name, message) {
 	$.ajax({
 		type : "GET",
@@ -1045,39 +1046,49 @@ function addActivities(act_type, event, target_id, target_name, message) {
 	});
 
 }
+*/
 
-function post(fanpage_name) {
+function post() {
 	mes =  $('#post_box').val();
-	FB.api('/' + fanpageId + '/feed', 'post', {
-		'message' : $('#post_box').val(),
-		'access_token' : userAccessToken
-	},
-			function(response) {
-				if (!response || response.error) {
-					alert(response.error.message);
-				} else {
-					//alert('Post ID: ' + response.id)
-					
-					addActivities('post-status', response.id, fanpageId, fanpage_name,mes.substring(0,99) );
-					$('#post_box').val('');
-					getFancrankfeed('post');
+
+			//alert('Post ID: ' + response.id)
+			$.ajax({
+				type : "GET",
+				url : serverUrl + '/app/user/' +userId +'/post/?fanpage_id=' + fanpageId + '&fanpage_name='+fanpageName +'&message=' + mes,
+				dataType : "html",
+				cache : false,
+				async : true,
+				beforeSend: function(){
+					$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				},
+				success : function(data) {
+					$('.profile-content').html(data);
+				},
+				error : function(xhr, errorMessage, thrownErro) {
+					console.log(xhr.statusText, errorMessage);
 				}
 			});
-
+			//addActivities('post-status', response.id, fanpageId, fanpage_name,mes.substring(0,99) );
+			$('#post_box').val('');
+			getFancrankfeed('post');
 }
+
 
 function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLatestAdminPost){
 	
 	mes= $('#comment_box_'+post_id).val();
-	FB.api('/' + post_id + '/comments', 'post', {
-		'message' : $('#comment_box_'+post_id).val(),
-		'access_token' : userAccessToken
-	}, function(response) {
-		if (!response || response.error) {
-			alert(response.error.message);
-		} else {
-
-			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/user/' +userId +'/comment/?post_id='+post_id + '&post_type='+post_type
+						+ '&target_id=' + post_owner_id + '&target_name=' +post_owner_name
+						+ '&fanpage_id=' + fanpageId + '&fanpage_name='+fanpageName +'&message=' + mes,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+		},
+		success : function(data) {
+			//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 			$('#comment_box_'+post_id).val('');
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 			//alert(post_comment_count);
@@ -1089,8 +1100,14 @@ function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLat
 			}else{
 				comment_feed(post_id, post_type,  post_comment_count, false);
 			}
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
 		}
 	});
+
+	
+
 }
 
 function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
@@ -1272,6 +1289,10 @@ function resizeCommentBox(x) {
 }
 
 function PostBox(){
+	if($('.post-box').val() == 'Type in your Post here!'){
+		$('.post-box').val('');	
+			
+	}
 	$('.post-button-container').css('display', 'block');
 	$('.post-box').css('border-bottom', '0px');
 }

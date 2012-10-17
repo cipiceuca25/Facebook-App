@@ -8,7 +8,7 @@
  *
  * @category    app
  * @package     app
- * @copyright   Copyright (c) 2012 Francrank
+ * @copyright   Copyright (c) 2012 Fancrank
  * @license
  */
 class Admin_UserController extends Fancrank_Admin_Controller_BaseController
@@ -155,7 +155,7 @@ class Admin_UserController extends Fancrank_Admin_Controller_BaseController
 			$data['target_user_name'] = $fanModel->getFanProfile()->fan_name;
 			$data['message'] = $msg;
 			
-			$adminActivityModel = new Model_AdminActivities();
+			$adminActivityModel = new Model_AdminActivities(); 
 			$result = $adminActivityModel->insert($data);
 			
 			//udpate point log

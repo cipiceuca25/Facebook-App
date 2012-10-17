@@ -281,7 +281,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   				'mostPopular'=>array(),
   				'topTalker'=>array(),
   				'topClicker'=>array(),
-  				'topFollowed'=>array()
+  				'topFollowed'=>array(),
+  				'topFansAllTime'=>array()
   		);
   		
   		if(!empty($this->_fanpageId)) {
@@ -309,7 +310,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   					//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
   					$fanpage['topFollowed'] = $follow->getTopFollowed($this->_fanpageId, 5);
   					//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-  		
+  					$fanpage['topFansAllTime'] = $model->getTopFans($this->_fanpageId, 5);
   					//Save to the cache, so we don't have to look it up next time
   					$cache->save($fanpage, $this->_fanpageId);
   				}else {
@@ -380,13 +381,32 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     		 
     	}
+  		$count=0;
+  		
+    	$topFansAllTimeArray = array();
+    	foreach ($fanpage['topFansAllTime'] as $top){
+    		//echo $top['facebook_user_id'];
+    		$topFansAllTimeArray[$count] = $follow->getRelation($this->_userId, $top['facebook_user_id'],$this->_fanpageId);
+    		//echo $topArray[$count];
+    		
+    		$stat = $stat_model ->findFanRecord($this->_fanpageId, $top['facebook_user_id']);
+    		 
+    		$topFansAllTimeStats[$count]['total_posts'] = $stat[0]['total_posts'];
+    		$topFansAllTimeStats[$count]['total_comments'] = $stat[0]['total_comments'];
+    		$topFansAllTimeStats[$count]['total_likes'] = $stat[0]['total_likes'];
+    		$topFansAllTimeStats[$count]['total_get_comments'] = $stat[0]['total_get_comments'];
+    		$topFansAllTimeStats[$count]['total_get_likes'] = $stat[0]['total_get_likes'];
+    		
+    		$count++;
+    		
+    	} 
     	
     	$userLeaderBoardData = array();
     	
     	if(!empty($this->_fanpageId) && !empty($this->_userId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
-    		//$cache->remove($this->_fanpageId .'_' .$user->facebook_user_id);
+    		//$cache->remove($this->_fanpageId .'_' .$this->_userId);
     	
     		try {
     	
@@ -406,7 +426,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
     				$userLeaderBoardData['topFollowed'] = $follow->getTopFollowedRank($this->_fanpageId, $this->_userId);
     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-    	
+    				$userLeaderBoardData['topFansAllTime'] = $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
     				//Save to the cache, so we don't have to look it up next time
     				$cache->save($userLeaderBoardData, $this->_fanpageId .'_' .$this->_userId);
     			}else {
@@ -440,7 +460,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		for ($i=0; $i<count($fanpage['topFollowed']); $i++){
     			$fanpage['topFollowed'][$i]['count'] = '?';
     		}
-    		
+    		for ($i=0; $i<count($fanpage['topFansAllTime']); $i++){
+    			$fanpage['topFansAllTime'][$i]['count'] = '?';
+    		}
     		if 	($userLeaderBoardData['topFans'] !=null) {
     			$userLeaderBoardData['topFans']['number_of_posts'] = '?';
     		}
@@ -460,31 +482,42 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		if 	($userLeaderBoardData['topFollowed'] !=null) {
     			$userLeaderBoardData['topFollowed']['count'] = '?';
     		}
+    		if 	($userLeaderBoardData['topFansAllTime'] !=null) {
+    			$userLeaderBoardData['topFansAllTime']['count'] = '?';
+    		}
     	}
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $this->_userId);
     	//Zend_Debug::dump($userLeaderBoardData['topFans']);
+    	$stat2 = new Model_FansObjectsStats();
+    	$stat2 = $stat2->findFanRecord($this->_fanpageId, $this->_userId);
+    	
     	
     	$this->view->top_fans_stat = $topFanStats;
+    	$this->view->top_fans_all_time_stat = $topFansAllTimeStats;
     	$this->view->your_stat = $stat;
+    	$this->view->your_all_time_stat = $stat2;
     	
     	$this->view->top_fans = $fanpage['topFans'];
     	$this->view->most_popular = $fanpage['mostPopular'];
     	$this->view->top_talker = $fanpage['topTalker'];
     	$this->view->top_clicker = $fanpage['topClicker'];
     	$this->view->top_followed = $fanpage['topFollowed'];
+    	$this->view->top_fans_all_time = $fanpage['topFansAllTime'];
 
     	$this->view->topFanYou =  $userLeaderBoardData['topFans'];
     	$this->view->popularYou = $userLeaderBoardData['mostPopular'];
     	$this->view->talkerYou = $userLeaderBoardData['topTalker'];
     	$this->view->clickerYou = $userLeaderBoardData['topClicker'];
     	$this->view->followedYou = $userLeaderBoardData['topFollowed'];
+    	$this->view->topFansAllTimeYou = $userLeaderBoardData['topFansAllTime'];
 		
     	$this->view->topFanArray = $topArray ;
     	$this->view->popularArray = $popularArray ;
     	$this->view->talkerArray = $talkerArray ;
     	$this->view->clickerArray = $clickerArray ;
     	$this->view->followedArray = $followedArray ;
+    	$this->view->topFansAllTimeArray = $topFansAllTimeArray ;
     	
     	$this->render('leaderboard');
   	}
@@ -508,11 +541,37 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	if ($latest != null ){
     		foreach ($latest as $l){
-    			$latestlike[] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
+    			$cache = Zend_Registry::get('memcache');
+    			$cache->setLifetime(1800);
+    			try {
+    				$adminPostId = $l->id;
+    				
+    				$cache->save($l, $adminPostId);
+    				//$x = $cache->load($adminPostId);
+    				//Zend_Debug::dump($x);
+    			} catch (Exception $e) {
+    				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    				//echo $e->getMessage();
+    			}
+    			
     			$yourpointslatest[$count] = 0;
     			$yourpointslatest[$count] = $this->postPointsCalculate($l);
+    			$latestlike[$count]=0;
+    			//echo $top['facebook_user_id'];
+    			if(isset($posts->likes)){
+    				foreach ($posts->likes->data as $l){
+    					if($l->id == $this->_userId){
+    						$latestlike[$count]=1;
+    						//echo "$latestlike[$count] in the condensed list";
+    					}
+    					//Zend_Debug::dump( $likes[$count]);
+    				}
+    				if($latestlike[$count]==0){
+    				$latestlike[count] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
+    				//Zend_Debug::dump($likes[$count]);
+    				}
+    				}
     			
-    
     			$count++;
     		}
     		
@@ -533,8 +592,23 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if ($feed != null){
     		
     			foreach ($feed as $posts){
+    				
+    				$likes[$count]=0;
     				//echo $top['facebook_user_id'];
-    				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    				if(isset($posts->likes)){
+    					foreach ($posts->likes->data as $l){
+    						if($l->id == $this->_userId){
+    							$likes[$count]=1;
+    							//echo "$likes[$count] in the condensed list";
+    						}	
+    						//Zend_Debug::dump( $likes[$count]);
+    					}
+    					if($likes[$count]==0){
+    						$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    						//Zend_Debug::dump($likes[$count]);
+    					}
+    				}
+    					
     				$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
     				//echo $likes[$count];
     				$yourpoints[$count] = 0;
@@ -609,12 +683,29 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$yourpoints = array();
     	$count=0;
     	
-    	
-    	
+
+   
 		//Zend_Debug::dump($topPosts);
     	foreach ($topPosts as $posts){
     		//echo $top['facebook_user_id'];
-    		$likes[$count] = $likesModel->getLikes($this->_fanpageId,  $posts->id, $this->_userId );
+    
+    		
+    		$likes[$count]=0;
+    		//echo $top['facebook_user_id'];
+    		if(isset($posts->likes)){
+    			foreach ($posts->likes->data as $l){
+    				if($l->id == $this->_userId){
+    					$likes[$count]=1;
+    					//echo "$likes[$count] in the condensed list";
+    				}
+    				//Zend_Debug::dump( $likes[$count]);
+    			}
+    			if($likes[$count]==0){
+    				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    				//Zend_Debug::dump($likes[$count]);
+    			}
+    		}
+    		
     		//echo $likes[$count];
     		$relation[$count] = $follow->getRelation($this->_userId,  $posts->from->id, $this->_fanpageId);
     		//$pic = $this->getPost($posts['post_id']);
@@ -694,8 +785,25 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$likes = array();
     	$relation = array();
     	$count=0;
-    	$likes[$count]=null;
-    	$likesPost = $likesModel->getLikes($this->_fanpageId, $postId, $this->_userId );
+
+    	
+    	
+    	$likesPost[$count]=0;
+    	//echo $top['facebook_user_id'];
+    	if(isset($post->likes)){
+    		foreach ($post->likes->data as $l){
+    			if($l->id == $this->_userId){
+    				$likesPost[$count]=1;
+    				//echo "$likes[$count] in the condensed list";
+    			}
+    			//Zend_Debug::dump( $likes[$count]);
+    		}
+    		if($likesPost==0){
+    			$likesPost = $likesModel->getLikes($this->_fanpageId, $postId, $this->_userId );
+    			//Zend_Debug::dump($likes[$count]);
+    		}
+    	}
+    	
     	$relation[$count] =$follow->getRelation($this->_userId, $post->from->id,$this->_fanpageId);
     	
     	
@@ -703,7 +811,19 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($result)) {
     		foreach ($result as $posts){
     			//echo $top['facebook_user_id'];
-    			$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+	    		if(isset($posts->likes)){
+	    			foreach ($posts->likes->data as $l){
+	    				if($l->id == $this->_userId){
+	    					$likes[$count]=1;
+	    					//echo "$likes[$count] in the condensed list";
+	    				}
+	    				//Zend_Debug::dump( $likes[$count]);
+	    			}
+	    			if($likes[$count]==0){
+	    				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+	    				//Zend_Debug::dump($likes[$count]);
+	    			}
+	    		}
     			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
     			//echo $likes[$count];
     			$count++;
@@ -911,7 +1031,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$badges = new Model_BadgeEvents() ;
     	$badges = $badges -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 6);
-    	for($count=0;$count < 6; $count++){
+    	for($count=0;$count < count($badges); $count++){
     		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
     	}
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
@@ -1147,7 +1267,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$badges = new Model_BadgeEvents() ;
     	$badges = $badges -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $user->facebook_user_id, 6);
-    	for($count=0;$count < 6; $count++){
+    	for($count=0;$count < count($badges); $count++){
     		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
 
     	}
@@ -1222,8 +1342,23 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			}else{*/
 				foreach ($result as $posts){
 					//echo $top['facebook_user_id'];
+
+					$likes[$count]=0;
+					if(isset($posts->likes)){
+						foreach ($posts->likes->data as $l){
+							//Zend_Debug::dump($posts->likes);
+							if($l->id == $this->_userId){
+								$likes[$count]=1;
+								//echo "$likes[$count] in the condensed list";
+							}
+							//Zend_Debug::dump( $likes[$count]);
+						}
+						if($likes[$count]==0){
+							$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId);
+							//Zend_Debug::dump($likes[$count]);
+						}
+					}
 					
-					$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
 					$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 					//Zend_Debug::dump($posts);
 					$yourpoints[$count] = 0;
@@ -1563,7 +1698,20 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($result)) {
     		foreach ($result as $posts){
     			//echo $top['facebook_user_id'];
-    			$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    			$likes[$count]=0;
+    			if(isset($posts->user_likes)){
+    				
+    				if($posts->user_likes == true){
+    					$likes[$count]=1;
+    						//echo "$likes[$count] in the condensed list";
+    				}
+    					//Zend_Debug::dump( $likes[$count]);
+    			}
+    			
+    			if($likes[$count]==0){
+    					$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    					//Zend_Debug::dump($likes[$count]);
+    			}    		
 
     			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 
@@ -1954,6 +2102,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     				return $myfeed;
     		default:
+    				$client->setUri("https://graph.facebook.com/". $this->_fanpageId ."/feed");
+    				$response = $client->request(); 
+    				$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
     				return $result->data;
     		}
     	return $result->data;
@@ -2798,31 +2949,34 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     					break;
     			case 'Post-General':
     				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
-    				$temp =  $fanRecord[0]['total_posts'] / $b['quantity'];
+    				
+    				$temp = (isset($fanRecord[0]['total_posts']))?$fanRecord[0]['total_posts'] / $b['quantity']:0;
+    				
     				$temp = ($temp>= 1)? 100 : round($temp*100, 2 ,PHP_ROUND_HALF_DOWN);
     				$array[$count]['percentage'] = $temp;
     				break;
     			case 'Post-Link':
     				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
-    				$temp =  $fanRecord[0]['post_link'] / $b['quantity'];
+    				$temp =  (isset($fanRecord[0]['post_link']))?$fanRecord[0]['post_link'] / $b['quantity']:0;
     				$temp = ($temp>= 1)? 100 : round($temp*100, 2 ,PHP_ROUND_HALF_DOWN);
     				$array[$count]['percentage'] = $temp;
     				break;
     			case 'Post-Photo':
     				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
-    				$temp =  $fanRecord[0]['post_photo'] / $b['quantity'];
+    				$temp =  (isset($fanRecord[0]['post_photo']))?$fanRecord[0]['post_photo'] / $b['quantity']:0;
     				$temp = ($temp>= 1)? 100 : round($temp*100, 2 ,PHP_ROUND_HALF_DOWN);
     				$array[$count]['percentage'] = $temp;
     				break;
     			case 'Post-Status':
     				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
-    				$temp =  $fanRecord[0]['post_status'] / $b['quantity'];
+    				//Zend_Debug::dump($fanRecord);
+    				$temp =  (isset($fanRecord[0]['post_status']))?$fanRecord[0]['post_status'] / $b['quantity']:0;
     				$temp = ($temp>= 1)? 100 : round($temp*100, 2 ,PHP_ROUND_HALF_DOWN);
     				$array[$count]['percentage'] = $temp;
     				break;
     			case 'Post-Video':
     				//$temp =  $fan->getVideoLikes($fanpage_id, $facebook_user_id);
-    				$temp =  $fanRecord[0]['post_video'] / $b['quantity'];
+    				$temp =  (isset($fanRecord[0]['post_video']))?$fanRecord[0]['post_video'] / $b['quantity']:0;
     				$temp = ($temp>= 1)? 100 : round($temp*100, 2 ,PHP_ROUND_HALF_DOWN);
     				$array[$count]['percentage'] = $temp;
     				break;
@@ -2872,11 +3026,16 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				break;
     		
     			case 'Multiple-Comment':
-    				$temp =	( ($fanRecord[0]['video_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['video_comments']/$b['quantity'] ) +
-    						( ($fanRecord[0]['status_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['status_comments']/$b['quantity'] ) +
-    						( ($fanRecord[0]['photo_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['photo_comments']/$b['quantity'] ) +
-    						( ($fanRecord[0]['link_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['link_comments']/$b['quantity'] ) +
-    						( ($fanRecord[0]['total_comments']/$b['quantity'] > 1)? 1 : $fanRecord[0]['video_comments']/$b['quantity'] ) ;
+    		
+    				
+    				
+    				
+    				
+    				$temp =	( ($timearray['comments']['video']['no-time']/$b['quantity'] > 1)? 1 : $timearray['comments']['video']['no-time']/$b['quantity'] ) +
+    						( ($timearray['comments']['status']['no-time']/$b['quantity'] > 1)? 1 : $timearray['comments']['status']['no-time']/$b['quantity'] ) +
+    						( ($timearray['comments']['photo']['no-time']/$b['quantity'] > 1)? 1 : $timearray['comments']['photo']['no-time']/$b['quantity'] ) +
+    						( ($timearray['comments']['link']['no-time']/$b['quantity'] > 1)? 1 : $timearray['comments']['link']['no-time']/$b['quantity'] ) +
+    						( ($timearray['comments']['all']['no-time']/$b['quantity'] > 1)? 1 : $timearray['comments']['all']['no-time']/$b['quantity'] ) ;
     						
     				//Zend_Debug::dump($temp);
     				$temp =  round($temp/5, 2 ,PHP_ROUND_HALF_DOWN);  
@@ -2884,11 +3043,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				break;
     		
     			case 'Multiple-Like':
-    				$temp = ( ($fanRecord[0]['video_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['video_likes']/$b['quantity'] ) +
-    						( ($fanRecord[0]['status_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['status_likes']/$b['quantity'] ) +
-    						( ($fanRecord[0]['photo_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['photo_likes']/$b['quantity'] ) +
-    						( ($fanRecord[0]['link_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['link_likes']/$b['quantity'] ) +
-    						( ($fanRecord[0]['total_likes']/$b['quantity'] > 1)? 1 : $fanRecord[0]['video_likes']/$b['quantity'] ) ;
+    				
+    				$temp = ( ($timearray['likes']['video']['no-time']/$b['quantity'] > 1)? 1 : $timearray['likes']['video']['no-time']/$b['quantity'] ) +
+    						( ($timearray['likes']['status']['no-time']/$b['quantity'] > 1)? 1 : $timearray['likes']['status']['no-time']/$b['quantity'] ) +
+    						( ($timearray['likes']['photo']['no-time']/$b['quantity'] > 1)? 1 : $timearray['likes']['photo']['no-time']/$b['quantity'] ) +
+    						( ($timearray['likes']['link']['no-time']/$b['quantity'] > 1)? 1 : $timearray['likes']['link']['no-time']/$b['quantity'] ) +
+    						( ($timearray['likes']['all']['no-time']/$b['quantity'] > 1)? 1 : $timearray['likes']['all']['no-time']/$b['quantity'] ) ;
     				//Zend_Debug::dump($temp);
     				$temp = round($temp/5, 2 ,PHP_ROUND_HALF_DOWN);  
     				$array[$count]['percentage'] = $temp;
@@ -3543,10 +3703,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    			*/
 	    			case 'default':
 	    				break;
-    			/*
-    			
-    				
-    			*/
+    
     			}
     		}
     		Zend_Debug::dump($array);
@@ -3569,8 +3726,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->_facebook_user->fancrankAppTour = 0;
     	}
     }
-    
-    
     
     private function feedFirstQuery() {
     	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/feed?limit=10");

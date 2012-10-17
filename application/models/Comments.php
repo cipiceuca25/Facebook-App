@@ -24,6 +24,46 @@ class Model_Comments extends Model_DbTable_Comments
 		}
 	}
 	
+	public function addLikeToComment($comment_id){
+		
+		$found = $this->findComment($comment_id);
+
+		if (!empty ( $found )) {
+			$found->comment_likes_count ++;
+			$found->save ();
+		}
+	}
+	
+	public function addLikeToCommentReturn($comment_id){
+	
+		$found = $this->findComment($comment_id);
+	
+		if (!empty ( $found )) {
+			$found->comment_likes_count ++;
+			$found->save ();
+		}
+		
+		return $found;
+	}
+	
+	public function subtractLikeToCommentReturn($id) {
+		$found = $this->findComment($id);
+		if (!empty ( $found )) {
+			if ($found->comment_likes_count >0){
+				$found->comment_likes_count --;
+			}
+			$found->save ();
+		}
+		return $found;
+	}
+	
+	public function findComment($comment_id){
+		$query = $this->select()
+		->from($this)
+		->where('commentt_id = ?', $comment_id);
+		return $this->fetchAll($query)->current();
+	}
+	
 	public function getCommentBelowByTimestamp($commentId, $limit) {
 		$comment = $this->find($commentId)->current();
 		if(! empty($comment->comment_post_id) && ! empty($comment->created_time)) {
