@@ -460,7 +460,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 								$pointLog['fanpage_id'] = $data['fanpage_id'];
 								$pointLog['facebook_user_id'] =  $post['facebook_user_id'];
 								$pointLog['object_id'] =  $data['post_id'];
-								$pointLog['object_type'] = 'likes';
+								$pointLog['object_type'] = 'get likes';
 								$pointLog['giving_points'] = 1 +(($virgin)?4:0);
 								$pointLog['note'] = 'get like on object'.(($virgin)?', viriginity broken':'');
 							
@@ -846,10 +846,10 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					$pointLog['fanpage_id'] = $data['fanpage_id'];
 					$pointLog['facebook_user_id'] =  $data['facebook_user_id'];
 					$pointLog['object_id'] = $data['post_id'];
-					$pointLog['object_type'] = 'recieve a comment';
+					$pointLog['object_type'] = 'comments';
 					$pointLog['giving_points'] = 2 + $bonus;
 					$pointLog['bonus'] = $bonus;
-					$pointLog['note'] = 'likes on object ,'.(($virgin)?'virginity broken':'');
+					$pointLog['note'] = 'comments on object ,'.(($virgin)?'virginity broken':'');
 					
 					$pointLogModel = new Model_PointLog();
 					$result = $pointLogModel->insert($pointLog);

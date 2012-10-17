@@ -1698,7 +1698,20 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($result)) {
     		foreach ($result as $posts){
     			//echo $top['facebook_user_id'];
-    			$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    			$likes[$count]=0;
+    			if(isset($posts->user_likes)){
+    				
+    				if($posts->user_likes == true){
+    					$likes[$count]=1;
+    						//echo "$likes[$count] in the condensed list";
+    				}
+    					//Zend_Debug::dump( $likes[$count]);
+    			}
+    			
+    			if($likes[$count]==0){
+    					$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
+    					//Zend_Debug::dump($likes[$count]);
+    			}    		
 
     			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 
