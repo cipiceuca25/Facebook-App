@@ -147,7 +147,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['facebook_user_id'] = $this->_user->facebook_user_id;
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['fanpage_name'] = $this->_getParam('fanpage_name');
-		$data['access_token'] = $this->_user->access_token;
+		$data['access_token'] = $this->_user->facebook_user_access_token;
 		//$data['post_id'] = $this->_getParam('post_id');
 		$data['message'] = $this->_getParam('message');
 		
@@ -160,6 +160,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	
 			$ret_obj = $fancrankFB->api('/'.$data['fanpage_id'].'/feed', 'POST',
 					$params);
+			
+			Zend_Debug::dump($ret_obj);
+			
 			$data['post_id'] = $ret_obj['id'];
 			
 			
@@ -244,7 +247,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					$pointLog = array();
 					$pointLog['fanpage_id'] = $data['fanpage_id'];
 					$pointLog['facebook_user_id'] =  $data['facebook_user_id'];
-					$pointLog['object_id'] = $row['post_type'];
+					$pointLog['object_id'] = $data['post_id'];
 					$pointLog['object_type'] = 'posts';
 					$pointLog['giving_points'] = -5;
 					$pointLog['note'] = 'post on fanpage';
@@ -425,9 +428,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 								$virgin=true;
 								echo 'virginity is true';
 							}
-							if ($post['post_comments_count'] != 0){
-								
-							}
 						}
 
 					}
@@ -493,6 +493,8 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 								
 								//Zend_Debug::dump($post);
 								
+								/* DONT HAVE TO DO THIS BECAUSE BONUS CRON WOULD DO IT*/
+								/*
 								if(isset($post['created_time'])){
 								
 									$a = new Zend_Date($post['created_time']);
@@ -503,7 +505,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 										echo ' within 1 hour, bonus is true';
 									}
 									echo $bonus;
-								}
+								}*/
 							}
 							
 							echo 'giving points to liker';
@@ -538,19 +540,18 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 
 		//}
 	}
-	
 
 	public function unlikeAction() {
 		
 		$likeModel = new Model_Likes();
-		$data['facebook_user_id'] = $this->_getParam('id');
+		$data['facebook_user_id'] = $this->_user->facebook_user_id;
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['post_id'] = $this->_getParam('post_id');
 		
-		$data['post_type'] = strpos($this->_getParam('post_type'),'comment')?'comment':$this->_getParam('post_type');
+		$data['post_type'] = $this->_getParam('post_type');
 		$data['likes'] = 0;
-		
-		$data['access_token'] = $this->_getParam('access_token');
+		$isComment = strpos($this->_getParam('post_type'),'comment')?true:false;
+		$data['access_token'] = $this->_user->facebook_user_access_token;
 		//echo ('function called ');
 		
 		//Zend_debug::dump($data);
@@ -575,20 +576,23 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 				//echo 'inserting data to like.';
 				//$likeModel->insert($data);		
 				$likeModel->unlike($data['fanpage_id'], $data['post_id'], $data['facebook_user_id'], $data['post_type'] );
-				$this->addactivity('unlike-'.$data['post_type'], $data['post_id'], 
-						$data['fanpage_id'],$this->_getParam('target_id'), $this->_getParam('target_name'), $this->_getParam('mes'));
 				
 				
 				$fanstat = new Model_FansObjectsStats();
 				if ($data['post_type'] == 'comment') {
 					$comment = new Model_Comments();
-					$comment = $comment -> subtractLikeToCommentReturn($data['post_id']);
-						
+					$post = $comment -> subtractLikeToCommentReturn($data['post_id']);
+					if ($post==null){
+							
+						$post['facebook_user_id'] = $this->_getParam('target_id');
+					
+						//Zend_Debug::dump($post);
+					}	
 					$fanstat -> subLikeCommentCount($data['fanpage_id'], $data['facebook_user_id']);
 						
 						
-					if($this->_getParam('target_id') != $data['fanpage_id']){
-						$fanstat -> subGetLikeComment($data['fanpage_id'], $data['target_id']);
+					if($post['facebook_user_id'] != $data['fanpage_id']){
+						$fanstat -> subGetLikeComment($data['fanpage_id'], $post['facebook_user_id']);
 					}
 						
 					// you still need to compare the created times and check if bonus should be applied
@@ -596,7 +600,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					// if liked a post
 					$post= new Model_Posts();
 					$post = $post -> subtractLikeToPostReturn($data['post_id']);					
-						
+					if ($post==null){
+							
+						$post['facebook_user_id'] = $this->_getParam('target_id');
+							
+						//Zend_Debug::dump($post);
+					}	
 					switch($data['post_type']){
 				
 						case 'status':
@@ -627,6 +636,8 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					}
 						
 				}
+				$this->addactivity('unlike-'.$data['post_type'], $data['post_id'],
+						$data['fanpage_id'],$post['facebook_user_id'], $this->_getParam('target_name'), $this->_getParam('mes'));
 				
 				
 				echo "unliked";
@@ -640,23 +651,223 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	}
 	
 	public function commentAction() {
-		$data['facebook_user_id'] = $this->_getParam('id');
-		$data['access_token'] = $this->_getParam('access_token');
+		$data['facebook_user_id'] = $this->_user->facebook_user_id;
+		$data['access_token'] = $this->_user->facebook_user_access_token;
 		$data['post_id'] = $this->_getParam('post_id');
-		$postId = $data['post_id'];
+		$data['post_type'] = $this->_getParam('post_type');
+		$data['message'] = $this->_getParam('message');
+		$data['fanpage_id'] = $this->_getParam('fanpage_id');
+		$data['fanpage_name'] = $this->_getParam('fanpage_name');
+		//$data['target_id'] = $this->_getParam('target_id');
+		//$data['target_name'] = $this->_getParam('target_name');
+		
 		$fancrankFB = new Service_FancrankFBService();
-		$msg = "";
-		
-		//save comment to fancrank database
-		//$comment = new Model_Comments();
-		//$comment->insert($data);
-		
-		//push comment to the post
+
 		$params =  array(
 				'access_token' => $data['access_token'],
-				'message' => "$msg",
+				'message' => $data['message'],
 		);
-		$fancrankFB->api("/$postId/comments", 'POST', $params);
+		
+		$bonus = 0;
+		$virgin=false;
+		
+		try{
+			$ret_obj = $fancrankFB->api("/".$data['post_id']."/comments", 'POST', $params);
+			
+			$data['comment_id'] = $ret_obj['id'];
+			//Zend_Debug::dump($data['comment_id']);
+			
+			$client = new Zend_Http_Client;
+			$client->setUri("https://graph.facebook.com/". $data['comment_id']);
+			$client->setMethod(Zend_Http_Client::GET);
+			$client->setParameterGet('access_token', $data['access_token']);
+			$response = $client->request();
+			$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+			
+			$created = new Zend_Date(!empty($post->created_time) ? $post->created_time : null, Zend_Date::ISO_8601);
+			$commentModel = new Model_Comments ();
+			$row = array (
+					'comment_id' => $result->id,
+					'fanpage_id' => $data['fanpage_id'],
+					'comment_post_id' => $data['post_id'],
+					'facebook_user_id' => $result->from->id,
+					'comment_message' => $commentModel->quoteInto($result->message),
+					'created_time' => $created->toString ( 'yyyy-MM-dd HH:mm:ss' ),
+					'comment_likes_count' => isset ( $result->like_count ) ? $result->like_count : 0,
+					'comment_type' => $data['post_type']
+			);
+			
+			// $fansId[] = $comment->from->id;
+			try {
+				// save fanpage's post's relative information into post table
+				// Zend_Debug::dump($row);
+				$commentModel->saveAndUpdateById ($row, array('id_field_name' =>'comment_id'));
+			} catch ( Exception $e ) {
+				print $e->getMessage ();
+				$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
+				$collectorLogger->log ( sprintf ( 'Unable to save comment %s fanpage %s to database. Error Message: %s ', $comment->id, $this->_fanpageId, $e->getMessage () ), Zend_log::ERR );
+				return;
+			}
+			
+			
+			$post= new Model_Posts();
+			$post = $post -> addCommentToPostReturn($data['post_id']);
+			//Zend_Debug::dump($post);
+			
+			if ($post==null){
+					
+				$post['facebook_user_id'] = $this->_getParam('target_id');
+				
+				//Zend_Debug::dump($post);
+			}
+			$fanstat = new Model_FansObjectsStats();
+			switch($data['post_type']){
+					
+				case 'status':
+					$fanstat->addCommentStatus($data['fanpage_id'], $data['facebook_user_id']);
+					if($post['facebook_user_id'] != $data['fanpage_id']){
+						$fanstat -> addGetCommentStatus($data['fanpage_id'], $post['facebook_user_id']);
+					}
+					break;
+				case 'photo':
+					$fanstat->addCommentPhoto($data['fanpage_id'], $data['facebook_user_id']);
+					if($post['facebook_user_id'] != $data['fanpage_id']){
+						$fanstat -> addGetCommentPhoto($data['fanpage_id'], $post['facebook_user_id']);
+					}
+					break;
+				case 'video':
+					$fanstat->addCommentVideo($data['fanpage_id'], $data['facebook_user_id']);
+					if($post['facebook_user_id'] != $data['fanpage_id']){
+						$fanstat -> addGetCommentVideo($data['fanpage_id'], $post['facebook_user_id']);
+					}
+					break;
+				case 'link':
+					$fanstat->addCommentLink($data['fanpage_id'], $data['facebook_user_id']);
+					if($post['facebook_user_id'] != $data['fanpage_id']){
+						$fanstat -> addGetCommentLink($data['fanpage_id'], $post['facebook_user_id']);
+					}
+					break;
+			
+			}
+			if (isset($post['post_comments_count'])){
+				if ($post['post_comments_count'] + $post['post_likes_count'] == 1){
+					$virgin=true;
+					echo 'virginity is true';
+				}
+		
+			}
+			
+			//preparing for points addition
+			//if user is not coming on this own post
+			if ($post['facebook_user_id'] != $data['facebook_user_id']){
+				
+				//checking how many times this user has comment on this post
+				$client->setUri("https://graph.facebook.com/". $data['post_id']."/comments");
+				$client->setMethod(Zend_Http_Client::GET);
+				$client->setParameterGet('access_token', $data['access_token']);
+				$response = $client->request();
+				$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+				
+				//Zend_Debug::dump($result);
+				$comment_counter = 0;
+				foreach ($result->data as $c){
+					
+					if ($c->from->id == $data['facebook_user_id']){
+						$comment_counter ++;
+					}
+					
+				}
+				//echo $comment_counter;
+				//if post owner is not a fanpage
+				
+				if($comment_counter < 6){
+				
+				if ($post['facebook_user_id'] != $data['fanpage_id']){
+					
+					if(isset($post['post_comments_count'])){
+						//GIVE 2 POINTS FOR RECIEVING A COMMENT
+						$fan = new Model_Fans($post['facebook_user_id'], $data['fanpage_id']);
+						$fan->updateFanPoints(2 + (($virgin)?4:0));
+						$fan->updateFanProfile();
+							
+						$pointLog = array();
+						$pointLog['fanpage_id'] = $data['fanpage_id'];
+						$pointLog['facebook_user_id'] =  $post['facebook_user_id'];
+						$pointLog['object_id'] = $data['post_id'];
+						$pointLog['object_type'] = 'recieve a comment';
+						$pointLog['giving_points'] = 2 + (($virgin)?4:0);
+						$pointLog['note'] = 'likes on object ,'.(($virgin)?'virginity broken':'');
+						
+						$pointLogModel = new Model_PointLog();
+						$result = $pointLogModel->insert($pointLog);
+					}
+					
+					
+				}else{
+					if(!isset($post['post_comments_count'])){
+						$cache = Zend_Registry::get('memcache');
+						try {
+							//Zend_Debug::dump($cache);
+							//Check to see if the $fanpageId is cached and look it up if not
+							if(isset($cache) && !$cache->load($data['post_id'])){
+								//Look up the $fanpageId
+								//$post = $cache->load($data['post_id']);
+							}else {
+								//echo 'memcache look up';
+								$post = $cache->load($data['post_id']);
+							}
+							
+							$a = new Zend_Date($post['created_time']);
+							//if it is a fanpage, check if bonus occured
+							echo 'poster is a fan page, checking bonus';
+							if ($a->compare(1, Zend_Date::HOUR)== -1) {
+								$bonus = $comment_counter;
+								//echo ' within 1 hour, bonus is true';
+							}
+							//echo $bonus;
+							
+							
+						} catch (Exception $e) {
+							Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+							//echo $e->getMessage();
+						}
+						echo 'this post is from an admin.';
+					}
+					
+					
+
+				}
+
+					$fan = new Model_Fans($data['facebook_user_id'], $data['fanpage_id']);
+					$fan->updateFanPoints(2 + $bonus);
+					$fan->updateFanProfile();
+						
+					$pointLog = array();
+					$pointLog['fanpage_id'] = $data['fanpage_id'];
+					$pointLog['facebook_user_id'] =  $data['facebook_user_id'];
+					$pointLog['object_id'] = $data['post_id'];
+					$pointLog['object_type'] = 'recieve a comment';
+					$pointLog['giving_points'] = 2 + $bonus;
+					$pointLog['bonus'] = $bonus;
+					$pointLog['note'] = 'likes on object ,'.(($virgin)?'virginity broken':'');
+					
+					$pointLogModel = new Model_PointLog();
+					$result = $pointLogModel->insert($pointLog);
+				
+				}
+				
+			}
+				
+			$this->addactivity('comment-'.$data['post_type'], $data['post_id'],
+					$data['fanpage_id'],$post['facebook_user_id'], $this->_getParam('target_name'), $row['comment_message']);
+			
+			echo 'adding activities';
+			
+			
+			
+		}catch(Exception $e){
+			echo $e;
+		}
 	}
 	
 	

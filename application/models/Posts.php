@@ -102,7 +102,18 @@ class Model_Posts extends Model_DbTable_Posts
 			$found->save ();
 		}
 	}
+	public function addCommentToPostReturn($id) {
+		$found = $this->findPost($id);
 	
+		$dateObject = new Zend_Date();
+	
+		if (!empty ( $found )) {
+			$found->updated_time = $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
+			$found->post_comments_count ++;
+			$found->save ();
+			return $found;
+		}
+	}
 	
 	public function insertPost($fanpage_id, $post)
 	{

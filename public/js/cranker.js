@@ -1077,15 +1077,18 @@ function post() {
 function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLatestAdminPost){
 	
 	mes= $('#comment_box_'+post_id).val();
-	FB.api('/' + post_id + '/comments', 'post', {
-		'message' : $('#comment_box_'+post_id).val(),
-		'access_token' : userAccessToken
-	}, function(response) {
-		if (!response || response.error) {
-			alert(response.error.message);
-		} else {
-
-			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/user/' +userId +'/comment/?post_id='+post_id + '&post_type='+post_type
+						+ '&target_id=' + post_owner_id + '&target_name=' +post_owner_name
+						+ '&fanpage_id=' + fanpageId + '&fanpage_name='+fanpageName +'&message=' + mes,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+		},
+		success : function(data) {
+			//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 			$('#comment_box_'+post_id).val('');
 			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 			//alert(post_comment_count);
@@ -1097,8 +1100,14 @@ function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLat
 			}else{
 				comment_feed(post_id, post_type,  post_comment_count, false);
 			}
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
 		}
 	});
+
+	
+
 }
 
 function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){

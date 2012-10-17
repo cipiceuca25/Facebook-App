@@ -546,9 +546,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			try {
     				$adminPostId = $l->id;
     				
-    				echo $cache->save($l, $adminPostId);
-    				$x = $cache->load($adminPostId);
-    				Zend_Debug::dump($x);
+    				$cache->save($l, $adminPostId);
+    				//$x = $cache->load($adminPostId);
+    				//Zend_Debug::dump($x);
     			} catch (Exception $e) {
     				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
     				//echo $e->getMessage();
