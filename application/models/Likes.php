@@ -25,11 +25,45 @@ class Model_Likes extends Model_DbTable_Likes
 			$found->save ();
 		}
 	}
+	public function insertNewLikesReturn($fanpage_id, $post_id, $facebook_user_id, $post_type) {
+		$found = $this->find ( $fanpage_id, $post_id, $facebook_user_id )->current ();
+		// zend_debug::dump($found);
+		$dateObject = new Zend_Date();
+	
+		if (empty ( $found )) {
+			$data = array (
+					'fanpage_id' => $fanpage_id,
+					'post_id' => $post_id,
+					'facebook_user_id' => $facebook_user_id,
+					'post_type' => $post_type,
+					'likes' => 1 ,
+					'updated_time' => $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' )
+			);
+	
+			$this->insert ( $data );
+			return 1;
+		} else {
+			if ($found->likes == 1){
+				return 0;	
+			}
+			
+			$found->likes = 1;
+			$dateObject = new Zend_Date();
+			$found->updated_time = $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
+			$found->save ();
+			return $found;
+		}
+		
+		
+		
+	}
 	public function unlike($fanpage_id, $post_id, $facebook_user_id, $post_type) {
 		$found = $this->find ( $fanpage_id, $post_id, $facebook_user_id )->current ();
 		
 		if (! empty ( $found )) {
-			
+			if ($found->likes == 0){
+				return 0;
+			}
 			$found->likes = 0;
 			$dateObject = new Zend_Date();
 			$found->updated_time = $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );

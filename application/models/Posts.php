@@ -43,13 +43,36 @@ class Model_Posts extends Model_DbTable_Posts
 		$update->where($this->getAdapter()->quoteInto('posts.post_id = ?', $post[activityid]));
 
 	}
+	public function addLikeToPostReturn($id) {
+		$found = $this->findPost($id);
 	
+	
+		//Zend_Debug::dump($found);
+		if (!empty ( $found )) {
+			$found->post_likes_count ++;
+			$found->save ();
+		}
+		return $found;
+	}
+	
+	public function subtractLikeToPostReturn($id) {
+		$found = $this->findPost($id);
+	
+	
+		if (!empty ( $found )) {
+			if ($found->post_likes_count >0){
+				$found->post_likes_count --;
+			}
+			$found->save ();
+		}
+		return $found;
+	}
 	
 	public function addLikeToPost($id) {
 		$found = $this->findPost($id);
 		
 	
-		Zend_Debug::dump($found);
+		//Zend_Debug::dump($found);
 		if (!empty ( $found )) {
 			$found->post_likes_count ++;
 			$found->save ();
@@ -297,6 +320,15 @@ class Model_Posts extends Model_DbTable_Posts
 		
 		return $this->getAdapter()->fetchAll($select);
 		
+	
+	}
+	
+	
+	public function getUniqueComment($fanpage_id , $facebook_user_id, $post_id){
+		
+		$select = "";
+		
+		return $this->getAdapter()->fetchAll($select);
 	
 	}
 	

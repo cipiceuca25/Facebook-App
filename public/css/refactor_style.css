@@ -361,7 +361,6 @@ ol {
 }
 .top-list {
   background-color: #ffffff;
-  overflow: hidden;
   max-height: 224px;
 }
 .top-list li:hover {

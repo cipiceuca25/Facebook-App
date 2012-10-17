@@ -34,8 +34,8 @@ function isLoginNotification() {
 		beforeSend: function(){
 		},
 		success : function(data) {
-			console.log(data['message']);
-			console.log(data);
+			//console.log(data['message']);
+			//console.log(data);
 			if(data['message'] == "ok") {
 				setupBadges(data);
 				$('#badge-notification-count').html(data['count']);

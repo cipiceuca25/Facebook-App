@@ -107,25 +107,25 @@
 				
 						<?if (strstr($this->escape($post->link), 'youtube.com')){
 							$temp=explode("http://www.youtube.com/watch?v=", $this->escape($post->link));?>
-							<iframe width="508" height="286" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
+							<iframe width="235" height="132" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
 					
 						<? }else if (strstr($this->escape($post->link), 'vimeo.com')){
 							$temp=explode("http://vimeo.com/", 	$this->escape($post->link));	?>
-							<iframe width="508" height="286" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
+							<iframe width="235" height="132" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
 				
 						<? }else if (strstr($this->escape($post->link), 'facebook.com')){
 							$temp=explode("v=", $this->escape($post->link));?>
-							<object width="508" height="286" > 
+							<object width="235" height="132" > 
 								 <param name="allowfullscreen" value="true" /> 
 								 <param name="allowscriptaccess" value="always" /> 
 								 <param name="movie" value="http://www.facebook.com/v/<?= $temp[1]?>" /> 
 								 <embed src="http://www.facebook.com/v/<?= $temp[1]?>" type="application/x-shockwave-flash"  
-								   allowscriptaccess="always" allowfullscreen="true" width="508" height="286"> 
+								   allowscriptaccess="always" allowfullscreen="true" width="235" height="132"> 
 								 </embed> 
 							</object> 
 						<? }else if (strstr($this->escape($post->link), 'liveleak.com/view')){ 
 							$temp=explode("view?i=", $this->escape($post->link));?>
-							<iframe width="508" height="286" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
+							<iframe width="235" height="132" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
 						<? }?>
 					<?}elseif ($post->type == 'link') {?>
 					<div class="link">
