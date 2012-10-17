@@ -2,6 +2,14 @@
 
 class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 {
+	const THEME_CHOICE = 3;
+	const TOP_POST_CHOICE = 'week';
+	const POINT_LIKE_NORMAL = 1;
+	const POINT_COMMENT_NORMAL = 1;
+	const POINT_POST_NORMAL = -5;
+	const POINT_LIKE_ADMIN = 1;
+	const POINT_COMMENT_ADMIN = 2;
+	const POINT_BONUS_DURATION = 3600;
 
 	public function getThemeChoice($fanpage_id)
 	{
@@ -65,7 +73,25 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 		return;
 	}
 
-	public function isDataValid() {
+	public function isDataValid($data) {
+		if(empty($data)) return false;
 		
+		foreach ($data as $key=>$value) {
+			if($key !== 'top_post_choice' && !is_numeric($value)) return false; 
+		}
+		return true;
+	}
+	
+	public function getDefaultSetting() {
+		$data = array(
+				'theme_choice'=>self::THEME_CHOICE,
+				'top_post_choice'=>self::TOP_POST_CHOICE,
+				'point_like_normal'=>self::POINT_LIKE_NORMAL,
+				'point_comment_normal'=>self::POINT_COMMENT_NORMAL,
+				'point_post_normal'=>self::POINT_POST_NORMAL,
+				'point_like_admin'=>self::POINT_LIKE_ADMIN,
+				'point_comment_admin'=>self::POINT_COMMENT_ADMIN
+				);
+		return $data;
 	}
 }

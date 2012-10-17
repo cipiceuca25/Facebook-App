@@ -2,27 +2,6 @@
 
 class Model_Fanpages extends Model_DbTable_Fanpages
 {
-	public function getFeed($fanpage_id)
-	{
-		$fanpage = $this->findRow($fanpage_id);
-		
-		return $this->facebookRequest(null, 'feed', $fanpage->access_token);	
-	}
-	
-	public function getAlbums($fanpage_id)
-	{
-		$fanpage = $this->findRow($fanpage_id);
-		
-		return $this->facebookRequest(null, 'albums', $fanpage->access_token);
-	}
-	
-	public function getInsights($fanpage_id)
-	{
-		$fanpage = $this->findRow($fanpage_id);
-
-		return $this->facebookRequest(null, 'insights', $fanpage->access_token);
-	}
-	
 	public function getFans($fanpage_id)
 	{
 		$fanpage = $this->findRow($fanpage_id);
@@ -342,6 +321,16 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		$select = $this->select();
 		$select->where('fanpages.active = TRUE');
 		return $this->fetchAll($select);
+	}
+	
+	public function getTotalAwardPoints($fanpageId) {
+		$select = $this->getDefaultAdapter()->select()
+						->from('fans', array('sum(fan_point) as total'));
+		$result = $this->getDefaultAdapter()->fetchAll($select);
+		
+		if(empty($result[0]['total'])) return 0;
+		
+		return $result[0]['total'];
 	}
 }
 

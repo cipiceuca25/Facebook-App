@@ -28,7 +28,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
     public function fanpagesAction() 
     {
-    
     	$uid = $this->_identity->facebook_user_id;
     	$access_token= $this->_identity->facebook_user_access_token;
     	
@@ -43,6 +42,72 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         $this->view->pages = $pages;
     }
 
+    public function pointsettingAction() {
+    	$fanpageId = $this->_getParam('id');
+    	
+    	try {
+    		$fanpageSettingModel = new Model_FanpageSetting();
+    		$settingData = $fanpageSettingModel->findRow($fanpageId);
+    		if(!$settingData) {
+    			$settingData = $fanpageSettingModel->getDefaultSetting();
+    		}
+    		
+    		//update new setting
+    		if($this->_getParam('confirm') === 'save') {
+    			$data = array(
+    					'point_like_normal'=>$this->_getParam('point_like_normal'),
+    					'point_comment_normal'=>$this->_getParam('point_comment_normal'),
+    					'point_post_normal'=>$this->_getParam('point_post_normal'),
+    					'point_like_admin'=>$this->_getParam('point_like_admin'),
+    					'point_comment_admin'=>$this->_getParam('point_comment_admin')
+    			);
+
+    			$dataLog = array();
+    			$dataLog['activity_type'] = 'admin_change_point_setting';
+    			$dataLog['event_object'] = '';
+    			$dataLog['facebook_user_id'] = $this->_auth->getIdentity()->facebook_user_id;
+    			$dataLog['facebook_user_name'] = $this->_auth->getIdentity()->facebook_user_name;
+    			$dataLog['fanpage_id'] = $fanpageId;
+    			$dataLog['target_user_id'] = $fanpageId;
+    			$dataLog['target_user_name'] = '';
+    			$dataLog['message'] = 'admin updated point setting';
+    			$adminActivityModel = new Model_AdminActivities();
+
+    			if($settingData) {
+    				$hasChange = false;
+    				foreach ($data as $key=>$value) {
+    					if($key !== 'top_post_choice' && !is_numeric($value)) throw new Exception('invalid argument');
+    					if($value != $settingData->{$key}) {
+    						$settingData->{$key} = $value;
+    						$hasChange = true;
+    					}
+    				}
+    				
+    				if($hasChange) {
+    					//update fanpage setting data
+    					$settingData->save();
+    					//insert admin activity log
+    					$adminActivityModel->insert($dataLog);
+    				}else {
+    					echo 'no new change';
+    				}
+    			}else {
+    				//insert new paget setting
+    				$data['fanpage_id'] = $fanpageId;
+    				if(!$fanpageSettingModel->isDataValid($data)) throw new Exception('invalid argument');
+    				$fanpageSettingModel->insert($data);
+    				//insert admin activity log
+    				$adminActivityModel->insert($dataLog);
+    			}
+    			
+    		}
+    	} catch (Exception $e) {
+    		echo $e->getMessage();
+    	}
+    	$this->view->setting = $settingData;
+    	$this->view->page_id = $fanpageId;
+    }
+    
     public function myaccountAction()
     {
     	//Zend_Debug::dump($this->_identity);
@@ -204,6 +269,12 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	
     	$fanRequestModel = new Model_FanRequests();
     	$this->view->fan_requests_count = $fanRequestModel->getFanRequestCount();
+    	$this->view->total_award_points = $fanpageModel->getTotalAwardPoints($fanpageId);
+    	
+    	$sideData = $this->getRealtimeInsightData($fanpageId);
+    	$this->view->page_view = $sideData['page_view'];
+    	$this->view->page_post = $sideData['page_post'];
+    	$this->view->user_post = $sideData['user_post'];
 	}
     
 	public function fantableAction(){
@@ -406,29 +477,51 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		if(empty($fanpageId)) {
 			return;
 		}
-		switch($logType) {
-			case 'like' :
-				$result = $activityModel->getRecentFanpageLikeActivities($fanpageId);
-				Zend_Debug::dump($result);
-				break;
-			case 'comment' :
-				$result = $activityModel->getRecentFanpageCommentActivities($fanpageId);
-				Zend_Debug::dump($result);
-				break;
-			case 'post' :
-				$result = $activityModel->getRecentFanpagePostActivities($fanpageId);
-				Zend_Debug::dump($result);
-				break;
-			case 'subscribe' : break;
-			case 'pointlog' :
-				$pointLogModel = new Model_PointLog();
-				$result = $pointLogModel->getFanpagePointLog($fanpageId, 100);
-				Zend_Debug::dump($result);
-				break;
-			case 'overall' :
-				$result = $activityModel->getRecentFanpageActivities($fanpageId);
-				Zend_Debug::dump($result);
-				break;
+		try {
+			switch($logType) {
+				case 'like' :
+					$logList = $activityModel->getRecentFanpageLikeActivities($fanpageId);
+					$result = array(
+							'sEcho'=> 1,
+							'aaData'=>$logList
+					);						
+					$this->_helper->json($result);
+					//Zend_Debug::dump($result);
+					break;
+				case 'comment' :
+					$logList = $activityModel->getRecentFanpageCommentActivities($fanpageId);
+					$result = array(
+							'sEcho'=> 1,
+							'aaData'=>$logList
+					);					
+					$this->_helper->json($result);
+					//Zend_Debug::dump($result);
+					break;
+				case 'post' :
+					$logList = $activityModel->getRecentFanpagePostActivities($fanpageId);
+					$result = array(
+							'sEcho'=> 1,
+							'iTotalRecords'=> '10',
+							'iTotalDisplayRecords'=> '10',
+							'aaData'=>$logList
+					);
+					$this->_helper->json($result);
+					break;
+				case 'subscribe' : break;
+				case 'pointlog' :
+					$pointLogModel = new Model_PointLog();
+					$result = $pointLogModel->getFanpagePointLog($fanpageId, 100);
+					$this->_helper->json($result);
+					Zend_Debug::dump($result);
+					break;
+				case 'overall' :
+					$result = $activityModel->getRecentFanpageActivities($fanpageId);
+					$this->_helper->json($result);
+					Zend_Debug::dump($result);
+					break;
+			}
+		} catch (Exception $e) {
+			echo $e->getMessage();
 		}
 		
 		$this->view->page_id = $fanpageId;
@@ -446,7 +539,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		return implode(',', $csv);
 	}
 	
-	function array_to_scv($array, $header_row = true, $col_sep = ",", $row_sep = "\n", $qut = '"')
+	private function array_to_scv($array, $header_row = true, $col_sep = ",", $row_sep = "\n", $qut = '"')
 	{
 		$output = null;
 		if (!is_array($array) or !is_array($array[0])) return false;
@@ -476,6 +569,75 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		}
 	
 		return $output;
+	}
+	
+	private function getRealtimeInsightData($fanpageId) {
+	
+		$insightId = $fanpageId .'_insights';
+
+		$insightData = null;
+		try {
+			$cache = Zend_Registry::get('memcache');
+				
+			if(isset($cache) && !$cache->load($insightId)){
+				//Look up the facebook graph api
+				//echo 'look up facebook graph api';
+				
+				$fanpageModel = new Model_Fanpages();
+				$fanpage = $fanpageModel->findRow($fanpageId);
+				$client = new Zend_Http_Client;
+				$client->setUri("https://graph.facebook.com/$fanpageId/insights?access_token=". $fanpage->access_token);
+				$client->setMethod(Zend_Http_Client::GET);
+				
+				$response = $client->request();
+				
+				$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+				
+				if(!empty($result->data)) {
+					$insightData = $result->data;
+					//Save to the cache, so we don't have to look it up next time
+					$cache->save($insightData, $insightId);
+				}
+			}else {
+				//echo 'memcache look up';
+				$insightData = $cache->load($insightId);
+			}
+		} catch (Exception $e) {
+			//echo $e->getMessage();
+		}
+		
+		return $this->insightDataParser($insightData);
+	}
+	
+	private function insightDataParser($insightData) {
+		$result = array();
+		$counter = 2;
+		foreach ($insightData as $data) {
+			if(preg_match('/\/day$/', $data->id)) {
+				switch($data->name) {
+					case 'page_views_login_unique' :
+						if(!empty($data->values)) {
+							$value = $data->values[sizeof($data->values)-1];
+							$result['page_view'] = empty($value->value) ? 0 : $value->value;
+						}
+						$counter--;
+						break;
+					case 'page_story_adds_by_story_type_unique' :
+						if(!empty($data->values)) {
+							$value = $data->values[sizeof($data->values)-1];
+							$result['page_post'] = empty($value->value->{'page post'}) ? 0 : $value->value->{'page post'};
+							$result['new_fan'] =  empty($value->value->fan) ? 0 : $value->value->fan;
+							$result['user_post'] = empty($value->value->{'user post'}) ? 0 : $value->value->{'user post'};
+						}
+						$counter++;
+						break;
+				}
+			}
+			
+			//early terminate
+			if($counter < 1) break;
+		}
+		return $result;
 	}
 }
 
