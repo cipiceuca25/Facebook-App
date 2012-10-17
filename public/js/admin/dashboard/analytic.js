@@ -31,6 +31,11 @@ jQuery(document).ready(function($){
 		var fanpageId = $(this).attr('data-id');
 		
 		var enableProfileImage = $('#enableProfileImage').val();
+		var pointLikeNormal = $('#point_like_normal').val();
+		var pointCommentNormal = $('#point_comment_normal').val();
+		var pointPostNormal = $('#point_post_normal').val();
+		var pointLikeAdmin = $('#point_like_admin').val();
+		var pointCommentAdmin = $('#point_comment_admin').val();
 		var topPostBy = $('#topPostBy').val();
 	    if(fanpageId) {
 	        $.ajax({
@@ -299,7 +304,6 @@ jQuery(document).ready(function($){
 
     // export ajax call
     $(".export-dropdown a").click(function () {
-
 		var type;
 		switch($(this).html()) {
 			case 'Top fans list': type = 'topfans'; break;

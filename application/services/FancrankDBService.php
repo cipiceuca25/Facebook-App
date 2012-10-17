@@ -334,7 +334,16 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 			$found = $likeModel->find($like['fanpage_id'], $like['post_id'], $like['facebook_user_id'])->current();
 			try {
 				if (empty($found)) {
+					if(isset($like['target'])) {
+						unset($like['target']);
+					}
 					$likeModel->insert($like);
+				}else {
+					if($found->likes === 0) {
+						$found->likes = 1;
+						$found->updated_time = $like['updated_time'];
+						$found->save();
+					}
 				}				
 			} catch (Exception $e) {
 				$collectorLogger = Zend_Registry::get ( 'collectorLogger' );

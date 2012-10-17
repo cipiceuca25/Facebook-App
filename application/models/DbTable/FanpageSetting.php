@@ -4,7 +4,7 @@ class Model_DbTable_FanpageSetting extends Fancrank_Db_Table
 	
 	protected $_name = 'fanpage_setting';
 	
-	protected $_primary = array('fanpage_id');
+	protected $_primary = 'fanpage_id';
 	
 	public function findAll($where = null, $order = null, $count = null, $offset = null)
 	{

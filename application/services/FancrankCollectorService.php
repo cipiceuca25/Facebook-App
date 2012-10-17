@@ -15,6 +15,7 @@ class Service_FancrankCollectorService {
 	protected $_fanpageId;
 	protected $_accessToken;
 	protected $_type;
+	protected $_fanpageSetting;
 	
 	public function __construct() {
 		$this->_facebookGraphAPIUrl = 'https://graph.facebook.com/';
@@ -39,6 +40,14 @@ class Service_FancrankCollectorService {
 			throw new Exception('Invalid Arguments: ' . get_class(), NULL, NULL);
 		}
 		
+		$fanpageSettingModel = new Model_FanpageSetting();
+		$fanpageSettingModel->findRow($this->_fanpageId);
+		$settingData = $fanpageSettingModel->findRow($fanpage_id)->toArray();
+		if(!$settingData) {
+			$settingData = $fanpageSettingModel->getDefaultSetting();
+		}
+		
+		$this->_fanpageSetting = $settingData;
 		$this->_fanpageId = $fanpage_id;
 		$this->_accessToken = $access_token;
 		$this->_type = $type;
@@ -172,6 +181,7 @@ class Service_FancrankCollectorService {
 		$start = time();
 		$pointResult = array();
 		$lastUpdatedData = array();
+		$overallData = array();
 		
 		//Zend_Debug::dump($lastUpdatedData['posts']);
 		//exit();
@@ -190,10 +200,10 @@ class Service_FancrankCollectorService {
 
  		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
  		Zend_Debug::dump($postLikeList); 
-		
+
  		$postCommentsList = $this->getCommentsFromPost($posts, 5, 1000);
  		Zend_Debug::dump($postCommentsList);
- 		
+
  		//$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
   		//Zend_Debug::dump($pointResult); exit();
 		//get all albums recursively
@@ -272,14 +282,14 @@ class Service_FancrankCollectorService {
 		
 		//Zend_Debug::dump($allLikesList);
 		
+		//get fanpage setting
+		
 		$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList); 
-		//Zend_Debug::dump($pointResult); exit();
 		$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
 		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
 		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList, $commentLikeList);
 		$pointResult = $this->calculateLikesPoints($pointResult, $allLikesList);
 		Zend_Debug::dump($pointResult);
-		//exit();
 		
 		$db->beginTransaction();
 		
@@ -571,29 +581,38 @@ class Service_FancrankCollectorService {
 			if(!empty($post->likes->data)) {
 				$likeCount = count($post->likes->data);
 			}
+			
+			$likeData = array(	'fanpage_id'=>$this->_fanpageId,
+								'post_id'=>$post->id
+							);
+			
+			if($post->from->id === $this->_fanpageId) {
+				$likeData['target'] = 'admin';
+			}else {
+				$likeData['target'] = 'user';
+			}
+			
 			if(!empty($post->likes->count) && $post->likes->count > $likeCount) {
 				$result = array();
 				$url = $this->_facebookGraphAPIUrl . $post->id .'/likes?access_token=' .$this->_accessToken;
 				$this->getFromUrlRecursive($url, $level, $limit, $result);
-				
 				foreach ($result as $like) {
-					$results[] = array('fanpage_id'=>$this->_fanpageId,
-										'post_id'=>$post->id,
-										'facebook_user_id'=>$like->id,
-										'post_type'=> !empty($post->type) ? $post->type : '',
-										'created_time'=> $created_time,
-										'updated_time'=> $update_time);					
+					$likeData['facebook_user_id'] = $like->id;
+					$likeData['post_type'] = !empty($post->type) ? $post->type : '';
+					$likeData['created_time'] = $created_time;
+					$likeData['updated_time'] = $update_time;
+					$results[] = $likeData;					
 				}
 				$hasMoreLike = true;
 			}
+			
 			if(! $hasMoreLike && !empty($post->likes->data)) {
 				foreach ($post->likes->data as $like) {
-					$results[] = array('fanpage_id'=>$this->_fanpageId,
-										'post_id'=>$post->id,
-										'facebook_user_id'=>$like->id,
-										'post_type'=> !empty($post->type) ? $post->type : '',
-										'created_time'=> $created_time,
-										'updated_time'=>$update_time);
+					$likeData['facebook_user_id'] = $like->id;
+					$likeData['post_type'] = !empty($post->type) ? $post->type : '';
+					$likeData['created_time'] = $created_time;
+					$likeData['updated_time'] = $update_time;
+					$results[] = $likeData;	
 				}
 			}
 			
@@ -740,7 +759,8 @@ class Service_FancrankCollectorService {
 							'facebook_user_id'  => $like->id,
 							'created_time'		=> $created_time,
 							'updated_time'		=> $update_time,
-							'post_type'			=> $type
+							'post_type'			=> $type,
+							'target'			=> 'admin'
 					);
 				}
 				
@@ -755,7 +775,8 @@ class Service_FancrankCollectorService {
 								'facebook_user_id'  => $like->id,
 								'created_time'		=> $created_time,	
 								'updated_time'		=> $update_time,
-								'post_type'			=> $type
+								'post_type'			=> $type,
+								'target'			=> 'admin'
 						);
 					}
 				}
@@ -784,6 +805,7 @@ class Service_FancrankCollectorService {
 							'created_time'		=> $created_time,
 							'updated_time'		=> $update_time,
 							'post_type'         => $comment->comment_type .'_comment',
+							'target'			=> 'comment',
 					);
 				}
 			}
@@ -835,6 +857,8 @@ class Service_FancrankCollectorService {
 					$fansIdList[] = $v->from->id;
 				}else if (!empty($v->facebook_user_id)) {
 					$fansIdList[] = $v->facebook_user_id;
+				}else if (!empty($v['facebook_user_id'])) {
+					$fansIdList[] = $v['facebook_user_id'];
 				}
 			}
 		}
@@ -921,17 +945,18 @@ class Service_FancrankCollectorService {
 							default: break;
 						}
 						//echo $comment->from->id .'gain comment: ' .$multiply*2 .' points from admin post ' .$post->id .'<br/>';
+						$gain = $multiply * $this->_fanpageSetting['point_comment_admin'];
 						if(isset($pointResult[$comment->from->id])) {
-							$pointResult[$comment->from->id]['total_points'] = $pointResult[$comment->from->id]['total_points'] + $multiply*2;
+							$pointResult[$comment->from->id]['total_points'] = $pointResult[$comment->from->id]['total_points'] + $gain;
 						}else {
-							$pointResult[$comment->from->id]['total_points'] = $multiply*2;
+							$pointResult[$comment->from->id]['total_points'] = $gain;
 						}
 						$pointResult[$comment->from->id]['xp'] = $pointResult[$comment->from->id]['total_points'];
 						$pointResult[$comment->from->id]['point_log'][] = array(
 									'object_id'=> $comment->id,
 									'object_type'=> 'comments',
-									'giving_points'=> $multiply*2,
-									'bonus'=> $multiply*2 - 2,
+									'giving_points'=> $gain,
+									'bonus'=> $gain - $this->_fanpageSetting['point_comment_admin'],
 									'note'=> 'comments on admin post'
 								);
 						//$xpResult[$comment->from->id] = $pointResult[$comment->from->id];
@@ -944,13 +969,13 @@ class Service_FancrankCollectorService {
 			$oldPost = $postModel->findRow($post->id);
 			
 			if(empty($post->likes->count) && empty($post->comments->count) && !$oldPost) {
-				$totalPoints = -5;
+				$totalPoints = $this->_fanpageSetting['point_post_normal'];
 				//echo $post->from->id .' lost: ' .$totalPoints .' from ' .$post->id .'<br/>';
 			}else if(!$oldPost) {
-				$virginity = 4;
+				$virginity = abs($this->_fanpageSetting['point_post_normal']) - 1;
 				$uniqueUser = array();
 				if(!empty($post->likes->count) && $post->likes->count >= 1) {
-					$totalLikePoints = $post->likes->count;
+					$totalLikePoints = $post->likes->count * $this->_fanpageSetting['point_like_normal'];
 					foreach ($postLikeList as $like) {
 						if($like['post_id'] === $post->id && $like['facebook_user_id'] !== $post->from->id) {
 							$uniqueUser[$like['facebook_user_id']] = 1;
@@ -978,7 +1003,7 @@ class Service_FancrankCollectorService {
 				
 				//echo $post->from->id .' gain new unique: ' .count($uniqueUser) .' from post ' .$post->id .'<br/>';
 				
-				$totalPoints = $virginity + $totalLikePoints + $totalCommentPoints + count($uniqueUser) - 5;
+				$totalPoints = $virginity + $totalLikePoints + $totalCommentPoints + count($uniqueUser) - $this->_fanpageSetting['point_post_normal'];
 			}else if($oldPost) {
 
 				$likeModel = new Model_Likes();
@@ -1014,18 +1039,20 @@ class Service_FancrankCollectorService {
 				//echo $post->from->id .' gain more unique: ' .$unique .' from post ' .$post->id .'<br/>';
 				$virginity = 0;
 				if(empty($oldPost->post_likes_count) && empty($oldPost->post_comments_count) && !empty($unique)) {
-					$virginity = 4;
+					$virginity = abs($this->_fanpageSetting['point_post_normal']) - 1;
 				}
+				
 				$totalPoints = $totalLikePoints + $totalCommentPoints + $unique + $virginity;
 			}
 				
 			if(isset($pointResult[$post->from->id])) {
 				$pointResult[$post->from->id]['total_points'] = $pointResult[$post->from->id]['total_points'] + $totalPoints;
+				$pointResult[$post->from->id]['xp'] = $totalPoints < 0 ? $pointResult[$post->from->id]['xp'] : $pointResult[$post->from->id]['xp'] + $totalPoints;
 			}else {
 				$pointResult[$post->from->id]['total_points'] = $totalPoints;
+				$pointResult[$post->from->id]['xp'] = $totalPoints < 0 ? 0 : $totalPoints;
 			}
 			
-			$pointResult[$post->from->id]['xp'] = $pointResult[$post->from->id]['total_points'];
 			if($oldPost && $totalPoints <= 0) {
 				continue;
 			}
@@ -1059,18 +1086,18 @@ class Service_FancrankCollectorService {
 						default: break;
 					}
 					//echo $comment->from->id .'gain comment:' .$multiply*2 .' from post ' .$album->from->id .'<br/>';
+					$gain = $multiply * $this->_fanpageSetting['point_comment_admin'];
 					if(isset($pointResult[$comment->from->id])) {
-						$pointResult[$comment->from->id]['total_points'] = $pointResult[$comment->from->id]['total_points'] + $multiply*2;
+						$pointResult[$comment->from->id]['total_points'] = $pointResult[$comment->from->id]['total_points'] + $gain;
 					}else {
-						$pointResult[$comment->from->id]['total_points'] = $multiply*2;
+						$pointResult[$comment->from->id]['total_points'] = $gain;
 					}
-					
 					$pointResult[$comment->from->id]['xp'] = $pointResult[$comment->from->id]['total_points'];
 					$pointResult[$comment->from->id]['point_log'][] = array(
 							'object_id'=> $comment->id,
 							'object_type'=> 'comments',
-							'giving_points'=> $multiply*2,
-							'bonus'=> $multiply*2 - 2,
+							'giving_points'=> $gain,
+							'bonus'=> $gain - $this->_fanpageSetting['point_comment_admin'],
 							'note'=> 'comment on album'
 					);
 				}
@@ -1097,18 +1124,18 @@ class Service_FancrankCollectorService {
 						default: break;
 					}
 					//echo $comment->from->id .'gain comment:' .$multiply*2 .' from post ' .$photo->id .'<br/>';
+					$gain = $multiply * $this->_fanpageSetting['point_comment_admin'];
 					if(isset($pointResult[$comment->from->id])) {
-						$pointResult[$comment->from->id]['total_points'] += $multiply*2;
+						$pointResult[$comment->from->id]['total_points'] = $pointResult[$comment->from->id]['total_points'] + $gain;
 					}else {
-						$pointResult[$comment->from->id]['total_points'] = $multiply*2;
+						$pointResult[$comment->from->id]['total_points'] = $gain;
 					}
-					
 					$pointResult[$comment->from->id]['xp'] = $pointResult[$comment->from->id]['total_points'];
 					$pointResult[$comment->from->id]['point_log'][] = array(
 							'object_id'=> $comment->id,
 							'object_type'=> 'comments',
-							'giving_points'=> $multiply*2,
-							'bonus'=> $multiply*2 - 2,
+							'giving_points'=> $gain,
+							'bonus'=> $gain - $this->_fanpageSetting['point_comment_admin'],
 							'note'=> 'comment on photo'
 					);
 				}
@@ -1124,16 +1151,17 @@ class Service_FancrankCollectorService {
 			if($comment->from->id !== $this->_fanpageId && ! empty($comment->like_count)) {
 				foreach ($commentLikeList as $commentLike) {
 					if($comment->id === $commentLike['post_id'] && !$commentModel->findRow($comment->id)) {
+						$gain = $comment->like_count * $this->_fanpageSetting['point_comment_normal'];
 						if(isset($pointResult[$comment->from->id])) {
-							$pointResult[$comment->from->id]['total_points'] += $comment->like_count;
+							$pointResult[$comment->from->id]['total_points'] += $gain;
 						}else {
-							$pointResult[$comment->from->id]['total_points'] = $comment->like_count;
+							$pointResult[$comment->from->id]['total_points'] = $gain;
 						}
 						$pointResult[$comment->from->id]['xp'] = $pointResult[$comment->from->id]['total_points'];
 						$pointResult[$comment->from->id]['point_log'][] = array(
 								'object_id'=> $comment->id,
 								'object_type'=> 'comments',
-								'giving_points'=> $comment->like_count,
+								'giving_points'=> $gain,
 								'bonus'=> 0,
 								'note'=> 'comments on non-admin post, gain points basic on total # of likes'
 						);
@@ -1148,18 +1176,25 @@ class Service_FancrankCollectorService {
 		$likeModel = new Model_Likes();
 		foreach ($likesList as $like) {
 			if($likeModel->getLikes($like['fanpage_id'], $like['post_id'], $like['facebook_user_id'])) continue;
+			
+			//check like target
+			$gain = $this->_fanpageSetting['point_like_normal'];
+			if($like['target'] === 'admin') {
+				$gain = $this->_fanpageSetting['point_like_admin'];
+			}
+			
 			if(isset($pointResult[$like['facebook_user_id']])) {
-				$pointResult[$like['facebook_user_id']]['total_points'] = $pointResult[$like['facebook_user_id']]['total_points'] + 1;
+				$pointResult[$like['facebook_user_id']]['total_points'] += $gain;
 			}else {
-				$pointResult[$like['facebook_user_id']]['total_points'] = 1;
+				$pointResult[$like['facebook_user_id']]['total_points'] = $gain;
 			}
 			$pointResult[$like['facebook_user_id']]['xp'] = $pointResult[$like['facebook_user_id']]['total_points'];
 			$pointResult[$like['facebook_user_id']]['point_log'][] = array(
 					'object_id'=> $like['post_id'],
 					'object_type'=> 'likes',
-					'giving_points'=> 1,
+					'giving_points'=> $gain,
 					'bonus'=> 0,
-					'note'=> 'likes on object'
+					'note'=> 'likes on ' .$like['target'] .' object'
 			);
 		}
 		return $pointResult;

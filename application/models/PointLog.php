@@ -36,12 +36,21 @@ class Model_PointLog extends Model_DbTable_PointLog
 		return $result;
 	}
 	
+
 	public function getPointsWithinDays($fanpageId, $facebook_user_id, $day){
 		$query = $this->select();	
-		
+	}
 		
 		
 	
+
+	public function getFanpagePointLog($fanpageId, $limit=1000) {
+		$query = $this->select()
+			->where('fanpage_id = ?', $fanpageId)
+			->order('created_time desc')
+			->limit($limit);
+		return $this->fetchAll($query)->toArray();
+
 	}
 }
 

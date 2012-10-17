@@ -2,27 +2,6 @@
 
 class Model_Fanpages extends Model_DbTable_Fanpages
 {
-	public function getFeed($fanpage_id)
-	{
-		$fanpage = $this->findRow($fanpage_id);
-		
-		return $this->facebookRequest(null, 'feed', $fanpage->access_token);	
-	}
-	
-	public function getAlbums($fanpage_id)
-	{
-		$fanpage = $this->findRow($fanpage_id);
-		
-		return $this->facebookRequest(null, 'albums', $fanpage->access_token);
-	}
-	
-	public function getInsights($fanpage_id)
-	{
-		$fanpage = $this->findRow($fanpage_id);
-
-		return $this->facebookRequest(null, 'insights', $fanpage->access_token);
-	}
-	
 	public function getFans($fanpage_id)
 	{
 		$fanpage = $this->findRow($fanpage_id);
@@ -90,7 +69,7 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 			(s.fan_like_status_count+s.fan_like_photo_count+s.fan_like_video_count+s.fan_like_link_count) as like_count,
 			(s.fan_get_like_status_count+s.fan_get_like_photo_count+s.fan_get_like_video_count+s.fan_get_like_link_count+s.fan_get_like_comment_count) as got_like_count,
 			(s.fan_get_comment_status_count+s.fan_get_comment_photo_count+s.fan_get_comment_video_count+s.fan_get_comment_link_count) as got_comment_count
-			from fans f, fans_objects_stats s where s.facebook_user_id = f.facebook_user_id and s.fanpage_id = f.fanpage_id and f.fanpage_id = $fanpage_id and datediff(s.updated_time, now()) < $days group by s.facebook_user_id order by fan_exp desc";
+			from fans f, fans_objects_stats s where s.facebook_user_id = f.facebook_user_id and s.fanpage_id = f.fanpage_id and f.fanpage_id = $fanpage_id and datediff(s.updated_time, now()) < $days group by s.facebook_user_id order by f.fan_exp desc";
 		
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
@@ -342,6 +321,16 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		$select = $this->select();
 		$select->where('fanpages.active = TRUE');
 		return $this->fetchAll($select);
+	}
+	
+	public function getTotalAwardPoints($fanpageId) {
+		$select = $this->getDefaultAdapter()->select()
+						->from('fans', array('sum(fan_point) as total'));
+		$result = $this->getDefaultAdapter()->fetchAll($select);
+		
+		if(empty($result[0]['total'])) return 0;
+		
+		return $result[0]['total'];
 	}
 }
 

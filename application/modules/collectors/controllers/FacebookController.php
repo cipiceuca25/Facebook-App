@@ -857,8 +857,109 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     
     public function test22Action() {
 		$pointLog = new Model_PointLog();
-		$fanpage_id = '216821905014540';
-		echo $pointLog->getAwardPointsByFanpgeIdAndTime($fanpage_id, 'yesterday');
+		$fanpageId = '216821905014540';
+		echo $pointLog->getAwardPointsByFanpgeIdAndTime($fanpageId, 'yesterday');
+		
+		$insightId = $fanpageId .'_insights';
+
+		$insightData = null;
+		try {
+			$cache = Zend_Registry::get('memcache');
+				
+			if(isset($cache) && !$cache->load($insightId)){
+				//Look up the facebook graph api
+				echo 'look up facebook graph api';
+				
+				$fanpageModel = new Model_Fanpages();
+				$fanpage = $fanpageModel->findRow($fanpageId);
+				$client = new Zend_Http_Client;
+				$client->setUri("https://graph.facebook.com/$fanpageId/insights?access_token=". $fanpage->access_token);
+				$client->setMethod(Zend_Http_Client::GET);
+				
+				$response = $client->request();
+				
+				$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+				
+				if(!empty($result->data)) {
+					$insightData = $result->data;
+					//Save to the cache, so we don't have to look it up next time
+					$cache->save($insightData, $insightId);
+				}
+			}else {
+				echo 'memcache look up';
+				$insightData = $cache->load($insightId);
+			}
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+		
+		Zend_Debug::dump($insightData);
+		Zend_Debug::dump($this->insightDataParser($insightData));
+    }
+    
+    // test multi table insert
+    public function test23Action() {
+		$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
+		// init default db adapter
+		$db = Zend_Db::factory($config->resources->db);
+		$db->beginTransaction();
+		try {
+
+		//read fanpage setting
+			
+		//prepare insert like
+		$sql = "select * from posts limit 1;";			
+		
+		//prepare insert activity
+		
+		//prepare insert pointlog
+		
+		//prepare update fan
+		
+		//prepare update fan stat
+		
+		//update memcache 
+		
+		//execute
+		$stmt = $db->prepare($sql);
+		$result = $stmt->execute();
+		Zend_Debug::dump($result);
+		$db->commit();		
+		} catch (Exception $e) {
+			echo $e->getMessage();
+			$db->rollBack();
+		}
+	}
+    
+    public function insightDataParser($insightData) {
+		$result = array();
+		$counter = 2;
+		foreach ($insightData as $data) {
+			if(preg_match('/\/day$/', $data->id)) {
+				switch($data->name) {
+					case 'page_views_login_unique' :
+						if(!empty($data->values)) {
+							$value = $data->values[sizeof($data->values)-1];
+							$result['page_view'] = empty($value->value) ? 0 : $value->value;
+						}
+						$counter--;
+						break;
+					case 'page_story_adds_by_story_type_unique' :
+						if(!empty($data->values)) {
+							$value = $data->values[sizeof($data->values)-1];
+							Zend_Debug::dump($value->value->{'page post'});
+							$result['page_post'] = empty($value->value->{'page post'}) ? 0 : $value->value->{'page post'};
+							$result['new_fan'] =  empty($value->value->fan) ? 0 : $value->value->fan;
+							$result['user_post'] = empty($value->value->{'user post'}) ? 0 : $value->value->{'user post'};
+						}
+						$counter++;
+						break;
+				}
+			}
+			
+			if($counter < 1) break;
+		}
+		return $result;
     }
     
     public function testmemcacheAction() {
