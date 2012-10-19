@@ -760,6 +760,30 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     }
     
     */
+    public function pointlogAction(){
+    	$this->_helper->layout->disableLayout();
+    	$pointlog = new Model_PointLog();
+    	
+    	$pointlog = $pointlog -> getPointsWithinDays($this->_fanpageId, $this->_userId, 3);
+    	
+    	//Zend_Debug::dump($pointlog);
+    	$this->view->point_log = $pointlog;
+    	$this->render("pointlog");
+    }
+    
+    public function pointlogNotificationAction(){
+    	$this->_helper->layout->disableLayout();
+    	$time = $this->_request->_getParam('time');
+    	$pointlog = new Model_PointLog();
+    	 
+    	$pointlog = $pointlog -> getPointsSinceTime($this->_fanpageId, $this->_userId, $time);
+    	 
+    	
+    	//Zend_Debug::dump($pointlog);
+    	$this->view->point_log = $pointlog;
+    	$this->render("pointlog");
+    }
+    
     
     public function popuppostAction()
     {
@@ -875,7 +899,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$allBadges = $allBadges -> getNumBadges();
     	//Zend_Debug::dump($allBadges);
     //	$overallAchievement = $userBadgeCount[0]['count']/$allBadges[0]['count']*100;
-    	 
     	 
     	//$this->view->user_badge = $userBadgeCount[0]['count'];
     	//$this->view->all_badge = $allBadges[0]['count'];
@@ -1035,11 +1058,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
     	}
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
-    	
-    	
 
-    	
-    	
     	$this->view->badges = $badges;
     	
     	$this->view->fan_exp = $fan_exp;
@@ -1406,6 +1425,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	return $yourpoints;
     	/////////////////////////////////NOTHING BEYOND THIS LINE RUNS
+    	/*
     	//Zend_Debug::dump( $points);
     	
     	
@@ -1664,6 +1684,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	//echo $posts->id.' - '.$yourpoints .'<br/>';
     	return $yourpoints;
+    	*/
     }
     
     public function fancrankfeedcommentAction() {

@@ -270,6 +270,29 @@ function popover(x) {
 	});
 }
 
+
+function pointlog(){
+	popup(true);
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/pointlog/' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$('.profile-content').html(data);
+			//$(x).popover('show');
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
+	
+}
+
 function feedbackAnimation(ui, type) {
 
 	switch(type){

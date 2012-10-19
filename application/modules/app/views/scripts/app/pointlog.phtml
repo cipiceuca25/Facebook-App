@@ -1,0 +1,40 @@
+<table class="pointlog">
+<?php 
+$currentdate = null;
+$currentpost = null;
+$total=0;
+$totalAll = 0;
+foreach ($this->point_log as $points){
+	
+	if ($currentdate != $points['created_time']){
+		if ($currentpost!=null){
+			echo '<tr><td></td><td>Total</td><td> '.$total . '</td></tr>';
+			$total=0;
+		}
+		$currentdate = $points['created_time'];
+		echo '<tr><th>';
+		echo $points['created_time'];
+		echo '</th></tr>';
+		$currentpost = null;
+	}
+	echo '<tr>';
+	if ($currentpost != $points['object_id']){
+		if ($currentpost!=null){
+			echo '<tr><td></td><td>Total</td><td> '.$total . '</td></tr>';
+			$total=0;
+		}
+		$currentpost = $points['object_id'];
+		echo '<td>'.$points['object_id'] . '</td>';
+	}else{
+		echo '<td></td>';
+	}
+	
+	echo '<td>'.$points['note'] . '</td><td>' . $points['giving_points'] . '</td>';
+	$total += $points['giving_points'];
+	$totalAll +=$points['giving_points'];
+	echo '</tr>';
+}
+echo '<tr><td></td><td>Total</td><td> '.$total . '</td></tr>';
+echo '<tr><td>Total for the Past 3 Days</td><td></td><td> '.$totalAll . '</td></tr>';
+?>
+</table>
