@@ -307,12 +307,12 @@
 					<div class="post">
 
 						<form action="#" class="submit-form">
-							<textarea id="post_box" class="post-box" onkeyup="resizeCommentBox(this)" onclick="PostBox()">Type in your Post here!</textarea>
+							<textarea id="post_box" class="post-box"  onclick="PostBox()">Type in your Post here!</textarea>
 							
 							<div class="post-button-container">
 								<input type=button class="btn-submit" value="Share"
 									id="post_button"
-									onclick="post()"/>
+									onclick="post(this)"/>
 							</div>
 						</form>
 					</div>
@@ -457,11 +457,11 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 		<div class="graphical">	
 		
 		<?php if (($post->type == 'photo') ) {?>	
-		
-			<a target="new" href="<?echo $this->escape($post->link)?> "> 
+			<div class="image">
+			<a onclick="popup_post('<?=$post->id?>', true)"> 
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
 					</a>
-					
+					</div>
 		<?php }elseif ($post->type =='video') { ?>
 			
 			<?php if (strstr($this->escape($post->link), 'youtube.com')){

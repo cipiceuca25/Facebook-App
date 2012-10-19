@@ -6,7 +6,7 @@ var ttb = true;
 var tcb = true;
 var tfdb = true;
 
-
+var currentpage = 'newsfeed';
 
 var backgroundcolor;
 
@@ -80,20 +80,25 @@ $(document).mousemove(function(e) {
 	//FB.Canvas.setAutoGrow();
 	
 	if (fb == false){
-		
-		FB.init({
-			 appId  : appId,
-			 status : true, // check login status
-			 cookie : true, // enable cookies to allow the server to access the session
-			 xfbml  : true// parse XFBML
-			 
-		});
-		fb=true;
-		FB.Canvas.setAutoGrow();	
+		try{
+			FB.init({
+				 appId  : appId,
+				 status : true, // check login status
+				 cookie : true, // enable cookies to allow the server to access the session
+				 xfbml  : true// parse XFBML
+				 
+			});
+			fb=true;
+			FB.Canvas.setAutoGrow();	
+		}catch(err){
+			console.log(err);
+		}
 	}
 	
 	
 });
+
+
 
 $(document).on('mouseover', '[rel=popover]', function() {
 
@@ -107,7 +112,6 @@ $(document).on('mouseover', '[rel=popover]', function() {
 	}).trigger('mouseover');
 	
 });
-
 
 
 $(document).on('mouseover', '[rel=tooltip]', function() {
@@ -156,6 +160,16 @@ $('.badge-Follower').live("mouseleave", function() {
 	$(this).css('background-color', '#56A556');
 });
 
+
+$('#post_box').live('keyup', function(){
+	//console.log('works');
+	growTextbox(this);
+});
+$('.comment-box').live('keyup', function(){
+	//console.log('works');
+	growTextbox2(this);
+});
+
 $('#fan-favorite-btn').live('click', function() {
 	if ((ffb) == true) {
 		$('#fan-favorite-btn').text('- Close');
@@ -194,60 +208,70 @@ $('#top-followed-btn').live('click', function() {
 
 
 $('#newsfeed-tab').live('click', function() {
-	feedLimit = 0;
-	getNewsfeed('#news-feed');
-
-	$('#leaderboard').html('');
-	$('#profile').html('');
-	//$('#achievements').html('');
-	$('#redeem').html('');
+	if (currentpage != 'newsfeed'){
+		feedLimit = 0;
+		getNewsfeed('#news-feed');
+	
+		$('#leaderboard').html('');
+		$('#profile').html('');
+		//$('#achievements').html('');
+		$('#redeem').html('');
+		currentpage = 'newsfeed';
+	}
 	
 });
 
 $('#leaderboard-tab').live('click', function() {
-	ffb = true;
-	ttb = true;
-	tcb = true;
-	tfdb = true;
-	getLeaderboard();
-
-	$('#profile').html('');
-	//$('#achievements').html('');
-	$('#news-feed').html('');
-	$('#redeem').html('');
-	//$('.bubble').html('');
-	FB.Canvas.setSize({
-		width : 810,
-		height : 600
-	});
+	if (currentpage != 'leaderboard'){
+		ffb = true;
+		ttb = true;
+		tcb = true;
+		tfdb = true;
+		getLeaderboard();
+	
+		$('#profile').html('');
+		//$('#achievements').html('');
+		$('#news-feed').html('');
+		$('#redeem').html('');
+		//$('.bubble').html('');
+		FB.Canvas.setSize({
+			width : 810,
+			height : 600
+		});
+		currentpage = 'leaderboard';
+	}
 
 });
 
 $('#profile-tab').live('click', function() {
-
-	getMyProfile();
-	$('#leaderboard').html('');
-	//$('#achievements').html('');
-	$('#news-feed').html('');
-	$('#redeem').html('');
-	FB.Canvas.setSize({
-		width : 810,
-		height : 600
-	});
-
+	if (currentpage != 'profile'){
+		getMyProfile();
+		$('#leaderboard').html('');
+		//$('#achievements').html('');
+		$('#news-feed').html('');
+		$('#redeem').html('');
+		FB.Canvas.setSize({
+			width : 810,
+			height : 400
+		});
+		currentpage = 'profile';
+	}
 });
 
 
 $('#redeem-tab').live('click', function() {
-	getRedeem();
-	$('#leaderboard').html('');
-	$('#profile').html('');
-	$('#news-feed').html('');
-	//$('#achievements').html('');
-	FB.Canvas.setSize({
-		width : 810,
-		height : 600
-	});
+	if (currentpage != 'redeem'){
+		getRedeem();
+		$('#leaderboard').html('');
+		$('#profile').html('');
+		$('#news-feed').html('');
+		//$('#achievements').html('');
+		FB.Canvas.setSize({
+			width : 810,
+			height : 600
+		});
+		currentpage = 'redeem';
+	}
 
 });
 
@@ -540,7 +564,7 @@ function getNewsfeed() {
 		success : function(data) {
 			
 			$('#news-feed').html(data);
-			
+	
 			getTopFan();
 			getTopPost();
 			
@@ -1071,9 +1095,12 @@ function addActivities(act_type, event, target_id, target_name, message) {
 }
 */
 
-function post() {
+function post(button) {
+	button.disabled = true;
 	mes =  $('#post_box').val();
-
+	if (mes == '' || mes == null){
+		
+	}else{
 			//alert('Post ID: ' + response.id)
 			$.ajax({
 				type : "GET",
@@ -1086,6 +1113,8 @@ function post() {
 				},
 				success : function(data) {
 					$('.profile-content').html(data);
+					button.disabled = false;
+					$('#post_box').css('height','20px');
 				},
 				error : function(xhr, errorMessage, thrownErro) {
 					console.log(xhr.statusText, errorMessage);
@@ -1094,40 +1123,49 @@ function post() {
 			//addActivities('post-status', response.id, fanpageId, fanpage_name,mes.substring(0,99) );
 			$('#post_box').val('');
 			getFancrankfeed('post');
+	}
 }
 
 
-function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLatestAdminPost){
+function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name, isLatestAdminPost){
+	
+	button.disabled = true;
 	
 	mes= $('#comment_box_'+post_id).val();
-	$.ajax({
-		type : "GET",
-		url : serverUrl + '/app/user/' +userId +'/comment/?post_id='+post_id + '&post_type='+post_type
-						+ '&target_id=' + post_owner_id + '&target_name=' +post_owner_name
-						+ '&fanpage_id=' + fanpageId + '&fanpage_name='+fanpageName +'&message=' + mes,
-		dataType : "html",
-		cache : false,
-		async : true,
-		beforeSend: function(){
-		},
-		success : function(data) {
-			//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
-			$('#comment_box_'+post_id).val('');
-			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
-			//alert(post_comment_count);
-			$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
-			$('.comment_'+post_id).html(' '+post_comment_count);
-			
-			if (isLatestAdminPost){
-				comment_feed2(post_id, post_type,  post_comment_count, false);
-			}else{
-				comment_feed(post_id, post_type,  post_comment_count, false);
+	
+	if (mes == '' || mes == null){
+		
+	}else{
+		$.ajax({
+			type : "GET",
+			url : serverUrl + '/app/user/' +userId +'/comment/?post_id='+post_id + '&post_type='+post_type
+							+ '&target_id=' + post_owner_id + '&target_name=' +post_owner_name
+							+ '&fanpage_id=' + fanpageId + '&fanpage_name='+fanpageName +'&message=' + mes,
+			dataType : "html",
+			cache : false,
+			async : true,
+			beforeSend: function(){
+				
+			},
+			success : function(data) {
+				//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
+				$('#comment_box_'+post_id).val('');
+				post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
+				//alert(post_comment_count);
+				$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
+				$('.comment_'+post_id).html(' '+post_comment_count);
+				
+				if (isLatestAdminPost){
+					comment_feed2(post_id, post_type,  post_comment_count, false);
+				}else{
+					comment_feed(post_id, post_type,  post_comment_count, false);
+				}
+			},
+			error : function(xhr, errorMessage, thrownErro) {
+				console.log(xhr.statusText, errorMessage);
 			}
-		},
-		error : function(xhr, errorMessage, thrownErro) {
-			console.log(xhr.statusText, errorMessage);
-		}
-	});
+		});
+	}
 
 	
 
@@ -1135,24 +1173,35 @@ function commentSubmit(post_id, post_type, post_owner_id, post_owner_name, isLat
 
 function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 	//alert($('#comment_box_popup_'+post_id).val());
-	FB.api('/' + post_id + '/comments', 'post', {
-		'message' : $('#comment_box_popup_'+post_id).val(),
-		'access_token' : userAccessToken
-	}, function(response) {
-		if (!response || response.error) {
-			alert(response.error.message);
-		} else {
+	mes= $('#comment_box_'+post_id).val();
+	if (mes == '' || mes == null){
+		
+	}else{
+		$.ajax({
+			type : "GET",
+			url : serverUrl + '/app/user/' +userId +'/comment/?post_id='+post_id + '&post_type='+post_type
+							+ '&target_id=' + post_owner_id + '&target_name=' +post_owner_name
+							+ '&fanpage_id=' + fanpageId + '&fanpage_name='+fanpageName +'&message=' + mes,
+			dataType : "html",
+			cache : false,
+			async : true,
+			beforeSend: function(){
+			},
+			success : function(data) {
+				//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
+				$('#comment_box_popup_'+post_id).val('');
+				post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
+				//alert(post_comment_count);
+				$('.comment_'+post_id).html(post_comment_count);
+	
+				popup_post(post_id, false);
+			},
+			error : function(xhr, errorMessage, thrownErro) {
+				console.log(xhr.statusText, errorMessage);
+			}
+		});
+	}
 
-			addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, $('#comment_box_'+post_id).val('').substring(0,99));
-			$('#comment_box_popup_'+post_id).val('');
-			post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
-			//alert(post_comment_count);
-			$('.comment_'+post_id).html(post_comment_count);
-
-			popup_post(post_id, false);
-
-		}
-	});
 }
 
 
@@ -1244,7 +1293,7 @@ function popup(load){
 	$('.profile-content').css('height', 'auto');
 	FB.Canvas.getPageInfo(function(info) {
 			//alert(info.scrollTop);
-			$('.user-profile').css('top', info.scrollTop);
+			$('.user-profile').css('top', info.scrollTop - 50);
 	});
 	if (load) {
 		$('.profile-content').animate({
@@ -1304,16 +1353,51 @@ function getMiniFollowersList(targetname, target) {
 
 }
 
-function resizeCommentBox(x) {
-	if (x.scrollHeight > 26) {
-		x.style.height = "1px";
-		x.style.height = (x.scrollHeight) + "px";
-	}
+function growTextbox(x){
+	
+	var linesCount = 0;
+	//console.log(x);
+    var lines = x.value.split('\n');
+
+    for (var i=lines.length-1; i>=0; --i)
+    {
+        linesCount += Math.floor((lines[i].length / 85) + 1);
+    }
+
+    if (linesCount > 1)
+        x.rows = linesCount + 1;
+	else
+        x.rows = 1;
+    
+   // console.log(x.rows);
+    x.style.height = (20 * x.rows) + 'px';
 }
 
+function growTextbox2(x){
+	
+	var linesCount = 0;
+	//console.log(x);
+    var lines = x.value.split('\n');
+
+    for (var i=lines.length-1; i>=0; --i)
+    {
+        linesCount += Math.floor((lines[i].length / 60) + 1);
+    }
+
+    if (linesCount > 1)
+        x.rows = linesCount + 1;
+	else
+        x.rows = 1;
+    
+   // console.log(x.rows);
+    x.style.height = (14 * x.rows) + 'px';
+}
+
+
 function PostBox(){
-	if($('.post-box').val() == 'Type in your Post here!'){
-		$('.post-box').val('');	
+
+	if($('#post_box').val() == 'Type in your Post here!'){
+		$('#post_box').val('');	
 			
 	}
 	$('.post-button-container').css('display', 'block');

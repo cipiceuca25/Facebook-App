@@ -82,33 +82,35 @@
 						</div>
 					<?}	?>
 					<div class="graphical">	
+					
 						<?php if (($this->post->type == 'photo')) {?>	
+							<div class="image">
 							<a target="new" href="<?echo $this->escape($this->post->link)?> ">
 								<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $this->post->picture))?>'/>
-							</a>
+							</a></div>
 						<?php }elseif ($this->post->type =='video') { ?>
 			
 								<?php if (strstr($this->escape($this->post->link), 'youtube.com')){
 										$temp=explode("http://www.youtube.com/watch?v=", $this->escape($this->post->link));?>
-										<iframe width="419" height="236" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
+										<iframe width="508" height="286" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
 								
 								<?php }else if (strstr($this->escape($this->post->link), 'vimeo.com')){
 										$temp=explode("http://vimeo.com/", 	$this->escape($this->post->link));	?>
-										<iframe width="419" height="236" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
+										<iframe width="508" height="286" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
 							
 								<?php }else if (strstr($this->escape($this->post->link), 'facebook.com')){
 										$temp=explode("v=", $this->escape($this->post->link));?>
-									 <object width="419" height="236" > 
+									 <object width="508" height="286" > 
 									 <param name="allowfullscreen" value="true" /> 
 									 <param name="allowscriptaccess" value="always" /> 
 									 <param name="movie" value="http://www.facebook.com/v/<?= $temp[1]?>" /> 
 									 <embed src="http://www.facebook.com/v/<?= $temp[1]?>" type="application/x-shockwave-flash"  
-									   allowscriptaccess="always" allowfullscreen="true" width="419" height="236"> 
+									   allowscriptaccess="always" allowfullscreen="true" width="508" height="286"> 
 									 </embed> 
 									</object> 
 								<?php }else if (strstr($this->escape($this->post->link), 'liveleak.com/view')){ 
 										$temp=explode("view?i=", $this->escape($this->post->link));?>
-									<iframe width="419" height="236" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
+									<iframe width="508" height="286" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
 								<?php }?>
 						<?}elseif ($this->post->type == 'link') {?>
 							<div class="link">
@@ -218,7 +220,7 @@
 									</a>
 									<?php }?>
 					</div>
-					<?php $count = 1?>
+					<?php $count = 0?>
 					<div id="popup_post_<?=$this->post->id?>" >
 					<ul class="comments popup_scroll" >
 						<?php if(empty($this->comments)){
@@ -263,7 +265,7 @@
 									</a>
 								</div>	
 								<div class="name">
-									<a <? if (($this->relation[$count] != 'Fanpage')){?> 
+									<a <? if (($this->relation[$count+1] != 'Fanpage')){?> 
 										onclick="userProfile('<?=$post->from->id?>', false)"
 										rel="popover" 
 										data-content="" 
@@ -325,8 +327,8 @@
 							<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->userid?>/picture" onerror="ImgError(this);">
 						</div>
 						<form action="#" class="submit-form" >
-							<textarea class="comment-box" id="comment_box_popup_<?= $this->post->id ?>" onkeyup="resizeCommentBox(this)"></textarea>
-							<input type=button class="btn-submit" value="Comment" onclick="commentSubmit2('<?= $this->post->id ?>','<?= $this->post->type ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>')">
+							<textarea class="comment-box" id="comment_box_popup_<?= $this->post->id ?>" ></textarea>
+							<input type=button class="btn-submit" value="Comment" onclick="commentSubmit2(this,'<?= $this->post->id ?>','<?= $this->post->type ?>','<?=$this->post->from->id?>','<?=$this->post->from->name?>')">
 						</form>																		
 					</div>
 				</li>

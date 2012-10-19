@@ -2,7 +2,7 @@ var images = new Array();
 var titles = new Array(); 
 var experience= new Array(); 
 var badgeIds= new Array(); 
-var points;
+var points = new Array();
 var lastViewNotification;
 var badgeCount = 0;
 var pointCount = 0;
@@ -13,7 +13,7 @@ jQuery(document).ready(function($){
 	//alert(color1 + color2);
 	isLoginNotification();
 	
-	setInterval(isLoginNotification, 150000);
+	setInterval(isLoginNotification, 10000);
 	
 });
 
@@ -38,7 +38,7 @@ $('.notification').live('click', function(){
 });
 
 function pointlogNotification() {
-	console.log(lastViewNotification);
+	//console.log(lastViewNotification);
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/user/' +userId +'/pointlognotification?fanpage_id='+ fanpageId +'&time=' + lastViewNotification ,
@@ -47,8 +47,9 @@ function pointlogNotification() {
 		async : false,
 
 		success : function(data) {
-			points = data;
+			points.concat(data);
 			pointCount = points.length;
+			//console.log(points);
 			if (pointCount + badgeCount > 0){
 				$('.notification a').removeClass('noclick');
 				$('#badge-notification-count').html(pointCount + badgeCount);
@@ -60,7 +61,7 @@ function pointlogNotification() {
 			date = new Date();
 			lastViewNotification = date.getUTCFullYear()+'-'+(date.getUTCMonth() + 1)+'-'+date.getUTCDate() +' '+ (date.getUTCHours()) + ':' + (date.getUTCMinutes()) + ':' + date.getUTCSeconds(); 
 			 
-			console.log(lastViewNotification);
+			//console.log(lastViewNotification);
 		
 		},
 		error : function(xhr, errorMessage, thrownErro) {

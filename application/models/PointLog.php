@@ -54,7 +54,7 @@ class Model_PointLog extends Model_DbTable_PointLog
 		$select = "select sum(giving_points) as sum, created_time from point_log p
 					where facebook_user_id = $facebook_user_id && fanpage_id = $fanpageId
 					&& created_time > '$time' 
-					group by object_id
+					group by date(created_time)
 					order by created_time ASC" ;
 
 		return $this->getAdapter()->fetchAll($select);

@@ -145,7 +145,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 		//197221680326345_425781560803688
 		$data['facebook_user_id'] = $this->_user->facebook_user_id;
-		$data['fanpage_id'] = $this->_getParam('fanpage_id');
+		$data['fanpage_id'] = $this->_user->fanpage_id;
 		$data['fanpage_name'] = $this->_getParam('fanpage_name');
 		$data['access_token'] = $this->_user->facebook_user_access_token;
 		//$data['post_id'] = $this->_getParam('post_id');

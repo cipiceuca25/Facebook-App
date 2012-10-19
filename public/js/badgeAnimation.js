@@ -129,9 +129,13 @@ function resetLeft(ui) {
 			
 			$('.badgeAni').remove();
 			$('.flare').remove();
+			$('.badge_title').css('margin-top','200px');
+			$('.badge_title').css('margin-bottom','200px');
+			$('.badge_title').css('position','absolute');
 			$('.badge_title').html('No More Notifications');
 			$('.next').remove();
 			pointCount = 0;
+			points = new Array();
 			badgeCount = 0;
 		}
 		

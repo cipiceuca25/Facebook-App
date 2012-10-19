@@ -1,9 +1,42 @@
-<table class="pointlog">
+<div class="row">
+<div class="span8">
+<div class="row box notitle">
+
 <?php 
 $currentdate = null;
 $currentpost = null;
 $total=0;
 $totalAll = 0;
+if ($this->point_log == 'x'){?>
+	<div class="post-container noline">
+		<div class="user">
+			<div class="user-badge">
+
+				<a class="noclick" rel="tooltip-follow" data-original-title="You can't Follow an Admin" >
+
+					<span class="badge badge-Fanpage">Admin</span>
+				</a>
+			</div>
+
+			<div class="photo"><a class="noclick" > <img class="face" width="30" height="30"
+					src="https://graph.facebook.com/<?= $this->fanpage_id?>/picture"
+					onerror="ImgError(this);"></a> </div> 
+					
+			<div class="name"><a class="noclick"><?=   $this->fanpage_name?></a> 
+			</div>
+		
+		</div>
+		<div class="post">
+			
+			<div class="message">
+				Points are not available for this fanpage
+			</div>
+		</div>
+	</div>
+<?php 	
+}else{?>
+<table class="pointlog" style ="border:1px">
+<?php 
 foreach ($this->point_log as $points){
 	
 	if ($currentdate != $points['created_time']){
@@ -38,3 +71,7 @@ echo '<tr><td></td><td>Total</td><td> '.$total . '</td></tr>';
 echo '<tr><td>Total for the Past 3 Days</td><td></td><td> '.$totalAll . '</td></tr>';
 ?>
 </table>
+
+<?}?>
+
+</div></div></div>

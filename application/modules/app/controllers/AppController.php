@@ -125,10 +125,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			}
 		}
 		
+		if ($this->_fanpageProfile -> fanpage_level <3){
+			$this->_fan['fan_point']='?';
+		}
+		if ($this->_fanpageProfile -> fanpage_level ==1){
+			$this->_fan['fan_exp']='?';
+		}
 		
 		$this->view->username = $this->_facebook_user->facebook_user_name;
 		$this->view->facebook_user_access_token = $this->_facebook_user->facebook_user_access_token;
 		$this->view->fanpage_id = $this->_fanpageId;
+	
 		$this->view->user_id = $this->_userId;
 		
 		//Zend_Debug::dump($this->_fan);
@@ -762,10 +769,16 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     */
     public function pointlogAction(){
     	$this->_helper->layout->disableLayout();
+    	if ($this->_fanpageProfile -> fanpage_level > 2){
+    		
+    	
+    	
     	$pointlog = new Model_PointLog();
     	
     	$pointlog = $pointlog -> getPointsWithinDays($this->_fanpageId, $this->_userId, 3);
-    	
+    	}else{
+    		$pointlog = 'x';
+    	}
     	//Zend_Debug::dump($pointlog);
     	$this->view->point_log = $pointlog;
     	$this->render("pointlog");
@@ -831,29 +844,33 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$relation[$count] =$follow->getRelation($this->_userId, $post->from->id,$this->_fanpageId);
     	
     	
-    	$count=1;
+    	$count=0;
     	if(!empty($result)) {
     		foreach ($result as $posts){
+    			$likes[$count]=0;
     			//echo $top['facebook_user_id'];
-	    		if(isset($posts->likes)){
-	    			foreach ($posts->likes->data as $l){
-	    				if($l->id == $this->_userId){
-	    					$likes[$count]=1;
-	    					//echo "$likes[$count] in the condensed list";
-	    				}
+    			if(isset($posts->user_likes)){
+	    				
+	    					if($posts->user_likes == true){
+	    						$likes[$count]=1;
+	    						//echo "$likes[$count] in the condensed list";
+	    					}
+	    					//Zend_Debug::dump( $likes[$count]);
+	    				
+	    				
 	    				//Zend_Debug::dump( $likes[$count]);
-	    			}
-	    			if($likes[$count]==0){
+	    		}
+	    		if($likes[$count]==0){
 	    				$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
 	    				//Zend_Debug::dump($likes[$count]);
-	    			}
 	    		}
-    			$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
+	    	
+    		$relation[$count+1] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
     			//echo $likes[$count];
-    			$count++;
+    		$count++;
     		}
     	}
-    	
+
     	//$postTop = explode('_', $postId);
     	//$postTop = $postTop[0].'_'.$postTop[1];
     	//$this->view->postTopId = $postTop;
@@ -1058,7 +1075,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
     	}
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
-
+	
     	$this->view->badges = $badges;
     	
     	$this->view->fan_exp = $fan_exp;
