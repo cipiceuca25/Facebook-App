@@ -30,6 +30,24 @@ var fanpageId = <?= $this->page_id ?>;
 				<h3>Log Data</h3>
 			</div>
 		</div>
+				<table class="table table-striped table-bordered" id="overallLogTable" style="display : none;">
+					<thead>
+						<tr>
+							<th>fanpage_id</th>
+							<th>facebook user id</th>
+							<th>facebook user name</th>
+							<th>activity type</th>
+							<th>event object</th>
+							<th>target user id</th>
+							<th>target user name</th>
+							<th>date</th>
+							<th>message</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+		
 				<table class="table table-striped table-bordered" id="postLogTable" style="display : none;">
 					<thead>
 						<tr>
@@ -78,6 +96,23 @@ var fanpageId = <?= $this->page_id ?>;
 							<th>target user name</th>
 							<th>date</th>
 							<th>message</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				
+				<table class="table table-striped table-bordered" id="pointLogTable" style="display : none;">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>facebook user id</th>
+							<th>object id</th>
+							<th>object type</th>
+							<th>giving point</th>
+							<th>bonus</th>
+							<th>date</th>
+							<th>note</th>
 						</tr>
 					</thead>
 					<tbody>

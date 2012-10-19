@@ -55,8 +55,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		}
 	}
 	
-	
-	
 	public function followAction() {
 		$subscribe_Model = new Model_Subscribes;
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
@@ -144,6 +142,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		//Note: data could initialize from preDispatch
 		
 		//197221680326345_425781560803688
+		$starttime = time();
 		$data['facebook_user_id'] = $this->_user->facebook_user_id;
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['fanpage_name'] = $this->_getParam('fanpage_name');
@@ -165,12 +164,10 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			
 			$data['post_id'] = $ret_obj['id'];
 			
-			
 			$client = new Zend_Http_Client;
 			$client->setUri("https://graph.facebook.com/". $data['post_id']);
 			$client->setMethod(Zend_Http_Client::GET);
 			$client->setParameterGet('access_token', $data['access_token']);
-			
 			 
 			$response = $client->request();
 			 
@@ -179,7 +176,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			//Zend_debug::dump($result);
 			 
 			if(!empty ($result)) {
-				
 				$postModel = new Model_Posts();
 				$created = new Zend_Date(!empty($post->created_time) ? $post->created_time : null, Zend_Date::ISO_8601);
 				$updated = new Zend_Date(!empty($post->updated_time) ? $post->updated_time : null, Zend_Date::ISO_8601);
@@ -208,57 +204,67 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					$row['post_application_id'] = null;
 					$row['post_application_name'] = null;
 				}
-	
+				
+				$db = Zend_Db_Table::getDefaultAdapter();
+				$db->beginTransaction();
 				
 				try {
 					//save fanpage's post's relative information into post table
 					//Zend_Debug::dump($row);
+					// retrieve fanpage setting
+					$fanpageSettingModel = new Model_FanpageSetting();
+					$settingData = $fanpageSettingModel->findRow($data['fanpage_id'])->toArray();
+					if(!$settingData) {
+						$settingData = $fanpageSettingModel->getDefaultSetting();
+					}
+					
+					// save or update post into database
 					$postModel->saveAndUpdateById($row, array('id_field_name'=>'post_id'));
 					
+					// add activity into database
 					$this->addactivity('post-'.$row['post_type'], $data['post_id'],
 							$data['fanpage_id'],$data['fanpage_id'], $data['fanpage_name'],$row['post_message'] );
 					
+					// update fan data
 					$fan = new Model_Fans($data['facebook_user_id'], $data['fanpage_id']);
-					$fan->updateFanPoints(-5);
+					$fan->updateFanPoints($settingData['point_post_normal']);
 					$fan->updateFanProfile();
 					
+					// update fan stat
 					$fanstat = new Model_FansObjectsStats();
-					
 					switch($row['post_type']){
-					
 						case 'status':
 							$fanstat ->addPostStatus($data['fanpage_id'], $data['facebook_user_id']);
-						
 							break;
 						case 'photo':
 							$fanstat->addPostPhoto($data['fanpage_id'], $data['facebook_user_id']);
-						
 							break;
 						case 'video':
 							$fanstat->addPostVideo($data['fanpage_id'], $data['facebook_user_id']);
-						
 							break;
 						case 'link':
 							$fanstat->addPostLink($data['fanpage_id'], $data['facebook_user_id']);
-						
 							break;
-					
 					}
+					
+					// update point data
 					$pointLog = array();
 					$pointLog['fanpage_id'] = $data['fanpage_id'];
 					$pointLog['facebook_user_id'] =  $data['facebook_user_id'];
 					$pointLog['object_id'] = $data['post_id'];
 					$pointLog['object_type'] = 'posts';
-					$pointLog['giving_points'] = -5;
+					$pointLog['giving_points'] = $settingData['point_post_normal'];
 					$pointLog['note'] = 'post on fanpage';
 						
 					$pointLogModel = new Model_PointLog();
 					$result = $pointLogModel->insert($pointLog);
 					
+					$db->commit();
 				} catch (Exception $e) {
+					$db->rollBack();
 					print $e->getMessage();
-					$collectorLogger = Zend_Registry::get('collectorLogger');
-					$collectorLogger->log(sprintf('Unable to save post %s from fanpage %s to database. Error Message: %s ', $post->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
+					$appLogger = Zend_Registry::get('appLog');
+					$appLogger->log(sprintf('Unable to save post %s from fanpage %s to database. Error Message: %s ', $post->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
 					return;
 				}
 			}
@@ -268,6 +274,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			echo $e;
 		
 		}
+		echo '<br/>' .time() - $starttime . 'sec';
 		/*
 		$fancrankFB = new Service_FancrankFBService();
 		$msg = "";
@@ -431,8 +438,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 						}
 
 					}
-					
-					
 					
 					$this->addactivity('like-'.$this->_getParam('post_type'), $data['post_id'],
 							$data['fanpage_id'],$post['facebook_user_id'], $this->_getParam('target_name'), $this->_getParam('mes'));

@@ -60,7 +60,7 @@ function getLikeLogTable() {
 		              { "mData": "target_user_id", "bVisible": false},
 		              { "mData": "target_user_name","bVisible": false },
 		              { "mData": "created_time" },
-		              { "mData": "message" }
+		              { "mData": "message", "bVisible": false }
 		          ],
 		"sAjaxSource": "/admin/dashboard/showlog/" +fanpageId+'?logType=like'
 	});
@@ -104,16 +104,42 @@ function getPointLogTable() {
 		"bDestroy": true,
 		"bLengthChange": false,
 		"aoColumns": [
-		              { "mData": "fanpage_id",  "bVisible": false },
-		              { "mData": "facebook_user_id" },
-		              { "mData": "facebook_user_name" },
-		              { "mData": "activity_type" },
-		              { "mData": "event_object", "bVisible": false},
-		              { "mData": "target_user_id", "bVisible": false},
-		              { "mData": "target_user_name","bVisible": false },
+		              { "mData": "id",  "bVisible": false },
+		              { "mData": "fanpage_id", "bVisible": false },
+		              { "mData": "object_id" },
+		              { "mData": "object_type" },
+		              { "mData": "giving_points", "bSortable" : true},
+		              { "mData": "bonus" },
 		              { "mData": "created_time" },
-		              { "mData": "message" }
+		              { "mData": "note" }
 		          ],
 		"sAjaxSource": "/admin/dashboard/showlog/" +fanpageId+'?logType=pointlog'
 	});
 }
+
+function getOverallLogTable() {
+	$('.table').hide();	
+	$('#overallLogTable').show();
+	var postTable = $('#overallLogTable').dataTable({
+		"bProcessing": false,
+		"bServerSide": true,
+		"bPaginate": false,
+		"bFilter": false,
+		"bInfo": false,
+		"bLengthChange": false,
+		"bDestroy": true,
+		"aoColumns": [
+		              { "mData": "fanpage_id",  "bVisible": false },
+		              { "mData": "facebook_user_id" },
+		              { "mData": "facebook_user_name" },
+		              { "mData": "activity_type" },
+		              { "mData": "event_object" },
+		              { "mData": "target_user_id" },
+		              { "mData": "target_user_name" },
+		              { "mData": "created_time" },
+		              { "mData": "message" }
+		          ],
+		"sAjaxSource": "/admin/dashboard/showlog/" +fanpageId+'?logType=overall'
+	});
+}
+

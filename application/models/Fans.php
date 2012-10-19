@@ -144,7 +144,7 @@ class Model_Fans extends Model_DbTable_Fans
 	
 	public function updateFanPoints($newFanPoints) {
 		$this->_fanProfile->fan_point += $newFanPoints;
-		$this->_fanProfile->fan_exp += $newFanPoints;
+		$this->_fanProfile->fan_exp += $newFanPoints > 0 ? $newFanPoints : 0;
 	}
 	
 	public function getNextLevelRequiredXP() {

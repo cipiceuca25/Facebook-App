@@ -43,6 +43,24 @@
 						<input type="text" id="point_comment_admin" name="point_comment_admin" value="<?=$this->setting['point_comment_admin']?>" />
 					</div>
 				</div>
+				<div class="control-group">
+					<label class="control-label" for="bonus_duration">bonus duration</label>
+					<div class="controls">
+						<input type="text" id="point_bonus_duration" name="point_bonus_duration" value="<?=$this->setting['point_bonus_duration']?>" /> seconds
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_post_virginity">post bonus for breaking virginity</label>
+					<div class="controls">
+						<input type="text" id="point_virginity" name="point_virginity" value="<?=$this->setting['point_virginity']?>" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_virginity">comment limit per post </label>
+					<div class="controls">
+						<input type="text" id="point_comment_limit" name="point_comment_limit" value="<?=$this->setting['point_comment_limit']?>" />
+					</div>
+				</div>												
 			</div>
 			<input type="submit" name="confirm" value="save" />
 	</form>

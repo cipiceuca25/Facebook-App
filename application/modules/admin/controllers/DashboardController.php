@@ -59,7 +59,10 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     					'point_comment_normal'=>$this->_getParam('point_comment_normal'),
     					'point_post_normal'=>$this->_getParam('point_post_normal'),
     					'point_like_admin'=>$this->_getParam('point_like_admin'),
-    					'point_comment_admin'=>$this->_getParam('point_comment_admin')
+    					'point_comment_admin'=>$this->_getParam('point_comment_admin'),
+    					'point_bonus_duration'=>$this->_getParam('point_bonus_duration'),
+    					'point_virginity'=>$this->_getParam('point_virginity'),
+    					'point_comment_limit'=>$this->_getParam('point_comment_limit')
     			);
 
     			$dataLog = array();
@@ -106,6 +109,37 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	}
     	$this->view->setting = $settingData;
     	$this->view->page_id = $fanpageId;
+    }
+    
+    public function fanpagescopeAction() {
+    	$fanpageId = $this->_getParam('id');
+    	
+    	$fanpageSettingModel = new Model_FanpageSetting();
+    	$settingData = $fanpageSettingModel->findRow($fanpageId);
+
+    	if($this->_getParam('confirm') === 'save') {
+    		$dataLog = array();
+    		$dataLog['activity_type'] = 'admin_change_facebook_scope';
+    		$dataLog['event_object'] = '';
+    		$dataLog['facebook_user_id'] = $this->_auth->getIdentity()->facebook_user_id;
+    		$dataLog['facebook_user_name'] = $this->_auth->getIdentity()->facebook_user_name;
+    		$dataLog['fanpage_id'] = $fanpageId;
+    		$dataLog['target_user_id'] = $fanpageId;
+    		$dataLog['target_user_name'] = '';
+    		$dataLog['message'] = 'admin updated facebook scope setting';
+    		$adminActivityModel = new Model_AdminActivities();
+    		if($settingData) {
+    			$settingData->facebook_scope = $this->_getParam('facebook_scope');
+    			//update fanpage setting data
+    			$settingData->save();
+    			//insert admin activity log
+    			$adminActivityModel->insert($dataLog);
+    		}
+    	}
+
+    	$this->view->facebook_scope = !empty($settingData) ? $settingData->facebook_scope : Model_FanpageSetting::getDefaultFacebookScope();
+    	$this->view->all_scope = Model_FanpageSetting::getAvailableScopeList();
+    	$this->view->page_id = $fanpageId;    	
     }
     
     public function myaccountAction()
@@ -510,14 +544,24 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 				case 'subscribe' : break;
 				case 'pointlog' :
 					$pointLogModel = new Model_PointLog();
-					$result = $pointLogModel->getFanpagePointLog($fanpageId, 100);
+					$logList = $pointLogModel->getFanpagePointLog($fanpageId, 100);
+					$result = array(
+							'sEcho'=> 1,
+							'iTotalRecords'=> '10',
+							'iTotalDisplayRecords'=> '10',
+							'aaData'=>$logList
+					);
 					$this->_helper->json($result);
-					Zend_Debug::dump($result);
 					break;
 				case 'overall' :
-					$result = $activityModel->getRecentFanpageActivities($fanpageId);
+					$logList = $activityModel->getRecentFanpageActivities($fanpageId);
+					$result = array(
+							'sEcho'=> 1,
+							'iTotalRecords'=> '10',
+							'iTotalDisplayRecords'=> '10',
+							'aaData'=>$logList
+					);					
 					$this->_helper->json($result);
-					Zend_Debug::dump($result);
 					break;
 			}
 		} catch (Exception $e) {

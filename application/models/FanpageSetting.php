@@ -10,7 +10,9 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 	const POINT_LIKE_ADMIN = 1;
 	const POINT_COMMENT_ADMIN = 2;
 	const POINT_BONUS_DURATION = 3600;
-
+	const POINT_VIRGINITY = 4;
+	const POINT_COMMENT_LIMIT = 5;
+	
 	public function getThemeChoice($fanpage_id)
 	{
 		//$select = "select users_color_choice.color_choice from users_color_choice where user_id ='".$user_id."'";
@@ -41,18 +43,9 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 	}
 	
 	public function setTheme($fanpage_id, $color){
-		//$user = new Model_UsersColorChoice();
-		//$select = $user->find($user_id);
-		
-		
 		$data = array('color_choice' => $color);
-			//if have user
 		$where = $this ->getAdapter() ->quoteInto('fanpage_id =?', $fanpage_id);
-			//else user not exist
-			// $select = "insert into user_color_choice values".$user_id.",".$color.")";
-		
 		$this->update($data, $where);
-		
 	}
 	
 	public function saveFanpageSetting($data) {
@@ -90,8 +83,26 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 				'point_comment_normal'=>self::POINT_COMMENT_NORMAL,
 				'point_post_normal'=>self::POINT_POST_NORMAL,
 				'point_like_admin'=>self::POINT_LIKE_ADMIN,
-				'point_comment_admin'=>self::POINT_COMMENT_ADMIN
+				'point_comment_admin'=>self::POINT_COMMENT_ADMIN,
+				'point_virginity'=>self::POINT_VIRGINITY,
+				'point_comment_limit'=>self::POINT_COMMENT_LIMIT
 				);
 		return $data;
+	}
+	
+	public static function getDefaultFacebookScope() {
+		$data = 'publish_stream,email,user_about_me,user_birthday,user_likes,user_status';
+		return $data;
+	}
+	
+	public static function getAvailableScopeList() {
+		$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
+		$scope = $sources->get('facebook');
+		return $scope->permission_scope;
+	}
+	
+	public function getFacebookScope($fanpageId) {
+		$settingData = $this->findRow($fanpageId);
+		return $settingData;
 	}
 }
