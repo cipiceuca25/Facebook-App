@@ -85,7 +85,8 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 				'point_like_admin'=>self::POINT_LIKE_ADMIN,
 				'point_comment_admin'=>self::POINT_COMMENT_ADMIN,
 				'point_virginity'=>self::POINT_VIRGINITY,
-				'point_comment_limit'=>self::POINT_COMMENT_LIMIT
+				'point_comment_limit'=>self::POINT_COMMENT_LIMIT,
+				'point_bonus_duration'=>self::POINT_BONUS_DURATION
 				);
 		return $data;
 	}
