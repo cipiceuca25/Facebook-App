@@ -48,9 +48,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	try {
     		$fanpageSettingModel = new Model_FanpageSetting();
     		$settingData = $fanpageSettingModel->findRow($fanpageId);
-    		if(!$settingData) {
-    			$settingData = $fanpageSettingModel->getDefaultSetting();
-    		}
     		
     		//update new setting
     		if($this->_getParam('confirm') === 'save') {
@@ -107,7 +104,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	} catch (Exception $e) {
     		echo $e->getMessage();
     	}
-    	$this->view->setting = $settingData;
+    	$this->view->setting = empty($settingData) ? $fanpageSettingModel->getDefaultSetting() : $settingData->toArray();
     	$this->view->page_id = $fanpageId;
     }
     
