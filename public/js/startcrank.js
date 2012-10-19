@@ -16,7 +16,7 @@ $(document).ready(function() {
 					'overflow' : 'auto'
 				});
 			}	
-			
+			/*
 			if ($('#logo').attr('data-login') == "true"){
 				
 				$('#logo').html(
@@ -54,7 +54,7 @@ $(document).ready(function() {
 					}
 		
 				});}
-			}
+			}*/
 
 	});
 

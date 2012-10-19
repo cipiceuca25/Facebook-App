@@ -117,9 +117,10 @@
 			<?}	?>
 		<div class="graphical">	
 		<?php if ($post->type == 'photo'){?>	
-			<a target="new" href="<?echo $this->escape($post->link)?> "> 
+			<div class="image">
+			<a onclick="popup_post('<?=$post->id?>', true)"> 
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
-					</a>
+					</a></div>
 		<?php }elseif ($post->type =='video') { ?>
 			
 				<?php if (strstr($this->escape($post->link), 'youtube.com')){

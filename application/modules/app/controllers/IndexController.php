@@ -84,7 +84,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     				'mostPopular'=>array(),
     				'topTalker'=>array(),
     				'topClicker'=>array(),
-    				'topFollowed'=>array()
+    				'topFollowed'=>array(),
+    				'topFansAllTime'=>array()
     			);
 
     	$cache = Zend_Registry::get('memcache');
@@ -115,7 +116,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
     				$fanpage2['topFollowed'] = $follow->getTopFollowed($this->data['page']['id'], 5);
     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-    				
+    				$fanpage2['topFansAllTime'] = $model->getTopFans($this->_fanpageId, 5);
     				//Save to the cache, so we don't have to look it up next time
     				$cache->save($fanpage2, $fanpageId);
     			}else {
@@ -175,6 +176,9 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     		}
     		for ($i=0; $i<count($fanpage2['topFollowed']); $i++){
     			$fanpage2['topFollowed'][$i]['count'] = '?';
+    		}
+    		for ($i=0; $i<count($fanpage['topFansAllTime']); $i++){
+    			$fanpage['topFansAllTime'][$i]['count'] = '?';
     		}
     		
     	}

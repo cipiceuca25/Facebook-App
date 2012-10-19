@@ -100,7 +100,7 @@
 				<?}	?>
 				<div class="graphical">	
 					<?if ($post->type == 'photo'){?>	
-						<a target="new" href="<?echo $this->escape($post->link)?> "> 
+						<a onclick="popup_post('<?=$post->id?>', true)"> 
 							<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
 						</a>
 					<?}elseif ($post->type =='video') { ?>

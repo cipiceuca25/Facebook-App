@@ -62,7 +62,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		->where('notification_read = ?', 0);
 	
 		return $this->fetchAll($query);*/
-		$select = "SELECT b.name, b.description, b.picture, b.quantity, b.id from badges b, badge_events e where e.badge_id = b.id && e.facebook_user_id = $facebook_user_id && e.fanpage_id = $fanpage_id";
+		$select = "SELECT b.name, b.description, b.picture, b.quantity, b.id from badges b, badge_events e where e.badge_id = b.id && e.facebook_user_id = $facebook_user_id && e.fanpage_id = $fanpage_id && e.notification_read=0";
 		
 		
 		return $this->getAdapter()->fetchAll($select);
@@ -92,6 +92,15 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		
 		return $this->getDefaultAdapter()->fetchAll($query);
 	}	
+	
+	public function setViewBadgesByTime($fanpage_id, $facebook_id , $time){
+		
+		$data = array('notification_read' => 1);
+		$where[] = $this->getAdapter()->quoteInto('created_time < ?', $time);
+		$where[] = $this->getAdapter()->quoteInto('fanpage_id = ?', $fanpage_id);
+		$where[] = $this->getAdapter()->quoteInto('facebook_user_id= ?', $facebook_id);
+		$this->update($data, $where);		
+	}
 }
 
 

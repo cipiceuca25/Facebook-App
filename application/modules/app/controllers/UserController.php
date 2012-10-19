@@ -144,7 +144,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		//197221680326345_425781560803688
 		$starttime = time();
 		$data['facebook_user_id'] = $this->_user->facebook_user_id;
-		$data['fanpage_id'] = $this->_getParam('fanpage_id');
+		$data['fanpage_id'] = $this->_user->fanpage_id;
 		$data['fanpage_name'] = $this->_getParam('fanpage_name');
 		$data['access_token'] = $this->_user->facebook_user_access_token;
 		//$data['post_id'] = $this->_getParam('post_id');
@@ -465,7 +465,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 								$pointLog['fanpage_id'] = $data['fanpage_id'];
 								$pointLog['facebook_user_id'] =  $post['facebook_user_id'];
 								$pointLog['object_id'] =  $data['post_id'];
-								$pointLog['object_type'] = 'get likes';
+								$pointLog['object_type'] = 'recieve a like';
 								$pointLog['giving_points'] = 1 +(($virgin)?4:0);
 								$pointLog['note'] = 'get like on object'.(($virgin)?', viriginity broken':'');
 							
@@ -1030,17 +1030,46 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		}
 	}
 	
+	public function pointlognotificationAction(){
+	
+		$fanpage_id = $this->_getParam('fanpage_id');
+		
+		$time = $this->_request->getParam('time');
+		$pointlog = new Model_PointLog();
+		
+		if ($time=='undefined'){
+			
+			$fan = new Model_Fans($this->_user->facebook_user_id, $fanpage_id);
+			
+			$time = $fan->getLastLoginTime();
+		}
+		
+		$pointlog = $pointlog -> getPointsGainSinceTimeByDay($fanpage_id, $this->_user->facebook_user_id, $time);
+		$this->_helper->json($pointlog);
+	}
+	
 	public function notificationAction() {
 		
 		$fp = $this->_getParam('fanpage_id');
 		$userBadges = new Model_BadgeEvents();
 		$userBadgeCount = $userBadges->getNonNotifiedBadgesByUser($fp, $this->_user->facebook_user_id);
 		//Zend_Debug::dump($userBadgeCount);
-		$this->_helper->json(array('message'=>'ok', 'notification'=>array('newBadgeCount'=>$userBadgeCount), 'count'=> count($userBadgeCount)));
+		if (!empty($userBadgeCount)){
+			$this->_helper->json(array('message'=>'ok', 'notification'=>array('newBadgeCount'=>$userBadgeCount), 'count'=> count($userBadgeCount)));
+		}else{
+			$this->_helper->json(array('message'=>'none'));
+		}
+		
 	}
 	
-	public function mybadgesAction() {
-	
+	public function setviewedbadgesAction() {
+		$fp = $this->_getParam('fanpage_id');
+		$time = new Zend_Date();
+		$userBadges = new Model_BadgeEvents();
+		$userBadges -> setViewBadgesByTime($fp, $this->_user->facebook_user_id , $time->toString ( 'yyyy-MM-dd HH:mm:ss' ));
 	}
+	
+
+	
 	
 }
