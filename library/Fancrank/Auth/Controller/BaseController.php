@@ -27,7 +27,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
 		$fanpageId = $this->_request->getParam ( 'id' );
 		//Zend_Debug::dump($this->_getAllParams()); exit();
 		$this->_helper->viewRenderer->setRender ( 'index/login', null, true );
-		$user = $this->oauth2 ( true, false );
+		$user = $this->oauth2 ( true, false, $fanpageId );
 		
 		if ($user) {
 			// create user session
@@ -53,7 +53,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         $this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
         $this->_helper->viewRenderer->setRender('index/authorize', null, true);
         
-        $user = $this->oauth2(false, false);
+        $user = $this->oauth2(false, false, $fanpageId);
         
         if ($user) {
         	$user->fanpage_id = $fanpageId;
@@ -88,7 +88,7 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         
     } 
     
-    private function oauth2($authenticate = false, $user_id = false)
+    private function oauth2($authenticate = false, $user_id = false, $fanpageId)
     {
     	$code = $this->_getParam('code', false);
     	
@@ -132,7 +132,20 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         	if ($authenticate) {
         		$extra_parameters = http_build_query($this->config->extra_parameters->redirect->toArray());
         	} else {
-        		$extra_parameters = http_build_query($this->config->user_extra_parameters->redirect->toArray());
+        		// retrieve fanpage setting
+        		$fanpageSettingModel = new Model_FanpageSetting();
+        		$settingData = $fanpageSettingModel->findRow($fanpageId);
+        		if(!$settingData) {
+        			$settingData = $fanpageSettingModel->getDefaultSetting();
+        		}else {
+        			$settingData = $settingData->toArray();
+        		}
+        		
+        		$params = $this->config->user_extra_parameters->redirect->toArray();
+        		if($settingData['facebook_scope']) {
+        			$params['scope'] = $settingData['facebook_scope'];
+        		}
+        		$extra_parameters = http_build_query($params);
         	}
         	
             $this->redirect(0, sprintf('%s?client_id=%s&redirect_uri=%s&%s', $this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));

@@ -104,6 +104,6 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 	
 	public function getFacebookScope($fanpageId) {
 		$settingData = $this->findRow($fanpageId);
-		return $settingData;
+		return $settingData->facebook_scope;
 	}
 }

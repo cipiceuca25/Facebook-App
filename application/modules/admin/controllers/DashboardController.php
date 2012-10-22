@@ -113,25 +113,31 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	
     	$fanpageSettingModel = new Model_FanpageSetting();
     	$settingData = $fanpageSettingModel->findRow($fanpageId);
-
+    	$dataLog = array();
+    	$dataLog['activity_type'] = 'admin_change_facebook_scope';
+    	$dataLog['event_object'] = '';
+    	$dataLog['facebook_user_id'] = $this->_auth->getIdentity()->facebook_user_id;
+    	$dataLog['facebook_user_name'] = $this->_auth->getIdentity()->facebook_user_name;
+    	$dataLog['fanpage_id'] = $fanpageId;
+    	$dataLog['target_user_id'] = $fanpageId;
+    	$dataLog['target_user_name'] = '';
+    	$dataLog['message'] = 'admin updated facebook scope setting';
+    	
     	if($this->_getParam('confirm') === 'save') {
-    		$dataLog = array();
-    		$dataLog['activity_type'] = 'admin_change_facebook_scope';
-    		$dataLog['event_object'] = '';
-    		$dataLog['facebook_user_id'] = $this->_auth->getIdentity()->facebook_user_id;
-    		$dataLog['facebook_user_name'] = $this->_auth->getIdentity()->facebook_user_name;
-    		$dataLog['fanpage_id'] = $fanpageId;
-    		$dataLog['target_user_id'] = $fanpageId;
-    		$dataLog['target_user_name'] = '';
-    		$dataLog['message'] = 'admin updated facebook scope setting';
+
     		$adminActivityModel = new Model_AdminActivities();
     		if($settingData) {
     			$settingData->facebook_scope = $this->_getParam('facebook_scope');
     			//update fanpage setting data
     			$settingData->save();
     			//insert admin activity log
-    			$adminActivityModel->insert($dataLog);
+    		}else {
+    			$data = $fanpageSettingModel->getDefaultSetting();
+    			$data['facebook_scope'] = $this->_getParam('facebook_scope');
+    			$data['fanpage_id'] = $fanpageId;
+    			$fanpageSettingModel->insert($data);
     		}
+    		$adminActivityModel->insert($dataLog);
     	}
 
     	$this->view->facebook_scope = !empty($settingData) ? $settingData->facebook_scope : Model_FanpageSetting::getDefaultFacebookScope();
