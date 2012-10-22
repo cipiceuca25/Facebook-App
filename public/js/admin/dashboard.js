@@ -18,7 +18,7 @@ jQuery(document).ready(function($){
 
 				addPreviewButton(this, $(this).attr('data-id'));
 				addInstallButton(this, $(this).attr('data-id'));
-				addAnalyticButton(this, $(this).attr('data-id'));
+				addDashboardButton(this, $(this).attr('data-id'));
 				addUpgradeMenu(this, $(this).attr('data-id'), $(this).attr('data-level'));
 			}.bind(this)
 		});
@@ -44,7 +44,7 @@ jQuery(document).ready(function($){
 
 				//remove the install button
 				$(this).closest('tr').find('.preview').find('button').remove();
-				$(this).closest('tr').find('.analytic').find('button').remove();
+				$(this).closest('tr').find('.dashboard').find('button').remove();
 				$(this).closest('tr').find('.upgrade').find('.btn-group').remove();
 				$(this).closest('tr').find('.tab').find('button').remove();
 			}.bind(this)
@@ -58,11 +58,11 @@ jQuery(document).ready(function($){
 		window.location = '/admin/dashboard/preview?id=' + id;
 	})
 
-	$(document).delegate('.app-analytic', 'click', function(event) {
+	$(document).delegate('.app-dashboard', 'click', function(event) {
 		//preview the app
 		id = $(event.target).attr('data-id');
 		//window.open('/dashboard/preview?id=' + id, 'preview', null, true);
-		window.location = '/admin/dashboard/analytic?id=' + id;
+		window.location = '/admin/dashboard/dashboard?id=' + id;
 	})
 	
 	$(document).delegate('.install', 'click', function(event){
@@ -88,7 +88,9 @@ jQuery(document).ready(function($){
 		        installSuccess($(this).attr('data-id'));
 
 		        $(this).addClass('disabled');
+		        $(this).html('Installed');
 				$('.tooltip-inner').html('Fancrank is already installed');
+				$(this).closest('tr').find('.preview').find('button').remove();
 			}.bind(this)
 		});
 		
@@ -146,9 +148,9 @@ function deleteSuccess(page)
 	new Alert.create('success', 'Page tab removed successfully!');
 }
 
-function addAnalyticButton(btn, id)
+function addDashboardButton(btn, id)
 {
-	$(btn).closest('tr').find('.analytic').append('<button class="app-analytic btn btn-analytic" rel="tooltip" title="See your fanpage statistics" data-id="' + id + '">DashBoard</button>');
+	$(btn).closest('tr').find('.dashboard').append('<button class="app-dashboard btn btn-dashboard" rel="tooltip" title="See your fanpage statistics" data-id="' + id + '">DashBoard</button>');
 }
 
 function addUpgradeMenu(btn, id, level)
@@ -161,7 +163,7 @@ function addUpgradeMenu(btn, id, level)
 		'<div class="btn-group">'+
 			'<ul class="nav nav-pills">'+
 				'<li class="dropdown"><a class="dropdown-toggle"'+
-					'data-toggle="dropdown" href="#menu2"><span id="'+id+'_level_text">'+text[level-1]+'</span> <b class="caret"></b></a>'+
+					'data-toggle="dropdown" href="#levelMenu"><span id="'+id+'_level_text">'+text[level-1]+'</span> <b class="caret"></b></a>'+
 					'<ul class="dropdown-menu level-dropdown">'+
 						'<li><a href="#" data-id="'+id+'" data-level=1>Free</a></li>'+
 						'<li><a href="#" data-id="'+id+'" data-level=2>Premium</a></li>'+

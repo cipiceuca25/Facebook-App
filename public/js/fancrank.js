@@ -26,7 +26,7 @@ jQuery(document).ready(function($){
 		        { element: '#dummyStatus', 'tooltip' : 'This is page current status' },
 		        { element: '#dummyTab', 'tooltip' : 'Clicking this will install the app to the fanpage tab' },
 		        { element: '#dummyPreview', 'tooltip' : 'Clicking this will link to a preview page' },
-		        { element: '#dummyAnalytic', 'tooltip' : 'Clicking this will link to a Analytic page' }
+		        { element: '#dummyDashboard', 'tooltip' : 'Clicking this will link to a Analytic page' }
 		       ],
 		controlsPosition : 'TR'
 	};

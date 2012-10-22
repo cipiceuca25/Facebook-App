@@ -270,7 +270,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	print_r($this->array_to_scv($result));
     }
     
-    public function analyticAction() {
+    public function dashboardAction() {
     	$fanpageId = $this->_getParam('id');
     	
     	$fanpageModel = new Model_Fanpages;

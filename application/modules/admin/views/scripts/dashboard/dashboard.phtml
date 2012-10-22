@@ -1,5 +1,5 @@
 
-<? //$this->headLink()->headLink(array('rel'=>'stylesheet', 'href'=>'/css/dashboard/analytic.css', 'type'=>'text/css')) ?>
+<? //$this->headLink()->headLink(array('rel'=>'stylesheet', 'href'=>'/css/dashboard/dashboard.css', 'type'=>'text/css')) ?>
 
 <script>
 var fanpageId = <?= $this->page_id ?>;
@@ -11,7 +11,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.barnumbers.js') ?>
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.pie.min.js') ?>
 <? $this->headScript()->appendFile('/js/libs/jquery.dataTables.min.js') ?>
-<? $this->headScript()->appendFile('/js/admin/dashboard/analytic.js') ?>
+<? $this->headScript()->appendFile('/js/admin/dashboard/dashboard.js') ?>
 <?php
 	$url = 'https://www.facebook.com/pages/' . str_replace(' ', '-', $this->fanpage_name) . '/' . $this->page_id;
 ?>
@@ -55,7 +55,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 					<li class="divider"></li>
 					<li>
 						<!-- likes graph -->
-						<div class="analytic-setting btn-group">
+						<div class="dashboard-setting btn-group">
 							<ul class="nav nav-pills">
 								<li></li>
 								<li class="dropdown" id="menu1"><a class="dropdown-toggle"

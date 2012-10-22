@@ -21,8 +21,8 @@
 		<td class="preview">
 			<button id="dummyPreview" class="btn" rel="tooltip" title="See FanCrank working with your data" data-id="">Preview</button>
 		</td>
-		<td class="analytic">
-			<button id="dummyAnalytic" class="btn" rel="tooltip" title="See your Fanpage's statistics" data-id="">Analytic</button>
+		<td class="dashboard">
+			<button id="dummyDashboard" class="btn" rel="tooltip" title="See your Fanpage's statistics" data-id="">Dashboard</button>
 		</td>
 	</tr>
 	<?php foreach($this->pages as $page): ?>
@@ -45,19 +45,19 @@
 			</td>
 			<td class="tab">
 				<?php if ( !empty($page['installed']) ): ?>
-					<button class="install-tab btn btn-success disabled" rel="tooltip" title="Fancrank is already installed" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
+					<button class="install-tab btn btn-success disabled" rel="tooltip" title="Fancrank is already installed" data-id="<?= $page['fanpage_id'] ?>">Installed</button>
 				<?php elseif( !empty($page['active']) ): ?>
 					<button class="install-tab btn btn-success" rel="tooltip" title="Install the Fancrank app on you page" data-id="<?= $page['fanpage_id'] ?>">Install Tab</button>
 				<?php endif; ?>
 			</td>
 			<td class="preview">
-				<?php if ( !empty($page['active']) ): ?>
+				<?php if ( !empty($page['active']) && empty($page['installed']) ): ?>
 					<button class="app btn btn-success" rel="tooltip" title="See Fancrank working with your data" data-id="<?= $page['fanpage_id'] ?>">Preview</button>
 				<?php endif; ?>
 			</td>
-			<td class="analytic">
+			<td class="dashboard">
 				<?php if ( !empty($page['active']) ): ?>
-					<button class="app-analytic btn" rel="tooltip" title="See your Fanpage's statistics" data-id="<?= $page['fanpage_id'] ?>">Dashboard</button>
+					<button class="app-dashboard btn" rel="tooltip" title="See your Fanpage's statistics" data-id="<?= $page['fanpage_id'] ?>">Dashboard</button>
 				<?php endif; ?>
 			</td>
 			<td class="upgrade">

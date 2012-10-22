@@ -42,9 +42,11 @@ class Service_FancrankCollectorService {
 		
 		$fanpageSettingModel = new Model_FanpageSetting();
 		$fanpageSettingModel->findRow($this->_fanpageId);
-		$settingData = $fanpageSettingModel->findRow($fanpage_id)->toArray();
+		$settingData = $fanpageSettingModel->findRow($fanpage_id);
 		if(!$settingData) {
 			$settingData = $fanpageSettingModel->getDefaultSetting();
+		}else {
+			$settingData = $settingData->toArray();
 		}
 		
 		$this->_fanpageSetting = $settingData;
@@ -972,7 +974,7 @@ class Service_FancrankCollectorService {
 				$totalPoints = $this->_fanpageSetting['point_post_normal'];
 				//echo $post->from->id .' lost: ' .$totalPoints .' from ' .$post->id .'<br/>';
 			}else if(!$oldPost) {
-				$virginity = abs($this->_fanpageSetting['point_post_normal']) - 1;
+				$virginity = $this->_fanpageSetting['point_virginity'];
 				$uniqueUser = array();
 				if(!empty($post->likes->count) && $post->likes->count >= 1) {
 					$totalLikePoints = $post->likes->count * $this->_fanpageSetting['point_like_normal'];
@@ -1039,7 +1041,7 @@ class Service_FancrankCollectorService {
 				//echo $post->from->id .' gain more unique: ' .$unique .' from post ' .$post->id .'<br/>';
 				$virginity = 0;
 				if(empty($oldPost->post_likes_count) && empty($oldPost->post_comments_count) && !empty($unique)) {
-					$virginity = abs($this->_fanpageSetting['point_post_normal']) - 1;
+					$virginity = $this->_fanpageSetting['point_virginity'];
 				}
 				
 				$totalPoints = $totalLikePoints + $totalCommentPoints + $unique + $virginity;
