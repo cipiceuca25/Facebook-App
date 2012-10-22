@@ -16,6 +16,8 @@ $(document).ready(function() {
 					'overflow' : 'auto'
 				});
 			}	
+			
+			$('#logo').html('<img src ="/img/thin-banner.jpg" />');
 			/*
 			if ($('#logo').attr('data-login') == "true"){
 				
