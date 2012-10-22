@@ -95,7 +95,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     		
     		try {
     			$fanpageId = $this->data['page']['id'];
-
+    			$cache->remove($fanpageId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanpageId)){
     				
@@ -116,7 +116,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
     				$fanpage2['topFollowed'] = $follow->getTopFollowed($this->data['page']['id'], 5);
     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-    				$fanpage2['topFansAllTime'] = $model->getTopFans($this->_fanpageId, 5);
+    				$fanpage2['topFansAllTime'] = $model->getTopFans($this->data['page']['id'], 5);
     				//Save to the cache, so we don't have to look it up next time
     				$cache->save($fanpage2, $fanpageId);
     			}else {
@@ -177,8 +177,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     		for ($i=0; $i<count($fanpage2['topFollowed']); $i++){
     			$fanpage2['topFollowed'][$i]['count'] = '?';
     		}
-    		for ($i=0; $i<count($fanpage['topFansAllTime']); $i++){
-    			$fanpage['topFansAllTime'][$i]['count'] = '?';
+    		for ($i=0; $i<count($fanpage2['topFansAllTime']); $i++){
+    			$fanpage2['topFansAllTime'][$i]['count'] = '?';
     		}
     		
     	}
@@ -190,7 +190,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$this->view->top_talker = $fanpage2['topTalker'];
     	$this->view->top_clicker = $fanpage2['topClicker'];
     	$this->view->top_followed = $fanpage2['topFollowed'];
-    	
+    	$this->view->top_fans_all_time = $fanpage2['topFansAllTime'];
     	$this->render('index');
     }
     
