@@ -46,10 +46,10 @@ $(document).ready(function(){
 		var fanpageTheme;
 		switch($(this).html()) {
 			case 'Grey theme': fanpageTheme = 1; break;
-			case 'Pink lady theme': fanpageTheme = 2; break;
-			case 'Classic theme': fanpageTheme = 3; break;
-			case 'Orange theme': fanpageTheme = 4; break;
-			case 'Ocean theme': fanpageTheme = 5; break;
+			case 'Orange theme': fanpageTheme = 2; break;
+			case 'Green theme': fanpageTheme = 3; break;
+			case 'Fall theme': fanpageTheme = 4; break;
+			case 'Default theme': fanpageTheme = 5; break;
 			default:
 				return false; 
 				break;

@@ -65,8 +65,7 @@ jQuery(document).ready(function($){
 		width: 400,
 		modal: true,
 		close: function() {
-			$('#add_point').val('').removeAttr('disabled');
-			$('#subtract_point').val('').removeAttr('disabled');
+			$('#adjust_point').val('');
 			$('#modifiedPointMessage').val('');
 			$( this ).dialog( "close" );
 		}
@@ -81,17 +80,16 @@ jQuery(document).ready(function($){
 
 		var userId = $('#modify_user_id').html();
 		var fanpageId = $(this).attr('data-id');
-		var addPoint = $('#add_point').val();
-		var subtractPoint = $('#subtract_point').val();
+		var adjustPoint = $('#adjust_point').val();
 		var pointMsg = $('#modifiedPointMessage').val();
 		
 	    if(fanpageId) {
-	    	if(addPoint.match(/^\d+$/)) {
+	    	if($("#add_radio").attr('checked')) {
 	    		//alert(addPoint);
 		        $.ajax({
 		            url: '/admin/user/addpoint?',
 		            type: 'POST',
-		            data: 'fanpage_id='+fanpageId+'&user_id='+userId+'&point='+addPoint+'&pointMsg='+pointMsg,
+		            data: 'fanpage_id='+fanpageId+'&user_id='+userId+'&point='+adjustPoint+'&pointMsg='+pointMsg,
 		            dataType: 'json',
 		            error: function( res ) {
 		            	alert('error'+res.message);
@@ -102,12 +100,12 @@ jQuery(document).ready(function($){
 		            	}
 		            }
 		        }); 
-	    	}else if(subtractPoint.match(/^\d+$/)) {
+	    	}else if($("#subtract_radio").attr('checked')) {
 	    		//alert(subtractPoint); 
 		        $.ajax({
 		            url: '/admin/user/subtractpoint?',
 		            type: 'POST',
-		            data: 'fanpage_id='+fanpageId+'&user_id='+userId+'&point='+subtractPoint+'&pointMsg='+pointMsg,
+		            data: 'fanpage_id='+fanpageId+'&user_id='+userId+'&point='+adjustPoint+'&pointMsg='+pointMsg,
 		            dataType: 'json',
 		            error: function( res ) {
 		            	alert('error'+res.message);
