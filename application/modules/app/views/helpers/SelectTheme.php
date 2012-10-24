@@ -9,9 +9,28 @@ class Fancrank_View_Helper_SelectTheme extends Zend_View_Helper_Abstract
 	}
 	
 	public function selectTheme($choice, $env) {
+		/*
+		switch($choice){
+			case 1:
+				echo $this->_view->headLink()->headLink(array('type'=>'text/css', 'rel'=>'stylesheet', 'href'=>'/css/loadstyle1.css'));
+				break;
+			case 2:
+				echo $this->_view->headLink()->headLink(array('type'=>'text/css', 'rel'=>'stylesheet', 'href'=>'/css/loadstyle2.css'));
+				break;
+			case 3:
+				echo $this->_view->headLink()->headLink(array('type'=>'text/css', 'rel'=>'stylesheet', 'href'=>'/css/loadstyle3.css'));
+				break;
+			case 4:
+				echo $this->_view->headLink()->headLink(array('type'=>'text/css', 'rel'=>'stylesheet', 'href'=>'/css/loadstyle4.css'));
+				break;
+			default:
+				echo $this->_view->headLink()->headLink(array('type'=>'text/css', 'rel'=>'stylesheet', 'href'=>'/css/loadstyle1.css'));
+				break;
+		}
+		*/
 		if($env) {
 			if(empty($choice)) {
-				$choice = 5;
+				$choice = 1;
 			}
 			$cssFile = '/css/loadstyle' .$choice .'.less';
 			echo $this->_view->headLink()->headLink(array('id'=>'stylesheet', 'rel'=>'stylesheet/less', 'href'=>"$cssFile"));

@@ -42,18 +42,20 @@
 						</div>
 					
 					</div>
-					<div class="span6">
-						<div style="padding:0 5px 0 5px; ">
-							<?php foreach ($this->badges as $b): ?>
+					<div class="span6 post-container noline">
+						<div class="user noline">
+						<div style="padding-left:10px;">
+							<?php foreach ($this->chosen_badges as $b): ?>
 								<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
-								<div class="bar" style="width: 100%;height:50px"></div>
-								<a data-original-title="<?= $b['name']. '<br/>'.$b['description']?>" 
-								class=noclick rel="tooltip" data-placement="top" style="float:left; position:relative;top:-50px;" >
-									<img src="<?= $b['picture']?>"/>
-								</a>
-							</div>
-
+									<div class="bar" style="width: 100%;height:50px"></div>
+									<a data-original-title="<?= $b['name']. '<br/>'.$b['description']?>" 
+									class=noclick rel="tooltip" data-placement="top" style="float:left; position:relative;top:-50px;" >
+										<img src="<?= $b['picture']?>"/>
+									</a>
+								</div>
 							<?php endforeach;?>
+						</div>
+						<a class="display-badges-button" style="margin-top:6px; float:right" onclick="choosebadges()">Choose Display Badges</a>	
 						</div>
 					</div>
 				</div>
@@ -110,7 +112,7 @@
 			
 			</div>
 		</div>
-		<div id ="upcoming-badges-container">
+		<div class="row-fluid" id ="upcoming-badges-container">
 			
 			<div class="row box">
 				<div class="title nopic">
@@ -118,11 +120,8 @@
 					<div class="title-header nopic">
 						Upcoming Badges
 					</div>
-					<!--  <div class="tip">
-						<a rel="tooltip" data-original-title='These are your upcoming badges'>
-							?
-						</a>
-					</div>-->
+					<div class="tip2">These are your upcoming badges.
+					</div>
 				</div>
 				<div class="post-container noline">
 					<div class="row-fluid post" id="profile_upcoming_badges">
@@ -159,9 +158,42 @@
 					</div>
 					<div id="followinglist"></div>
 				
-				</div>				
+				</div>		
+				
+				
+						
 			</div>
 		</div>	
+		<div class="row-fluid" id ="badges-container">
+			
+			<div class="row box">
+				<div class="title nopic">
+		
+					<div class="title-header nopic">
+						Earned Badges
+					</div>
+					<div class="tip2">These are Badges that you have earned.
+					</div>
+				
+				</div>
+				<div class="post-container noline">
+					<div class="row-fluid post" id="profile_earned_badges" style="overflow:hidden; outline:none">
+						<div style="width:<?=count($this->badges) * 54?>px; height:70px;" >
+							<?php foreach ($this->badges as $b): ?>
+								<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
+									<div class="bar" style="width: 100%;height:50px"></div>
+									<a data-original-title="<?= $b['name']. '<br/>'.$b['description']?>" 
+									class=noclick rel="tooltip" data-placement="top" style="float:left; position:relative;top:-50px;" >
+										<img src="<?= $b['picture']?>"/>
+									</a>
+								</div>
+	
+							<?php endforeach;?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 	</div>
 	</div>
@@ -193,4 +225,13 @@
 		verticalTrackClass: 'track3',
 		verticalHandleClass: 'handle3'
 	});
+	$('#profile_earned_badges').enscroll({
+		showOnHover: true,
+		clickTrackToScroll: false,
+		horizontalScrolling:true,
+		verticalScrolling:false,
+		horizontalTrackClass: 'htrack',
+		horizontalHandleClass: 'hhandle'
+	});
+	
 </script>

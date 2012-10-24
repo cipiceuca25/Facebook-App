@@ -95,7 +95,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     		
     		try {
     			$fanpageId = $this->data['page']['id'];
-    			$cache->remove($fanpageId);
+    			//$cache->remove($fanpageId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanpageId)){
     				
@@ -159,7 +159,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     
     	$fanpage = $fanpageModel->findRow($this->data['page']['id']);
     	
-    	
+    	/*
     	if(isset($fanpage->fanpage_level) && $fanpage->fanpage_level != 3) {
     		for ($i=0; $i<count($fanpage2['topFans']); $i++){
     			$fanpage2['topFans'][$i]['number_of_posts'] = '?';
@@ -180,9 +180,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     		for ($i=0; $i<count($fanpage2['topFansAllTime']); $i++){
     			$fanpage2['topFansAllTime'][$i]['count'] = '?';
     		}
-    		
     	}
-    	
+    	*/
     	
     	
     	$this->view->top_fans = $fanpage2['topFans'];

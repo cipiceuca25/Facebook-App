@@ -1,136 +1,6 @@
 @import url('/bootstrap/css/bootstrap.css');
 @import url('../bootstrap/less/mixin.less');
 
-@color-background-blue: 			#E7EBF2; // background color, follow hover, tip border
-@color-container-blue: 				#C1CEE0; // container blue
-@color-link-blue: 					#3B5998; // links color
-@color-link-hover:					#0a1b31;	//link hover
-@color-tab-border-blue:				#173D71; // tab dark blue, rank first, follow text hover,button hover , fan exp bar
-@color-tab-back-blue:				#47658E; // unselected blue, rank numbers , button text, tip, other exp bars
-@color-tab-hover:					#eeeeee; // the hover color
-@color-photo-border-blue:			#7D98BE; // the border on the icons, follow button
-@color-social-bar-blue:				#EDEFF4; // social bar color
-@color-user-border-gray:			#E5E5E5;//flag bottom border color
-@color-text:						#575757; //text color
-@color-post-border-thing:			#8194BD; //post border
-@color-post-border-hover-thing:		#5a6d99;
-@color-post-shadow-thing:			#A5B4CE;
-@color-post-hover:					#f9f9f9; // the color of the post on hover
-@color-post:						#ffffff;
-@color-admin:						#09937C;
-@color-unfollow:					#BD362F;
-@color-following:					#56A556;
-@color-you:							#F7CB1E;
-@color-link:						#F6F7F9; //color of link box
-@color-link-border:					#D3DAE8; // the border of the link
-@color-button:						#dddddd; //post button back
-@color-rank-border:					#C4CDE0; //ranking border
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//main 
-@color-main-background:@color-background-blue;
-@color-main-header-picture-border:@color-photo-border-blue;
-@color-main-container:@color-container-blue;
-@color-main-text:@color-text;
-@color-main-title:@color-post;
-@color-main-link-text:@color-link-blue;
-@color-main-link-text-hover:@color-link-hover;
-@color-main-content:@color-post;
-@color-main-split-line:@color-container-blue;
-@color-main-title-text:@color-post;
-@color-main-photo-border:@color-photo-border-blue;
-
-//tabs
-@color-tab-background:@color-tab-back-blue;
-@color-tab-text:@color-post;
-@color-tab-border:@color-tab-back-blue;
-@color-tab-border-bottom:@color-tab-border-blue;
-@color-tab-border-bottom-hover:@color-tab-hover;
-@color-tab-background-hover:@color-tab-hover;
-@color-tab-border-hover:@color-tab-hover;
-@color-tab-text-hover:@color-tab-border-blue;
-@color-tab-select-background:@color-background-blue;
-@color-tab-select-text:@color-tab-border-blue;
-@color-tab-select-border:@color-tab-border-blue;
-@color-tab-select-border-bottom:@color-background-blue;
-
-//tips
-@color-tip-border:@color-post;
-@color-tip-background:@color-tab-back-blue;
-@color-tip-question-mark:@color-post;
-@color-tip-background-hover:@color-post;
-@color-tip-question-mark-hover:@color-tab-back-blue;
-@color-tip-border-hover:@color-tab-back-blue;
-
-//rank
-@color-ranking-first:@color-tab-border-blue;
-@color-ranking-number:@color-tab-back-blue;
-@color-ranking-border:@color-rank-border;
-@color-ranking-number-text:@color-post;
-@color-ranking-border-hover:@color-rank-border;
-@color-ranking-number-hover:@color-tab-back-blue;
-@color-ranking-background:@color-post;
-
-//follow tags
-@color-tag-text:@color-post;
-@color-tag-text-hover:@color-tab-border-blue;
-@color-tag-admin:@color-admin;
-@color-tag-follow:@color-photo-border-blue;
-@color-tag-follow-hover:@color-background-blue;
-@color-tag-follower:@color-background-blue;
-@color-tag-you:@color-you;
-@color-tag-following:@color-following;
-@color-tag-unfollow:@color-unfollow;
-
-//posts
-@color-post-background:@color-post;
-@color-post-border:@color-post-border-thing;
-@color-post-text:@color-text;
-@color-post-social-background:@color-social-bar-blue;
-@color-post-comment-background:@color-social-bar-blue;
-@color-post-user-border:@color-user-border-gray;
-@color-post-background-hover:@color-post-hover;
-@color-post-border-hover:@color-post-border-hover-thing;
-@color-post-shadow:@color-post-shadow-thing;
-@color-post-link-background:@color-link;
-@color-post-link-border:@color-link-border;
-
-//buttons
-@color-more-button-background:@color-tab-hover;
-@color-more-button-text:@color-tab-back-blue;
-@color-more-button-background-hover:@color-tab-border-blue;			
-@color-more-button-text-hover:@color-post;
-@color-more-button-border:@color-container-blue;
-
-@color-post-button-background:@color-container-blue;
-@color-post-button-background-hover:@color-tab-border-blue;
-@color-post-button-text:@color-tab-border-blue;			
-@color-post-button-text-hover:@color-post;
-@color-post-button-border:@color-tab-border-blue;
-
-@color-userlist-button-background:@color-tab-hover;
-@color-userlist-button-background-hover:@color-tab-border-blue;
-@color-userlist-button-text:@color-tab-back-blue;
-@color-userlist-button-text-hover:@color-post;
-
-//userlist
-@color-userlist-background:@color-background-blue;
-@color-userlist-border:@color-post;
-
-//scrollbar 
-@color-scrollbar:@color-tab-border-blue;
-
-//my profile
-@color-level-border:@color-tab-back-blue;
-@color-level-background:@color-post;
-@color-level-text:@color-tab-back-blue;
-@color-fan-experience-bar:@color-tab-border-blue;
-@color-overall-achievement-bar:@color-tab-back-blue;
-@color-personal-achievement-bar:@color-tab-back-blue;
-@color-social-achievement-bar:@color-tab-back-blue;
-
-//popover
-@color-popover-background:@color-container-blue;
-@color-popover-border:@color-container-blue;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 .span12 {
 width:804px;
@@ -141,11 +11,11 @@ width:737px;
 .span10 {
 width:668px;
 }
-.span9 {
+.span9 { 
 width:599px;
 }
 .span8 {
-width:530px;
+width:530px; 
 }
 .span7 {
 width:461px;
@@ -213,7 +83,7 @@ width:790px;
 overflow:hidden;
 background-color:white;
 padding:5px;
-border:1px solid @color-main-container;
+border:1px solid @color-main-container-border;
 margin-left:3px;
 margin-right:3px;
 margin-top:6px;
@@ -232,7 +102,7 @@ border:0px;
 }
 
 .tab-container{
-border-bottom: 1px solid @color-main-container;
+border-bottom: 1px solid @color-main-container-border;
 background-color: @color-main-background;
 height:28px;
 margin-bottom:15px;
@@ -243,9 +113,9 @@ margin-right:4px;
 .toolbar{
 	float:left;
 	position:absolute;
-	left:480px;
+	right:129px;
 	font-size:13px;
-	border:1px solid @color-main-container;
+	border:1px solid @color-toolbar-border;
 	border-left:0px;
 }
 
@@ -254,12 +124,17 @@ margin-right:4px;
 	float:left;
 	padding:3px 10px 3px;
 	font-weight:bold;
-	color:@color-tab-select-text;
-	background-color:white;
-	border-left:1px solid @color-main-container;
+	color:@color-toolbar-text;
+	background-color:@color-toolbar-background;
+	border-left:1px solid @color-toolbar-border;
+	border-color: @color-toolbar-border;
 	height:18px;
-}
+} 
 
+.toolbar li a{
+	color:@color-toolbar-text;
+}
+	
 
 .toolbar-title{
 	font:9px/100%  Helvetica, Arial sans-serif;
@@ -284,7 +159,7 @@ margin-right:4px;
 .toolbar #notification_upcoming_badges .upcoming-badges .progress{
 height:15px;
 width:15px;
-border:1px solid @color-main-container;
+border:1px solid @color-badge-border;
 position:relative;
 top:1px;
 margin:0;
@@ -309,7 +184,7 @@ width:15px;
 .nav-tabs .active  a, 
 .nav-tabs .active a:hover,
 .nav-tabs li a:hover{
-border:1px solid @color-main-container;
+border:1px solid @color-main-container-border;
 border-bottom:1px solid @color-main-background;
 background-color:@color-main-background;
 color:@color-tab-select-text;
@@ -323,18 +198,18 @@ margin-right:1px;
 }
 
 .nav-tabs li a:hover{
-border:1px solid @color-main-container;
+border:1px solid @color-main-container-border;
 
 background-color:@color-tab-select-text;
-color:white;
+color:@color-tab-text-hover;
 
 }
 
 .nav-tabs li a{
 .border-radius(1px);
-color:@color-tab-select-text;
-background-color:white;
-border-bottom-color:@color-main-container;
+color:@color-tab-text;
+background-color:@color-tab-background;
+border-bottom-color:@color-main-container-border;
 padding-top:4px;
 padding-bottom:4px;
 margin-right:1px;
@@ -349,10 +224,10 @@ left:1px;
 position:absolute;
 right:8px;
 
-background-color:@color-main-container;
+background-color:@color-main-container-border;
 height:28px;
 margin-bottom:0px;
-border-right:1px solid @color-main-container;
+border-right:1px solid @color-main-container-border;
 
 }
 
@@ -360,11 +235,11 @@ border-right:1px solid @color-main-container;
 
 position:relative;
 float:left;
-background-color:@color-main-container;
+background-color:@color-main-container-border;
 height:28px;
 left:3px;
 margin-bottom:0px;
-border-right:1px solid @color-main-container;
+border-right:1px solid @color-main-container-border;
 
 }
 
@@ -442,10 +317,10 @@ filter:alpha(opacity=95);
 
 .box{	
 margin:0 1px 20px 3px;
-background-color:white;
+background-color:@color-post-background;
 .border-radius(1px);
 padding:30px 8px 8px 8px;
-border: 1px solid  @color-main-container;
+border: 1px solid  @color-main-container-border;
 }
 
 .box.notitle{
@@ -455,12 +330,12 @@ padding-top:0;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .title{
-	border-bottom:2px solid @color-main-container;
+	border-bottom:2px solid @color-post-user-border;
 	
 }	
 
 .tip2{
-	color:#999999;
+	color:@color-tip-text;
 	margin-top:8px;
 	font: 11px/130% Helvetica, Arial,  sans-serif;
 }
@@ -835,6 +710,12 @@ padding-top:2px;
 padding-bottom:2px;
 }
 
+.popover-content .post-container.nonline{
+padding-bottom:0px;
+margin-bottom:0px;
+margin-top:0px;
+}
+
 .post-container.noline{
 border:0px;
 padding-bottom:5px;
@@ -843,9 +724,9 @@ padding-bottom:5px;
 .post-container{
 background-color:@color-post-background;
 position:relative;
-border-bottom:1px solid @color-main-container;
-padding-bottom:10px;
-padding-top:10px;
+//border-bottom:1px solid @color-main-container-border;
+margin-bottom:10px;
+margin-top:10px;
 }
 
 .post-container:hover{
@@ -954,7 +835,7 @@ background-color:@color-post-comment-background;
 margin-bottom:1px;
 padding:5px;
 min-height:30px;
-
+padding-left:30px;
 }
 
 .comment-container .user .user-badge{
@@ -1005,10 +886,10 @@ background-color: @color-post-social-background;
 
 .post-button-container{
 display:none;
-border:1px solid #ddd;
-background-color:#f7f7f7;
+border:1px solid @color-main-container-border;
+background-color: @color-post-button-container;
 border-top:0;
-width:501px;
+width:500px;
 height:20px;
 padding:3px;
 }
@@ -1023,11 +904,13 @@ margin:0;
 resize: none; 
 overflow:hidden;
 .border-radius(0);
-width:382px;
+width:357px;
 margin:0 5px 0 5px;
 padding:1px;
 height:14px;
 outline:none;
+color:@color-main-text;
+border-color:@color-main-container-border;
 }
 
 #user-description-box{
@@ -1038,7 +921,7 @@ font-size:12px;
 }
 
 .post-box{
-width:505px;
+width:504px;
 margin-left:0;
 overflow:hidden;
 height:20px;
@@ -1046,7 +929,7 @@ height:20px;
 
 .post-box:focus,
 .comment-box:focus{
-border:1px solid #ddd;
+border:1px solid @color-main-container-border;
 outline:none;
 .box-shadow(0 0 0 0 );
 }
@@ -1151,16 +1034,14 @@ position:relative;
 top:15px;
 }
 
-
-
 .progress{
 margin-bottom:0;
-background:@color-more-button-background;
-border:2px solid @color-main-container;
+background:@color-badge-background;
+border:2px solid @color-badge-border;
 }
 
 .progress .bar{
-background:@color-main-container;
+background:@color-badge-bar;
 .box-shadow(0 0 0 0 );
 }
 
@@ -1186,7 +1067,7 @@ border-top:0px solid;
 #recent_activities{
 overflow: auto;
 padding-left:5px;
-height: 734px;
+height: 913px;
 .border-radius(3px);
 }
 
@@ -1214,6 +1095,19 @@ margin-top:-1px;
 
 .handle3 {
 width: 5px;
+background: @color-scrollbar ;
+opacity: 0.45;
+filter: alpha(opacity=45);
+left:5px;
+}
+
+.htrack {
+height: 5px;
+margin-top:-1px;
+}
+
+.hhandle {
+height: 5px;
 background: @color-scrollbar ;
 opacity: 0.45;
 filter: alpha(opacity=45);
@@ -1316,7 +1210,7 @@ display:none;
 
 .popover-content{
 .border-radius(0px);
-padding:0 8px 0;
+padding:1px 5px 1px;
 }
 
 .popover-content .post-container .user{
@@ -1488,8 +1382,6 @@ float:right;
 
 #whatisfancrank{
 	margin-top:3px;
-	background:url(../img/whatisfancrank.jpg) no-repeat;
-	background-size:100% 350px;
 	height:401px;
 	width:370px;
 }
@@ -1681,7 +1573,7 @@ to {-o-transform: translate(-810px,0px); /* Safari and Chrome */}
 	top:211px;
 	left:600px;	 
 	font-size:100px;
-	color:#47658e;
+	color:@color-main-container-border;
 	font-family:verdana;
 }
 
@@ -1698,9 +1590,87 @@ cursor:default;
 
 .pointlog{
 	width:100%;
+	border:1px solid black;
 }	
 
 .pointlog th{
 	text-align:left;
+	padding:3px;
 }
 
+.pointlog td{
+	padding:3px;
+}
+
+.pointlog .points{
+	text-align:right;
+
+}
+
+.pointlog .no-border{
+	border-left:0px solid;
+	border-right:0px solid;
+}
+
+.spacer{
+	display:block;
+	height:5px;
+	margin-left:-9px;
+	margin-right:-9px;
+	border-top:1px solid  @color-main-container-border;
+	border-bottom:1px solid  @color-main-container-border;
+	background-color: @color-main-background;
+}
+
+#menu{
+	position:fixed; 
+	top:170px; 
+	z-index:5; 
+	width:100%;
+	background-color:@color-main-background;
+	padding-top:3px;
+	padding-bottom:5px;
+}
+
+.cbadges a{
+	cursor:pointer;
+}
+
+.cbadges.selected{
+	outline:none;
+    transition: all 0.25s ease-in-out;
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+	-o-transition: all 0.25s ease-in-out;
+	 .box-shadow(0 0 12px @color-you );
+}
+
+.notifier{
+	position:absolute;
+	left:16px;
+	top:33px;
+	border:2px solid @color-tab-background;
+	background-color:@color-post-background;
+}
+
+.notifier .arrow{
+	width:0px;
+	height:0px;
+	border-top:5px solid transparent;
+	left:40%;
+	position:absolute;
+	border-bottom: 5px solid @color-tab-background;
+	border-right:20px solid transparent;
+	border-left:20px solid transparent;
+	margin-top:-12px;
+}
+
+.notifier .message{
+	color:@color-main-text;
+	font-weight:normal;
+	font-size:11px;
+}
+
+.notifier .box{
+	margin:0px;
+}

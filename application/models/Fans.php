@@ -110,6 +110,10 @@ class Model_Fans extends Model_DbTable_Fans
 		return $this->_fanProfile->fan_exp;
 	}
 	
+	public function getChosenBadges(){
+		return $this->_fanProfile->chosen_badges;
+	}
+	
 	protected function calculateLevel($points) {
 		if($points < self::BASE_XP) return 1;
 		$newLevel = floor(pow($points / self::BASE_XP, 1 / self::LEVEL_FACTOR));
@@ -134,6 +138,12 @@ class Model_Fans extends Model_DbTable_Fans
 		if($this->_isNew || empty($point)) return;
 		$this->_fanProfile->fan_point = $this->_fanProfile->fan_point - $point;
 		return $this->_fanProfile->save();
+	}
+	
+	public function updateBadgeChoices($badges){
+	
+		$this->_fanProfile->chosen_badges = $this->getAdapter()->quote($badges);
+		$this->_fanProfile->save();
 	}
 	
 	public function updateDescription($message){
