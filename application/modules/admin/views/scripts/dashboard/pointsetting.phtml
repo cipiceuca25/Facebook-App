@@ -1,3 +1,6 @@
+<? $this->headLink()->headLink(array('rel'=>'stylesheet', 'href'=>'/css/dashboard/pointsetting.css', 'type'=>'text/css')) ?>
+<? $this->headScript()->appendFile('/js/libs/ui.spinner.js') ?>
+
 <ul class="breadcrumb">
   <li><a href="http://www.fancrank.local/admin/dashboard/fanpages"><i class="icon-home"></i></a> <span class="divider">/</span></li>
   <li><a href="/admin/dashboard/dashboard/<?= $this->page_id ?>">dashboard</a><span class="divider">/</span></li>
@@ -11,53 +14,53 @@
 				<div class="control-group">
 					<label class="control-label" for="point_like_normal">point for
 						like on user object</label>
-					<div class="controls">
+					<div class="controls point-input">
 						<input type="text" id="point_like_normal" name="point_like_normal" value="<?=$this->setting['point_like_normal']?>" />
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="point_comment_normal">point for
 						comment on user post</label>
-					<div class="controls">
+					<div class="controls point-input">
 						<input type="text" id="point_comment_normal" name="point_comment_normal" value="<?=$this->setting['point_comment_normal']?>" />
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="point_post_normal">point for
 						post on fanpage</label>
-					<div class="controls">
+					<div class="controls point-input">
 						<input type="text" id="point_post_normal" name="point_post_normal" value="<?=$this->setting['point_post_normal']?>" />
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="point_like_admin">point for like
 						on admin post</label>
-					<div class="controls">
+					<div class="controls point-input">
 						<input type="text" id="point_like_admin" name="point_like_admin" value="<?=$this->setting['point_like_admin']?>" />
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="point_comment_admin">point for
 						comment on admin post</label>
-					<div class="controls">
+					<div class="controls point-input">
 						<input type="text" id="point_comment_admin" name="point_comment_admin" value="<?=$this->setting['point_comment_admin']?>" />
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="bonus_duration">bonus duration</label>
-					<div class="controls">
-						<input type="text" id="point_bonus_duration" name="point_bonus_duration" value="<?=$this->setting['point_bonus_duration']?>" /> seconds
+					<div class="controls point-input">
+						<input type="text" id="point_bonus_duration" name="point_bonus_duration" value="<?=$this->setting['point_bonus_duration']?>" /> minutes
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="point_post_virginity">post bonus for breaking virginity</label>
-					<div class="controls">
+					<div class="controls point-input">
 						<input type="text" id="point_virginity" name="point_virginity" value="<?=$this->setting['point_virginity']?>" />
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="point_virginity">comment limit per post </label>
-					<div class="controls">
+					<div class="controls point-input">
 						<input type="text" id="point_comment_limit" name="point_comment_limit" value="<?=$this->setting['point_comment_limit']?>" />
 					</div>
 				</div>												

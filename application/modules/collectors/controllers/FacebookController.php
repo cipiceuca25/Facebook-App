@@ -945,6 +945,36 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$this->postBatchQuery($fanpageId, $accessToken, $limit, $since);
     }
     
+    public function test25Action() {
+    	$fanpageId = '216821905014540';
+    	$facebook_user_id = '508061175';
+		$rank = new Model_Rankings();
+		Zend_Debug::dump($rank->getTopFansByWeek($fanpageId));
+		
+		echo '--------------top talker';
+		Zend_Debug::dump($rank->getTopTalkerByWeek($fanpageId));
+		
+		echo '--------------top clicker';
+		Zend_Debug::dump($rank->getTopClickerByWeek($fanpageId));
+		
+		echo '--------------top popular';
+		Zend_Debug::dump($rank->getMostPopularByWeek($fanpageId));
+		
+		echo '--------------top post';
+		Zend_Debug::dump($rank->getTopPosts($fanpageId));
+		
+		echo '--------------user top fan';
+		Zend_Debug::dump($rank->getUserTopFansRankByWeek($fanpageId, $facebook_user_id));
+		
+		echo '--------------top talker';
+		Zend_Debug::dump($rank->getUserTopTalkerRankByWeek($fanpageId, $facebook_user_id));
+		
+		echo '----------------------------fan get like stat';
+		$fanpage_id = '216821905014540';
+		$stat = new Model_FansObjectsStats();
+		Zend_Debug::dump($stat->getFanLikeCountByType($fanpage_id, $facebook_user_id, 'status'));		
+    }
+    
     public function testpostAction() {
     
     	$starttime = time();

@@ -195,23 +195,22 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 	}
 	
 	public function getFanCommentCountByType($fanpage_id, $facebook_user_id, $type) {
+		$select = null;
+		
 		if($type === 'all') {
-			$commentModel = new Model_Comments();
-			$select = $commentModel->select();
-			$select->from($commentModel, array('count(*) as count'));
-			$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
-			->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id));
-			$rows = $this->fetchAll($select);
-			return ($rows[0]->count);
+			$select = "SELECT count(*) AS count FROM comments c left join posts p on (p.post_id = c.comment_post_id)
+			WHERE p.fanpage_id = $fanpage_id AND c.facebook_user_id = $facebook_user_id AND p.facebook_user_id != c.facebook_user_id GROUP BY p.facebook_user_id";
+		}else {
+			$select = "SELECT count(*) AS count FROM comments c left join posts p on (p.post_id = c.comment_post_id)
+			WHERE p.fanpage_id = $fanpage_id AND c.facebook_user_id = $facebook_user_id AND p.facebook_user_id != c.facebook_user_id AND p.post_type = '". $type ."' GROUP BY p.facebook_user_id";
 		}
-		$commentModel = new Model_Comments();
-		$select = $commentModel->select();
-		$select->from($commentModel, array('count(*) as count'));
-		$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
-				->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id))
-				->where($this->quoteInto('comment_type = ?', $type));
-		$rows = $this->fetchAll($select);
-		return ($rows[0]->count);
+		
+		$rows = $this->getAdapter()->fetchAll($select);
+		
+		if(empty($rows[0]['count'])) {
+			return 0;
+		}
+		return ($rows[0]['count']);
 	}
 	
 	public function getFanCommentStatusCount($fanpage_id, $facebook_user_id) {
@@ -235,26 +234,47 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 	}
 	
 	public function getFanLikeCountByType($fanpage_id, $facebook_user_id, $type) {
-		if($type === 'all') {
-			$likeModel = new Model_Likes();
-			$select = $likeModel->select();
-			$select->from($likeModel, array('count(*) as count'));
-			$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
-				->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id))
-				->where($this->quoteInto('likes = ?', 1));
-			$rows = $this->fetchAll($select);
-			return ($rows[0]->count);
+		
+		$select = null;
+		
+		switch($type) {
+			case 'all':
+				$select = "SELECT count(*) AS count FROM likes l
+				WHERE l.facebook_user_id = $facebook_user_id AND l.fanpage_id = $fanpage_id AND l.likes = 1";
+				break;			
+			case 'status':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
+				WHERE l.facebook_user_id = $facebook_user_id AND p.facebook_user_id != l.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'status' AND l.likes = 1";
+				break;
+			case 'link':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
+				WHERE l.facebook_user_id = $facebook_user_id AND p.facebook_user_id != l.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'link' AND l.likes = 1";
+				break;
+			case 'photo':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
+				WHERE l.facebook_user_id = $facebook_user_id AND p.facebook_user_id != l.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'photo' AND l.likes = 1";
+				break;
+			case 'video':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
+				WHERE l.facebook_user_id = $facebook_user_id AND p.facebook_user_id != l.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'video' AND l.likes = 1";
+				break;
+			case 'comment':
+				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN comments c ON(l.post_id = c.comment_id) WHERE l.facebook_user_id =
+				$facebook_user_id AND l.facebook_user_id != c.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type LIKE '%_comment' AND l.likes = 1";
+				break;
+				default: break;
 		}
 		
-		$likeModel = new Model_Likes();
-		$select = $likeModel->select();
-		$select->from($likeModel, array('count(*) as count'));
-		$select->where($this->quoteInto('fanpage_id = ?', $fanpage_id))
-			->where($this->quoteInto('facebook_user_id = ?', $facebook_user_id))
-			->where($this->quoteInto('post_type = ?', $type))
-			->where($this->quoteInto('likes = ?', 1));
-		$rows = $this->fetchAll($select);
-		return ($rows[0]->count);
+		if(empty($select)) {
+			return 0;
+		}
+		
+		$rows = $this->getAdapter()->fetchAll($select);
+		
+		if(empty($rows[0]['count'])) {
+			return 0;
+		}
+		return ($rows[0]['count']);
 	}
 	
 	
@@ -288,23 +308,23 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		switch($type) {
 			case 'status':
 				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
-				WHERE p.facebook_user_id = $facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'status' AND l.likes = 1";
+				WHERE p.facebook_user_id = $facebook_user_id AND p.facebook_user_id != l.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'status' AND l.likes = 1";
 				break;
 			case 'link':
 				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
-				WHERE p.facebook_user_id = $facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'link' AND l.likes = 1";
+				WHERE p.facebook_user_id = $facebook_user_id AND p.facebook_user_id != l.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'link' AND l.likes = 1";
 				break;
 			case 'photo':
 				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
-				WHERE p.facebook_user_id = $facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'photo' AND l.likes = 1";
+				WHERE p.facebook_user_id = $facebook_user_id AND p.facebook_user_id != l.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'photo' AND l.likes = 1";
 				break;
 			case 'video':
 				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN posts p ON(l.post_id = p.post_id)
-				WHERE p.facebook_user_id = $facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'video' AND l.likes = 1";
+				WHERE p.facebook_user_id = $facebook_user_id AND p.facebook_user_id != l.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type = 'video' AND l.likes = 1";
 				break;
 			case 'comment':
 				$select = "SELECT count(*) AS count FROM likes l LEFT JOIN comments c ON(l.post_id = c.comment_id) WHERE c.facebook_user_id = 
-							$facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type LIKE '%_comment' AND l.likes = 1"; 
+							$facebook_user_id AND l.facebook_user_id != c.facebook_user_id AND l.fanpage_id = $fanpage_id AND l.post_type LIKE '%_comment' AND l.likes = 1"; 
 				break;
 			default: break;
 		}
@@ -345,11 +365,11 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		$select = null;
 		
 		if($type === 'all') {
-			$select = "SELECT sum(p.post_comments_count) AS count FROM posts p
-				WHERE p.fanpage_id = $fanpage_id AND p.facebook_user_id = $facebook_user_id GROUP BY p.facebook_user_id";
+			$select = "SELECT count(*) AS count FROM comments c left join posts p on (p.post_id = c.comment_post_id)
+				WHERE p.fanpage_id = $fanpage_id AND p.facebook_user_id = $facebook_user_id AND p.facebook_user_id != c.facebook_user_id GROUP BY p.facebook_user_id";
 		}else {
-			$select = "SELECT sum(p.post_comments_count) AS count FROM posts p
-				WHERE p.fanpage_id = $fanpage_id AND p.facebook_user_id = $facebook_user_id AND p.post_type = '". $type ."' GROUP BY p.facebook_user_id";
+			$select = "SELECT count(*) AS count FROM comments c left join posts p on (p.post_id = c.comment_post_id)
+				WHERE p.fanpage_id = $fanpage_id AND p.facebook_user_id = $facebook_user_id AND p.facebook_user_id != c.facebook_user_id AND p.post_type = '". $type ."' GROUP BY p.facebook_user_id";
 		}
 		
 		if(empty($select)) {

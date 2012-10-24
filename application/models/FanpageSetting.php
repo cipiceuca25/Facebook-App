@@ -9,7 +9,7 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 	const POINT_POST_NORMAL = -5;
 	const POINT_LIKE_ADMIN = 1;
 	const POINT_COMMENT_ADMIN = 2;
-	const POINT_BONUS_DURATION = 3600;
+	const POINT_BONUS_DURATION = 60;
 	const POINT_VIRGINITY = 4;
 	const POINT_COMMENT_LIMIT = 5;
 	
