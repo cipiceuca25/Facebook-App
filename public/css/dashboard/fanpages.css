@@ -1,2 +1,30 @@
-table.fanpage-table{width:100%}img{margin:5px}.logo img{height:40px;float:left}.tourOverlay{position:fixed;width:100%;height:100%;top:0;left:0;background:#333;opacity:.2;z-index:100;filter:progid:dximagetransform.microsoft.alpha(opacity=20)}#tourControls{text-shadow:0 0 1px #fff;padding:10px;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;font-weight:700;z-index:9999}
-/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */
+table.fanpage-table {
+  width: 100%;
+}
+img {
+  margin: 5px;
+}
+.logo img {
+  height: 40px;
+  float: left;
+}
+.tourOverlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background: #333;
+  opacity: 0.2;
+  z-index: 100;
+  filter: progid:DXImageTransform.Microsoft.Alpha(opacity=20);
+}
+#tourControls {
+  text-shadow: 0px 0px 1px #fff;
+  padding: 10px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+  z-index: 9999;
+}

@@ -43,7 +43,7 @@
 			var userName = "<?= $this->username?>";
 			var userAccessToken = "<?= $this->facebook_user_access_token?>";
 			var tour = "<?= $this->tour ?>";
-
+			
 			//alert( accessToken);
 			var fb =false;
 			window.fbAsyncInit = function() {
@@ -58,15 +58,15 @@
 				fb = true;
 			};
 
-		 </script>
-		 <script src="/js/cranker.js"></script>
-		  <script src="/js/badgeAnimation.js"></script>
-		  <script src="/js/app/notification.js"></script>
+		</script>
+		<script src="/js/cranker.js"></script>
+		<script src="/js/badgeAnimation.js"></script>
+		<script src="/js/app/notification.js"></script>
 		<script src="/js/fancrankTour.js"></script>
 <!-- End of iframe initialization -->
 		
-
-        <? if (APPLICATION_ENV == 'development'): ?>
+		<!-- 
+        <?// if (APPLICATION_ENV == 'development'): ?>
           
             <link rel="stylesheet/less" href="/css/refactor_style.less">
             <script type="text/javascript">
@@ -77,15 +77,15 @@
 
             </script>
             <script src="/js/libs/less-1.3.0.min.js"></script>
-        <? else: ?>
+        <? //else: ?>
             <link href="/css/refactor_style.css" rel="stylesheet" type="text/css"/>
-        <? endif ?>
-		 
+        <?// endif ?>
+		 -->
 		  
         <?= $this->headScript(); ?>
 		
 		<link rel="stylesheet" href="/css/app/joyride-1.0.5.css" />
-        <!--<?php // $this->selectTheme(5, APPLICATION_ENV); ?>-->
+        <?php $this->selectTheme($this->color, APPLICATION_ENV); ?>
 
 		<style>
 		.container,.navbar-fixed-top .container {
@@ -122,7 +122,8 @@
 				</div>
 				<div class="container">
 
-					<div class="tabbable">
+					<div class="tabbable" style="margin-top:50px;">
+						<div id="menu">
 						<div class="tab-container">
 							
 							<ul class="nav nav-tabs" id="pageTabs">
@@ -133,9 +134,9 @@
 								<li><a href="#redeem" id="redeem-tab" data-toggle="tab">Redeem</a></li>
 							</ul>
 							<ul class="toolbar">
-								
+								<? if ($this->fan->fan_point != '?'){?>
 								<li><div><a rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="top"><img src="/img/coins.png" /> <?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></a></div></li>
-
+								<?php }?>
 								<li class="row-fluid" id='notification_upcoming_badges'>
 								<!--  
 								<?php // foreach ($this->notibadges as $b){?>
@@ -152,13 +153,15 @@
 								<?php // }?>
 								-->
 								</li>
-								<li class="notification "><a rel="tooltip" class="noclick" data-original-title="You have no new Notifications" data-placement="top"><i class="icon-exclamation-sign"></i> <span id="badge-notification-count">0</span></a></li>
+								<li class="notification" >
+								<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" ><i class="icon-exclamation-sign"></i> <span id="badge-notification-count">0</span></a></li>
 							
 							</ul>
 							<ul class="nav nav-tabs" id="log-in-out">
 								<li><a id="help-tab" onclick="resetTour()">Help</a></li>
 								<li><a id="logout-tab" href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
 							</ul>
+						</div>
 						</div>
 <!--						
 						<a href="#" onclick="colorChange(5)">Ocean</a>

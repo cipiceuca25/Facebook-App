@@ -893,16 +893,19 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	
 	public function notificationAction() {
 		
-		$fp = $this->_getParam('fanpage_id');
+		//$fp = $this->_getParam('fanpage_id');
 		$userBadges = new Model_BadgeEvents();
+		/*
 		$userBadgeCount = $userBadges->getNonNotifiedBadgesByUser($fp, $this->_user->facebook_user_id);
 		//Zend_Debug::dump($userBadgeCount);
 		if (!empty($userBadgeCount)){
 			$this->_helper->json(array('message'=>'ok', 'notification'=>array('newBadgeCount'=>$userBadgeCount), 'count'=> count($userBadgeCount)));
 		}else{
 			$this->_helper->json(array('message'=>'none'));
-		}
+		}*/
+		$userBadges = $userBadges -> notify($this->_user->fanpage_id, $this->_user->facebook_user_id);
 		
+		//$this->_helper->json($userBadges);
 	}
 	
 	public function setviewedbadgesAction() {
@@ -923,6 +926,14 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		}
 		return $result;
 	}
-	
-	
+
+	public function savechosenbadgesAction(){
+		
+		$c1 = $this->_getParam('c1');
+		$c2 = $this->_getParam('c2');
+		$c3 = $this->_getParam('c3');
+		$fan = new Model_Fans($this->_user->facebook_user_id, $this->_user->fanpage_id);
+		$fan->updateBadgeChoices($c1.','.$c2.','.$c3);
+		echo 'badges save';
+	}
 }

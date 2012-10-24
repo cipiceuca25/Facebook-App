@@ -1,0 +1,82 @@
+<div class="arrow"></div>
+<span id="notifynumber" style="display:none"><?=count($this->events)?></span>
+<div class="row">
+	<div class="span3">
+		<div class="row box notitle">
+			<div class="post-container nonline">
+				<div class="user">
+					<div class="name">Notifications</div>
+				</div>			
+			</div>
+			<?php if (count($this->events) == 0 ){?>
+				<div class="post-container noline">
+					
+					<div class="post">
+						
+						<div class="message">
+							No Notifications
+						</div>
+					</div>
+				</div>
+			<? }else{?>
+				<?php foreach ($this->events as $e){?>
+					<div class="post-container noline">
+				
+						<div class="post">
+							
+							<div class="message">
+								
+								<? switch($e['activity_type']){
+									case 'points':?>
+										You have earned points
+									<?break;?>	
+									<?case 'badge':?>
+										You Earned a Badge
+									<?break;?>
+									<?case 'admin_add_point':?>
+										Admin has given you some points
+									<?break;?>
+									<?case 'admin_sub_point':?>
+										Admin has given you some points
+									<?break;?>
+									<?case 'follow'?>
+										Someone has followed you 
+									<?break;?>
+									<?case 'unfollow'?>
+										Someone has unfollowed you
+									<?break;?>
+									<?case 'comment-status'?>
+										Someone has commented on your status post
+									<?break;?>
+									<?case 'like-status'?>
+										Someone has liked your status post
+									<?break;?>
+									<?case 'comment-photo'?>
+										Someone has commented on your photo post
+									<?break;?>
+									<?case 'like-photo'?>
+										Someone has liked your photo post
+									<?break;?>
+									<?case 'comment-video'?>
+										Someone has commented on your video post
+									<?break;?>
+									<?case 'like-video'?>
+										Someone has liked  your video post
+									<?break;?>
+									<?case 'comment-link'?>
+										Someone has commented on your link post
+									<?break;?>
+									<?case 'like-link'?>
+										Someone has liked your comment post
+									<?break;?>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
+				<? }?>
+			<? }?>
+		
+		</div>
+	</div>
+</div>
+

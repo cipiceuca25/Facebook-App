@@ -11,7 +11,10 @@ var currentpage = 'newsfeed';
 var backgroundcolor;
 
 $(document).ready(function() {
-		
+	setInterval(MouseWheelHandler, 500);
+	window.addEventListener("mousewheel", MouseWheelHandler, false);  
+    // Firefox  
+	window.addEventListener("DOMMouseScroll", MouseWheelHandler, false);  
 // trick to indentify parent container
 		if (window.location != window.parent.location) {
 			$(document.body).css({
@@ -113,7 +116,24 @@ $(document).on('mouseover', '[rel=popover]', function() {
 	
 });
 
-
+function MouseWheelHandler() {  
+    // cross-browser wheel delta  
+    // old IE support  
+   // alert(e.wheelDelta);
+	$('#menu').stop();
+    FB.Canvas.getPageInfo(function(info) {
+		//alert(info.scrollTop);
+    	if (info.scrollTop > 170){
+			//$('#menu').css('top',info.scrollTop-28);
+    		$('#menu').animate({'top':info.scrollTop-28},100, function(){});
+    	}else{
+    		//$('#menu').css('top','170px');
+    		$('#menu').animate({'top':'170px'},100, function(){});
+    	}
+    });
+    
+    //var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));  
+}
 $(document).on('mouseover', '[rel=tooltip]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;
@@ -207,6 +227,8 @@ $('#top-followed-btn').live('click', function() {
 });
 
 
+
+
 $('#newsfeed-tab').live('click', function() {
 	if (currentpage != 'newsfeed'){
 		feedLimit = 0;
@@ -294,6 +316,27 @@ function popover(x) {
 	});
 }
 
+function choosebadges(){
+	popup(true);
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/choosebadges/' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$('.profile-content').html(data);
+			//$(x).popover('show');
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
+}
+
 
 function pointlog(){
 	popup(true);
@@ -357,6 +400,7 @@ function feedbackAnimation(ui, type) {
 
 
 function closeProfile() {
+	selected_badges = 0;
 	$('.light-box').css('display', 'none');
 	$('.user-profile').css('display', 'none');
 	$('.profile-content').css('display', 'none');
@@ -932,6 +976,39 @@ function getRedeem() {
 	});
 }
 
+
+function getListNotification(){
+	
+	$('.notification').append('<div class="notifier"></div>');
+	
+	$('.notifier').html($('.notification').attr('data-content'));
+	
+	notifier = true;
+	//console.log(points);
+	/*
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/listnotification/' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : false,
+		beforeSend: function(){
+			$('.notifier').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$('.notifier').html(data);
+			//play();
+			notifier = true;
+			//$('#noti').popover('show');
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting list notification');
+		}
+	});
+	*/
+}
+
 function getBadgeNotification(){
 	load = typeof load !== 'undefined' ? load : true;
 	popup(load);
@@ -956,8 +1033,6 @@ function getBadgeNotification(){
 			console.log('error getting badges notification');
 		}
 	});
-	
-	
 	
 }
 
@@ -1792,6 +1867,56 @@ var tourOptions = {
 	};
 
 
+var selected_badges = 0;
+
+
+$('.cbadges').live('click', function(){
+	
+	var $this = $(this);
+	
+	if(!$this.hasClass('selected') && selected_badges >= 3){
+		alert('You have already selected 3 badges');
+	}else if($this.hasClass('selected')){
+		$this.toggleClass('selected');
+		
+		
+		selected_badges--;
+		
+	}else{
+		
+		
+		selected_badges++;
+		//console.log($this.attr('data-id'));
+		$this.toggleClass('selected');
+	}
+    
+});
+function submit_badges_choice(){
+	var sbadges = new Array();
+	$('.selected').each(function(i){
+		sbadges.push($(this).attr('data-id'));
+		//console.log($(this).attr('data-id'));
+	});
+
+	console.log(sbadges[0]+ ' ' +sbadges[1] + ' ' + sbadges[2]) ;
+
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/user/' + userId + '/savechosenbadges/' + '?c1=' +sbadges[0]+ '&c2=' +sbadges[1] + '&c3=' + sbadges[2],
+		dataType : "html",
+		cache : false,
+		async : true,
+		success : function(data) {
+			//alert($.trim(data));
+			closeProfile();
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error saving badge choices');
+		}
+	});
+	
+}
 /*
 function isLogin(data) {
 	if($.trim(data) == "") {

@@ -39,12 +39,6 @@
 				</li>
 				<?}else{?>
 
-
-				
-				
-				
-				
-	
 				<li class="post-container noline">
 
 
@@ -278,13 +272,14 @@
 						<img src="/img/news-feed/top-fan-icon.jpg" />
 					</div>-->
 		
-					<div class="title-header nopic">FanCrank Feed</div>
-					<div class="tip2">The FanCrank Feed is a customized news feed of all the activity on the page.  Choose "All" to see all posts on the page.  Choose "My Feed" to only show posts by the page owner and the people you follow.  choose "Page Posts" to see posts from the page owner.
-					</div><!--  <div class="tip">
+				<div class="title-header nopic">FanCrank Feed
+				</div>
+				<div class="tip2">The FanCrank Feed is a customized news feed of all the activity on the page.  Choose "All" to see all posts on the page.  Choose "My Feed" to only show posts by the page owner and the people you follow.  choose "Page Posts" to see posts from the page owner.
+				</div><!--  <div class="tip">
 						<a rel="tooltip"
 							data-original-title='The FanCrank Feed is a customized news feed of all the activity on the page.  Choose "All" to see all posts on the page.  Choose "My Feed" to only show posts by the page owner and the people you follow.  choose "Page Posts" to see posts from the page owner.'>?</a>
 					</div>-->
-				</div>
+		</div>
 
 
 			<ul id="submitfeed">
@@ -317,7 +312,7 @@
 						</form>
 					</div>
 				</li>
-
+				
 			</ul>
 
 
@@ -340,6 +335,8 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 												  
 												  
 </div>-->
+
+	<div class="spacer"></div>
 
 <ul id="fancrankfeed">
 
@@ -465,7 +462,8 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 		<?php }elseif ($post->type =='video') { ?>
 			
 			<?php if (strstr($this->escape($post->link), 'youtube.com')){
-					$temp=explode("http://www.youtube.com/watch?v=", $this->escape($post->link));?>
+					$temp=explode("v=", $this->escape($post->link));?>
+				
 					<iframe width="508" height="286" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
 			
 			<?php }else if (strstr($this->escape($post->link), 'vimeo.com')){
@@ -645,6 +643,9 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 	
 	<div id="post_<?=$post->id?>" ></div>
 	</li>	
+	<li>
+	<div class="spacer"></div>
+	</li>
 	<?php }?><!-- story -->	
 			<?php $count ++;?>
 			 

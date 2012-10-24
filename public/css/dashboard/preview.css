@@ -1,2 +1,14 @@
-.navbar-fixed-top .navbar-inner,.navbar-fixed-bottom .navbar-inner{background:#fff}.install-header{margin-top:100px}.setting_menu{position:fixed;left:15px;top:150px;margin-bottom:0;z-index:1040}
-/* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */
+.navbar-fixed-top .navbar-inner,
+.navbar-fixed-bottom .navbar-inner {
+  background: white;
+}
+.install-header {
+  margin-top: 100px;
+}
+.setting_menu {
+  position: fixed;
+  left: 15px;
+  top: 150px;
+  margin-bottom: 0;
+  z-index: 1040;
+}

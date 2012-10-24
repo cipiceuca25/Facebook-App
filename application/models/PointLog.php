@@ -37,15 +37,24 @@ class Model_PointLog extends Model_DbTable_PointLog
 	}
 	
 	public function getPointsWithinDays($fanpageId, $facebook_user_id, $day){
-		$select = "select object_id, object_type, giving_points, note, date(created_time) as created_time from point_log p
-					where";
+		$select = "select distinct sum(giving_points) as sum,  l.object_id, l.object_type, f.message, 
+					l.giving_points, l.note, date(l.created_time) as created_time 
+					
+					from point_log l
+					
+					
+					left join  fancrank.fancrank_activities f 
+					on 	f.facebook_user_id = l.facebook_user_id && l.fanpage_id = f.fanpage_id 
+						&& 	f.event_object = l.object_id
+					where ";
 		if ($facebook_user_id !=null){
 			
-			$select = $select." facebook_user_id = $facebook_user_id && ";
+			$select = $select." l.facebook_user_id = $facebook_user_id && ";
 		}
 				
-		$select =  $select." fanpage_id = $fanpageId && datediff(curdate(), created_time) < $day 
-					order by created_time ASC, object_id";
+		$select =  $select." l.fanpage_id = $fanpageId && datediff(curdate(), l.created_time) < $day
+group by object_id
+order by l.created_time ASC, l.object_id";
 		return $this->getAdapter()->fetchAll($select);
 	}
 		
