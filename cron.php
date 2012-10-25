@@ -59,7 +59,7 @@ if(APPLICATION_ENV === 'production') {
 }
 
 if (count($messages) > 0) {
-	$logger = new Zend_Log();
+	//$logger = new Zend_Log();
 	//$writer = new Zend_Log_Writer_Stream('php://output');
 	$writer = new Zend_Log_Writer_Stream('./cron_error.log');
 	$logger = new Zend_Log($writer);

@@ -532,4 +532,50 @@ class Model_Rankings extends Model_DbTable_Rankings
 		return;
 	}
 	
+	public function getTopFollowedByWeek($fanpage, $limit=5){
+		$select = "SELECT distinct a.facebook_user_id_subscribe_to, b.*, count(*) as count
+					FROM fancrank.subscribes a, fancrank.fans b
+					where a.fanpage_id = ".$fanpage." &&
+						  b.fanpage_id = ".$fanpage." &&
+				          a.facebook_user_id_subscribe_to = b.facebook_user_id &&
+				          a.follow_enable = 1 &&
+						  a.created_time > '$this->_lastSunday' &&		
+						  b.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage."')
+					group by a.facebook_user_id_subscribe_to
+					order by count DESC";
+	
+		if($limit !== false)
+			$select = $select . " LIMIT $limit";
+		return $this->getAdapter()->fetchAll($select);
+	
+	}
+	
+	public function getTopFollowedRankByWeek($fanpage, $facebook_user_id){
+	
+		$select = "select *
+				from
+				(
+				    select rank.*, @rownum:=@rownum+1 as my_rank
+				    FROM
+					    (
+						SELECT distinct a.facebook_user_id_subscribe_to ,b.*, count(*) as count
+							FROM fancrank.subscribes a, fancrank.fans b
+							where a.fanpage_id = ".$fanpage." &&
+							  b.fanpage_id = ".$fanpage." &&
+					          a.facebook_user_id_subscribe_to = b.facebook_user_id &&
+					          a.follow_enable = 1 &&
+							  a.created_time > '$this->_lastSunday' &&		
+							  b.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage."')
+							group by a.facebook_user_id_subscribe_to
+							order by count DESC
+					) as rank, (SELECT @rownum:=0) r
+				) as topfollow_rank
+				WHERE facebook_user_id = '". $facebook_user_id ."'
+		";
+	
+		$result = $this->getAdapter()->fetchAll($select);
+		if(!empty($result[0])) {
+			return $result[0];
+		}
+	}
 }

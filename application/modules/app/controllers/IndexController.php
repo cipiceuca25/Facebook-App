@@ -56,7 +56,6 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	
     	$model = new Model_Rankings;
     	//$post = new Model_Posts;
-    	$follow = new Model_Subscribes();
     	//$colorChoice = new Model_UsersColorChoice;
     	$user = new Model_FacebookUsers();
     	$user = $user->find($this->data['user_id'])->current();
@@ -114,7 +113,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     				//Zend_Debug::dump($topClicker);
     				 
     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    				$fanpage2['topFollowed'] = $follow->getTopFollowed($this->data['page']['id'], 5);
+    				$fanpage2['topFollowed'] = $model->getTopFollowedByWeek($this->data['page']['id'], 5);
     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     				$fanpage2['topFansAllTime'] = $model->getTopFans($this->data['page']['id'], 5);
     				//Save to the cache, so we don't have to look it up next time

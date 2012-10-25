@@ -127,10 +127,6 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 		if(!empty($result[0])) {
 			return $result[0];
 		}
-		
-		
-		
-		
 	}
 	
 	

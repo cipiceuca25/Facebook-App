@@ -196,7 +196,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				//Zend_Debug::dump($topClicker);
     				
     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    				$fanpage['topFollowed'] = $follow->getTopFollowed($this->_fanpageId, 5);
+    				$fanpage['topFollowed'] = $model->getTopFollowedByWeek($this->_fanpageId, 5);
     				$fanpage['topFansAllTime'] = $model->getTopFans($this->_fanpageId, 5);
     				//Save to the cache, so we don't have to look it up next time
     				$cache->save($fanpage, $this->_fanpageId);
@@ -245,7 +245,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				//Zend_Debug::dump($topClicker);
     				 
     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    				$userLeaderBoardData['topFollowed'] = $follow->getTopFollowedRank($this->_fanpageId, $this->_userId);
+    				$userLeaderBoardData['topFollowed'] = $model->getTopFollowedRankByWeek($this->_fanpageId, $this->_userId);
     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     				$userLeaderBoardData['topFansAllTime'] = $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
     				//Save to the cache, so we don't have to look it up next time
@@ -320,7 +320,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   					//Zend_Debug::dump($topClicker);
   						
   					//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-  					$fanpage['topFollowed'] = $follow->getTopFollowed($this->_fanpageId, 5);
+  					$fanpage['topFollowed'] = $model->getTopFollowedByWeek($this->_fanpageId, 5);
   					//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
   					$fanpage['topFansAllTime'] = $model->getTopFans($this->_fanpageId, 5);
   					//Save to the cache, so we don't have to look it up next time
@@ -437,7 +437,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				//Zend_Debug::dump($topClicker);
     	
     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    				$userLeaderBoardData['topFollowed'] = $follow->getTopFollowedRank($this->_fanpageId, $this->_userId);
+    				$userLeaderBoardData['topFollowed'] = $model->getTopFollowedRankByWeek($this->_fanpageId, $this->_userId);
     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     				$userLeaderBoardData['topFansAllTime'] = $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
     				//Save to the cache, so we don't have to look it up next time
