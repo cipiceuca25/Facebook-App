@@ -37,24 +37,44 @@ class Model_PointLog extends Model_DbTable_PointLog
 	}
 	
 	public function getPointsWithinDays($fanpageId, $facebook_user_id, $day){
-		$select = "select distinct sum(giving_points) as sum,  l.object_id, l.object_type, f.message, 
-					l.giving_points, l.note, date(l.created_time) as created_time 
+		$select = "select sum, object_id, object_type, date(d.created_time) as created_time, note,d.facebook_user_id, fan_name, d.message from (
+					select sum, object_id, object_type, created_time, note, 
+					(case post_message when post_message<=> NULL then b.facebook_user_id else c.facebook_user_id end)as facebook_user_id, 
+					(case post_message when post_message<=> NULL then post_message else comment_message end) as message from (
 					
-					from point_log l
-					
-					
-					left join  fancrank.fancrank_activities f 
-					on 	f.facebook_user_id = l.facebook_user_id && l.fanpage_id = f.fanpage_id 
-						&& 	f.event_object = l.object_id
+					SELECT sum(l.giving_points + l.bonus) as sum, object_id, object_type, created_time, note FROM fancrank.point_log l
 					where ";
 		if ($facebook_user_id !=null){
-			
 			$select = $select." l.facebook_user_id = $facebook_user_id && ";
 		}
-				
+		
 		$select =  $select." l.fanpage_id = $fanpageId && datediff(curdate(), l.created_time) < $day
-group by object_id
-order by l.created_time ASC, l.object_id";
+					group by l.object_id
+					order by l.object_id) as a 
+					
+					left join 
+					
+					(select facebook_user_id , post_message, post_id
+					from posts
+					where fanpage_id = $fanpageId) as b
+					
+					on a.object_id = b.post_id
+					
+					left join 
+					
+					(select facebook_user_id , comment_message, comment_id
+					from comments
+					where fanpage_id = $fanpageId) as c
+					
+					on a.object_id = c.comment_id
+					
+					) as d
+					left join 
+					
+					fans f
+					on d.facebook_user_id= f.facebook_user_id  
+					order by created_time ASC";
+
 		return $this->getAdapter()->fetchAll($select);
 	}
 		

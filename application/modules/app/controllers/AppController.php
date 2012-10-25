@@ -782,7 +782,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     	$pointlog = new Model_PointLog();
     	
-    	$pointlog = $pointlog -> getPointsWithinDays($this->_fanpageId, $this->_userId, 6);
+    	$pointlog = $pointlog -> getPointsWithinDays($this->_fanpageId, $this->_userId, 3);
     	}else{
     		$pointlog = 'x';
     	}
