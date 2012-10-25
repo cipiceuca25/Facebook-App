@@ -126,9 +126,19 @@ function MouseWheelHandler() {
     	if (info.scrollTop > 170){
 			//$('#menu').css('top',info.scrollTop-28);
     		$('#menu').animate({'top':info.scrollTop-28},100, function(){});
+    		$('#menu').css({'-moz-box-shadow': '0px 5px 5px #888', 
+    						'-webkit-box-shadow': '5px 0px 5px #888',
+    						'box-shadow': '0px 5px 5px #888',
+    						'-o-box-shadow': '0px 5px 5px #888',
+    						})
     	}else{
     		//$('#menu').css('top','170px');
     		$('#menu').animate({'top':'170px'},100, function(){});
+    		$('#menu').css({'-moz-box-shadow': '0px 0px 0px #888', 
+							'-webkit-box-shadow': '0px 0px 0px #888',
+							'box-shadow': '0px 0px 0px #888',
+							'-o-box-shadow': '0px 0px 0px #888',
+							})
     	}
     });
     
@@ -667,9 +677,9 @@ function like(post_id, post_type, target_id, target_name) {
 				success : function(data) {
 					//alert("target followed")
 					//alert(post_id + 'liked');
-					//feedbackAnimation('.like_control_' + post_id, 'like');
+					feedbackAnimation('.like_control_' + post_id, 'like');
 					//addActivities('like-' + post_type, post_id, target_id, target_name, mes);
-
+					console.log(data);
 					num = parseInt($('.like_' + post_id).attr('data-like-count')) + 1;
 					$('.like_' + post_id).attr('data-like-count', num);
 					
@@ -730,6 +740,7 @@ function unlike(post_id, post_type, target_id, target_name) {
 				dataType : "html",
 				cache : false,
 				success : function(data) {
+					console.log(data);
 					//alert("target followed")
 					//alert(post_id + 'liked');
 					feedbackAnimation('.like_control_' + post_id, 'unlike');
@@ -979,12 +990,32 @@ function getRedeem() {
 
 function getListNotification(){
 	
-	$('.notification').append('<div class="notifier"></div>');
+	$('#menu').append('<div class="notifier"></div>');
 	
 	$('.notifier').html($('.notification').attr('data-content'));
-	
+	changeTime('.notifier .time');
 	notifier = true;
 	//console.log(points);
+	
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/user/' + userId	+ '/savelastnotification/',
+		dataType : "html",
+		cache : false,
+		async : true,
+		success : function(data) {
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting list notification');
+		}
+	})
+	
+	
+	
+	
+	
 	/*
 	$.ajax({
 		type : "GET",
@@ -1052,7 +1083,7 @@ function getRecentActivities(ui, user_id) {
 		success : function(data) {
 	
 			$(ui).html(data);
-			changeTime('.time');
+			changeTime('#recent_activities .time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);

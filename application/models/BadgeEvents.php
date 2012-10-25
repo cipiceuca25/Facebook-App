@@ -130,7 +130,8 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	
 	public function notify($fanpage_id, $facebook_user_id, $time){
 		
-		$select= "select * 
+		if ($time){
+			$select= "select * 
 					from (
 					
 					SELECT e.created_time as created_time, 'badge' as activity_type, e.id as event_object, facebook_user_id, null as facebook_user_name, description as message, name, quantity, picture
@@ -153,6 +154,33 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 					) as a
 					order by created_time DESC
 					";
+		}else{
+			$select= "select *
+						from (
+							
+						SELECT e.created_time as created_time, 'badge' as activity_type, e.id as event_object, facebook_user_id, null as facebook_user_name, description as message, name, quantity, picture
+						from badges b, badge_events e
+						where e.badge_id = b.id && e.facebook_user_id = $facebook_user_id
+						&& e.fanpage_id = $fanpage_id && e.notification_read=0
+							
+						union
+							
+						select created_time, 'points' as activity_type, object_type as event_object, null as facebook_user_id, null as facebook_user_name,
+						note as message, null as name, sum(giving_points+bonus) as quantity, null as picture  from point_log p
+						where facebook_user_id = $facebook_user_id && fanpage_id = $fanpage_id
+						group by date(created_time)
+						
+						union
+							
+						SELECT created_time, activity_type, event_object, facebook_user_id, facebook_user_name, message, null as name, null as quantity, null as picture
+						FROM fancrank.fancrank_activities
+						where target_user_id = $facebook_user_id && fanpage_id = $fanpage_id  && facebook_user_id != target_user_id && activity_type != 'admin_add_point' && activity_type != 'admin_sub_point'
+						) as a
+						order by created_time DESC
+						";
+		}
+		
+		
 		
 		return $this->getAdapter()->fetchAll($select);
 	}

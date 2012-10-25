@@ -6,7 +6,7 @@ var points = new Array();
 var lastViewNotification;
 var badgeCount = 0;
 var pointCount = 0;
-
+var notifiercount = 0;
 var notifier=false;
 
 jQuery(document).ready(function($){
@@ -25,7 +25,7 @@ $('.notification').live('click', function(){
 	//if(pointCount + badgeCount > 0 ){
 		getListNotification();
 		
-		//setviewedbadges();
+		setviewedbadges();
 		
 		$('.notification').css('background-color',color2);
 		$('.notification a').css('color',color1);
@@ -98,12 +98,12 @@ function isLoginNotification() {
 			$('.notification').attr('data-content',data);
 			//console.log(data);
 			
-			x = $(data).filter('#notifynumber').text();
+			notifiercount = $(data).filter('#notifynumber').text();
 			
-			if (x > 0){
+			if (notifiercount > 0){
 				//$('.notification a').removeClass('noclick');
-				$('#badge-notification-count').html(x);
-				$('.notification a').attr('data-original-title','You have ' + x + ' new Notifications');
+				$('#badge-notification-count').html(notifiercount);
+				$('.notification a').attr('data-original-title','You have ' + notifiercount + ' new Notifications');
 				$('.notification').css('background-color','#56A556');
 				$('.notification a').css('color',color2);
 				$('.notification').effect("pulsate", { times:3 }, 300);
@@ -141,7 +141,7 @@ function setupBadges(badges){
 }
 
 function setviewedbadges(){
-	if (badgeCount > 0){
+	if (notifiercount > 0){
 		$.ajax({
 			type : "GET",
 			url : serverUrl + '/app/user/' +userId +'/setviewedbadges?fanpage_id=' + fanpageId,

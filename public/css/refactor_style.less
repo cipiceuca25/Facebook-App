@@ -508,8 +508,7 @@ background-color: @color-post-background-hover;
 	min-width:280px;
 }
 
-#whatisfancrank,
-.top-list.first{
+#whatisfancrank{
 margin-top:8px;
 }
 
@@ -835,7 +834,7 @@ background-color:@color-post-comment-background;
 margin-bottom:1px;
 padding:5px;
 min-height:30px;
-padding-left:30px;
+
 }
 
 .comment-container .user .user-badge{
@@ -851,9 +850,6 @@ margin:0 0 0 35px;
 padding-bottom:0px;
 }
 
-
-
-
 .comment-container .photo{
 float:left;
 }
@@ -861,7 +857,7 @@ float:left;
 .comment-container .user .name{
 left:0;
 float:left;
-margin-right:5px;
+margin-right:3px;
 font-size:11px;
 }
 
@@ -1053,11 +1049,6 @@ width:221px;
 width:218px;
 }
 
-#followerslist .top-list.mini,
-#followinglist .top-list.mini{
-padding:3px;
-}
-
 #followinglist .top-list.mini .ranker,
 #followerslist .top-list.mini .ranker{
 border-bottom:1px solid @color-post-user-border;
@@ -1067,7 +1058,7 @@ border-top:0px solid;
 #recent_activities{
 overflow: auto;
 padding-left:5px;
-height: 913px;
+height: 948px;
 .border-radius(3px);
 }
 
@@ -1087,6 +1078,7 @@ width:229px;
 #recent_activities .post-container:hover{
 background:@color-post-background-hover;
 }
+
 
 .track3 {
 width: 5px;
@@ -1647,22 +1639,34 @@ cursor:default;
 
 .notifier{
 	position:absolute;
-	left:16px;
-	top:33px;
-	border:2px solid @color-tab-background;
+	right:21px;
+	top:37px;
+	
 	background-color:@color-post-background;
+	.box-shadow(0px 2px 5px #888888);
 }
-
+.notifier .comments{
+	max-height:400px;
+	overflow:hidden;
+}
 .notifier .arrow{
 	width:0px;
 	height:0px;
 	border-top:5px solid transparent;
-	left:40%;
+	left:48%;
 	position:absolute;
-	border-bottom: 5px solid @color-tab-background;
-	border-right:20px solid transparent;
-	border-left:20px solid transparent;
-	margin-top:-12px;
+	border-bottom: 5px solid @color-main-container-border;
+	border-right:5px solid transparent;
+	border-left:5px solid transparent;
+	margin-top:-10px;
+}
+
+.notifier .post-container:hover{
+background-color: @color-post-background;
+}
+
+.notifier .post-container .user{
+font-size: 12px;
 }
 
 .notifier .message{
@@ -1672,5 +1676,25 @@ cursor:default;
 }
 
 .notifier .box{
-	margin:0px;
+	margin:0px;	
+}
+
+.notifier .time{
+	font-size:11px;
+}
+
+.badgedisplay{
+	min-height:77px;
+	padding-left:10px
+}
+
+.progress.earned-badges{
+height:50px;
+width:50px;
+margin:10px 13.5px 10px;
+display:inline-block
+}
+
+.post-container .comment-container{
+	padding-left:30px;
 }

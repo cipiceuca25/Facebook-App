@@ -80,7 +80,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			
 			try {
 				$fanProfileId = $this->_fanpageId .'_' .$this->_userId .'_fan';
-				//$cache->remove($fanProfileId);
+				$cache->remove($fanProfileId);
 				//Check to see if the $fanpageId is cached and look it up if not
 				if(isset($cache) && !$cache->load($fanProfileId)){
 		
@@ -2415,7 +2415,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$userBadges = new Model_BadgeEvents();
     	
-    	$userBadges = $userBadges -> notify($this->_fanpageId, $this->_userId, '2012-10-19');
+    	$userBadges = $userBadges -> notify($this->_fanpageId, $this->_userId, $this->_fan->last_notification);
     	
     	$this->view->events= $userBadges;
 
