@@ -316,6 +316,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		
 		$isComment = strpos($this->_getParam('post_type'),'comment')?true:false;
 		
+		
 		try {
 			//$data['post_id'] = $this->_getParam('post_id');
 			$postId = $data['post_id'];
@@ -351,7 +352,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 							$post['facebook_user_id'] = $this->_getParam('target_id');
 							
 						}
-						$fanstat -> addLikeCommentCount($data['fanpage_id'], $data['facebook_user_id']);
+						$fanstat -> addLikeComment($data['fanpage_id'], $data['facebook_user_id']);
 						echo 'increasing comment likes count';
 						
 						if($post['facebook_user_id'] != $data['fanpage_id']){
@@ -408,15 +409,21 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 						}
 
 					}
-					
-					$this->addactivity('like-'.$this->_getParam('post_type'), $data['post_id'],
+					if ($isComment){
+						$x = explode("_",$data['post_id']);
+						$this->addactivity('like-comment', $x[0].'_'.$x[1],
 							$data['fanpage_id'],$post['facebook_user_id'], $this->_getParam('target_name'), $this->_getParam('mes'));
+					}else{
+						$this->addactivity('like-'.$this->_getParam('post_type'), $data['post_id'],
+						$data['fanpage_id'],$post['facebook_user_id'], $this->_getParam('target_name'), $this->_getParam('mes'));
+					}
+					
 					echo 'adding activities';
 					
 				//Zend_Debug::dump($likesModel);
 				//if likes model didn't return anything 
 				//ie if its not a "new" like, there doesn't need to be points 
-					if ($likesModel == 1){
+					if (is_int($likesModel) && $likesModel == 1){
 						
 						echo ' Like is new, points need to be allocated';
 						
@@ -563,7 +570,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					
 						//Zend_Debug::dump($post);
 					}	
-					$fanstat -> subLikeCommentCount($data['fanpage_id'], $data['facebook_user_id']);
+					$fanstat -> subLikeComment($data['fanpage_id'], $data['facebook_user_id']);
 						
 						
 					if($post['facebook_user_id'] != $data['fanpage_id']){
@@ -611,9 +618,15 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					}
 						
 				}
-				$this->addactivity('unlike-'.$data['post_type'], $data['post_id'],
-						$data['fanpage_id'],$post['facebook_user_id'], $this->_getParam('target_name'), $this->_getParam('mes'));
-				
+			
+				if ($isComment){
+					$x = explode("_",$data['post_id']);
+					$this->addactivity('unlike-comment', $x[0].'_'.$x[1],
+							$data['fanpage_id'],$post['facebook_user_id'], $this->_getParam('target_name'), $this->_getParam('mes'));
+				}else{
+					$this->addactivity('unlike-'.$this->_getParam('post_type'), $data['post_id'],
+							$data['fanpage_id'],$post['facebook_user_id'], $this->_getParam('target_name'), $this->_getParam('mes'));
+				}
 				
 				echo "unliked";
 			} catch (Exception $e) {
@@ -910,9 +923,10 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	
 	public function setviewedbadgesAction() {
 		$fp = $this->_getParam('fanpage_id');
-		$time = new Zend_Date();
+
 		$userBadges = new Model_BadgeEvents();
-		$userBadges -> setViewBadgesByTime($fp, $this->_user->facebook_user_id , $time->toString ( 'yyyy-MM-dd HH:mm:ss' ));
+		$fan = new Model_Fans($this->_user->facebook_user_id, $this->_user->fanpage_id);
+		$userBadges -> setViewBadgesByTime($fp, $this->_user->facebook_user_id , $fan->getLastNotification());
 	}
 	
 	private function facebookResponseCheck($result) {
@@ -935,5 +949,11 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$fan = new Model_Fans($this->_user->facebook_user_id, $this->_user->fanpage_id);
 		$fan->updateBadgeChoices($c1.','.$c2.','.$c3);
 		echo 'badges save';
+	}
+	
+	public function savelastnotificationAction(){
+		$fan = new Model_Fans($this->_user->facebook_user_id, $this->_user->fanpage_id);
+		$fan->updateLastNotification();
+	
 	}
 }

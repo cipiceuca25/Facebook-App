@@ -60,7 +60,7 @@ class Model_Comments extends Model_DbTable_Comments
 	public function findComment($comment_id){
 		$query = $this->select()
 		->from($this)
-		->where('commentt_id = ?', $comment_id);
+		->where('comment_id = ?', $comment_id);
 		return $this->fetchAll($query)->current();
 	}
 	

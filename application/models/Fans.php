@@ -105,7 +105,10 @@ class Model_Fans extends Model_DbTable_Fans
 		$this->_fanProfile->fan_level = $newLevel;
 	}
 	
-	
+	public function getLastNotification(){
+		
+		return $this->_fanProfile->last_notification;
+	}
 	public function getCurrentEXP(){
 		return $this->_fanProfile->fan_exp;
 	}
@@ -138,6 +141,12 @@ class Model_Fans extends Model_DbTable_Fans
 		if($this->_isNew || empty($point)) return;
 		$this->_fanProfile->fan_point = $this->_fanProfile->fan_point - $point;
 		return $this->_fanProfile->save();
+	}
+	
+	public function updateLastNotification(){
+		$date = new Zend_Date();
+		$this->_fanProfile->last_notification = $date->toString('YYYY-MM-dd HH:mm:ss');
+		$this->_fanProfile->save();
 	}
 	
 	public function updateBadgeChoices($badges){
