@@ -1,19 +1,11 @@
-<!--  nav bar -->
-<div class="navbar-inner">
-    <div class="container">
-    
-
-      <div class="brand"><img src="/img/logo-noline.png"></div>
-        <ul class="nav pull-right">
-            <li><a href="/admin/dashboard/fanpages">My Pages</a></li>
-  
-            <li><a href="/admin/dashboard/myaccount">My Account</a></li>
-
-            
-   			<li><a <?php if ( $this->layout()->action === 'fanpages' ): ?>id="fancrankTour" <?php endif; ?> href="#">Help</a></li>
-		
-			<li><a href="/admin/dashboard/logout">Log Out</a></li>		
-			
-        </ul>
-    </div>
+<div class="brand">
+	<img src="/img/logo-noline.png">
 </div>
+<ul class="breadcrumb custom">
+	 <li><a href="/admin/dashboard/fanpages">My Pages</a></li>
+	 <li><a href="/admin/dashboard/myaccount">My Account</a></li>
+	 <li><a <?php if ( $this->layout()->action === 'fanpages' ): ?>id="fancrankTour" <?php endif; ?> href="#">Help</a></li>
+	<li><a href="/admin/dashboard/logout">Log Out</a></li>		
+</ul>
+
+	

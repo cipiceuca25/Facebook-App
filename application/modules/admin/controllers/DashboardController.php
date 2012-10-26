@@ -277,7 +277,37 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	 
     	$fans_model = new Model_Fans;
     	
-     	$postDataByType = $fanpageModel->getPostsStatByFanpageId($fanpageId);
+    	$fanStatModel = new Model_FansObjectsStats();
+    	$topFanList = $fanStatModel->getTopFanListByFanpageId($fanpageId);
+    	
+    	//Zend_Debug::dump($topPostByComment);
+    	$follow = new Model_Subscribes();
+    	for ($count = 0 ;$count <count($topFanList); $count ++ ){
+    	
+    		$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+    		$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+    		$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+    		$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+    		if ($fanpageModel->getFanpageLevel($fanpageId) < 3) {
+    			$topFanList[$count]['fan_exp'] = '?';
+    		}
+    	}
+    	
+    	$this->view->topFanList = $topFanList;
+     	
+    	$fanpages_model = new Model_Fanpages;
+    	$pages = $fanpages_model->getActiveFanpagesByUserId( $this->_identity->facebook_user_id);
+    	//$pages = $this->getUserPagesList($uid, $access_token);
+    	
+    	$this->view->pages = $pages;
+    	
+    	$topPostByLike = $fanpageModel->getTopObjectsWithinTime($fanpageId, 24);
+    	$this->view->topPostByLike = $topPostByLike;
+    	
+    	
+    	
+    	
+    	$postDataByType = $fanpageModel->getPostsStatByFanpageId($fanpageId);
 
      	$date = new Zend_Date();
      	$date->subDay(2);
@@ -285,7 +315,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
      	$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'), 5);
      	
     	
-     	$topPostByLike = $fanpageModel->getTopPostsByNumberOfLikes($fanpageId, 50);
+     	
      	$topPostByComment = $fanpageModel->getTopPostsByNumberOfComments($fanpageId, 50);
      	
      	//Zend_Debug::dump($topFanList); //exit();
@@ -296,9 +326,13 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$this->view->page_id = $fanpageId;
     	//Zend_Debug::dump($this->_getParam('id')); exit();
     	$this->view->post_data = json_encode($postDataByType);
+    	
+    	
+    	
+    	
     	$this->view->fansNumberBySex = json_encode($fansNumberBySex);
     	
-    	$this->view->topPostByLike = $topPostByLike;
+    	
     	$this->view->topPostByComment = $topPostByComment;
     	
     	$redeemTransactionModel = new Model_RedeemTransactions();

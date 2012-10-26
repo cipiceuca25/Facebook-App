@@ -1,7 +1,16 @@
 
 
 jQuery(document).ready(function($){
-
+	loadGraph("#placeholder");
+	loadGraph("#placeholder2");
+	$('#placeholder').css({'width':'100%', 'height':'150px'});
+	$('#placeholder2').css({'width':'100%', 'height':'150px'});
+	$('#placeholder').resize();
+	$('#placeholder2').resize();
+	topFanTable = $('#topfanTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]} );
+	topPostByLike= $('#topPostByLike').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]});
+	//topFanTable = $('#topfanTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );
+	//getTopFanTable('topfan', 30);
 	/**************** Fanpage Setting Section *******************************/
 	$( "#myFanpageSettingModel" ).dialog("destroy");
 
@@ -173,7 +182,7 @@ jQuery(document).ready(function($){
 	}, function(){});
 	
 	/**************** Analytic Table Section *******************************/
-	getTopFanTable('topfan', 30);
+	//getTopFanTable('topfan', 30);
 	
 
 	
@@ -244,8 +253,7 @@ jQuery(document).ready(function($){
 	}
 	
 	/**************** Graph Section *******************************/
-	$('#placeholder').css({'width':'400px', 'height':'200px'});
-
+	
     // a null signifies separate line segments
     var options = {
 		xaxis: {
@@ -261,8 +269,35 @@ jQuery(document).ready(function($){
             backgroundColor: { colors: ["#fff", "#eee"] }
         }
   	}
-  	    
-    $(".graph-drodown a").click(function () {
+    
+    function loadGraph(ui){
+    	type = 'likes';
+    
+
+        if(fanpageId && type) {
+        	//alert(fanpageId+' '+type); return false;
+            $.ajax({
+            	url: '/api/fanpages/' + fanpageId + '?type=' + type,
+                type: 'GET',
+                dataType: 'json',
+                error: function( data ) {
+                	alert('error');
+                },
+                success: function (data){
+                	var dataset = [];
+                	for(i=0; i < data.length; i++) {
+                		dataset.push( [ (new Date(data[i].end_time)).getTime(), data[i].value ]);
+                	}
+
+                    $.plot($(ui), [{ label: type,  data:dataset}], options);
+                }
+            });            
+        }
+    }
+    
+    
+    
+    $(".graph-dropdown a").click(function () {
 
 		var type;
 		switch($(this).html()) {
@@ -289,7 +324,7 @@ jQuery(document).ready(function($){
         	//alert(fanpageId+' '+type); return false;
             $.ajax({
             	url: '/api/fanpages/' + fanpageId + '?type=' + type,
-                type: 'analystic',
+                type: 'dashboard',
                 dataType: 'json',
                 error: function( data ) {
                 	alert('error');

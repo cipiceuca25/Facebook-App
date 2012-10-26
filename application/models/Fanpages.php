@@ -31,6 +31,54 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		//Zend_Debug::dump($rows->toArray());
 		return $rows->toArray();	
 	}
+	public function getTopObjectsWithinTime($fanpage_id, $limit){
+		
+		$select = "select x.*, fan_name from (
+
+					select p.post_id, facebook_user_id, post_message as message, 
+					post_type, post_description, picture, link, link_name, created_time,
+					post_likes_count, post_comments_count, (case like_interactions when like_interactions > 0 then like_interactions else 0 end) as like_interactions ,
+					post_comments_count + (case like_interactions when like_interactions > 0 then like_interactions else 0 end) as total_interactions
+					from posts p
+					
+					left join 
+					(select post_id,  count(*) as like_interactions
+					from likes
+					where fanpage_id = $fanpage_id 
+					group by post_id) as a
+					
+					on a.post_id = p.post_id
+					where p.fanpage_id = $fanpage_id
+					&&
+					timestampdiff(HOUR, created_time, curdate()) < $limit
+					
+					union 
+					
+					select 
+					
+					comment_id as post_id, facebook_user_id, comment_message as message, 
+					comment_type as post_type, null as post_description, null as picture,null as link, null as link_name, created_time,
+					comment_likes_count as post_likes_count, 0 as post_comments_count, (case like_interactions when like_interactions > 0 then like_interactions else 0 end) as like_interactions ,
+					(case like_interactions when like_interactions > 0 then like_interactions else 0 end) as total_interactions
+					 
+					from comments c
+					left join 
+					(select post_id, count(*) as like_interactions
+					from likes
+					where fanpage_id = $fanpage_id
+					group by post_id) as a
+					
+					on a.post_id = c.comment_id
+					where c.fanpage_id = $fanpage_id 
+					&&
+					timestampdiff(HOUR, created_time, curdate()) < $limit
+					) as x
+					left join fans f
+					on f.facebook_user_id = x.facebook_user_id
+					order by total_interactions DESC";
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
 	
 	public function getTopPostsByNumberOfLikes($fanpage_id, $limit) {
 		$postModel = new Model_Posts();

@@ -1558,6 +1558,9 @@ function timeZone(time) {
 				var mindiff = Math.floor(difference/1000/60);
 				if(mindiff <1){
 					var secdiff = Math.floor(difference/1000);
+					if (secdiff < 0){
+						return 'A few seconds ago';
+					}
 					return secdiff + ((secdiff==1)? ' second ago' : ' seconds ago');
 				}
 		

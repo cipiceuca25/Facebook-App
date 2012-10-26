@@ -155,9 +155,30 @@ background-image: -webkit-radial-gradient(center, circle farthest-corner, #FFFFF
 background-image: radial-gradient(circle farthest-corner at center, #FFFFFF 0%, #d3d3d3 100%);
 }
 
+
+.nav-tabs{
+	margin-bottom:0px;
+	border-bottom:0px solid; 
+}
+
+.nav-tabs li .active a,
+.nav-tabs li .active a:hover{
+	background-color:white;
+}
+.nav-tabs  li  a{
+	background-color:#b8b8b8;
+	border:1px solid #DDD
+}
+
+.nav-tabs  li  a:hover{
+	background-color:white;
+}
+
+
 .navbar .nav li a,
 a{
 	color:#3B5998;
+	
 	text-shadow:none;
 	cursor:pointer;
 }
@@ -168,23 +189,78 @@ a:hover{
 	text-shadow:none;
 }
 
-.navbar-inner{
-	background:white;
-	box-shadow:none;
-}
 
-.navbar .nav li a{
-	padding:20px 20px 12px;
-	font-size:15px;
-}
 
 .navbar .brand{
-	padding: 10px 17px 1px;
+	padding: 13px 20px;
+	margin-left:20px;
 }
 .brand img{
 	width:100px;
 }
 
+.table th, .table td{
+padding:0px;
+}
+
+.breadcrumb.custom{
+
+margin-left:20px;
+margin-right:20px;
+margin-bottom:0px;
+padding-top:15px;
+padding-bottom:15px;
+
+text-align:right;
+.border-radius(0 0 3px 3px);
+border-top:0px solid;
+}
+
+.breadcrumb.custom li{
+padding:5px;
+}
+
+.padding{
+	padding:20px;
+	padding-top:0px;
+}
+
+[role="main"]{
+	margin-top:65px;
+}
+
+.box.tab-content{
+	.border-radius(0 0 3px 3px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 table.fanpage {
 	margin-bottom:0px;
 }
@@ -204,9 +280,7 @@ table.fanpage img{
 	
 }
 
-[role="main"]{
-	margin-top:80px;
-}
+
 
 .upgrade ul, ol{
 margin:0 0 0 0;
@@ -233,16 +307,13 @@ border-bottom-color:grey;
 
 }
 
-.padding{
-	padding:20px;
-}
+
 
 .box{
 #gradient > .vertical(white, #F7f7f7 );
 border:1px solid #DDD;
 padding:10px;
 .border-radius(3px);
-
 }
 
 
