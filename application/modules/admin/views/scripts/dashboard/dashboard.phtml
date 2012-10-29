@@ -2,9 +2,10 @@
 <? //$this->headLink()->headLink(array('rel'=>'stylesheet', 'href'=>'/css/dashboard/dashboard.css', 'type'=>'text/css')) ?>
 
 <script>
-var fanpageId = <?= $this->page_id ?>;
-var postData = <?= $this->post_data ?>;
-var sexPieData = <?= $this->fansNumberBySex ?>;
+
+
+//var postData = <?= $this->post_data ?>;
+//var sexPieData = <?= $this->fansNumberBySex ?>;
 </script>
 
 <? $this->headScript()->appendFile('/js/libs/jquery.flot.js') ?>
@@ -38,10 +39,10 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 				<li class="divider"></li>
 				<?php foreach($this->pages as $page){ ?>
 					<?php
-						$url = 'https://www.facebook.com/pages/' . str_replace(' ', '-', $page['fanpage_name']) . '/' . $page['fanpage_id'];
+						$url = '/admin/dashboard/dashboard?id='.$page['fanpage_id'];
 					?>
 					
-					<li><a href="<?= $url ?>"><?= $page['fanpage_name'] ?></a></li>
+					<li><a href="<?= $url ?>"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $page['fanpage_id'] ?>/picture" onerror="ImgError(this);"><?= $page['fanpage_name'] ?></a></li>
 				<?php }?>
 					
 				</ul>
@@ -79,59 +80,90 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 						<div class="span4">
 						<!-- <div class="small-chart">
 							 <img height="32" width="60" src="/img/graph/line_chart.png"></div>-->
-							<div style="border:1px solid black">
-								<div class="chart-detail">
-									
-									<span class="description"># of fans: </span>
+							<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+								<div>
+									<span>Fanpage ID: </span> 
+									<span><?= $this->page_id?></span>
+								</div>
+								<div>
+									<span>Fanpage Name: </span> 
+									<span><?= $this->fanpage_name?></span>
+								</div>
+								<div>
+									<span>Fancrank Fanpage Level: </span> 
+									<span><?= $this->level?></span>
+								</div>
+								<div>
+									<span>Using Fancrank Since: </span> 
+									<span>YYYY-MM-DD </span>
+								</div>
+								<div>
+									<span>Last Admin Activity: </span> 
+									<span>YYYY-MM-DD </span>
+								</div>
+								<div>
+									<span>Last Data Collection: </span> 
+									<span><?= $this->cron_time?> </span>
+								</div>
+							</div>
+							
+							<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+								<div>
+									<span class="description">Number of Page Likes: </span>
+									<span class="amount"><?= $this->likes ?></span>
+								</div>
+								
+								<div>
+									<span class="description">Number of Fans: </span>
 									<span class="amount"><?= $this->fans ?></span>
 								</div>
-								
-								<!-- <div class="small-chart">
-									 <img height="32" width="60" src="/img/graph/graph.png"></div>-->
-								<div class="chart-detail">
-									
-									<span class="description"># of New Fans in 24 hrs :</span>
-									<span class="amount"><?= $this->new_fans ?></span>
+								<div>
+									<span class="description">Overall User Participation </span>
+									<span class="amount"><?= round($this->fans *100/$this->likes, 4) ?> %</span>
 								</div>
-								
-								<!--<div class="small-chart">
-									  <img height="32" width="60" src="/img/graph/colorful_chart.png"></div>-->
-								<div class="chart-detail">
-									
-									<span class="description">% Increase</span>
+								<div>
+									<span class="description">Number of New Fans in the last 24 Hours:</span>
+										<span class="amount"><?= $this->new_fans ?></span>
+								</div>
+								<div>
+									<span class="description">Increase Percentage: </span>
 									<span class="amount"><?= round($this->new_fans * 100 / $this->fans, 4) ?> %</span>
 								</div>
-							
+								<div>
+									<span class="description">Number of New FanCrank Users this Week:</span>
+									<span class="amount"><?= $this->new_fancrank_users?></span>
+								</div>
+								<div>
+									
+									<span class="description">Number of Fans that Participated this Week:</span>
+									<span class="amount"><?= $this->new_interaction_users?></span>
+								</div>
+								<div>
+									<span class="description">Number of Interactions:</span>
+									<span class="amount"><?= $this->new_interaction?></span>
+								</div>
 								
-							</div>
-							<br/>
-							<br/>
-							<div style="border:1px solid black">
-								<div class="chart-detail">
-									
-									<span class="description"># of Customers Signed Up </span>
-									<span class="amount">X</span>
+								<div>
+									<span class="description">Number of Fans that Participated this Week via FanCrank:</span>
+									<span class="amount"><?= $this->fancrank_interaction_users?></span>
 								</div>
-						
-								<!--<div class="small-chart">
-									  <img height="32" width="60" src="/img/graph/colorful_chart.png"></div>-->
-								<div class="chart-detail">
-									
-									<span class="description"># Who participated this week</span>
-									<span class="amount"></span>
+								<div>
+									<span class="description">Number of Interactions via FanCrank:</span>
+									<span class="amount"><?= $this->fancrank_interaction?></span>
 								</div>
-							
-								<!-- <div class="small-chart">
-									 <img height="32" width="60" src="/img/graph/graph.png"></div>-->
-								<div class="chart-detail">
+								
+								
+								
+								<div >
 									
-									<span class="description">#of points awarded:</span>
+									<span class="description"># of points awarded:</span>
 									<span class="amount"></span>
 									<br/>
-									Today | This Week | Month
+									Today - <?= ($this->points[2]['points'] != null)?$this->points[2]['points']:0 ?> | This Week - <?= ($this->points[1]['points'] != null)?$this->points[1]['points']:0?> | Month - <?= ($this->points[0]['points'] != null)?$this->points[0]['points']:0?>
 								</div>
-							
 							</div>
+						
+							
 						</div>
 						
 						<div class="span8">
@@ -142,20 +174,20 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 					<div class="row-fluid">
 						<div class="span6">
 				
-							<table id="topPostByLike">
+							<table class="table" id="topPostByLike">
 								<thead>
 									<tr>
-										<th>Facebook User ID</th>
-										<th>Message</th>
-										<th># of likes</th>
+										<th><a>Fan</a></th>
+										<th><a>Message</a></th>
+										<th><a>Number of Interactions</a></th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php foreach($this->topPostByLike as $post): ?>
 										<tr>
-											<td><?=$post['fan_name']?></td>
-											<td><?=$this->escape($post['message'])?></td>
-											<td><?=$post['total_interactions']?></td>
+											<td style="width:20%"><?=$post['fan_name']?></td>
+											<td style="width:70%"><?=$this->escape($post['message'])?></td>
+											<td style="width:10%"><?=$post['total_interactions']?></td>
 										</tr>
 									<?php endforeach; ?>
 							</tbody>
@@ -166,7 +198,7 @@ var sexPieData = <?= $this->fansNumberBySex ?>;
 							<table class="table" id="topfanTable">
 								<thead>
 									<tr>
-										<th><a>ID</a></th>
+										
 										<th><a>Name</a></th>
 										<th><a>EXP</a></th>
 										<th><a >Level</a></th>

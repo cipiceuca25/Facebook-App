@@ -155,7 +155,7 @@
 					</div>
 
 					<div class="social">
-						<a class="like_control_<?= $post->id?>"  data-placement="top-left" rel="tooltip" id="latest-like-container"
+						<a class="like-control like_control_<?= $post->id?>"  data-placement="top-left" rel="tooltip" id="latest-like-container"
 					
 						<?php if ($this->latestlike[$story] == 0) {?>
 						   data-original-title="Click to like this" onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like<?}else{?>
@@ -522,7 +522,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 	<div class="social"> 
 			
 			
-		<a class="like_control_<?= $post->id?>"  rel="tooltip" data-placement="top-left"
+		<a class="like-control like_control_<?= $post->id?>"  rel="tooltip" data-placement="top-left"
 							
 						<?php if ($this->likes[$count] == 0) {?>
 						  data-original-title="Click to like this"  onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like<?}else{?>

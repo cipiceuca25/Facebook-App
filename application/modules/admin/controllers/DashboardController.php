@@ -5,6 +5,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 	public function preDispatch()
 	{
 		parent::preDispatch();
+		$fp = new Model_Fanpages();
 		$fanpageId = $this->_getParam('id');
 		$uid = $this->_identity->facebook_user_id;
 		$fanpage_admin_model = new Model_FanpageAdmins;
@@ -12,13 +13,16 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			$this->_helper->redirector('index', 'index');
 		}
 		if(!empty($fanpageId)) {
-			$fanpage = new Model_Fanpages();
-			$fanpage = $fanpage->find($this->_getParam('id'))->current();
 			
+			$fanpage = $fp->find($this->_getParam('id'))->current();
+			$this->view->page_id = $fanpageId;
 			$this->view->fanpage_name = $fanpage->fanpage_name;
 		}else {
 			//$this->_redirect('http://www.fancrank.com');
 		}
+		$pages = $fp->getActiveFanpagesByUserId( $this->_identity->facebook_user_id);
+		$this->view->pages = $pages;
+		
 	}
 	
     public function indexAction()
@@ -43,6 +47,8 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     }
 
     public function pointsettingAction() {
+    	$this->_helper->layout()->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender();
     	$fanpageId = $this->_getParam('id');
     	
     	try {
@@ -106,6 +112,8 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	}
     	$this->view->setting = empty($settingData) ? $fanpageSettingModel->getDefaultSetting() : $settingData->toArray();
     	$this->view->page_id = $fanpageId;
+    	
+    	$this->render("pointsetting");
     }
     
     public function fanpagescopeAction() {
@@ -280,6 +288,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$fanStatModel = new Model_FansObjectsStats();
     	$topFanList = $fanStatModel->getTopFanListByFanpageId($fanpageId);
     	
+    	
     	//Zend_Debug::dump($topPostByComment);
     	$follow = new Model_Subscribes();
     	for ($count = 0 ;$count <count($topFanList); $count ++ ){
@@ -293,24 +302,48 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     		}
     	}
     	
-    	$this->view->topFanList = $topFanList;
-     	
-    	$fanpages_model = new Model_Fanpages;
-    	$pages = $fanpages_model->getActiveFanpagesByUserId( $this->_identity->facebook_user_id);
+    	$date = new Zend_Date();
+    	$date->subDay(1);
+    	$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'));
+    	$fans = $fanpageModel ->getFansNumber($fanpageId);
     	//$pages = $this->getUserPagesList($uid, $access_token);
-    	
-    	$this->view->pages = $pages;
-    	
     	$topPostByLike = $fanpageModel->getTopObjectsWithinTime($fanpageId, 24);
+    	$newInteractionsUsers = $fanpageModel -> getNumOfParticipatedUserWithinDays($fanpageId, 7);
+    	$newInteractions = $fanpageModel ->getNumOfInteractionsWithinDays($fanpageId, 7);
+    	$activitiesModel = new Model_FancrankActivities();
+    	$fanCrankInteractionUsers = $activitiesModel -> getNumofUserInteractionsWithinDays($fanpageId, 7);
+    	$fanCrankInteractions = $activitiesModel -> getNumofInteractionsWithinDays($fanpageId, 7);
+    	$newFanCrankUsers = $fanpageModel ->getNewFanCrankUsers($fanpageId);
+    	$level = $fanpageModel->getFanpageLevel($fanpageId);
+    	$likes = $fanpageModel->getFanpageLike($fanpageId);
+    	$crontime = new Model_CronLog();
+    	$crontime = $crontime -> getLastUpdate($fanpageId);
+    	$points = new Model_PointLog();
+    	$points = $points ->getFanpagePoints($fanpageId);
+    	//CHARTS
     	$this->view->topPostByLike = $topPostByLike;
+    	$this->view->topFanList = $topFanList;
     	
+    	//STATS
+    	$this->view->likes = $likes;
+    	$this->view->level = $level;  
+    	$this->view->fans = $fans;
+    	$this->view->new_fans = $newFans;
+    	$this->view->new_interaction_users = $newInteractionsUsers;
+    	$this->view->new_interaction = $newInteractions;
+    	$this->view->new_fancrank_users = $newFanCrankUsers;
+    	$this->view->fancrank_interaction_users = $fanCrankInteractionUsers;
+    	$this->view->fancrank_interaction = $fanCrankInteractions;
+    	$this->view->cron_time = $crontime[0]['end_time'];
+    	$this->view->points = $points;
+
     	
+    	/*
     	
     	
     	$postDataByType = $fanpageModel->getPostsStatByFanpageId($fanpageId);
 
-     	$date = new Zend_Date();
-     	$date->subDay(2);
+     	
      	
      	$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'), 5);
      	
@@ -323,7 +356,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	//Zend_Debug::dump($fansNumberBySex);
     	$this->view->fans = $fanpageModel->getFansNumber($fanpageId);
     	$this->view->new_fans = $newFans;
-    	$this->view->page_id = $fanpageId;
+    	
     	//Zend_Debug::dump($this->_getParam('id')); exit();
     	$this->view->post_data = json_encode($postDataByType);
     	
@@ -346,6 +379,9 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$this->view->page_view = $sideData['page_view'];
     	$this->view->page_post = $sideData['page_post'];
     	$this->view->user_post = $sideData['user_post'];
+    	
+    	
+    	*/
 	}
     
 	public function fantableAction(){
@@ -540,6 +576,17 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		//Zend_Debug::dump($this->_getAllParams());
 		$this->view->page_id = $this->_getParam('id');
 	}
+	
+	public function badgesettingAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+		$userId = $this->_request->getParam('fanpage_id');
+		
+		$this->render("badgesetting");
+	}
+	
+
+	
 	
 	public function showlogAction() {
 		$activityModel = new Model_FancrankActivities();

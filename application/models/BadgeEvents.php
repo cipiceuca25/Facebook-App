@@ -13,11 +13,22 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	}
 	
 	public function getBadgesByFanpageIdAndFanID($fanpage_id, $facebook_user_id, $limit){
-		$select = "SELECT b.name, b.description, b.picture, b.quantity, b.id, e.created_time, e.badge_id
-					from badges b, badge_events e 
-					where e.badge_id = b.id && e.facebook_user_id = $facebook_user_id &&
-					 e.fanpage_id = $fanpage_id
-					order by created_time DESC, quantity   DESC";
+		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active
+					from badge_events e,
+					(
+					SELECT b.id, b.name, b.description, b.quantity, 
+					if (f.weight <=> null, b.weight, f.weight) as weight,  
+					if (f.style_name <=> null, b.stylename, f.style_name) as stylename,
+					if (f.active <=> null, 1, f.active) as active,
+					b.picture
+					
+					FROM badges b
+					left join fancrank.fanpage_badges f
+					on f.badge_id = b.id && fanpage_id = $fanpage_id
+					) as x
+					where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
+					x.active = 1
+					order by created_time DESC , quantity DESC";
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
 		
@@ -27,10 +38,22 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 
 	public function getChosenBadges($fanpage_id, $facebook_user_id, $chosen){
 		
-		$select = "SELECT b.name, b.description, b.picture, b.quantity, b.id, e.created_time
-		from badges b, badge_events e
-		where e.badge_id = b.id && e.facebook_user_id = $facebook_user_id &&
-		e.fanpage_id = $fanpage_id ";
+		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active
+					from badge_events e,
+					(
+					SELECT b.id, b.name, b.description, b.quantity, 
+					if (f.weight <=> null, b.weight, f.weight) as weight,  
+					if (f.style_name <=> null, b.stylename, f.style_name) as stylename,
+					if (f.active <=> null, 1, f.active) as active,
+					b.picture
+					
+					FROM badges b
+					left join fancrank.fanpage_badges f
+					on f.badge_id = b.id && fanpage_id = $fanpage_id
+					) as x
+					where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
+					x.active = 1
+					";
 		switch(count($chosen)){
 			case 3:
 				$select = $select."&& (e.badge_id=$chosen[0] || e.badge_id = $chosen[1] || e.badge_id = $chosen[2])";

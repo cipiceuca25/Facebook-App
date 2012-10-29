@@ -33,7 +33,7 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 	}
 	public function getTopObjectsWithinTime($fanpage_id, $limit){
 		
-		$select = "select x.*, fan_name from (
+		$select = "select distinct x.*, fan_name from (
 
 					select p.post_id, facebook_user_id, post_message as message, 
 					post_type, post_description, picture, link, link_name, created_time,
@@ -44,11 +44,11 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 					left join 
 					(select post_id,  count(*) as like_interactions
 					from likes
-					where fanpage_id = $fanpage_id 
+					where fanpage_id = $fanpage_id && facebook_user_id != fanpage_id
 					group by post_id) as a
 					
 					on a.post_id = p.post_id
-					where p.fanpage_id = $fanpage_id
+					where p.fanpage_id = $fanpage_id && facebook_user_id != fanpage_id
 					&&
 					timestampdiff(HOUR, created_time, curdate()) < $limit
 					
@@ -65,11 +65,11 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 					left join 
 					(select post_id, count(*) as like_interactions
 					from likes
-					where fanpage_id = $fanpage_id
+					where fanpage_id = $fanpage_id && facebook_user_id != fanpage_id
 					group by post_id) as a
 					
 					on a.post_id = c.comment_id
-					where c.fanpage_id = $fanpage_id 
+					where c.fanpage_id = $fanpage_id && facebook_user_id != fanpage_id 
 					&&
 					timestampdiff(HOUR, created_time, curdate()) < $limit
 					) as x
@@ -79,6 +79,84 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	public function getNumOfParticipatedUserWithinDays($fanpage_id, $day){
+		
+		$select ="select count(distinct facebook_user_id)as count from
+					(select facebook_user_id, 'post' as type from posts
+					where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
+					
+					timestampdiff(DAY, created_time, curdate()) < $day
+					
+					union
+					
+					select facebook_user_id, 'comments' as type from comments
+					where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
+					
+					timestampdiff(DAY, created_time, curdate()) < $day
+					
+					union
+					
+					select facebook_user_id, 'likes' as type from likes
+					where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
+					
+					timestampdiff(DAY, updated_time, curdate()) < $day
+					
+					union 
+					
+					select facebook_user_id, 'follow' as type from subscribes
+					where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
+					
+					timestampdiff(DAY, update_time, curdate()) < $day
+					
+					) as a";
+		
+		$row = $this->getAdapter()->fetchAll($select);
+		
+		if(empty($row['count'])) {
+			return 0;
+		}
+		
+		return $row['count'];
+	}
+	public function getNumOfInteractionsWithinDays($fanpage_id, $day){
+	
+		$select ="select count(*) as count from
+		(select facebook_user_id, 'post' as type from posts
+		where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
+			
+		timestampdiff(DAY, created_time, curdate()) < $day
+			
+		union
+			
+		select facebook_user_id, 'comments' as type from comments
+		where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
+			
+		timestampdiff(DAY, created_time, curdate()) < $day
+			
+		union
+			
+		select facebook_user_id, 'likes' as type from likes
+		where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
+			
+		timestampdiff(DAY, updated_time, curdate()) < $day
+			
+		union
+			
+		select facebook_user_id, 'follow' as type from subscribes
+		where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
+			
+		timestampdiff(DAY, update_time, curdate()) < $day
+			
+		) as a";
+	
+		$row = $this->getAdapter()->fetchAll($select);
+	
+		if(empty($row['count'])) {
+			return 0;
+		}
+	
+		return $row['count'];
+	}
 	
 	public function getTopPostsByNumberOfLikes($fanpage_id, $limit) {
 		$postModel = new Model_Posts();
@@ -297,6 +375,21 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $row['count'];
 	}
 	
+	public function getFanpageLike($fanpage_id){
+	
+		$select = $this->getAdapter()->select();
+		$select->from(array('fanpages' => 'fanpages') )
+		->where($this->quoteInto('fanpage_id = ?', $fanpage_id));
+	
+		$row = $this->getAdapter()->fetchRow($select);
+	
+		if(empty($row['fanpage_likes'])) {
+			return 0;
+		}
+	
+		return $row['fanpage_likes'];
+	}
+	
 	public function getFanpageLevel($fanpage_id){
 		
 		$select = $this->getAdapter()->select();
@@ -380,5 +473,17 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		
 		return $result[0]['total'];
 	}
+	
+	public function getNewFanCrankUsers($fanpageId){
+		$select = "SELECT count(*) as count FROM fancrank.fans where fanpage_id = $fanpageId && yearweek(first_login_time) = yearweek(curdate())";
+		
+		$row= $this->getAdapter()->fetchAll($select);
+		if(empty($row['count'])) {
+			return;
+		}
+		
+		return $row['count']; 
+	}
+
 }
 

@@ -1,17 +1,199 @@
 
-
+    
 jQuery(document).ready(function($){
-	loadGraph("#placeholder");
-	loadGraph("#placeholder2");
+	loadGraph("#placeholder", 'Likes');
+	loadGraph("#placeholder2", 'Points');
 	$('#placeholder').css({'width':'100%', 'height':'150px'});
 	$('#placeholder2').css({'width':'100%', 'height':'150px'});
 	$('#placeholder').resize();
 	$('#placeholder2').resize();
 	topFanTable = $('#topfanTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]} );
-	topPostByLike= $('#topPostByLike').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]});
+	topPostByLike= $('#topPostByLike').dataTable({"sDom" : "t", "aaSorting": [[ 3, "desc" ]]});
 	//topFanTable = $('#topfanTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );
 	//getTopFanTable('topfan', 30);
 	/**************** Fanpage Setting Section *******************************/
+	var previousPoint = null;
+	    
+	$("#placeholder").bind("plothover", function (event, pos, item) {
+		if (item) {
+			if (previousPoint != item.dataIndex) {
+		    	previousPoint = item.dataIndex;
+		            
+				$("#graphTooltip").remove();
+				var x = item.datapoint[0].toFixed(2),
+				y = item.datapoint[1].toFixed(2);
+				var newDate = new Date();
+				newDate.setTime(x);
+				showTooltip(item.pageX, item.pageY, parseInt(y) + " " + item.series.label + " as of " + newDate.toLocaleString());
+			}
+		} else {
+			$("#graphTooltip").remove();
+			previousPoint = null;            
+		}
+	
+	});
+	
+	$("#placeholder").bind("plotclick", function (event, pos, item) {
+	    if (item) {
+			plot.highlight(item.series, item.datapoint);
+	    }
+	});
+	
+	$("#placeholder2").bind("plothover", function (event, pos, item) {
+		if (item) {
+			if (previousPoint != item.dataIndex) {
+		    	previousPoint = item.dataIndex;
+		            
+				$("#graphTooltip").remove();
+				var x = item.datapoint[0].toFixed(2),
+				y = item.datapoint[1].toFixed(2);
+				var newDate = new Date();
+				newDate.setTime(x);
+				showTooltip(item.pageX, item.pageY, parseInt(y) + " " + item.series.label + " as of " + newDate.toLocaleString());
+			}
+		} else {
+			$("#graphTooltip").remove();
+			previousPoint = null;            
+		}
+	
+	});
+	
+	$("#placeholder2").bind("plotclick", function (event, pos, item) {
+	    if (item) {
+			plot.highlight(item.series, item.datapoint);
+	    }
+	});
+});	
+
+
+function loadGraph(ui, type){
+
+	options = {		xaxis: {
+						mode: "time",
+						minTickSize: [1, "day"]
+						},
+					series: {
+							lines: { show: true }
+						},
+					grid: {
+						hoverable: true, 
+						clickable: true,
+					    backgroundColor: { colors: ["#fff", "#eee"] }
+				    }
+				}
+
+	if (type == 'Likes'){
+	   	if(fanpageId) {
+	    	//alert(fanpageId+' '+type); return false;
+			$.ajax({
+				url: '/admin/fanpage/graphlikes/'+fanpageId,
+			    type: 'get',
+			    dataType: 'json',
+			    error: function( data ) {
+			    	alert('error');
+			    },
+			    success: function (data){
+			    	var dataset = [];
+			    	for(i=0; i < data.length; i++) {
+			    	
+			    		dataset.push( [ (new Date(data[i].end_time)).getTime(), (data[i].value)]);
+			    	}
+			
+			        $.plot($(ui), [{ label: type,  data:dataset}], options);
+			    }
+			});            
+	   	}
+	}else if (type='Points'){
+		if(fanpageId) {
+	    	//alert(fanpageId+' '+type); return false;
+			$.ajax({
+				url: '/admin/fanpage/graphpoints/'+fanpageId,
+			    type: 'get',
+			    dataType: 'json',
+	
+			    error: function( data ) {
+			    	alert('error');
+			    },
+			    success: function (data){
+			    	//console.log(data);
+			    	
+			    	var dataset = [];
+			    	for(i=0; i < data.length; i++) {
+			    		dataset.push( [ (new Date(data[i].hours)).getTime(), data[i].sum ]);
+			    	}
+			
+			        $.plot($(ui), [{ label: type,  data:dataset}], options);
+			    }
+			});            
+	   	}
+	}
+}
+
+function showTooltip(x, y, contents) {
+    $('<div id="graphTooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 15,
+        border: '1px solid #fdd',
+        padding: '2px',
+        'background-color': '#fee',
+        opacity: 0.80
+    }).appendTo("body").fadeIn(200);
+}
+
+function loadBadgeSettings(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/badgesetting?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#badges').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$('#badges').html(data);
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the mini followers list');
+		}
+	});
+	
+}
+
+
+function loadPointSettings(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/pointsetting?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#points').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$('#points').html(data);
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting point settings');
+		}
+	});	
+}
+
+$('#badges-tab').live('click', function() {
+	loadBadgeSettings();
+});
+
+$('#points-tab').live('click', function() {
+	loadPointSettings();
+});
+/*	
 	$( "#myFanpageSettingModel" ).dialog("destroy");
 
 	$('#myFanpageSettingModel').dialog({
@@ -65,7 +247,7 @@ jQuery(document).ready(function($){
 		$('#myFanpageSettingModel').dialog( "close" );
 	});
 
-	/**************** User Point Modify Model Section *******************************/
+	//User Point Modify Model Section 
 	$( "#pointModifyModel" ).dialog( "destroy" );
 
 	$('#pointModifyModel').dialog({
@@ -148,7 +330,7 @@ jQuery(document).ready(function($){
 		}
 	});
 	
-	/***********************************************/
+	///////////////////////////////////////////////////////
 	$('.progress-preview').each(function(){
 		var el = $(this);
 		function up(){
@@ -181,7 +363,7 @@ jQuery(document).ready(function($){
 		}
 	}, function(){});
 	
-	/**************** Analytic Table Section *******************************/
+	///Analytic Table Section 
 	//getTopFanTable('topfan', 30);
 	
 
@@ -191,7 +373,7 @@ jQuery(document).ready(function($){
 
    // var topFanTable = $('#topPostByComment').dataTable();
     
-    /*******************************************************************/
+ ////////////////////////////////////////////////////
     $( "#userprofile" ).dialog( "destroy" );
     
 	$('#userprofile').dialog({
@@ -214,29 +396,9 @@ jQuery(document).ready(function($){
 	
 	
 	
-/*
-	function popover(x){
-		//alert ('getting info for '+ id);
-		$.ajax({
-    		type: "GET",
-    		url:  serverUrl +'/admin/dashboard/fanprofile/'+ fanpageId +'?facebook_user_id=' + x,
-    		dataType: "html",
-    		cache: false,
-    		async: false,
-    		success: function( data ) {
-    			
-    			$('#fan-profile-content').html(data);
-    			$('#userprofile').dialog( "open" );
-    		},	
-    		error: function( xhr, errorMessage, thrownErro ) {
-    			alert(xhr.statusText);
-    			console.log(xhr.statusText, errorMessage);
-    		}
-    	});
-	}
-	*/
 
-	/* Get the rows which are currently selected */
+
+	// Get the rows which are currently selected 
 	function fnGetSelected( oTableLocal )
 	{
 		var aReturn = new Array();
@@ -252,48 +414,11 @@ jQuery(document).ready(function($){
 		return aReturn;
 	}
 	
-	/**************** Graph Section *******************************/
+	///Graph Section 
 	
     // a null signifies separate line segments
-    var options = {
-		xaxis: {
-			mode: "time",
-			minTickSize: [1, "day"]
-		},
-        series: {
-            lines: { show: true }
-        },
-        grid: {
-        	hoverable: true, 
-        	clickable: true,
-            backgroundColor: { colors: ["#fff", "#eee"] }
-        }
-  	}
-    
-    function loadGraph(ui){
-    	type = 'likes';
-    
-
-        if(fanpageId && type) {
-        	//alert(fanpageId+' '+type); return false;
-            $.ajax({
-            	url: '/api/fanpages/' + fanpageId + '?type=' + type,
-                type: 'GET',
-                dataType: 'json',
-                error: function( data ) {
-                	alert('error');
-                },
-                success: function (data){
-                	var dataset = [];
-                	for(i=0; i < data.length; i++) {
-                		dataset.push( [ (new Date(data[i].end_time)).getTime(), data[i].value ]);
-                	}
-
-                    $.plot($(ui), [{ label: type,  data:dataset}], options);
-                }
-            });            
-        }
-    }
+   
+   
     
     
     
@@ -362,47 +487,11 @@ jQuery(document).ready(function($){
         
     });
     
-    function showTooltip(x, y, contents) {
-        $('<div id="graphTooltip">' + contents + '</div>').css( {
-            position: 'absolute',
-            display: 'none',
-            top: y + 5,
-            left: x + 15,
-            border: '1px solid #fdd',
-            padding: '2px',
-            'background-color': '#fee',
-            opacity: 0.80
-        }).appendTo("body").fadeIn(200);
-    }
+  
     
-    var previousPoint = null;
+ 
     
-    $("#placeholder").bind("plothover", function (event, pos, item) {
-		if (item) {
-        	if (previousPoint != item.dataIndex) {
-            	previousPoint = item.dataIndex;
-                    
-				$("#graphTooltip").remove();
-				var x = item.datapoint[0].toFixed(2),
-				y = item.datapoint[1].toFixed(2);
-				var newDate = new Date();
-				newDate.setTime(x);
-				showTooltip(item.pageX, item.pageY, item.series.label + " of " + newDate.toUTCString() + " = " + parseInt(y));
-			}
-		}
-		else {
-			$("#graphTooltip").remove();
-			previousPoint = null;            
-		}
-    });
-
-    $("#placeholder").bind("plotclick", function (event, pos, item) {
-        if (item) {
-			plot.highlight(item.series, item.datapoint);
-        }
-    });
-
-    /***************************post graph*****************************/
+//post graph
 	$('#postStat').css({'width':'600px', 'height':'600px'});
 	$('#postByLikeStat').css({'width':'600px', 'height':'500px'});
 	$('#postByCommentStat').css({'width':'600px', 'height':'500px'});
@@ -485,7 +574,7 @@ jQuery(document).ready(function($){
    // $.plot($("#postByLikeStat"), barData2, barOptions);
     
   // $.plot($("#postByCommentStat"), barData3, barOptions);
-    /****************************Pie Graph**************************/
+//pie graph
     $('#sexPieGraph2').css({'width':'400px', 'height':'200px'});
 
 	var pieData =getSexPieData2(postData);
@@ -522,7 +611,7 @@ jQuery(document).ready(function($){
     
     $("#sexPieGraph2").bind("plothover", pieHover);
 
-    /****************************Pie Graph**************************/
+//pie graph
     $('#sexPieGraph').css({'width':'400px', 'height':'200px'});
 
 	var pieData = getSexPieData(sexPieData); 
@@ -865,4 +954,25 @@ function fileUpload(form, action_url, div_id) {
  
     document.getElementById(div_id).innerHTML = "Uploading...";
 }
-
+*/
+/*
+function popover(x){
+	//alert ('getting info for '+ id);
+	$.ajax({
+		type: "GET",
+		url:  serverUrl +'/admin/dashboard/fanprofile/'+ fanpageId +'?facebook_user_id=' + x,
+		dataType: "html",
+		cache: false,
+		async: false,
+		success: function( data ) {
+			
+			$('#fan-profile-content').html(data);
+			$('#userprofile').dialog( "open" );
+		},	
+		error: function( xhr, errorMessage, thrownErro ) {
+			alert(xhr.statusText);
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
+}
+*/

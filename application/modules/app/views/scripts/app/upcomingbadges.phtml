@@ -2,7 +2,7 @@
 	<div class="span2 upcoming-badges">
 		<div class="progress">
 			<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
-			<a class="noclick" data-original-title="<?= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+			<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
 			rel="tooltip" data-placement="bottom"  >
 				
 				<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>

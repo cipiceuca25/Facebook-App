@@ -378,13 +378,13 @@ function feedbackAnimation(ui, type) {
 		$(ui).before('<div class = "like-animation" style="width:60px; left:-7px; z-index:100;"></div>')
 		setTimeout(function(){
 			$('.like-animation').remove();
-		}, 2000);
+		}, 200000);
 		break;
 	case 'unlike':
 		$(ui).before('<div class = "unlike-animation" style="width:75px; left:-11px; z-index:100;"></div>')
 		setTimeout(function(){
 			$('.unlike-animation').remove();
-		}, 2000);
+		}, 200000);
 		break;
 	case 'follow':
 		$(ui).before('<div class = "follow-animation" style=" left:-20px; width:86px; z-index:100;"></div>')
@@ -398,14 +398,7 @@ function feedbackAnimation(ui, type) {
 			$('.unfollow-animation').remove();
 		}, 2000);
 		break;
-
-	
-	}
-	
-	
-	
-	
-	
+	}	
 }
 
 
@@ -1943,6 +1936,26 @@ function submit_badges_choice(){
 		success : function(data) {
 			//alert($.trim(data));
 			closeProfile();
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error saving badge choices');
+		}
+	});
+	
+}
+
+function reset_badges_choice(){
+
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/user/' + userId + '/savechosenbadges/',
+		dataType : "html",
+		cache : false,
+		async : true,
+		success : function(data) {
+			//alert($.trim(data));
+			//closeProfile();
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
