@@ -334,13 +334,58 @@ class Model_Posts extends Model_DbTable_Posts
 	
 	}
 	
-	
 	public function getUniqueComment($fanpage_id , $facebook_user_id, $post_id){
 		
 		$select = "";
 		
 		return $this->getAdapter()->fetchAll($select);
 	
+	}
+
+	public function isVirginity($postId) {
+		return $this->getUniqueInteractionCount($postId) > 0 ? false : true; 
+	}
+	
+	public function getUniqueInteractionCount($postId, $filterSelf = true) {
+		$select = "
+				select count(*) as count
+				from
+				(select c.facebook_user_id from comments c left join posts p on (c.comment_post_id = p.post_id) where c.comment_post_id = '" .$postId ."' and p.facebook_user_id != c.facebook_user_id group by c.facebook_user_id
+				union
+				select l.facebook_user_id from likes l left join posts p on (l.post_id = p.post_id) where p.post_id = '" .$postId ."' and p.facebook_user_id != l.facebook_user_id) a
+				";
+		
+		if ($filterSelf === false) {
+			$select = "
+					select count(*) as count
+					from
+					(select c.facebook_user_id from comments c left join posts p on (c.comment_post_id = p.post_id) where c.comment_post_id = '" .$postId ."' group by c.facebook_user_id
+					union
+					select l.facebook_user_id from likes l left join posts p on (l.post_id = p.post_id) where p.post_id = '" .$postId ."') a
+					";
+		}
+		
+		$result = $this->getAdapter()->fetchAll($select);
+		
+		if(!empty($result[0]['count'])) {
+			return $result[0]['count'];
+		}
+		
+		return 0;
+	}
+	
+	public function isUniqueInPost($postId, $facebookUserId) {
+		$select = "
+				select count(*) as count
+				from
+				(select c.facebook_user_id from comments c left join posts p on (c.comment_post_id = p.post_id) where c.comment_post_id = '" .$postId ."' and p.facebook_user_id != c.facebook_user_id and c.facebook_user_id = $facebookUserId group by c.facebook_user_id
+				union
+				select l.facebook_user_id from likes l left join posts p on (l.post_id = p.post_id) where p.post_id = '" .$postId ."' and p.facebook_user_id != l.facebook_user_id and l.facebook_user_id = $facebookUserId) a
+				";
+		
+		$result = $this->getAdapter()->fetchAll($select);
+
+		return isset($result[0]['count']) && $result[0]['count'] == 0 ? true : false;
 	}
 	
 }

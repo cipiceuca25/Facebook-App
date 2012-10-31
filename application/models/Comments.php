@@ -98,13 +98,17 @@ class Model_Comments extends Model_DbTable_Comments
 		return $this->fetchAll($select); 
 	}
 
-	public function getPostOwnerCommentCount($postId, $ownerId) {
+	public function getUserCommentCountByPost($postId, $facebook_user_id) {
 		$select = $this->select();
 		$select->from($this, array('count(*) as count'));
-		$select->where($this->quoteInto('comment_post_id = ?', $postId))
-				->where($this->quoteInto('facebook_user_id = ?', $ownerId));
+		$select->where('comment_post_id = ?', $postId)
+			->where('facebook_user_id = ?', $facebook_user_id);
 		$rows = $this->fetchAll($select);
-		return ($rows[0]->count);
+		
+		if(empty($rows[0]->count)) {
+			return 0;
+		}
+		return $rows[0]->count;
 	}
 }
 

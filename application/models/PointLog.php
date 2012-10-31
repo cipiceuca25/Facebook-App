@@ -96,7 +96,7 @@ order by l.created_time ASC, l.object_id";
 		$query = $this->select()
 			->from($this, array('sum(giving_points) as point, HOUR(created_time) as hours'))
 			->where('fanpage_id = ?', $fanpageId)
-			->where('created_time > >', $today->toString('yyyy-MM-dd 00:00:00'))
+			->where('created_time > ?', $today->toString('yyyy-MM-dd 00:00:00'))
 			->group('hours')
 			->order('created_time desc')
 			->limit($limit);
