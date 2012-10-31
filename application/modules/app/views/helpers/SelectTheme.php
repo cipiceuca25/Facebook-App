@@ -9,7 +9,7 @@ class Fancrank_View_Helper_SelectTheme extends Zend_View_Helper_Abstract
 	}
 	
 	public function selectTheme($choice, $env) {
-		/*
+/*
 		switch($choice){
 			case 1:
 				echo $this->_view->headLink()->headLink(array('type'=>'text/css', 'rel'=>'stylesheet', 'href'=>'/css/loadstyle1.css'));
@@ -41,6 +41,7 @@ class Fancrank_View_Helper_SelectTheme extends Zend_View_Helper_Abstract
 		}else {
 			echo $this->_view->headLink()->headLink(array('type'=>'text/css', 'rel'=>'stylesheet', 'href'=>'/css/style.css'));
 		}
+	
 	}
 }
 

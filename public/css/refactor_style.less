@@ -818,6 +818,7 @@ font-size:11px;
 background-color:@color-post-social-background;
 padding-left:10px;
 margin-bottom:1px;
+position:relative;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1582,21 +1583,23 @@ cursor:default;
 
 .pointlog{
 	width:100%;
-	border:1px solid black;
+	
 }	
 
 .pointlog th{
 	text-align:left;
 	padding:3px;
+	border-bottom:1px solid @color-main-text;
 }
 
 .pointlog td{
-	padding:3px;
+	padding:5px 3px;
+	width:80%;
 }
 
 .pointlog .points{
 	text-align:right;
-
+	padding:3px;
 }
 
 .pointlog .no-border{
@@ -1698,3 +1701,8 @@ display:inline-block
 .post-container .comment-container{
 	padding-left:30px;
 }
+
+.like-control, .likes{
+position:relative;
+}
+

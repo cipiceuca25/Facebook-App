@@ -56,5 +56,22 @@ class Model_Badges extends Model_DbTable_Badges
 		
 		return $this->fetchAll($query);
 	}
+	
+	public function getAllBadges($fanpageId){
+		$select = "select * from
+			(SELECT b.id, b.name, b.description, b.quantity, if (f.weight <=> null, b.weight, f.weight) as weight,  if (f.stylename <=> null, b.stylename, f.stylename) as stylename, 
+			if (f.active <=> null, 1, f.active) as active,
+			b.picture,
+			b.type
+			FROM badges b
+			left join fancrank.fanpage_badges f
+			on f.badge_id = b.id && fanpage_id = $fanpageId) as x
+			where x.active = 1";
+		
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
+	
+	
 }
 

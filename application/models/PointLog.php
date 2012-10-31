@@ -37,24 +37,44 @@ class Model_PointLog extends Model_DbTable_PointLog
 	}
 	
 	public function getPointsWithinDays($fanpageId, $facebook_user_id, $day){
-		$select = "select distinct sum(giving_points) as sum,  l.object_id, l.object_type, f.message, 
-					l.giving_points, l.note, date(l.created_time) as created_time 
+		$select = "select sum, object_id, object_type, date(d.created_time) as created_time, note,d.facebook_user_id, fan_name, d.message from (
+					select sum, object_id, object_type, created_time, note, 
+					(case post_message when post_message<=> NULL then b.facebook_user_id else c.facebook_user_id end)as facebook_user_id, 
+					(case post_message when post_message<=> NULL then post_message else comment_message end) as message from (
 					
-					from point_log l
-					
-					
-					left join  fancrank.fancrank_activities f 
-					on 	f.facebook_user_id = l.facebook_user_id && l.fanpage_id = f.fanpage_id 
-						&& 	f.event_object = l.object_id
+					SELECT sum(l.giving_points) as sum, object_id, object_type, created_time, note FROM fancrank.point_log l
 					where ";
 		if ($facebook_user_id !=null){
-			
 			$select = $select." l.facebook_user_id = $facebook_user_id && ";
 		}
-				
+		
 		$select =  $select." l.fanpage_id = $fanpageId && datediff(curdate(), l.created_time) < $day
-group by object_id
-order by l.created_time ASC, l.object_id";
+					group by l.object_id
+					order by l.object_id) as a 
+					
+					left join 
+					
+					(select facebook_user_id , post_message, post_id
+					from posts
+					where fanpage_id = $fanpageId) as b
+					
+					on a.object_id = b.post_id
+					
+					left join 
+					
+					(select facebook_user_id , comment_message, comment_id
+					from comments
+					where fanpage_id = $fanpageId) as c
+					
+					on a.object_id = c.comment_id
+					
+					) as d
+					left join 
+					
+					fans f
+					on d.facebook_user_id= f.facebook_user_id  
+					order by created_time ASC";
+
 		return $this->getAdapter()->fetchAll($select);
 	}
 		
@@ -91,21 +111,54 @@ order by l.created_time ASC, l.object_id";
 		return $result->toArray();
 	}
 	
-	public function getFanpagePointLogByHour($fanpageId, $limit=1000) {
-		$today = new Zend_Date();
-		$query = $this->select()
-			->from($this, array('sum(giving_points) as point, HOUR(created_time) as hours'))
-			->where('fanpage_id = ?', $fanpageId)
-			->where('created_time > ?', $today->toString('yyyy-MM-dd 00:00:00'))
-			->group('hours')
-			->order('created_time desc')
-			->limit($limit);
+	public function getFanpagePointLogByHour($fanpageId, $date) {
+		$select = "SELECT sum(giving_points)as sum , date_format(created_time, '%Y-%m-%d %H:00:00')as hours FROM fancrank.point_log
+					where fanpage_id = $fanpageId &&
+						created_time > $date
+					group by hours";
 		
-		$result = $this->fetchAll($query);
-		
-		if(empty($result)) return null;
-		return $result->toArray();
+		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	
+	public function getFanpagePoints($fanpage){
+		$select= "
+		SELECT 'Month' as time ,sum(giving_points) as points FROM fancrank.point_log where
+		Month(curdate()) = Month(created_time)
+		&& year(curdate()) = year(created_time)
+		&& fanpage_id = $fanpage
+		
+		union
+		
+		SELECT 'Week' as time ,sum(giving_points) as points FROM fancrank.point_log where
+		yearweek(curdate()) = yearweek(created_time)
+		&& fanpage_id = $fanpage
+		
+		union
+		
+		SELECT 'Today' as time ,sum(giving_points) as points FROM fancrank.point_log where
+		Date(curdate()) = date(created_time)
+		&& fanpage_id = $fanpage
+		
+		union
+		
+		SELECT 'all' as time ,sum(giving_points) as points 
+		FROM fancrank.point_log where fanpage_id = $fanpage
+		";
+		
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
+	
+	public function getPointsByType($fanpageId){
+		
+		$select= "SELECT object_type, sum(giving_points) as points, sum(bonus) as bonus FROM fancrank.point_log 
+					where fanpage_id = $fanpageId
+					group by object_type";
+		
+		return $this->getAdapter()->fetchAll($select);
+		
+	
+	}
 }
 

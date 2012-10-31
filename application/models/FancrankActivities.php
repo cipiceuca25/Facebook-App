@@ -628,5 +628,31 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 			->where('fanpage_id != facebook_user_id')->limit(1000);
 		return $this->fetchAll($query);
 	}
+	
+	
+	public function getNumofInteractionsWithinDays ( $fanpageId, $days){
+		$select = "SELECT count(*) FROM fancrank.fancrank_activities 
+					where
+					fanpage_id = $fanpageId &&
+					timestampdiff(DAY, created_time, curdate()) < 7";
+		$result = $this->getAdapter()->fetchAll($select);
+		if(empty($result['count'])) {
+			return 0;
+		}
+		
+		return $result['count'];
+	}
+	
+	public function getNumOfUserInteractionsWithinDays ( $fanpageId, $days){
+		$select = "SELECT count(distinct facebook_user_id) FROM fancrank.fancrank_activities 
+					 where fanpage_id = $fanpageId &&
+					timestampdiff(DAY, created_time, curdate()) < 7";
+		$result = $this->getAdapter()->fetchAll($select);
+		if(empty($result['count'])) {
+			return 0;
+		}
+		
+		return $result['count'];
+	}
 }
 

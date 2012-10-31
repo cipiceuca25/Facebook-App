@@ -143,7 +143,7 @@
 					</div>	
 			
 					<div class="social"> 
-						<a class="like_control_<?= $this->post->id?>" rel="tooltip" data-placement="top"
+						<a class="like-control like_control_<?= $this->post->id?>" rel="tooltip" data-placement="top"
 							<?php if ($this->likepost == 0) {?>
 								 data-original-title="Click to like this" onclick="like('<?= $this->post->id?>', '<?= $this->post->type?>', '<?=$this->post->from->id?>','<?=$this->post->from->name?>' )" >Like   
 							<?}else{?>
@@ -308,7 +308,7 @@
 									
 									<a class="like_<?= $post->id?>" data-like-count=<?=isset($post->likes)?$post->likes:'0'?>  onclick="getLikesList('<?=$post->id?>',<?=isset($post->likes)?$post->likes:'0'?>, false)" rel="tooltip" data-placement="top" data-original-title="Click to See who likes this"><?=isset($post->likes)?$post->likes:'0'?></a>
 									 
-									<a class="like_control_<?= $post->id?>" rel="tooltip" data-placement="top"
+									<a class="like-control like_control_<?= $post->id?>" rel="tooltip" data-placement="top"
 										<?php if ($this->likes[$count] == 0) {?>
 									  		data-original-title="Click to like this" onclick="like('<?= $post->id?>', 'comment', '<?=$post->from->id?>','<?=$post->from->name?>')">Like
 										<?}else{?>

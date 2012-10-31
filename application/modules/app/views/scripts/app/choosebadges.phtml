@@ -24,13 +24,14 @@ selected_badges=  <?= count($this->selected)?>;
 						<div class="progress cbadges <?= (in_array($b['badge_id'],$this->selected))?'selected':''?> " style="height:50px;width:50px;margin:10px 8px 10px;display:inline-block" 
 							 data-id="<?=$b['badge_id']?>">
 							<div class="bar" style="width: 100%;height:50px"></div>
-							<a data-original-title="<?= $b['name']. '<br/>'.$b['description']?>" 
+							<a data-original-title="<?=$b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
 							 rel="tooltip" data-placement="top" style="float:left; position:relative;top:-50px;" >
 								<img src="<?= $b['picture']?>"/>
 							</a>
 						</div>
 						
 					<?php endforeach;?>
+					<!-- <input type="button" class="btn-submit" value="Reset All Choices" onclick="reset_badges_choice()"> -->
 				</div>
 			</div>
 

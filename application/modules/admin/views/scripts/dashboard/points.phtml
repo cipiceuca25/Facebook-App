@@ -1,0 +1,149 @@
+
+
+<div class="row-fluid">
+	<div class="span3">
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<div class="info">
+				<span class="description">Total Points Awarded:</span> 
+				<span class="amount"><?= $this->points[3]['points']?></span>
+				
+			</div>
+			
+			<div class="info">
+				<span class="description">Total Points Awarded from Likes:</span> 
+				<span class="amount"><?= $this->points_by_type['likes']?></span>
+				<br/>
+				<span class="description">From Bonus:</span>
+				<span class="amount"><?= $this->points_by_type['likes-bonus']?></span>
+				<br/>
+				<span class="description">From Base:</span>
+				<span class="amount"><?= $this->points_by_type['likes'] - $this->points_by_type['likes-bonus']?></span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Total Points Awarded from Comments:</span> 
+				<span class="amount"><?= $this->points_by_type['comments']?></span>
+				<br/>
+				<span class="description">From Bonus:</span>
+				<span class="amount"><?= $this->points_by_type['comments-bonus']?></span>
+				<br/>
+				<span class="description">From Base:</span>
+				<span class="amount"><?= $this->points_by_type['comments'] - $this->points_by_type['comments-bonus']?></span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Total Points Awarded from Posts:</span> 
+				<span class="amount"><?= $this->points_by_type['posts']?></span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Points Awarded from Badges:</span> 
+				<span class="amount"><?= $this->badge_points?></span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Points Awarded from Leaderboard:</span> 
+				<span class="amount">X</span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Points Awarded:</span> 
+				<br/>
+				<span class="amount">Today - <?= ($this->points[2]['points'] != null)?$this->points[2]['points']:0 ?> | This Week - <?= ($this->points[1]['points'] != null)?$this->points[1]['points']:0?> | Month - <?= ($this->points[0]['points'] != null)?$this->points[0]['points']:0?> </span>
+			</div>
+		</div>
+	</div>
+	<div class="span8">
+		<div id= "placeholder3"></div>
+	</div>
+
+</div>
+
+<div class="row-fluid">
+
+<div class="span6">
+</div>
+
+<div class="span6">
+</div>
+
+</div>
+
+
+<div class="row-fluid">
+
+	<div class="span12">
+	
+		
+	
+	</div>
+
+</div>
+<!-- 
+
+
+
+
+
+<div>
+	<form class="form-horizontal" action="/admin/dashboard/pointsetting/<?= $this->page_id ?>" method="post">
+			<h3>Point Setting Section</h3>
+			<div>
+				<div class="control-group">
+					<label class="control-label" for="point_like_normal">point for
+						like on user object</label>
+					<div class="controls point-input">
+						<input type="text" id="point_like_normal" name="point_like_normal" value="<?=$this->setting['point_like_normal']?>" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_comment_normal">point for
+						comment on user post</label>
+					<div class="controls point-input">
+						<input type="text" id="point_comment_normal" name="point_comment_normal" value="<?=$this->setting['point_comment_normal']?>" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_post_normal">point for
+						post on fanpage</label>
+					<div class="controls point-input">
+						<input type="text" id="point_post_normal" name="point_post_normal" value="<?=$this->setting['point_post_normal']?>" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_like_admin">point for like
+						on admin post</label>
+					<div class="controls point-input">
+						<input type="text" id="point_like_admin" name="point_like_admin" value="<?=$this->setting['point_like_admin']?>" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_comment_admin">point for
+						comment on admin post</label>
+					<div class="controls point-input">
+						<input type="text" id="point_comment_admin" name="point_comment_admin" value="<?=$this->setting['point_comment_admin']?>" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="bonus_duration">bonus duration</label>
+					<div class="controls point-input">
+						<input type="text" id="point_bonus_duration" name="point_bonus_duration" value="<?=$this->setting['point_bonus_duration']?>" /> minutes
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_post_virginity">post bonus for breaking virginity</label>
+					<div class="controls point-input">
+						<input type="text" id="point_virginity" name="point_virginity" value="<?=$this->setting['point_virginity']?>" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="point_virginity">comment limit per post </label>
+					<div class="controls point-input">
+						<input type="text" id="point_comment_limit" name="point_comment_limit" value="<?=$this->setting['point_comment_limit']?>" />
+					</div>
+				</div>												
+			</div>
+			<input type="submit" name="confirm" value="save" />
+	</form>
+</div>
+ -->

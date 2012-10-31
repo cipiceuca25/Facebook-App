@@ -45,7 +45,7 @@
 						
 			
 											</div>
-										<?} else if ($e['event_object'] == 'admin_sub_point'){?>
+										<?} else if ($e['event_object'] == 'admin_subtract_point'){?>
 											<div class="photo">
 												<a>
 													<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->fanpage_id ?>/picture">
@@ -203,7 +203,7 @@
 													<?= $e['facebook_user_name']?> 
 												</a>
 											</div>
-												<span class="message">has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">status post</a></span>
+												<span class="message">has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">status post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.</span>
 										</div> 
 										
 										<div class="social">
@@ -240,7 +240,7 @@
 													<?= $e['facebook_user_name']?> 
 												</a>
 											</div>
-											<span class="message">has liked your <a onclick="popup_post('<?=$e['event_object']?>', true)">status post</a> </span>
+											<span class="message">has liked your <a onclick="popup_post('<?=$e['event_object']?>', true)">status post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.</span>
 										</div> 
 										
 										<div class="social">
@@ -277,7 +277,7 @@
 													<?= $e['facebook_user_name']?> 
 												</a>
 											</div>
-												<span class="message">has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">photo post</a></span>
+												<span class="message">has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">photo post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.</span>
 										</div>
 										
 										<div class="social">
@@ -314,7 +314,7 @@
 													<?= $e['facebook_user_name']?> 
 												</a>
 											</div>
-												<span class="message">has liked your <a onclick="popup_post('<?=$e['event_object']?>', true)">photo post</a></span>
+												<span class="message">has liked your <a onclick="popup_post('<?=$e['event_object']?>', true)">photo post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.</span>
 										</div> 
 										
 										<div class="social">
@@ -351,7 +351,7 @@
 													<?= $e['facebook_user_name']?> 
 												</a>
 											</div>
-												<span class="message">has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">video post</a></span>
+												<span class="message">has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">video post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.</span>
 										</div>
 										
 										<div class="social">
@@ -388,7 +388,7 @@
 													<?= $e['facebook_user_name']?> 
 												</a>
 											</div>
-												<span class="message">has liked  your <a onclick="popup_post('<?=$e['event_object']?>', true)">video post</a></span>
+												<span class="message">has liked  your <a onclick="popup_post('<?=$e['event_object']?>', true)">video post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.</span>
 										</div>
 										
 										<div class="social">
@@ -425,7 +425,7 @@
 													<?= $e['facebook_user_name']?> 
 												</a>
 											</div>
-												<span class="message">has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">link post</a></span>
+												<span class="message">has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">link post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.</span>
 										</div>
 										
 										<div class="social">
@@ -462,7 +462,7 @@
 													<?= $e['facebook_user_name']?> 
 												</a>
 											</div>
-												<span class="message">has liked your <a onclick="popup_post('<?=$e['event_object']?>', true)">link post</a></span>
+												<span class="message">has liked your <a onclick="popup_post('<?=$e['event_object']?>', true)">link post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.</span>
 										</div>
 										
 										<div class="social">
@@ -498,7 +498,7 @@
 													<?= $e['facebook_user_name']?> 
 												</a>
 											</div>
-												<span class="message">has liked  your <a onclick="popup_post('<?=$e['event_object']?>', true)">comment</a></span>
+												<span class="message">has liked  your <a onclick="popup_post('<?=$e['event_object']?>', true)">comment</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.</span>
 										</div>
 										
 										<div class="social">

@@ -134,7 +134,7 @@
 							</ul>
 							<ul class="toolbar">
 								<? if ($this->fan->fan_point != '?'){?>
-								<li><div><a rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="top"><img src="/img/coins.png" /> <?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></a></div></li>
+								<li><div><a rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><img src="/img/coins.png" /> <?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></a></div></li>
 								<?php }?>
 								<li class="row-fluid" id='notification_upcoming_badges'>
 								<!--  

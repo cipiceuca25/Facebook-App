@@ -161,7 +161,7 @@
 			</div>
 			<div class="social">
 	
-				<a class="like_control_<?= $post->id?>" data-placement="top-left" rel="tooltip"
+				<a class="like-control like_control_<?= $post->id?>" data-placement="top-left" rel="tooltip"
 				<?php if ($this->likes[$count] == 0) {?> 
 					data-original-title="Click to like this" 
 					onclick="like('<?= $post->id?>', '<?= $post->type?>', '<?=$post->from->id?>','<?=$post->from->name?>' )">Like

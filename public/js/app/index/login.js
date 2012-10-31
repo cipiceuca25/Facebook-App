@@ -1,6 +1,7 @@
 jQuery(document).ready(function($){
 	$('.fancrank_login').click(function(event){
 		event.preventDefault();
+
 		//confirmFunction();
 		if(newuser) {
 			$(".profile-content").html("<div class='title '>" +
