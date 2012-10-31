@@ -1,68 +1,9 @@
-
+var defaultMax = 10;
+var defaultMin = 0;
+var defaultStep = 1;
     
 jQuery(document).ready(function($){
-	loadGraph("#placeholder", 'Likes');
-	loadGraph("#placeholder2", 'Points');
-	$('#placeholder').css({'width':'100%', 'height':'150px'});
-	$('#placeholder2').css({'width':'100%', 'height':'150px'});
-	$('#placeholder').resize();
-	$('#placeholder2').resize();
-	topFanTable = $('#topfanTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]} );
-	topPostByLike= $('#topPostByLike').dataTable({"sDom" : "t", "aaSorting": [[ 3, "desc" ]]});
-	//topFanTable = $('#topfanTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );
-	//getTopFanTable('topfan', 30);
-	/**************** Fanpage Setting Section *******************************/
-	var previousPoint = null;
-	    
-	$("#placeholder").bind("plothover", function (event, pos, item) {
-		if (item) {
-			if (previousPoint != item.dataIndex) {
-		    	previousPoint = item.dataIndex;
-		            
-				$("#graphTooltip").remove();
-				var x = item.datapoint[0].toFixed(2),
-				y = item.datapoint[1].toFixed(2);
-				var newDate = new Date();
-				newDate.setTime(x);
-				showTooltip(item.pageX, item.pageY, parseInt(y) + " " + item.series.label + " as of " + newDate.toLocaleString());
-			}
-		} else {
-			$("#graphTooltip").remove();
-			previousPoint = null;            
-		}
-	
-	});
-	
-	$("#placeholder").bind("plotclick", function (event, pos, item) {
-	    if (item) {
-			plot.highlight(item.series, item.datapoint);
-	    }
-	});
-	
-	$("#placeholder2").bind("plothover", function (event, pos, item) {
-		if (item) {
-			if (previousPoint != item.dataIndex) {
-		    	previousPoint = item.dataIndex;
-		            
-				$("#graphTooltip").remove();
-				var x = item.datapoint[0].toFixed(2),
-				y = item.datapoint[1].toFixed(2);
-				var newDate = new Date();
-				newDate.setTime(x);
-				showTooltip(item.pageX, item.pageY, parseInt(y) + " " + item.series.label + " as of " + newDate.toLocaleString());
-			}
-		} else {
-			$("#graphTooltip").remove();
-			previousPoint = null;            
-		}
-	
-	});
-	
-	$("#placeholder2").bind("plotclick", function (event, pos, item) {
-	    if (item) {
-			plot.highlight(item.series, item.datapoint);
-	    }
-	});
+	loadHome();
 });	
 
 
@@ -70,8 +11,13 @@ function loadGraph(ui, type){
 
 	options = {		xaxis: {
 						mode: "time",
+						font:{size:12},
 						minTickSize: [1, "day"]
 						},
+					yaxis:{
+						font:{size:12},
+						
+					},
 					series: {
 							lines: { show: true }
 						},
@@ -93,13 +39,22 @@ function loadGraph(ui, type){
 			    	alert('error');
 			    },
 			    success: function (data){
+			    	//console.log(data);
 			    	var dataset = [];
-			    	for(i=0; i < data.length; i++) {
-			    	
-			    		dataset.push( [ (new Date(data[i].end_time)).getTime(), (data[i].value)]);
+			    	for(i=0; i < data['likes'].length; i++) {
+			    		
+			    		dataset.push( [ (new Date(data['likes'][i].end_time)).getTime(), (data['likes'][i].value)]);
 			    	}
-			
-			        $.plot($(ui), [{ label: type,  data:dataset}], options);
+			    	var dataset2 = [];
+			    	for(i=0; i < data['interaction'].length; i++) {
+			    		
+			    		dataset2.push( [ (new Date(data['interaction'][i].date)).getTime(), (data['interaction'][i].interaction)]);
+			    	}
+			    	//console.log(dataset2);
+			        $.plot($(ui), [{ label: 'Facebook Likes',  data:dataset} ,
+			                       { label: 'Interaction', data:dataset2}
+			                       
+			                       ], options);
 			    }
 			});            
 	   	}
@@ -120,7 +75,7 @@ function loadGraph(ui, type){
 			    	var dataset = [];
 			    	for(i=0; i < data.length; i++) {
 			    		dataset.push( [ (new Date(data[i].hours)).getTime(), data[i].sum ]);
-			    	}
+			    	} 
 			
 			        $.plot($(ui), [{ label: type,  data:dataset}], options);
 			    }
@@ -134,27 +89,33 @@ function showTooltip(x, y, contents) {
         position: 'absolute',
         display: 'none',
         top: y + 5,
-        left: x + 15,
-        border: '1px solid #fdd',
+        width:'200px',
+        left: x - 200,
+        border: '1px solid #ade4ff',
         padding: '2px',
-        'background-color': '#fee',
+        'background-color': '#ade4ff',
         opacity: 0.80
     }).appendTo("body").fadeIn(200);
 }
 
-function loadBadgeSettings(){
+function loadBadge(){
 	
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/admin/dashboard/badgesetting?id=' + fanpageId,
+		url : serverUrl + '/admin/dashboard/badge?id=' + fanpageId,
 		dataType : "html",
 		cache : false,
 		async : true,
 		beforeSend : function() {
 			$('#badges').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
 		},
 		success : function(data) {
 			$('#badges').html(data);
+			mostAwardBadges = $('#MostAwardTable').dataTable({"sDom" : "t", "aaSorting": [[ 3, "desc" ]]} );
+			recentBadges = $('#RecentlyAwardedTable').dataTable({"sDom" : "t", "aaSorting": [[ 3, "desc" ]]} );
+			mostBadges = $('#mostBadgesTable').dataTable({"sDom" : "t", "aaSorting": [[ 1, "desc" ]]} );
+			allBadges = $('#allBadgesTable').dataTable({"sDom" : "t", "aaSorting": [[ 1, "desc" ]]} );
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -164,20 +125,233 @@ function loadBadgeSettings(){
 	
 }
 
-
-function loadPointSettings(){
+function loadHome(){
 	
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/admin/dashboard/pointsetting?id=' + fanpageId,
+		url : serverUrl + '/admin/dashboard/home?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#home').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('#home').html(data);
+			loadGraph("#placeholder", 'Likes');
+			//loadGraph("#placeholder2", 'Points');
+			$('#placeholder').css({'width':'100%', 'height':'500px'});
+			//$('#placeholder2').css({'width':'100%', 'height':'150px'});
+			$('#placeholder').resize();
+			//$('#placeholder2').resize();
+			//topFanTable = $('#topfanTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]} );
+			topPostByLike= $('#topPostByLike').dataTable({"sDom" : "t", "aaSorting": [[ 3, "desc" ]]});
+			
+			//topFanTable = $('#topfanTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );
+			//getTopFanTable('topfan', 30);
+			/**************** Fanpage Setting Section *******************************/
+			var previousPoint = null;
+			    
+			$("#placeholder").bind("plothover", function (event, pos, item) {
+				if (item) {
+					if (previousPoint != item.dataIndex) {
+				    	previousPoint = item.dataIndex;
+				            
+						$("#graphTooltip").remove();
+						var x = item.datapoint[0].toFixed(2),
+						y = item.datapoint[1].toFixed(2);
+						var newDate = new Date();
+						newDate.setTime(x);
+						showTooltip(item.pageX, item.pageY, parseInt(y) + " " + item.series.label + " as of " + newDate.toLocaleString());
+					}
+				} else {
+					$("#graphTooltip").remove();
+					previousPoint = null;            
+				}
+			
+			});
+			
+			$("#placeholder").bind("plotclick", function (event, pos, item) {
+			    if (item) {
+					plot.highlight(item.series, item.datapoint);
+			    }
+			});
+
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the mini followers list');
+		}
+	});
+	
+}
+
+function loadFacebookInsights(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/facebookinsights?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#facebook').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('#facebook').html(data);
+			
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the mini followers list');
+		}
+	});
+	
+}
+
+function loadUsers(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/users?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#users').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('#users').html(data);
+			userTable = $('#userTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]} );
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the mini followers list');
+		}
+	});
+	
+}
+
+function loadDashboard(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/stats?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#dashboard').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('#dashboard').html(data);
+	
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the mini followers list');
+		}
+	});
+	
+}
+
+function loadSettings(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/settings?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#settings').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('#settings').html(data);
+	
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting settings');
+		}
+	});
+	
+}
+
+
+
+function loadPoints(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/points?id=' + fanpageId,
 		dataType : "html",
 		cache : false,
 		async : true,
 		beforeSend : function() {
 			$('#points').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
 		},
 		success : function(data) {
 			$('#points').html(data);
+			
+			
+			$('#point_like_normal').spinner({
+				min: defaultMin,
+				max: defaultMax,
+				step: defaultStep
+			});
+			
+			$('#point_comment_normal').spinner({
+				min: defaultMin,
+				max: defaultMax,
+				step: defaultStep
+			});
+			
+			$('#point_post_normal').spinner({
+				min: -10,
+				max: defaultMax,
+				step: defaultStep
+			});
+			
+			$('#point_like_admin').spinner({
+				min: defaultMin,
+				max: defaultMax,
+				step: defaultStep
+			});
+			
+			$('#point_comment_admin').spinner({
+				min: defaultMin,
+				max: defaultMax,
+				step: defaultStep
+			});
+			
+			$('#point_bonus_duration').spinner({
+				min: 0,
+				max: 180,
+				step: 1
+			});
+			
+			$('#point_virginity').spinner({
+				min: defaultMin,
+				max: defaultMax,
+				step: defaultStep
+			});
+			
+			$('#point_comment_limit').spinner({
+				min: defaultMin,
+				max: defaultMax,
+				step: defaultStep
+			});
+			loadGraph("#placeholder3", 'Points');
+			$('#placeholder3').css({'width':'100%', 'height':'150px'});
+			$('#placeholder3').resize();
+		
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -187,14 +361,74 @@ function loadPointSettings(){
 }
 
 $('#badges-tab').live('click', function() {
-	loadBadgeSettings();
+	loadBadge();
 });
 
 $('#points-tab').live('click', function() {
-	loadPointSettings();
+	loadPoints();
 });
+
+$('#users-tab').live('click', function() {
+	loadUsers();
+});
+
+$('#settings-tab').live('click', function() {
+	loadSettings();
+});
+
+$('#dashboard-tab').live('click', function() {
+	loadDashboard();
+});
+
+$('#home-tab').live('click', function() {
+	loadHome();
+});
+
+$('#facebook-tab').live('click', function() {
+	loadFacebookInsights();
+});
+
+function destroyAll(){
+	
+	$('#home').html('');
+	$('#dashboard').html('');
+	$('#settings').html('');
+	$('#users').html('');
+	$('#badges').html('');
+	$('#points').html('');
+
+	try{
+		topFanTable.fnDestroy();
+	}catch(exception){
+	}
+	try{
+		userTable.fnDestroy();
+	}catch(exception){
+	}
+	try{
+		mostAwardBadges.fnDestroy();
+	}catch(exception){
+	}
+	try{
+		recentBadges.fnDestroy();
+	}catch(exception){
+	}
+	try{
+		mostBadges.fnDestroy();
+	}catch(exception){
+	}
+	try{
+		allBadges.fnDestroy();
+	}catch(exception){
+	}
+	try{
+		topPostByLike.fnDestroy();
+	}catch(exception){
+	}
+
+}
 /*	
-	$( "#myFanpageSettingModel" ).dialog("destroy");
+	$( "#myFanpageSettingMsodel" ).dialog("destroy");
 
 	$('#myFanpageSettingModel').dialog({
 		autoOpen: false,

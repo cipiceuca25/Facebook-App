@@ -1,14 +1,89 @@
-Points Settings
+
+
+<div class="row-fluid">
+	<div class="span3">
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<div class="info">
+				<span class="description">Total Points Awarded:</span> 
+				<span class="amount"><?= $this->points[3]['points']?></span>
+				
+			</div>
+			
+			<div class="info">
+				<span class="description">Total Points Awarded from Likes:</span> 
+				<span class="amount"><?= $this->points_by_type['likes']?></span>
+				<br/>
+				<span class="description">From Bonus:</span>
+				<span class="amount"><?= $this->points_by_type['likes-bonus']?></span>
+				<br/>
+				<span class="description">From Base:</span>
+				<span class="amount"><?= $this->points_by_type['likes'] - $this->points_by_type['likes-bonus']?></span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Total Points Awarded from Comments:</span> 
+				<span class="amount"><?= $this->points_by_type['comments']?></span>
+				<br/>
+				<span class="description">From Bonus:</span>
+				<span class="amount"><?= $this->points_by_type['comments-bonus']?></span>
+				<br/>
+				<span class="description">From Base:</span>
+				<span class="amount"><?= $this->points_by_type['comments'] - $this->points_by_type['comments-bonus']?></span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Total Points Awarded from Posts:</span> 
+				<span class="amount"><?= $this->points_by_type['posts']?></span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Points Awarded from Badges:</span> 
+				<span class="amount"><?= $this->badge_points?></span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Points Awarded from Leaderboard:</span> 
+				<span class="amount">X</span>
+			</div>
+			
+			<div class="info">
+				<span class="description">Points Awarded:</span> 
+				<br/>
+				<span class="amount">Today - <?= ($this->points[2]['points'] != null)?$this->points[2]['points']:0 ?> | This Week - <?= ($this->points[1]['points'] != null)?$this->points[1]['points']:0?> | Month - <?= ($this->points[0]['points'] != null)?$this->points[0]['points']:0?> </span>
+			</div>
+		</div>
+	</div>
+	<div class="span8">
+		<div id= "placeholder3"></div>
+	</div>
+
+</div>
+
+<div class="row-fluid">
+
+<div class="span6">
+</div>
+
+<div class="span6">
+</div>
+
+</div>
+
+
+<div class="row-fluid">
+
+	<div class="span12">
+	
+		
+	
+	</div>
+
+</div>
 <!-- 
 
-<?// $this->headLink()->headLink(array('rel'=>'stylesheet', 'href'=>'/css/dashboard/pointsetting.css', 'type'=>'text/css')) ?>
-<?// $this->headScript()->appendFile('/js/libs/ui.spinner.js') ?>
 
-<ul class="breadcrumb">
-  <li><a href="http://www.fancrank.local/admin/dashboard/fanpages"><i class="icon-home"></i></a> <span class="divider">/</span></li>
-  <li><a href="/admin/dashboard/dashboard/<?= $this->page_id ?>">dashboard</a><span class="divider">/</span></li>
-  <li class="active">Point Setting</li>
-</ul>
+
+
 
 <div>
 	<form class="form-horizontal" action="/admin/dashboard/pointsetting/<?= $this->page_id ?>" method="post">

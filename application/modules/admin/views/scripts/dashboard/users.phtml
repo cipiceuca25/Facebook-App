@@ -1,0 +1,81 @@
+<div class="row-fluid">
+	<div class="span3">
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<div class="info">
+				<span class="description">User with the most Points</span> 
+				<span class="amount">X</span>
+			</div>
+			<div class="info">
+				<span class="description">User with the most Likes</span> 
+				<span class="amount">X</span>
+			</div>
+			<div class="info">
+				<span class="description">User with the most Comments</span> 
+				<span class="amount">X</span>
+			</div>
+			<div class="info">
+				<span class="description">User with the most Post</span> 
+				<span class="amount">X</span>
+			</div>
+		
+		</div>
+	</div>
+	
+
+</div>
+
+<div class = "row-fluid">
+	
+	<div class="span4">
+		
+	</div>
+	<div class="span4">
+		
+	</div>
+
+	<div class="span4">
+		
+	</div>
+	
+</div>
+
+<div class="row-fluid">
+	<div class="span12" >
+		<table class="table" id="userTable">
+								<thead>
+									<tr>
+										
+										<th><a>Name</a></th>
+										<th><a>EXP</a></th>
+										<th><a >Level</a></th>
+										<th><a rel="tooltip"  data-original-title="Total # of Posts" data-placement="top"><img src="/img/post.png" /></a></th>
+										<th><a rel="tooltip"  data-original-title="Total # of Likes" data-placement="top"><img src="/img/thumbsup.png"/></a></th>
+										<th><a rel="tooltip" data-original-title="Total # of Comments" data-placement="top"><img src="/img/comment.png" /></a></th>
+										<th><a rel="tooltip"  data-original-title="Total # of Recieved Likes" data-placement="top"><img src="/img/rthumbsup.png" /></a></th>
+										<th><a rel="tooltip" data-original-title="Total # of Recieved Comments" data-placement="top"><img src="/img/rcomment.png" /></a></th>
+										<th><a rel="tooltip" data-original-title="Total Followers" data-placement="top"><img src="/img/eye_arrow.png" /></a></th>
+										<th><a rel="tooltip" data-original-title="Total Following" data-placement="top"><img src="/img/eye_arrow2.png" /></a></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php foreach($this->topFanList as $fan): ?>
+										<tr>
+										
+											<td class="name"><a rel="popover" data-userid="<?=$fan['facebook_user_id']?>"><?=$fan['fan_name']?></a></td>
+											<td class="points"><?=$fan['fan_exp']; ?></td>
+											<td class="level"><?=$fan['fan_level']?></td>
+											<td class="posts"><?=$fan['post_count']?></td>
+											<td class="likes"><?=$fan['like_count']?></td>
+											<td class="comments"><?=$fan['comment_count']?></td>
+											<td class="rlikes"><?=$fan['got_like_count']?></td>
+											<td class="rcomments"><?=$fan['got_comment_count']?></td>
+											<td class="followers"><?=$fan['follower']?></td>
+											<td class="followings"><?=$fan['following']?></td>															
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
+							</table>
+		
+	
+	</div>
+</div>

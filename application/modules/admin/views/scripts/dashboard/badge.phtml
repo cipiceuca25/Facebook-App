@@ -1,0 +1,122 @@
+<div class="row-fluid">
+	<div class="span3">
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<div class="info">
+				<span class="description">Total Number of Badges Awarded:</span> 
+				<span class="amount"><?= $this->totalBadges?></span>
+			</div>
+			<div class="info">
+				<span class="description">Most Awarded Badge:</span> 
+				<span class="amount"><?= $this->mostAwarded[0]['name']?></span>
+			</div>
+			<div class="info">
+				<span class="description">Points Awarded from Badges:</span> 
+				<span class="amount"><?= $this->totalPoints?></span>
+			</div>
+			<div class="info">
+				<span class="description">Badges Awarded:</span> 
+				<span class="amount"> Today - <?=$this->badgesbytime[2]['badges']?> | This Week - <?=$this->badgesbytime[1]['badges']?>| This Month - <?=$this->badgesbytime[0]['badges']?></span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="span9">
+		Most Awarded Badges
+		<table class="table" id="MostAwardTable">
+			<thead>
+				<tr>
+					<th><a>Badge</a></th>
+					<th><a>Name</a></th>
+					<th><a>Description</a></th>
+					<th><a>Count</a></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($this->mostAwarded as $b): ?>
+					<tr>
+						<td>
+							<div class="progress">
+								<div class="bar" style="width: 100%;"></div>
+								<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description']?>" 
+								rel="tooltip" data-placement="bottom"  >
+									<img src="<?= $b['picture']?>" style="opacity:100"/>
+								</a>
+							</div>
+						</td>	
+						<td><?= $b['name']?></td>		
+						<td><?= $b['description']?></td>	
+						<td><?= $b['count']?></td>									
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+<div class = "row-fluid">
+	<div class="span4">
+		Recently Awarded Badges 
+		<table class="table" id="RecentlyAwardedTable">
+			<thead>
+				<tr>
+					<th><a>Fan</a>
+					<th><a>Name</a></th>
+					<th><a>Description</a></th>
+					<th><a >Date</a></th>
+					<th><a>Badge</a></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($this->recentBadges as $b): ?>
+					<tr>
+						<td>
+							<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $b['facebook_user_id'] ?>/picture" onerror="ImgError(this);"> <?=$b['fan_name']?>
+							
+						</td>
+							
+						<td><?= $b['name']?></td>		
+						<td><?= $b['description']?></td>	
+						<td><?= $b['created_time']?></td>
+						<td>
+							<div class="progress">
+								<div class="bar" style="width: 100%;"></div>
+								<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description']?>" 
+								rel="tooltip" data-placement="bottom"  >
+									<img src="<?= $b['picture']?>" style="opacity:100"/>
+								</a>
+							</div>
+						</td>									
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="span4">
+		User with the most badges
+		<table class="table" id="mostBadgesTable">
+			<thead>
+				<tr>
+					<th><a>Fan</a>
+					<th><a>Count</a></th>
+				
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach($this->userMostBadges as $b): ?>
+					<tr>
+						<td>
+							<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $b['facebook_user_id'] ?>/picture" onerror="ImgError(this);"> <?=$b['fan_name']?>
+							
+						</td>
+							
+						<td><?= $b['count']?></td>		
+															
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+

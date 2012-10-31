@@ -48,11 +48,12 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 					group by post_id) as a
 					
 					on a.post_id = p.post_id
-					where p.fanpage_id = $fanpage_id && facebook_user_id != fanpage_id
-					&&
-					timestampdiff(HOUR, created_time, curdate()) < $limit
-					
-					union 
+					where p.fanpage_id = $fanpage_id && facebook_user_id != fanpage_id";
+		if($limit !=null){
+				$select=$select."&&
+					timestampdiff(HOUR, created_time, curdate()) < $limit";
+		}		
+		$select=$select."			union 
 					
 					select 
 					
@@ -70,9 +71,12 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 					
 					on a.post_id = c.comment_id
 					where c.fanpage_id = $fanpage_id && facebook_user_id != fanpage_id 
-					&&
-					timestampdiff(HOUR, created_time, curdate()) < $limit
-					) as x
+					";
+		if($limit !=null){
+				$select=$select."&&
+					timestampdiff(HOUR, created_time, curdate()) < $limit";
+		}	
+		$select=$select."			) as x
 					left join fans f
 					on f.facebook_user_id = x.facebook_user_id
 					order by total_interactions DESC";
@@ -121,28 +125,28 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 	public function getNumOfInteractionsWithinDays($fanpage_id, $day){
 	
 		$select ="select count(*) as count from
-		(select facebook_user_id, 'post' as type from posts
+		(select facebook_user_id, 'post' as type,post_id, created_time from posts
 		where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
 			
 		timestampdiff(DAY, created_time, curdate()) < $day
 			
 		union
 			
-		select facebook_user_id, 'comments' as type from comments
+		select facebook_user_id, 'comments' as type, comment_id, created_time from comments
 		where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
 			
 		timestampdiff(DAY, created_time, curdate()) < $day
 			
 		union
 			
-		select facebook_user_id, 'likes' as type from likes
+		select facebook_user_id, 'likes' as type,post_id, updated_time from likes
 		where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
 			
 		timestampdiff(DAY, updated_time, curdate()) < $day
 			
 		union
 			
-		select facebook_user_id, 'follow' as type from subscribes
+		select facebook_user_id, 'follow' as type, facebook_user_id_subscribe_to, created_time from subscribes
 		where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id &&
 			
 		timestampdiff(DAY, update_time, curdate()) < $day
@@ -154,9 +158,35 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		if(empty($row['count'])) {
 			return 0;
 		}
-	
 		return $row['count'];
 	}
+	
+	public function getTotalInteractionGraph($fanpage_id){
+		
+		$select = "select count(*) as interaction, date(created_time) as date from
+					(select facebook_user_id, 'post' as type, post_id, created_time from posts
+					where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id 
+						
+					union
+						
+					select facebook_user_id, 'comments' as type,comment_id, created_time from comments
+					where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id 
+						
+					union
+						
+					select facebook_user_id, 'likes' as type,post_id, created_time from likes
+					where fanpage_id =  $fanpage_id && facebook_user_id != fanpage_id 
+						
+				
+					) as a
+					group by date(created_time)
+					order by created_time DESC";
+		return $this->getAdapter()->fetchAll($select);
+		
+	}
+	
+	
+	
 	
 	public function getTopPostsByNumberOfLikes($fanpage_id, $limit) {
 		$postModel = new Model_Posts();

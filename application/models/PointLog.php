@@ -138,10 +138,27 @@ class Model_PointLog extends Model_DbTable_PointLog
 		
 		SELECT 'Today' as time ,sum(giving_points) as points FROM fancrank.point_log where
 		Date(curdate()) = date(created_time)
-		&& fanpage_id = $fanpage";
+		&& fanpage_id = $fanpage
+		
+		union
+		
+		SELECT 'all' as time ,sum(giving_points) as points 
+		FROM fancrank.point_log where fanpage_id = $fanpage
+		";
 		
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	
+	public function getPointsByType($fanpageId){
+		
+		$select= "SELECT object_type, sum(giving_points) as points, sum(bonus) as bonus FROM fancrank.point_log 
+					where fanpage_id = $fanpageId
+					group by object_type";
+		
+		return $this->getAdapter()->fetchAll($select);
+		
+	
+	}
 }
 

@@ -65,8 +65,14 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 				$likeStats[] = $value;
 			}
 		}
-
-		$this->_helper->json($likeStats);
+		$fp = new Model_Fanpages();
+		
+		$x = $fp -> getTotalInteractionGraph( $this->_fanpageId);
+		
+		$r['likes'] = $likeStats;
+		$r['interaction'] = $x;
+		
+		$this->_helper->json($r);
 	}
 	
 	
@@ -77,6 +83,14 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$pointStats = $points ->getFanpagePointLogByHour($this->_fanpageId, '2012-10-01');
 
 		$this->_helper->json($pointStats);
+	}
+	
+	public function newFansTableAction(){
+		return 'table of new fancrank fans';
+	}
+
+	public function newFansGraphAction(){
+		return 'graph of new fancrank fans';
 	}
 }
 

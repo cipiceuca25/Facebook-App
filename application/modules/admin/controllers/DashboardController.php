@@ -46,74 +46,48 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         $this->view->pages = $pages;
     }
 
-    public function pointsettingAction() {
+    public function pointsAction() {
     	$this->_helper->layout()->disableLayout();
     	$this->_helper->viewRenderer->setNoRender();
     	$fanpageId = $this->_getParam('id');
     	
-    	try {
-    		$fanpageSettingModel = new Model_FanpageSetting();
-    		$settingData = $fanpageSettingModel->findRow($fanpageId);
+    	
+    	$points = new Model_PointLog();
+    	$allpoints = $points ->getFanpagePoints($fanpageId);
+    	$x = $points ->getPointsByType($fanpageId);
+    	
+    
+    	foreach ($x as $y){
     		
-    		//update new setting
-    		if($this->_getParam('confirm') === 'save') {
-    			$data = array(
-    					'point_like_normal'=>$this->_getParam('point_like_normal'),
-    					'point_comment_normal'=>$this->_getParam('point_comment_normal'),
-    					'point_post_normal'=>$this->_getParam('point_post_normal'),
-    					'point_like_admin'=>$this->_getParam('point_like_admin'),
-    					'point_comment_admin'=>$this->_getParam('point_comment_admin'),
-    					'point_bonus_duration'=>$this->_getParam('point_bonus_duration'),
-    					'point_virginity'=>$this->_getParam('point_virginity'),
-    					'point_comment_limit'=>$this->_getParam('point_comment_limit')
-    			);
-
-    			$dataLog = array();
-    			$dataLog['activity_type'] = 'admin_change_point_setting';
-    			$dataLog['event_object'] = '';
-    			$dataLog['facebook_user_id'] = $this->_auth->getIdentity()->facebook_user_id;
-    			$dataLog['facebook_user_name'] = $this->_auth->getIdentity()->facebook_user_name;
-    			$dataLog['fanpage_id'] = $fanpageId;
-    			$dataLog['target_user_id'] = $fanpageId;
-    			$dataLog['target_user_name'] = '';
-    			$dataLog['message'] = 'admin updated point setting';
-    			$adminActivityModel = new Model_AdminActivities();
-
-    			if($settingData) {
-    				$hasChange = false;
-    				foreach ($data as $key=>$value) {
-    					if($key !== 'top_post_choice' && !is_numeric($value)) throw new Exception('invalid argument');
-    					if($value != $settingData->{$key}) {
-    						$settingData->{$key} = $value;
-    						$hasChange = true;
-    					}
-    				}
-    				
-    				if($hasChange) {
-    					//update fanpage setting data
-    					$settingData->save();
-    					//insert admin activity log
-    					$adminActivityModel->insert($dataLog);
-    				}else {
-    					echo 'no new change';
-    				}
-    			}else {
-    				//insert new paget setting
-    				$data['fanpage_id'] = $fanpageId;
-    				if(!$fanpageSettingModel->isDataValid($data)) throw new Exception('invalid argument');
-    				$fanpageSettingModel->insert($data);
-    				//insert admin activity log
-    				$adminActivityModel->insert($dataLog);
-    			}
-    			
+    		switch ($y['object_type']){
+    			case 'comments':
+    				$pointsbytype['comments'] = $y['points'];
+    				$pointsbytype['comments-bonus'] = $y['bonus'];
+    			break;
+    			case 'posts':
+    				$pointsbytype['posts'] = $y['points'];
+    			break;
+    			case 'likes':
+    				$pointsbytype['likes'] = $y['points'];
+    				$pointsbytype['likes-bonus'] = $y['bonus'];
+    				break;
     		}
-    	} catch (Exception $e) {
-    		echo $e->getMessage();
     	}
-    	$this->view->setting = empty($settingData) ? $fanpageSettingModel->getDefaultSetting() : $settingData->toArray();
+    	
+    	
+    	$badges = new Model_BadgeEvents();
+    	$badgesPoints = $badges -> getTotalPointsFromBadges($fanpageId);
+    	
+    	$this->view->badge_points = $badgesPoints;
+    	$this->view->points = $allpoints;
+    	
+    	
+    	
+    	$this->view->points_by_type = $pointsbytype;
+
     	$this->view->page_id = $fanpageId;
     	
-    	$this->render("pointsetting");
+    	$this->render("points");
     }
     
     public function fanpagescopeAction() {
@@ -281,61 +255,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     public function dashboardAction() {
     	$fanpageId = $this->_getParam('id');
     	
-    	$fanpageModel = new Model_Fanpages;
-    	 
-    	$fans_model = new Model_Fans;
-    	
-    	$fanStatModel = new Model_FansObjectsStats();
-    	$topFanList = $fanStatModel->getTopFanListByFanpageId($fanpageId);
-    	
-    	
-    	//Zend_Debug::dump($topPostByComment);
-    	$follow = new Model_Subscribes();
-    	for ($count = 0 ;$count <count($topFanList); $count ++ ){
-    	
-    		$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
-    		$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
-    		$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
-    		$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
-    		if ($fanpageModel->getFanpageLevel($fanpageId) < 3) {
-    			$topFanList[$count]['fan_exp'] = '?';
-    		}
-    	}
-    	
-    	$date = new Zend_Date();
-    	$date->subDay(1);
-    	$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'));
-    	$fans = $fanpageModel ->getFansNumber($fanpageId);
-    	//$pages = $this->getUserPagesList($uid, $access_token);
-    	$topPostByLike = $fanpageModel->getTopObjectsWithinTime($fanpageId, 24);
-    	$newInteractionsUsers = $fanpageModel -> getNumOfParticipatedUserWithinDays($fanpageId, 7);
-    	$newInteractions = $fanpageModel ->getNumOfInteractionsWithinDays($fanpageId, 7);
-    	$activitiesModel = new Model_FancrankActivities();
-    	$fanCrankInteractionUsers = $activitiesModel -> getNumofUserInteractionsWithinDays($fanpageId, 7);
-    	$fanCrankInteractions = $activitiesModel -> getNumofInteractionsWithinDays($fanpageId, 7);
-    	$newFanCrankUsers = $fanpageModel ->getNewFanCrankUsers($fanpageId);
-    	$level = $fanpageModel->getFanpageLevel($fanpageId);
-    	$likes = $fanpageModel->getFanpageLike($fanpageId);
-    	$crontime = new Model_CronLog();
-    	$crontime = $crontime -> getLastUpdate($fanpageId);
-    	$points = new Model_PointLog();
-    	$points = $points ->getFanpagePoints($fanpageId);
-    	//CHARTS
-    	$this->view->topPostByLike = $topPostByLike;
-    	$this->view->topFanList = $topFanList;
-    	
-    	//STATS
-    	$this->view->likes = $likes;
-    	$this->view->level = $level;  
-    	$this->view->fans = $fans;
-    	$this->view->new_fans = $newFans;
-    	$this->view->new_interaction_users = $newInteractionsUsers;
-    	$this->view->new_interaction = $newInteractions;
-    	$this->view->new_fancrank_users = $newFanCrankUsers;
-    	$this->view->fancrank_interaction_users = $fanCrankInteractionUsers;
-    	$this->view->fancrank_interaction = $fanCrankInteractions;
-    	$this->view->cron_time = $crontime[0]['end_time'];
-    	$this->view->points = $points;
 
     	
     	/*
@@ -577,12 +496,230 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$this->view->page_id = $this->_getParam('id');
 	}
 	
-	public function badgesettingAction(){
+	
+	public function facebookinsightsAction(){
 		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
-		$userId = $this->_request->getParam('fanpage_id');
+		$fanpageId = $this->_request->getParam('id');
 		
-		$this->render("badgesetting");
+		$insights = $this->getRealtimeInsightData($fanpageId, false);
+		
+		Zend_Debug::dump($insights);
+		$this->render("facebookinsights");
+	}
+	
+	public function homeAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+		$fanpageId = $this->_request->getParam('id');
+	
+		
+		
+
+		$fanpageModel = new Model_Fanpages;
+		
+		$fans_model = new Model_Fans;
+		 
+		$fanStatModel = new Model_FansObjectsStats();
+		$topFanList = $fanStatModel->getTopFanListByFanpageId($fanpageId);
+		 
+		 
+		//Zend_Debug::dump($topPostByComment);
+		$follow = new Model_Subscribes();
+		for ($count = 0 ;$count <count($topFanList); $count ++ ){
+			 
+			$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+			$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+			$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+			$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+			if ($fanpageModel->getFanpageLevel($fanpageId) < 3) {
+				$topFanList[$count]['fan_exp'] = '?';
+			}
+		}
+		 
+		$date = new Zend_Date();
+		$date->subDay(1);
+		$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'));
+		$fans = $fanpageModel ->getFansNumber($fanpageId);
+		//$pages = $this->getUserPagesList($uid, $access_token);
+		$topPostByLike = $fanpageModel->getTopObjectsWithinTime($fanpageId, 24);
+		$newInteractionsUsers = $fanpageModel -> getNumOfParticipatedUserWithinDays($fanpageId, 7);
+		$newInteractions = $fanpageModel ->getNumOfInteractionsWithinDays($fanpageId, 7);
+		$activitiesModel = new Model_FancrankActivities();
+		$fanCrankInteractionUsers = $activitiesModel -> getNumofUserInteractionsWithinDays($fanpageId, 7);
+		$fanCrankInteractions = $activitiesModel -> getNumofInteractionsWithinDays($fanpageId, 7);
+		$newFanCrankUsers = $fanpageModel ->getNewFanCrankUsers($fanpageId);
+		$level = $fanpageModel->getFanpageLevel($fanpageId);
+		$likes = $fanpageModel->getFanpageLike($fanpageId);
+		$crontime = new Model_CronLog();
+		$crontime = $crontime -> getLastUpdate($fanpageId);
+		$points = new Model_PointLog();
+		$points = $points ->getFanpagePoints($fanpageId);
+		//CHARTS
+		$this->view->topPostByLike = $topPostByLike;
+		$this->view->topFanList = $topFanList;
+		 
+		//STATS
+		$this->view->likes = $likes;
+		$this->view->level = $level;
+		$this->view->fans = $fans;
+		$this->view->new_fans = $newFans;
+		$this->view->new_interaction_users = $newInteractionsUsers;
+		$this->view->new_interaction = $newInteractions;
+		$this->view->new_fancrank_users = $newFanCrankUsers;
+		$this->view->fancrank_interaction_users = $fanCrankInteractionUsers;
+		$this->view->fancrank_interaction = $fanCrankInteractions;
+		$this->view->cron_time = $crontime[0]['end_time'];
+		$this->view->points = $points;
+		
+		$this->render("home");
+	
+	}
+	
+	public function usersAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+		$fanpageId = $this->_request->getParam('id');
+		
+		$fanStatModel = new Model_FansObjectsStats();
+		$topFanList = $fanStatModel->getTopFanListByFanpageId($fanpageId);
+		$fanpageModel = new Model_Fanpages;
+			
+		//Zend_Debug::dump($topPostByComment);
+		$follow = new Model_Subscribes();
+		for ($count = 0 ;$count <count($topFanList); $count ++ ){
+		
+			$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+			$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+			$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+			$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+			if ($fanpageModel->getFanpageLevel($fanpageId) < 3) {
+				$topFanList[$count]['fan_exp'] = '?';
+			}
+		}
+		$this->view->topFanList = $topFanList;
+		$this->render("users");
+		
+	}
+	
+	public function statsAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+		$fanpageId = $this->_request->getParam('id');
+	
+		$this->render("stats");
+	
+	}
+	
+	public function settingsAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+		$fanpageId = $this->_request->getParam('id');
+		//Zend_Debug::dump($this->getRealtimeInsightData($fanpageId));
+		$b = new Model_Badges();
+		$allBadges = $b-> getAllBadges($fanpageId);
+		for($count=0;$count < count($allBadges); $count++){
+			$allBadges[$count]['description'] = str_replace('[quantity]',$allBadges[$count]['quantity'] ,$allBadges[$count]['description']);
+		}
+		
+		
+		try {
+			$fanpageSettingModel = new Model_FanpageSetting();
+			$settingData = $fanpageSettingModel->findRow($fanpageId);
+		
+			//update new setting
+			if($this->_getParam('confirm') === 'save') {
+				$data = array(
+						'point_like_normal'=>$this->_getParam('point_like_normal'),
+						'point_comment_normal'=>$this->_getParam('point_comment_normal'),
+						'point_post_normal'=>$this->_getParam('point_post_normal'),
+						'point_like_admin'=>$this->_getParam('point_like_admin'),
+						'point_comment_admin'=>$this->_getParam('point_comment_admin'),
+						'point_bonus_duration'=>$this->_getParam('point_bonus_duration'),
+						'point_virginity'=>$this->_getParam('point_virginity'),
+						'point_comment_limit'=>$this->_getParam('point_comment_limit')
+				);
+		
+				$dataLog = array();
+				$dataLog['activity_type'] = 'admin_change_point_setting';
+				$dataLog['event_object'] = '';
+				$dataLog['facebook_user_id'] = $this->_auth->getIdentity()->facebook_user_id;
+				$dataLog['facebook_user_name'] = $this->_auth->getIdentity()->facebook_user_name;
+				$dataLog['fanpage_id'] = $fanpageId;
+				$dataLog['target_user_id'] = $fanpageId;
+				$dataLog['target_user_name'] = '';
+				$dataLog['message'] = 'admin updated point setting';
+				$adminActivityModel = new Model_AdminActivities();
+		
+				if($settingData) {
+					$hasChange = false;
+					foreach ($data as $key=>$value) {
+						if($key !== 'top_post_choice' && !is_numeric($value)) throw new Exception('invalid argument');
+						if($value != $settingData->{$key}) {
+							$settingData->{$key} = $value;
+							$hasChange = true;
+						}
+					}
+		
+					if($hasChange) {
+						//update fanpage setting data
+						$settingData->save();
+						//insert admin activity log
+						$adminActivityModel->insert($dataLog);
+					}else {
+						echo 'no new change';
+					}
+				}else {
+					//insert new paget setting
+					$data['fanpage_id'] = $fanpageId;
+					if(!$fanpageSettingModel->isDataValid($data)) throw new Exception('invalid argument');
+					$fanpageSettingModel->insert($data);
+					//insert admin activity log
+					$adminActivityModel->insert($dataLog);
+				}
+				 
+			}
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+		$this->view->setting = empty($settingData) ? $fanpageSettingModel->getDefaultSetting() : $settingData->toArray();
+		$this->view->allBadges = $allBadges;
+		$this->render("settings");
+	
+	}
+	
+	public function badgeAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+		$fanpageId = $this->_request->getParam('id');
+		
+		$badges = new Model_BadgeEvents();
+	
+		$mostAwarded = $badges -> getMostAwardedBadges($fanpageId);
+		for($count=0;$count < count($mostAwarded); $count++){
+			$mostAwarded[$count]['description'] = str_replace('[quantity]',$mostAwarded[$count]['quantity'] ,$mostAwarded[$count]['description']);
+		}
+	
+		$recentBadges = $badges -> recentAwardedBadges($fanpageId);
+		for($count=0;$count < count($recentBadges); $count++){
+			$recentBadges[$count]['description'] = str_replace('[quantity]',$recentBadges[$count]['quantity'] ,$recentBadges[$count]['description']);
+		}	
+		$userMostBadges = $badges -> getUsersWithMostBadge($fanpageId);
+		
+		$totalBadges = $badges -> getTotalAwardedBadges($fanpageId);
+		$totalPoints = $badges -> getTotalPointsFromBadges($fanpageId);
+		$badgesbytime = $badges -> badgesAwardedByTime($fanpageId);
+		
+		$this->view->mostAwarded = $mostAwarded;
+		$this->view->recentBadges = $recentBadges;
+		$this->view->userMostBadges =$userMostBadges;
+		$this->view->totalBadges = $totalBadges;
+		$this->view->totalPoints = $totalPoints;
+		$this->view->badgesbytime = $badgesbytime ;
+		
+		
+		
+		$this->render("badge");
 	}
 	
 
@@ -699,7 +836,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		return $output;
 	}
 	
-	private function getRealtimeInsightData($fanpageId) {
+	private function getRealtimeInsightData($fanpageId, $parse = true) {
 	
 		$insightId = $fanpageId .'_insights';
 
@@ -733,8 +870,10 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		} catch (Exception $e) {
 			//echo $e->getMessage();
 		}
+		if ($parse)
+			return $this->insightDataParser($insightData);
 		
-		return $this->insightDataParser($insightData);
+		return $insightData;
 	}
 	
 	private function insightDataParser($insightData) {
