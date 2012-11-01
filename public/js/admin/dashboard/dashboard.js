@@ -6,8 +6,213 @@ jQuery(document).ready(function($){
 	loadHome();
 });	
 
+function getHomeFans(time){
+	tick = 'day'
+	 switch(time){
+	 	case 'today':
+	 		tick = 'hours';
+	 		break;
+	 	default :
+	 		tick = 'day';
+	 }
+		//console.log(tick);
+	 options = {		xaxis: {
+			mode: "time",
+			font:{size:12},
+			minTickSize: [1, tick]
+			},
+		yaxis:{
+			font:{size:12},
+			minTickSize: [1]
+		},
 
-function loadGraph(ui, type){
+		series: {
+				lines: { show: true }
+			},
+		grid: {
+			hoverable: true, 
+			clickable: true,
+		    backgroundColor: { colors: ["#fff", "#eee"] }
+	    }
+	}
+	if(fanpageId) {
+	    	//alert(fanpageId+' '+type); return false;
+			$.ajax({
+				url: '/admin/fanpage/graphhomefans/'+fanpageId + '?time='+time,
+			    type: 'get',
+			    dataType: 'json',
+			    error: function( data ) {
+			    	alert('error');
+			    },
+			    beforeSend : function() {
+			    	$('#placeholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+					
+					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+					//destroyAll();
+				},
+			    success: function (data){
+			    	//console.log(data);
+			    	var dataset = [];
+			    	var dataset2 = [];
+			    	var crankdataset = [];
+			    	var crankdataset2 = [];
+			    	
+			    	//console.log(first_time_use);
+			    	for(i=0; i < data.length; i++) {
+			    		if ( ((new Date(data[i].date)).getTime()) >= (new Date(first_time_use).getTime())){
+			    			crankdataset.push( [ (new Date(data[i].date)).getTime(), (data[i].like)]);
+			    			crankdataset2.push( [ (new Date(data[i].date)).getTime(), (data[i].total)]);
+							if (crankdataset.length == 1){
+								dataset.push( [ (new Date(data[i].date)).getTime(), (data[i].like)]);
+				    		
+							}
+							if (crankdataset2.length == 1){
+				    			dataset2.push( [ (new Date(data[i].date)).getTime(), (data[i].total)]);
+							}
+							
+							
+							
+						}else{
+			    			dataset.push( [ (new Date(data[i].date)).getTime(), (data[i].like)]);
+			    			dataset2.push( [ (new Date(data[i].date)).getTime(), (data[i].total)]);
+						}
+			    	}
+			    	
+			    	if (crankdataset.length == 1){
+			    		var date = new Date(crankdataset[0][0]);
+			    		date.setDate(date.getDate()-1);
+			    		crankdataset.push([date.getTime(), 0]);
+			    	}
+			    	if (crankdataset2.length == 1){
+			    		var date = new Date(crankdataset2[0][0]);
+			    		date.setDate(date.getDate()-1);
+			    		crankdataset2.push([date.getTime(), 0]);
+			    	}
+			    	
+			    	if (crankdataset.length == 0){
+			    		var date = new Date();
+			    		crankdataset.push([date.getTime(), 0]);
+			    	
+			    		date.setDate(date.getDate()-1);
+			    		crankdataset.push([date.getTime(), 0]);
+			    	}
+			    	if (crankdataset2.length == 0){
+			    		var date = new Date();
+			   
+			    		crankdataset2.push([date.getTime(), 0]);
+			    
+			    		date.setDate(date.getDate()-1);
+			    		crankdataset2.push([date.getTime(), 0]);
+			    	}
+			    	//console.log(dateset2);
+			        $.plot($('#placeholder'), [ {label: 'Started Using FanCrank', data:crankdataset },{ label: 'Fan Interaction',  data:dataset} ], options);
+			        $.plot($('#placeholder2'), [{label: 'Started Using FanCrank', data:crankdataset2 }, { label: 'Fan Interaction Total',  data:dataset2} ], options);
+			        $('#graphtitle').html('New Fans');
+			        $('#graphtitle2').html('Total New Fans');
+			    }
+			});  
+	}
+}
+
+function getHomeActivedFans(time){
+	tick = 'day'
+	 switch(time){
+	 	case 'today':
+	 		tick = 'hours';
+	 		break;
+	 	default :
+	 		tick = 'day';
+	 }
+		//console.log(tick);
+	 options = {		xaxis: {
+			mode: "time",
+			font:{size:12},
+			minTickSize: [1, tick]
+			},
+		yaxis:{
+			font:{size:12},
+			minTickSize: [1]
+		},
+
+		series: {
+				lines: { show: true }
+			},
+		grid: {
+			hoverable: true, 
+			clickable: true,
+		    backgroundColor: { colors: ["#fff", "#eee"] }
+	    }
+	}
+	if(fanpageId) {
+	    	//alert(fanpageId+' '+type); return false;
+			$.ajax({
+				url: '/admin/fanpage/graphhomeactivefans/'+fanpageId + '?time='+time,
+			    type: 'get',
+			    dataType: 'json',
+			    error: function( data ) {
+			    	alert('error');
+			    },
+			    beforeSend : function() {
+			    	$('#placeholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+					
+					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+					//destroyAll();
+				},
+			    success: function (data){
+			    	//console.log(data);
+			    	var dataset = [];
+			    	var dataset2 = [];
+			    
+			    	
+			    	//console.log(first_time_use);
+			    	for(i=0; i < data.length; i++) {
+			    		
+			    		dataset.push( [ (new Date(data[i].first_login_time)).getTime(), (data[i].active)]);
+			    		dataset2.push( [ (new Date(data[i].first_login_time)).getTime(), (data[i].total)]);
+						
+			    	}
+			    	
+			    	if (dataset.length == 1){
+			    		console.log(dataset);
+			    		var date = new Date(dataset[0][0]);
+			    		date.setDate(date.getDate()-1);
+			    		dataset.push([date.getTime(), 0]);
+			    	}
+			    	if (dataset2.length == 1){
+			    		var date = new Date(dataset2[0][0]);
+			    		date.setDate(date.getDate()-1);
+			    		dataset2.push([date.getTime(), 0]);
+			    	}
+			    	
+			    	
+			    	if (dataset.length == 0){
+			    		var date = new Date();
+			    		dataset.push([date.getTime(), 0]);
+			    	
+			    		date.setDate(date.getDate()-1);
+			    		dataset.push([date.getTime(), 0]);
+			    	}
+			    	if (dataset2.length == 0){
+			    		var date = new Date();
+			   
+			    		dataset2.push([date.getTime(), 0]);
+			    
+			    		date.setDate(date.getDate()-1);
+			    		dataset2.push([date.getTime(), 0]);
+			    	}
+			    	
+			    	//console.log(dateset2);
+			        $.plot($('#placeholder'), [ { label: 'Fan Interaction',  data:dataset} ], options);
+			        $.plot($('#placeholder2'), [{ label: 'Fan Interaction Total',  data:dataset2} ], options);
+			        $('#graphtitle').html('Active Fans');
+			        $('#graphtitle2').html('Total Active Fans');
+			    }
+			});  
+	}
+}
+
+
+function getHomePageLikes(time){
 
 	options = {		xaxis: {
 						mode: "time",
@@ -28,61 +233,228 @@ function loadGraph(ui, type){
 				    }
 				}
 
-	if (type == 'Likes'){
+
 	   	if(fanpageId) {
 	    	//alert(fanpageId+' '+type); return false;
 			$.ajax({
-				url: '/admin/fanpage/graphlikes/'+fanpageId,
+				url: '/admin/fanpage/graphlikes/'+fanpageId+"?time="+time,
 			    type: 'get',
 			    dataType: 'json',
 			    error: function( data ) {
 			    	alert('error');
 			    },
+			    beforeSend : function() {
+			    	$('#placeholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+					
+					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+					//destroyAll();
+				},
 			    success: function (data){
 			    	//console.log(data);
 			    	var dataset = [];
-			    	for(i=0; i < data['likes'].length; i++) {
-			    		
-			    		dataset.push( [ (new Date(data['likes'][i].end_time)).getTime(), (data['likes'][i].value)]);
-			    	}
 			    	var dataset2 = [];
-			    	for(i=0; i < data['interaction'].length; i++) {
+			    	
+			    	for(i=0; i < data[0].length; i++) {
 			    		
-			    		dataset2.push( [ (new Date(data['interaction'][i].date)).getTime(), (data['interaction'][i].interaction)]);
+			    		dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
+			    		dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
 			    	}
-			    	//console.log(dataset2);
-			        $.plot($(ui), [{ label: 'Facebook Likes',  data:dataset} ,
-			                       { label: 'Interaction', data:dataset2}
-			                       
-			                       ], options);
+			    	
+			    	$.plot($('#placeholder'), [{ label: 'Facebook Likes',  data:dataset2} ], options);
+			        $.plot($('#placeholder2'), [{ label: 'Facebook Likes',  data:dataset} ], options);
+			        $('#graphtitle').html('Facebook Likes');
+			        $('#graphtitle2').html('Total Facebook Likes');
 			    }
 			});            
 	   	}
-	}else if (type='Points'){
-		if(fanpageId) {
+
+}
+
+function getHomeFacebookInteractions(time){
+	tick = 'day'
+	 switch(time){
+	 	case 'today':
+	 		tick = 'hours';
+	 		break;
+	 	default :
+	 		tick = 'day';
+	 }
+		//console.log(tick);
+	 options = {		xaxis: {
+			mode: "time",
+			font:{size:12},
+			minTickSize: [1, tick]
+			},
+		yaxis:{
+			font:{size:12},
+			minTickSize: [1]
+		},
+
+		series: {
+				lines: { show: true }
+			},
+		grid: {
+			hoverable: true, 
+			clickable: true,
+		    backgroundColor: { colors: ["#fff", "#eee"] }
+	    }
+	}
+	if(fanpageId) {
 	    	//alert(fanpageId+' '+type); return false;
 			$.ajax({
-				url: '/admin/fanpage/graphpoints/'+fanpageId,
+				url: '/admin/fanpage/graphhomefacebookinteractions/'+fanpageId + '?time='+time,
 			    type: 'get',
 			    dataType: 'json',
-	
 			    error: function( data ) {
 			    	alert('error');
 			    },
+			    beforeSend : function() {
+			    	$('#placeholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+					
+					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+					//destroyAll();
+				},
 			    success: function (data){
 			    	//console.log(data);
+			    	var alldataset = [];
+			    	var postsdataset = [];
+			    	var commentsdataset = [];
+			    	var likesdataset = [];
+			    	var alldataset2 = [];
+			    	var postsdataset2 = [];
+			    	var commentsdataset2 = [];
+			    	var likesdataset2 = [];
 			    	
-			    	var dataset = [];
+			    	//console.log(first_time_use);
 			    	for(i=0; i < data.length; i++) {
-			    		dataset.push( [ (new Date(data[i].hours)).getTime(), data[i].sum ]);
-			    	} 
-			
-			        $.plot($(ui), [{ label: type,  data:dataset}], options);
+			    		
+			    			alldataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].all)]);
+			    			postsdataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].posts)]);
+			    			commentsdataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].comments)]);
+			    			likesdataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].likes)]);
+			    			
+			    			alldataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_all)]);
+			    			postsdataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_posts)]);
+			    			commentsdataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_comments)]);
+			    			likesdataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_likes)]);
+			    	}
+			    	
+			    	//console.log(dateset2);
+			        $.plot($('#placeholder'), [{ label: 'Posts',  data:postsdataset},
+			                                    {label: 'Comments', data:commentsdataset },
+			                                    {label: 'Likes', data:likesdataset }, 
+			                                    {label: 'All', data:alldataset }], options);
+			        $.plot($('#placeholder2'), [{ label: 'Posts',  data:postsdataset2},
+			                                    {label: 'Comments', data:commentsdataset2 },
+			                                    {label: 'Likes', data:likesdataset2 }, 
+			                                    {label: 'All', data:alldataset2 }], options);
+			        //$.plot($('#placeholder2'), [{label: 'Started Using FanCrank', data:crankdataset2 }, { label: 'Fan Interaction Total',  data:dataset2} ], options);
+			        $('#graphtitle').html('Interactions');
+			        $('#graphtitle2').html('Total Interactions');
 			    }
-			});            
-	   	}
+			});  
 	}
 }
+
+
+
+function getInteractionsFanCrank(){
+	options = {		xaxis: {
+		mode: "time",
+		font:{size:12},
+		minTickSize: [1, "day"]
+		},
+		yaxis:{
+			font:{size:12},
+			
+		},
+		series: {
+				lines: { show: true }
+			},
+		grid: {
+			hoverable: true, 
+			clickable: true,
+		    backgroundColor: { colors: ["#fff", "#eee"] }
+	    }
+	}
+	if(fanpageId) {
+		//alert(fanpageId+' '+type); return false;
+		$.ajax({
+			url: '/admin/fanpage/fancrankinteractionsgraph/'+fanpageId,
+		    type: 'get',
+		    dataType: 'json',
+
+		    error: function( data ) {
+		    	alert('error');
+		    },
+		    success: function (data){
+		    	//console.log(data);
+		    	
+		    	var dataset = [];
+		    	var dataset2 = [];
+		    	for(i=0; i < data.length; i++) {
+		    		dataset.push( [ (new Date(data[i].date)).getTime(), data[i].interactions ]);
+		    		dataset2.push( [ (new Date(data[i].date)).getTime(), data[i].total ]);
+		    	} 
+		
+		        $.plot($('#placeholder'), [{ label: 'Interactions Via Fancrank',  data:dataset}], options);
+		        $.plot($('#placeholder2'), [{ label: 'Interactions Via Fancrank Total',  data:dataset2}], options);
+		    }
+		});            
+	}
+
+	
+}
+
+function getHomePointsAwarded(ui){
+
+	options = {		xaxis: {
+						mode: "time",
+						font:{size:12},
+						minTickSize: [1, "day"]
+						},
+					yaxis:{
+						font:{size:12},
+						
+					},
+					series: {
+							lines: { show: true }
+						},
+					grid: {
+						hoverable: true, 
+						clickable: true,
+					    backgroundColor: { colors: ["#fff", "#eee"] }
+				    }
+				}
+
+
+	if(fanpageId) {
+		//alert(fanpageId+' '+type); return false;
+		$.ajax({
+			url: '/admin/fanpage/graphpoints/'+fanpageId,
+		    type: 'get',
+		    dataType: 'json',
+
+		    error: function( data ) {
+		    	alert('error');
+		    },
+		    success: function (data){
+		    	//console.log(data);
+		    	
+		    	var dataset = [];
+		    	for(i=0; i < data.length; i++) {
+		    		dataset.push( [ (new Date(data[i].hours)).getTime(), data[i].sum ]);
+		    	} 
+		
+		        $.plot($(ui), [{ label: 'Points',  data:dataset}], options);
+		    }
+		});            
+	}
+
+}
+
+
+
 
 function showTooltip(x, y, contents) {
     $('<div id="graphTooltip">' + contents + '</div>').css( {
@@ -139,12 +511,12 @@ function loadHome(){
 		},
 		success : function(data) {
 			$('#home').html(data);
-			loadGraph("#placeholder", 'Likes');
+			getHomePageLikes("#placeholder");
 			//loadGraph("#placeholder2", 'Points');
-			$('#placeholder').css({'width':'100%', 'height':'500px'});
-			//$('#placeholder2').css({'width':'100%', 'height':'150px'});
+			$('#placeholder').css({'width':'100%', 'height':'300px'});
+			$('#placeholder2').css({'width':'100%', 'height':'300px'});
 			$('#placeholder').resize();
-			//$('#placeholder2').resize();
+			$('#placeholder2').resize();
 			//topFanTable = $('#topfanTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]} );
 			topPostByLike= $('#topPostByLike').dataTable({"sDom" : "t", "aaSorting": [[ 3, "desc" ]]});
 			
@@ -172,11 +544,27 @@ function loadHome(){
 			
 			});
 			
-			$("#placeholder").bind("plotclick", function (event, pos, item) {
-			    if (item) {
-					plot.highlight(item.series, item.datapoint);
-			    }
+		
+			$("#placeholder2").bind("plothover", function (event, pos, item) {
+				if (item) {
+					if (previousPoint != item.dataIndex) {
+				    	previousPoint = item.dataIndex;
+				            
+						$("#graphTooltip").remove();
+						var x = item.datapoint[0].toFixed(2),
+						y = item.datapoint[1].toFixed(2);
+						var newDate = new Date();
+						newDate.setTime(x);
+						showTooltip(item.pageX, item.pageY, parseInt(y) + " " + item.series.label + " as of " + newDate.toLocaleString());
+					}
+				} else {
+					$("#graphTooltip").remove();
+					previousPoint = null;            
+				}
+			
 			});
+			
+			
 
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -272,34 +660,7 @@ function loadSettings(){
 			//destroyAll();
 		},
 		success : function(data) {
-			$('#settings').html(data);
-	
-		},
-		error : function(xhr, errorMessage, thrownErro) {
-			console.log(xhr.statusText, errorMessage);
-			console.log('error getting settings');
-		}
-	});
-	
-}
-
-
-
-function loadPoints(){
-	
-	$.ajax({
-		type : "GET",
-		url : serverUrl + '/admin/dashboard/points?id=' + fanpageId,
-		dataType : "html",
-		cache : false,
-		async : true,
-		beforeSend : function() {
-			$('#points').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-			//destroyAll();
-		},
-		success : function(data) {
-			$('#points').html(data);
-			
+			$('#settings').html(data);			
 			
 			$('#point_like_normal').spinner({
 				min: defaultMin,
@@ -347,7 +708,32 @@ function loadPoints(){
 				min: defaultMin,
 				max: defaultMax,
 				step: defaultStep
-			});
+			});	
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting settings');
+		}
+	});
+	
+}
+
+
+
+function loadPoints(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/points?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#points').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			
 			loadGraph("#placeholder3", 'Points');
 			$('#placeholder3').css({'width':'100%', 'height':'150px'});
 			$('#placeholder3').resize();
@@ -387,6 +773,10 @@ $('#home-tab').live('click', function() {
 $('#facebook-tab').live('click', function() {
 	loadFacebookInsights();
 });
+
+
+
+
 
 function destroyAll(){
 	

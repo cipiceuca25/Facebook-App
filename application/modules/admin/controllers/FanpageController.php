@@ -49,32 +49,104 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 	}
 
 	public function graphlikesAction(){
-		$time = time();
-		$range = 7776000;
-		$since = $time - $range;
-		$until = $time;
+		$t = $this->_getParam('time');
+		$date = new Zend_Date();
+		
+		$date->subDay(1);
+		
 
 		$collector = new Service_FancrankCollectorService(null,  $this->_fanpageId, $this->_accessToken, 'insights');
 		$result = $collector->collectFanpageInsight(5, 'likes');
 		$likeStats = array();
+		$diffStats = array();
+		$previous = 0;
+		$first = true;
 		foreach ($result as $data) {
 			foreach($data->values as $value) {
+			
 				$time = explode('T', $value->end_time);
+				
 				$newTime = str_replace('-', '/', $time[0]);
-				$value->end_time = $newTime;
-				$likeStats[] = $value;
+				$tempdate = new Zend_Date($time[0]);
+				switch ($t){
+					case 'month':
+						if ($tempdate->toString('Y M') == $date->toString('Y M')){
+							if ($first){
+								$x = 0;
+								$first=false;
+							}else{
+								$x = $value->value - $previous;
+							}
+							$diffStats[] = array('value'=> $x,'end_time'=> $newTime);
+							$value->end_time = $newTime;
+							$likeStats[] = $value;
+						}
+						break;
+					case 'week':
+						if ($tempdate->toString('Y w') == $date->toString('Y w')){
+							if ($first){
+								$x = 0;
+								$first=false;
+							}else{
+								$x = $value->value - $previous;
+							}
+							$diffStats[] = array('value'=> $x,'end_time'=> $newTime);
+							$value->end_time = $newTime;
+							$likeStats[] = $value;
+						}
+						break;
+					default:
+						if ($first){
+							$x = 0;
+							$first=false;
+						}else{
+							$x = $value->value - $previous;
+						}
+						$diffStats[] = array('value'=> $x,'end_time'=> $newTime);
+						$value->end_time = $newTime;
+						$likeStats[] = $value;
+						break;
+				}	
+				$previous = $value->value;
 			}
 		}
-		$fp = new Model_Fanpages();
-		
-		$x = $fp -> getTotalInteractionGraph( $this->_fanpageId);
-		
-		$r['likes'] = $likeStats;
-		$r['interaction'] = $x;
-		
-		$this->_helper->json($r);
+		$a = array();
+		$a [] = $likeStats;
+		$a [] = $diffStats;
+		$this->_helper->json($a);
 	}
 	
+	public function graphhomefansAction(){
+		$time = $this->_getParam('time');
+		$fp = new Model_Fanpages();
+		
+		$x = $fp -> getFanFirstInteractionDateTable( $this->_fanpageId,$time,  true);
+		
+		$this->_helper->json($x);
+	}
+	
+	public function graphhomeactivefansAction(){
+		
+		$time = $this->_getParam('time');
+		$fp = new Model_Fanpages();
+		
+		$x = $fp ->getActiveFanTable( $this->_fanpageId,$time,  true);
+		
+		$this->_helper->json($x);
+		
+	}
+	
+	public function graphhomefacebookinteractionsAction(){
+		
+		$time = $this->_getParam('time');
+		$fp = new Model_Fanpages();
+		
+		$x = $fp ->getFacebookInteractions( $this->_fanpageId,$time,  true);
+		
+		$this->_helper->json($x);
+	
+	
+	}
 	
 	public function graphpointsAction(){
 		
@@ -86,11 +158,38 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 	}
 	
 	public function newFansTableAction(){
+		
+
 		return 'table of new fancrank fans';
 	}
 
 	public function newFansGraphAction(){
+		
+		$fanpage = new Model_Fanpages();
+		
+		$result = $fanpage -> getFanFirstInteractionDateTable($this->_fanpageId, true);
+		
+		Zend_Debug::dump($result);
+		
 		return 'graph of new fancrank fans';
+	}
+	
+
+	
+	
+	public function fancrankinteractionsgraphAction(){
+		
+		$actModel = new Model_FancrankActivities();
+		$act = $actModel -> getFancrankInteractionsGraph($this->_fanpageId, null);
+		
+		$act[0]['total'] = $act[0]['interactions'];
+			
+		for($i = 1; $i < count($act); $i++ ){
+		
+			$act[$i]['total'] = $act[$i]['interactions'] +  $act[$i-1]['total'] ;
+		
+		}
+		$this->_helper->json($act);
 	}
 }
 

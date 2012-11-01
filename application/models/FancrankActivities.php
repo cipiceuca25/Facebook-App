@@ -643,6 +643,16 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 		return $result['count'];
 	}
 	
+	public function getFancrankInteractionsGraph($fanpageId, $days){
+		$select = "SELECT count(*) as interactions, date(created_time)  as date
+					FROM fancrank.fancrank_activities
+					where fanpage_id = $fanpageId
+					group by date(created_time)
+					order by date(created_time)";
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
+	
 	public function getNumOfUserInteractionsWithinDays ( $fanpageId, $days){
 		$select = "SELECT count(distinct facebook_user_id) FROM fancrank.fancrank_activities 
 					 where fanpage_id = $fanpageId &&
