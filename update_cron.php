@@ -142,7 +142,7 @@ if (count($fanpageList) > 0) {
 				}
 								
 				//break;
-			}catch(Exception $e) {
+			} catch(Exception $e) {
 				$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan['facebook_user_id'], $fanpage->fanpage_id);
 				$logger->log('Update fanpage cron Failed: ' .$errMsg .' ' .$e->getMessage(), Zend_Log::INFO);
 				$error = true;
@@ -151,7 +151,7 @@ if (count($fanpageList) > 0) {
 		
 	}
     
-	if($error) {
+	if ($error) {
 		// send email with attachment
 	}
     echo 'job done'.PHP_EOL;

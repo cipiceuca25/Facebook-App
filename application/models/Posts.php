@@ -374,6 +374,35 @@ class Model_Posts extends Model_DbTable_Posts
 		return 0;
 	}
 	
+	public function getUniqueInteractionList($postId, $filterSelf = true) {
+		$select = "
+				select distinct facebook_user_id
+				from
+				(select c.facebook_user_id from comments c left join posts p on (c.comment_post_id = p.post_id) where c.comment_post_id = '" .$postId ."' and p.facebook_user_id != c.facebook_user_id group by c.facebook_user_id
+				union
+				select l.facebook_user_id from likes l left join posts p on (l.post_id = p.post_id) where p.post_id = '" .$postId ."' and p.facebook_user_id != l.facebook_user_id) a
+				";
+	
+		if ($filterSelf === false) {
+			$select = "
+					select distinct facebook_user_id
+					from
+					(select c.facebook_user_id from comments c left join posts p on (c.comment_post_id = p.post_id) where c.comment_post_id = '" .$postId ."' group by c.facebook_user_id
+					union
+					select l.facebook_user_id from likes l left join posts p on (l.post_id = p.post_id) where p.post_id = '" .$postId ."') a
+					";
+		}
+	
+		$result = $this->getAdapter()->fetchAll($select);
+	
+		$finalResult = array();
+		foreach ($result as $row) {
+			$finalResult[] = $row['facebook_user_id'];
+		}
+		
+		return $finalResult;
+	}
+	
 	public function isUniqueInPost($postId, $facebookUserId) {
 		$select = "
 				select count(*) as count

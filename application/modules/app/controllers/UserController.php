@@ -708,7 +708,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 // 						'type' => $data['post_type']
 // 				);
 // 				//Zend_Debug::dump($list);
-// 				$queue->send($message, strtotime('5 minutes'));
+// 				$queue->send($message, strtotime('1 minutes'));
 				
 				// add activity into database
 				$this->addactivity('comment-'.$data['post_type'], $data['post_id'],

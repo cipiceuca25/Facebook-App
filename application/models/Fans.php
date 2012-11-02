@@ -3,6 +3,7 @@
 class Model_Fans extends Model_DbTable_Fans
 {
 	const BASE_XP = 100;
+	const BASE_POINT = 100;
 	const MAX_LEVEL = 60;
 	const LEVEL_FACTOR = 2;
 	
@@ -80,6 +81,14 @@ class Model_Fans extends Model_DbTable_Fans
 	
 	public function getFanCurrency() {
 		return $this->_fanProfile->fan_point;
+	}
+
+	public function getFanPoint() {
+		return $this->_isNew ? self::BASE_XP : $this->_fanProfile->fan_point;
+	}
+	
+	public function getFanExp() {
+		return $this->_isNew ? self::BASE_POINT : $this->_fanProfile->fan_exp;	
 	}
 	
 	public function getFanCountry() {
