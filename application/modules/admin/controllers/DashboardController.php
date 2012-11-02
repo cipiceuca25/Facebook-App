@@ -22,6 +22,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		}
 		$pages = $fp->getActiveFanpagesByUserId( $this->_identity->facebook_user_id);
 		$this->view->pages = $pages;
+	
 		
 	}
 	
@@ -255,11 +256,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     public function dashboardAction() {
     	$fanpageId = $this->_getParam('id');
     	
-
-    	
     	/*
-    	
-    	
     	$postDataByType = $fanpageModel->getPostsStatByFanpageId($fanpageId);
 
      	
@@ -513,64 +510,92 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$this->_helper->viewRenderer->setNoRender(true);
 		$fanpageId = $this->_request->getParam('id');
 	
-		
-		
-
 		$fanpageModel = new Model_Fanpages;
-		
+		$activityModel = new Model_FancrankActivities();
 		$fans_model = new Model_Fans;
-		 
 		$fanStatModel = new Model_FansObjectsStats();
+		$cronModel = new Model_CronLog();
+		
+		//level
+		$level = $fanpageModel->getFanpageLevel($fanpageId);
+		$this->view->level = $level;
+		
+		//using fancrank since
+		$firsttime = $cronModel -> getFirstCron($fanpageId);
+		$this->view->first_time = $firsttime[0]['end_time'];
+		
+		//cron time
+		$crontime = $cronModel-> getLastUpdate($fanpageId);
+		$this->view->cron_time = $crontime[0]['end_time'];
+		
 		$topFanList = $fanStatModel->getTopFanListByFanpageId($fanpageId);
 		 
-		 
 		//Zend_Debug::dump($topPostByComment);
-		$follow = new Model_Subscribes();
-		for ($count = 0 ;$count <count($topFanList); $count ++ ){
+		//$follow = new Model_Subscribes();
+	//	for ($count = 0 ;$count <count($topFanList); $count ++ ){
 			 
-			$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
-			$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
-			$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
-			$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
-			if ($fanpageModel->getFanpageLevel($fanpageId) < 3) {
-				$topFanList[$count]['fan_exp'] = '?';
-			}
-		}
+	//		$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
+	//		$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
+	//		$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
+	//		$topFanList[$count]['following'] = $topFanList[$count]['following'][0]['Following'];
+	//		if ($fanpageModel->getFanpageLevel($fanpageId) < 3) {
+	//			$topFanList[$count]['fan_exp'] = '?';
+	//		}
+	//	}
 		 
-		$date = new Zend_Date();
-		$date->subDay(1);
-		$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'));
-		$fans = $fanpageModel ->getFansNumber($fanpageId);
+	//	$date = new Zend_Date();
+	//	$date->subDay(1);
+	//	$newFans = $fanpageModel->getNewFansNumberSince($fanpageId, $date->toString('yyyy-MM-dd HH:mm:ss'));
+		
 		//$pages = $this->getUserPagesList($uid, $access_token);
+	
+		//$newInteractionsUsers = $fanpageModel -> getNumOfParticipatedUserWithinDays($fanpageId, 7);
+		//$newInteractions = $fanpageModel ->getNumOfInteractionsWithinDays($fanpageId, 7);
+		//$activitiesModel = new Model_FancrankActivities();
+		//$fanCrankInteractionUsers = $activitiesModel -> getNumofUserInteractionsWithinDays($fanpageId, 7);
+		//$fanCrankInteractions = $activitiesModel -> getNumofInteractionsWithinDays($fanpageId, 7);
+	//	$newFanCrankUsers = $fanpageModel ->getNewFanCrankUsers($fanpageId);
+	
+		//chart interactions
 		$topPostByLike = $fanpageModel->getTopObjectsWithinTime($fanpageId, 24);
-		$newInteractionsUsers = $fanpageModel -> getNumOfParticipatedUserWithinDays($fanpageId, 7);
-		$newInteractions = $fanpageModel ->getNumOfInteractionsWithinDays($fanpageId, 7);
-		$activitiesModel = new Model_FancrankActivities();
-		$fanCrankInteractionUsers = $activitiesModel -> getNumofUserInteractionsWithinDays($fanpageId, 7);
-		$fanCrankInteractions = $activitiesModel -> getNumofInteractionsWithinDays($fanpageId, 7);
-		$newFanCrankUsers = $fanpageModel ->getNewFanCrankUsers($fanpageId);
-		$level = $fanpageModel->getFanpageLevel($fanpageId);
-		$likes = $fanpageModel->getFanpageLike($fanpageId);
-		$crontime = new Model_CronLog();
-		$crontime = $crontime -> getLastUpdate($fanpageId);
-		$points = new Model_PointLog();
-		$points = $points ->getFanpagePoints($fanpageId);
-		//CHARTS
 		$this->view->topPostByLike = $topPostByLike;
-		$this->view->topFanList = $topFanList;
+		
+		//$points = new Model_PointLog();
+		//$points = $points ->getFanpagePoints($fanpageId);
+		//CHARTS
+		
+	//	$this->view->topFanList = $topFanList;
 		 
-		//STATS
+		//Page Likes
+		$likes = $fanpageModel->getFanpageLike($fanpageId);
 		$this->view->likes = $likes;
-		$this->view->level = $level;
+		
+		//Fans
+		$fans = $fanpageModel ->getFanFirstInteractionNumber($fanpageId);
 		$this->view->fans = $fans;
-		$this->view->new_fans = $newFans;
-		$this->view->new_interaction_users = $newInteractionsUsers;
-		$this->view->new_interaction = $newInteractions;
-		$this->view->new_fancrank_users = $newFanCrankUsers;
-		$this->view->fancrank_interaction_users = $fanCrankInteractionUsers;
-		$this->view->fancrank_interaction = $fanCrankInteractions;
-		$this->view->cron_time = $crontime[0]['end_time'];
-		$this->view->points = $points;
+		
+		//Actived Fans
+		$activefans = $fanpageModel ->getActiveFanNumber($fanpageId);
+		$this->view->active_fans = $activefans;
+		
+		//facebook interactions
+		$facebookinteractions = $fanpageModel ->getFacebookInteractionsNumber($fanpageId);
+		//Zend_Debug::dump($facebookinteractions);
+		$this->view->facebook_interactions = $facebookinteractions;
+		
+		
+		
+		$fancrankinteractions = $activityModel->getFancrankInteractionsNumber($fanpageId);
+		$this->view->fancrank_interactions = $fancrankinteractions;
+		//$this->view->new_fans = $newFans;
+		//$this->view->new_interaction_users = $newInteractionsUsers;
+		//$this->view->new_interaction = $newInteractions;
+		//$this->view->new_fancrank_users = $newFanCrankUsers;
+		//$this->view->fancrank_interaction_users = $fanCrankInteractionUsers;
+		//$this->view->fancrank_interaction = $fanCrankInteractions;
+		
+		
+		//$this->view->points = $points;
 		
 		$this->render("home");
 	

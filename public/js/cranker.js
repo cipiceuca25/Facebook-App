@@ -378,13 +378,13 @@ function feedbackAnimation(ui, type) {
 		$(ui).before('<div class = "like-animation" style="width:60px; left:-7px; z-index:100;"></div>')
 		setTimeout(function(){
 			$('.like-animation').remove();
-		}, 200000);
+		}, 2000);
 		break;
 	case 'unlike':
 		$(ui).before('<div class = "unlike-animation" style="width:75px; left:-11px; z-index:100;"></div>')
 		setTimeout(function(){
 			$('.unlike-animation').remove();
-		}, 200000);
+		}, 2000);
 		break;
 	case 'follow':
 		$(ui).before('<div class = "follow-animation" style=" left:-20px; width:86px; z-index:100;"></div>')

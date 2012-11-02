@@ -515,5 +515,327 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $row['count']; 
 	}
 
-}
+	public function getFanFirstInteractionDateTable($fanpageId ,$time, $graph) {
+		
+		if ($graph){
+		
+				$select =  "select * from (
+				select count(*) as 'like' ,
+				if ((f.created_time < e.created_time) || (e.created_time <=> null), f.created_time, e.created_time ) as date
+				from fans f
+				left join
+					
+				(select * from (
+				select *
+				from (
+				select created_time, facebook_user_id from posts
+				where fanpage_id = $fanpageId
+			
+				group by facebook_user_id
+				order by created_time asc
+				) a
+					
+				union
+				select *
+				from (
+				select created_time, facebook_user_id from comments
+				where fanpage_id = $fanpageId
+			
+				group by facebook_user_id
+				order by created_time asc
+				) b
+				) as c
+			
+				group by facebook_user_id
+				order by created_time asc
+				) as e
+				on e.facebook_user_id = f.facebook_user_id
+					
+				where fanpage_id = $fanpageId
+				group by if ((f.created_time < e.created_time) || (e.created_time <=> null), date(f.created_time), date(e.created_time) )
+				order by date asc
+				) as x";
+
+			switch ($time){
+				
+				
+				case 'month':
+					$select= $select. " where month(x.date) = month(curdate()) && year(x.date) = year(curdate())";
+					break;
+				case 'week':
+					$select= $select." where yearweek(x.date) = yearweek(curdate())";
+					break;
+				case 'today':
+					$select= $select." where date(x.date) = date(curdate())";
+			 				
+					break;
+						
+			}
+			
+			$result= $this->getAdapter()->fetchAll($select);
+			
+			if ($result){
+				$result[0]['total'] = $result[0]['like'];
+				
+				for($i = 1; $i < count($result); $i++ ){
+					
+					$result[$i]['total'] = $result[$i]['like'] +  $result[$i-1]['total'] ;
+					
+				}
+			}
+		
+			return $result;
+			
+		}else{
+			
+			
+			
+		}
+		
+		
+	}
+	
+	public function getFanFirstInteractionNumber($fanpageId){
+		$select ="select * from (
+					select f.facebook_user_id,
+									if ((f.created_time < e.created_time) || (e.created_time <=> null), f.created_time,e.created_time ) as date
+									from fans f
+									
+									left join
+									
+										(select * from (
+									
+									
+									select * 
+											from (
+												select created_time, facebook_user_id from posts 
+												where fanpage_id = $fanpageId
+												
+												group by facebook_user_id
+												order by created_time asc 
+												) a
+									
+											union
+									
+											select * 
+											from (
+												select created_time, facebook_user_id from comments
+												where fanpage_id = $fanpageId
+												
+												
+												group by facebook_user_id
+												order by created_time asc 
+												) b
+									) as c
+									
+									
+									group by facebook_user_id
+									order by created_time asc
+										 ) as e
+									on e.facebook_user_id = f.facebook_user_id
+									
+									where fanpage_id = $fanpageId
+					) as x  order by date ASC";
+		$result= $this->getAdapter()->fetchAll($select);
+		
+		$total = 0;
+		$month = 0;
+		$week = 0;
+		$today = 0;
+		$date = new Zend_Date();
+		foreach ( $result as $r){
+			$total++;
+			$tempdate = new Zend_Date($r['date']);
+
+			if ($tempdate->toString('Y M') == $date->toString('Y M')){
+		
+				$month++;
+			}
+			if ($tempdate->toString('Y w') == $date->toString('Y w')){
+				$week++;
+			}
+			if ($tempdate->toString('F') == $date->toString('F')){
+				$today++;
+			}
+			
+		}
+		
+		$array['all'] = $total;
+		$array['month'] = $month;
+		$array['week'] = $week;
+		$array['today'] =$today;
+		
+		
+		return $array;
+		
+		
+	}
+
+	public function getActiveFanTable($fanpageId, $time, $graph){
+		
+		if($graph){
+			
+			$select = "select * from (
+						Select count(*) as active, first_login_time from fans 
+						where !(first_login_time <=> null) && fanpage_id = $fanpageId
+						group by date(first_login_time)
+						order by first_login_time ASC) as x";
+		
+			switch($time){
+				case 'month':
+					$select= $select. " where month(x.first_login_time) = month(curdate()) && year(x.first_login_time) = year(curdate())";
+					break;
+				case 'week':
+					$select= $select." where yearweek(x.first_login_time) = yearweek(curdate())";
+					break;
+				case 'today':
+					$select= $select." where date(x.first_login_time) = date(curdate())";
+					break;
+			}
+			
+			$result= $this->getAdapter()->fetchAll($select);
+			if ($result){
+				$result[0]['total'] = $result[0]['active'];
+			
+				for($i = 1; $i < count($result); $i++ ){
+						
+					$result[$i]['total'] = $result[$i]['active'] +  $result[$i-1]['total'] ;
+						
+				}
+			}
+			
+			return $result;
+		}
+		
+		
+	}
+
+	public function getActiveFanNumber($fanpageId){
+		$select = "Select count(*) as active, first_login_time from fans 
+				where !(first_login_time <=> null) && fanpage_id = $fanpageId
+					group by date(first_login_time)
+					order by first_login_time DESC";
+		$result= $this->getAdapter()->fetchAll($select);
+		$total = 0;
+		$month = 0;
+		$week = 0;
+		$today = 0;
+		$date = new Zend_Date();
+		foreach ( $result as $r){
+			$total++;
+			$tempdate = new Zend_Date($r['first_login_time']);
+		
+			if ($tempdate->toString('Y M') == $date->toString('Y M')){
+				$month++;
+			}
+			if ($tempdate->toString('Y w') == $date->toString('Y w')){
+				$week++;
+			}
+			if ($tempdate->toString('F') == $date->toString('F')){
+				$today++;
+			}
+				
+		}
+		
+		$array['all'] = $total;
+		$array['month'] = $month;
+		$array['week'] = $week;
+		$array['today'] =$today;
+		
+		
+		return $array;
+		
+	
+	}
+
+	public function getFacebookInteractions($fanpageId, $time, $graph){
+		$select ="select * from (select count(*) as 'all', sum(if (x.type = 'post', 1, 0)) as posts ,sum(if (x.type = 'comment', 1, 0))as comments,sum(if (x.type = 'like', 1, 0)) as likes, created_time from
+					(
+					select post_id, facebook_user_id, created_time, 'post' as type from  posts where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					union all
+					select comment_id, facebook_user_id, created_time, 'comment' as type from  comments where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					union all
+					select post_id, facebook_user_id, updated_time ,'like' as type from  likes where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					
+					) as x 
+					group by date(created_time)
+					order by created_time ASC) as y";
+		
+		switch($time){
+			case 'month':
+				$select= $select. " where month(y.created_time) = month(curdate()) && year(y.created_time) = year(curdate())";
+				break;
+			case 'week':
+				$select= $select." where yearweek(y.created_time) = yearweek(curdate())";
+				break;
+			case 'today':
+				$select= "select count(*) as 'all', sum(if (x.type = 'post', 1, 0)) as posts ,sum(if (x.type = 'comment', 1, 0))as comments,sum(if (x.type = 'like', 1, 0)) as likes, created_time from
+					(
+					select post_id, facebook_user_id, created_time, 'post' as type from  posts where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					union all
+					select comment_id, facebook_user_id, created_time, 'comment' as type from  comments where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					union all
+					select post_id, facebook_user_id, updated_time ,'like' as type from  likes where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					
+					) as x 
+					where date(x.created_time) = date(curdate())
+					group by hour(created_time)
+					order by created_time ASC";
+				break;
+		}
+		$result= $this->getAdapter()->fetchAll($select);
+		if ($result){
+			$result[0]['total_all'] = $result[0]['all'];
+			$result[0]['total_posts'] = $result[0]['posts'];
+			$result[0]['total_comments'] = $result[0]['comments'];
+			$result[0]['total_likes'] = $result[0]['likes'];
+				
+			for($i = 1; $i < count($result); $i++ ){
+		
+				$result[$i]['total_all'] = $result[$i]['all'] +  $result[$i-1]['total_all'] ;
+				$result[$i]['total_posts'] = $result[$i]['posts'] +  $result[$i-1]['total_posts'] ;
+				$result[$i]['total_comments'] = $result[$i]['comments'] +  $result[$i-1]['total_comments'] ;
+				$result[$i]['total_likes'] = $result[$i]['likes'] +  $result[$i-1]['total_likes'] ;
+		
+			}
+		}
+		//Zend_Debug::$result;
+		return $result;
+	}
+
+	public function getFacebookInteractionsNumber($fanpageId){
+		
+		$select = "select 'posts' as type, count(*) as 'all', 
+					sum(case when date(created_time) = date(curdate()) then 1 else 0 end ) as today,
+					sum(case when yearweek(created_time) = yearweek(curdate()) then 1 else 0 end ) as week,
+					sum(case when (year(created_time) = year(curdate()) && month(created_time) = month(curdate())) then 1 else 0 end ) as month
+					from  posts where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					
+					union 
+					
+					select 'comments' as type, count(*) as 'all',
+					sum(case when date(created_time) = date(curdate()) then 1 else 0 end ) as today,
+					sum(case when yearweek(created_time) = yearweek(curdate()) then 1 else 0 end ) as week,
+					sum(case when (year(created_time) = year(curdate()) && month(created_time) = month(curdate())) then 1 else 0 end ) as month
+					 from comments where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					 
+					union 
+					
+					select 'likes' as type, count(*) as 'all',
+					sum(case when date(updated_time) = date(curdate()) then 1 else 0 end ) as today,
+					sum(case when yearweek(updated_time) = yearweek(curdate()) then 1 else 0 end ) as week,
+					sum(case when (year(updated_time) = year(curdate()) && month(updated_time) = month(curdate())) then 1 else 0 end ) as month
+					from likes where fanpage_id = $fanpageId && facebook_user_id != fanpage_id ";
+		
+		$result= $this->getAdapter()->fetchAll($select);
+		
+		$result[3]['all'] = $result[0]['all'] + $result[1]['all'] + $result[2]['all'];
+		$result[3]['today'] = $result[0]['today'] + $result[1]['today'] + $result[2]['today'];
+		$result[3]['week'] = $result[0]['week'] + $result[1]['week'] + $result[2]['week'];
+		$result[3]['month'] = $result[0]['month'] + $result[1]['month'] + $result[2]['month'];
+		
+		return $result;
+	}
+	
+}	
 

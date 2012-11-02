@@ -643,6 +643,82 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 		return $result['count'];
 	}
 	
+	public function getFancrankInteractionsGraph($fanpageId, $time, $graph){
+		
+		if($graph){
+			$select = "select * from (
+					select count(*) as 'all',
+					sum(case when activity_type like 'post-%' then 1 else 0 end ) as posts, 
+					sum(case when activity_type like 'comment-%' then 1 else 0 end ) as comments, 
+					sum(case when activity_type like 'like-%' then 1 else 0 end ) as likes, 
+					sum(case when activity_type like 'unlike-%' then 1 else 0 end ) as unlike, 
+					sum(case when activity_type = 'follow' then 1 else 0 end ) as follow, 
+					sum(case when activity_type = 'unfollow' then 1 else 0 end ) as unfollow, 
+					created_time from fancrank_activities
+					where fanpage_id = $fanpageId
+					group by date(created_time)
+					order by created_time ASC
+					) as x ";
+			
+			switch($time){
+				case 'month':
+					$select= $select. " where month(x.created_time) = month(curdate()) && year(x.created_time) = year(curdate())";
+					break;
+				case 'week':
+					$select= $select." where yearweek(x.created_time) = yearweek(curdate())";
+					break;
+				case 'today':
+					$select= $select."  where date(x.created_time) = date(curdate())";
+					break;
+			}
+
+			$result = $this->getAdapter()->fetchAll($select);
+			
+			if ($result){
+				$result[0]['total_all'] = $result[0]['all'];
+				$result[0]['total_posts'] =$result[0]['posts'];
+				$result[0]['total_comments'] = $result[0]['comments'];
+				$result[0]['total_likes'] = $result[0]['likes'];
+				$result[0]['total_unlike'] = $result[0]['unlike'];
+				$result[0]['total_follow'] = $result[0]['follow'];
+				$result[0]['total_unfollow'] = $result[0]['unfollow'];
+
+				for($i = 1; $i < count($result); $i++ ){
+			
+					$result[$i]['total_all'] = $result[$i]['all'] +  $result[$i-1]['total_all'] ;
+					$result[$i]['total_posts'] = $result[$i]['posts'] +  $result[$i-1]['total_posts'] ;
+					$result[$i]['total_comments'] = $result[$i]['comments'] +  $result[$i-1]['total_comments'] ;
+					$result[$i]['total_likes'] = $result[$i]['likes'] +  $result[$i-1]['total_likes'] ;
+					$result[$i]['total_unlike'] = $result[$i]['unlike'] +  $result[$i-1]['total_unlike'] ;
+					$result[$i]['total_follow'] = $result[$i]['follow'] +  $result[$i-1]['total_follow'] ;
+					$result[$i]['total_unfollow'] = $result[$i]['unfollow'] +  $result[$i-1]['total_unfollow'] ;
+				}
+			}
+			
+			return $result;
+		}
+		
+	}
+	
+	public function getFancrankInteractionsNumber($fanpageId){
+		$select = "select count(*) as 'all',
+				sum(case when date(created_time) = date(curdate()) then 1 else 0 end ) as today,
+				sum(case when yearweek(created_time) = yearweek(curdate()) then 1 else 0 end ) as week,
+				sum(case when (year(created_time) = year(curdate()) && month(created_time) = month(curdate())) then 1 else 0 end ) as month
+				from fancrank_activities
+				where fanpage_id = $fanpageId";
+		
+		$result = $this->getAdapter()->fetchAll($select);
+		$result[0]['today'] = ($result[0]['today'] == null)?0:$result[0]['today'];
+		$result[0]['month'] = ($result[0]['month'] == null)?0:$result[0]['month'];
+		$result[0]['week'] = ($result[0]['week'] == null)?0:$result[0]['week'];
+		return $result;
+	}
+	
+	
+	
+	
+	
 	public function getNumOfUserInteractionsWithinDays ( $fanpageId, $days){
 		$select = "SELECT count(distinct facebook_user_id) FROM fancrank.fancrank_activities 
 					 where fanpage_id = $fanpageId &&
