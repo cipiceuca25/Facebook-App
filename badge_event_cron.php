@@ -88,7 +88,6 @@ function sendNotification() {
 				Zend_Debug::dump($activity->toArray());
 				//default badge check
 				
-				
 				// custom badge check
 				$fanpageBadgeModel = new Model_FanpageBadges();
 				$fanpageBadgeList = $fanpageBadgeModel->findRemaindBadgeByUser($activity->fanpage_id, $activity->facebook_user_id);

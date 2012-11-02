@@ -79,6 +79,9 @@ foreach ($messages as $i => $message) {
 	$time = new Zend_Date();
 	$update_time = $time->toString('yyyy-MM-dd HH:mm:ss');
 	
+	$settingModel = new Model_FanpageSetting();
+	$fanpageSetting = $settingModel->getFanpageSetting($job->fanpage_id);
+	$givingPoint = $fanpageSetting['point_like_admin'] + $fanpageSetting['point_like_bonus'];
 	$fansIdsList = array();
 	$pointResult = array();
 	foreach ($result->data as $data) {
@@ -92,6 +95,7 @@ foreach ($messages as $i => $message) {
 				'updated_time'		=> $update_time,
 				'post_type'			=> $job->type
 		);
+		
 		$likeModel = new Model_Likes();
 		$found = $likeModel->find($like['fanpage_id'], $like['post_id'], $like['facebook_user_id'])->current();
 		try {
@@ -101,23 +105,23 @@ foreach ($messages as $i => $message) {
 				
 				// like point for admin post 
 				if(isset($pointResult[$like['facebook_user_id']])) {
-					$pointResult[$like['facebook_user_id']]['total_points'] = $pointResult[$like['facebook_user_id']]['total_points'] + 5;
+					$pointResult[$like['facebook_user_id']]['total_points'] = $pointResult[$like['facebook_user_id']]['total_points'] + $givingPoint;
 				}else {
-					$pointResult[$like['facebook_user_id']]['total_points'] = 5;
+					$pointResult[$like['facebook_user_id']]['total_points'] = $givingPoint;
 				}
 				$pointResult[$like['facebook_user_id']]['xp'] = $pointResult[$like['facebook_user_id']]['total_points'];
 				$pointResult[$like['facebook_user_id']]['point_log'][] = array(
 						'object_id'=> $like['post_id'],
 						'object_type'=> 'likes',
-						'giving_points'=> 5,
-						'bonus'=> 4,
-						'note'=> 'likes on admin object'
+						'giving_points'=> $givingPoint,
+						'bonus'=> $fanpageSetting['point_like_bonus'],
+						'note'=> 'likes on admin object, bonus: ' .$fanpageSetting['point_like_bonus']
 				);
 			}
 			//
 			$fansIdsList[] = $like['facebook_user_id'];
 		} catch (Exception $e) {
-			$logger->log ( sprintf ( 'Unable to save likes in post monitor cron: %s %s',  $e->getMessage (), implode(' ', $like)), Zend_log::ERR);
+			$logger->log ( sprintf ( 'Unable to save likes in post monitor cron: %s %s',  $e->getMessage (), implode(' ', $like)), Zend_Log::ERR);
 		}
 		
 	}
@@ -129,17 +133,12 @@ foreach ($messages as $i => $message) {
 
 	$fdb = new Service_FancrankDBService($job->fanpage_id, $job->access_token);
 	
-	$db = $fdb->getDefaultAdapter();
-	$db->beginTransaction();
 	try {
 		//Zend_Debug::dump($facebookUsers);
 		$result = $fdb->saveAndUpdateFans($facebookUsers, $pointResult, true);
 		echo 'finish....';	
-		$db->commit();
-	
 	} catch (Exception $e) {
-		$logger->log ( sprintf ( 'Post like Scan fail: %s',  $e->getMessage ()), Zend_log::ERR);
-		$db->rollBack();
+		$logger->log ( sprintf ( 'Post like Scan fail: %s',  $e->getMessage ()), Zend_Log::ERR);
 	}
 	// We have processed the message; now we remove it from the queue.
 }

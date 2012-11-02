@@ -55,8 +55,7 @@ if (count($fanpageList) > 0) {
 	$error = false;
 	foreach ($fanpageList as $fanpage) {
 
-		//if($fanpage->fanpage_id != '216821905014540') continue;
-		//if(!$fanpage->installed) continue;
+		if(!$fanpage->installed || $fanpage->fanpage_level < 3) continue;
 
 		$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
 		$data = array(
@@ -143,7 +142,7 @@ if (count($fanpageList) > 0) {
 				}
 								
 				//break;
-			}catch(Exception $e) {
+			} catch(Exception $e) {
 				$errMsg = sprintf('fan_id: %s %s <br/> type: update<br/>', $fan['facebook_user_id'], $fanpage->fanpage_id);
 				$logger->log('Update fanpage cron Failed: ' .$errMsg .' ' .$e->getMessage(), Zend_Log::INFO);
 				$error = true;
@@ -152,7 +151,7 @@ if (count($fanpageList) > 0) {
 		
 	}
     
-	if($error) {
+	if ($error) {
 		// send email with attachment
 	}
     echo 'job done'.PHP_EOL;

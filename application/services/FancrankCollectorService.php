@@ -41,7 +41,6 @@ class Service_FancrankCollectorService {
 		}
 		
 		$fanpageSettingModel = new Model_FanpageSetting();
-		$fanpageSettingModel->findRow($this->_fanpageId);
 		$settingData = $fanpageSettingModel->findRow($fanpage_id);
 		if(!$settingData) {
 			$settingData = $fanpageSettingModel->getDefaultSetting();
@@ -430,7 +429,7 @@ class Service_FancrankCollectorService {
 		}
 	}
 	
-	private function getCommentsFromPost($posts, $level, $limit=1000) {
+	private function getCommentsFromPost($posts, $level, $limit=500) {
 		//Zend_Debug::dump($posts);
 		$results = array();
 		foreach ($posts as $post) {
@@ -1271,6 +1270,97 @@ class Service_FancrankCollectorService {
 			}
 		}
 		return $result;
+	}
+	
+	// get single post data
+	public function getFullPost($postId) {
+		// get basic post data
+		try {
+			$client = new Zend_Http_Client;
+			$client->setUri("https://graph.facebook.com/". $postId);
+			$client->setMethod(Zend_Http_Client::GET);
+			$client->setParameterGet('access_token', $this->_accessToken);
+		
+			$response = $client->request();
+		
+			$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+			Zend_Debug::dump($result);
+			
+			if (!empty($result->error)) {
+				$type = isset($result->error->type) ? $result->error->type : '';
+				$code = isset($result->error->code) ? $result->error->code : '';
+				$message = isset($result->error->message) ? $result->error->message : '';
+				$msg = sprintf('type: %s, $code: %s, message: %s', $type, $code, $message);
+				throw new Exception($msg);
+			}
+		
+			if (!empty ($result)) {
+				$postModel = new Model_Posts();
+				$created = new Zend_Date(!empty($result->created_time) ? $result->created_time : null, Zend_Date::ISO_8601);
+				$updated = new Zend_Date(!empty($result->updated_time) ? $result->updated_time : null, Zend_Date::ISO_8601);
+		
+				$row = array(
+						'post_id'               => $result->id,
+						'facebook_user_id'      => $result->from->id,
+						'fanpage_id'            => $this->_fanpageId,
+						'post_message'          => isset($result->message) ? $postModel->getDefaultAdapter()->quote($result->message) : '',
+						'picture'				=> !empty($result->picture) ? $result->picture : '',
+						'link'					=> !empty($result->link) ? $result->link : '',
+						'post_type'             => !empty($result->type) ? $result->type : '',
+						'status_type'           => !empty($result->status_type) ? $result->status_type : '',
+						'post_description'		=> !empty($result->description) ? $postModel->getDefaultAdapter()->quote($result->description) : '',
+						'post_caption'			=> !empty($result->caption) ? $postModel->getDefaultAdapter()->quote($result->caption) : '',
+						'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
+						'updated_time'          => $updated->toString('yyyy-MM-dd HH:mm:ss'),
+						'post_comments_count'   => !empty($result->comments->count) ? $result->comments->count : 0,
+						'post_likes_count'      => isset($result->likes) && isset($result->likes->count) ? $result->likes->count : 0
+				);
+		
+				if (property_exists($result, 'application') && isset($result->application->id)) {
+					$row['post_application_id'] = $result->application->id;
+					$row['post_application_name'] = $result->application->name;
+				} else {
+					$row['post_application_id'] = null;
+					$row['post_application_name'] = null;
+				}
+				
+				$commentList = $this->getCommentsFromPost(array($result), 2);
+				$row['comment_list'] = $commentList;
+				
+				$likeList = $this->getLikesFromMyPost(array($result), 2);
+				$row['like_list'] = $likeList;
+				
+				return $row;
+			}
+		} catch (Exception $e){
+			echo $e->getMessage();
+			return null;
+		}
+	}
+	
+	public function getNewFanListFromPost($post) {
+		$fansIdList = array();
+		$fansIdList[] = $post['facebook_user_id'];
+		$fanModel = new Model_Fans();
+		foreach ($post['comment_list'] as $comment) {
+			if (!empty($comment->from->id) && 
+					$comment->from->id != $post['fanpage_id'] && 
+					!$fanModel->find($comment->from->id, $post['fanpage_id'])->count()) {
+				$fansIdList[] = $comment->from->id;
+			}
+		}
+		
+		foreach ($post['like_list'] as $like) {
+			if (!empty($like['facebook_user_id']) &&
+					$like['facebook_user_id'] != $post['fanpage_id'] &&
+					!$fanModel->find($like['facebook_user_id'], $post['fanpage_id'])->count()) {
+				$fansIdList[] = $like['facebook_user_id'];
+			}
+		}
+		
+		$fansIdsList = array_unique($fansIdList);
+		
+		return $this->getFansList($fansIdsList, $this->_accessToken);
 	}
 	
 	public function test() {

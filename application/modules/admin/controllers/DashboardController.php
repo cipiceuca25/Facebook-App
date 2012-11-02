@@ -737,7 +737,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		
 		$this->view->mostAwarded = $mostAwarded;
 		$this->view->recentBadges = $recentBadges;
-		$this->view->userMostBadges =$userMostBadges;
+		$this->view->userMostBadges = $userMostBadges;
 		$this->view->totalBadges = $totalBadges;
 		$this->view->totalPoints = $totalPoints;
 		$this->view->badgesbytime = $badgesbytime ;

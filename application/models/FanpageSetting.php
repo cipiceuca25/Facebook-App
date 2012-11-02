@@ -5,13 +5,14 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 	const THEME_CHOICE = 3;
 	const TOP_POST_CHOICE = 'week';
 	const POINT_LIKE_NORMAL = 1;
-	const POINT_COMMENT_NORMAL = 1;
+	const POINT_COMMENT_NORMAL = 0;
 	const POINT_POST_NORMAL = -5;
 	const POINT_LIKE_ADMIN = 1;
 	const POINT_COMMENT_ADMIN = 2;
 	const POINT_BONUS_DURATION = 60;
 	const POINT_VIRGINITY = 4;
 	const POINT_COMMENT_LIMIT = 5;
+	const POINT_LIKE_BONUS = 1;
 	
 	public function getThemeChoice($fanpage_id)
 	{
@@ -86,9 +87,15 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 				'point_comment_admin'=>self::POINT_COMMENT_ADMIN,
 				'point_virginity'=>self::POINT_VIRGINITY,
 				'point_comment_limit'=>self::POINT_COMMENT_LIMIT,
-				'point_bonus_duration'=>self::POINT_BONUS_DURATION
+				'point_bonus_duration'=>self::POINT_BONUS_DURATION,
+				'point_like_bonus'=>self::POINT_LIKE_BONUS
 				);
 		return $data;
+	}
+	
+	public function getFanpageSetting($fanpageId) {
+		$result = $this->findRow($fanpageId);
+		return empty($result) ? $this->getDefaultSetting() : $result->toArray();
 	}
 	
 	public static function getDefaultFacebookScope() {

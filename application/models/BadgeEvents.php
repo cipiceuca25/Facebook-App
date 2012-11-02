@@ -18,7 +18,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 					(
 					SELECT b.id, b.name, b.description, b.quantity, 
 					if (f.weight <=> null, b.weight, f.weight) as weight,  
-					if (f.style_name <=> null, b.stylename, f.style_name) as stylename,
+					if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
 					if (f.active <=> null, 1, f.active) as active,
 					b.picture
 					
@@ -43,7 +43,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 					(
 					SELECT b.id, b.name, b.description, b.quantity, 
 					if (f.weight <=> null, b.weight, f.weight) as weight,  
-					if (f.style_name <=> null, b.stylename, f.style_name) as stylename,
+					if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
 					if (f.active <=> null, 1, f.active) as active,
 					b.picture
 					
@@ -214,7 +214,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		(
 		SELECT b.id, b.name, b.description, b.quantity,
 		if (f.weight <=> null, b.weight, f.weight) as weight,
-		if (f.style_name <=> null, b.stylename, f.style_name) as stylename,
+		if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
 		if (f.active <=> null, 1, f.active) as active,
 		b.picture
 			
@@ -239,7 +239,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	(
 	SELECT b.id, b.name, b.description, b.quantity,
 	if (f.weight <=> null, b.weight, f.weight) as weight,
-	if (f.style_name <=> null, b.stylename, f.style_name) as stylename,
+	if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
 	if (f.active <=> null, 1, f.active) as active,
 	b.picture
 	
@@ -266,7 +266,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 			(
 			SELECT b.id, b.name, b.description, b.quantity,
 			if (f.weight <=> null, b.weight, f.weight) as weight,
-			if (f.style_name <=> null, b.stylename, f.style_name) as stylename,
+			if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
 			if (f.active <=> null, 1, f.active) as active,
 			b.picture
 				

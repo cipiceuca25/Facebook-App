@@ -10,7 +10,10 @@ class Collectors_FancrankController extends Fancrank_Collectors_Controller_BaseC
 	
     public function indexAction()
     {
-
+    	
+    	$postModel = new Model_Posts();
+    	$postUniqueList = $postModel->getUniqueInteractionList('216821905014540_10150514453682161');
+    	Zend_Debug::dump($postUniqueList);
     }
     
     public function insightAction() {
