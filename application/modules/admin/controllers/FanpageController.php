@@ -145,6 +145,16 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		
 		$this->_helper->json($x);
 	
+	}
+	
+	public function graphhomefancrankinteractionsAction(){
+	
+		$time = $this->_getParam('time');
+		$fp = new Model_FancrankActivities();
+	
+		$x = $fp ->getFancrankInteractionsGraph( $this->_fanpageId,$time,  true);
+	
+		$this->_helper->json($x);
 	
 	}
 	
@@ -159,7 +169,6 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 	
 	public function newFansTableAction(){
 		
-
 		return 'table of new fancrank fans';
 	}
 
@@ -178,6 +187,7 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 	
 	
 	public function fancrankinteractionsgraphAction(){
+
 		
 		$actModel = new Model_FancrankActivities();
 		$act = $actModel -> getFancrankInteractionsGraph($this->_fanpageId, null);

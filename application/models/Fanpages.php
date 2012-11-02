@@ -726,7 +726,6 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 			$tempdate = new Zend_Date($r['first_login_time']);
 		
 			if ($tempdate->toString('Y M') == $date->toString('Y M')){
-		
 				$month++;
 			}
 			if ($tempdate->toString('Y w') == $date->toString('Y w')){
@@ -800,9 +799,43 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		
 			}
 		}
-		
+		//Zend_Debug::$result;
 		return $result;
 	}
 
+	public function getFacebookInteractionsNumber($fanpageId){
+		
+		$select = "select 'posts' as type, count(*) as 'all', 
+					sum(case when date(created_time) = date(curdate()) then 1 else 0 end ) as today,
+					sum(case when yearweek(created_time) = yearweek(curdate()) then 1 else 0 end ) as week,
+					sum(case when (year(created_time) = year(curdate()) && month(created_time) = month(curdate())) then 1 else 0 end ) as month
+					from  posts where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					
+					union 
+					
+					select 'comments' as type, count(*) as 'all',
+					sum(case when date(created_time) = date(curdate()) then 1 else 0 end ) as today,
+					sum(case when yearweek(created_time) = yearweek(curdate()) then 1 else 0 end ) as week,
+					sum(case when (year(created_time) = year(curdate()) && month(created_time) = month(curdate())) then 1 else 0 end ) as month
+					 from comments where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+					 
+					union 
+					
+					select 'likes' as type, count(*) as 'all',
+					sum(case when date(updated_time) = date(curdate()) then 1 else 0 end ) as today,
+					sum(case when yearweek(updated_time) = yearweek(curdate()) then 1 else 0 end ) as week,
+					sum(case when (year(updated_time) = year(curdate()) && month(updated_time) = month(curdate())) then 1 else 0 end ) as month
+					from likes where fanpage_id = $fanpageId && facebook_user_id != fanpage_id ";
+		
+		$result= $this->getAdapter()->fetchAll($select);
+		
+		$result[3]['all'] = $result[0]['all'] + $result[1]['all'] + $result[2]['all'];
+		$result[3]['today'] = $result[0]['today'] + $result[1]['today'] + $result[2]['today'];
+		$result[3]['week'] = $result[0]['week'] + $result[1]['week'] + $result[2]['week'];
+		$result[3]['month'] = $result[0]['month'] + $result[1]['month'] + $result[2]['month'];
+		
+		return $result;
+	}
+	
 }	
 

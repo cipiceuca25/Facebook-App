@@ -511,6 +511,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$fanpageId = $this->_request->getParam('id');
 	
 		$fanpageModel = new Model_Fanpages;
+		$activityModel = new Model_FancrankActivities();
 		$fans_model = new Model_Fans;
 		$fanStatModel = new Model_FansObjectsStats();
 		$cronModel = new Model_CronLog();
@@ -575,10 +576,17 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		
 		//Actived Fans
 		$activefans = $fanpageModel ->getActiveFanNumber($fanpageId);
-		
-		//Zend_Debug::dump($activefans);
-		
 		$this->view->active_fans = $activefans;
+		
+		//facebook interactions
+		$facebookinteractions = $fanpageModel ->getFacebookInteractionsNumber($fanpageId);
+		//Zend_Debug::dump($facebookinteractions);
+		$this->view->facebook_interactions = $facebookinteractions;
+		
+		
+		
+		$fancrankinteractions = $activityModel->getFancrankInteractionsNumber($fanpageId);
+		$this->view->fancrank_interactions = $fancrankinteractions;
 		//$this->view->new_fans = $newFans;
 		//$this->view->new_interaction_users = $newInteractionsUsers;
 		//$this->view->new_interaction = $newInteractions;
