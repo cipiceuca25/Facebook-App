@@ -712,8 +712,8 @@ function loadHome(){
 			$('#home').html(data);
 			getHomePageLikes("#placeholder");
 			//loadGraph("#placeholder2", 'Points');
-			$('#placeholder').css({'width':'100%', 'height':'300px'});
-			$('#placeholder2').css({'width':'100%', 'height':'300px'});
+			$('#placeholder').css({'width':'100%', 'height':'200px'});
+			$('#placeholder2').css({'width':'100%', 'height':'200px'});
 			$('#placeholder').resize();
 			$('#placeholder2').resize();
 			//topFanTable = $('#topfanTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]} );
@@ -932,10 +932,10 @@ function loadPoints(){
 			//destroyAll();
 		},
 		success : function(data) {
-			
-			loadGraph("#placeholder3", 'Points');
-			$('#placeholder3').css({'width':'100%', 'height':'150px'});
-			$('#placeholder3').resize();
+			$('#points').html(data)
+			//loadGraph("#placeholder", 'Points');
+			//$('#placeholder').css({'width':'100%', 'height':'200px'});
+			//$('#placeholder').resize();
 		
 		},
 		error : function(xhr, errorMessage, thrownErro) {

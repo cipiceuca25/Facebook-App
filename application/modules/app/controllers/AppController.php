@@ -583,7 +583,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			
     			if(isset($l->likes)){
     				foreach ($l->likes->data as $x){
-    					echo $x->id;
+    					//echo $x->id;
     					if($x->id == $this->_userId){
     						$latestlike[$count]=1;
     						//echo "$latestlike[$count] in the condensed list";
@@ -591,7 +591,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     					//Zend_Debug::dump( $likes[$count]);
     				}
     				if($latestlike[$count]==0){
-    				$latestlike[count] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
+    				$latestlike[$count] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
     				//Zend_Debug::dump($likes[$count]);
     				}
     			}
@@ -604,7 +604,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	
     	$this->view->yourpointslatest = $yourpointslatest;
-    	Zend_Debug::dump($latestlike);
+    	//Zend_Debug::dump($latestlike);
     	//Zend_Debug::dump($latest);
     	
     	$this->view->latestlike = $latestlike;

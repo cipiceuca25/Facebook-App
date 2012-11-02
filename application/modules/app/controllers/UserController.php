@@ -140,7 +140,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	
 	public function postAction() {
 		//Note: data could initialize from preDispatch
-		
+		exit();
 		//197221680326345_425781560803688
 		$starttime = time();
 		$data['facebook_user_id'] = $this->_user->facebook_user_id;

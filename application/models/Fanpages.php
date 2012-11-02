@@ -837,5 +837,33 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $result;
 	}
 	
+	
+	public function getUniqueUserInteractionsGraph($fanpage, $time, $graph){
+		$select = "select * from 
+					(
+					select * from (select count(distinct facebook_user_id) as 'all', 
+					 created_time from
+					(
+					select post_id, facebook_user_id, created_time from  posts where fanpage_id = $fanpage && facebook_user_id != fanpage_id
+					union all
+					select comment_id, facebook_user_id, created_time from  comments where fanpage_id = $fanpage && facebook_user_id != fanpage_id
+					union all
+					select post_id, facebook_user_id, updated_time from  likes where fanpage_id =$fanpage && facebook_user_id != fanpage_id
+					
+					) as x 
+					group by date(created_time)
+					order by created_time ASC) as y) as z";
+		switch($time){
+			case 'month':
+				$select= $select. " where month(z.created_time) = month(curdate()) && year(z.created_time) = year(curdate())";
+				break;
+			case 'week':
+				$select= $select." where yearweek(z.created_time) = yearweek(curdate())";
+				break;
+			case 'today':
+				$select= $select." where date(z.created_time) = date(curdate())";
+				break;
+		}
+	}
 }	
 
