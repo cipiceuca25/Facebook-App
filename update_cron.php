@@ -39,6 +39,7 @@ $application = new Zend_Application(
 $application->bootstrap();
 
 $fanpageModel = new Model_Fanpages();
+$cronlogModel = new Model_CronLog();
 //$fanpageList = $fanpageModel->fetchAll();
 
 $fanpageList = $fanpageModel->getActiveFanpages();
@@ -53,10 +54,17 @@ if (count($fanpageList) > 0) {
 	$dbLog = new Model_CronLog();
 	
 	$error = false;
-	foreach ($fanpageList as $fanpage) {
 
+	foreach ($fanpageList as $fanpage) {
 		if(!$fanpage->installed || $fanpage->fanpage_level < 3) continue;
 
+		$fanpageHasUpdatedBefore = false;
+		if ($cronlogModel->getLastUpdate($fanpage->fanpage_id)) {
+			$fanpageHasUpdatedBefore = true;
+		}
+
+		echo $fanpage->fanpage_id . ' ' .$fanpageHasUpdatedBefore; 
+		
 		$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
 		$data = array(
 				'fanpage_id'	=> $fanpage->fanpage_id,
@@ -91,20 +99,28 @@ if (count($fanpageList) > 0) {
 				
 			$errMsg = sprintf('fanpage_id: %s <br/>access_token: %s<br/> type: update<br/>', $fanpage->fanpage_id, $fanpage->access_token);
 			$logger->log('Update fanpage cron Failed: ' .$errMsg .'<br/>' .$e->getMessage(), Zend_Log::INFO);
+			// if error occurs, goto next fanpage
 			$error = true;
+			continue;
 		}
-		//hello
-		//update fanpage fans stat
-		$fan = new Model_Fans();
-		$fanList = $fan->fetchFanFieldsByFanpageId($fanpage->fanpage_id, array('facebook_user_id', 'fan_exp', 'fan_point'));
+
+		$fanList = array();
+		if ($fanpageHasUpdatedBefore) {
+			$fanList = $fanpageModel->getActiveFansSince($fanpage->fanpage_id, (time()-3600*24*2));
+		} else {
+			$fan = new Model_Fans();
+			$fanList = $fan->fetchFanFieldsByFanpageId($fanpage->fanpage_id, array('facebook_user_id', 'fan_exp', 'fan_point'));
+		}
+		
 		$fanStat = new Model_FansObjectsStats();
 		
 		foreach ($fanList as $fan) {
 			try {
-				//echo $fan->facebook_user_id .' ' .$fan->fanpage_id;
+				//echo $fan['facebook_user_id'] .' ' .$fan['fan_exp'] .' ' .$fan['fan_point']; 
+				// update fan stat
 				$result = $fanStat->updatedFanWithPoint($fanpage->fanpage_id, $fan['facebook_user_id'], $fan['fan_exp'], $fan['fan_point']);
-				
-				//check badge
+
+				// check badge
 				$badgeDefaultModel = Fancrank_BadgeFactory::factory('default');
 				$badgeModel = new Model_Badges();
 				$badgeEventModel = new Model_BadgeEvents();

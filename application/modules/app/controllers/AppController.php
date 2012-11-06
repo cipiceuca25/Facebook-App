@@ -601,8 +601,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     	}
     	
-    	
-    	
     	$this->view->yourpointslatest = $yourpointslatest;
     	//Zend_Debug::dump($latestlike);
     	//Zend_Debug::dump($latest);

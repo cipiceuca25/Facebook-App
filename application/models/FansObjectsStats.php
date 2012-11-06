@@ -2080,6 +2080,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		return $this->getAdapter()->fetchAll($select);
 	
 	}
+	
 	public function getAdminComment($fanpage_id, $facebook_user_id){
 		$select = "SELECT count(*) as count from posts p , comments c
 					where
@@ -2091,7 +2092,6 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 					&& p.facebook_user_id = p.fanpage_id
 					"	;
 		return $this->getAdapter()->fetchAll($select);
-	
 	}
 	
 	public function getStatsByTime( $fanpage_id, $facebook_user_id){
@@ -2243,9 +2243,5 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 					
 	
 				return $this->getAdapter()->fetchAll($select);
-	
-	
 	}
-	
-	
 }

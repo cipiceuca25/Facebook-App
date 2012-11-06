@@ -249,7 +249,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 
 			if (property_exists($post, 'application') && isset($post->application->id)) {
 				$row['post_application_id'] = $post->application->id;
-				$row['post_application_name'] = $post->application->name;
+				$row['post_application_name'] = empty($post->application->name) ? null : $post->application->name;
 			} else {
 				$row['post_application_id'] = null;
 				$row['post_application_name'] = null;

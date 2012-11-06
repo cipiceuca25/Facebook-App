@@ -837,5 +837,151 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $result;
 	}
 	
+	public function getActiveFansSince($fanpageId, $since=0, $limit=99999) {
+		$date = new Zend_Date($since);
+		$since = $date->toString('yyyy-MM-dd HH:mm:ss');
+	
+		$select= "
+			select distinct f.*
+			from (
+				select facebook_user_id, created_time from
+				(
+					(Select c.fanpage_id, c.facebook_user_id, p.facebook_user_id as target_user_id, c.created_time
+					from
+					comments c left join posts p on (c.comment_post_id = p.post_id)
+					where c.fanpage_id =  $fanpageId and p.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+					
+					union
+					
+					(Select c.fanpage_id, c.facebook_user_id, p.facebook_user_id as target_user_id, c.created_time
+					from
+					comments c left join photos p on (c.comment_post_id = p.photo_id)
+					where c.fanpage_id =  $fanpageId and p.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+					
+					union
+					
+					(Select c.fanpage_id, c.facebook_user_id, a.facebook_user_id as target_user_id, c.created_time
+					from
+					comments c left join albums a on (c.comment_post_id = a.album_id)
+					where c.fanpage_id =  $fanpageId and a.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+					
+					union
+					
+					(SELECT p.fanpage_id, p.facebook_user_id, p.fanpage_id as target_user_id, p.created_time
+					FROM posts p
+					where p.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+						
+					union
+						
+					(select l.fanpage_id, l.facebook_user_id, p.facebook_user_id as target_id, l.updated_time as created_time
+					from
+					likes l left join posts p on (l.post_id = p.post_id)
+					where p.fanpage_id = $fanpageId and l.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+						
+					union
+						
+					(select l.fanpage_id, l.facebook_user_id, c.facebook_user_id as target_id, l.updated_time as created_time
+					from
+					likes l left join comments c on (l.post_id = c.comment_id)
+					where c.fanpage_id = $fanpageId and l.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+						
+					union
+						
+					(select fanpage_id, facebook_user_id, target_user_id, created_time
+					from fancrank_activities
+					where fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+					
+				) as t1 
+				group by facebook_user_id
+				
+				union
+				
+				select target_user_id, created_time from
+				(
+					(Select c.fanpage_id, c.facebook_user_id, p.facebook_user_id as target_user_id, c.created_time
+					from
+					comments c left join posts p on (c.comment_post_id = p.post_id)
+					where c.fanpage_id =  $fanpageId and p.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+					
+					union
+					
+					(Select c.fanpage_id, c.facebook_user_id, p.facebook_user_id as target_user_id, c.created_time
+					from
+					comments c left join photos p on (c.comment_post_id = p.photo_id)
+					where c.fanpage_id =  $fanpageId and p.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+					
+					union
+					
+					(Select c.fanpage_id, c.facebook_user_id, a.facebook_user_id as target_user_id, c.created_time
+					from
+					comments c left join albums a on (c.comment_post_id = a.album_id)
+					where c.fanpage_id =  $fanpageId and a.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+					
+					union
+					
+					(SELECT p.fanpage_id, p.facebook_user_id, p.fanpage_id as target_user_id, p.created_time
+					FROM posts p
+					where p.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+						
+					union
+						
+					(select l.fanpage_id, l.facebook_user_id, p.facebook_user_id as target_id, l.updated_time as created_time
+					from
+					likes l left join posts p on (l.post_id = p.post_id)
+					where p.fanpage_id = $fanpageId and l.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+						
+					union
+						
+					(select l.fanpage_id, l.facebook_user_id, c.facebook_user_id as target_id, l.updated_time as created_time
+					from
+					likes l left join comments c on (l.post_id = c.comment_id)
+					where c.fanpage_id = $fanpageId and l.fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+						
+					union
+						
+					(select fanpage_id, facebook_user_id, target_user_id, created_time
+					from fancrank_activities
+					where fanpage_id = $fanpageId
+					order by created_time DESC
+					limit $limit)
+					
+				) as t1 
+				group by target_user_id 
+			) as t2 left join fans f on (t2.facebook_user_id = f.facebook_user_id and f.fanpage_id = $fanpageId and f.facebook_user_id != $fanpageId)
+			where t2.created_time > '" .$since ."'	
+			order by t2.created_time DESC
+			limit $limit			
+		";
+		
+		$result = $this->getAdapter()->fetchAll($select);
+		//return $result;
+		return $result;
+	}
 }	
 
