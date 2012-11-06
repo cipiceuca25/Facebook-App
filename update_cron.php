@@ -56,7 +56,8 @@ if (count($fanpageList) > 0) {
 	$error = false;
 
 	foreach ($fanpageList as $fanpage) {
-		if(!$fanpage->installed || $fanpage->fanpage_level < 3) continue;
+		// this line is for filtering out other fanpage
+		if($fanpage->fanpage_level < 3) continue;
 
 		$fanpageHasUpdatedBefore = false;
 		if ($cronlogModel->getLastUpdate($fanpage->fanpage_id)) {
@@ -65,6 +66,7 @@ if (count($fanpageList) > 0) {
 
 		echo $fanpage->fanpage_id . ' ' .$fanpageHasUpdatedBefore; 
 		
+
 		$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
 		$data = array(
 				'fanpage_id'	=> $fanpage->fanpage_id,

@@ -2,9 +2,175 @@ var defaultMax = 10;
 var defaultMin = 0;
 var defaultStep = 1;
     
+var graphData1 = [], startTime1= null, endTime1 =null ,  graphMargin = [];
+var graphData2 = [], startTime2= null, endTime2 =null , graphMargin2 = [];
+var graphLoaded=false, graphLoaded2= false;
+
+var downx = Math.NaN;
+var downscalex;
+
 jQuery(document).ready(function($){
 	loadHome();
 });	
+
+$(document).on('mouseover', '[rel=tooltip]', function() {
+	if ($(this).data('isTooltipLoaded') == true) {
+		return;
+	}
+	$(this).data('isTooltipLoaded', true).tooltip({placement:'left' }).trigger('mouseover');
+});
+
+function draw(ui,data,  startTime, endTime,  m){
+	$(ui).empty();
+	// define dimensions of graph
+	
+	//console.log($('#graph').css('width'));
+	var w = parseInt($(ui).css('width')) - m[1] - m[3];	// width
+	var h = parseInt($(ui).css('height')) - m[0] - m[2]; // height
+	
+	var lines = new Array(data[0].length-1);
+	/* 
+	 * sample data to plot over time
+	 * 		[Success, Failure]
+	 *		Start: 1335035400000
+	 *		End: 1335294600000
+	 *		Step: 300000ms	
+	 */
+
+	
+	// X scale starts at epoch time 1335035400000, ends at 1335294600000 with 300s increments
+	var x = d3.time.scale().domain([startTime, endTime]).range([0, w]);
+	//x.tickFormat(d3.time.format("%d"));
+	// Y scale will fit values from 0-10 within pixels h-0a1b31 (Note the inverted domain for the y-scale: bigger is up!)
+	
+	//console.log(data);
+
+	var y = d3.scale.linear().domain([ d3.min(data, function(d,i) {  return d[1]-1; }),
+	                                   d3.max(data, function(d,i) {  return d[1]+1; })]).range([h,0 ]);
+	//console.log(y);
+	// create a line function that can convert data[] into x and y points
+	
+	
+
+		// Add an SVG element with the desired dimensions and margin.
+		var graph = d3.select(ui).append("svg:svg")
+		      .attr("width", w + m[1] + m[3])
+		      .attr("height", h + m[0] + m[2])
+		    .append("svg:g")
+		      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+		// create yAxis
+		var xAxis = d3.svg.axis().scale(x).tickSize(-h)
+		.orient("bottom");//;
+
+		// Add the x-axis.
+		graph.append("svg:g")
+		      .attr("class", "x axis")
+		      .attr("transform", "translate(5," + h + ")")
+		      .call(xAxis)
+		      .on("mousedown", function(d) {
+			    	
+			        var p = d3.svg.mouse(graph[0][0]);
+			    	  //console.log(p);
+			    	  downx = x.invert(p[0]);
+			          downscalex = x;
+			          //console.log(downx);
+			   })
+			   .on("mousemove", function(d){
+			    		//console.log('mouse moving');
+			    		if (!isNaN(downx)){
+			    			console.log(downx);
+			    			var x = d3.time.scale().domain([startTime, endTime]).range([0, w]);
+			    		}
+			    	})
+			    .on("mouseup",function(d){
+			    	downx=Math.NaN;
+			    })
+			    ;
+	
+
+		// create left yAxis
+		var yAxisLeft = d3.svg.axis().scale(y).ticks(8).tickSize(-w).orient("left");
+		// Add the y-axis to the left
+		graph.append("svg:g")
+		      .attr("class", "y axis")
+		      .attr("transform", "translate(-10,0)")
+		      .call(yAxisLeft);
+		
+		
+		
+		for(j=0;j<lines.length;j++){
+			
+			lines[j] = d3.svg.line()
+			// assign the X function to plot our line as we wish
+			.x(function(d) { 
+				// verbose logging to show what's actually being done
+				//console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+				// return the X coordinate where we want to plot this datapoint
+				return x(d[0]); 
+			})
+			.y(function(d) { 
+				// verbose logging to show what's actually being done
+				//console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
+				// return the Y coordinate where we want to plot this datapoint
+				//console.log( d[0] );
+				return y(d[j+1]); // use the 1st index of data (for example, get 20 from [20,13])
+			})
+			
+			graph.append("svg:path").attr("d", lines[j](data)).attr("class", "data" + j);
+		}	  
+		
+			// add lines
+			// do this AFTER the axes above so that the line is above the tick-lines
+		
+		//graph.append("svg:path").attr("d", line2(data)).attr("class", "data2");
+		//graph.append("svg:path").attr("d", line3(data)).attr("class", "data3");
+		
+		for(j=0;j<lines.length;j++){
+		
+			graph.selectAll("circle.line")
+				.data(data)
+			  .enter().append("svg:circle")
+				.attr("class", "line"+j)
+				.attr("cx", function(d) { return x(d[0]); })
+				.attr("cy", function(d) { return y(d[j+1]); })
+				.attr("r", 1.5)
+				.attr("rel","tooltip")
+				.attr('data-original-title', (function(d) { return d[j+1] + ' Likes on ' + (new Date(d[0])).toString() }))
+				;
+		}
+}
+
+
+
+
+$(window).resize(function() {
+	if (graphLoaded){
+		draw('#placeholder', graphData1, startTime1, endTime1,  graphMargin);
+	}
+	if (graphLoaded2){
+		draw('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
+	}
+});	
+
+
+
+/*
+
+
+d3.select('#placeholder').on("mousemove", function(d) {
+	if (!isNaN(downx)) {
+        var p = d3.svg.mouse(vis[0][0]), rupx = p[0];
+        if (rupx != 0) {
+          x.domain([downscalex.domain()[0],  mw * (downx - downscalex.domain()[0]) / rupx + downscalex.domain()[0]]);
+        }
+        draw();
+      }
+}).on("mouseup", function(d) {
+	downx = Math.NaN;
+})
+*/
+
 
 function getHomeFans(time){
 	tick = 'day'
@@ -15,26 +181,9 @@ function getHomeFans(time){
 	 	default :
 	 		tick = 'day';
 	 }
-		//console.log(tick);
-	 var options = {		xaxis: {
-			mode: "time",
-			font:{size:12},
-			minTickSize: [1, tick]
-			},
-		yaxis:{
-			font:{size:12},
-			minTickSize: [1]
-		},
 
-		series: {
-				lines: { show: true }
-			},
-		grid: {
-			hoverable: true, 
-			clickable: true,
-		    backgroundColor: { colors: ["#fff", "#eee"] }
-	    }
-	}
+
+
 	if(fanpageId) {
 	    	//alert(fanpageId+' '+type); return false;
 			$.ajax({
@@ -57,8 +206,17 @@ function getHomeFans(time){
 			    	var crankdataset = [];
 			    	var crankdataset2 = [];
 			    	
+			    	graphData1 = [];
+			    	graphData2 = [];
 			    	//console.log(first_time_use);
 			    	for(i=0; i < data.length; i++) {
+			    		
+			    		//dataset.push( [ (new Date(data[i].end_time)).getTime(), (data[0][i].value)]);
+			    		graphData1.push ([ (new Date(data[i].date)).getTime(), (data[i].like)]);
+			    		//dataset2.push( [ (new Date(data[i].end_time)).getTime(), (data[i].value)]);
+			    		graphData2.push ([	(new Date(data[i].date)).getTime(), (data[i].total)]);
+			    		/*
+			    		
 			    		if ( ((new Date(data[i].date)).getTime()) >= (new Date(first_time_use).getTime())){
 			    			crankdataset.push( [ (new Date(data[i].date)).getTime(), (data[i].like)]);
 			    			crankdataset2.push( [ (new Date(data[i].date)).getTime(), (data[i].total)]);
@@ -75,9 +233,9 @@ function getHomeFans(time){
 						}else{
 			    			dataset.push( [ (new Date(data[i].date)).getTime(), (data[i].like)]);
 			    			dataset2.push( [ (new Date(data[i].date)).getTime(), (data[i].total)]);
-						}
+						}*/
 			    	}
-			    	
+			    	/*
 			    	if (crankdataset.length == 1){
 			    		var date = new Date(crankdataset[0][0]);
 			    		date.setDate(date.getDate()-1);
@@ -104,10 +262,30 @@ function getHomeFans(time){
 			    		date.setDate(date.getDate()-1);
 			    		crankdataset2.push([date.getTime(), 0]);
 			    	}
+			    	*/
+			
+			    	
+			    	console.log(data);
+			    	
+			    	//graphData1 = [[1,1],[2,1],[1,1]];
+			    	startTime2 = new Date( (new Date(data[0].date)).getTime());
+			    	endTime2 = new Date( (new Date(data[data.length-1].date)).getTime());
+			    
+			    	startTime1 = new Date( (new Date(data[0].date)).getTime());
+			    	endTime1 = new Date( (new Date(data[data.length-1].date)).getTime());
+		
+			    	graphMargin = [5,5, 20,40]; // margins
+			    	graphMargin2 = [5,5, 20,60]; // margins
+			    	graphLoaded =true;
+			    	graphLoaded2 =true;
+			    	draw('#placeholder', graphData1, startTime1, endTime1,  graphMargin);
+			    	draw('#placeholder2', graphData2, startTime2, endTime2, graphMargin2);
+			    	
+			    	
+			    	
 			    	//console.log(dateset2);
-			        $.plot($('#placeholder'), [ {label: 'Started Using FanCrank', data:crankdataset },{ label: 'Fan Interaction',  data:dataset} ], options);
-			        $.plot($('#placeholder2'), [{label: 'Started Using FanCrank', data:crankdataset2 }, { label: 'Fan Interaction Total',  data:dataset2} ], options);
-			        $('#graphtitle').html('New Fans');
+			    	
+			    	$('#graphtitle').html('New Fans');
 			        $('#graphtitle2').html('Total New Fans');
 			    }
 			});  
@@ -202,8 +380,8 @@ function getHomeActivedFans(time){
 			    	}
 			    	
 			    	//console.log(dateset2);
-			        $.plot($('#placeholder'), [ { label: 'Fan Interaction',  data:dataset} ], options);
-			        $.plot($('#placeholder2'), [{ label: 'Fan Interaction Total',  data:dataset2} ], options);
+			        //$.plot($('#placeholder'), [ { label: 'Fan Interaction',  data:dataset} ], options);
+			       // $.plot($('#placeholder2'), [{ label: 'Fan Interaction Total',  data:dataset2} ], options);
 			        $('#graphtitle').html('Active Fans');
 			        $('#graphtitle2').html('Total Active Fans');
 			    }
@@ -213,26 +391,6 @@ function getHomeActivedFans(time){
 
 
 function getHomePageLikes(time){
-
-	var options = {		xaxis: {
-						mode: "time",
-						font:{size:12},
-						minTickSize: [1, "day"]
-						},
-					yaxis:{
-						font:{size:12},
-						
-					},
-					series: {
-							lines: { show: true }
-						},
-					grid: {
-						hoverable: true, 
-						clickable: true,
-					    backgroundColor: { colors: ["#fff", "#eee"] }
-				    }
-				}
-
 
 	   	if(fanpageId) {
 	    	//alert(fanpageId+' '+type); return false;
@@ -245,23 +403,42 @@ function getHomePageLikes(time){
 			    },
 			    beforeSend : function() {
 			    	$('#placeholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-					
+		
 					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				
 					//destroyAll();
 				},
 			    success: function (data){
 			    	//console.log(data);
-			    	var dataset = [];
-			    	var dataset2 = [];
-			    	
+			    	//var dataset = [];
+			    	//var dataset2 = [];
+			    	graphData1 = [];
+			    	graphData2 = [];
 			    	for(i=0; i < data[0].length; i++) {
 			    		
-			    		dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
-			    		dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
+			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
+			    		graphData1.push ([ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
+			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
+			    		graphData2.push ([	(new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
 			    	}
 			    	
-			    	$.plot($('#placeholder'), [{ label: 'Facebook Likes',  data:dataset2} ], options);
-			        $.plot($('#placeholder2'), [{ label: 'Facebook Likes',  data:dataset} ], options);
+			    	//console.log(dataset);
+			    	
+			    	//graphData1 = [[1,1],[2,1],[1,1]];
+			    	startTime2 = new Date( (new Date(data[0][0].end_time)).getTime());
+			    	endTime2 = new Date( (new Date(data[0][data[0].length-1].end_time)).getTime());
+			    	
+			    	startTime1 = new Date( (new Date(data[0][0].end_time)).getTime());
+			    	endTime1 = new Date( (new Date(data[0][data[0].length-1].end_time)).getTime());
+			    	
+			    	graphMargin = [5,5, 20,40]; // margins
+			    	graphMargin2 = [5,5, 20,60]; // margins
+			    	graphLoaded =true;
+			    	graphLoaded2 =true;
+			    	draw('#placeholder', graphData1, startTime1, endTime1,  graphMargin);
+			    	draw('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
+			    //	$.plot($('#placeholder'), [{ label: 'Facebook Likes',  data:dataset2} ], options);
+			       // $.plot($('#placeholder2'), [{ label: 'Facebook Likes',  data:dataset} ], options);
 			        $('#graphtitle').html('Facebook Likes');
 			        $('#graphtitle2').html('Total Facebook Likes');
 			    }
@@ -382,14 +559,14 @@ function getHomeFacebookInteractions(time){
 			    					    		
 			    	}
 			    	//console.log(dateset2);
-			        $.plot($('#placeholder'), [{ label: 'Posts',  data:postsdataset},
-			                                    {label: 'Comments', data:commentsdataset },
-			                                    {label: 'Likes', data:likesdataset }, 
-			                                    {label: 'All', data:alldataset }], options);
-			        $.plot($('#placeholder2'), [{ label: 'Posts',  data:postsdataset2},
-			                                    {label: 'Comments', data:commentsdataset2 },
-			                                    {label: 'Likes', data:likesdataset2 }, 
-			                                    {label: 'All', data:alldataset2 }], options);
+			     //   $.plot($('#placeholder'), [{ label: 'Posts',  data:postsdataset},
+			                             //       {label: 'Comments', data:commentsdataset },
+			                              //      {label: 'Likes', data:likesdataset }, 
+			                              //      {label: 'All', data:alldataset }], options);
+			     //   $.plot($('#placeholder2'), [{ label: 'Posts',  data:postsdataset2},
+			                              //      {label: 'Comments', data:commentsdataset2 },
+			                              //      {label: 'Likes', data:likesdataset2 }, 
+			                              //      {label: 'All', data:alldataset2 }], options);
 			        //$.plot($('#placeholder2'), [{label: 'Started Using FanCrank', data:crankdataset2 }, { label: 'Fan Interaction Total',  data:dataset2} ], options);
 			        $('#graphtitle').html('Interactions');
 			        $('#graphtitle2').html('Total Interactions');
@@ -529,7 +706,7 @@ function getHomeFanCrankInteractions(time){
 	    			unfollowdataset2.push( [date.getTime(), 0]);
 		    					    		
 		    	}
-		    	
+		    	/*
 		        $.plot($('#placeholder'), [{ label: 'All',  data:alldataset},
 		                                   { label: 'Posts',  data:postdataset},
 		                                   { label: 'Comments',  data:commentdataset},
@@ -548,7 +725,7 @@ function getHomeFanCrankInteractions(time){
 		                                   { label: 'Follows',  data:followdataset2},
 		                                   { label: 'Unfollows',  data:unfollowdataset2}
 		                                   
-		                                   ], options);
+		                                   ], options);*/
 		        //$.plot($('#placeholder2'), [{ label: 'Interactions Via Fancrank Total',  data:dataset2}], options);
 		    }
 		});            
@@ -596,8 +773,8 @@ function getInteractionsFanCrank(){
 		    		dataset2.push( [ (new Date(data[i].date)).getTime(), data[i].total ]);
 		    	} 
 		
-		        $.plot($('#placeholder'), [{ label: 'Interactions Via Fancrank',  data:dataset}], options);
-		        $.plot($('#placeholder2'), [{ label: 'Interactions Via Fancrank Total',  data:dataset2}], options);
+		       // $.plot($('#placeholder'), [{ label: 'Interactions Via Fancrank',  data:dataset}], options);
+		        //$.plot($('#placeholder2'), [{ label: 'Interactions Via Fancrank Total',  data:dataset2}], options);
 		    }
 		});            
 	}
@@ -645,7 +822,7 @@ function getHomePointsAwarded(ui){
 		    		dataset.push( [ (new Date(data[i].hours)).getTime(), data[i].sum ]);
 		    	} 
 		
-		        $.plot($(ui), [{ label: 'Points',  data:dataset}], options);
+		       // $.plot($(ui), [{ label: 'Points',  data:dataset}], options);
 		    }
 		});            
 	}
@@ -723,7 +900,7 @@ function loadHome(){
 			//getTopFanTable('topfan', 30);
 			/**************** Fanpage Setting Section *******************************/
 			var previousPoint = null;
-			    
+			/*    
 			$("#placeholder").bind("plothover", function (event, pos, item) {
 				if (item) {
 					if (previousPoint != item.dataIndex) {
@@ -762,7 +939,7 @@ function loadHome(){
 				}
 			
 			});
-			
+			*/
 			
 
 		},
