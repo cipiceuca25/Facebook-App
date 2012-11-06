@@ -291,7 +291,7 @@ class Service_FancrankCollectorService {
 		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList, $commentLikeList);
 		$pointResult = $this->calculateLikesPoints($pointResult, $allLikesList);
 		Zend_Debug::dump($pointResult);
-		
+
 		$db->beginTransaction();
 		
 		try {
@@ -1318,7 +1318,7 @@ class Service_FancrankCollectorService {
 		
 				if (property_exists($result, 'application') && isset($result->application->id)) {
 					$row['post_application_id'] = $result->application->id;
-					$row['post_application_name'] = $result->application->name;
+					$row['post_application_name'] = empty($result->application->name) ? null : $result->application->name;
 				} else {
 					$row['post_application_id'] = null;
 					$row['post_application_name'] = null;

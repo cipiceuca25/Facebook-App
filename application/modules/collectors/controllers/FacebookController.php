@@ -1437,11 +1437,12 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test27Action() {
-    	$fanpageId = '216821905014540';
-    	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
-    	
-    	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
-    	
+		//$fanpageActivitiesModel = new Model_FancrankActivities();
+		//$result = $fanpageActivitiesModel->getRecentFanpageActivitiesSince('216821905014540', (time()-3600*24*7));
+
+		$fanpageModel = new Model_Fanpages();
+		$result = $fanpageModel->getActiveFansSince('216821905014540', (time()-3600*24*2));
+		Zend_Debug::dump($result);    	
     }
     
     public function testpostAction() {

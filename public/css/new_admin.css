@@ -273,7 +273,7 @@ input[type="text"] {
   background-image: -o-linear-gradient(top, #fafafa, #ededed);
   background-image: linear-gradient(top, #fafafa, #ededed);
   background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fafafa', endColorstr='#ededed', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#ededed', GradientType=0);
   -webkit-box-shadow: inset 0 0 1px 1px #ffffff;
   -moz-box-shadow: inset 0 0 1px 1px #ffffff;
   box-shadow: inset 0 0 1px 1px #ffffff;
@@ -323,7 +323,7 @@ input[type="text"] {
   background-image: -o-linear-gradient(top, #fafafa, #ededed);
   background-image: linear-gradient(top, #fafafa, #ededed);
   background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fafafa', endColorstr='#ededed', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#ededed', GradientType=0);
   -webkit-box-shadow: inset 0 0 1px 1px #ffffff;
   -moz-box-shadow: inset 0 0 1px 1px #ffffff;
   box-shadow: inset 0 0 1px 1px #ffffff;
@@ -347,7 +347,7 @@ input[type="text"] {
   background-image: -o-linear-gradient(top, #f2f2f2, #d9d9d9);
   background-image: linear-gradient(top, #f2f2f2, #d9d9d9);
   background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#f2f2f2', endColorstr='#d9d9d9', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2f2f2', endColorstr='#d9d9d9', GradientType=0);
 }
 /****************************/
 .popover-inner {
