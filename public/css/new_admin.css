@@ -522,6 +522,7 @@ path {
 }
 .axis {
   shape-rendering: crispEdges;
+  cursor: pointer;
 }
 .x.axis line {
   stroke: #ddd;
