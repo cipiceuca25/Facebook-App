@@ -591,7 +591,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     					//Zend_Debug::dump( $likes[$count]);
     				}
     				if($latestlike[$count]==0){
+
     					$latestlike[$count] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
+    					
     				//Zend_Debug::dump($likes[$count]);
     				}
     			}
