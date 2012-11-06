@@ -55,8 +55,8 @@ if (count($fanpageList) > 0) {
 	$error = false;
 	foreach ($fanpageList as $fanpage) {
 
-		if(!$fanpage->installed || $fanpage->fanpage_level < 3) continue;
-
+		if(!$fanpage->installed) continue;
+		
 		$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
 		$data = array(
 				'fanpage_id'	=> $fanpage->fanpage_id,

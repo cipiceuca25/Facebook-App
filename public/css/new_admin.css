@@ -273,7 +273,7 @@ input[type="text"] {
   background-image: -o-linear-gradient(top, #fafafa, #ededed);
   background-image: linear-gradient(top, #fafafa, #ededed);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#ededed', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fafafa', endColorstr='#ededed', GradientType=0);
   -webkit-box-shadow: inset 0 0 1px 1px #ffffff;
   -moz-box-shadow: inset 0 0 1px 1px #ffffff;
   box-shadow: inset 0 0 1px 1px #ffffff;
@@ -323,7 +323,7 @@ input[type="text"] {
   background-image: -o-linear-gradient(top, #fafafa, #ededed);
   background-image: linear-gradient(top, #fafafa, #ededed);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#ededed', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fafafa', endColorstr='#ededed', GradientType=0);
   -webkit-box-shadow: inset 0 0 1px 1px #ffffff;
   -moz-box-shadow: inset 0 0 1px 1px #ffffff;
   box-shadow: inset 0 0 1px 1px #ffffff;
@@ -347,7 +347,7 @@ input[type="text"] {
   background-image: -o-linear-gradient(top, #f2f2f2, #d9d9d9);
   background-image: linear-gradient(top, #f2f2f2, #d9d9d9);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f2f2f2', endColorstr='#d9d9d9', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#f2f2f2', endColorstr='#d9d9d9', GradientType=0);
 }
 /****************************/
 .popover-inner {
@@ -510,4 +510,70 @@ input[type="text"] {
 .ui-spinner .ui-spinner-box {
   background: none;
   border: none !important;
+}
+#placeholder,
+#placeholder2 {
+  width: 100%;
+  height: 250px;
+}
+path {
+  stroke-width: 1;
+  fill: none;
+}
+.axis {
+  shape-rendering: crispEdges;
+}
+.x.axis line {
+  stroke: #ddd;
+}
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+.x.axis path {
+  display: none;
+}
+.x.axis text {
+  font-size: 10px;
+}
+.y.axis line,
+.y.axis path {
+  fill: none;
+  stroke: #ddd;
+}
+.y.axis text {
+  font-size: 12px;
+}
+circle.line0,
+circle.line2,
+circle.line1 {
+  fill: #fff;
+}
+circle.line0:hover,
+circle.line2:hover,
+circle.line1:hover {
+  fill: #000;
+}
+.data0 {
+  stroke: green;
+}
+.data2 {
+  stroke: orange;
+}
+.data1 {
+  stroke: blue;
+}
+.line0 {
+  fill: none;
+  stroke: green;
+  stroke-width: 1px;
+}
+.line2 {
+  fill: none;
+  stroke: orange;
+  stroke-width: 1px;
+}
+.line1 {
+  fill: none;
+  stroke: blue;
+  stroke-width: 1px;
 }

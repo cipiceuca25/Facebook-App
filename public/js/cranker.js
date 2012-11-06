@@ -663,7 +663,7 @@ function like(post_id, post_type, target_id, target_name) {
 				type : "GET",
 				url : serverUrl + '/app/user/' + userId + '/likes/?post_id='
 						+ post_id + '&fanpage_id=' + fanpageId + '&post_type='
-						+ post_type + '&target_id='+target_id + '&target_name='+ target_name + '&mes='+mes,
+						+ post_type + '&target_id='+target_id + '&target_name='+ target_name + '&access_token=' + userAccessToken + '&mes='+mes,
 				dataType : "html",
 				cache : false,
 				async: true,
@@ -728,7 +728,7 @@ function unlike(post_id, post_type, target_id, target_name) {
 		
 				url : serverUrl + '/app/user/' + userId + '/unlike/?post_id='
 						+ post_id + '&fanpage_id=' + fanpageId + '&post_type='
-						+ post_type + '&target_id='+target_id + '&target_name='+ target_name + '&mes='+mes ,
+						+ post_type + '&target_id='+target_id + '&target_name='+ target_name + '&mes='+mes + '&access_token=' + userAccessToken,
 				
 				dataType : "html",
 				cache : false,
@@ -1203,7 +1203,7 @@ function post(button) {
 			//alert('Post ID: ' + response.id)
 			$.ajax({
 				type : "GET",
-				url : serverUrl + '/app/user/' +userId +'/post/?fanpage_id=' + fanpageId + '&fanpage_name='+fanpageName +'&message=' + mes,
+				url : serverUrl + '/app/user/' +userId +'/post/?fanpage_id=' + fanpageId + '&access_token=' + userAccessToken + '&fanpage_name='+fanpageName +'&message=' + mes,
 				dataType : "html",
 				cache : false,
 				async : true,
@@ -1239,7 +1239,8 @@ function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name
 			type : "GET",
 			url : serverUrl + '/app/user/' +userId +'/comment/?post_id='+post_id + '&post_type='+post_type
 							+ '&target_id=' + post_owner_id + '&target_name=' +post_owner_name
-							+ '&fanpage_id=' + fanpageId + '&fanpage_name='+fanpageName +'&message=' + mes,
+							+ '&fanpage_id=' + fanpageId + '&fanpage_name='+fanpageName +'&message=' + mes
+							+ '&access_token=' + userAccessToken ,
 			dataType : "html",
 			cache : false,
 			async : true,

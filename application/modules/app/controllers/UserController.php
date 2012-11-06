@@ -145,7 +145,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['facebook_user_id'] = $this->_user->facebook_user_id;
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['fanpage_name'] = $this->_getParam('fanpage_name');
-		$data['access_token'] = $this->_user->facebook_user_access_token;
+		$data['access_token'] = $this->_getParam('access_token');
 		//$data['post_id'] = $this->_getParam('post_id');
 		$data['message'] = $this->_getParam('message');
 
@@ -317,7 +317,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['post_id'] = $this->_getParam('post_id');
 		$data['fanpage_id'] = $this->_getParam('fanpage_id');
 		$data['post_type'] = $this->_getParam('post_type');
-		$data['access_token'] = $this->_user->facebook_user_access_token;
+		$data['access_token'] = $this->_getParam('access_token');
 		
 		$isComment = strpos($this->_getParam('post_type'),'comment')?true:false;
 		$db = Zend_Db_Table::getDefaultAdapter();
@@ -557,7 +557,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$data['post_type'] = $this->_getParam('post_type');
 		$data['likes'] = 0;
 		$isComment = strpos($this->_getParam('post_type'),'comment')?true:false;
-		$data['access_token'] = $this->_user->facebook_user_access_token;
+		$data['access_token'] = $this->_getParam('access_token');
 		//echo ('function called ');
 		
 		//Zend_debug::dump($data);
@@ -661,7 +661,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	
 	public function commentAction() {
 		$data['facebook_user_id'] = $this->_user->facebook_user_id;
-		$data['access_token'] = $this->_user->facebook_user_access_token;
+		$data['access_token'] = $this->_getParam('access_token');
 		$data['post_id'] = $this->_getParam('post_id');
 		$data['post_type'] = $this->_getParam('post_type');
 		$data['message'] = $this->_getParam('message');
