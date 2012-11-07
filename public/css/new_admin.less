@@ -1,22 +1,24 @@
 @import url('/bootstrap/css/bootstrap.css');
 @import url('../bootstrap/less/mixin.less');
+@import url('preview.less'); 
+  
 @color-background-blue: 			#E7EBF2; // background color, follow hover, tip border
-@color-container-blue: 				#C1CEE0; // container blue
+@color-container-blue: 		 		#C1CEE0; // container blue
 @color-link-blue: 					#3B5998; // links color
-@color-link-hover:					#0a1b31;	//link hover
+@color-link-hover:					#0a1b31; //link hover
 @color-tab-border-blue:				#173D71; // tab dark blue, rank first, follow text hover,button hover , fan exp bar
 @color-tab-back-blue:				#47658E; // unselected blue, rank numbers , button text, tip, other exp bars
 @color-tab-hover:					#eeeeee; // the hover color
 @color-photo-border-blue:			#7D98BE; // the border on the icons, follow button
 @color-social-bar-blue:				#EDEFF4; // social bar color
-@color-user-border-gray:			#E5E5E5;//flag bottom border color
-@color-text:						#666666; //text color
+@color-user-border-gray:			#E5E5E5; //flag bottom border color
+@color-text:						#575757; //text color
 @color-post-border-thing:			#8194BD; //post border
 @color-post-border-hover-thing:		#5a6d99;
 @color-post-shadow-thing:			#A5B4CE;
-@color-post-hover:					#f7f7f7; // the color of the post on hover
+@color-post-hover:					#f9f9f9; // the color of the post on hover
 @color-post:						#ffffff;
-@color-admin:						#09937C;
+@color-admin:						#47658E;
 @color-unfollow:					#BD362F;
 @color-following:					#56A556;
 @color-you:							#F7CB1E;
@@ -24,11 +26,14 @@
 @color-link-border:					#D3DAE8; // the border of the link
 @color-button:						#dddddd; //post button back
 @color-rank-border:					#C4CDE0; //ranking border
+@color-post-bottom:					#f7f7f7;
+@color-text2:						#999999;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //main 
 @color-main-background:@color-background-blue;
 @color-main-header-picture-border:@color-photo-border-blue;
-@color-main-container:@color-container-blue;
+@color-main-container-border:@color-container-blue;
 @color-main-text:@color-text;
 @color-main-title:@color-post;
 @color-main-link-text:@color-link-blue;
@@ -46,13 +51,18 @@
 @color-tab-border-bottom-hover:@color-tab-hover;
 @color-tab-background-hover:@color-tab-hover;
 @color-tab-border-hover:@color-tab-hover;
-@color-tab-text-hover:@color-tab-border-blue;
+@color-tab-text-hover:@color-post;
 @color-tab-select-background:@color-background-blue;
 @color-tab-select-text:@color-tab-border-blue;
 @color-tab-select-border:@color-tab-border-blue;
 @color-tab-select-border-bottom:@color-background-blue;
 
+@color-toolbar-background:@color-social-bar-blue;
+@color-toolbar-border:@color-tab-back-blue;
+@color-toolbar-text:@color-tab-back-blue;
+
 //tips
+@color-tip-text:@color-text2;
 @color-tip-border:@color-post;
 @color-tip-background:@color-tab-back-blue;
 @color-tip-question-mark:@color-post;
@@ -92,6 +102,7 @@
 @color-post-shadow:@color-post-shadow-thing;
 @color-post-link-background:@color-link;
 @color-post-link-border:@color-link-border;
+@color-post-button-container:@color-post-bottom;
 
 //buttons
 @color-more-button-background:@color-tab-hover;
@@ -122,16 +133,12 @@
 @color-level-border:@color-tab-back-blue;
 @color-level-background:@color-post;
 @color-level-text:@color-tab-back-blue;
-@color-fan-experience-bar:@color-tab-border-blue;
+@color-fan-experience-bar:@color-tab-back-blue;
 @color-overall-achievement-bar:@color-tab-back-blue;
 @color-personal-achievement-bar:@color-tab-back-blue;
 @color-social-achievement-bar:@color-tab-back-blue;
 
 //popover
-@color-popover-background:@color-container-blue;
-@color-popover-border:@color-container-blue;
-
-
 @color-popover-background:@color-container-blue;
 @color-popover-border:@color-container-blue;
 
@@ -718,8 +725,14 @@ path {
 }
 
 .axis {
-  shape-rendering: crispEdges;
-  cursor:pointer;
+  	shape-rendering: crispEdges;
+	cursor:default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .x.axis line {
@@ -736,6 +749,7 @@ path {
 
 .x.axis text {
 	font-size: 10px;
+	cursor:default;
 }
 
 .y.axis line, .y.axis path {
@@ -769,15 +783,26 @@ circle.line0:hover, circle.line2:hover, circle.line1:hover {
 .line0 {
   fill: none;
   stroke: green;
-  stroke-width: 1px;
+  stroke-width: 1.5px;
 }
 .line2 {
   fill: none;
   stroke: orange;
-  stroke-width: 1px;
+  stroke-width: 1.5px;
 }
 .line1 {
   fill: none;
   stroke: blue;
-  stroke-width: 1px;
+  stroke-width: 1.5px;
+}
+
+.preview{
+	position:relative;
+	padding:10px;
+	width:810px;
+	background-color:@color-main-background;
+	color:@color-main-text;
+	font:12px Helvetica, Arial sans-serif;
+	border: 2px solid black;
+	overflow:hidden;
 }

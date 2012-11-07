@@ -2,12 +2,14 @@ var defaultMax = 10;
 var defaultMin = 0;
 var defaultStep = 1;
     
-var graphData1 = [], startTime1= null, endTime1 =null ,  graphMargin = [];
+var graphData1 = [], startTime1= null, endTime1 =null ,  graphMargin1 = [];
 var graphData2 = [], startTime2= null, endTime2 =null , graphMargin2 = [];
 var graphLoaded=false, graphLoaded2= false;
 
 var downx = Math.NaN;
 var downscalex;
+
+var lineGraph
 
 jQuery(document).ready(function($){
 	loadHome();
@@ -20,139 +22,11 @@ $(document).on('mouseover', '[rel=tooltip]', function() {
 	$(this).data('isTooltipLoaded', true).tooltip({placement:'left' }).trigger('mouseover');
 });
 
-function draw(ui,data,  startTime, endTime,  m){
-	$(ui).empty();
-	// define dimensions of graph
-	
-	//console.log($('#graph').css('width'));
-	var w = parseInt($(ui).css('width')) - m[1] - m[3];	// width
-	var h = parseInt($(ui).css('height')) - m[0] - m[2]; // height
-	
-	var lines = new Array(data[0].length-1);
-	/* 
-	 * sample data to plot over time
-	 * 		[Success, Failure]
-	 *		Start: 1335035400000
-	 *		End: 1335294600000
-	 *		Step: 300000ms	
-	 */
-
-	
-	// X scale starts at epoch time 1335035400000, ends at 1335294600000 with 300s increments
-	var x = d3.time.scale().domain([startTime, endTime]).range([0, w]);
-	//x.tickFormat(d3.time.format("%d"));
-	// Y scale will fit values from 0-10 within pixels h-0a1b31 (Note the inverted domain for the y-scale: bigger is up!)
-	
-	//console.log(data);
-
-	var y = d3.scale.linear().domain([ d3.min(data, function(d,i) {  return d[1]-1; }),
-	                                   d3.max(data, function(d,i) {  return d[1]+1; })]).range([h,0 ]);
-	//console.log(y);
-	// create a line function that can convert data[] into x and y points
-	
-	
-
-		// Add an SVG element with the desired dimensions and margin.
-		var graph = d3.select(ui).append("svg:svg")
-		      .attr("width", w + m[1] + m[3])
-		      .attr("height", h + m[0] + m[2])
-		    .append("svg:g")
-		      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
-
-		// create yAxis
-		var xAxis = d3.svg.axis().scale(x).tickSize(-h)
-		.orient("bottom");//;
-
-		// Add the x-axis.
-		graph.append("svg:g")
-		      .attr("class", "x axis")
-		      .attr("transform", "translate(5," + h + ")")
-		      .call(xAxis)
-		      .on("mousedown", function(d) {
-			    	
-			        var p = d3.svg.mouse(graph[0][0]);
-			    	  //console.log(p);
-			    	  downx = x.invert(p[0]);
-			          downscalex = x;
-			          //console.log(downx);
-			   })
-			   .on("mousemove", function(d){
-			    		//console.log('mouse moving');
-			    		if (!isNaN(downx)){
-			    			console.log(downx);
-			    			var x = d3.time.scale().domain([startTime, endTime]).range([0, w]);
-			    		}
-			    	})
-			    .on("mouseup",function(d){
-			    	downx=Math.NaN;
-			    })
-			    ;
-	
-
-		// create left yAxis
-		var yAxisLeft = d3.svg.axis().scale(y).ticks(8).tickSize(-w).orient("left");
-		// Add the y-axis to the left
-		graph.append("svg:g")
-		      .attr("class", "y axis")
-		      .attr("transform", "translate(-10,0)")
-		      .call(yAxisLeft);
-		
-		
-		
-		for(j=0;j<lines.length;j++){
-			
-			lines[j] = d3.svg.line()
-			// assign the X function to plot our line as we wish
-			.x(function(d) { 
-				// verbose logging to show what's actually being done
-				//console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
-				// return the X coordinate where we want to plot this datapoint
-				return x(d[0]); 
-			})
-			.y(function(d) { 
-				// verbose logging to show what's actually being done
-				//console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
-				// return the Y coordinate where we want to plot this datapoint
-				//console.log( d[0] );
-				return y(d[j+1]); // use the 1st index of data (for example, get 20 from [20,13])
-			})
-			
-			graph.append("svg:path").attr("d", lines[j](data)).attr("class", "data" + j);
-		}	  
-		
-			// add lines
-			// do this AFTER the axes above so that the line is above the tick-lines
-		
-		//graph.append("svg:path").attr("d", line2(data)).attr("class", "data2");
-		//graph.append("svg:path").attr("d", line3(data)).attr("class", "data3");
-		
-		for(j=0;j<lines.length;j++){
-		
-			graph.selectAll("circle.line")
-				.data(data)
-			  .enter().append("svg:circle")
-				.attr("class", "line"+j)
-				.attr("cx", function(d) { return x(d[0]); })
-				.attr("cy", function(d) { return y(d[j+1]); })
-				.attr("r", 1.5)
-				.attr("rel","tooltip")
-				.attr('data-original-title', (function(d) { return d[j+1] + ' Likes on ' + (new Date(d[0])).toString() }))
-				;
-		}
+function ImgError(source) {
+	source.src = "/img/profile-picture.png";
+	source.onerror = "";
+	return true;
 }
-
-
-
-
-$(window).resize(function() {
-	if (graphLoaded){
-		draw('#placeholder', graphData1, startTime1, endTime1,  graphMargin);
-	}
-	if (graphLoaded2){
-		draw('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
-	}
-});	
-
 
 
 /*
@@ -274,12 +148,12 @@ function getHomeFans(time){
 			    	startTime1 = new Date( (new Date(data[0].date)).getTime());
 			    	endTime1 = new Date( (new Date(data[data.length-1].date)).getTime());
 		
-			    	graphMargin = [5,5, 20,40]; // margins
+			    	graphMargin1 = [5,5, 20,40]; // margins
 			    	graphMargin2 = [5,5, 20,60]; // margins
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
-			    	draw('#placeholder', graphData1, startTime1, endTime1,  graphMargin);
-			    	draw('#placeholder2', graphData2, startTime2, endTime2, graphMargin2);
+			    	graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
+			    	graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2, graphMargin2);
 			    	
 			    	
 			    	
@@ -431,12 +305,12 @@ function getHomePageLikes(time){
 			    	startTime1 = new Date( (new Date(data[0][0].end_time)).getTime());
 			    	endTime1 = new Date( (new Date(data[0][data[0].length-1].end_time)).getTime());
 			    	
-			    	graphMargin = [5,5, 20,40]; // margins
+			    	graphMargin1 = [5,5, 20,40]; // margins
 			    	graphMargin2 = [5,5, 20,60]; // margins
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
-			    	draw('#placeholder', graphData1, startTime1, endTime1,  graphMargin);
-			    	draw('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
+			    	graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
+			    	graph2  = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
 			    //	$.plot($('#placeholder'), [{ label: 'Facebook Likes',  data:dataset2} ], options);
 			       // $.plot($('#placeholder2'), [{ label: 'Facebook Likes',  data:dataset} ], options);
 			        $('#graphtitle').html('Facebook Likes');
@@ -505,15 +379,15 @@ function getHomeFacebookInteractions(time){
 			    	//console.log(first_time_use);
 			    	for(i=0; i < data.length; i++) {
 			    		
-			    			alldataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].all)]);
-			    			postsdataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].posts)]);
-			    			commentsdataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].comments)]);
-			    			likesdataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].likes)]);
-			    			
-			    			alldataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_all)]);
-			    			postsdataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_posts)]);
-			    			commentsdataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_comments)]);
-			    			likesdataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_likes)]);
+			    		alldataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].all)]);
+			    		postsdataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].posts)]);
+			    		commentsdataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].comments)]);
+			    		likesdataset.push( [ (new Date(data[i].created_time)).getTime(), (data[i].likes)]);
+			    		
+			    		alldataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_all)]);
+			    		postsdataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_posts)]);
+			    		commentsdataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_comments)]);
+			    		likesdataset2.push( [ (new Date(data[i].created_time)).getTime(), (data[i].total_likes)]);
 			    	}
 			    	
 			    	console.log(alldataset);
@@ -873,6 +747,8 @@ function loadBadge(){
 	
 }
 
+
+
 function loadHome(){
 	
 	$.ajax({
@@ -950,6 +826,8 @@ function loadHome(){
 	});
 	
 }
+
+
 
 function loadFacebookInsights(){
 	
@@ -1037,7 +915,7 @@ function loadSettings(){
 		},
 		success : function(data) {
 			$('#settings').html(data);			
-			
+			// loadPreviewContent();
 			$('#point_like_normal').spinner({
 				min: defaultMin,
 				max: defaultMax,
@@ -1110,6 +988,7 @@ function loadPoints(){
 		},
 		success : function(data) {
 			$('#points').html(data)
+			
 			//loadGraph("#placeholder", 'Points');
 			//$('#placeholder').css({'width':'100%', 'height':'200px'});
 			//$('#placeholder').resize();
@@ -1121,6 +1000,36 @@ function loadPoints(){
 		}
 	});	
 }
+
+function loadPreviewContent(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/newsfeed/' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#preview-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('#preview-content').html(data)
+			//loadGraph("#placeholder", 'Points');
+			//$('#placeholder').css({'width':'100%', 'height':'200px'});
+			//$('#placeholder').resize();
+		
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting point settings');
+		}
+	});	
+}
+
+
+
+
 
 $('#badges-tab').live('click', function() {
 	loadBadge();
@@ -1149,10 +1058,6 @@ $('#home-tab').live('click', function() {
 $('#facebook-tab').live('click', function() {
 	loadFacebookInsights();
 });
-
-
-
-
 
 function destroyAll(){
 	
@@ -1976,3 +1881,163 @@ function popover(x){
 	});
 }
 */
+
+
+lineGraph =  function (u, d, s, e,  m){
+	
+	var self = this;
+	this.ui = u;
+	this.data = d;
+	this.margin = m;
+	this.startTime = s;
+	this.endTime = e;
+
+	
+	//console.log(this.scale);
+	
+	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3];	// width
+	this.height = parseInt($(this.ui).css('height')) - this.margin[0] - this.margin[2]; // height
+	
+	this.x = d3.time.scale().domain([this.startTime, this.endTime]).range([10, this.width-10]);
+	
+	this.minValue = d3.min(this.data, function(d,i) {  return d[1]; });
+	if (this.minValue > 0){
+		this.minValue /= 1.5;
+	}else if (this.minValue == 0){
+		this.minValue -= 5;
+	}else{
+		this.minValue *= 1.5;
+	}
+
+	
+	this.maxValue = d3.max(this.data, function(d,i) {  return d[1]; });
+	if (this.maxValue == 0){
+		this.maxValue += 5;
+	}else{
+		this.maxValue *= 1.5;
+	}
+	
+	
+	this.y =  d3.scale.linear().domain([this.minValue ,this.maxValue]).range([this.height,0 ]);
+	//console.log (this.minValue + ' ' + this.maxValue);
+	this.lines = new Array();
+
+	for(j=0;j<this.data[0].length - 1;j++){	
+		this.lines[j] = d3.svg.line()
+		.x(function(d) { 
+			return self.x(d[0]); 
+		})
+		.y(function(d) { 
+			return self.y(d[j+1]); 
+		})
+	}
+	
+	this.xAxis = d3.svg.axis().scale(this.x).tickSize(-this.height).ticks(8).orient("bottom")
+	 			.tickFormat(d3.time.format("%b %d"))
+	 			
+	this.yAxis = d3.svg.axis().scale(this.y).tickSize(-this.width).ticks(4).orient("left");
+	$(this.ui).empty();
+	
+	this.graph = d3.select(this.ui).append("svg")
+					.attr("width", this.width + this.margin[1] + this.margin[3])
+					.attr("height", this.height + this.margin[0] + this.margin[2])
+				.append("svg:g")
+					.attr("transform", "translate(" + this.margin[3] + "," + this.margin[0] + ")");
+	//console.log(this.graph);
+	this.plot = this.graph.append("rect") 
+					.attr("width", this.width)
+					.attr("height", this.height)
+				.style("fill", "#fafafa")
+					.attr("pointer-events", "all")
+					.call(d3.behavior.zoom().x(this.x).y(this.y).on("zoom", this.redraw()));
+	//console.log(this.transx+' '+this.transy+' '+this.scale);
+	this.graph.append("svg")
+    				.attr("top", 0)
+    				.attr("left", 0)
+    				.attr("width", this.width)
+    				.attr("height", this.height)
+    				.attr("viewBox", "0 0 "+this.width+" "+this.height)
+    				.attr("transform", "translate(" + (this.margin[3]) + "," + (this.margin[0]) +")");
+	
+	this.graph.append("svg:g")
+    				.attr("class", "x axis")
+    				.attr("transform", "translate(0," + this.height + ")")
+    				.call(this.xAxis);
+    
+	this.graph.append("svg:g")
+    			    .attr("class", "y axis")
+    			    .attr("transform", "translate(0,0)")
+    			    .call(this.yAxis);
+	
+	
+	//console.log(this.data);
+	for(j=0;j<this.lines.length;j++){	
+	
+		this.graph.select("svg").append("svg:path").attr("d", this.lines[j](this.data)).attr("class", "data" + j);
+	}
+	
+	this.redraw()();
+	
+};
+
+
+
+lineGraph.prototype.redraw = function (){
+	//console.log(this.data);
+	
+	var self = this;
+	return function(){
+		
+	
+		
+		self.graph.select(".x.axis")
+			.call(self.xAxis);
+		self.graph.select(".y.axis")
+			.call(self.yAxis);
+		
+		for(j=0;j<self.data[0].length - 1;j++){
+			
+			self.graph.select("svg").selectAll(".data"+j)
+				.attr("d", self.lines[j](self.data));
+			
+			var circle = self.graph.select("svg").selectAll("circle")
+				.data(self.data);
+			
+			//console.log(circle);
+			
+			circle.enter().append("svg:circle")
+				.attr("class", "line"+j)
+				.attr("cx", function(d) { return self.x(d[0]); })
+				.attr("cy", function(d) { return self.y(d[j+1]); })
+				.attr("r", 3)
+				.attr("rel","tooltip")
+				.attr('data-original-title', (function(d) { return d[j+1] + ' Likes on ' + (new Date(d[0])).toString() }))
+				;
+			
+			circle.attr("cx", function(d) { return self.x(d[0]); })
+				.attr("cy", function(d) { return self.y(d[j+1]); })
+				.attr("r", 3);
+			
+			circle.exit().remove();
+			
+		}
+	
+		self.graph.call(d3.behavior.zoom().x(self.x).y(self.y).on("zoom", self.redraw))
+
+	}
+};
+
+
+
+$(window).resize(function(){
+	if (graphLoaded){
+	
+
+		
+		graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
+		
+	}
+	if (graphLoaded2){
+		graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
+	}
+});
