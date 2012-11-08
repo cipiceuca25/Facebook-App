@@ -1110,6 +1110,122 @@ function destroyAll(){
 	}
 
 }
+
+function PostBox(){
+	if($('#post_box').val() == 'Type in your Post here!'){
+		$('#post_box').val('');	
+			
+	}
+	$('.post-button-container').css('display', 'block');
+	$('.post-box').css('border-bottom', '0px');
+}
+$('#post_box').live('keyup', function(){
+	//console.log('works');
+	growTextbox(this);
+});
+function growTextbox(x){
+	
+	var linesCount = 0;
+	//console.log(x);
+    var lines = x.value.split('\n');
+
+    for (var i=lines.length-1; i>=0; --i)
+    {
+        linesCount += Math.floor((lines[i].length / 85) + 1);
+    }
+
+    if (linesCount > 1)
+        x.rows = linesCount + 1;
+	else
+        x.rows = 1;
+    
+   // console.log(x.rows);
+    x.style.height = (20 * x.rows) + 'px';
+}
+
+function growTextbox2(x){
+	
+	var linesCount = 0;
+	//console.log(x);
+    var lines = x.value.split('\n');
+
+    for (var i=lines.length-1; i>=0; --i)
+    {
+        linesCount += Math.floor((lines[i].length / 60) + 1);
+    }
+
+    if (linesCount > 1)
+        x.rows = linesCount + 1;
+	else
+        x.rows = 1;
+    
+   // console.log(x.rows);
+    x.style.height = (14 * x.rows) + 'px';
+}
+
+function changeTime(ui){
+	$.each($(ui), function(index) {
+		$(this).html(timeZone($(this).attr('data-unix-time')));
+		$(this).attr('data-original-title', timeZoneTitle($(this).attr('data-unix-time')));
+	});
+}
+
+function timeZoneTitle(time) {
+
+	var date = new Date(time * 1000);
+	return date.toLocaleString();
+}
+
+function timeZone(time) {
+
+	var date = new Date(time * 1000);
+	
+	var now = new Date();
+
+	var weekday = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+	var apm = '';
+
+	var hour = date.getHours();
+	apm = (hour < 12)? 'am' : 'pm';
+	
+	if (hour == 0) {
+		hour = 12;
+	}
+	if (hour > 12) {
+		hour = hour - 12;
+	}
+	
+	var min = date.getMinutes();
+	if (min < 10) {
+		min = '0' + min;
+	}
+	
+	var difference = now.getTime() - date.getTime();
+	var daydiff = Math.floor(difference/1000/60/60/24);
+	if (daydiff < 4){
+		if (daydiff==1){
+			return 'Yesterday at ' + hour + ':' + min + '' + apm;
+		}else if (daydiff < 1){
+			var hourdiff = Math.floor(difference/1000/60/60);
+			if (hourdiff < 1){
+				var mindiff = Math.floor(difference/1000/60);
+				if(mindiff <1){
+					var secdiff = Math.floor(difference/1000);
+					if (secdiff < 0){
+						return 'A few seconds ago';
+					}
+					return secdiff + ((secdiff==1)? ' second ago' : ' seconds ago');
+				}
+		
+				return mindiff + ((mindiff==1)? ' minute ago' : ' minutes ago');
+			}
+			return hourdiff + ((hourdiff==1)?' hour ago' : ' hours ago');
+		}
+		return weekday[date.getDay()] + ' at ' + hour + ':' + min + '' + apm;
+	}else{
+		return (date.toDateString());
+	}
+}
 /*	
 	$( "#myFanpageSettingMsodel" ).dialog("destroy");
 

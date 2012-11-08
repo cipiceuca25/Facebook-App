@@ -563,6 +563,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	if ($latest != null ){
     		foreach ($latest as $l){
+    			/*
     			$cache = Zend_Registry::get('memcache');
     			$cache->setLifetime(1800);
     			try {
@@ -575,7 +576,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
     				//echo $e->getMessage();
     			}
-    			
+    			*/
     			$yourpointslatest[$count] = 0;
     			$yourpointslatest[$count] = $this->postPointsCalculate($l);
     			$latestlike[$count]=0;

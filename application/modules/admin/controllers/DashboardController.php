@@ -2,6 +2,9 @@
 
 class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 {
+	
+	
+	
 	public function preDispatch()
 	{
 		parent::preDispatch();
@@ -784,6 +787,16 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$this->_helper->viewRenderer->setNoRender(true);
 		
 		$fanpageId = $this->_request->getParam('id');
+		
+		$result = $this->feedFirstQuery($fanpageId);
+		
+		$latest = $result['posts']->data;
+		$feed = $result['feed']->data;
+
+		$this->view->latest = $latest ;
+		$this->view->post = $feed;
+		//Zend_Debug::dump($fanpage);
+		$this->view->fanpage_id = $fanpageId;
 		$this->render("preview/newsfeed");
 	}
 	
@@ -1005,6 +1018,39 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			if($counter < 1) break;
 		}
 		return $result;
+	}
+	
+	private function feedFirstQuery($fanpage_id) {
+		
+		$fanpage = new Model_Fanpages();
+		$fanpage = $fanpage->find($fanpage_id)->current();
+		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$fanpage_id/feed?limit=10");
+		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$fanpage_id/posts?limit=10");
+	
+		$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$fanpage ->access_token;
+	
+		$client = new Zend_Http_Client;
+		$client->setUri("https://graph.facebook.com/?". $batchQueries);
+		$client->setMethod(Zend_Http_Client::POST);
+	
+		$response = $client->request();
+	
+		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+	
+		$feed = array();
+		$posts = array();
+		if(!empty($result[0]->body)) {
+			$feed = json_decode($result[0]->body);
+		}
+	
+		if(!empty($result[1]->body)) {
+			$posts = json_decode($result[1]->body);
+		}
+	
+		$finalResult['feed'] = $feed;
+		$finalResult['posts'] = $posts;
+		
+		return $finalResult;
 	}
 }
 
