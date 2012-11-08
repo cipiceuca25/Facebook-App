@@ -901,6 +901,42 @@ function loadDashboard(){
 	
 }
 
+function loadPreviewLogin(){
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/previewlogin?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('.preview-container').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('.preview-container').html(data);
+		}
+	});
+	
+}
+
+function loadPreviewNewsFeed(){
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/previewnewsfeed?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('.preview-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('.preview-content').html(data);
+		}
+	});
+	
+}
+
 function loadSettings(){
 	
 	$.ajax({
@@ -916,6 +952,7 @@ function loadSettings(){
 		success : function(data) {
 			$('#settings').html(data);			
 			// loadPreviewContent();
+			loadPreviewLogin();
 			$('#point_like_normal').spinner({
 				min: defaultMin,
 				max: defaultMax,
@@ -1001,31 +1038,6 @@ function loadPoints(){
 	});	
 }
 
-function loadPreviewContent(){
-	
-	$.ajax({
-		type : "GET",
-		url : serverUrl + '/app/app/newsfeed/' + fanpageId,
-		dataType : "html",
-		cache : false,
-		async : true,
-		beforeSend : function() {
-			$('#preview-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-			//destroyAll();
-		},
-		success : function(data) {
-			$('#preview-content').html(data)
-			//loadGraph("#placeholder", 'Points');
-			//$('#placeholder').css({'width':'100%', 'height':'200px'});
-			//$('#placeholder').resize();
-		
-		},
-		error : function(xhr, errorMessage, thrownErro) {
-			console.log(xhr.statusText, errorMessage);
-			console.log('error getting point settings');
-		}
-	});	
-}
 
 
 
@@ -1939,45 +1951,49 @@ lineGraph =  function (u, d, s, e,  m){
 	$(this.ui).empty();
 	
 	this.graph = d3.select(this.ui).append("svg")
+					.attr("class", "graph")
 					.attr("width", this.width + this.margin[1] + this.margin[3])
 					.attr("height", this.height + this.margin[0] + this.margin[2])
+	
 				.append("svg:g")
-					.attr("transform", "translate(" + this.margin[3] + "," + this.margin[0] + ")");
+					.attr("transform", "translate(" + this.margin[3] + "," + this.margin[0] + ") ");
+	
 	//console.log(this.graph);
 	this.plot = this.graph.append("rect") 
 					.attr("width", this.width)
 					.attr("height", this.height)
 				.style("fill", "#fafafa")
 					.attr("pointer-events", "all")
-					.call(d3.behavior.zoom().x(this.x).y(this.y).on("zoom", this.redraw()));
+					.call(d3.behavior.zoom().on("zoom", this.redraw()).scaleExtent([0.1,10]).x(this.x).y(this.y));
 	//console.log(this.transx+' '+this.transy+' '+this.scale);
 	this.graph.append("svg")
     				.attr("top", 0)
     				.attr("left", 0)
     				.attr("width", this.width)
     				.attr("height", this.height)
-    				.attr("viewBox", "0 0 "+this.width+" "+this.height)
-    				.attr("transform", "translate(" + (this.margin[3]) + "," + (this.margin[0]) +")");
-	
+    			.append("svg:g")
+    				.attr("transform", "translate(" + (this.margin[3]) + "," + (this.margin[0]) +") ");
+	//console.log(this.margin);
 	this.graph.append("svg:g")
     				.attr("class", "x axis")
-    				.attr("transform", "translate(0," + this.height + ")")
+    				.attr("transform", "translate("+this.margin[3]+"," + this.height + ") ")
     				.call(this.xAxis);
     
 	this.graph.append("svg:g")
     			    .attr("class", "y axis")
-    			    .attr("transform", "translate(0,0)")
+    			    .attr("transform", "translate(0,0) ")
     			    .call(this.yAxis);
 	
 	
 	//console.log(this.data);
 	for(j=0;j<this.lines.length;j++){	
 	
-		this.graph.select("svg").append("svg:path").attr("d", this.lines[j](this.data)).attr("class", "data" + j);
+		this.graph.select("svg g").append("svg:path").attr("d", this.lines[j](this.data)).attr("class", "data" + j);
+		
 	}
 	
 	this.redraw()();
-	
+
 };
 
 
@@ -1987,8 +2003,7 @@ lineGraph.prototype.redraw = function (){
 	
 	var self = this;
 	return function(){
-		
-	
+
 		
 		self.graph.select(".x.axis")
 			.call(self.xAxis);
@@ -1997,10 +2012,10 @@ lineGraph.prototype.redraw = function (){
 		
 		for(j=0;j<self.data[0].length - 1;j++){
 			
-			self.graph.select("svg").selectAll(".data"+j)
+			self.graph.select("svg g").selectAll(".data"+j)
 				.attr("d", self.lines[j](self.data));
 			
-			var circle = self.graph.select("svg").selectAll("circle")
+			var circle = self.graph.select("svg g").selectAll("circle")
 				.data(self.data);
 			
 			//console.log(circle);
@@ -2021,23 +2036,78 @@ lineGraph.prototype.redraw = function (){
 			circle.exit().remove();
 			
 		}
-	
-		self.graph.call(d3.behavior.zoom().x(self.x).y(self.y).on("zoom", self.redraw))
+		
+		self.graph.call(d3.behavior.zoom().on("zoom", self.redraw).scaleExtent([0.1,10]).x(self.x).y(self.y));
 
 	}
 };
 
 
+lineGraph.prototype.resize = function (){
+	
+	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3];	// width
+		
+	this.yAxis = d3.svg.axis().scale(this.y).tickSize(-this.width).ticks(4).orient("left");
 
+	this.x = d3.time.scale().domain(this.x.domain()).range([10, this.width-10]);
+	this.xAxis = d3.svg.axis().scale(this.x).tickSize(-this.height).ticks(8).orient("bottom")
+		.tickFormat(d3.time.format("%b %d"))
+	this.graph = d3.select(this.ui).select(".graph")
+			.attr("width", this.width + this.margin[1] + this.margin[3])
+			
+		.select("g")
+			.attr("transform", "translate(" + this.margin[3] + "," + this.margin[0] + ") ");
+	
+	//console.log(this.graph);
+	this.plot = this.graph.select("rect") 
+			.attr("width", this.width)
+			.call(d3.behavior.zoom().on("zoom", this.redraw()).scaleExtent([0.1,10]).x(this.x).y(this.y));
+	//console.log(this.transx+' '+this.transy+' '+this.scale);
+	this.graph.select("svg")
+    			
+    				.attr("width", this.width)
+    	
+    			.select("g")
+    				.attr("transform", "translate(" + (this.margin[3]) + "," + (this.margin[0]) +") ");
+	
+	
+	
+	this.graph.select(".x.axis")
+		.attr("transform", "translate("+this.margin[3]+"," + this.height + ") ")
+		.call(this.xAxis);
+	
+	this.graph.select(".y.axis")
+		.call(this.yAxis);
+	
+	
+	//console.log(this.data);
+	/*
+	for(j=0;j<this.lines.length;j++){	
+	
+		this.graph.select("svg g").select("path").attr("d", this.lines[j](this.data)).attr("class", "data" + j);
+	
+	}
+	*/
+	//this.redraw()();
+}
+
+/*
+var chart = $("#chart"),
+aspect = chart.width() / chart.height(),
+container = chart.parent();
+$(window).on("resize", function() {
+var targetWidth = container.width();
+chart.attr("width", targetWidth);
+chart.attr("height", Math.round(targetWidth / aspect));
+}).trigger("resize");
+*/
 $(window).resize(function(){
 	if (graphLoaded){
-	
-
-		
-		graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
-		
+		graph.resize();
+		//graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
 	}
 	if (graphLoaded2){
-		graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
+		graph.resize();
+		//graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
 	}
 });

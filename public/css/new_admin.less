@@ -795,14 +795,31 @@ circle.line0:hover, circle.line2:hover, circle.line1:hover {
   stroke: blue;
   stroke-width: 1.5px;
 }
-
-.preview{
+ 
+#preview{
 	position:relative;
 	padding:10px;
+	width:810px;
+	height:1000px;
+	background-color:white;
+	border: 3px solid #bcbcbc;
+	overflow:auto;
+}
+
+#preview .preview-container{
 	width:810px;
 	background-color:@color-main-background;
 	color:@color-main-text;
 	font:12px Helvetica, Arial sans-serif;
-	border: 2px solid black;
 	overflow:hidden;
+}
+
+.track3 {
+width: 5px;
+}
+
+.handle3 {
+width: 5px;
+background: #bcbcbc ;
+left:0px;
 }
