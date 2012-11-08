@@ -62,6 +62,120 @@ class Service_FancrankCollectorService {
 		//Zend_Debug::dump($result);
 	}
 	
+	public function getFanpageFeed($since=null, $until=null) {
+		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/feed?access_token=' .$this->_accessToken .'&until=' .$until .'&since=' .$since;
+		
+		$posts = array();
+		//echo $url; exit();
+		$this->getPostsByTimeRange($url, 10, 100, $posts);
+		//Zend_Debug::dump($posts); exit();
+		
+		if(empty($posts)) {
+			return array();
+		}
+		
+ 		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
+ 		//Zend_Debug::dump($postLikeList); 
+
+ 		$postCommentsList = $this->getCommentsAndItsLikesFromPost($posts, 5, 1000);
+ 		//Zend_Debug::dump($postCommentsList);
+ 		return $posts;
+	}
+	
+	public function updateFanpageFeed($since=null, $until=null, $synchronization=true) {
+		$feed = $this->getFanpageFeed($since, $until);
+		$fancrankDB = new Service_FancrankDBService($this->_fanpageId, $this->_accessToken);
+		
+		// save and update fans
+		try {
+			//Zend_Debug::dump($facebookUsers);
+			$fansIdList = $this->getActiveFansFromFeed($feed);
+			$saveFanList = $fancrankDB->saveAndUpdateFans($fansIdList, null, false);
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+		
+		// handle fanpage feed
+		foreach ( $feed as $post ) {
+			// save post
+			if (! $fancrankDB->savePost ( $post )) {
+				echo 'error to save post';
+				continue;
+			}
+			
+			// handle post comments
+			if (! empty ( $post->comments->data )) {
+				foreach ( $post->comments->data as $comment ) {
+					// save comment
+					$comment->comment_type = $post->type;
+					if (! $fancrankDB->saveComment ( $comment, $post )) {
+						continue;
+					}
+					
+					// save comment like
+					if (! empty ( $comment->like_list )) {
+						foreach ( $comment->like_list as $like ) {
+							$fancrankDB->saveCommentLike ( $like, $comment );
+						}
+					}
+				}
+			}
+			
+			// handle post likes
+			if (! empty ( $post->likes->data )) {
+				foreach ( $post->likes->data as $like ) {
+					$fancrankDB->savePostLike ( $like, $post );
+				}
+			}
+		}
+		
+		Zend_Debug::dump($saveFanList);
+		// update fan stat
+		$fanStat = new Model_FansObjectsStats();
+		foreach ($saveFanList as $row) {
+			$fan = new Model_Fans($row['facebook_user_id'], $this->_fanpageId);
+			$fanStat->updatedFanWithPoint($this->_fanpageId, $row['facebook_user_id'], $fan->getFanExp(), $fan->getFanPoint());
+		}
+	}
+	
+	public function getActiveFansFromFeed($feed) {
+		$fansIdList = array();
+		$fanModel = new Model_Fans();
+		foreach ($feed as $post) {
+			if ($post->from->id !== $this->_fanpageId) {
+				$fansIdList[] = $post->from->id;
+			}
+			
+			// scan post comments
+			if (! empty ( $post->comments->data )) {
+				foreach ( $post->comments->data as $comment ) {
+					if ($comment->from->id !== $this->_fanpageId) {
+						$fansIdList[] = $comment->from->id;
+					}
+					// scan comment likes
+					if (! empty ( $comment->like_list )) {
+						foreach ( $comment->like_list as $like ) {
+							if ($like->id !== $this->_fanpageId) {
+								$fansIdList[] = $like->id;
+							}
+						}
+					}
+				}
+			}
+				
+			// handle post likes
+			if (! empty ( $post->likes->data )) {
+				foreach ( $post->likes->data as $like ) {
+					if ($like->id !== $this->_fanpageId) {
+						$fansIdList[] = $like->id;
+					}
+				}
+			}
+		}
+
+		return $this->getFansList(array_unique($fansIdList));
+	}
+	
 	public function fullScanFanpage() {
 		$start = time();
 		$this->collectFanpageInitInfo();
@@ -192,7 +306,7 @@ class Service_FancrankCollectorService {
 		//echo $url; exit();
 		$this->getPostsByTimeRange($url, 10, 100, $posts);
 		Zend_Debug::dump($posts);
-
+		
 		echo '---------------';
 
 		if(empty($posts)) {
@@ -429,10 +543,10 @@ class Service_FancrankCollectorService {
 		}
 	}
 	
-	private function getCommentsFromPost($posts, $level, $limit=500) {
+	private function getCommentsFromPost(&$posts, $level, $limit=500) {
 		//Zend_Debug::dump($posts);
 		$results = array();
-		foreach ($posts as $post) {
+		foreach ($posts as $key => $post) {
 			$commentCount = 1;
 			$hasMore = false;
 			if(!empty($post->comments->data)) {
@@ -442,7 +556,9 @@ class Service_FancrankCollectorService {
 				$result = array();
 				$url = $this->_facebookGraphAPIUrl . $post->id .'/comments?access_token=' .$this->_accessToken;
 				$this->getFromUrlRecursive($url, $level, $limit, $result);
-		
+				if (!empty($result)) {
+					$posts[$key]->comments->data = $result;
+				}
 				foreach ($result as $comment) {
 					$comment->comment_type = !empty($post->type) ? $post->type : '';
 					$results[] = $comment;
@@ -453,6 +569,36 @@ class Service_FancrankCollectorService {
 				foreach ($post->comments->data as $comment) {
 					$comment->comment_type = !empty($post->type) ? $post->type : '';
 					$results[] = $comment;
+				}
+			}
+		}
+		return $results;
+	}
+	
+	private function getCommentsAndItsLikesFromPost(&$posts, $level, $limit=500) {
+		//Zend_Debug::dump($posts);
+		$results = array();
+		foreach ($posts as $key => $post) {
+			$commentCount = 1;
+			$hasMore = false;
+			if(!empty($post->comments->data)) {
+				$commentCount = count($post->comments->data);
+			}
+			if(!empty($post->comments->count) && $post->comments->count > $commentCount) {
+				$result = array();
+				$url = $this->_facebookGraphAPIUrl . $post->id .'/comments?access_token=' .$this->_accessToken;
+				$this->getFromUrlRecursive($url, $level, $limit, $result);
+				if (!empty($result)) {
+					$posts[$key]->comments->data = $result;
+				}
+				foreach ($result as $k=>$comment) {
+					$posts[$key]->comments->data[$k]->like_list = $this->getLikesFromComment($comment);
+				}
+				$hasMore = true;
+			}
+			if(! $hasMore && !empty($post->comments->data)) {
+				foreach ($post->comments->data as $comment) {
+					$posts[$key]->comments->data[$k]->like_list = $this->getLikesFromComment($comment);
 				}
 			}
 		}
@@ -569,12 +715,12 @@ class Service_FancrankCollectorService {
 		$this->getLikesFromMyPostRecursive($extraLikesPosts, $fanpageId, $access_token, $offset+25, $likesList);
 	}
 	
-	private function getLikesFromMyPost($posts, $level=5, $limit=1000) {
+	private function getLikesFromMyPost(&$posts, $level=5, $limit=1000) {
 		//Zend_Debug::dump($posts);
 		$results = array();
 		$time = new Zend_Date();
 		$update_time = $time->toString('yyyy-MM-dd HH:mm:ss');
-		foreach ($posts as $post) {
+		foreach ($posts as $key=>$post) {
 			$likeCount = 1;
 			$hasMoreLike = false;
 			$time = new Zend_Date(!empty($post->created_time) ? $post->created_time : null, Zend_Date::ISO_8601);
@@ -597,6 +743,9 @@ class Service_FancrankCollectorService {
 				$result = array();
 				$url = $this->_facebookGraphAPIUrl . $post->id .'/likes?access_token=' .$this->_accessToken;
 				$this->getFromUrlRecursive($url, $level, $limit, $result);
+				if (!empty($result)) {
+					$posts[$key]->likes->data = $result;
+				}
 				foreach ($result as $like) {
 					$likeData['facebook_user_id'] = $like->id;
 					$likeData['post_type'] = !empty($post->type) ? $post->type : '';
@@ -672,10 +821,10 @@ class Service_FancrankCollectorService {
 		//$posts = json_decode($result);
 		//Zend_Debug::dump($results); exit();
 		foreach ($results as $groupKey => $result) {
-			foreach(json_decode($result) as $key=>$values) {
-				if(!empty($values->code) && $values->code === 200 && !empty($values->body)) {
+			foreach (json_decode($result) as $key=>$values) {
+				if (!empty($values->code) && $values->code === 200 && !empty($values->body)) {
 					$values = json_decode($values->body);
-					if(!empty ($values->data)) {
+					if (!empty ($values->data)) {
 						foreach ($values->data as $value) {
 							//echo $value->id .' ' .$queryType .'postId: '.$postIdsGroup[$groupKey][$key] .'<br />';
 							$resultList[] = $value;
@@ -689,7 +838,7 @@ class Service_FancrankCollectorService {
 	}
 	
 	private function getFromUrlRecursive($url, $level = 5, $limit=5, &$result) {
-		if(empty($url) || $level === 0) {
+		if (empty($url) || $level === 0) {
 			return array();
 		}
 		$level = $level - 1;
@@ -701,7 +850,7 @@ class Service_FancrankCollectorService {
 		try {
 			$response = json_decode($curlReturn);
 			$url = !empty($response->paging->next) ? $response->paging->next : null;
-			if(! empty($response->data)) {
+			if (! empty($response->data)) {
 				$result = array_merge((array)$result, (array)$response->data);
 				//$this->getPostsRecursive($url, $level, $limit, $result);
 			}
@@ -714,7 +863,7 @@ class Service_FancrankCollectorService {
 	private function getCommentsFromPhotos($photos, $fanpageId) {
 		$commentsList = array();
 		foreach ($photos as $photo) {
-			if(! empty($photo->comments) ) {
+			if (! empty($photo->comments)) {
 				foreach ($photo->comments->data as $comment) {
 					$commentsList[] = $comment;
 				}
@@ -814,6 +963,17 @@ class Service_FancrankCollectorService {
 		return $likesList;
 	}
 	
+	public function getLikesFromComment($comment) {
+		$result = array();
+		if(!empty($comment->like_count) && $comment->like_count >= 1) {
+			$url = $this->_facebookGraphAPIUrl . $comment->id .'/likes?access_token=' .$this->_accessToken;
+			$this->getFromUrlRecursive($url, 1, 1000, $result);
+		}
+		echo 'comment likes.......';
+		Zend_Debug::dump($result);
+		return $result;
+	}
+	
 	private function getCommentsFromMyAlbum($albums, $type) {
 		$commentList = array();
 		foreach ($albums as $album) {
@@ -867,12 +1027,14 @@ class Service_FancrankCollectorService {
 		return array_unique($fansIdList);
 	}
 	
-	public function getFansList($fansIdsList, $access_token) {
+	public function getFansList($fansIdsList, $access_token=null) {
+		if (!$access_token) {
+			$access_token = $this->_accessToken;
+		}
+		 
 		$results = array();
 		$fansIdsGroup = $this->arrayToGroups($fansIdsList, 500);
-		//Zend_Debug::dump($fansIdsGroup);
 		try {
-			$results = array();
 			foreach ($fansIdsGroup as $fansIds) {
 				$batchQuery = $this->batchQueryBuilder($fansIds, $access_token);
 				foreach (json_decode($this->httpCurl($batchQuery)) as $fans) {
@@ -880,11 +1042,10 @@ class Service_FancrankCollectorService {
 					$results[] = $fans;
 				}
 			}
-			return $results;
 		} catch (Exception $e) {
-			//echo $e->getMessage();
-			return;
+			echo $e->getMessage();
 		}
+		return $results;
 	}
 	
 	private function batchQueryBuilder($ids, $access_token) {
@@ -1411,6 +1572,7 @@ class Service_FancrankCollectorService {
 		}
 		
 	}
+	
 }
 
 ?>

@@ -2,6 +2,38 @@
 
 class Model_Comments extends Model_DbTable_Comments
 {
+	
+	public static function prepareCommentData($comment, $postId = null, $fanpageId = null) {
+		if (empty($comment->id)) {
+			return array();
+		}
+		
+		if (count($commentId = explode('_', $comment->id)) > 0) {
+			$fanpageId = $commentId[0];
+			$postId = count($commentId) > 2 ? $commentId[0] .'_' .$commentId[1] : $commentId[0];
+		} else {
+			return array(); 
+		}
+		
+		if (!$postId || !$fanpageId) {
+			return array();
+		}
+		
+		$created = new Zend_Date(!empty($comment->created_time) ? $comment->created_time : null, Zend_Date::ISO_8601);
+		$row = array (
+				'comment_id' => $comment->id,
+				'fanpage_id' => $fanpageId,
+				'comment_post_id' => $postId,
+				'facebook_user_id' => $comment->from->id,
+				'comment_message' => Zend_Db_Table::getDefaultAdapter()->quote($comment->message),
+				'created_time' => $created->toString ( 'yyyy-MM-dd HH:mm:ss' ),
+				'comment_likes_count' => isset ( $comment->like_count ) ? $comment->like_count : 0,
+				'comment_type' => $comment->comment_type
+		);
+		
+		return $row;
+	}
+	
 	public function insertComment($fanpage_id, $post_id, $comments)
 	{
 	
