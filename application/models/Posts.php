@@ -2,6 +2,49 @@
 
 class Model_Posts extends Model_DbTable_Posts
 {
+	
+	public static function preparePostData($post, $fanpageId = null) {
+		if (empty($post->id)) {
+			return array();
+		}
+		
+		if (!$fanpageId && count($postId = explode('_', $post->id)) > 1) {
+			$fanpageId = $postId[0];
+		} else if (!$fanpageId) {
+			return array();
+		}
+		
+		$created = new Zend_Date(!empty($post->created_time) ? $post->created_time : null, Zend_Date::ISO_8601);
+		$updated = new Zend_Date(!empty($post->updated_time) ? $post->updated_time : null, Zend_Date::ISO_8601);
+	
+		$row = array(
+				'post_id'               => $post->id,
+				'facebook_user_id'      => $post->from->id,
+				'fanpage_id'            => $fanpageId,
+				'post_message'          => isset($post->message) ? Zend_Db_Table::getDefaultAdapter()->quote($post->message) : '',
+				'picture'				=> !empty($post->picture) ? $post->picture : '',
+				'link'					=> !empty($post->link) ? $post->link : '',
+				'post_type'             => !empty($post->type) ? $post->type : '',
+				'status_type'           => !empty($post->status_type) ? $post->status_type : '',
+				'post_description'		=> !empty($post->description) ? Zend_Db_Table::getDefaultAdapter()->quote($post->message) : '',
+				'post_caption'			=> !empty($post->caption) ? Zend_Db_Table::getDefaultAdapter()->quote($post->caption) : '',
+				'created_time'          => $created->toString('yyyy-MM-dd HH:mm:ss'),
+				'updated_time'          => $updated->toString('yyyy-MM-dd HH:mm:ss'),
+				'post_comments_count'   => !empty($post->comments->count) ? $post->comments->count : 0,
+				'post_likes_count'      => isset($post->likes) && isset($post->likes->count) ? $post->likes->count : 0
+		);
+	
+		if (property_exists($post, 'application') && isset($post->application->id)) {
+			$row['post_application_id'] = $post->application->id;
+			$row['post_application_name'] = empty($post->application->name) ? null : $post->application->name;
+		} else {
+			$row['post_application_id'] = null;
+			$row['post_application_name'] = null;
+		}
+		
+		return $row;
+	}
+	
 	public function checkPostExists($id)
 	{
 		$select = $this->getAdapter()->select();

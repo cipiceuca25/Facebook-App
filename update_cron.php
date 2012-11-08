@@ -83,7 +83,7 @@ if (count($fanpageList) > 0) {
 				echo $fanpage->fanpage_id .' ' .$fanpage->access_token .PHP_EOL;
 				//update fanpage
 				$collector = new Service_FancrankCollectorService(null, $fanpage->fanpage_id, $fanpage->access_token, 'update');
-				$collector->updateFanpage('2+days+ago','now');
+				$collector->updateFanpageFeed('2+days+ago','now');
 				
 				$data['status'] = 'success';
 				
@@ -92,6 +92,7 @@ if (count($fanpageList) > 0) {
 				$dbLog->insert($data);
 			}
 		}catch(Exception $e) {
+			echo $e->getMessage();
 			$date = new Zend_Date(time(), Zend_Date::TIMESTAMP);
 			$data['status'] = 'fail';
 			$data['note'] = $e->getMessage();

@@ -414,7 +414,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
     	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
-		$collector->updateFanpage('5+days+ago', 'now');
+		$collector->updateFanpageFeed('10+days+ago', 'now');
     }
     
     public function test3Action () {
@@ -2398,5 +2398,75 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$result = curl_exec($ch);
     	curl_close($ch);
     	return $result;
+    }
+    
+    public function test28Action() {
+		//$fanpageId = '178384541065';
+    	//$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
+
+    	$fanpageId = '216821905014540';
+    	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
+    	 
+    	$feed = array();
+    	$testFeedId = 'test_feed';
+    	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
+    	try {
+    		$cache = Zend_Registry::get('memcache');
+    		$cache->remove($testFeedId);
+
+    		if(isset($cache) && !$cache->load($testFeedId)){
+    			//Look up the facebook graph api
+    			echo 'look up facebook graph api';
+
+    			$feed = $collector->getFanpageFeed('2+days+ago', 'now');
+    			if($feed) {
+    				//Save to the cache, so we don't have to look it up next time
+    				//$cache->save($feed, $testFeedId);
+    				$cache->save($feed, $testFeedId, array(), 7200);
+    			}
+    		}else {
+    			echo 'memcache look up';
+    			$feed = $cache->load($testFeedId);
+    		}
+    	} catch (Exception $e) {
+    		echo $e->getMessage();
+    	}
+    	
+		Zend_Debug::dump($feed);
+		Zend_Debug::dump($collector->getActiveFansFromFeed($feed)); exit();
+		
+		$fancrankDB = new Service_FancrankDBService($fanpageId, $accessToken);
+		foreach ($feed as $post) {
+			// save post
+    		if (!$fancrankDB->savePost($post)) {
+    			echo 'error to save post';
+	    		continue;
+    		}
+				
+			// handle post comments
+			if (! empty ( $post->comments->data )) {
+				foreach ( $post->comments->data as $comment ) {
+					// save comment
+					$comment->comment_type = $post->type;
+					if (! $fancrankDB->saveComment ( $comment, $post )) {
+						continue;
+					}
+					
+					// save comment like
+					if (! empty ( $comment->like_list )) {
+						foreach ( $comment->like_list as $like ) {
+							$fancrankDB->saveCommentLike ( $like, $comment );
+						}
+					}
+				}
+			}
+			
+			// handle post likes
+			if (! empty ( $post->likes->data )) {
+				foreach ( $post->likes->data as $like ) {
+					$fancrankDB->savePostLike ( $like, $post );
+				}
+			}
+    	}
     }
 }

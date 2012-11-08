@@ -6,6 +6,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	
 	protected $_fanpageId;
 	protected $_accessToken;
+	protected $_fanpageSetting;
 
 	public function __construct() {
 		$args = func_get_args();
@@ -21,6 +22,16 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 	{
 		$this->_fanpageId = $fanpage_id;
 		$this->_accessToken = $access_token;
+		
+		$fanpageSettingModel = new Model_FanpageSetting();
+		$settingData = $fanpageSettingModel->findRow($fanpage_id);
+		if(!$settingData) {
+			$settingData = $fanpageSettingModel->getDefaultSetting();
+		}else {
+			$settingData = $settingData->toArray();
+		}
+		
+		$this->_fanpageSetting = $settingData;
 	}
 	
 	/*
@@ -422,7 +433,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 						'facebook_user_name'		=> !empty($data->name) ? $data->name : $data->first_name .' ' .$data->last_name,
 						'facebook_user_gender' 		=> !empty($data->gender) ? $data->gender : '',
 						'updated_time' 				=> $updated->toString ( 'yyyy-MM-dd HH:mm:ss' ),
-						'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : '',
+						'facebook_user_locale' 		=> !empty($data->facebook_user_locale) ? $data->locale : ''
 				);
 	
 				//save facebook user's relative information into facebook_users table
@@ -480,5 +491,450 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		return $result;
 	}
 	
+	public function savePost($post, $enablePointLog=false) {
+		$postData = Model_Posts::preparePostData($post, $this->_fanpageId);
+		$postModel = new Model_Posts();
+		$db = Zend_Db_Table::getDefaultAdapter();
+		$pointLogModel = new Model_PointLog();
+		
+		try {
+			$db->beginTransaction();
+			$foundPost = $postModel->find($post->id)->current();
+			
+			if ($foundPost) {
+				foreach ($postData as $key=>$row) {
+					$foundPost->{$key} = $row;
+				}
+				$foundPost->save();
+			} else {
+				if ($postData['facebook_user_id'] == $postData['fanpage_id']) {
+					// handle admin post
+					$postModel->insert($postData);
+				} else {
+					// handle user post
+					$postModel->insert($postData);
+				
+					// update fan profile
+					$fan = new Model_Fans($postData['facebook_user_id'], $postData['fanpage_id']);
+					if (!$fan->isNewFan()) {
+						$fan->updateFanPoints($this->_fanpageSetting['point_post_normal']);
+						$fan->updateFanProfile();
+					}
+				
+					// update point log data
+					$pointLog = array();
+					$pointLog['fanpage_id'] = $postData['fanpage_id'];
+					$pointLog['facebook_user_id'] =  $postData['facebook_user_id'];
+					$pointLog['object_id'] = $postData['post_id'];
+					$pointLog['object_type'] = 'posts';
+					$pointLog['giving_points'] = $this->_fanpageSetting['point_post_normal'];
+					$pointLog['note'] = 'post on fanpage';
+					echo $pointLogModel->insert($pointLog);
+				}
+			}
+			
+			// commit all update
+			$db->commit();
+			$db->closeConnection();
+			return $post;
+		} catch (Exception $e) {
+			print $e->getMessage();
+			$db->rollBack();
+			$db->closeConnection();
+			$collectorLogger = Zend_Registry::get('collectorLogger');
+			$collectorLogger->log(sprintf('Unable to save post %s from fanpage %s to database. Error Message: %s ', $post->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
+			return array();
+		}
+		return array();
+	}
+	
+	public function saveComment($comment, $post=false, $enablePointLog=false) {
+		if (!$post) {
+			return array();
+		}
+		
+		$commentModel = new Model_Comments();
+		$db = Zend_Db_Table::getDefaultAdapter();
+		
+		try {
+			$db->beginTransaction();
+			
+			$foundComment = $commentModel->findRow($comment->id); 
+			//Zend_Debug::dump($foundComment->toArray());
+			if ($foundComment) {
+				$commentData = Model_Comments::prepareCommentData($comment);
+				foreach ($commentData as $key=>$row) {
+					$foundComment->{$key} = $row;
+				}
+				//$foundComment->save();
+			} else {
+				if ($comment->from->id != $this->_fanpageId && $post->from->id == $this->_fanpageId &&
+						($commentCount = $commentModel->getUserCommentCountByPost($post->id, $comment->from->id)) < $this->_fanpageSetting['point_comment_limit']) {
+					// handle comment on admin post
+					Zend_Debug::dump($comment->from->id .' admin post : ' .$commentCount);
+					$this->saveUserCommentOnAdminPost($commentModel, $comment, $commentCount, $post);
+				} else if ($post->from->id != $this->_fanpageId) {
+					// handle comment on non-admin post
+					$this->saveCommentOnUserPost($commentModel, $comment, $post);
+					Zend_Debug::dump($comment->from->id .' user post : ');
+				}
+			}
+			$db->commit();
+			$db->closeConnection();
+		} catch (Exception $e) {
+			echo $e->getMessage() .$e->getCode();
+			$db->rollBack();
+			$db->closeConnection();
+		}
+	}
+	
+	private function saveUserCommentOnAdminPost(Model_Comments $commentModel, $comment, $commentCount, $post) {
+		$bonus = 0;
+		$commentData = $commentModel->prepareCommentData($comment);
+		// insert new comment into database
+		echo 'insert ' .$commentModel->insert($commentData) .'<br/>';
+		// check bonus
+		$postTime = new Zend_Date($post->created_time, Zend_Date::ISO_8601);
+		$commentTime = new Zend_Date($comment->created_time, Zend_Date::ISO_8601);
+		$timeDifferentInMinute = floor(($commentTime->getTimestamp() - $postTime->getTimestamp()) / 60);
+		if ($timeDifferentInMinute < $this->_fanpageSetting['point_bonus_duration']) {
+			$bonus = $this->_fanpageSetting['point_comment_limit'] - $commentCount;
+		}
+		
+		// update fan profile
+		$fan = new Model_Fans($commentData['facebook_user_id'], $commentData['fanpage_id']);
+		if (!$fan->isNewFan()) {
+			$fan->updateFanPoints($this->_fanpageSetting['point_comment_admin']+$bonus);
+			$fan->updateFanProfile();
+			echo 'update fan point';
+		}
+		
+		// update pointlog
+		$pointLogModel = new Model_PointLog();
+		$pointLog = array();
+		$pointLog['fanpage_id'] = $commentData['fanpage_id'];
+		$pointLog['facebook_user_id'] = $commentData['facebook_user_id'];
+		$pointLog['object_id'] = $commentData['comment_post_id'];
+		$pointLog['object_type'] = $commentData['comment_type'];
+		$pointLog['giving_points'] = $this->_fanpageSetting['point_comment_admin'] + $bonus;
+		$pointLog['bonus'] = $bonus;
+		$pointLog['note'] = 'comment on admin object , bonus : ' .$bonus;
+		$pointLogModel->insert($pointLog);
+		
+		return $commentData;
+	}
+	
+	private function saveCommentOnUserPost(Model_Comments $commentModel, $comment, $post) {
+		$commentData = $commentModel->prepareCommentData($comment);
+		// insert new comment into database
+		$commentModel->insert($commentData);
+
+		
+		// get the list of unique user id that have interaction with the post
+		$postModel = new Model_Posts();
+		$postUniqueList = $postModel->getUniqueInteractionList($post->id);
+		
+		if ($comment->from->id !== $post->id && !in_array($comment->from->id, $postUniqueList)) {
+		
+			// check virginity break
+			$pointLogModel = new Model_PointLog();
+			$pointLog = array();
+			$givingPoint = 0;
+			if (count($postUniqueList) === 0) {
+				// update point log data
+				$givingPoint = $this->_fanpageSetting['point_virginity'] + 1;
+				$pointLog['fanpage_id'] = $commentData['fanpage_id'];
+				$pointLog['facebook_user_id'] =  $post->from->id;
+				$pointLog['object_id'] = $post->id;
+				$pointLog['object_type'] = 'get_virginity_comment';
+				$pointLog['giving_points'] = $givingPoint;
+				$pointLog['bonus'] = $this->_fanpageSetting['point_virginity'];
+				$pointLog['note'] = 'receive unique from comment' .$comment->id .'and ' .$this->_fanpageSetting['point_virginity'] .'bonus on breaking post virginity';
+				Zend_Debug::dump($pointLog);
+				echo 'break virgin' .$pointLogModel->insert($pointLog);
+			} else {
+				// update point log data, giving one point for unique in user post
+				$givingPoint = 1;
+				$pointLog = array();
+				$pointLog['fanpage_id'] = $commentData['fanpage_id'];
+				$pointLog['facebook_user_id'] =  $post->from->id;
+				$pointLog['object_id'] = $post->id;
+				$pointLog['object_type'] = 'get_unique_comment';
+				$pointLog['giving_points'] = 1;
+				$pointLog['note'] = 'receive unique from comment ' .$comment->id;
+				Zend_Debug::dump($pointLog);
+				echo $pointLogModel->insert($pointLog);
+			}
+			
+			// update post owner profile
+			$fan = new Model_Fans($post->from->id, $commentData['fanpage_id']);
+			if (!$fan->isNewFan()) {
+				$fan->updateFanPoints($givingPoint);
+				$fan->updateFanProfile();
+			}
+		}
+
+		return $commentData;
+	}
+	
+	public function saveCommentLike($like, $comment, $enablePointLog=false) {
+		$db = Zend_Db_Table::getDefaultAdapter();
+		$likeModel = new Model_Likes();
+		$likeData = Model_Likes::prepareCommentLikeData($like, $comment);
+		
+		try {
+			$db->beginTransaction();
+			$foundLike = $likeModel->find($likeData['fanpage_id'], $likeData['post_id'], $likeData['facebook_user_id'])->current();
+			//Zend_Debug::dump($foundLike);
+			//Zend_Debug::dump($likeData); $db->closeConnection(); return;
+			if (!$foundLike) {
+				// insert new like
+				Zend_Debug::dump($likeModel->insert($likeData));
+				
+				// filter self like
+				if ($comment->from->id != $likeData['facebook_user_id']) {
+					$pointLogModel = new Model_PointLog();
+						
+					// update non admin fan profile and point log
+					if ($comment->from->id != $likeData['fanpage_id']) {
+						// update fan profile
+						$fan = new Model_Fans($comment->from->id, $likeData['fanpage_id']);
+						if (!$fan->isNewFan()) {
+							$fan->updateFanPoints($this->_fanpageSetting['point_like_normal']);
+							$fan->updateFanProfile();
+						}
+						
+						// update get like point log
+						$pointLog = array();
+						$pointLog['fanpage_id'] = $likeData['fanpage_id'];
+						$pointLog['facebook_user_id'] =  $comment->from->id;
+						$pointLog['object_id'] = $comment->id;
+						$pointLog['object_type'] = 'get_likes';
+						$pointLog['giving_points'] = $this->_fanpageSetting['point_like_normal'];
+						$pointLog['note'] = 'receive likes on comment';
+						$pointLogModel->insert($pointLog);
+						Zend_Debug::dump($pointLog);
+					}
+					
+					// update non admin fan profile and point log
+					if ($likeData['facebook_user_id'] != $likeData['fanpage_id']) {
+						// update fan profile
+						$fan = new Model_Fans($likeData['facebook_user_id'], $likeData['fanpage_id']);
+						if (!$fan->isNewFan()) {
+							$fan->updateFanPoints($this->_fanpageSetting['point_like_normal']);
+							$fan->updateFanProfile();
+						}
+						
+						// update like point log
+						$pointLog = array();
+						$pointLog['fanpage_id'] = $likeData['fanpage_id'];
+						$pointLog['facebook_user_id'] =  $likeData['facebook_user_id'];
+						$pointLog['object_id'] = $comment->id;
+						$pointLog['object_type'] = 'likes';
+						$pointLog['giving_points'] = $this->_fanpageSetting['point_like_normal'];
+						$pointLog['note'] = 'likes on comment';
+						
+						$pointLogModel->insert($pointLog);
+						Zend_Debug::dump($pointLog);
+					}
+				}
+			} else {
+				$foundLike->likes = 1;
+				$update = new Zend_Date();
+				$foundLike->updated_time = $update->toString('yyyy-MM-dd HH:mm:ss');
+				$foundLike->save();
+			}
+			
+			$db->commit();
+			$db->closeConnection();
+			
+			return $likeData;
+		} catch(Exception $e) {
+			print $e->getMessage();
+			$db->rollBack();
+			$db->closeConnection();
+		}
+		
+	}
+	
+	public function savePostLike($like, $post, $enablePointLog=false) {
+		$db = Zend_Db_Table::getDefaultAdapter();
+		$likeModel = new Model_Likes();
+		$likeData = Model_Likes::preparePostLikeData($like, $post);
+		
+		try {
+			$db->beginTransaction();
+			$foundLike = $likeModel->find($likeData['fanpage_id'], $likeData['post_id'], $likeData['facebook_user_id'])->current();
+			
+			if (!$foundLike) {
+				// insert new like
+				
+				if ($post->from->id === $this->_fanpageId && $like->id !== $this->_fanpageId) {
+					// handle like on admin post
+					Zend_Debug::dump($post->from->id .' admin post : like id :' .$like->id);
+					$this->saveUserLikeOnAdminPost($likeModel, $likeData, $post);
+				} else if ($post->from->id !== $this->_fanpageId && $post->from->id !== $like->id) {
+					// handle like on non-admin post
+					$this->saveLikeOnUserPost($likeModel, $likeData, $post);
+					Zend_Debug::dump($post->from->id .' user post : like id :' .$like->id);
+				}
+				Zend_Debug::dump($likeModel->insert($likeData));
+			} else {
+				$foundLike->likes = 1;
+				$update = new Zend_Date();
+				$foundLike->updated_time = $update->toString('yyyy-MM-dd HH:mm:ss');
+				$foundLike->save();
+			}
+			
+			$db->commit();
+			$db->closeConnection();
+				
+			return $likeData;
+		} catch (Exception $e) {
+			print $e->getMessage();
+			$db->rollBack();
+			$db->closeConnection();
+		}	
+		
+	}
+	
+	private function saveUserLikeOnAdminPost(Model_Likes $likeModel, $likeData, $post) {
+		// apply double point bonus
+		$bonus = 0;
+		$postTime = new Zend_Date($post->created_time, Zend_Date::ISO_8601);
+		$now = new Zend_Date();
+		$timeDifferentInMinute = floor(($now->getTimestamp() - $postTime->getTimestamp()) / 60);
+			
+		if ($timeDifferentInMinute < $this->_fanpageSetting['point_bonus_duration']) {
+			$bonus = $this->_fanpageSetting['point_like_bonus'];
+		}
+		
+		// update fan profile
+		$fan = new Model_Fans($likeData['facebook_user_id'], $likeData['fanpage_id']);
+		if (!$fan->isNewFan()) {
+			$fan->updateFanPoints($this->_fanpageSetting['point_like_normal']);
+			$fan->updateFanProfile();
+		}
+		
+		//update like point log
+		$pointLogModel = new Model_PointLog();
+		$pointLog = array();
+		$pointLog['fanpage_id'] = $likeData['fanpage_id'];
+		$pointLog['facebook_user_id'] =  $likeData['facebook_user_id'];
+		$pointLog['object_id'] = $post->id;
+		$pointLog['object_type'] = 'likes';
+		$pointLog['giving_points'] = $this->_fanpageSetting['point_like_admin'] + $bonus;
+		$pointLog['bonus']= $bonus;
+		$pointLog['note'] = empty($bonus) ? 'likes on admin post' : sprintf('likes on admin post, %s bonus for likes within %s minutes', $bonus, $this->_fanpageSetting['point_bonus_duration']);
+		$pointLogModel->insert($pointLog);
+		
+	}
+	
+	private function saveLikeOnUserPost(Model_Likes $likeModel, $likeData, $post) {
+		
+		// get the list of unique user id that have interaction with the post
+		$postModel = new Model_Posts();
+		$postUniqueList = $postModel->getUniqueInteractionList($post->id);
+		$pointLogModel = new Model_PointLog();
+		// check virginity break
+		if (!($isUnique = in_array($likeData['facebook_user_id'], $postUniqueList))) {
+				
+			// check virginity break
+			if (count($postUniqueList) === 0) {
+				// update get like point log
+				$pointLog = array();
+				$givingPoint = $this->_fanpageSetting['point_like_normal'] + $this->_fanpageSetting['point_virginity'];
+				$pointLog['fanpage_id'] = $likeData['fanpage_id'];
+				$pointLog['facebook_user_id'] =  $post->from->id;
+				$pointLog['object_id'] = $post->id;
+				$pointLog['object_type'] = 'get_virginity_like';
+				$pointLog['giving_points'] = $this->_fanpageSetting['point_like_normal'] + $this->_fanpageSetting['point_virginity'] + 1;
+				$pointLog['bonus']= $this->_fanpageSetting['point_virginity'] + 1;
+				$pointLog['note'] = 'receive like and ' .($this->_fanpageSetting['point_virginity'] + 1) .' bonus on breaking virginity and unique';
+				$pointLogModel->insert($pointLog);
+				Zend_Debug::dump($pointLog);
+					
+				// update owner post fan profile
+				$fan = new Model_Fans($post->from->id,  $likeData['fanpage_id']);
+				if (!$fan->isNewFan()) {
+					$fan->updateFanPoints($this->_fanpageSetting['point_like_normal']);
+					$fan->updateFanProfile();
+				}
+								
+				// update like point log
+				$pointLog = array();
+				$pointLog['fanpage_id'] = $likeData['fanpage_id'];
+				$pointLog['facebook_user_id'] =  $likeData['facebook_user_id'];
+				$pointLog['object_id'] = $post->id;
+				$pointLog['object_type'] = 'likes';
+				$pointLog['giving_points'] = $this->_fanpageSetting['point_like_normal'];
+				$pointLog['note'] = 'likes on user post';
+				$pointLogModel->insert($pointLog);
+				
+				// update liker fan profile
+				$fan = new Model_Fans($likeData['facebook_user_id'],  $likeData['fanpage_id']);
+				if (!$fan->isNewFan()) {
+					$fan->updateFanPoints($this->_fanpageSetting['point_like_normal']);
+					$fan->updateFanProfile();
+				}
+			} else {
+				// update get like point log
+				$pointLog = array();
+				$givingPoint = 0;
+				if ($isUnique) {
+					// update get like point log
+					$givingPoint = $this->_fanpageSetting['point_like_normal'] + 1;
+					$pointLog['fanpage_id'] = $likeData['fanpage_id'];
+					$pointLog['facebook_user_id'] =  $post->from->id;
+					$pointLog['object_id'] = $post->id;
+					$pointLog['object_type'] = 'get_unique_likes';
+					$pointLog['giving_points'] = $givingPoint;
+					$pointLog['bonus']= 1;
+					$pointLog['note'] = 'receive likes on post and 1 bonus on unique' ;
+					$pointLogModel->insert($pointLog);
+					Zend_Debug::dump($pointLog);
+						
+				} else {
+					$givingPoint = $this->_fanpageSetting['point_like_normal'];
+					$pointLog['fanpage_id'] = $likeData['fanpage_id'];
+					$pointLog['facebook_user_id'] =  $post->from->id;
+					$pointLog['object_id'] = $post->id;
+					$pointLog['object_type'] = 'get_likes';
+					$pointLog['giving_points'] = $givingPoint;
+					$pointLog['note'] = 'receive likes on post';
+					$pointLogModel->insert($pointLog);
+					Zend_Debug::dump($pointLog);
+				}
+					
+				// update owner post fan profile
+				$fan = new Model_Fans($post->from->id,  $likeData['fanpage_id']);
+				if (!$fan->isNewFan()) {
+					$fan->updateFanPoints($givingPoint);
+					$fan->updateFanProfile();
+				}
+					
+				// update liker point log and fanprofile
+				if ($likeData['facebook_user_id'] != $likeData['fanpage_id']) {
+					// update liker fan profile
+					$fan = new Model_Fans($likeData['facebook_user_id'],  $likeData['fanpage_id']);
+					if (!$fan->isNewFan()) {
+						$fan->updateFanPoints($this->_fanpageSetting['point_like_normal']);
+						$fan->updateFanProfile();
+					}
+					
+					$pointLog = array();
+					$pointLog['fanpage_id'] = $likeData['fanpage_id'];
+					$pointLog['facebook_user_id'] =  $likeData['facebook_user_id'];
+					$pointLog['object_id'] = $likeData['post_id'];
+					$pointLog['object_type'] = 'likes';
+					$pointLog['giving_points'] = $this->_fanpageSetting['point_like_normal'];
+					$pointLog['note'] = 'likes on user post';
+					$pointLogModel->insert($pointLog);
+					Zend_Debug::dump($pointLog);
+				}
+			}
+		}
+		
+	}
 }
 ?>

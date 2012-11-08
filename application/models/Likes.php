@@ -2,6 +2,58 @@
 
 class Model_Likes extends Model_DbTable_Likes
 {
+	public static function prepareCommentLikeData($like, $comment, $fanpageId = null) {
+		if (empty($comment->id)) {
+			return array();
+		}
+		
+		if (count($commentId = explode('_', $comment->id)) > 1) {
+			$fanpageId = $commentId[0];
+		} else {
+			return array();
+		}
+		
+		$created = new Zend_Date(!empty($comment->created_time) ? $comment->created_time : time(), Zend_Date::ISO_8601);
+		$updated = new Zend_Date();
+		
+		$row = array(
+				'fanpage_id'        => $fanpageId,
+				'post_id'           => $comment->id,
+				'facebook_user_id'  => $like->id,
+				'created_time'		=> $created->toString( 'yyyy-MM-dd HH:mm:ss' ),
+				'updated_time'		=> $updated->toString( 'yyyy-MM-dd HH:mm:ss' ),
+				'post_type'         => $comment->comment_type .'_comment'
+		);
+		
+		return $row;
+	}
+	
+	public static function preparePostLikeData($like, $post, $fanpageId = null) {
+		if (empty($post->id)) {
+			return array();
+		}
+	
+		if (count($commentId = explode('_', $post->id)) > 1) {
+			$fanpageId = $commentId[0];
+		} else {
+			return array();
+		}
+	
+		$created = new Zend_Date(!empty($post->created_time) ? $post->created_time : time(), Zend_Date::ISO_8601);
+		$updated = new Zend_Date();
+	
+		$row = array(
+				'fanpage_id'        => $fanpageId,
+				'post_id'           => $post->id,
+				'facebook_user_id'  => $like->id,
+				'created_time'		=> $created->toString( 'yyyy-MM-dd HH:mm:ss' ),
+				'updated_time'		=> $updated->toString( 'yyyy-MM-dd HH:mm:ss' ),
+				'post_type'         => $post->type
+		);
+	
+		return $row;
+	}
+	
 	public function insertNewLikes($fanpage_id, $post_id, $facebook_user_id, $post_type) {
 		$found = $this->find ( $fanpage_id, $post_id, $facebook_user_id )->current ();
 		// zend_debug::dump($found);
