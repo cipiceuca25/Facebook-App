@@ -57,7 +57,8 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$allpoints = $points ->getFanpagePoints($fanpageId);
     	$x = $points ->getPointsByType($fanpageId);
     	
-    
+    	// dont forget to initialized first
+    	$pointsbytype = array();
     	foreach ($x as $y){
     		
     		switch ($y['object_type']){
