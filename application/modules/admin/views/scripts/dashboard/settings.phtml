@@ -12,7 +12,18 @@
 			</div>
 		</div>
 	</div>
-	<div class="span9">
+	<div class="span9" >
+		<div id="preview"  >
+			<div class="preview-container">
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+<div class="row-fluid">
+
+	<div class="span12">
 		<form  action="/admin/dashboard/pointsetting/<?= $this->page_id ?>" method="post">
 			<h3>Point Setting Section</h3>
 			<div>
@@ -84,10 +95,7 @@
 			</div>
 			<input type="submit" name="confirm" value="Save Point Settings" />
 		</form>
-	
-	
 	</div>
-
 </div>
 
 <div class="row-fluid">
@@ -140,3 +148,11 @@
 		
 	</div>
 </div>
+<script>
+	$('#preview').enscroll({
+		showOnHover: true,
+		clickTrackToScroll: false,
+		verticalTrackClass: 'track3',
+		verticalHandleClass: 'handle3'
+	});
+	</script>

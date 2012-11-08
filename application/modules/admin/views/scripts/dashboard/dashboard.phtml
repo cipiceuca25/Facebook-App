@@ -9,7 +9,7 @@
 </script>
 
 <? $this->headScript()->appendFile('/js/libs/d3.v2.js') ?>
-
+<? $this->headScript()->appendFile('/js/libs/enscroll-0.2.6.min.js') ?>
 <? $this->headScript()->appendFile('/js/libs/jquery.dataTables.min.js') ?>
 <? $this->headScript()->appendFile('/js/admin/dashboard/dashboard.js') ?>
 <? $this->headScript()->appendFile('/js/libs/ui.spinner.js') ?>
@@ -19,7 +19,7 @@
 
 	<ul class="breadcrumb">
 		<li>
-			<a href="/fanpages">
+			<a href="/dashboard/fanpages">
 				<i class="icon-home"></i>
 			</a> 
 			<span class="divider">/</span>
@@ -73,7 +73,6 @@
 					<li>
 						<a href="#dashboard" id="dashboard-tab"data-toggle="tab" >Dashboard</a>
 					</li>
-				
 					<li>
 						<a href="#users" id="users-tab" data-toggle="tab">Users</a>
 					</li>
@@ -89,10 +88,8 @@
 					<li>
 						<a href="#settings" id="settings-tab" data-toggle="tab">Settings</a>
 					</li>
-					
 				</ul>
-		
-		
+
 			<div class="box tab-content">
 				<div id="home" class="tab-pane active" >
 	
@@ -107,6 +104,7 @@
 				<div id="badges" class="tab-pane"></div>
 				<div id="points" class="tab-pane"></div>
 				<div id="settings" class="tab-pane"></div>
+	
 			</div>
 			
 		</div>
