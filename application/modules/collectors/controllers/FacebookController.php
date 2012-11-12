@@ -1449,28 +1449,32 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     
     	$starttime = time();
     	$postId = '197221680326345_428051090576735';
-    	$data['facebook_user_id'] = '100001005159808';
+    	$data['facebook_user_id'] = '100004566963982';
     	$data['fanpage_id'] = '197221680326345';
     	$data['fanpage_name'] = 'dan club';
-    	$data['access_token'] = 'AAAFHFbxmJmgBAM6lldcZAZCggKej98EhT9n4hAcuDfpIQVB7nHKIuGNOZAQ2rprCeFEBk3tDZApEb8KUJZBuFR8lIUTvKE4yW3amNYmJMWgZDZD';
+    	$data['access_token'] = 'AAAFHFbxmJmgBAMSA4ZAdwftxnE4X9BRWOtZBehbIe4F923gH8PreivIqkF6JnZChO8idLwSTX4HqXRpfyaH18JKrjMldKHdq14wEMJnUAZDZD';
     	//$data['post_id'] = $this->_getParam('post_id');
-    	$data['message'] = 'test post';
-    
+    	$data['message'] = 'I can get in';
     	try{
-//     		$fancrankFB = new Service_FancrankFBService();
-//     		$params =  array(
-//     				'message' => $data['message'],
-//     				'access_token' => $data['access_token']
-//     		);
+    		$fancrankFB = new Service_FancrankFBService();
+    		$params =  array(
+    				'message' => $data['message'],
+    				'access_token' => $data['access_token']
+    		);
     
-//     		$ret_obj = $fancrankFB->api('/'.$data['fanpage_id'].'/feed', 'POST',
-//     				$params);
+    		$ret_obj = $fancrankFB->api('/'.$data['fanpage_id'].'/feed', 'POST',
+    				$params);
     			
-//     		Zend_Debug::dump($ret_obj);
-    			
-//     		$data['post_id'] = $ret_obj['id'];
-    		$data['post_id'] = $postId;
-    			
+    		Zend_Debug::dump($ret_obj);
+
+    		
+    		$data['post_id'] = $ret_obj['id'];
+    		
+    		$ret_obj = $fancrankFB->api('/'.$data['post_id'], 'GET',
+    				$params);
+    		exit();
+    		//$data['post_id'] = $postId;
+    		Zend_Debug::dump($data['post_id']);	
     		$client = new Zend_Http_Client;
     		$client->setUri("https://graph.facebook.com/". $data['post_id']);
     		$client->setMethod(Zend_Http_Client::GET);
@@ -1479,7 +1483,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     		$response = $client->request();
     
     		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-    
+			Zend_Debug::dump($result); exit();
     		if(!empty ($result)) {
     			$db = Zend_Db_Table::getDefaultAdapter();
     			$db->beginTransaction();

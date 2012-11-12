@@ -28,11 +28,11 @@
 #preview a,
 #preview a:visited,
 #preview .time {
-  color: #3b5998;
+  color: #848484;
   cursor: pointer;
 }
 #preview a:hover {
-  color: #0a1b31;
+  color: #424242;
   text-decoration: underline;
 }
 #preview .container,
@@ -43,7 +43,7 @@
 #preview #content {
   position: relative;
   top: 10px;
-  background-color: #ffffff;
+  background-color: #f4f4f4;
 }
 #preview ul,
 #preview ol {
@@ -58,7 +58,7 @@
   overflow: hidden;
   background-color: white;
   padding: 5px;
-  border: 1px solid #c1cee0;
+  border: 1px solid #e9e9e9;
   margin-left: 3px;
   margin-right: 3px;
   margin-top: 6px;
@@ -72,8 +72,8 @@
   border: 0px;
 }
 #preview .tab-container {
-  border-bottom: 1px solid #c1cee0;
-  background-color: #ffffff;
+  border-bottom: 1px solid #e9e9e9;
+  background-color: #f4f4f4;
   height: 28px;
   margin-bottom: 15px;
   margin-left: 3px;
@@ -84,21 +84,21 @@
   position: absolute;
   right: 129px;
   font-size: 13px;
-  border: 1px solid #47658e;
+  border: 1px solid #cccccc;
   border-left: 0px;
 }
 #preview .toolbar li {
   float: left;
   padding: 3px 10px 3px;
   font-weight: bold;
-  color: #47658e;
-  background-color: #edeff4;
-  border-left: 1px solid #47658e;
-  border-color: #47658e;
+  color: #cccccc;
+  background-color: #e9e9e9;
+  border-left: 1px solid #cccccc;
+  border-color: #cccccc;
   height: 18px;
 }
 #preview .toolbar li a {
-  color: #47658e;
+  color: #cccccc;
 }
 #preview .toolbar-title {
   font: 9px/100% Helvetica, Arial sans-serif;
@@ -118,7 +118,7 @@
 #preview .toolbar #notification_upcoming_badges .upcoming-badges .progress {
   height: 15px;
   width: 15px;
-  border: 1px solid #c4cde0;
+  border: 1px solid #cccccc;
   position: relative;
   top: 1px;
   margin: 0;
@@ -138,10 +138,10 @@
 #preview .nav-tabs .active a,
 #preview .nav-tabs .active a:hover,
 #preview .nav-tabs li a:hover {
-  border: 1px solid #c1cee0;
-  border-bottom: 1px solid #ffffff;
-  background-color: #ffffff;
-  color: #ffffff;
+  border: 1px solid #e9e9e9;
+  border-bottom: 1px solid #f4f4f4;
+  background-color: #f4f4f4;
+  color: #424242;
   font-weight: bold;
   padding-top: 6px;
   padding-left: 13px;
@@ -151,8 +151,8 @@
   margin-right: 1px;
 }
 #preview .nav-tabs li a:hover {
-  border: 1px solid #c1cee0;
-  background-color: #ffffff;
+  border: 1px solid #e9e9e9;
+  background-color: #424242;
   color: #ffffff;
 }
 #preview .nav-tabs li a {
@@ -160,8 +160,8 @@
   -moz-border-radius: 1px;
   border-radius: 1px;
   color: #ffffff;
-  background-color: #47658e;
-  border-bottom-color: #c1cee0;
+  background-color: #cccccc;
+  border-bottom-color: #e9e9e9;
   padding-top: 4px;
   padding-bottom: 4px;
   margin-right: 1px;
@@ -171,19 +171,19 @@
 #preview #log-in-out {
   position: absolute;
   right: 3px;
-  background-color: #c1cee0;
+  background-color: #e9e9e9;
   height: 28px;
   margin-bottom: 0px;
-  border-right: 1px solid #c1cee0;
+  border-right: 1px solid #e9e9e9;
 }
 #preview #pageTabs {
   position: relative;
   float: left;
-  background-color: #c1cee0;
+  background-color: #e9e9e9;
   height: 28px;
   left: 1px;
   margin-bottom: 0px;
-  border-right: 1px solid #c1cee0;
+  border-right: 1px solid #e9e9e9;
 }
 #preview #newsfeed-tab,
 #preview #leaderboard-tab,
@@ -225,7 +225,7 @@
   right: 4px;
 }
 #preview .tip a {
-  background-color: #47658e;
+  background-color: #cccccc;
   border: 2px solid #ffffff;
   color: #ffffff;
   font: bold 16px/100% Helvetica, Arial, sans-serif;
@@ -237,8 +237,8 @@
 }
 #preview .tip a:hover {
   background-color: #ffffff;
-  border: 2px solid #47658e;
-  color: #47658e;
+  border: 2px solid #cccccc;
+  color: #cccccc;
   text-decoration: none;
 }
 #preview .tooltip-inner {
@@ -255,14 +255,14 @@
   -moz-border-radius: 1px;
   border-radius: 1px;
   padding: 30px 8px 8px 8px;
-  border: 1px solid #c1cee0;
+  border: 1px solid #e9e9e9;
   background-image: none;
 }
 #preview .box.notitle {
   padding-top: 0;
 }
 #preview .title {
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 2px solid #e9e9e9;
 }
 #preview .tip2 {
   color: #999999;
@@ -296,7 +296,7 @@
   height: 30px;
   font-size: 11px;
   background-color: transparent;
-  color: #47658e;
+  color: #cccccc;
   font-weight: bold;
   border: 0;
   -webkit-border-radius: 1px;
@@ -307,20 +307,20 @@
 #preview .btn-submit:hover,
 #preview .btn-more:hover,
 #preview .comments .btn-more:hover {
-  background-color: #47658e;
+  background-color: #cccccc;
   color: #ffffff;
 }
 #preview .btn-submit {
   font: bold 11px/100% Helvetica, Arial, sans-serif;
-  border: 1px solid #173d71;
-  color: #173d71;
+  border: 1px solid #424242;
+  color: #424242;
   font-weight: bold;
   width: 51px;
   height: 20px;
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
-  background-color: #c1cee0;
+  background-color: #e9e9e9;
   float: right;
 }
 #preview .top-list {
@@ -335,7 +335,7 @@
 #preview .user-profile .stats li,
 #preview #myprofile .stats li {
   font: 10px/100% Helvetica, Arial, sans-serif;
-  border-right: 1px solid #e5e5e5;
+  border-right: 1px solid #e9e9e9;
   height: 60px;
   float: left;
   width: 16.505606105%;
@@ -355,7 +355,7 @@
 #preview .user-profile .stats,
 #preview #myprofile .stats {
   height: 60px;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #e9e9e9;
   margin-bottom: -5px;
 }
 #preview .user-profile .stats.fol {
@@ -415,7 +415,7 @@
   margin-top: 8px;
 }
 #preview .top-list .ranker {
-  border-bottom: 1px solid #c4cde0;
+  border-bottom: 1px solid #cccccc;
   height: 55px;
   width: 100%;
   position: relative;
@@ -428,7 +428,7 @@
 }
 #preview .top-list .rank {
   width: 55px;
-  background-color: #47658e;
+  background-color: #cccccc;
   float: left;
 }
 #preview .top-list.mini .rank {
@@ -436,7 +436,7 @@
   height: 36px;
 }
 #preview .top-list .rank.first {
-  background-color: #173d71;
+  background-color: #424242;
 }
 #preview .top-list .rank h1,
 #preview .top-list .rank h2,
@@ -538,7 +538,7 @@
   background-color: #7d98be;
 }
 #preview .badge-Follower {
-  background-color: #ffffff;
+  background-color: #f4f4f4;
 }
 #preview .badge-Follower:hover,
 #preview .badge-Follow:hover {
@@ -564,7 +564,7 @@
   background-color: #f7cb1e;
 }
 #preview .badge-Fanpage {
-  background-color: #47658e;
+  background-color: #000000;
 }
 #preview .badge-link:hover {
   text-decoration: none;
@@ -593,7 +593,7 @@
 }
 #preview .post-container .user {
   font: bold 13px Helvetica, Arial, sans-serif;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e9e9e9;
   padding-bottom: 10px;
   overflow: hidden;
 }
@@ -661,7 +661,7 @@
 #preview .post-container .social {
   line-height: 25px;
   font-size: 11px;
-  background-color: #edeff4;
+  background-color: #e9e9e9;
   padding-left: 10px;
   margin-bottom: 1px;
   position: relative;
@@ -672,7 +672,7 @@
   overflow: auto;
 }
 #preview .comment-container {
-  background-color: #edeff4;
+  background-color: #e9e9e9;
   margin-bottom: 1px;
   padding: 5px;
   min-height: 30px;
@@ -707,14 +707,14 @@
 }
 #preview .comments .btn-more {
   margin-top: 1px;
-  background-color: #edeff4;
+  background-color: #e9e9e9;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
 }
 #preview .post-button-container {
   display: none;
-  border: 1px solid #c1cee0;
+  border: 1px solid #e9e9e9;
   background-color: #f7f7f7;
   border-top: 0;
   width: 500px;
@@ -738,7 +738,7 @@
   height: 14px;
   outline: none;
   color: #575757;
-  border-color: #c1cee0;
+  border-color: #e9e9e9;
 }
 #preview #user-description-box {
   width: 230px;
@@ -754,7 +754,7 @@
 }
 #preview .post-box:focus,
 #preview .comment-box:focus {
-  border: 1px solid #c1cee0;
+  border: 1px solid #e9e9e9;
   outline: none;
   -webkit-box-shadow: 0 0 0 0;
   -moz-box-shadow: 0 0 0 0;
@@ -777,7 +777,7 @@
   margin: 0 0 0 144px;
   z-index: 51;
   display: none;
-  background-color: #ffffff;
+  background-color: #f4f4f4;
   width: 530px;
 }
 #preview .profile-content .row.box {
@@ -819,9 +819,9 @@
   text-align: center;
 }
 #preview .level {
-  border: 5px solid #47658e;
+  border: 5px solid #cccccc;
   background-color: #ffffff;
-  color: #47658e;
+  color: #cccccc;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -844,11 +844,11 @@
 }
 #preview .progress {
   margin-bottom: 0;
-  background: #edeff4;
-  border: 2px solid #c4cde0;
+  background: #e9e9e9;
+  border: 2px solid #cccccc;
 }
 #preview .progress .bar {
-  background: #c4cde0;
+  background: #cccccc;
   -webkit-box-shadow: 0 0 0 0;
   -moz-box-shadow: 0 0 0 0;
   box-shadow: 0 0 0 0;
@@ -861,7 +861,7 @@
 }
 #preview #followinglist .top-list.mini .ranker,
 #preview #followerslist .top-list.mini .ranker {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e9e9e9;
   border-top: 0px solid;
 }
 #preview #recent_activities {
@@ -895,7 +895,7 @@
 }
 #preview .handle3 {
   width: 5px;
-  background: #173d71;
+  background: #424242;
   opacity: 0.45;
   filter: alpha(opacity=45);
   left: 5px;
@@ -906,7 +906,7 @@
 }
 #preview .hhandle {
   height: 5px;
-  background: #173d71;
+  background: #424242;
   opacity: 0.45;
   filter: alpha(opacity=45);
   left: 5px;
@@ -975,9 +975,9 @@
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  border: 5px solid #c1cee0;
+  border: 5px solid #e9e9e9;
   padding: 0;
-  background-color: #c1cee0;
+  background-color: #e9e9e9;
 }
 #preview .popover-title {
   display: none;
@@ -1000,10 +1000,10 @@
   float: right;
   text-align: center;
   font: bold 20px/25px Arial, Helvetica, sans-serif;
-  color: #47658e;
+  color: #cccccc;
   width: 25px;
   height: 25px;
-  border: 3px solid #47658e;
+  border: 3px solid #cccccc;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
@@ -1026,7 +1026,7 @@
   margin-left: -5px;
   border-right: 5px solid transparent;
   border-left: 5px solid transparent;
-  border-top: 5px solid #c1cee0;
+  border-top: 5px solid #e9e9e9;
   margin-left: -95px;
 }
 #preview .popover.top-right .arrow {
@@ -1035,17 +1035,17 @@
   margin-left: -5px;
   border-right: 5px solid transparent;
   border-left: 5px solid transparent;
-  border-top: 5px solid #c1cee0;
+  border-top: 5px solid #e9e9e9;
   margin-left: -54px;
 }
 #preview .popover.top .arrow {
-  border-top: 5px solid #c1cee0;
+  border-top: 5px solid #e9e9e9;
 }
 #preview .popover.left .arrow {
-  border-left: 5px solid #c1cee0;
+  border-left: 5px solid #e9e9e9;
 }
 #preview .popover.right .arrow {
-  border-right: 5px solid #c1cee0;
+  border-right: 5px solid #e9e9e9;
 }
 #preview .popover.toppost .arrow {
   top: 50%;
@@ -1053,7 +1053,7 @@
   margin-top: -5px;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 5px solid #c1cee0;
+  border-left: 5px solid #e9e9e9;
 }
 #preview .popover.top-left {
   margin-top: -10px;
@@ -1314,7 +1314,7 @@
   top: 211px;
   left: 600px;
   font-size: 100px;
-  color: #c1cee0;
+  color: #e9e9e9;
   font-family: verdana;
 }
 #preview .next a:hover {
@@ -1323,7 +1323,7 @@
 }
 #preview .noclick:hover {
   text-decoration: none;
-  color: #3b5998;
+  color: #848484;
   cursor: default;
 }
 #preview .pointlog {
@@ -1351,16 +1351,16 @@
   height: 5px;
   margin-left: -9px;
   margin-right: -9px;
-  border-top: 1px solid #c1cee0;
-  border-bottom: 1px solid #c1cee0;
-  background-color: #ffffff;
+  border-top: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
+  background-color: #f4f4f4;
 }
 #preview #menu {
   position: fixed;
   top: 170px;
   z-index: 5;
   width: 810px;
-  background-color: #ffffff;
+  background-color: #f4f4f4;
   padding-top: 3px;
   padding-bottom: 5px;
 }
@@ -1396,7 +1396,7 @@
   border-top: 5px solid transparent;
   left: 48%;
   position: absolute;
-  border-bottom: 5px solid #c1cee0;
+  border-bottom: 5px solid #e9e9e9;
   border-right: 5px solid transparent;
   border-left: 5px solid transparent;
   margin-top: -10px;

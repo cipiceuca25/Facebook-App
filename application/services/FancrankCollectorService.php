@@ -86,6 +86,7 @@ class Service_FancrankCollectorService {
 		$feed = $this->getFanpageFeed($since, $until);
 		$fancrankDB = new Service_FancrankDBService($this->_fanpageId, $this->_accessToken);
 		
+		$saveFanList = array();
 		// save and update fans
 		try {
 			//Zend_Debug::dump($facebookUsers);
@@ -128,13 +129,15 @@ class Service_FancrankCollectorService {
 				}
 			}
 		}
-		
-		Zend_Debug::dump($saveFanList);
+
 		// update fan stat
 		$fanStat = new Model_FansObjectsStats();
-		foreach ($saveFanList as $row) {
-			$fan = new Model_Fans($row['facebook_user_id'], $this->_fanpageId);
-			$fanStat->updatedFanWithPoint($this->_fanpageId, $row['facebook_user_id'], $fan->getFanExp(), $fan->getFanPoint());
+		if (!empty($saveFanList)) {
+			Zend_Debug::dump($saveFanList);
+			foreach ($saveFanList as $row) {
+				$fan = new Model_Fans($row['facebook_user_id'], $this->_fanpageId);
+				$fanStat->updatedFanWithPoint($this->_fanpageId, $row['facebook_user_id'], $fan->getFanExp(), $fan->getFanPoint());
+			}
 		}
 	}
 	

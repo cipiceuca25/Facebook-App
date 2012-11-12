@@ -19,7 +19,7 @@
         <meta name="keywords" content="" />
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
-        <script src="/js/libs/jquery.min.js"></script>
+        <script src="/js/libs/jquery-1.8.2.min.js"></script>
         <script src="/bootstrap/js/bootstrap.min.js"></script>
 
         <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
@@ -63,6 +63,27 @@
                     <?= $this->partial('index/_ticket.phtml', array('title' => 'Fans', 'num' => $this->fans)) ?>
                 </div>
             </div>
+            <p class="heading">basick app info </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->appInfo);?></div>
+            <p class="heading">insight data </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->insightData);?></div>
+            <p class="heading">admin activities </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->adminLog);?></div>
+            <p class="heading">fanpage cron log </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->cronLog);?></div>
+            <p class="heading">point log </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->pointLog);?></div>
         </div>
+        
+        <script>
+			$(function(){
+				console.log('log begin...');
+				jQuery(".app-info").hide();
+				//toggle the componenet with class msg_body
+				$(".heading").click(function() {
+					$(this).next(".app-info").slideToggle(500);
+				});
+			});
+        </script>
     </body>
 </html>
