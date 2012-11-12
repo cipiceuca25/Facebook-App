@@ -45,6 +45,9 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	}
         $fanpages_model = new Model_Fanpages;
         $pages = $fanpages_model->getActiveFanpagesByUserId($uid);
+        
+        //Zend_Debug::dump($pages);
+        
         //$pages = $this->getUserPagesList($uid, $access_token);
   
         $this->view->pages = $pages;
@@ -156,11 +159,15 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
         $this->view->installed = $fanpage->installed;
         $this->view->page_id = $this->_getParam('id');
+        
+        
+        
         $colorChoice = new Model_UsersColorChoice;
         $choice = $colorChoice->getColorChoice($this->_getParam('id'))->color_choice;
         if(empty($choice)) {
         	$choice = 1;
         }
+       
         $this->view->fanpageTheme = $choice;
 
         if ($fanpage->active) {
@@ -179,6 +186,8 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         	$this->view->top_clicker = array();
         	$this->view->top_followed = array();
         }
+        
+      
         $this->render("preview");
     }
 
@@ -793,6 +802,9 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 				//echo $e->getMessage();
 			}
 		}
+		$color = $this->_getParam('color');
+	
+		$this->view->color = $color;
 		
 		$this->view->top_fans = $fanpage2['topFans'];
 		$this->view->most_popular = $fanpage2['mostPopular'];

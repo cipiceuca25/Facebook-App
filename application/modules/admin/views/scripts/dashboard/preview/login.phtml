@@ -1,3 +1,19 @@
+<?php switch ($this->color){?>
+<?php case '1':?>
+	<link rel="stylesheet" type="text/less" href="/css/previewstyle1.less" />
+	<?php break;?>
+	<?php case '2':?>
+	<link rel="stylesheet" type="text/less" href="/css/previewstyle2.less" />
+	<?php break;?>
+<?php }?>
+
+<script type="text/javascript">
+	env = 'development';
+	less = {};
+	less.env = 'development';
+</script>
+ 
+<script src="/js/libs/less-1.3.0.min.js"></script>
 <div class="container" > 
 
 <div id="wrapper">

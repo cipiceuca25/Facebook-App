@@ -157,6 +157,7 @@ table.fanpage td {
   border-top: 0px;
   vertical-align: middle;
   padding: 8px 0;
+  width: 100px;
 }
 table.fanpage tbody tr:hover td {
   background: #DCEDF7;
@@ -197,6 +198,7 @@ ol {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  margin-bottom: 20px;
 }
 select,
 label,
@@ -573,47 +575,74 @@ path {
 .y.axis text {
   font-size: 12px;
 }
-circle.line0,
+circle.line1,
 circle.line2,
-circle.line1 {
+circle.line3,
+circle.line4,
+circle.line5,
+circle.line6,
+circle.line7,
+circle.line8 {
   fill: #fff;
 }
-circle.line0:hover,
+circle.line1:hover,
 circle.line2:hover,
-circle.line1:hover {
+circle.line3:hover,
+circle.line4:hover,
+circle.line5:hover,
+circle.line6:hover,
+circle.line7:hover,
+circle.line8:hover {
   fill: #000;
 }
-.data4 {
-  stroke: green;
-}
-.data1 {
-  stroke: blue;
-}
-.data2 {
-  stroke: orange;
-}
-.data3 {
-  stroke: red;
-}
-.line4 {
-  fill: none;
-  stroke: green;
-  stroke-width: 1.5px;
-}
+.data1,
 .line1 {
-  fill: none;
-  stroke: blue;
-  stroke-width: 1.5px;
+  stroke: green;
 }
+.data2,
 .line2 {
-  fill: none;
+  stroke: blue;
+}
+.data3,
+.line3 {
   stroke: orange;
+}
+.data4,
+.line4 {
+  stroke: red;
+}
+.data5,
+.line5 {
+  stroke: yellow;
+}
+.data6,
+.line6 {
+  stroke: purple;
+}
+.data7,
+.line7 {
+  stroke: pink;
+}
+.data8,
+.line8 {
+  stroke: cyan;
+}
+.line1,
+line2,
+line3,
+line4,
+line5,
+line6,
+line7,
+line8 {
+  fill: none;
   stroke-width: 1.5px;
 }
-.line3 {
-  fill: none;
-  stroke: red;
-  stroke-width: 1.5px;
+.legend {
+  float: right;
+  width: 100px;
+  height: 250px;
+  border: 1px solid black;
 }
 #preview {
   position: relative;

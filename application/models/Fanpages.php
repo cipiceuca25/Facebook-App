@@ -11,14 +11,25 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 
 	public function getActiveFanpagesByUserId($user_id)
 	{
-		$select = $this->getAdapter()->select();
+		$select ="SELECT *, has_added_app+active as ranking FROM fanpage_admins a
+					left join fanpages fp 
+					on fp.fanpage_id = a.fanpage_id
+					where a.facebook_user_id = $user_id
+					order by ranking DESC, fanpage_name ASC";
+		/*
+		 * $select = $this->getAdapter()->select();
+		
 		$select->from(array('fanpages' => 'fanpages'));
 		$select->join(array('admins' => 'fanpage_admins'), 'fanpages.fanpage_id = admins.fanpage_id');
 		$select->where($this->getAdapter()->quoteInto('admins.facebook_user_id = ?', $user_id));
-
+		$select->order(array('has_added_app + active DESC'));
+		*/
 		return $this->getAdapter()->fetchAll($select);
+		
 	}
 
+	
+	
 	public function getPostsStatByFanpageId($fanpage_id) {
 		$postModel = new Model_Posts();
 		$select = $postModel->select();
