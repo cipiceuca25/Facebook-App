@@ -27,6 +27,9 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .clearfix {
   *zoom: 1;
@@ -54,42 +57,9 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-}
-.span12 {
-  width: 804px;
-}
-.span11 {
-  width: 737px;
-}
-.span10 {
-  width: 668px;
-}
-.span9 {
-  width: 599px;
-}
-.span8 {
-  width: 530px;
-}
-.span7 {
-  width: 461px;
-}
-.span6 {
-  width: 392px;
-}
-.span5 {
-  width: 323px;
-}
-.span4 {
-  width: 257px;
-}
-.span3 {
-  width: 184px;
-}
-.span2 {
-  width: 116px;
-}
-.span1 {
-  width: 47px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 body {
   background-color: #f4f4f4;
@@ -107,7 +77,7 @@ a:hover {
   text-decoration: underline;
 }
 .container,
-.navbar-fixed-top .container {
+.navbar-fixed-top.container {
   width: 810px;
 }
 #content {
@@ -124,7 +94,7 @@ ol {
 #logo {
   display: block;
   height: 150px;
-  width: 790px;
+  width: 792px;
   overflow: hidden;
   background-color: white;
   padding: 5px;
@@ -229,6 +199,9 @@ ol {
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
   color: #ffffff;
   background-color: #cccccc;
   border-bottom-color: #e9e9e9;
@@ -240,7 +213,7 @@ ol {
 }
 #log-in-out {
   position: absolute;
-  right: 8px;
+  right: 3px;
   background-color: #e9e9e9;
   height: 28px;
   margin-bottom: 0px;
@@ -251,7 +224,7 @@ ol {
   float: left;
   background-color: #e9e9e9;
   height: 28px;
-  left: 3px;
+  left: 1px;
   margin-bottom: 0px;
   border-right: 1px solid #e9e9e9;
 }
@@ -304,6 +277,9 @@ ol {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 .tip a:hover {
   background-color: #ffffff;
@@ -321,6 +297,9 @@ ol {
 .box {
   margin: 0 1px 20px 3px;
   background-color: #ffffff;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
@@ -371,6 +350,9 @@ ol {
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
   margin-top: 5px;
 }
 .btn-submit:hover,
@@ -386,6 +368,9 @@ ol {
   font-weight: bold;
   width: 51px;
   height: 20px;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
@@ -407,7 +392,7 @@ ol {
   border-right: 1px solid #e9e9e9;
   height: 60px;
   float: left;
-  width: 16.505906105%;
+  width: 16.505606105%;
 }
 .user-profile .stats li {
   width: 14.1174530982%;
@@ -540,17 +525,20 @@ ol {
 .top-list .user {
   margin: 10px 0 0 10px;
   float: left;
-  width: 180px;
+  position: absolute;
+  left: 55px;
 }
 .span12 .top-list .user {
   width: 300px;
 }
 #user_list .top-list .user {
   width: auto;
+  left: 0px;
 }
 .top-list.mini .user {
   margin: 3px 0 0 5px;
   width: auto;
+  left: 35px;
 }
 .top-list .user .name {
   font: 18px Helvetica, Arial, sans-serif;
@@ -578,7 +566,6 @@ ol {
   position: relative;
   top: 4px;
   text-align: right;
-  float: right;
 }
 .top-list .points h3 {
   display: inline-block;
@@ -590,6 +577,9 @@ ol {
   top: -7px;
 }
 .badge {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -777,6 +767,9 @@ ol {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .post-button-container {
   display: none;
@@ -795,6 +788,9 @@ ol {
 .comment-box {
   resize: none;
   overflow: hidden;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -825,6 +821,9 @@ ol {
   -webkit-box-shadow: 0 0 0 0;
   -moz-box-shadow: 0 0 0 0;
   box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+  -moz-box-shadow: 0 0 0 0;
+  box-shadow: 0 0 0 0;
 }
 .light-box {
   position: fixed;
@@ -836,6 +835,9 @@ ol {
   display: none;
 }
 .profile-content {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -891,6 +893,9 @@ ol {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
   font: bold 35px/35px Helvetica, Arial, sans-serif;
   width: 35px;
   margin: auto;
@@ -918,6 +923,9 @@ ol {
   -webkit-box-shadow: 0 0 0 0;
   -moz-box-shadow: 0 0 0 0;
   box-shadow: 0 0 0 0;
+  -webkit-box-shadow: 0 0 0 0;
+  -moz-box-shadow: 0 0 0 0;
+  box-shadow: 0 0 0 0;
 }
 .row.box .half {
   width: 221px;
@@ -937,12 +945,18 @@ ol {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 #user_activities .post-container,
 #recent_activities .post-container {
   font-size: 11px;
   background: #ffffff;
   padding: 3px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
@@ -1036,9 +1050,14 @@ ol {
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
 }
 .popover-inner {
-  width: 323px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
@@ -1053,10 +1072,16 @@ ol {
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
   padding: 1px 5px 1px;
 }
 .popover-content .post-container .user {
   overflow: visible;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
@@ -1071,6 +1096,9 @@ ol {
   width: 25px;
   height: 25px;
   border: 3px solid #cccccc;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
@@ -1231,6 +1259,10 @@ ol {
   -moz-background-size: 300px;
   -o-background-size: 300px;
   background-size: 300px;
+  -webkit-background-size: 300px;
+  -moz-background-size: 300px;
+  -o-background-size: 300px;
+  background-size: 300px;
 }
 @-webkit-keyframes spin {
   from {
@@ -1268,6 +1300,10 @@ ol {
   -moz-background-size: 500px;
   -o-background-size: 500px;
   background-size: 500px;
+  -webkit-background-size: 500px;
+  -moz-background-size: 500px;
+  -o-background-size: 500px;
+  background-size: 500px;
   -webkit-animation-name: spin;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-timing-function: linear;
@@ -1293,6 +1329,10 @@ ol {
   -moz-background-size: 150px;
   -o-background-size: 150px;
   background-size: 150px;
+  -webkit-background-size: 150px;
+  -moz-background-size: 150px;
+  -o-background-size: 150px;
+  background-size: 150px;
   font: bold 130px Helvetica, Arial, sans-serif;
   color: black;
 }
@@ -1300,8 +1340,15 @@ ol {
   font: bold 20px Helvetica, Arial, sans-serif;
   position: absolute;
   display: block;
+  display: block;
   margin-left: auto;
   margin-right: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
@@ -1366,7 +1413,11 @@ ol {
   }
 }
 .exp_count {
+  display: block;
   position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -1426,7 +1477,8 @@ ol {
   position: fixed;
   top: 170px;
   z-index: 5;
-  width: 100%;
+  width: 794;
+  height: 50px;
   background-color: #f4f4f4;
   padding-top: 3px;
   padding-bottom: 5px;
@@ -1443,12 +1495,18 @@ ol {
   -webkit-box-shadow: 0 0 12px #f7cb1e;
   -moz-box-shadow: 0 0 12px #f7cb1e;
   box-shadow: 0 0 12px #f7cb1e;
+  -webkit-box-shadow: 0 0 12px #f7cb1e;
+  -moz-box-shadow: 0 0 12px #f7cb1e;
+  box-shadow: 0 0 12px #f7cb1e;
 }
 .notifier {
   position: absolute;
   right: 21px;
   top: 37px;
   background-color: #ffffff;
+  -webkit-box-shadow: 0px 2px 5px #888888;
+  -moz-box-shadow: 0px 2px 5px #888888;
+  box-shadow: 0px 2px 5px #888888;
   -webkit-box-shadow: 0px 2px 5px #888888;
   -moz-box-shadow: 0px 2px 5px #888888;
   box-shadow: 0px 2px 5px #888888;

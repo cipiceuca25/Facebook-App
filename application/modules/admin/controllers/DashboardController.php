@@ -60,8 +60,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$allpoints = $points ->getFanpagePoints($fanpageId);
     	$x = $points ->getPointsByType($fanpageId);
     	
-    	// dont forget to initialized first
-    	$pointsbytype = array();
+    
     	foreach ($x as $y){
     		
     		switch ($y['object_type']){
@@ -648,7 +647,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$fanpageId = $this->_request->getParam('id');
 		//Zend_Debug::dump($this->getRealtimeInsightData($fanpageId));
 		
-		
+		//points settings
 		try {
 			$fanpageSettingModel = new Model_FanpageSetting();
 			$settingData = $fanpageSettingModel->findRow($fanpageId);
@@ -709,6 +708,29 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			echo $e->getMessage();
 		}
 		$this->view->setting = empty($settingData) ? $fanpageSettingModel->getDefaultSetting() : $settingData->toArray();
+		
+		
+		
+		
+		
+		//badge settings
+		$b = new Model_Badges();
+
+		$allBadges = $b-> getAllBadges($fanpageId);
+	
+		for($count=0;$count < count($allBadges); $count++){
+			$allBadges[$count]['description'] = str_replace('[quantity]',$allBadges[$count]['quantity'] ,$allBadges[$count]['description']);
+		}
+		$this->view->allBadges = $allBadges;
+		
+		
+		//color
+		$colorChoice = new Model_UsersColorChoice;
+		$choice = $colorChoice->getColorChoice($fanpageId)->color_choice;
+		if(empty($choice)) {
+			$choice = 1;
+		}
+		$this->view->color = $choice;
 		
 		$this->render("settings");
 	
@@ -785,19 +807,34 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 	public function previewnewsfeedAction(){
 		
 		$this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender(true);
+		$this->_helper->viewRenderer->setNoRender(true);	
 		
-		$fanpageId = $this->_request->getParam('id');
+	$fanpageId = $this->_request->getParam('id');
 		
 		$result = $this->feedFirstQuery($fanpageId);
 		
 		$latest = $result['posts']->data;
 		$feed = $result['feed']->data;
+		
+		$follow = new Model_Subscribes();
 
+		$relation = array();
+		$count=0;
+		 
+		if ($feed != null){
+		
+			foreach ($feed as $posts){
+				$relation[$count] = $follow->getRelation($fanpageId, $posts->from->id,$fanpageId);
+				$count++;
+			}
+		
+		}
 		$this->view->latest = $latest ;
 		$this->view->post = $feed;
+		$this->view->relation = $relation;
 		//Zend_Debug::dump($fanpage);
 		$this->view->fanpage_id = $fanpageId;
+		
 		$this->render("preview/newsfeed");
 	}
 	

@@ -41,69 +41,21 @@ margin:0;
 padding:0; 
 }
 
-#logo{
-display:block;
-height:150px;
-width:792px;
-overflow:hidden;
-background-color:white;
-padding:5px;
-border:1px solid @color-main-container-border;
-margin-left:3px;
-margin-right:3px;
-margin-top:6px;
-}
 
-#logo img{
-width:100%;
-position:relative;
-top:0;
-}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-.nav-tabs{
-border:0px;
-}
-
 .tab-container{
-border-bottom: 1px solid @color-main-container-border;
-background-color: @color-main-background;
-height:28px;
-margin-bottom:15px;
-margin-left:3px;
-margin-right:4px;
-}
+	position:relative; 
+	z-index:5;
+	width:794px;
+	height:50px;
+	background-color:@color-menu-left-background;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom:20px;
 
-.toolbar{
-	float:left;
-	position:absolute;
-	right:129px;
-	font-size:13px;
-	border:1px solid @color-toolbar-border;
-	border-left:0px;
-}
-
-
-.toolbar li{
-	float:left;
-	padding:3px 10px 3px;
-	font-weight:bold;
-	color:@color-toolbar-text;
-	background-color:@color-toolbar-background;
-	border-left:1px solid @color-toolbar-border;
-	border-color: @color-toolbar-border;
-	height:18px;
-} 
-
-.toolbar li a{
-	color:@color-toolbar-text;
-}
-	
-
-.toolbar-title{
-	font:9px/100%  Helvetica, Arial sans-serif;
-	text-align:center;
 }
 
 .follow-title{
@@ -149,64 +101,129 @@ width:15px;
 .nav-tabs .active  a, 
 .nav-tabs .active a:hover,
 .nav-tabs li a:hover{
-border:1px solid @color-main-container-border;
-border-bottom:1px solid @color-main-background;
-background-color:@color-main-background;
+background-color:@color-menu-hover;
 color:@color-tab-select-text;
-font-weight:bold;
-padding-top:6px;
-padding-left:13px;
-padding-right:13px;
-padding-bottom:4px;
-bottom:1px;
-margin-right:1px;
+border:0px solid;
 }
 
 .nav-tabs li a:hover{
-border:1px solid @color-main-container-border;
 
-background-color:@color-tab-select-text;
-color:@color-tab-text-hover;
+}
 
+.nav-tabs li a img{
+margin-right:5px;
 }
 
 .nav-tabs li a{
 .border-radius(1px);
-color:@color-tab-text;
-background-color:@color-tab-background;
-border-bottom-color:@color-main-container-border;
-padding-top:4px;
-padding-bottom:4px;
-margin-right:1px;
-bottom:-1px;
-left:1px;
+padding:0px;
+margin:0px;
+text-align:center;
+color:@color-tab-select-text;
+width:113px;
+height:50px;
+line-height:50px;
+border:0px solid;
+font-weight:bold;
 }
 
-
-
-
-#log-in-out{
-position:absolute;
-right:3px;
-
-background-color:@color-main-container-border;
-height:28px;
-margin-bottom:0px;
-border-right:1px solid @color-main-container-border;
-
-}
-
-#pageTabs{
-
+.nav-tabs{
+border:0px;
 position:relative;
 float:left;
-background-color:@color-main-container-border;
-height:28px;
-left:1px;
-margin-bottom:0px;
-border-right:1px solid @color-main-container-border;
-
 }
+
+
+.nav-tabs#toolbar{
+	float:right;
+	background-color:@color-menu-right-background;
+	width:195px;
+	padding-left:13px;
+	padding-right:6px;
+	font-size:10px;
+}
+
+.nav-tabs#log-in-out{
+	font-size:12px;
+	float:right;
+	background-color:@color-menu-right-background;
+	width:214px;
+}
+
+.nav-tabs#log-in-out li a {
+	width:214px;
+}
+
+.nav-tabs#toolbar li a{
+	width:auto;
+}
+
+.nav-tabs#toolbar li a:hover{
+	background-color:@color-menu-right-background;
+}
+
+.nav-tabs#toolbar li a img{
+margin-left:5px;
+}
+
+.nav-tabs#toolbar li .line{
+width:1px;
+height:26px;
+margin-top:12px;
+background-color:lightgray;
+}
+
+.nav-tabs#toolbar li a{
+	padding-left:5px;
+	padding-right:5px;
+}
+
+
+#logo{
+display:block;
+height:40px;
+overflow:hidden;
+width:113px;
+padding-left:15px;
+padding-top:10px;
+float:left;
+#gradient > .horizontal(@color-menu-right-background, @color-menu-left-background);
+}
+
+#logo img{
+width:100px;
+}
+
+#logout-tab{
+padding-left:6px;
+padding-right:10px;
+}
+
+#logout-tab img{
+margin-right:0px;
+}
+
+#logout-tab .dropdown-menu{
+top:49px;
+left:0px;
+width:50px;
+min-width:0;
+padding:0;
+margin:0;
+background-color:@color-menu-right-background;
+border:0px solid;
+.border-radius(0px);
+.box-shadow(-5px 5px 10px rgba(0, 0, 0, 0.2));
+}
+
+#logout-tab .dropdown-menu li a:hover{
+	background-color:@color-menu-hover;
+}
+
+#logout-tab.open .dropdown-toggle {
+background-color:transparent;
+}
+
 
 #newsfeed-tab,
 #leaderboard-tab,
@@ -281,7 +298,7 @@ filter:alpha(opacity=95);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .box{	
-margin:0 1px 20px 3px;
+margin:0 0 20px 0;
 background-color:@color-post-background;
 .border-radius(1px);
 padding:30px 8px 8px 8px;
@@ -291,6 +308,7 @@ border: 1px solid  @color-main-container-border;
 .box.notitle{
 padding-top:0;
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -347,6 +365,10 @@ font-weight:bold;
 border:0;
 .border-radius(1px);
 margin-top:5px;
+}
+
+#fancrankfeed .btn-more{
+margin-top:-10px;
 }
 
 .btn-submit:hover,
@@ -548,7 +570,9 @@ font:bold 35px/55px Helvetica, Arial,sans-serif;
 .top-list .user{
 margin:10px 0 0 10px;
 float:left;
-width:180px;
+position:absolute;
+left:55px;
+//width:180px;
 }
 
 .span12 .top-list .user{
@@ -558,11 +582,15 @@ width:300px;
 
 #user_list .top-list .user{
 width:auto;
+left:0px;
 }
 
 .top-list.mini .user{
 margin:3px 0 0 5px;
 width:auto;
+
+		left:35px;
+
 }
 
 .top-list .user .name{
@@ -596,7 +624,7 @@ position:relative;
 top:4px;
 text-align:right;
 
-float:right;
+//float:right;
 }
 
 .top-list .points h3{
@@ -689,8 +717,7 @@ padding-bottom:5px;
 background-color:@color-post-background;
 position:relative;
 //border-bottom:1px solid @color-main-container-border;
-margin-bottom:10px;
-margin-top:10px;
+padding-top:10px;
 }
 
 .post-container:hover{
@@ -780,10 +807,15 @@ margin-top:5px;
 .post-container .social{
 line-height:25px;
 font-size:11px;
-background-color:@color-post-social-background;
-padding-left:10px;
 margin-bottom:1px;
 position:relative;
+}
+
+.post-container .social.comment,
+.post-container .social.commentn,
+.post-container .social.like{
+background-color:@color-post-social-background;
+padding-left:10px;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -866,7 +898,7 @@ margin:0;
 resize: none; 
 overflow:hidden;
 .border-radius(0);
-width:357px;
+width:354px;
 margin:0 5px 0 5px;
 padding:1px;
 height:14px;
@@ -883,7 +915,7 @@ font-size:12px;
 }
 
 .post-box{
-width:504px;
+width:498px;
 margin-left:0;
 overflow:hidden;
 height:20px;
@@ -1582,15 +1614,7 @@ cursor:default;
 	background-color: @color-main-background;
 }
 
-#menu{
-	position:fixed; 
-	top:170px; 
-	z-index:5; 
-	width:100%;
-	background-color:@color-main-background;
-	padding-top:3px;
-	padding-bottom:5px;
-}
+
 
 .cbadges a{
 	cursor:pointer;
@@ -1607,8 +1631,8 @@ cursor:default;
 
 .notifier{
 	position:absolute;
-	right:21px;
-	top:37px;
+	right:0px;
+	top:50px;
 	
 	background-color:@color-post-background;
 	.box-shadow(0px 2px 5px #888888);
@@ -1621,7 +1645,7 @@ cursor:default;
 	width:0px;
 	height:0px;
 	border-top:5px solid transparent;
-	left:48%;
+	left:50%;
 	position:absolute;
 	border-bottom: 5px solid @color-main-container-border;
 	border-right:5px solid transparent;

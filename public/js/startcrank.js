@@ -17,7 +17,7 @@ $(document).ready(function() {
 				});
 			}	
 			
-			$('#logo').html('<img src ="/img/thin-banner.jpg" />');
+		//	$('#logo').html('<img src ="/img/thin-banner.jpg" />');
 			/*
 			if ($('#logo').attr('data-login') == "true"){
 				

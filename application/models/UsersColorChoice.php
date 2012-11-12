@@ -7,15 +7,16 @@ class Model_UsersColorChoice extends Model_DbTable_UsersColorChoice
 	public function getColorChoice($fanpage_id)
 	{
 		//$select = "select users_color_choice.color_choice from users_color_choice where user_id ='".$user_id."'";
-		
-		if ($this -> find($fanpage_id)->current() ==false){
+		if($fanpage_id){
+			if ($this -> find($fanpage_id)->current() ==false){
+				
+				$data = array('fanpage_id' => $fanpage_id, 'color_choice' => 1);
+				
+				$insert = $this->getAdapter()->insert(array('users_color_choice' => 'users_color_choice'), $data);
+			}
 			
-			$data = array('fanpage_id' => $fanpage_id, 'color_choice' => 1);
-			
-			$insert = $this->getAdapter()->insert(array('users_color_choice' => 'users_color_choice'), $data);
+			return $this -> find($fanpage_id)->current();
 		}
-		
-		return $this -> find($fanpage_id)->current();
 		//return $this->getAdapter()->fetchAll($select);
 	}
 	

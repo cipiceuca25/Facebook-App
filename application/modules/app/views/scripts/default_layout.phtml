@@ -75,7 +75,7 @@
 
         <style>
             .container, .navbar-fixed-top .container {
-                width: 810px;
+                width: 794px;
             }
         </style>
        
@@ -87,11 +87,7 @@
 		
 			<div id="wrapper">
 	
-				<div id="header">
-			    
-			    	<div id="logo" data-login="true"></div>
-			        
-			    </div><!--/end header -->
+		
 			    <div id="content">
 			    	<div class="user-profile">
 						<div class="tip"><a onclick="closeProfile()">X</a></div>
@@ -99,13 +95,21 @@
 					</div>
 					<div class="container">
 				    	<div class="tabbable">
-				    		<div class="tab-container">
-						    	
-								
+				    		<div id="menu" class="tab-container">
+								<div id="logo"><img src="/img/logo-noline-white.png"/></div>
+							
 								<ul class="nav nav-tabs" id="log-in-out">
-								<li><a class="fancrank_login" href="/app/login/<?= $this->fanpage_id ?>">Login to FanCrank</a></li>
+									
+									<li><a class="fancrank_login" href="/app/login/<?= $this->fanpage_id ?>">Login to FanCrank</a></li>
+							
 								</ul>
+								<!-- <ul class="nav nav-tabs" id="log-in-out">
+									
+								
+								 	<li><a id="help-tab" onclick="resetTour()">Help</a></li>
+										</ul>-->
 							</div>
+				   
 		        		
 					   		<div>
 					   	    	      

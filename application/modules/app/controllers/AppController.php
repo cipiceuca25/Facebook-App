@@ -24,6 +24,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	 */
 	public function preDispatch() {
 		parent::preDispatch();
+	
 		
 		if (APPLICATION_ENV != 'stage') {
 			$this->_fanpageId = $this->_getParam('id');

@@ -88,7 +88,7 @@
 
 		<style>
 		.container,.navbar-fixed-top .container {
-			width: 810px;
+			width: 794px;
 		}
 		</style>
 
@@ -98,13 +98,13 @@
 	<div id="fb-root"></div>
 	<div class="container">
 		<div id="wrapper">
-
+			<!--
 			<div id="header">
 
 				<div id="logo"></div>
 
 			</div>
-			<!--/end header -->
+			/end header -->
 
 			<div id="content">
 				<!--  
@@ -121,47 +121,65 @@
 				</div>
 				<div class="container">
 
-					<div class="tabbable" style="margin-top:50px;">
-						<div id="menu">
-						<div class="tab-container">
+					<div class="tabbable" >
+					
+							<div id="menu" class="tab-container">
+								<div id="logo"><img src="/img/logo-noline-white.png"/></div>
+								<ul class="nav nav-tabs" id="pageTabs">
+									<li class="active"><a href="#news-feed" id="newsfeed-tab" data-toggle="tab"><img src="/img/icons/Newsfeed.png" />News Feed</a></li>
+									<li><a href="#leaderboard" id="leaderboard-tab" data-toggle="tab"><img src="/img/icons/Leaderboards.png" />Leaderboard</a></li>
+									<li><a href="#profile" id="profile-tab" data-toggle="tab" ><img src="/img/icons/Profile.png" />My Profile</a></li>
+									<!--  <li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>-->
+									<li><a href="#redeem" id="redeem-tab" data-toggle="tab"><img src="/img/icons/Rewards.png" />Redeem</a></li>
+								</ul>
+								<ul class="nav nav-tabs" id="toolbar">
+									<? if ($this->fan->fan_point != '?'){?>
+									<li><a rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?><img src="/img/icons/Points.png" /></a></li>
+									<?php }?>
+															<!-- <li class="row-fluid" id='notification_upcoming_badges'>
+															 
+															<?php // foreach ($this->notibadges as $b){?>
+																<div class="ub">
+																	<div class="progress">
+																		<div class="bar" style="width: <? //= $b['percentage']?>%;"></div>
+																		<a data-original-title="<?//= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+																		rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-19px;" >
+																			
+																			<img src="<?//= $b['picture']?>" style="opacity:<?//= $b['percentage']/100?>"/>
+																		</a>
+																	</div> 
+																</div>
+															<?php // }?>
+															</li>-->
+									<li><div class="line"></div></li>
+									<li class="notification" >
+										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/Badges.png" /></a>
+									</li>
+									<li><div class="line"></div></li>
+									<li class="" >
+									<a> <span>0</span><img src="/img/icons/Mail.png" /></a>
+								
+									</li>
+									<li>
+										<div id="logout-tab" class="dropdown">
+											<a  class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="/img/icons/Settings.png" /></a>
+											<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+												<li><a onclick="resetTour()">?</a></li>
+												<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Log Out</a></li>
+											</ul>
+										</div>
 							
-							<ul class="nav nav-tabs" id="pageTabs">
-								<li class="active"><a href="#news-feed" id="newsfeed-tab" data-toggle="tab">News Feed</a></li>
-								<li><a href="#leaderboard" id="leaderboard-tab" data-toggle="tab">Leaderboard</a></li>
-								<li><a href="#profile" id="profile-tab" data-toggle="tab" >My Profile</a></li>
-								<!--  <li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>-->
-								<li><a href="#redeem" id="redeem-tab" data-toggle="tab">Redeem</a></li>
-							</ul>
-							<ul class="toolbar">
-								<? if ($this->fan->fan_point != '?'){?>
-								<li><div><a rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><img src="/img/coins.png" /> <?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></a></div></li>
-								<?php }?>
-								<li class="row-fluid" id='notification_upcoming_badges'>
-								<!--  
-								<?php // foreach ($this->notibadges as $b){?>
-									<div class="ub">
-										<div class="progress">
-											<div class="bar" style="width: <? //= $b['percentage']?>%;"></div>
-											<a data-original-title="<?//= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
-											rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-19px;" >
-												
-												<img src="<?//= $b['picture']?>" style="opacity:<?//= $b['percentage']/100?>"/>
-											</a>
-										</div> 
-									</div>
-								<?php // }?>
-								-->
-								</li>
-								<li class="notification" >
-								<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" ><i class="icon-exclamation-sign"></i> <span id="badge-notification-count">0</span></a></li>
+										
+									</li>
 							
-							</ul>
-							<ul class="nav nav-tabs" id="log-in-out">
-								<li><a id="help-tab" onclick="resetTour()">Help</a></li>
-								<li><a id="logout-tab" href="/app/app/logout/<?= $this->fanpage_id ?>">Logout</a></li>
-							</ul>
-						</div>
-						</div>
+								</ul>
+								<!-- <ul class="nav nav-tabs" id="log-in-out">
+									
+								
+								 	
+										</ul>-->
+							</div>
+				
 <!--						
 						<a href="#" onclick="colorChange(5)">Ocean</a>
 				
