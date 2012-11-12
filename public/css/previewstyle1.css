@@ -1,4 +1,3 @@
-@import url('/../bootstrap/css/bootstrap.css');
 .clearfix {
   *zoom: 1;
 }
@@ -44,7 +43,7 @@
 #preview #content {
   position: relative;
   top: 10px;
-  background-color: #e7ebf2;
+  background-color: #ffffff;
 }
 #preview ul,
 #preview ol {
@@ -74,7 +73,7 @@
 }
 #preview .tab-container {
   border-bottom: 1px solid #c1cee0;
-  background-color: #e7ebf2;
+  background-color: #ffffff;
   height: 28px;
   margin-bottom: 15px;
   margin-left: 3px;
@@ -140,9 +139,9 @@
 #preview .nav-tabs .active a:hover,
 #preview .nav-tabs li a:hover {
   border: 1px solid #c1cee0;
-  border-bottom: 1px solid #e7ebf2;
-  background-color: #e7ebf2;
-  color: #173d71;
+  border-bottom: 1px solid #ffffff;
+  background-color: #ffffff;
+  color: #ffffff;
   font-weight: bold;
   padding-top: 6px;
   padding-left: 13px;
@@ -153,7 +152,7 @@
 }
 #preview .nav-tabs li a:hover {
   border: 1px solid #c1cee0;
-  background-color: #173d71;
+  background-color: #ffffff;
   color: #ffffff;
 }
 #preview .nav-tabs li a {
@@ -257,6 +256,7 @@
   border-radius: 1px;
   padding: 30px 8px 8px 8px;
   border: 1px solid #c1cee0;
+  background-image: none;
 }
 #preview .box.notitle {
   padding-top: 0;
@@ -538,7 +538,7 @@
   background-color: #7d98be;
 }
 #preview .badge-Follower {
-  background-color: #e7ebf2;
+  background-color: #ffffff;
 }
 #preview .badge-Follower:hover,
 #preview .badge-Follow:hover {
@@ -777,7 +777,7 @@
   margin: 0 0 0 144px;
   z-index: 51;
   display: none;
-  background-color: #e7ebf2;
+  background-color: #ffffff;
   width: 530px;
 }
 #preview .profile-content .row.box {
@@ -1355,14 +1355,14 @@
   margin-right: -9px;
   border-top: 1px solid #c1cee0;
   border-bottom: 1px solid #c1cee0;
-  background-color: #e7ebf2;
+  background-color: #ffffff;
 }
 #preview #menu {
   position: fixed;
   top: 170px;
   z-index: 5;
   width: 810px;
-  background-color: #e7ebf2;
+  background-color: #ffffff;
   padding-top: 3px;
   padding-bottom: 5px;
 }

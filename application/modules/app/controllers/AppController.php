@@ -133,9 +133,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			$this->_fan['fan_exp']='?';
 		}
 		
-		
-		
-		
 		$color = new Model_UsersColorChoice();
 		$color = $color->getColorChoice($this->_fanpageId);
 		
@@ -560,10 +557,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$likesModel = new Model_Likes();
     	$latestlike = array();
     	$count=0;
-    	//Zend_Debug::dump($result);
+    	//Zend_Debug::dump($latest);
     	
     	if ($latest != null ){
     		foreach ($latest as $l){
+    			if (isset($l->story)){
     			/*
     			$cache = Zend_Registry::get('memcache');
     			$cache->setLifetime(1800);
@@ -578,29 +576,31 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				//echo $e->getMessage();
     			}
     			*/
-    			$yourpointslatest[$count] = 0;
-    			$yourpointslatest[$count] = $this->postPointsCalculate($l);
-    			$latestlike[$count]=0;
-    			//echo $top['facebook_user_id'];
-    			
-    			if(isset($l->likes)){
-    				foreach ($l->likes->data as $x){
-    					//echo $x->id;
-    					if($x->id == $this->_userId){
-    						$latestlike[$count]=1;
-    						//echo "$latestlike[$count] in the condensed list";
-    					}
-    					//Zend_Debug::dump( $likes[$count]);
-    				}
-    				if($latestlike[$count]==0){
-
-    					$latestlike[$count] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
-    					
-    				//Zend_Debug::dump($likes[$count]);
-    				}
+    			}else{
+	    			$yourpointslatest = 0;
+	    			$yourpointslatest = $this->postPointsCalculate($l);
+	    			$latestlike=0;
+	    			//echo $top['facebook_user_id'];
+	    			
+	    			if(isset($l->likes)){
+	    				foreach ($l->likes->data as $x){
+	    					//echo $x->id;
+	    					if($x->id == $this->_userId){
+	    						$latestlike=1;
+	    						//echo "$latestlike[$count] in the condensed list";
+	    					}
+	    					//Zend_Debug::dump( $likes[$count]);
+	    				}
+	    				if($latestlike==0){
+	
+	    					$latestlike = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
+	    					
+	    				//Zend_Debug::dump($likes[$count]);
+	    				}
+	    			}
+	    			$latest = $l;
+	    			break;
     			}
-    			
-    			$count++;
     		}
     		
     	}
