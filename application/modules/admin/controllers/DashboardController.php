@@ -2,6 +2,9 @@
 
 class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 {
+	
+	
+	
 	public function preDispatch()
 	{
 		parent::preDispatch();
@@ -42,6 +45,9 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	}
         $fanpages_model = new Model_Fanpages;
         $pages = $fanpages_model->getActiveFanpagesByUserId($uid);
+        
+        //Zend_Debug::dump($pages);
+        
         //$pages = $this->getUserPagesList($uid, $access_token);
   
         $this->view->pages = $pages;
@@ -57,8 +63,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$allpoints = $points ->getFanpagePoints($fanpageId);
     	$x = $points ->getPointsByType($fanpageId);
     	
-    	// dont forget to initialized first
-    	$pointsbytype = array();
+    
     	foreach ($x as $y){
     		
     		switch ($y['object_type']){
@@ -154,11 +159,15 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 
         $this->view->installed = $fanpage->installed;
         $this->view->page_id = $this->_getParam('id');
+        
+        
+        
         $colorChoice = new Model_UsersColorChoice;
         $choice = $colorChoice->getColorChoice($this->_getParam('id'))->color_choice;
         if(empty($choice)) {
         	$choice = 1;
         }
+       
         $this->view->fanpageTheme = $choice;
 
         if ($fanpage->active) {
@@ -177,6 +186,8 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         	$this->view->top_clicker = array();
         	$this->view->top_followed = array();
         }
+        
+      
         $this->render("preview");
     }
 
@@ -645,7 +656,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$fanpageId = $this->_request->getParam('id');
 		//Zend_Debug::dump($this->getRealtimeInsightData($fanpageId));
 		
-		
+		//points settings
 		try {
 			$fanpageSettingModel = new Model_FanpageSetting();
 			$settingData = $fanpageSettingModel->findRow($fanpageId);
@@ -706,6 +717,29 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			echo $e->getMessage();
 		}
 		$this->view->setting = empty($settingData) ? $fanpageSettingModel->getDefaultSetting() : $settingData->toArray();
+		
+		
+		
+		
+		
+		//badge settings
+		$b = new Model_Badges();
+
+		$allBadges = $b-> getAllBadges($fanpageId);
+	
+		for($count=0;$count < count($allBadges); $count++){
+			$allBadges[$count]['description'] = str_replace('[quantity]',$allBadges[$count]['quantity'] ,$allBadges[$count]['description']);
+		}
+		$this->view->allBadges = $allBadges;
+		
+		
+		//color
+		$colorChoice = new Model_UsersColorChoice;
+		$choice = $colorChoice->getColorChoice($fanpageId)->color_choice;
+		if(empty($choice)) {
+			$choice = 1;
+		}
+		$this->view->color = $choice;
 		
 		$this->render("settings");
 	
@@ -768,6 +802,9 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 				//echo $e->getMessage();
 			}
 		}
+		$color = $this->_getParam('color');
+	
+		$this->view->color = $color;
 		
 		$this->view->top_fans = $fanpage2['topFans'];
 		$this->view->most_popular = $fanpage2['mostPopular'];
@@ -782,9 +819,34 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 	public function previewnewsfeedAction(){
 		
 		$this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender(true);
+		$this->_helper->viewRenderer->setNoRender(true);	
 		
-		$fanpageId = $this->_request->getParam('id');
+	$fanpageId = $this->_request->getParam('id');
+		
+		$result = $this->feedFirstQuery($fanpageId);
+		
+		$latest = $result['posts']->data;
+		$feed = $result['feed']->data;
+		
+		$follow = new Model_Subscribes();
+
+		$relation = array();
+		$count=0;
+		 
+		if ($feed != null){
+		
+			foreach ($feed as $posts){
+				$relation[$count] = $follow->getRelation($fanpageId, $posts->from->id,$fanpageId);
+				$count++;
+			}
+		
+		}
+		$this->view->latest = $latest ;
+		$this->view->post = $feed;
+		$this->view->relation = $relation;
+		//Zend_Debug::dump($fanpage);
+		$this->view->fanpage_id = $fanpageId;
+		
 		$this->render("preview/newsfeed");
 	}
 	
@@ -1006,6 +1068,39 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			if($counter < 1) break;
 		}
 		return $result;
+	}
+	
+	private function feedFirstQuery($fanpage_id) {
+		
+		$fanpage = new Model_Fanpages();
+		$fanpage = $fanpage->find($fanpage_id)->current();
+		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$fanpage_id/feed?limit=10");
+		$tmp[] = array('method'=>'GET', 'relative_url'=> "/$fanpage_id/posts?limit=10");
+	
+		$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$fanpage ->access_token;
+	
+		$client = new Zend_Http_Client;
+		$client->setUri("https://graph.facebook.com/?". $batchQueries);
+		$client->setMethod(Zend_Http_Client::POST);
+	
+		$response = $client->request();
+	
+		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+	
+		$feed = array();
+		$posts = array();
+		if(!empty($result[0]->body)) {
+			$feed = json_decode($result[0]->body);
+		}
+	
+		if(!empty($result[1]->body)) {
+			$posts = json_decode($result[1]->body);
+		}
+	
+		$finalResult['feed'] = $feed;
+		$finalResult['posts'] = $posts;
+		
+		return $finalResult;
 	}
 }
 

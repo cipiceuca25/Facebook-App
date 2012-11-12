@@ -1,8 +1,19 @@
+<script>
+	if (previewcolor = undefined){
+		previewcolor = <?= $this->color?>
+	}
+</script>
+
+
+
+
 <div class="row-fluid">
 	<div class="span3">
 		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
 			<div class="info">
 				<span class="description"><a>Theme Settings</a></span> 
+				<span class="description"><a onclick="loadPreviewLogin(1)">Blue</a></span> 
+				<span class="description"><a onclick="loadPreviewLogin(2)">Gray</a></span>
 			</div>
 			<div class="info">
 				<span class="description"><a>Badges Settings</a></span> 
@@ -153,6 +164,7 @@
 		showOnHover: true,
 		clickTrackToScroll: false,
 		verticalTrackClass: 'track3',
-		verticalHandleClass: 'handle3'
+		verticalHandleClass: 'handle3',
+		scrollIncrement: 100	
 	});
 	</script>

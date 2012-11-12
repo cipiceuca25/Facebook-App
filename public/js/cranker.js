@@ -11,12 +11,13 @@ var currentpage = 'newsfeed';
 var backgroundcolor;
 
 $(document).ready(function() {
-	setInterval(MouseWheelHandler, 500);
-	window.addEventListener("mousewheel", MouseWheelHandler, false);  
+	//setInterval(MouseWheelHandler, 500);
+	//window.addEventListener("mousewheel", MouseWheelHandler, false);  
     // Firefox  
-	window.addEventListener("DOMMouseScroll", MouseWheelHandler, false);  
+	//window.addEventListener("DOMMouseScroll", MouseWheelHandler, false);  
 // trick to indentify parent container
-		if (window.location != window.parent.location) {
+	/*	
+	if (window.location != window.parent.location) {
 			$(document.body).css({
 				'overflow' : 'hidden'
 			});
@@ -26,6 +27,8 @@ $(document).ready(function() {
 			});
 		}	
 		$('#logo').html('<img src ="/img/thin-banner.jpg" />');
+	
+		*/
 		/*
 		if ($('#logo').attr('data-login') == "true"){
 			
@@ -115,7 +118,7 @@ $(document).on('mouseover', '[rel=popover]', function() {
 	}).trigger('mouseover');
 	
 });
-
+/*
 function MouseWheelHandler() {  
     // cross-browser wheel delta  
     // old IE support  
@@ -144,6 +147,8 @@ function MouseWheelHandler() {
     
     //var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));  
 }
+
+*/
 $(document).on('mouseover', '[rel=tooltip]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;
@@ -1394,7 +1399,7 @@ function popup(load){
 	$('.profile-content').css('height', 'auto');
 	FB.Canvas.getPageInfo(function(info) {
 			//alert(info.scrollTop);
-			$('.user-profile').css('top', info.scrollTop - 50);
+			$('.user-profile').css('top', info.scrollTop +100);
 	});
 	if (load) {
 		$('.profile-content').animate({

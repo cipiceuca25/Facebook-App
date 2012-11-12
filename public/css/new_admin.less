@@ -1,6 +1,6 @@
 @import url('/bootstrap/css/bootstrap.css');
 @import url('../bootstrap/less/mixin.less');
-@import url('preview.less'); 
+
   
 @color-background-blue: 			#E7EBF2; // background color, follow hover, tip border
 @color-container-blue: 		 		#C1CEE0; // container blue
@@ -319,6 +319,7 @@ table.fanpage th, table.fanpage td{
 border-top:0px;
 vertical-align:middle;
 padding:8px 0;
+width:100px;
 }
 
 table.fanpage tbody tr:hover td{
@@ -364,6 +365,7 @@ border-bottom-color:grey;
 border:1px solid #DDD;
 padding:10px;
 .border-radius(3px);
+margin-bottom:20px;
 }
 
 
@@ -524,7 +526,7 @@ float:right;
 
 /****************************/
 ///////////////////////////////////////////////////////////////
-
+/*
 .popover-inner{
 width:323px;
 .border-radius(3px);
@@ -621,7 +623,7 @@ left:37px;
 .post-container .post{
 padding:10px;
 }
-
+*/
 
 .progress a{
 position:relative;
@@ -717,6 +719,7 @@ height:32px;
 #placeholder, #placeholder2{
 	width:100%;
 	height:250px;
+	
 }
 
 path {
@@ -761,41 +764,66 @@ path {
 	font-size: 12px;
 }
 
-circle.line0, circle.line2, circle.line1 {
+circle.line1, 
+circle.line2, 
+circle.line3, 
+circle.line4,
+circle.line5,
+circle.line6,
+circle.line7,
+circle.line8{
   fill: #fff;
 }
 
-circle.line0:hover, circle.line2:hover, circle.line1:hover {
+circle.line1:hover, 
+circle.line2:hover, 
+circle.line3:hover,
+circle.line4:hover,
+circle.line5:hover,
+circle.line6:hover,
+circle.line7:hover,
+circle.line8:hover {
   fill: #000;
 }
 
-.data0 {
+.data1, .line1 {
 	stroke: green;
 }
-
-.data2 {
-	stroke: orange;
-}
-.data1 {
+.data2, .line2 {
 	stroke: blue;
 }
+.data3, .line3 {
+	stroke: orange;
+} 
+.data4, .line4 {
+	stroke: red;
+}
+.data5, .line5 {
+	stroke: yellow;
+}
+.data6, .line6 {
+	stroke: purple;
+}
+.data7, .line7 {
+	stroke: pink;
+}
+.data8, .line8 {
+	stroke: cyan;
+}
 
-.line0 {
-  fill: none;
-  stroke: green;
-  stroke-width: 1.5px;
+.line1, line2, line3, line4, line5, line6,line7, line8{
+fill: none;
+ stroke-width: 1.5px;
 }
-.line2 {
-  fill: none;
-  stroke: orange;
-  stroke-width: 1.5px;
+
+.legend{
+	float:right;
+	width:100px;
+	height:250px;
+	border:1px solid black;
 }
-.line1 {
-  fill: none;
-  stroke: blue;
-  stroke-width: 1.5px;
-}
- 
+
+
 #preview{
 	position:relative;
 	padding:10px;

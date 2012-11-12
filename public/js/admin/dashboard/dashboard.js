@@ -2,12 +2,12 @@ var defaultMax = 10;
 var defaultMin = 0;
 var defaultStep = 1;
     
-var graphData1 = [], startTime1= null, endTime1 =null ,  graphMargin1 = [];
-var graphData2 = [], startTime2= null, endTime2 =null , graphMargin2 = [];
+//var graphData1 = [], startTime1= null, endTime1 =null ,  graphMargin1 = [];
+//var graphData2 = [], startTime2= null, endTime2 =null , graphMargin2 = [];
 var graphLoaded=false, graphLoaded2= false;
-
-var downx = Math.NaN;
-var downscalex;
+var graph, graph2;
+//var downx = Math.NaN;
+//var downscalex;
 
 var lineGraph
 
@@ -80,15 +80,15 @@ function getHomeFans(time){
 			    	var crankdataset = [];
 			    	var crankdataset2 = [];
 			    	
-			    	graphData1 = [];
-			    	graphData2 = [];
+			    	var graphData1 = [];
+			    	var graphData2 = [];
 			    	//console.log(first_time_use);
 			    	for(i=0; i < data.length; i++) {
 			    		
 			    		//dataset.push( [ (new Date(data[i].end_time)).getTime(), (data[0][i].value)]);
-			    		graphData1.push ([ (new Date(data[i].date)).getTime(), (data[i].like)]);
+			    		graphData1.push ([new Date(data[i].date), (data[i].like)]);
 			    		//dataset2.push( [ (new Date(data[i].end_time)).getTime(), (data[i].value)]);
-			    		graphData2.push ([	(new Date(data[i].date)).getTime(), (data[i].total)]);
+			    		graphData2.push ([new Date(data[i].date), (data[i].total)]);
 			    		/*
 			    		
 			    		if ( ((new Date(data[i].date)).getTime()) >= (new Date(first_time_use).getTime())){
@@ -139,21 +139,30 @@ function getHomeFans(time){
 			    	*/
 			
 			    	
-			    	console.log(data);
+			    	//console.log(data);
 			    	
 			    	//graphData1 = [[1,1],[2,1],[1,1]];
-			    	startTime2 = new Date( (new Date(data[0].date)).getTime());
-			    	endTime2 = new Date( (new Date(data[data.length-1].date)).getTime());
-			    
-			    	startTime1 = new Date( (new Date(data[0].date)).getTime());
-			    	endTime1 = new Date( (new Date(data[data.length-1].date)).getTime());
-		
-			    	graphMargin1 = [5,5, 20,40]; // margins
-			    	graphMargin2 = [5,5, 20,60]; // margins
+			    	if (data.length> 0){
+				    	var startTime2 = new Date(data[0].date);
+				    	var endTime2 = new Date(data[data.length-1].date);
+				    
+				    	var startTime1 =new Date(data[0].date);
+				    	var endTime1 = new Date(data[data.length-1].date);
+			    	}else{
+			    		var startTime2 = new Date();
+				    	var endTime2 = startTime2;
+				    
+				    	var startTime1 =  startTime2;
+				    	var endTime1 =  startTime2;
+			    		
+			    	}
+			    	var graphMargin1 = [5,5, 20,40]; // margins
+			    	var graphMargin2 = [5,5, 20,40]; // margins
+			    	var text = ['likes'];
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
-			    	graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
-			    	graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2, graphMargin2);
+			    	graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1, text);
+			    	graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2, graphMargin2, text);
 			    	
 			    	
 			    	
@@ -176,7 +185,8 @@ function getHomeActivedFans(time){
 	 		tick = 'day';
 	 }
 		//console.log(tick);
-	 var options = {		xaxis: {
+	/*
+	var options = {		xaxis: {
 			mode: "time",
 			font:{size:12},
 			minTickSize: [1, tick]
@@ -194,7 +204,7 @@ function getHomeActivedFans(time){
 			clickable: true,
 		    backgroundColor: { colors: ["#fff", "#eee"] }
 	    }
-	}
+	}*/
 	if(fanpageId) {
 	    	//alert(fanpageId+' '+type); return false;
 			$.ajax({
@@ -212,12 +222,45 @@ function getHomeActivedFans(time){
 				},
 			    success: function (data){
 			    	//console.log(data);
-			    	var dataset = [];
-			    	var dataset2 = [];
-			    
+			    	var graphData1 = [];
+			    	var graphData2 = [];
+			    	for(i=0; i < data.length; i++) {
+			    		
+			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
+			    		graphData1.push ([ new Date(data[i].first_login_time), (data[i].active)]);
+			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
+			    		graphData2.push ([ new Date(data[i].first_login_time), (data[i].total)]);
+			    	}
+			    	
+				      
+			    	//console.log(dataset);
+			    	
+			    	
+			    	//graphData1 = [[1,1],[2,1],[1,1]];
+			    	if (data.length > 0){
+				    	var startTime2 =new Date(data[0].first_login_time);
+				    	var endTime2 = new Date(data[data.length-1].first_login_time);
+				    	
+				    	var startTime1 = new Date(data[0].first_login_time);
+				    	var endTime1 = new Date(data[data.length-1].first_login_time);
+			    	}else{
+			    		var startTime2 = new Date();
+				    	var endTime2 = startTime2;
+				    
+				    	var startTime1 =  startTime2;
+				    	var endTime1 =  startTime2;
+			    		
+			    	}
+			    	var graphMargin1 = [5,5, 20,40]; // margins
+			    	var graphMargin2 = [5,5, 20,40]; // margins
+			    	graphLoaded =true;
+			    	graphLoaded2 =true;
+			    	var text = ['likes'];
+			    	graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1, text);
+			    	graph2  = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2, text);
 			    	
 			    	//console.log(first_time_use);
-			    	for(i=0; i < data.length; i++) {
+			    	/*for(i=0; i < data.length; i++) {
 			    		
 			    		dataset.push( [ (new Date(data[i].first_login_time)).getTime(), (data[i].active)]);
 			    		dataset2.push( [ (new Date(data[i].first_login_time)).getTime(), (data[i].total)]);
@@ -256,6 +299,7 @@ function getHomeActivedFans(time){
 			    	//console.log(dateset2);
 			        //$.plot($('#placeholder'), [ { label: 'Fan Interaction',  data:dataset} ], options);
 			       // $.plot($('#placeholder2'), [{ label: 'Fan Interaction Total',  data:dataset2} ], options);
+			       */
 			        $('#graphtitle').html('Active Fans');
 			        $('#graphtitle2').html('Total Active Fans');
 			    }
@@ -286,31 +330,45 @@ function getHomePageLikes(time){
 			    	//console.log(data);
 			    	//var dataset = [];
 			    	//var dataset2 = [];
-			    	graphData1 = [];
-			    	graphData2 = [];
+			    	var graphData1 = [];
+			    	var graphData2 = [];
+			    	//graphData1.push(['Date', 'Likes']);
+			    	//graphData2.push(['Date', 'Likes']);
 			    	for(i=0; i < data[0].length; i++) {
 			    		
 			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
-			    		graphData1.push ([ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
+			    		graphData1.push ([ (new Date(data[0][i].end_time)), (data[1][i].value)]);
 			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
-			    		graphData2.push ([	(new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
+			    		graphData2.push ([ (new Date(data[1][i].end_time)), (data[0][i].value)]);
 			    	}
 			    	
+				      
 			    	//console.log(dataset);
 			    	
+			    	
 			    	//graphData1 = [[1,1],[2,1],[1,1]];
-			    	startTime2 = new Date( (new Date(data[0][0].end_time)).getTime());
-			    	endTime2 = new Date( (new Date(data[0][data[0].length-1].end_time)).getTime());
+			    	if(data[0].length > 0){
+				    	var startTime2 = new Date(data[0][0].end_time);
+				    	var endTime2 = new Date(data[0][data[0].length-1].end_time);
+				    	
+				    	var startTime1 = new Date(data[0][0].end_time);
+				    	var endTime1 = new Date(data[0][data[0].length-1].end_time);
+			    	}else{
+			    		var startTime2 = new Date();
+				    	var endTime2 = startTime2;
+				    
+				    	var startTime1 =  startTime2;
+				    	var endTime1 =  startTime2;
+				    		
+				    }
 			    	
-			    	startTime1 = new Date( (new Date(data[0][0].end_time)).getTime());
-			    	endTime1 = new Date( (new Date(data[0][data[0].length-1].end_time)).getTime());
-			    	
-			    	graphMargin1 = [5,5, 20,40]; // margins
-			    	graphMargin2 = [5,5, 20,60]; // margins
+			    	var graphMargin1 = [5,5, 20,40]; // margins
+			    	var graphMargin2 = [5,5, 20,40]; // margins
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
-			    	graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
-			    	graph2  = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
+			    	var text = ['likes'];
+			    	graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1, text);
+			    	graph2  = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2, text);
 			    //	$.plot($('#placeholder'), [{ label: 'Facebook Likes',  data:dataset2} ], options);
 			       // $.plot($('#placeholder2'), [{ label: 'Facebook Likes',  data:dataset} ], options);
 			        $('#graphtitle').html('Facebook Likes');
@@ -331,6 +389,7 @@ function getHomeFacebookInteractions(time){
 	 		tick = 'day';
 	 }
 		//console.log(tick);
+	/*
 	 var options = {		xaxis: {
 			mode: "time",
 			font:{size:12},
@@ -349,7 +408,7 @@ function getHomeFacebookInteractions(time){
 			clickable: true,
 		    backgroundColor: { colors: ["#fff", "#eee"] }
 	    }
-	}
+	}*/
 	if(fanpageId) {
 	    	//alert(fanpageId+' '+type); return false;
 			$.ajax({
@@ -367,6 +426,7 @@ function getHomeFacebookInteractions(time){
 				},
 			    success: function (data){
 			    	//console.log(data);
+			    	/*
 			    	var alldataset = [];
 			    	var postsdataset = [];
 			    	var commentsdataset = [];
@@ -432,6 +492,7 @@ function getHomeFacebookInteractions(time){
 						likesdataset2.push( [ date.getTime(), 0]);
 			    					    		
 			    	}
+			    	*/
 			    	//console.log(dateset2);
 			     //   $.plot($('#placeholder'), [{ label: 'Posts',  data:postsdataset},
 			                             //       {label: 'Comments', data:commentsdataset },
@@ -442,7 +503,49 @@ function getHomeFacebookInteractions(time){
 			                              //      {label: 'Likes', data:likesdataset2 }, 
 			                              //      {label: 'All', data:alldataset2 }], options);
 			        //$.plot($('#placeholder2'), [{label: 'Started Using FanCrank', data:crankdataset2 }, { label: 'Fan Interaction Total',  data:dataset2} ], options);
-			        $('#graphtitle').html('Interactions');
+			       
+			    	var graphData1 = [];
+			    	var graphData2 = [];
+			    	//graphData1.push(['Date', 'Likes']);
+			    	//graphData2.push(['Date', 'Likes']);
+			    	for(i=0; i < data.length; i++) {
+			    		
+			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
+			    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes ]);
+			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
+			    		graphData2.push ([ new Date(data[i].created_time), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes]);
+			    	}
+			    	
+				      
+			    	//console.log(dataset);
+			    	
+			    	
+			    	//graphData1 = [[1,1],[2,1],[1,1]];
+			    	if(data.length > 0){
+				    	var startTime2 = new Date(data[0].created_time);
+				    	var endTime2 = new Date(data[data.length-1].created_time);
+				    	
+				    	var startTime1 = new Date(data[0].created_time);
+				    	var endTime1 = new Date(data[data.length-1].created_time);
+			    	}else{
+			    		var startTime2 = new Date();
+				    	var endTime2 = startTime2;
+				    
+				    	var startTime1 =  startTime2;
+				    	var endTime1 =  startTime2;
+				    		
+				    }
+			    	
+			    	var graphMargin1 = [5,5, 20,40]; // margins
+			    	var graphMargin2 = [5,5, 20,40]; // margins
+			    	graphLoaded =true;
+			    	graphLoaded2 =true;
+			    	var text = ['activities', 'posts', 'comments', 'likes'];
+			    	graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1, text);
+			    	graph2  = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2, text);
+			    	
+			    	
+			    	$('#graphtitle').html('Interactions');
 			        $('#graphtitle2').html('Total Interactions');
 			    }
 			});  
@@ -487,7 +590,7 @@ function getHomeFanCrankInteractions(time){
 			},
 		    success: function (data){
 		    	//console.log(data);
-		    	
+		    	/*
 		    	var alldataset = [];
 		    	var postdataset = [];
 		    	var commentdataset = [];
@@ -601,6 +704,45 @@ function getHomeFanCrankInteractions(time){
 		                                   
 		                                   ], options);*/
 		        //$.plot($('#placeholder2'), [{ label: 'Interactions Via Fancrank Total',  data:dataset2}], options);
+	
+			   	var graphData1 = [];
+		    	var graphData2 = [];
+		    	//graphData1.push(['Date', 'Likes']);
+		    	//graphData2.push(['Date', 'Likes']);
+		    	for(i=0; i < data.length; i++) {
+		    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
+		    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes,data[i].unlike,data[i].follow,data[i].unfollow ]);
+		    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
+		    		graphData2.push ([ new Date(data[i].created_time), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes,data[i].total_unlike,data[i].total_follow,data[i].total_unfollow]);
+		    	}
+		    	  
+		    	//console.log(dataset);
+		    	
+		    	//graphData1 = [[1,1],[2,1],[1,1]];
+		    	if(data.length > 0){
+			    	var startTime2 = new Date(data[0].created_time);
+			    	var endTime2 = new Date(data[data.length-1].created_time);
+			    	
+			    	var startTime1 = new Date(data[0].created_time);
+			    	var endTime1 = new Date(data[data.length-1].created_time);
+		    	}else{
+		    		var startTime2 = new Date();
+			    	var endTime2 = startTime2;
+			    
+			    	var startTime1 =  startTime2;
+			    	var endTime1 =  startTime2;
+			    		
+			    }
+		    	
+		    	var graphMargin1 = [5,5, 20,40]; // margins
+		    	var graphMargin2 = [5,5, 20,40]; // margins
+		    	graphLoaded =true;
+		    	graphLoaded2 =true;
+		    	var text = ['activities', 'posts', 'comments', 'likes', 'unlikes', 'follow', 'unfollow'];
+		    	graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1, text);
+		    	graph2  = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2, text);
+		    	$('#graphtitle').html('Interactions');
+		        $('#graphtitle2').html('Total Interactions');
 		    }
 		});            
 	}
@@ -901,10 +1043,10 @@ function loadDashboard(){
 	
 }
 
-function loadPreviewLogin(){
+function loadPreviewLogin(num){
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/admin/dashboard/previewlogin?id=' + fanpageId,
+		url : serverUrl + '/admin/dashboard/previewlogin?id=' + fanpageId +'&color=' + num,
 		dataType : "html",
 		cache : false,
 		async : true,
@@ -952,7 +1094,7 @@ function loadSettings(){
 		success : function(data) {
 			$('#settings').html(data);			
 			// loadPreviewContent();
-			loadPreviewLogin();
+			loadPreviewLogin(1);
 			$('#point_like_normal').spinner({
 				min: defaultMin,
 				max: defaultMax,
@@ -1109,6 +1251,122 @@ function destroyAll(){
 	}catch(exception){
 	}
 
+}
+
+function PostBox(){
+	if($('#post_box').val() == 'Type in your Post here!'){
+		$('#post_box').val('');	
+			
+	}
+	$('.post-button-container').css('display', 'block');
+	$('.post-box').css('border-bottom', '0px');
+}
+$('#post_box').live('keyup', function(){
+	//console.log('works');
+	growTextbox(this);
+});
+function growTextbox(x){
+	
+	var linesCount = 0;
+	//console.log(x);
+    var lines = x.value.split('\n');
+
+    for (var i=lines.length-1; i>=0; --i)
+    {
+        linesCount += Math.floor((lines[i].length / 85) + 1);
+    }
+
+    if (linesCount > 1)
+        x.rows = linesCount + 1;
+	else
+        x.rows = 1;
+    
+   // console.log(x.rows);
+    x.style.height = (20 * x.rows) + 'px';
+}
+
+function growTextbox2(x){
+	
+	var linesCount = 0;
+	//console.log(x);
+    var lines = x.value.split('\n');
+
+    for (var i=lines.length-1; i>=0; --i)
+    {
+        linesCount += Math.floor((lines[i].length / 60) + 1);
+    }
+
+    if (linesCount > 1)
+        x.rows = linesCount + 1;
+	else
+        x.rows = 1;
+    
+   // console.log(x.rows);
+    x.style.height = (14 * x.rows) + 'px';
+}
+
+function changeTime(ui){
+	$.each($(ui), function(index) {
+		$(this).html(timeZone($(this).attr('data-unix-time')));
+		$(this).attr('data-original-title', timeZoneTitle($(this).attr('data-unix-time')));
+	});
+}
+
+function timeZoneTitle(time) {
+
+	var date = new Date(time * 1000);
+	return date.toLocaleString();
+}
+
+function timeZone(time) {
+
+	var date = new Date(time * 1000);
+	
+	var now = new Date();
+
+	var weekday = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+	var apm = '';
+
+	var hour = date.getHours();
+	apm = (hour < 12)? 'am' : 'pm';
+	
+	if (hour == 0) {
+		hour = 12;
+	}
+	if (hour > 12) {
+		hour = hour - 12;
+	}
+	
+	var min = date.getMinutes();
+	if (min < 10) {
+		min = '0' + min;
+	}
+	
+	var difference = now.getTime() - date.getTime();
+	var daydiff = Math.floor(difference/1000/60/60/24);
+	if (daydiff < 4){
+		if (daydiff==1){
+			return 'Yesterday at ' + hour + ':' + min + '' + apm;
+		}else if (daydiff < 1){
+			var hourdiff = Math.floor(difference/1000/60/60);
+			if (hourdiff < 1){
+				var mindiff = Math.floor(difference/1000/60);
+				if(mindiff <1){
+					var secdiff = Math.floor(difference/1000);
+					if (secdiff < 0){
+						return 'A few seconds ago';
+					}
+					return secdiff + ((secdiff==1)? ' second ago' : ' seconds ago');
+				}
+		
+				return mindiff + ((mindiff==1)? ' minute ago' : ' minutes ago');
+			}
+			return hourdiff + ((hourdiff==1)?' hour ago' : ' hours ago');
+		}
+		return weekday[date.getDay()] + ' at ' + hour + ':' + min + '' + apm;
+	}else{
+		return (date.toDateString());
+	}
 }
 /*	
 	$( "#myFanpageSettingMsodel" ).dialog("destroy");
@@ -1895,7 +2153,7 @@ function popover(x){
 */
 
 
-lineGraph =  function (u, d, s, e,  m){
+lineGraph =  function (u, d, s, e,  m, t){
 	
 	var self = this;
 	this.ui = u;
@@ -1903,16 +2161,24 @@ lineGraph =  function (u, d, s, e,  m){
 	this.margin = m;
 	this.startTime = s;
 	this.endTime = e;
+	this.text = t;
 
-	
 	//console.log(this.scale);
 	
-	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3];	// width
+	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3] - 100;	// width
 	this.height = parseInt($(this.ui).css('height')) - this.margin[0] - this.margin[2]; // height
 	
 	this.x = d3.time.scale().domain([this.startTime, this.endTime]).range([10, this.width-10]);
 	
-	this.minValue = d3.min(this.data, function(d,i) {  return d[1]; });
+	if (this.data.length > 0){
+		this.minValue = d3.min(this.data, function(d,i) {  return d[1]; });
+	}else{
+		this.minValue = 0;
+	}
+	//console.log(this.startTime + ' ' + this.endTime);
+	
+
+	
 	if (this.minValue > 0){
 		this.minValue /= 1.5;
 	}else if (this.minValue == 0){
@@ -1921,8 +2187,12 @@ lineGraph =  function (u, d, s, e,  m){
 		this.minValue *= 1.5;
 	}
 
+	if (this.data.length > 0){
+		this.maxValue = d3.max(this.data, function(d,i) {  return d[1]; });
+	}else{
+		this.maxValue = 0;
+	}
 	
-	this.maxValue = d3.max(this.data, function(d,i) {  return d[1]; });
 	if (this.maxValue == 0){
 		this.maxValue += 5;
 	}else{
@@ -1933,24 +2203,29 @@ lineGraph =  function (u, d, s, e,  m){
 	this.y =  d3.scale.linear().domain([this.minValue ,this.maxValue]).range([this.height,0 ]);
 	//console.log (this.minValue + ' ' + this.maxValue);
 	this.lines = new Array();
-
-	for(j=0;j<this.data[0].length - 1;j++){	
-		this.lines[j] = d3.svg.line()
-		.x(function(d) { 
-			return self.x(d[0]); 
-		})
-		.y(function(d) { 
-			return self.y(d[j+1]); 
-		})
-	}
 	
+	if(this.data[0] != undefined){
+		for(j=1;j<this.data[0].length;j++){	
+			this.lines[j] = d3.svg.line()
+			.x(function(d) { 
+				return self.x(d[0]); 
+			})
+			.y(function(d) { 
+				return self.y(d[j]); 
+			})
+		}
+	}
+	//console.log(this.lines.length);
 	this.xAxis = d3.svg.axis().scale(this.x).tickSize(-this.height).ticks(8).orient("bottom")
 	 			.tickFormat(d3.time.format("%b %d"))
 	 			
 	this.yAxis = d3.svg.axis().scale(this.y).tickSize(-this.width).ticks(4).orient("left");
 	$(this.ui).empty();
 	
+	
+	
 	this.graph = d3.select(this.ui).append("svg")
+			
 					.attr("class", "graph")
 					.attr("width", this.width + this.margin[1] + this.margin[3])
 					.attr("height", this.height + this.margin[0] + this.margin[2])
@@ -1964,7 +2239,7 @@ lineGraph =  function (u, d, s, e,  m){
 					.attr("height", this.height)
 				.style("fill", "#fafafa")
 					.attr("pointer-events", "all")
-					.call(d3.behavior.zoom().on("zoom", this.redraw()).scaleExtent([0.1,10]).x(this.x).y(this.y));
+					.call(d3.behavior.zoom().on("zoom", this.redraw()).x(this.x).y(this.y));
 	//console.log(this.transx+' '+this.transy+' '+this.scale);
 	this.graph.append("svg")
     				.attr("top", 0)
@@ -1972,7 +2247,7 @@ lineGraph =  function (u, d, s, e,  m){
     				.attr("width", this.width)
     				.attr("height", this.height)
     			.append("svg:g")
-    				.attr("transform", "translate(" + (this.margin[3]) + "," + (this.margin[0]) +") ");
+    				.attr("transform", "translate(" + (this.margin[3]) + "," + (this.margin[0] - 5)  +") ");
 	//console.log(this.margin);
 	this.graph.append("svg:g")
     				.attr("class", "x axis")
@@ -1986,11 +2261,15 @@ lineGraph =  function (u, d, s, e,  m){
 	
 	
 	//console.log(this.data);
-	for(j=0;j<this.lines.length;j++){	
+	for(j=1;j<this.lines.length;j++){	
 	
-		this.graph.select("svg g").append("svg:path").attr("d", this.lines[j](this.data)).attr("class", "data" + j);
+		this.graph.select("svg g").append("svg:path").attr("d", this.lines[j](this.data)).attr("class", "line" + j);
 		
 	}
+	
+	this.legend  = d3.select(this.ui).append('div');
+	this.legend.attr("class", "legend")
+				.html('Legend');
 	
 	this.redraw()();
 
@@ -2009,35 +2288,36 @@ lineGraph.prototype.redraw = function (){
 			.call(self.xAxis);
 		self.graph.select(".y.axis")
 			.call(self.yAxis);
-		
-		for(j=0;j<self.data[0].length - 1;j++){
+		if(self.data[0] != undefined){
 			
-			self.graph.select("svg g").selectAll(".data"+j)
-				.attr("d", self.lines[j](self.data));
-			
-			var circle = self.graph.select("svg g").selectAll("circle")
-				.data(self.data);
-			
-			//console.log(circle);
-			
-			circle.enter().append("svg:circle")
-				.attr("class", "line"+j)
-				.attr("cx", function(d) { return self.x(d[0]); })
-				.attr("cy", function(d) { return self.y(d[j+1]); })
-				.attr("r", 3)
-				.attr("rel","tooltip")
-				.attr('data-original-title', (function(d) { return d[j+1] + ' Likes on ' + (new Date(d[0])).toString() }))
-				;
-			
-			circle.attr("cx", function(d) { return self.x(d[0]); })
-				.attr("cy", function(d) { return self.y(d[j+1]); })
-				.attr("r", 3);
-			
-			circle.exit().remove();
-			
+			for(j=1;j<self.data[0].length;j++){
+				//console.log(j);
+				self.graph.select("svg g").selectAll(".line"+j)
+					.attr("d", self.lines[j](self.data));
+				
+				var circle = self.graph.select("svg g").selectAll("circle.line"+j)
+					.data(self.data);
+				
+				//console.log(circle);
+				
+				circle.enter().append("svg:circle")
+					.attr("class", "line"+j)
+					.attr("cx", function(d) { return self.x(d[0]); })
+					.attr("cy", function(d) { return self.y(d[j]); })
+					.attr("r", 3)
+					.attr("rel","tooltip")
+					.attr('data-original-title', (function(d) { return d[j] + ' ' + self.text[j-1] +' on '+(new Date(d[0])).toString() }))
+					;
+				
+				circle.attr("cx", function(d) { return self.x(d[0]); })
+					.attr("cy", function(d) { return self.y(d[j]); })
+					.attr("r", 3);
+				
+				circle.exit().remove();
+				
+			}
 		}
-		
-		self.graph.call(d3.behavior.zoom().on("zoom", self.redraw).scaleExtent([0.1,10]).x(self.x).y(self.y));
+		self.graph.call(d3.behavior.zoom().on("zoom", self.redraw).x(self.x).y(self.y));
 
 	}
 };
@@ -2045,7 +2325,7 @@ lineGraph.prototype.redraw = function (){
 
 lineGraph.prototype.resize = function (){
 	
-	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3];	// width
+	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3]  - 100;	// width
 		
 	this.yAxis = d3.svg.axis().scale(this.y).tickSize(-this.width).ticks(4).orient("left");
 
@@ -2107,7 +2387,12 @@ $(window).resize(function(){
 		//graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
 	}
 	if (graphLoaded2){
-		graph.resize();
+		graph2.resize();
 		//graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
 	}
 });
+
+
+
+
+

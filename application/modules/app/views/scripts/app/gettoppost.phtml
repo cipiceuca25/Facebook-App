@@ -1,6 +1,6 @@
 <?php $count = 0?>
 <?php if (empty($this->top_post)) {?>
-		<li class="post-container noline" >
+		<li class=" row box post-container noline" >
 			<div class="post">
 				<div class="message">
 						There are no Top Posts this week
@@ -26,7 +26,7 @@
 					}
 				}
 		?>
-		<li class="post-container <?=$post->id?>" >
+		<li class="row box post-container <?=$post->id?>" >
 			<div class="user">
 				<div class="user-badge">
 						<a rel="tooltip-follow"  <?php switch($this->relation[$count]) { 
