@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<superusers>
+	<internal>
+		<user>
+			<name>stephen</name>
+			<password>stephen@fancrank.com</password>
+		</user>
+	</internal>
+</superusers>

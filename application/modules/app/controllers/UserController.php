@@ -139,7 +139,6 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	
 	public function postAction() {
 		//Note: data could initialize from preDispatch
-		exit();
 		//197221680326345_425781560803688
 		$starttime = time();
 		$data['facebook_user_id'] = $this->_user->facebook_user_id;
@@ -153,7 +152,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			$fancrankFB = new Service_FancrankFBService();
 			$params =  array(
 					'message' => $data['message'],
-					'access_token' => $data['access_token']
+					'access_token' => $this->_user->facebook_user_access_token
 			);
 	
 			$ret_obj = $fancrankFB->api('/'.$data['fanpage_id'].'/feed', 'POST',
@@ -163,16 +162,19 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			
 			$data['post_id'] = $ret_obj['id'];
 			
+			$fanpageModel = new Model_Fanpages();
+			$fanpageAccessToken = $fanpageModel->getFanpageAccessToken($data['fanpage_id']);
+			
 			$client = new Zend_Http_Client;
 			$client->setUri("https://graph.facebook.com/". $data['post_id']);
 			$client->setMethod(Zend_Http_Client::GET);
-			$client->setParameterGet('access_token', $data['access_token']);
+			$client->setParameterGet('access_token', $fanpageAccessToken);
 			 
 			$response = $client->request();
 			 
 			$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
 			 
-			//Zend_debug::dump($result);
+			Zend_debug::dump($result);
 			 
 			if(!empty ($result)) {
     			$db = Zend_Db_Table::getDefaultAdapter();
@@ -268,8 +270,10 @@ class App_UserController extends Fancrank_App_Controller_BaseController
     				
     				// commit all update
     				$db->commit();
+    				$db->closeConnection();
 				} catch (Exception $e) {
 					$db->rollBack();
+					$db->closeConnection();
 					print $e->getMessage();
 					$appLogger = Zend_Registry::get('appLog');
 					$appLogger->log(sprintf('Unable to save post %s from fanpage %s to database. Error Message: %s ', $post->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);

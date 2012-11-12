@@ -2,8 +2,8 @@
 
 class Model_Fans extends Model_DbTable_Fans
 {
-	const BASE_XP = 100;
-	const BASE_POINT = 100;
+	const BASE_EXP = 100;
+	const BASE_POINT = 0;
 	const MAX_LEVEL = 60;
 	const LEVEL_FACTOR = 2;
 	
@@ -25,7 +25,7 @@ class Model_Fans extends Model_DbTable_Fans
 		parent::__construct();
 		$this->_isNew = true;
 		$this->_fanProfile = null;
-		$this->_newBalance = self::BASE_XP;
+		$this->_newBalance = self::BASE_POINT;
 	}
 	
 	public function __construct2($facebook_user_id, $fanpage_id) {
@@ -43,7 +43,7 @@ class Model_Fans extends Model_DbTable_Fans
 		}else {
 			$this->_isNew = true;
 			$this->_fanProfile = null;
-			$this->_newBalance = self::BASE_XP;
+			$this->_newBalance = self::BASE_POINT;
 		}
 	}
 	
@@ -84,11 +84,11 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 
 	public function getFanPoint() {
-		return $this->_isNew ? self::BASE_XP : $this->_fanProfile->fan_point;
+		return $this->_isNew ? self::BASE_POINT : $this->_fanProfile->fan_point;
 	}
 	
 	public function getFanExp() {
-		return $this->_isNew ? self::BASE_POINT : $this->_fanProfile->fan_exp;	
+		return $this->_isNew ? self::BASE_EXP : $this->_fanProfile->fan_exp;	
 	}
 	
 	public function getFanCountry() {
@@ -109,7 +109,7 @@ class Model_Fans extends Model_DbTable_Fans
 			return;
 		}
 		
-		//$newLevel = floor(pow($this->_fanProfile->fan_exp / self::BASE_XP, 1 / self::LEVEL_FACTOR));
+		//$newLevel = floor(pow($this->_fanProfile->fan_exp / self::BASE_EXP, 1 / self::LEVEL_FACTOR));
 		//$this->_fanProfile->fan_level = $newLevel < self::MAX_LEVEL ? $newLevel : self::MAX_LEVEL;
 		$this->_fanProfile->fan_level = $newLevel;
 	}
@@ -127,8 +127,8 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	protected function calculateLevel($points) {
-		if($points < self::BASE_XP) return 1;
-		$newLevel = floor(pow($points / self::BASE_XP, 1 / self::LEVEL_FACTOR));
+		if($points < self::BASE_EXP) return 1;
+		$newLevel = floor(pow($points / self::BASE_EXP, 1 / self::LEVEL_FACTOR));
 		return $newLevel < self::MAX_LEVEL ? $newLevel : self::MAX_LEVEL;
 	}
 	
@@ -176,7 +176,7 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function getNextLevelRequiredXP() {
-		return self::BASE_XP * pow($this->_fanProfile->fan_level + 1, self::LEVEL_FACTOR);
+		return self::BASE_EXP * pow($this->_fanProfile->fan_level + 1, self::LEVEL_FACTOR);
 	}
 	
 	public function getFanLevelByFanIdAndFanpageId($facebook_user_id, $fanpage_id) {

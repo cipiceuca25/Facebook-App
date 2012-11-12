@@ -1214,6 +1214,7 @@ function post(button) {
 					$('.profile-content').html(data);
 					button.disabled = false;
 					$('#post_box').css('height','20px');
+					console.log(data);
 				},
 				error : function(xhr, errorMessage, thrownErro) {
 					console.log(xhr.statusText, errorMessage);

@@ -450,6 +450,16 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $row['fanpage_name'];
 	}
 	
+	public function getFanpageAccessToken($fanpage_id) {
+		$select = $this->select();
+		$select->from($this, array('access_token'))
+			->where('fanpage_id = ?', $fanpage_id);
+		
+		$row = $this->fetchRow($select);
+		
+		return empty($row['access_token']) ? null : $row['access_token'];
+	}
+	
 	public function getActiveFanpageByFanpageId($fanpage_id, $user_id)
 	{
 		$select = $this->getAdapter()->select();
