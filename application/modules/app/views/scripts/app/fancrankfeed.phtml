@@ -1,6 +1,6 @@
 
 <?php $count = 0?>
-
+<?php $count2 = 0?>
 <?php if(empty($this->post)){?>
 	
 	<li class="row box post-container">
@@ -81,40 +81,35 @@
 		
 	
 	</div>
-	
-			
-	
 
 	<div class="post">
 
-
-
-			<?php if(isset($post->message)){ ?>
-							<div class="message">
-							<?php 
-							$reg_ex = "/\n/";
-							$message = $this->escape($post->message);
-							if(preg_match_all($reg_ex, $message, $url)) {
-								$message= preg_replace($reg_ex, "<br/>", $message);
-							} 
-							
-							$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
-						
-							$m = preg_match_all($reg_exUrl, $message, $match); 
-							
-							if ($m) { 
-							    $links=$match[0]; 
-							    for ($j=0;$j<$m;$j++) { 
-							        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
-							    } 
-							} 
-							
-							echo $message; 
-								//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
-							
-							?><br/>
-							</div>
-			<?}	?>
+		<?php if(isset($post->message)){ ?>
+			<div class="message">
+			<?php 
+			$reg_ex = "/\n/";
+			$message = $this->escape($post->message);
+			if(preg_match_all($reg_ex, $message, $url)) {
+				$message= preg_replace($reg_ex, "<br/>", $message);
+			} 
+			
+			$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
+		
+			$m = preg_match_all($reg_exUrl, $message, $match); 
+			
+			if ($m) { 
+			    $links=$match[0]; 
+			    for ($j=0;$j<$m;$j++) { 
+			        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
+			    } 
+			} 
+			
+			echo $message; 
+				//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
+			
+			?><br/>
+			</div>
+		<?}	?>
 		<div class="graphical">	
 		<?php if ($post->type == 'photo'){?>	
 			<div class="image">
@@ -218,6 +213,7 @@
 		<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
 
 		<?if ($this->yourpoints[$count] !=0){?>
+			&middot;
 			<a class="point-display noclick"><?= $this->yourpoints[$count]?>Pts</a>
 		<?}?>
 		
@@ -250,7 +246,7 @@
  		<div id="post_<?=$post->id?>"> 
  			<ul class="comments">
  				
-				<?php $count2 = 0?>
+
 				
 				<?php if(!empty($post->comments->data)){?>
 				
@@ -259,7 +255,7 @@
 					<li class="comment-container <?= $comments->id?>" >
 				
 						<div class="photo"><a  
-							<? if (!($this->relation[$count] == 'Fanpage')){?> 
+							<? if (!($this->comment_relation[$count2] == 'Fanpage')){?> 
 								onclick="userProfile('<?=$comments->from->id?>')"
 								rel="popover" 
 								data-content="" 
@@ -274,7 +270,7 @@
 					<div class="user">
 						
 						<div class="user-badge">
-							<a rel="tooltip-follow" class ="follow_<?=$comments->from->id?>" <?php switch($this->relation[$count]) { 
+							<a rel="tooltip-follow" class ="follow_<?=$comments->from->id?>" <?php switch($this->comment_relation[$count2]) { 
 								case 'Fanpage':?>
 									 class="noclick" data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
 								<?break;?>
@@ -288,7 +284,7 @@
 									
 								<?default:?>
 									onclick="follow(<?=$comments->from->id?> , '<?=$comments->from->name?>')" 				
-									data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+									data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->comment_relation[$count2]?>"><?= $this->comment_relation[$count2]?></span>
 								<?}?>
 							</a>
 						</div>	
@@ -296,7 +292,7 @@
 						
 						
 						<div class="name"><a  
-							<? if (!($this->relation[$count] == 'Fanpage')){?> 
+							<? if (!($this->comment_relation[$count2] == 'Fanpage')){?> 
 								onclick="userProfile('<?=$comments->from->id?>')"
 								rel="popover" 
 								data-content="" 
@@ -353,7 +349,7 @@
 						<a class="like_<?= $comments->id?>" data-like-count=<?=isset($comments->likes)?$comments->likes:'0'?>  onclick="getLikesList('<?=$comments->id?>',<?=isset($comments->likes)?$comments->likes:'0'?>, true)" rel="tooltip" data-placement="top" data-original-title="Click to See who likes this"><?=isset($comments->likes)?$comments->likes:'0'?></a>
 						 
 						<a class="like-control like_control_<?= $comments->id?>" rel="tooltip" data-placement="top"
-							<?php if ($this->likes[$count] == 0) {?>
+							<?php if ($this->commentlikes[$count2] == 0) {?>
 								 data-original-title="Click to like this" onclick="like('<?= $comments->id?>', '<?=$post->type?>_comment', '<?=$comments->from->id?>','<?=$comments->from->name?>')">Like 
 							<?}else{?>
 								 data-original-title="You like this" onclick="unlike('<?= $comments->id?>', '<?=$post->type?>_comment', '<?=$comments->from->id?>','<?=$comments->from->name?>')">Unlike
