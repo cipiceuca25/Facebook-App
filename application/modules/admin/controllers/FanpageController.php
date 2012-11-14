@@ -58,52 +58,42 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 			//echo $adminLikesID;
 			//$cache->remove($adminLikesID );
 			if(isset($cache) && !$cache->load($adminLikesID )){
-				$date = new Zend_Date();
 				
-				$date->subDay(1);
 				
 		
 				$collector = new Service_FancrankCollectorService(null,  $this->_fanpageId, $this->_accessToken, 'insights');
 				$result = $collector->collectFanpageInsight(5, 'likes');
-				$likeStats = array();
-				$diffStats = array();
-				$previous = 0;
-				$first = true;
-				foreach ($result as $data) {
-					foreach($data->values as $value) {
-					
-						$time = explode('T', $value->end_time);
+				
+				
+				
+				//Zend_Debug::dump($this->_fan);
+				//Save to the cache, so we don't have to look it up next time
+				$cache->save($result, $adminLikesID );
+			}else {
+					//echo 'memcache look up';
+					$result = $cache->load($adminLikesID );
+				}
+		} catch (Exception $e) {
+				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+				//echo $e->getMessage();
+		}	
+			$date = new Zend_Date();
+			
+			$date->subDay(1);
+			$likeStats = array();
+			$diffStats = array();
+			$previous = 0;
+			$first = true;
+			foreach ($result as $data) {
+				foreach($data->values as $value) {
 						
-						$newTime = str_replace('-', '/', $time[0]);
-						$tempdate = new Zend_Date($time[0]);
-						switch ($t){
-							case 'month':
-								if ($tempdate->toString('Y M') == $date->toString('Y M')){
-									if ($first){
-										$x = 0;
-										$first=false;
-									}else{
-										$x = $value->value - $previous;
-									}
-									$diffStats[] = array('value'=> $x,'end_time'=> $newTime);
-									$value->end_time = $newTime;
-									$likeStats[] = $value;
-								}
-								break;
-							case 'week':
-								if ($tempdate->toString('Y w') == $date->toString('Y w')){
-									if ($first){
-										$x = 0;
-										$first=false;
-									}else{
-										$x = $value->value - $previous;
-									}
-									$diffStats[] = array('value'=> $x,'end_time'=> $newTime);
-									$value->end_time = $newTime;
-									$likeStats[] = $value;
-								}
-								break;
-							default:
+					$time = explode('T', $value->end_time);
+			
+					$newTime = str_replace('-', '/', $time[0]);
+					$tempdate = new Zend_Date($time[0]);
+					switch ($t){
+						case 'month':
+							if ($tempdate->toString('Y M') == $date->toString('Y M')){
 								if ($first){
 									$x = 0;
 									$first=false;
@@ -113,28 +103,39 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 								$diffStats[] = array('value'=> $x,'end_time'=> $newTime);
 								$value->end_time = $newTime;
 								$likeStats[] = $value;
-								break;
-						}	
-						$previous = $value->value;
+							}
+							break;
+						case 'week':
+							if ($tempdate->toString('Y w') == $date->toString('Y w')){
+								if ($first){
+									$x = 0;
+									$first=false;
+								}else{
+									$x = $value->value - $previous;
+								}
+								$diffStats[] = array('value'=> $x,'end_time'=> $newTime);
+								$value->end_time = $newTime;
+								$likeStats[] = $value;
+							}
+							break;
+						default:
+							if ($first){
+								$x = 0;
+								$first=false;
+							}else{
+								$x = $value->value - $previous;
+							}
+							$diffStats[] = array('value'=> $x,'end_time'=> $newTime);
+							$value->end_time = $newTime;
+							$likeStats[] = $value;
+							break;
 					}
+					$previous = $value->value;
 				}
-				$a = array();
-				$a [] = $likeStats;
-				$a [] = $diffStats;
-				
-				//Zend_Debug::dump($this->_fan);
-				//Save to the cache, so we don't have to look it up next time
-				$cache->save($a, $adminLikesID );
-			}else {
-					//echo 'memcache look up';
-					$a = $cache->load($adminLikesID );
-				}
-			} catch (Exception $e) {
-				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
-				//echo $e->getMessage();
-			}	
-				
-				
+			}
+			$a = array();
+			$a [] = $likeStats;
+			$a [] = $diffStats;
 				
 				
 				
@@ -182,6 +183,18 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$this->_helper->json($x);
 	
 	}
+	
+	public function graphhomefacebookinteractionsuniqueusersAction(){
+	
+		$time = $this->_getParam('time');
+		$fp = new Model_Fanpages();
+	
+		$x = $fp ->getFacebookInteractionsUniqueUsers( $this->_fanpageId,$time,  true);
+	
+		$this->_helper->json($x);
+	
+	}
+	
 	
 	public function graphpointsAction(){
 		
