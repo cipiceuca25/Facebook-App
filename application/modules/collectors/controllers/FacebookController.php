@@ -2473,4 +2473,42 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 			}
     	}
     }
+    
+    public function test29Action() {
+        $fanpageId = '216821905014540';
+    	$accessToken = 'AAAFHFbxmJmgBAPUVD7kjQIquRVpaDPJ8TKUPMXqUSD0BuP7F9KhsXtC1uEnWe0eaVTPebNprupHZC4fhNZA0ZAYTQoAjnNM0lG7ZBWQApc3Ttfphz7Dg';
+    	 
+    	$insightData = array();
+    	$testInsighdId = 'full_insight';
+    	$insightCollector = new Service_InsightCollectorService(null, $fanpageId, $accessToken, 'insight');
+    	
+    	
+    	try {
+    		$cache = Zend_Registry::get('memcache');
+    		//$insightData = $insightCollector->getFullInsightData();
+    		if(isset($cache) && !$cache->load($testInsighdId)){
+    			//Look up the facebook graph api
+    			echo 'look up facebook graph api';
+
+    			if($insightData) {
+    				//Save to the cache, so we don't have to look it up next time
+    				//$cache->save($insightData, $testInsighdId, array(), 7200);
+    			}
+    		}else {
+    			echo 'memcache look up';
+    			$insightData = $cache->load($testInsighdId);
+    		}
+    	} catch (Exception $e) {
+    		echo $e->getMessage();
+    	}
+    	$insightData = $insightCollector->logInsight($insightData);
+    	Zend_Debug::dump($insightData);
+    }
+    
+    public function test30Action() {
+    	$fanpageId = '197221680326345';
+    	$rss = new Service_FancrankRssService();
+    	$rss->readPageRssFeed($fanpageId);
+    	$rss->formatRssFeed('array');
+    }
 }

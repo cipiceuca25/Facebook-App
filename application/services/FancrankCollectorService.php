@@ -68,7 +68,7 @@ class Service_FancrankCollectorService {
 		$posts = array();
 		//echo $url; exit();
 		$this->getPostsByTimeRange($url, 10, 100, $posts);
-		//Zend_Debug::dump($posts); exit();
+		Zend_Debug::dump($posts);
 		
 		if(empty($posts)) {
 			return array();
@@ -466,7 +466,7 @@ class Service_FancrankCollectorService {
 		return $insights;
 	}
 	
-	private function getInsightsRecursive($url, $level, $limit=null, &$result) {
+	protected function getInsightsRecursive($url, $level, $limit=null, &$result) {
 		if(empty($url) || $level == 0) {
 			return array();
 		}
@@ -600,7 +600,7 @@ class Service_FancrankCollectorService {
 				$hasMore = true;
 			}
 			if(! $hasMore && !empty($post->comments->data)) {
-				foreach ($post->comments->data as $comment) {
+				foreach ($post->comments->data as $k=>$comment) {
 					$posts[$key]->comments->data[$k]->like_list = $this->getLikesFromComment($comment);
 				}
 			}
@@ -1056,7 +1056,7 @@ class Service_FancrankCollectorService {
 		return 'https://graph.facebook.com/?' .$params .'&access_token=' .$access_token;
 	}
 	
-	private function httpCurl($url, $params=null, $method=null) {
+	protected function httpCurl($url, $params=null, $method=null) {
 		$ch = curl_init();
 		switch (strtolower($method)) {
 			case 'get':

@@ -2392,7 +2392,3 @@ $(window).resize(function(){
 	}
 });
 
-
-
-
-

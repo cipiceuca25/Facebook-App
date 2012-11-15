@@ -1,0 +1,45 @@
+        <!-- temporary styles -->
+        <style>
+            .ticket {
+            	margin: 15px;
+                border: 1px solid white;
+                display: block;
+                padding: 5px;
+                margin: 15px;
+				background: black;
+                color: white;
+                height: 150px;
+                width: 150px;
+            }
+
+            .ticket .num {
+                font-size: 50px;
+            }
+        </style>
+        
+        <div class="container">
+            <div class="row">
+                <div class="span6">
+                    <h1>Fancrank Dashboard</h1>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span2">
+                    <?= $this->partial('index/_ticket.phtml', array('title' => 'Fanpages', 'num' => $this->fanpages)) ?>
+                </div>
+                <div class="span2">
+                    <?= $this->partial('index/_ticket.phtml', array('title' => 'Fans', 'num' => $this->fans)) ?>
+                </div>
+            </div>
+            <p class="heading">basick app info </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->appInfo);?></div>
+            <p class="heading">insight data </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->insightData);?></div>
+            <p class="heading">admin activities </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->adminLog);?></div>
+            <p class="heading">fanpage cron log </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->cronLog);?></div>
+            <p class="heading">point log </p>
+            <div class="app-info"><?php Zend_Debug::dump($this->pointLog);?></div>
+        </div>
+
