@@ -27,15 +27,14 @@
 
         <script src="/js/fancrankTour.js"></script>
         <script src="/js/fancrank.js"></script>
-        
-        
-		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
         <script>
 			var appId = "<?= $this->layout()->appKey ?>";
 			var serverUrl = "<?= $this->fullServerUrl() ?>";
-			var fanpageId = <?= $this->page_id ?>;
+			var fanpageId = "<?= $this->page_id ?>";
 
 			//google.load("visualization", "1", {packages:["corechart"]});
+			google.load('visualization', '1', {packages: ['geochart']});
         </script>
         <link href="/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
         <!--  <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>-->

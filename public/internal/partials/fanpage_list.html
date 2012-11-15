@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+
+      Search: <input ng-model="query">
+      Sort by:
+      <select ng-model="orderProp">
+        <option value="name">Alphabetical</option>
+        <option value="age">Newest</option>
+      </select>
+
+    </div>
+    <div class="span10">
+      <!--Body content-->
+
+      <ul class="fanpages">
+        <li ng-repeat="fanpage in fanpages" class="thumbnail">
+          <a href="#/fanpages/{{fanpage.fanpage_id}}" class="thumb"><img ng-src="{{fanpage.imageUrl}}"></a>
+          <a href="#/fanpages/{{fanpage.fanpage_id}}">{{fanpage.fanpage_id}}</a>
+          <p>{{fanpage.fanpage_about}}</p>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>

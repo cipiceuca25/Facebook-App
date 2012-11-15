@@ -1,0 +1,15 @@
+<img ng-src="{{mainImageUrl}}" class="fanpage">
+
+<h1>{{fanpage.fanpage_name}}</h1>
+
+<p>{{fanpage.fanpage_about}}</p>
+
+<ul class="phone-thumbs">
+  <li ng-repeat="fanpage_id in fanpage.fanpage_id">
+    <img ng-src="{{fanpage_id}}" ng-click="setImage(fanpage_id)">
+  </li>
+</ul>
+
+<ul class="specs">
+
+</ul>

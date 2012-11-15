@@ -516,6 +516,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$insights = $this->getRealtimeInsightData($fanpageId, false);
 		
 		Zend_Debug::dump($insights);
+		$this->view->pageFanData = json_encode($this->insightPageFansByCountry($insights));
 		$this->render("facebookinsights");
 	}
 	
@@ -1037,8 +1038,9 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		} catch (Exception $e) {
 			//echo $e->getMessage();
 		}
-		if ($parse)
+		if ($parse) {
 			return $this->insightDataParser($insightData);
+		}
 		
 		return $insightData;
 	}
@@ -1071,6 +1073,37 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			//early terminate
 			if($counter < 1) break;
 		}
+		return $result;
+	}
+	
+	private function insightPageFansByLanguage($insightData) {
+		$result = array();
+		foreach ($insightData as $data) {
+			if(preg_match('/\/page_fans_locale\/lifetime$/', $data->id)) {
+				$value = $data->values[sizeof($data->values)-1];
+				$result = empty($value->value) ? 0 : $value->value;
+				break;
+			}
+		}
+		
+		$newResult = array();
+		foreach ($result as $key => $value) {
+			$parts = explode("_", $key);
+			$newResult[$parts[1]] = $value;
+		}
+		return $newResult;
+	}
+	
+	private function insightPageFansByCountry($insightData) {
+		$result = array();
+		foreach ($insightData as $data) {
+			if(preg_match('/\/page_fans_country\/lifetime$/', $data->id)) {
+				$value = $data->values[sizeof($data->values)-1];
+				$result = empty($value->value) ? 0 : $value->value;
+				break;
+			}
+		}
+	
 		return $result;
 	}
 	

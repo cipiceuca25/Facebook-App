@@ -2191,7 +2191,3 @@ $(window).resize(function(){
 	}
 });
 
-
-
-
-
