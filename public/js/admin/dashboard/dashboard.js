@@ -429,27 +429,7 @@ function getHomeFanCrankInteractions(time){
 		    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
 		    		graphData2.push ([ new Date(data[i].created_time), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes,data[i].total_unlike,data[i].total_follow,data[i].total_unfollow]);
 		    	}
-		    	  
-		    	//console.log(dataset);
-		    	
-		    	//graphData1 = [[1,1],[2,1],[1,1]];
-		    	if(data.length > 0){
-			    	var startTime2 = new Date(data[0].created_time);
-			    	var endTime2 = new Date(data[data.length-1].created_time);
-			    	
-			    	var startTime1 = new Date(data[0].created_time);
-			    	var endTime1 = new Date(data[data.length-1].created_time);
-		    	}else{
-		    		var startTime2 = new Date();
-			    	var endTime2 = startTime2;
-			    
-			    	var startTime1 =  startTime2;
-			    	var endTime1 =  startTime2;
-			    		
-			    }
-		    	
-		    	var graphMargin1 = [5,5, 20,40]; // margins
-		    	var graphMargin2 = [5,5, 20,40]; // margins
+		    
 		    	graphLoaded =true;
 		    	graphLoaded2 =true;
 		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow'];
@@ -492,9 +472,8 @@ function getHomeFacebookInteractionsUniqueUser(time){
 			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
 			    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes ]);
 			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
-			    		graphData2.push ([ new Date(data[i].created_time), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes]);
+			    		graphData2.push ([ new Date(data[i].created_time2), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes]);
 			    	}
-			    	
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
 			    	var text = ['Activities', 'Posts', 'Comments', 'Likes'];
