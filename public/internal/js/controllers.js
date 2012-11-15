@@ -6,6 +6,7 @@ function IndexCtrl($scope, $routeParams) {
 }
 
 function HomeCtrl($scope, $http) {
+	
 	console.log($scope);
 
 	$(function(){
