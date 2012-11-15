@@ -128,17 +128,17 @@ var first_time_use = '<?= $this->first_time?>';
 			<div class="info">
 				<span class="description">Interactions from Unique Users on Facebook(No Admin): </span>
 				<br/>
-				<a onclick = "getHomeFanCrankInteractions('all')"><span class="description">All: </span></a>
-				<span class="amount"><?= $this->fancrank_interactions[0]['all'] ?></span>
+				<a onclick = "getHomeFacebookInteractionsUniqueUser('all')"><span class="description">All: </span></a>
+				<span class="amount"><?= $this->facebook_interactions_unique_users[3]['all'] ?></span>
 				<br/>
-				<a onclick = "getHomeFanCrankInteractions('month')"><span class="description">This Month: </span></a>
-				<span class="amount"><?= $this->fancrank_interactions[0]['month'] ?></span>
+				<a onclick = "getHomeFacebookInteractionsUniqueUser('month')"><span class="description">This Month: </span></a>
+				<span class="amount"><?= $this->facebook_interactions_unique_users[3]['month'] ?></span>
 				<br/>
-				<a onclick = "getHomeFanCrankInteractions('week')"><span class="description">This Week: </span></a>
-				<span class="amount"><?= $this->fancrank_interactions[0]['week'] ?></span>
+				<a onclick = "getHomeFacebookInteractionsUniqueUser('week')"><span class="description">This Week: </span></a>
+				<span class="amount"><?= $this->facebook_interactions_unique_users[3]['week'] ?></span>
 				<br/>
-				<a onclick = "getHomeFanCrankInteractions('today')"><span class="description">Today: </span></a>
-				<span class="amount"><?= $this->fancrank_interactions[0]['today'] ?></span>
+				<a onclick = "getHomeFacebookInteractionsUniqueUser('today')"><span class="description">Today: </span></a>
+				<span class="amount"><?= $this->facebook_interactions_unique_users[3]['today'] ?></span>
 			</div>
 		</div>
 		

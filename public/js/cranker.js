@@ -11,10 +11,10 @@ var currentpage = 'newsfeed';
 var backgroundcolor;
 
 $(document).ready(function() {
-	//setInterval(MouseWheelHandler, 500);
-	//window.addEventListener("mousewheel", MouseWheelHandler, false);  
+	setInterval(MouseWheelHandler, 500);
+	window.addEventListener("mousewheel", MouseWheelHandler, false);  
     // Firefox  
-	//window.addEventListener("DOMMouseScroll", MouseWheelHandler, false);  
+	window.addEventListener("DOMMouseScroll", MouseWheelHandler, false);  
 // trick to indentify parent container
 	/*	
 	if (window.location != window.parent.location) {
@@ -118,37 +118,31 @@ $(document).on('mouseover', '[rel=popover]', function() {
 	}).trigger('mouseover');
 	
 });
-/*
+
 function MouseWheelHandler() {  
     // cross-browser wheel delta  
     // old IE support  
    // alert(e.wheelDelta);
-	$('#menu').stop();
+	$('#info-box-container').stop();
+	
+	x = $("#toppost").height();
     FB.Canvas.getPageInfo(function(info) {
 		//alert(info.scrollTop);
-    	if (info.scrollTop > 170){
+    	if (info.scrollTop > 500 + x){
 			//$('#menu').css('top',info.scrollTop-28);
-    		$('#menu').animate({'top':info.scrollTop-28},100, function(){});
-    		$('#menu').css({'-moz-box-shadow': '0px 5px 5px #888', 
-    						'-webkit-box-shadow': '5px 0px 5px #888',
-    						'box-shadow': '0px 5px 5px #888',
-    						'-o-box-shadow': '0px 5px 5px #888',
-    						})
+    		$('#info-box-container').animate({'top':info.scrollTop-500},150, function(){});
+    	
     	}else{
     		//$('#menu').css('top','170px');
-    		$('#menu').animate({'top':'170px'},100, function(){});
-    		$('#menu').css({'-moz-box-shadow': '0px 0px 0px #888', 
-							'-webkit-box-shadow': '0px 0px 0px #888',
-							'box-shadow': '0px 0px 0px #888',
-							'-o-box-shadow': '0px 0px 0px #888',
-							})
+    		$('#info-box-container').animate({'top':'0px'},150, function(){});
+    
     	}
     });
     
     //var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));  
 }
 
-*/
+
 $(document).on('mouseover', '[rel=tooltip]', function() {
 	if ($(this).data('isTooltipLoaded') == true) {
 		return;

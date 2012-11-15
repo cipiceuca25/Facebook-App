@@ -133,9 +133,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			$this->_fan['fan_exp']='?';
 		}
 		
-		
-		
-		
 		$color = new Model_UsersColorChoice();
 		$color = $color->getColorChoice($this->_fanpageId);
 		
@@ -551,7 +548,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->layout->disableLayout();
 
 		$this->view->facebook_user = $this->_facebook_user;		    	
-   
+		$follow = new Model_Subscribes();
 		$result = $this->feedFirstQuery();
 
 		$latest = $result['posts']->data;
@@ -559,11 +556,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	
     	$likesModel = new Model_Likes();
     	$latestlike = array();
-    	$count=0;
-    	//Zend_Debug::dump($result);
+    	$latest_comment_relation = array();
+    	$latest_comment_like = array();
+    	//Zend_Debug::dump($latest);
     	
     	if ($latest != null ){
     		foreach ($latest as $l){
+    			if (isset($l->story)){
     			/*
     			$cache = Zend_Registry::get('memcache');
     			$cache->setLifetime(1800);
@@ -578,48 +577,70 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				//echo $e->getMessage();
     			}
     			*/
-    			$yourpointslatest[$count] = 0;
-    			$yourpointslatest[$count] = $this->postPointsCalculate($l);
-    			$latestlike[$count]=0;
-    			//echo $top['facebook_user_id'];
-    			
-    			if(isset($l->likes)){
-    				foreach ($l->likes->data as $x){
-    					//echo $x->id;
-    					if($x->id == $this->_userId){
-    						$latestlike[$count]=1;
-    						//echo "$latestlike[$count] in the condensed list";
-    					}
-    					//Zend_Debug::dump( $likes[$count]);
-    				}
-    				if($latestlike[$count]==0){
-
-    					$latestlike[$count] = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
-    					
-    				//Zend_Debug::dump($likes[$count]);
-    				}
+    			}else{
+	    			$yourpointslatest = 0;
+	    			$yourpointslatest = $this->postPointsCalculate($l);
+	    			$latestlike=0;
+	    			//echo $top['facebook_user_id'];
+	    			
+	    			if(isset($l->likes)){
+	    				foreach ($l->likes->data as $x){
+	    					//echo $x->id;
+	    					if($x->id == $this->_userId){
+	    						$latestlike=1;
+	    						//echo "$latestlike[$count] in the condensed list";
+	    						
+	    					}
+	    					//Zend_Debug::dump( $likes[$count]);
+	    					
+	    				}
+	    				if($latestlike==0){
+	
+	    					$latestlike = $likesModel->getLikes($this->_fanpageId, $l->id, $this->_userId );
+	    					
+	    				//Zend_Debug::dump($likes[$count]);
+	    				}
+	    				
+	    			}
+	    			if(isset($l->comments)){
+		    			$count=0;
+		    			foreach ( $l->comments->data as $x){
+		    				$latest_comment_relation[$count] = $follow->getRelation($this->_userId, $x->from->id,$this->_fanpageId);
+		    				
+		    				$latest_comment_like[$count] = $likesModel->getLikes($this->_fanpageId, $x->id, $this->_userId );
+		    				
+		    				$count++;
+		    			}
+	    			}
+	    			$latest = $l;
+	    			break;
     			}
-    			
-    			$count++;
     		}
     		
     	}
+    	//Zend_Debug::dump($latestrelation);
     	
+    	$this->view->latest_comment_relation = $latest_comment_relation;
     	$this->view->yourpointslatest = $yourpointslatest;
     	//Zend_Debug::dump($latestlike);
     	//Zend_Debug::dump($latest);
-    	
     	$this->view->latestlike = $latestlike;
+    	$this->view->latest_comment_like = $latest_comment_like;
+    	
+    	//Zend_Debug::dump($latest_comment_like);
+    	
     	$this->view->latest = $latest ;
     	
 
-    	$follow = new Model_Subscribes();
+    	
     	$likes = array();
     	$relation = array();
+    	$comment_likes = array();
+    	$comment_relation = array();
     	$count=0;
-    	
+    	$count2 = 0;
     	if ($feed != null){
-    		
+    			
     			foreach ($feed as $posts){
     				
     				$likes[$count]=0;
@@ -650,21 +671,42 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				//	$yourpoints[$count] = $points['point'];
     				//}
     				//Zend_Debug::dump( $points);
+    				
+    				if (isset($posts->comments->data)){
+    					foreach($posts->comments->data as $c){
+    						
+    						$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
+    						$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
+    						//Zend_Debug::dump($comment_relation[$count2]);
+    						$count2++;
+    					}
+    				}
+    				
+
     				$yourpoints[$count] = $this->postPointsCalculate($posts);
     				$count++;
-    	
+    				
     			}
     		
     	}
+    	//Zend_Debug::dump($relation);
+    	//Zend_Debug::dump($comment_relation);
+    	
     	
     	$this->view->yourpoints = $yourpoints;
     	$this->view->relation = $relation;
     	
     	$this->view->likes = $likes;
+    	
+    	$this->view->comment_relation = $comment_relation;
+    	 
+    	$this->view->comment_likes = $comment_likes;
+    	
     	$this->view->post = $feed;
     	//Zend_Debug::dump($fanpage);
     	$this->view->fanpage_id = $this->_fanpageId;
     	
+    
     	$this->render("newsfeed");
     }
     
@@ -1420,7 +1462,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$follow = new Model_Subscribes();
     	$likes = array();
 		$relation = array();
+		$comment_likes = array();
+		$comment_relation = array();
     	$count=0;
+    	$count2=0;
 		$totalpoints = array();
 		$yourpoints = array();
 		
@@ -1459,6 +1504,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 						}
 					}
 					
+					
+					if (isset($posts->comments->data)){
+						foreach($posts->comments->data as $c){
+													
+							$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
+							$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
+							//Zend_Debug::dump($comment_relation[$count2]);
+							$count2++;
+						}
+					}
+					
+					
 					$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 					//Zend_Debug::dump($posts);
 					$yourpoints[$count] = 0;
@@ -1470,8 +1527,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			//}
 		}
 		//Zend_Debug::dump($yourpoints);
-		
+
 		$this->view->yourpoints = $yourpoints;
+		
+		$this->view->comment_relation = $comment_relation;
+		
+		$this->view->comment_likes = $likes;
+		
 		$this->view->relation = $relation;
 
     	$this->view->likes = $likes;
@@ -1810,7 +1872,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     					//Zend_Debug::dump( $likes[$count]);
     			}
     			
-    			if($likes[$count]==0){
+    			if (!isset($posts->user_likes) && ($likes[$count]==0)){
     					$likes[$count] = $likesModel->getLikes($this->_fanpageId, $posts->id, $this->_userId );
     					//Zend_Debug::dump($likes[$count]);
     			}    		
@@ -1840,6 +1902,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if($latest){
     		$this->view->latest = $latest;
     	}
+    	
     	$this->view->popup = $popup;
     	$this->render("fancrankfeedcomment");
     }
