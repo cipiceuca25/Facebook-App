@@ -1,10 +1,9 @@
 <?php
-
-class Fc_IndexController extends Fancrank_Admin_Controller_BaseController
+class Fc_IndexController extends Fancrank_Fc_Controller_BaseController
 {
 
-    public function preDispatch()
-    {
+    public function preDispatch() {
+    	parent::preDispatch();
         $this->view->layout()->disableLayout();
     }
 
@@ -20,31 +19,10 @@ class Fc_IndexController extends Fancrank_Admin_Controller_BaseController
         $insightData = $this->getInsightData();
         $appInfo = $this->insightDataParser($insightData);
         
-        //Zend_Debug::dump($appInfo);
-        
-        $adminLogModel = new Model_AdminActivities();
-        
-        //echo 'page admin activities..............' . '<br/>';
-        $adminLog = $adminLogModel->getAllActivitiesSince(0);
-        //Zend_Debug::dump($adminLog->toArray());
-        
-		$pointLogModel = new Model_PointLog();
-		$pointLog = $pointLogModel->findAll(null, null, 100)->toArray();
-		//Zend_Debug::dump($pointLog);
-		
-        //echo 'cron log..............' . '<br/>'; 
-        $cronLogModel = new Model_CronLog();
-        $cronLog = $cronLogModel->fetchAll();
-        //Zend_Debug::dump($cronLog->toArray());
-        
         if (!($query = $this->_request->getParam('q'))) {
         }
         
-        $this->view->insightData = $insightData;
         $this->view->appInfo = $appInfo;
-        $this->view->adminLog = $adminLog;
-        $this->view->cronLog = $cronLog;
-        $this->view->pointLog = $pointLog;
         //$this->view->graphData = $graphData;
     }
     
@@ -233,3 +211,4 @@ class Fc_IndexController extends Fancrank_Admin_Controller_BaseController
 	}
 }
 
+?>

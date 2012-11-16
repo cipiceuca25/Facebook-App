@@ -5,5 +5,13 @@
 			<name>stephen</name>
 			<password>stephen@fancrank.com</password>
 		</user>
+		<user>
+			<name>dan</name>
+			<password>dan</password>
+		</user>
+		<user>
+			<name>mannix</name>
+			<password>mannix</password>
+		</user>				
 	</internal>
 </superusers>

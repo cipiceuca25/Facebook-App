@@ -1,0 +1,16 @@
+<div id="outWrapper">
+    <h3>FanCrank Internal Login</h3>
+	<form action="/fc/auth/login" method="post" id="login">
+		<div>
+			<fieldset>  
+				<legend>Login</legend>  
+				<p><label for="username">Username:</label><input style="" type="text" id="username" value="" name="username"></p>
+				<p><label for="password">Password:</label><input style="" type="password" id="password" value="" name="password"></p>
+				<input id="loginButton" type="submit" value="Login"></button><br />
+			</fieldset>
+			<div style="color: red" id="errorMessa"></div>  
+		</div>  
+	</form>
+	<p><?php echo $this->message; ?></p>
+	
+</div>
