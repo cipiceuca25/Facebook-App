@@ -183,7 +183,16 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$this->_helper->json($x);
 	
 	}
+	public function graphhomefancrankinteractionsuniqueusersAction(){
 	
+		$time = $this->_getParam('time');
+		$fp = new Model_FancrankActivities();
+	
+		$x = $fp ->getFancrankInteractionsUniqueUsersGraph( $this->_fanpageId,$time,  true);
+	
+		$this->_helper->json($x);
+	
+	}
 	public function graphhomefacebookinteractionsuniqueusersAction(){
 	
 		$time = $this->_getParam('time');

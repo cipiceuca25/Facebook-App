@@ -468,7 +468,6 @@ function getHomeFacebookInteractionsUniqueUser(time){
 			    	//graphData1.push(['Date', 'Likes']);
 			    	//graphData2.push(['Date', 'Likes']);
 			    	for(i=0; i < data.length; i++) {
-			    		
 			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
 			    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes ]);
 			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
@@ -488,6 +487,50 @@ function getHomeFacebookInteractionsUniqueUser(time){
 	}
 }
 
+function getHomeFanCrankInteractionsUniqueUsers(time){
+	
+	if(fanpageId) {
+		//alert(fanpageId+' '+type); return false;
+		$.ajax({
+			url: '/admin/fanpage/graphhomefancrankinteractionsuniqueusers/'+fanpageId + '?time=' + time,
+		    type: 'get',
+		    dataType: 'json',
+
+		    error: function( data ) {
+		    	alert('error');
+		    },
+		    beforeSend : function() {
+		    	$('#placeholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				
+				$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				//destroyAll();
+			},
+		    success: function (data){
+		    
+			   	var graphData1 = [];
+		    	var graphData2 = [];
+		    	//graphData1.push(['Date', 'Likes']);
+		    	//graphData2.push(['Date', 'Likes']);
+		    	for(i=0; i < data.length; i++) {
+		    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
+		    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes,data[i].unlikes,data[i].follow,data[i].unfollow ]);
+		    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
+		    		graphData2.push ([ new Date(data[i].created_time2), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes,data[i].total_unlikes,data[i].total_follow,data[i].total_unfollow]);
+		    	}
+		    
+		    	graphLoaded =true;
+		    	graphLoaded2 =true;
+		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow'];
+		    	graph = new lineGraph('#placeholder', graphData1, text);
+		    	graph2  = new lineGraph('#placeholder2', graphData2, text);
+		    	$('#graphtitle').html('Interactions');
+		        $('#graphtitle2').html('Total Interactions');
+		    }
+		});            
+	}
+
+	
+}
 
 /*
  * 

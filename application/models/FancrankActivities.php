@@ -797,6 +797,145 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 		return $result;
 	}
 	
+	public function getFancrankInteractionsUniqueUsersNumber($fanpageId){
+		$select = "select count(distinct facebook_user_id) as 'all',
+					count(distinct case when date(created_time) = date(curdate()) then facebook_user_id end ) as today,
+					count(distinct case when yearweek(created_time) = yearweek(curdate()) then facebook_user_id end ) as week,
+					count(distinct case when (year(created_time) = year(curdate()) && month(created_time) = month(curdate())) then facebook_user_id end ) as month 
+					from fancrank_activities
+					where fanpage_id = $fanpageId";
+	
+		$result = $this->getAdapter()->fetchAll($select);
+		$result[0]['today'] = ($result[0]['today'] == null)?0:$result[0]['today'];
+		$result[0]['month'] = ($result[0]['month'] == null)?0:$result[0]['month'];
+		$result[0]['week'] = ($result[0]['week'] == null)?0:$result[0]['week'];
+		return $result;
+	}
+	
+	public function getFancrankInteractionsUniqueUsersGraph($fanpageId, $time, $graph){
+		$select = "select count(distinct facebook_user_id) as 'all',
+					count(distinct case when activity_type like 'post-%' then facebook_user_id end ) as posts, 
+					count(distinct case when activity_type like 'comment-%' then facebook_user_id end ) as comments, 
+					count(distinct case when activity_type like 'like-%' then facebook_user_id end ) as likes, 
+					count(distinct case when activity_type like 'unlike-%' then facebook_user_id end ) as unlikes, 
+					count(distinct case when activity_type = 'follow' then facebook_user_id end ) as follow, 
+					count(distinct case when activity_type = 'unfollow' then facebook_user_id end ) as unfollow, 
+					created_time from fancrank_activities
+					where fanpage_id = $fanpageId && fanpage_id != facebook_user_id
+					";
+		
+		
+		switch($time){
+			case 'month':
+				$select = $select . " && year(created_time) = year(curdate()) && month(created_time) = month(curdate())
+									group by date(created_time)
+									order by created_time ASC ";
+				$select2 = "select count(distinct facebook_user_id) as 'all',
+							count(distinct case when activity_type like 'post-%' then facebook_user_id end ) as posts, 
+							count(distinct case when activity_type like 'comment-%' then facebook_user_id end ) as comments, 
+							count(distinct case when activity_type like 'like-%' then facebook_user_id end ) as likes, 
+							count(distinct case when activity_type like 'unlike-%' then facebook_user_id end ) as unlikes, 
+							count(distinct case when activity_type = 'follow' then facebook_user_id end ) as follow, 
+							count(distinct case when activity_type = 'unfollow' then facebook_user_id end ) as unfollow, 
+							y.created_time from fancrank_activities f, 
+							
+							(select distinct date(created_time) as created_time from fancrank_activities
+							where fanpage_id != facebook_user_id
+								&& fanpage_id = $fanpageId && year(created_time) = year(curdate()) && month(created_time) = month(curdate())
+							order by created_time ASC) as y
+							
+							where fanpage_id = $fanpageId && fanpage_id != facebook_user_id && date(f.created_time)  <= date(y.created_time)
+									&& year(f.created_time) = year(curdate()) && month(f.created_time) = month(curdate())
+							group by date(y.created_time)
+							order by y.created_time ASC";
+				break;
+			case 'week':
+				$select = $select . " && yearweek(created_time) = yearweek(curdate())
+									group by date(created_time)
+									order by created_time ASC ";
+				$select2 = "select count(distinct facebook_user_id) as 'all',
+							count(distinct case when activity_type like 'post-%' then facebook_user_id end ) as posts, 
+							count(distinct case when activity_type like 'comment-%' then facebook_user_id end ) as comments, 
+							count(distinct case when activity_type like 'like-%' then facebook_user_id end ) as likes, 
+							count(distinct case when activity_type like 'unlike-%' then facebook_user_id end ) as unlikes, 
+							count(distinct case when activity_type = 'follow' then facebook_user_id end ) as follow, 
+							count(distinct case when activity_type = 'unfollow' then facebook_user_id end ) as unfollow, 
+							y.created_time from fancrank_activities f, 
+							
+							(select distinct date(created_time) as created_time from fancrank_activities
+							where fanpage_id != facebook_user_id
+								&& fanpage_id = $fanpageId && yearweek(created_time) = yearweek(curdate())
+							order by created_time ASC) as y
+							
+							where fanpage_id = $fanpageId && fanpage_id != facebook_user_id && date(f.created_time)  <= date(y.created_time)
+									&& yearweek(f.created_time) = yearweek(curdate())
+							group by date(y.created_time)
+							order by y.created_time ASC";
+				break;
+			case 'today':
+				$select= $select . "&& date(created_time) = date(curdate())
+									group by hour(created_time)
+									order by created_time ASC";
+				$select2 = "select count(distinct facebook_user_id) as 'all',
+							count(distinct case when activity_type like 'post-%' then facebook_user_id end ) as posts, 
+							count(distinct case when activity_type like 'comment-%' then facebook_user_id end ) as comments, 
+							count(distinct case when activity_type like 'like-%' then facebook_user_id end ) as likes, 
+							count(distinct case when activity_type like 'unlike-%' then facebook_user_id end ) as unlikes, 
+							count(distinct case when activity_type = 'follow' then facebook_user_id end ) as follow, 
+							count(distinct case when activity_type = 'unfollow' then facebook_user_id end ) as unfollow, 
+							y.created_time from fancrank_activities f, 
+							
+							(select distinct date(created_time) as created_time from fancrank_activities
+							where fanpage_id != facebook_user_id
+								&& fanpage_id = $fanpageId && date(created_time) = date(curdate())
+							order by created_time ASC) as y
+							
+							where fanpage_id = $fanpageId && fanpage_id != facebook_user_id && date(f.created_time)  <= date(y.created_time)
+									&& date(f.created_time) = date(curdate())
+							group by hour(y.created_time)
+							order by y.created_time ASC";
+				break;
+			default:
+				$select = $select.' group by date(created_time)
+									order by created_time ASC';
+				$select2 = "select count(distinct facebook_user_id) as 'all',
+							count(distinct case when activity_type like 'post-%' then facebook_user_id end ) as posts,
+							count(distinct case when activity_type like 'comment-%' then facebook_user_id end ) as comments,
+							count(distinct case when activity_type like 'like-%' then facebook_user_id end ) as likes,
+							count(distinct case when activity_type like 'unlike-%' then facebook_user_id end ) as unlikes,
+							count(distinct case when activity_type = 'follow' then facebook_user_id end ) as follow,
+							count(distinct case when activity_type = 'unfollow' then facebook_user_id end ) as unfollow,
+							y.created_time from fancrank_activities f,
+								
+							(select distinct date(created_time) as created_time from fancrank_activities
+							where fanpage_id != facebook_user_id
+							&& fanpage_id = $fanpageId
+							order by created_time ASC) as y
+								
+							where fanpage_id = $fanpageId && fanpage_id != facebook_user_id && date(f.created_time)  <= date(y.created_time)
+							group by date(y.created_time)
+							order by y.created_time ASC";
+				break;
+		}
+		
+		$result = $this->getAdapter()->fetchAll($select);
+		$result2 = $this->getAdapter()->fetchAll($select2);	
+		for($i = 0; $i < count($result); $i++ ){
+		
+			$result[$i]['total_all'] =  $result2[$i]['all'] ;
+			$result[$i]['total_posts'] = $result2[$i]['posts'] ;
+			$result[$i]['total_comments'] =$result2[$i]['comments'] ;
+			$result[$i]['total_likes'] =  $result2[$i]['likes'] ;
+			$result[$i]['total_unlikes'] = $result2[$i]['unlikes'] ;
+			$result[$i]['total_follow'] =$result2[$i]['follow'] ;
+			$result[$i]['total_unfollow'] =  $result2[$i]['unfollow'] ;
+			$result[$i]['created_time2'] = $result2[$i]['created_time'] ;
+		
+		}
+		return $result;
+	}
+	
+	
 	public function getNumOfUserInteractionsWithinDays ($fanpageId, $days){
 		$select = "SELECT count(distinct facebook_user_id) FROM fancrank.fancrank_activities 
 					 where fanpage_id = $fanpageId &&

@@ -599,13 +599,16 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		
 		$facebookinterationsuniqueusers = $fanpageModel ->getFacebookInteractionsUniqueUsersNumber($fanpageId);
 		$this->view->facebook_interactions_unique_users = $facebookinterationsuniqueusers;
-		Zend_Debug::dump($facebookinterationsuniqueusers);
-		
-		
-		
-		
+		//Zend_Debug::dump($facebookinterationsuniqueusers);
+
 		$fancrankinteractions = $activityModel->getFancrankInteractionsNumber($fanpageId);
 		$this->view->fancrank_interactions = $fancrankinteractions;
+		
+		
+		$fancrankinteractionsuniqueusers = $activityModel->getFancrankInteractionsUniqueUsersNumber($fanpageId);
+		$this->view->fancrank_interactions_unique_users = $fancrankinteractionsuniqueusers;
+		
+		
 		//$this->view->new_fans = $newFans;
 		//$this->view->new_interaction_users = $newInteractionsUsers;
 		//$this->view->new_interaction = $newInteractions;
