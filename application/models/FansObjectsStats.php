@@ -463,7 +463,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 						'fan_get_comment_video_count' => 0,
 						'fan_get_comment_link_count' => 0,
 						);
-		echo 'making new entry';
+		//echo 'making new entry';
 		return $this->insert ( $data );
 	}
 	
@@ -566,20 +566,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_post_status_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_post_status_count ++;
 				$found->id = null;
@@ -599,20 +599,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_post_photo_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_post_photo_count ++;
 				$found->id = null;
@@ -633,20 +633,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_post_video_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_post_video_count ++;
 				$found->id = null;
@@ -666,20 +666,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_post_link_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_post_link_count ++;
 				$found->id = null;
@@ -700,20 +700,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_comment_status_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_comment_status_count ++;
 				$found->id = null;
@@ -734,20 +734,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_comment_photo_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_comment_photo_count ++;
 				$found->id = null;
@@ -769,20 +769,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_comment_video_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_comment_video_count ++;
 				$found->id = null;
@@ -805,20 +805,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_comment_link_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_comment_link_count ++;
 				$found->id = null;
@@ -842,20 +842,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_status_count ++;
 				$found->save ();
 				
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_status_count ++;
 				$found->id = null;
@@ -877,20 +877,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_photo_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_photo_count ++;
 				$found->id = null;
@@ -913,20 +913,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_video_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_video_count ++;
 				$found->id = null;
@@ -949,20 +949,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_link_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_link_count ++;
 				$found->id = null;
@@ -982,20 +982,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_comment_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_like_comment_count ++;
 				$found->id = null;
@@ -1015,20 +1015,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_comment_status_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_comment_status_count ++;
 				$found->id = null;
@@ -1047,20 +1047,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_comment_photo_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_comment_photo_count ++;
 				$found->id = null;
@@ -1081,20 +1081,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_comment_video_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_comment_video_count ++;
 				$found->id = null;
@@ -1115,20 +1115,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_comment_link_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_comment_link_count ++;
 				$found->id = null;
@@ -1149,20 +1149,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_status_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_status_count ++;
 				$found->id = null;
@@ -1183,20 +1183,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_photo_count ++;
 				$found->save ();
 		
 			}else{
 				$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_photo_count ++;
 				$found->id = null;
@@ -1215,20 +1215,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_video_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_video_count ++;
 				$found->id = null;
@@ -1248,20 +1248,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_link_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_link_count ++;
 				$found->id = null;
@@ -1281,20 +1281,20 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_comment_count ++;
 				$found->save ();
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->fan_get_like_comment_count ++;
 				$found->id = null;
@@ -1316,7 +1316,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			
 			
@@ -1324,7 +1324,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_like_status_count > 0 ){
 					
@@ -1335,7 +1335,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 	
 				if ($found->fan_like_status_count > 0 ){
@@ -1358,13 +1358,13 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_like_photo_count > 0 ){
 					
@@ -1375,7 +1375,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				//$found->updated_time = $dateObject->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_like_photo_count > 0 ){
@@ -1399,13 +1399,13 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				if ($found->fan_like_video_count > 0 ){
 					$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 					$found->fan_like_video_count --;
@@ -1415,7 +1415,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_like_video_count > 0 ){
 					$found->fan_like_video_count --;
@@ -1436,14 +1436,14 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
-				echo 'found data from today';
+				//echo 'found data from today';
 				if ($found->fan_like_link_count > 0 ){
 					$found->fan_like_link_count --;
 				}
@@ -1452,7 +1452,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_like_link_count > 0 ){
 					$found->fan_like_link_count --;
@@ -1473,13 +1473,13 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_like_comment_count > 0 ){
 					$found->fan_like_comment_count --;
@@ -1489,7 +1489,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_like_comment_count > 0 ){
 					$found->fan_like_comment_count --;
@@ -1512,13 +1512,13 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_status_count > 0 ){
 					$found->fan_get_like_status_count --;
@@ -1528,7 +1528,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_status_count > 0 ){
 					$found->fan_get_like_status_count --;
@@ -1550,13 +1550,13 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_photo_count > 0 ){
 					$found->fan_get_like_photo_count --;
@@ -1566,7 +1566,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_photo_count > 0 ){
 					$found->fan_get_like_photo_count --;
@@ -1587,13 +1587,13 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_video_count > 0 ){
 					$found->fan_get_like_video_count --;
@@ -1603,7 +1603,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_video_count> 0 ){
 					$found->fan_get_like_video_count --;
@@ -1626,13 +1626,13 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_link_count > 0 ){
 					$found->fan_get_like_link_count --;
@@ -1642,7 +1642,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_link_count> 0 ){
 					$found->fan_get_like_link_count --;
@@ -1664,13 +1664,13 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		if (empty ( $found )) {
 			$found = $this->updatedFan($fanpage_id, $facebook_user_id);
 			//echo($found);
-			echo 'did not find previous data, creating new data';
+			//echo 'did not find previous data, creating new data';
 		}else{
 			//Zend_Debug::dump($found->updated_time);
 			$dateObject = new Zend_Date($found->updated_time);
 			$date = new Zend_Date();
 			if($dateObject->compareDay($date )=== 0){
-				echo 'found data from today';
+				//echo 'found data from today';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_comment_count > 0 ){
 					$found->fan_get_like_comment_count --;
@@ -1680,7 +1680,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		
 			}else{
 				//$dateObject = new Zend_Date();
-				echo 'found older stats data, using';
+				//echo 'found older stats data, using';
 				$found->updated_time = $date->toString ( 'yyyy-MM-dd HH:mm:ss' );
 				if ($found->fan_get_like_comment_count > 0 ){
 					$found->fan_get_like_comment_count --;

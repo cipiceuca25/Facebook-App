@@ -663,15 +663,21 @@ function like(post_id, post_type, target_id, target_name) {
 				url : serverUrl + '/app/user/' + userId + '/likes/?post_id='
 						+ post_id + '&fanpage_id=' + fanpageId + '&post_type='
 						+ post_type + '&target_id='+target_id + '&target_name='+ target_name + '&access_token=' + userAccessToken + '&mes='+mes,
-				dataType : "html",
+				dataType : "json",
 				cache : false,
 				async: true,
 				success : function(data) {
+					;
 					//alert("target followed")
 					//alert(post_id + 'liked');
 					feedbackAnimation('.like_control_' + post_id, 'like');
 					//addActivities('like-' + post_type, post_id, target_id, target_name, mes);
-					console.log(data);
+					//console.log(data.fan_point);
+					// update fan point on top menu bar
+					if (! isNaN(data.fan_point)) {
+						$('.my_fan_point').html(numberFormat(data.fan_point));
+						$('.my_fan_point_tooltip').attr('data-original-title', 'You have '+data.fan_point+ ' points');
+					}
 					num = parseInt($('.like_' + post_id).attr('data-like-count')) + 1;
 					$('.like_' + post_id).attr('data-like-count', num);
 					
@@ -2115,3 +2121,15 @@ function getAwards() {
 
 */
 
+function numberFormat(num) {
+    if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(1) + 'G';
+    }
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1) + 'M';
+    }
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1) + 'K';
+    }
+    return num;
+}

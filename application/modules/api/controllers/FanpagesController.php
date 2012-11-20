@@ -18,7 +18,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 	public function preDispatch() {
 		
 		parent::preDispatch();
-		
+
 		$fanpage_admin_model = new Model_FanpageAdmins;
 		$admins = $fanpage_admin_model->findByFanpageId($this->_getParam('id'));
 		
@@ -44,6 +44,18 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		//security check
 		try {
 			if ( !$fanpage->active ) {
+				$dataLog = array();
+				$dataLog['activity_type'] = 'admin_activate_fanpage';
+				$dataLog['event_object'] = '';
+				$dataLog['facebook_user_id'] = $this->_identity->facebook_user_id;
+				$dataLog['facebook_user_name'] = $this->_identity->facebook_user_name;
+				$dataLog['fanpage_id'] = $fanpage->fanpage_id;
+				$dataLog['target_user_id'] = $fanpage->fanpage_id;
+				$dataLog['target_user_name'] = '';
+				$dataLog['message'] = 'admin activated a fanpage';
+				$adminActivityModel = new Model_AdminActivities();
+				$adminActivityModel->insert($dataLog);
+				
 				$fanpage->active = (int) TRUE;
 				$fanpage->save();
 				Collector::run(null, $this->_getParam('id'), $this->_identity->facebook_user_id, $fanpage->access_token, 'init');
@@ -87,7 +99,18 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 	    	}
 
 			$fanpage->save();
-
+			
+			$dataLog = array();
+			$dataLog['activity_type'] = 'admin_deactivate_fanpage';
+			$dataLog['event_object'] = '';
+			$dataLog['facebook_user_id'] = $this->_identity->facebook_user_id;
+			$dataLog['facebook_user_name'] = $this->_identity->facebook_user_name;
+			$dataLog['fanpage_id'] = $fanpage->fanpage_id;
+			$dataLog['target_user_id'] = $fanpage->fanpage_id;
+			$dataLog['target_user_name'] = '';
+			$dataLog['message'] = 'admin deactivated a fanpage';
+			$adminActivityModel = new Model_AdminActivities();
+			$adminActivityModel->insert($dataLog);
 		} else {
 			//send access deinied 403
 			$this->_response->setHttpResponseCode(403);
@@ -118,6 +141,18 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 	        	$fanpage->installed = (int) TRUE;
 	        	$fanpage->fanpage_tab_id = $this->_getParam('id'). '/tabs/app_' . $this->_config->client_id;
 	            $fanpage->save();
+	            
+	            $dataLog = array();
+	            $dataLog['activity_type'] = 'admin_install_fanpage';
+	            $dataLog['event_object'] = '';
+	            $dataLog['facebook_user_id'] = $this->_identity->facebook_user_id;
+	            $dataLog['facebook_user_name'] = $this->_identity->facebook_user_name;
+	            $dataLog['fanpage_id'] = $fanpage->fanpage_id;
+	            $dataLog['target_user_id'] = $fanpage->fanpage_id;
+	            $dataLog['target_user_name'] = '';
+	            $dataLog['message'] = 'admin installed a fanpage';
+	            $adminActivityModel = new Model_AdminActivities();
+	            $adminActivityModel->insert($dataLog);
 	        } else {
 	        	echo $message->error->message;
 	        	$this->_response->setHttpResponseCode(400);
@@ -162,6 +197,7 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 		if (isset($fanpage->fanpage_level) && $fanpage->fanpage_level != $level) {
 			//reuturn success or not
 			try {
+				$oldLevel = $fanpage->fanpage_level;
 				switch($level)	{
 					case 1: $fanpage->fanpage_level = 1; break;
 					case 2: $fanpage->fanpage_level = 2; break;
@@ -170,6 +206,18 @@ class Api_FanpagesController extends Fancrank_API_Controller_BaseController
 					default: throw new Fancrank_Exception_InvalidParameterException('invalid parameter'); break;
 				}
 				$fanpage->save();
+				
+				$dataLog = array();
+				$dataLog['activity_type'] = 'admin_upgrade_fanpage';
+				$dataLog['event_object'] = '';
+				$dataLog['facebook_user_id'] = $this->_identity->facebook_user_id;
+				$dataLog['facebook_user_name'] = $this->_identity->facebook_user_name;
+				$dataLog['fanpage_id'] = $fanpage->fanpage_id;
+				$dataLog['target_user_id'] = $fanpage->fanpage_id;
+				$dataLog['target_user_name'] = '';
+				$dataLog['message'] = "admin upgraded fanpage level from $oldLevel to $level";
+				$adminActivityModel = new Model_AdminActivities();
+				$adminActivityModel->insert($dataLog);
 			} catch (Fancrank_Exception_InvalidParameterException $e) {
 				echo $e->getMessage();
 				$this->_response->setHttpResponseCode(400);

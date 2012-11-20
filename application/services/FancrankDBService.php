@@ -615,7 +615,7 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		$pointLog['fanpage_id'] = $commentData['fanpage_id'];
 		$pointLog['facebook_user_id'] = $commentData['facebook_user_id'];
 		$pointLog['object_id'] = $commentData['comment_post_id'];
-		$pointLog['object_type'] = $commentData['comment_type'];
+		$pointLog['object_type'] = 'comments';
 		$pointLog['giving_points'] = $this->_fanpageSetting['point_comment_admin'] + $bonus;
 		$pointLog['bonus'] = $bonus;
 		$pointLog['note'] = 'comment on admin object , bonus : ' .$bonus;
@@ -634,36 +634,50 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 		$postModel = new Model_Posts();
 		$postUniqueList = $postModel->getUniqueInteractionList($post->id);
 		
-		if ($comment->from->id !== $post->id && !in_array($comment->from->id, $postUniqueList)) {
+		if ($comment->from->id !== $post->id) {
 		
 			// check virginity break
 			$pointLogModel = new Model_PointLog();
 			$pointLog = array();
 			$givingPoint = 0;
-			if (count($postUniqueList) === 0) {
+			if (in_array($comment->from->id, $postUniqueList)) {
 				// update point log data
-				$givingPoint = $this->_fanpageSetting['point_virginity'] + 1;
+				$givingPoint = $this->_fanpageSetting['point_post_comment'];
 				$pointLog['fanpage_id'] = $commentData['fanpage_id'];
 				$pointLog['facebook_user_id'] =  $post->from->id;
 				$pointLog['object_id'] = $post->id;
-				$pointLog['object_type'] = 'get_virginity_comment';
+				$pointLog['object_type'] = 'get_comment';
 				$pointLog['giving_points'] = $givingPoint;
-				$pointLog['bonus'] = $this->_fanpageSetting['point_virginity'];
-				$pointLog['note'] = 'receive unique from comment' .$comment->id .'and ' .$this->_fanpageSetting['point_virginity'] .'bonus on breaking post virginity';
+				$pointLog['note'] = 'receive point from comment ' .$comment->id;
 				Zend_Debug::dump($pointLog);
 				echo 'break virgin' .$pointLogModel->insert($pointLog);
 			} else {
-				// update point log data, giving one point for unique in user post
-				$givingPoint = 1;
-				$pointLog = array();
-				$pointLog['fanpage_id'] = $commentData['fanpage_id'];
-				$pointLog['facebook_user_id'] =  $post->from->id;
-				$pointLog['object_id'] = $post->id;
-				$pointLog['object_type'] = 'get_unique_comment';
-				$pointLog['giving_points'] = 1;
-				$pointLog['note'] = 'receive unique from comment ' .$comment->id;
-				Zend_Debug::dump($pointLog);
-				echo $pointLogModel->insert($pointLog);
+				if (count($postUniqueList) === 0) {
+					// update point log data
+					$givingPoint = $this->_fanpageSetting['point_virginity'] + $this->_fanpageSetting['point_post_comment'];
+					$pointLog['fanpage_id'] = $commentData['fanpage_id'];
+					$pointLog['facebook_user_id'] =  $post->from->id;
+					$pointLog['object_id'] = $post->id;
+					$pointLog['object_type'] = 'get_virginity_comment';
+					$pointLog['giving_points'] = $givingPoint;
+					$pointLog['bonus'] = $this->_fanpageSetting['point_virginity'];
+					$pointLog['note'] = 'receive unique from comment' .$comment->id .'and ' .$this->_fanpageSetting['point_virginity'] .'bonus on breaking post virginity';
+					Zend_Debug::dump($pointLog);
+					echo 'break virgin' .$pointLogModel->insert($pointLog);
+				} else {
+					// update point log data, giving point for unique comment in user post
+					$givingPoint = $this->_fanpageSetting['point_post_comment'] + 1;
+					$pointLog = array();
+					$pointLog['fanpage_id'] = $commentData['fanpage_id'];
+					$pointLog['facebook_user_id'] =  $post->from->id;
+					$pointLog['object_id'] = $post->id;
+					$pointLog['object_type'] = 'get_unique_comment';
+					$pointLog['giving_points'] = $this->_fanpageSetting['point_post_comment'] + 1;
+					$pointLog['bonus'] = 1;
+					$pointLog['note'] = 'receive point from unique comment ' .$comment->id;
+					Zend_Debug::dump($pointLog);
+					echo $pointLogModel->insert($pointLog);
+				}				
 			}
 			
 			// update post owner profile

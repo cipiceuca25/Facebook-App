@@ -347,7 +347,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			//******* WE HAVE YET TO UPDATE THE POSTS DATABASE THRU THIS FUNCTION
 			
 			$db->beginTransaction();
-			echo 'attempting insert data to like.';
+			//echo 'attempting insert data to like.';
 			//$likeModel->insert($data);
 
 			//save like into database, return 0 if like exists in database and like flag is 0, return 1 if new like
@@ -358,9 +358,10 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 
 			$bonus = 0;
 			$virgin = false;
+			$fanPoint = 0;
 			//echo $bonus; 
-			if($likesModel !== 0){
-				echo 'like is not redundant';
+			if ($likesModel !== 0) {
+				//echo 'like is not redundant';
 				
 				$fanstat = new Model_FansObjectsStats();
 				if ($isComment) {
@@ -370,7 +371,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					if ($post == null){
 						$post['facebook_user_id'] = $this->_getParam('target_id');
 					}
-					echo 'increasing comment likes count';
+					//echo 'increasing comment likes count';
 					
 					//update fan stat table
 					if($post['facebook_user_id'] != $data['fanpage_id']){
@@ -420,7 +421,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					if (isset($post['post_comments_count'])){
 						if ($post['post_comments_count'] + $post['post_likes_count'] == 1){
 							$virgin=true;
-							echo 'virginity is true';
+							//echo 'virginity is true';
 						}
 					}
 
@@ -435,7 +436,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					$data['fanpage_id'],$post['facebook_user_id'], $this->_getParam('target_name'), $this->_getParam('mes'));
 				}
 				
-				echo 'adding activities';
+				//echo 'adding activities';
 				
 				//Zend_Debug::dump($likesModel);
 				//if likes model didn't return anything 
@@ -444,18 +445,19 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					$settingModel = new Model_FanpageSetting();
 					$fanpageSetting = $settingModel->getFanpageSetting($data['fanpage_id']);
 					$pointLogModel = new Model_PointLog();
-					echo ' Like is new, points need to be allocated';
+					//echo ' Like is new, points need to be allocated';
 					
 					// check target object is not liker's own post
 					if ($data['facebook_user_id'] != $post['facebook_user_id']) {
-						echo 'User did not like his/her own post';
+						//echo 'User did not like his/her own post';
 						//if not admin object , apply normal user like point rule
 						if ($post['facebook_user_id'] != $data['fanpage_id']) {
-							echo 'poster is not a fanpage';
+							//echo 'poster is not a fanpage';
 							//update get_like fan
 							$fan = new Model_Fans($post['facebook_user_id'], $data['fanpage_id']);
 							$fan->updateFanPoints($fanpageSetting['point_like_normal']);
 							$fan->updateFanProfile();
+							$this->updateProfileMemcache($fan->getFanProfile());
 								
 							//update get_like point log
 							$pointLog = array();
@@ -474,7 +476,9 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 								$fan = new Model_Fans($data['facebook_user_id'], $data['fanpage_id']);
 								$fan->updateFanPoints($fanpageSetting['point_like_normal']);
 								$fan->updateFanProfile();
-									
+								$fanPoint = $fan->getFanPoint();
+								$this->updateProfileMemcache($fan->getFanProfile());
+								
 								//update like point log
 								$pointLog = array();
 								$pointLog['fanpage_id'] = $data['fanpage_id'];
@@ -488,7 +492,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 							}
 						}else{
 							// admin object, apply admin point rule
-							echo 'trying memcache';
+							//echo 'trying memcache';
 							$cache = Zend_Registry::get('memcache');
 							
 							//$cache->remove($this->_fanpageId .'_' .$this->_userId);
@@ -523,11 +527,13 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 							// update like fan if not admin
 							if($data['facebook_user_id'] != $data['fanpage_id']) {
 								//update like fan
-								echo 'giving points to liker';
+								//echo 'giving points to liker';
 								$fan = new Model_Fans($data['facebook_user_id'], $data['fanpage_id']);
 								$fan->updateFanPoints($fanpageSetting['point_like_admin']+$bonus);
 								$fan->updateFanProfile();
-									
+								$fanPoint = $fan->getFanPoint();
+								$this->updateProfileMemcache($fan->getFanProfile());
+								
 								//update like point log
 								$pointLog = array();
 								$pointLog['fanpage_id'] = $data['fanpage_id'];
@@ -543,11 +549,15 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					}
 				}
 			}
+
 			$db->commit();
+			$this->_helper->json(array('fan_point'=>$fanPoint));
+			// update profile memcache
+					
 		} catch (Exception $e) {
 			//TO LOG
 			$db->rollBack();
-			echo $e;
+			//echo $e;
 		}
 	}
 
@@ -959,5 +969,22 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$fan = new Model_Fans($this->_user->facebook_user_id, $this->_user->fanpage_id);
 		$fan->updateLastNotification();
 	
+	}
+	
+	private function updateProfileMemcache($fanProfile) {
+		$cache = Zend_Registry::get('memcache');
+			
+		try {
+			$fanProfileId = $fanProfile->fanpage_id .'_' .$fanProfile->facebook_user_id .'_fan';
+			//$cache->remove($fanProfileId);
+			if(isset($cache)){
+				//echo 'db look up';
+				$fanModel = new Model_Fans($fanProfile->facebook_user_id, $fanProfile->fanpage_id);
+				$cache->save($fanProfile, $fanProfileId);
+			}
+		} catch (Exception $e) {
+			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+			//echo $e->getMessage();
+		}
 	}
 }

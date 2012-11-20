@@ -7,6 +7,7 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 	const POINT_LIKE_NORMAL = 1;
 	const POINT_COMMENT_NORMAL = 0;
 	const POINT_POST_NORMAL = -5;
+	const POINT_POST_COMMENT = 2;
 	const POINT_LIKE_ADMIN = 1;
 	const POINT_COMMENT_ADMIN = 2;
 	const POINT_BONUS_DURATION = 60;
@@ -83,6 +84,7 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 				'point_like_normal'=>self::POINT_LIKE_NORMAL,
 				'point_comment_normal'=>self::POINT_COMMENT_NORMAL,
 				'point_post_normal'=>self::POINT_POST_NORMAL,
+				'point_post_comment'=>self::POINT_POST_COMMENT,
 				'point_like_admin'=>self::POINT_LIKE_ADMIN,
 				'point_comment_admin'=>self::POINT_COMMENT_ADMIN,
 				'point_virginity'=>self::POINT_VIRGINITY,

@@ -83,3 +83,27 @@ function ActivityCtrl($scope, $http) {
 function FacebookUserCtrl($scope, $http) {
 
 }
+
+// rss controller
+function RssCtrl($scope, $http) {
+	console.log('Rss');
+    var updateFeed = function (data) {
+    	$scope.feeds = data;
+    }
+    
+	$scope.getFeed = function() {
+		$http({method: 'GET', url: '/fc/rss/fanpage/'+$scope.fanpageId}).
+		success(function(data, status) {
+		    console.log(data);
+		    if (status === 200) {
+		    	//console.log(data);
+		    	updateFeed(data); 
+		    }
+		}).
+		error(function(data, status) {
+		    $scope.data = data || "Request failed";
+		    $scope.status = status;
+		    //console.log($scope.data);
+		});
+	}
+}

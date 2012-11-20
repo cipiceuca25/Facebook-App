@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+
+    Fanpage ID: <input ng-model="fanpageId">
+	<button ng-click="getFeed()">get</button>
+
+    </div>
+    <div class="span10">
+      <!--Body content-->
+
+      <ul class="fanpage-feed">
+        <li ng-repeat="feed in feeds" class="thumbnail">
+        	<div class="feed-style">
+	        	<ul>
+	        		<li>{{feed.title}}</li>
+	        		<li>{{feed.description}}</li>
+	        		<li>{{feed.authors}}</li>
+	        		<li>{{feed.link}}</li>
+	        		<li>{{feed.dateModified}}</li>
+	        		<li>{{feed.content | htmlDecode}}</li>
+	        	</ul>
+        	</div>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>

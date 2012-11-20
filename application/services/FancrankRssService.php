@@ -49,17 +49,16 @@ class Service_FancrankRssService {
 		$arrayFeed = array();
 		foreach ($this->_rssFeed as $entry) {
 			$data = array (
-					'title' => $entry->title,
-					'description' => $entry->summary,
-					'dateModified' => $entry->updated,
-					'authors' => $entry->author,
-					'link' => $entry->link,
-					'content' => $entry->content
+					'title' => $entry->title(),
+					'description' => $entry->summary(),
+					'dateModified' => $entry->updated(),
+					'authors' => $entry->author(),
+					'link' => $entry->link(),
+					'content' => $entry->content()
 			);
-		
 			$arrayFeed [] = $data;
 		}
-		Zend_Debug::dump($arrayFeed);
+		//Zend_Debug::dump($arrayFeed);
 		return $arrayFeed;
 	}
 	

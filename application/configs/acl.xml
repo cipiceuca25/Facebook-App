@@ -2,16 +2,12 @@
 <superusers>
 	<internal>
 		<user>
-			<name>stephen</name>
-			<password>stephen@fancrank.com</password>
+			<username>admin</username>
+			<password>admin123</password>
 		</user>
 		<user>
-			<name>dan</name>
-			<password>dan</password>
-		</user>
-		<user>
-			<name>mannix</name>
-			<password>mannix</password>
-		</user>				
+			<username>stephen</username>
+			<password>admin123</password>
+		</user>		
 	</internal>
 </superusers>

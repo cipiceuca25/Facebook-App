@@ -167,7 +167,7 @@ foreach ($messages as $i => $message) {
 						$pointLog['fanpage_id'] = $job->fanpage_id;
 						$pointLog['facebook_user_id'] =  $job->facebook_user_id;
 						$pointLog['object_id'] = $result->id;
-						$pointLog['object_type'] = 'comment';
+						$pointLog['object_type'] = 'comments';
 						$pointLog['giving_points'] = $fanpageSetting['point_comment_admin'] + $bonus;
 						$pointLog['note'] = 'comment on admin object , bonus : ' .$bonus;
 						
@@ -395,7 +395,7 @@ function processAdminPost($result) {
 					$pointLog['fanpage_id'] = $result['fanpage_id'];
 					$pointLog['facebook_user_id'] =  $comment->from->id;
 					$pointLog['object_id'] = $comment->id;
-					$pointLog['object_type'] = $comment->comment_type;
+					$pointLog['object_type'] = 'comments';
 					$pointLog['giving_points'] = $fanpageSetting['point_comment_admin'] + $bonus;
 					$pointLog['bonus'] = $bonus;
 					$pointLog['note'] = 'comment on admin object , bonus : ' .$bonus;

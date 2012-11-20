@@ -12,11 +12,14 @@
  */
 class Service_InsightCollectorService extends Service_FancrankCollectorService {
 
-	public function getFullInsightData() {
+	/*
+	 * @format if false, it will return native format
+	 */ 
+	public function getFullInsightData($format=true) {
 		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/insights?access_token=' .$this->_accessToken .'&since=30+days+ago';
 		$insights = array();
 		$this->getFanpageInsights($url, 30, null, $insights);
-		return $insights;
+		return $format ? $this->formatInsight($insights) : $insights;
 	}
 
 	protected function getFanpageInsights($url, $level, $since = null, &$result) {
@@ -36,10 +39,8 @@ class Service_InsightCollectorService extends Service_FancrankCollectorService {
 			$url = !empty($response->paging->previous) ? $response->paging->previous : null;
 			if (! empty($response->data)) {
 				$result[] = $response->data;
-				$this->getInsightsRecursive($url, $level, null, $result);
-			} else {
-				return array();
-			}
+			} 
+			$this->getFanpageInsights($url, $level, null, $result);
 		} catch (Exception $e) {
 			$collectorLogger = Zend_Registry::get ( 'collectorLogger' );
 			$msg = sprintf('Unable to fetch feed from fanpage %s. Error Message: %s ', $this->_fanpageId, $e->getMessage ());
@@ -49,15 +50,32 @@ class Service_InsightCollectorService extends Service_FancrankCollectorService {
 	}
 	
 	public function logInsight($data, $overwrite=false) {
-		$filePath = DATA_PATH .'/temp/' .$this->_fanpageId .'_last_insight.data';
+		$date = new Zend_Date();
+		$filePath = DATA_PATH .'/temp/' .$this->_fanpageId .'_' .$date->getDate()->toString('y-M-d') .'_last_insight.data';
 	
 		if (file_exists($filePath) && !$overwrite) {
 			echo "The file $filePath exists";
-			return unserialize( file_get_contents( $filePath ) );;
+			return unserialize( file_get_contents( $filePath ) );
 		} else {
 			echo "The file $filePath not exists";
 			file_put_contents( $filePath, serialize( $data ) );
 		}
+	}
+	
+	private function formatInsight($data) {
+		$result = array();
+		foreach ($data as $values) {
+			foreach ($values as $insight) {
+				if (!empty($insight->id) && !empty($insight->values)) {
+					foreach (array_reverse($insight->values) as $value) {
+						$result[$insight->id]->values[$value->end_time] = $value->value;
+					}
+				} else if (!empty($insight->id)) {
+					$result[$insight->id] = $insight;
+				}
+			}
+		}
+		return $result;
 	}
 }
 

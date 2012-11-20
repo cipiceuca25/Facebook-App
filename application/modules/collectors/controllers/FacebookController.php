@@ -1454,25 +1454,31 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$data['fanpage_name'] = 'dan club';
     	$data['access_token'] = 'AAAFHFbxmJmgBAMSA4ZAdwftxnE4X9BRWOtZBehbIe4F923gH8PreivIqkF6JnZChO8idLwSTX4HqXRpfyaH18JKrjMldKHdq14wEMJnUAZDZD';
     	//$data['post_id'] = $this->_getParam('post_id');
-    	$data['message'] = 'I can get in';
+    	$data['message'] = 'data load cant post in this page';
+    	//Zend_Debug::dump($data); exit();
     	try{
-    		$fancrankFB = new Service_FancrankFBService();
-    		$params =  array(
-    				'message' => $data['message'],
-    				'access_token' => $data['access_token']
-    		);
     
-    		$ret_obj = $fancrankFB->api('/'.$data['fanpage_id'].'/feed', 'POST',
-    				$params);
-    			
-    		Zend_Debug::dump($ret_obj);
+    		$client = new Zend_Http_Client;
+    		$client->setUri("https://graph.facebook.com/". $data['fanpage_id']  .'/feed');
+    		$client->setMethod(Zend_Http_Client::POST);
+    		$client->setParameterGet('access_token', $data['access_token']);
+    		$client->setParameterGet('message', $data['message']);
 
+
+//     		$fancrankFB = new Service_FancrankFBService();
+//     		$params =  array(
+//     				'message' => $data['message'],
+//     				'access_token' => $data['access_token']
+//     		);
     		
-    		$data['post_id'] = $ret_obj['id'];
+//     		$data['post_id'] = $ret_obj['id'];
     		
-    		$ret_obj = $fancrankFB->api('/'.$data['post_id'], 'GET',
-    				$params);
-    		exit();
+//     		$ret_obj = $fancrankFB->api('/'.$data['post_id'], 'GET',
+//     				$params);
+    		$response = $client->request();
+    		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+    		Zend_Debug::dump($result); exit();
+
     		//$data['post_id'] = $postId;
     		Zend_Debug::dump($data['post_id']);	
     		$client = new Zend_Http_Client;
@@ -2475,34 +2481,19 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test29Action() {
+    	$begin = time();
         $fanpageId = '216821905014540';
     	$accessToken = 'AAAFHFbxmJmgBAPUVD7kjQIquRVpaDPJ8TKUPMXqUSD0BuP7F9KhsXtC1uEnWe0eaVTPebNprupHZC4fhNZA0ZAYTQoAjnNM0lG7ZBWQApc3Ttfphz7Dg';
     	 
     	$insightData = array();
     	$testInsighdId = 'full_insight';
     	$insightCollector = new Service_InsightCollectorService(null, $fanpageId, $accessToken, 'insight');
-    	
-    	
-    	try {
-    		$cache = Zend_Registry::get('memcache');
-    		//$insightData = $insightCollector->getFullInsightData();
-    		if(isset($cache) && !$cache->load($testInsighdId)){
-    			//Look up the facebook graph api
-    			echo 'look up facebook graph api';
-
-    			if($insightData) {
-    				//Save to the cache, so we don't have to look it up next time
-    				//$cache->save($insightData, $testInsighdId, array(), 7200);
-    			}
-    		}else {
-    			echo 'memcache look up';
-    			$insightData = $cache->load($testInsighdId);
-    		}
-    	} catch (Exception $e) {
-    		echo $e->getMessage();
-    	}
-    	$insightData = $insightCollector->logInsight($insightData);
+    	$insightData = $insightCollector->getFullInsightData();
     	Zend_Debug::dump($insightData);
+    	$end = time();
+    	echo 'total time: ' .($end - $begin); 
+    	$insightData = $insightCollector->logInsight($insightData, true);
+    	//Zend_Debug::dump($insightData);
     }
     
     public function test30Action() {
@@ -2510,5 +2501,35 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$rss = new Service_FancrankRssService();
     	$rss->readPageRssFeed($fanpageId);
     	$rss->formatRssFeed('array');
+    }
+    
+    public function test31Action() {
+        $fanpageId = '216821905014540';
+    	$accessToken = 'AAAFHFbxmJmgBAPUVD7kjQIquRVpaDPJ8TKUPMXqUSD0BuP7F9KhsXtC1uEnWe0eaVTPebNprupHZC4fhNZA0ZAYTQoAjnNM0lG7ZBWQApc3Ttfphz7Dg';
+    	$date = new Zend_Date();
+    	//Zend_Debug::dump($date->getDate()->toString('y-M-d')); 
+		$filePath = DATA_PATH .'/temp/' .'376385369079791_2012-11-16_last_insight.data';
+		$data = unserialize( file_get_contents( $filePath ) );
+		//Zend_Debug::dump($data);
+		
+		foreach ($data as $key=>$value) {
+			echo $key .'<br/>';
+		}
+    }
+    
+    public function test32Action() {
+    	$begin = time();
+    	$fanpageId = '376385369079791';
+    	$accessToken = '376385369079791|dD06ENQhJjuB5dsCH1ryfvYKG78';
+    
+    	$insightData = array();
+    	$testInsighdId = 'full_insight';
+    	$insightCollector = new Service_InsightCollectorService(null, $fanpageId, $accessToken, 'insight');
+    	$insightData = $insightCollector->getFullInsightData();
+    	Zend_Debug::dump($insightData);
+    	$end = time();
+    	echo 'total time: ' .($end - $begin);
+    	$insightData = $insightCollector->logInsight($insightData, true);
+    	//Zend_Debug::dump($insightData);
     }
 }

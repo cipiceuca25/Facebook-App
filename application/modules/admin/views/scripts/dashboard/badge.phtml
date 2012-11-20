@@ -18,6 +18,17 @@
 				<span class="amount"> Today - <?=$this->badgesbytime[2]['badges']?> | This Week - <?=$this->badgesbytime[1]['badges']?>| This Month - <?=$this->badgesbytime[0]['badges']?></span>
 			</div>
 		</div>
+		
+		<div class="control-group">
+			<label>Custom Filter: </label><input class="searchFilter input-medium search-query">
+			<select class="pageSize">
+				<option value="5">Min Range</option>
+				<option value="50">Mid Range</option>
+				<option value="100">Max Ranpge</option>
+			</select>
+		</div>
+		
+		
 	</div>
 	
 	<div class="span9">
@@ -120,3 +131,20 @@
 	
 </div>
 
+<script type="text/javascript">
+	$('.searchFilter').live('keyup', function(e) {
+		//console.log($(this).val());
+		if (mostAwardBadges) {
+			mostAwardBadges.fnFilter( $(this).val() );
+			//recentBadges.fnFilter($(this).val());
+		}
+	});
+
+	$('.pageSize').live('change', function(e) {
+		var size = $(this).val();
+		if (! isNaN(size) && mostAwardBadges) {
+			console.log(size);
+			mostAwardBadges.fnLengthChange( size );
+		}
+	});
+</script>

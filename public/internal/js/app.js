@@ -2,7 +2,7 @@
 
 /* App Module */
 
-angular.module('fc-internal', []).config(
+angular.module('fc-internal', ['MyHtmlModule']).config(
 		[ '$routeProvider', function($routeProvider) {
 			$routeProvider.when('/index', {
 				templateUrl : '/',
@@ -22,7 +22,10 @@ angular.module('fc-internal', []).config(
 			}).when('/facebookuser', {
 				templateUrl : '/fc/index/facebookuser',
 				controller : FacebookUserCtrl				
-			}).			
+			}).when('/rss', {
+				templateUrl : '/fc/rss',
+				controller : RssCtrl				
+			}).				
 			when('/home', {
 				templateUrl : '/internal/partials/home.html',
 				controller : HomeCtrl

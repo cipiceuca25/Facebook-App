@@ -16,12 +16,12 @@
             "http_headers": {
                 "User-Agent":   "Fancrank"
             },
-            "permission_scope" : "read_stream,publish_stream,email,user_about_me,user_birthday,user_checkins,user_hometown,user_location,user_likes,user_status,read_friendlists,manage_notifications,user_interests,user_online_presence",
+            "permission_scope" : "publish_stream,email,user_about_me,user_birthday,user_checkins,user_hometown,user_location,user_likes,user_status,read_friendlists,manage_notifications,user_interests,user_online_presence",
             "extra_parameters": {
                 "redirect": {
                     "display": "popup",
                     "response_type": "code",
-                    "scope": "read_stream,read_insights,manage_pages,publish_stream,email,user_about_me,user_birthday,user_hometown,user_location,user_status"
+                    "scope": "manage_pages,publish_stream,email,user_about_me,user_birthday,user_hometown,user_location,user_status"
                 }
             },
             "user_extra_parameters": {
