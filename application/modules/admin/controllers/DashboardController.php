@@ -3,8 +3,6 @@
 class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 {
 	
-	
-	
 	public function preDispatch()
 	{
 		parent::preDispatch();
@@ -12,9 +10,11 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$fanpageId = $this->_getParam('id');
 		$uid = $this->_identity->facebook_user_id;
 		$fanpage_admin_model = new Model_FanpageAdmins;
+		
 		if(!empty($fanpageId) && ! $fanpage_admin_model->findRow($uid, $fanpageId)) {
 			$this->_helper->redirector('index', 'index');
 		}
+		
 		if(!empty($fanpageId)) {
 			
 			$fanpage = $fp->find($this->_getParam('id'))->current();
@@ -23,10 +23,22 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		}else {
 			//$this->_redirect('http://www.fancrank.com');
 		}
+		
 		$pages = $fp->getActiveFanpagesByUserId( $this->_identity->facebook_user_id);
 		$this->view->pages = $pages;
-	
 		
+		
+		$activepages = array();
+		
+		foreach ($pages as $x){
+			
+			if ($x['ranking'] > 0){
+				$activepages[] = $x;
+			}
+			
+		}
+		//Zend_Debug::dump($activepages);
+		$this->view->active_pages = $activepages;
 	}
 	
     public function indexAction()

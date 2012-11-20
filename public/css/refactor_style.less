@@ -299,10 +299,10 @@ filter:alpha(opacity=95);
 
 .box{	
 margin:0 0 20px 0;
-background-color:@color-post-background;
+background-color:@color-box-background;
 .border-radius(1px);
 padding:30px 8px 8px 8px;
-border: 1px solid  @color-main-container-border;
+border: 1px solid  @color-box-border;
 }
 
 .box.notitle{
@@ -393,21 +393,22 @@ float:right;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .top-list{
-background-color:@color-ranking-background;
-
-
+//background-color:@color-ranking-background;
 max-height:224px;
 }
 
+/*
 .top-list li:hover{
 background-color: @color-post-background-hover;
 }
+*/
+
 .top-list .stats li,
 .popover .stats li,
 .user-profile .stats li,
 #myprofile .stats li{
 	font:10px/100% Helvetica, Arial,  sans-serif;
-	border-right: 1px solid @color-post-user-border;
+	//border-right: 1px solid @color-post-user-border;
 	height:60px;
 	float:left;
 	width:16.505606105%;
@@ -417,7 +418,7 @@ background-color: @color-post-background-hover;
 }
 .top-list .stats li,
 .popover .stats li{
-	width:19.1174530982%;
+	width:20%;
 }
 
 .top-list .stats li{
@@ -444,8 +445,9 @@ background-color: @color-post-background-hover;
 }
 
 .stats-block{
-	text-align:center;
+	//text-align:center;
 	position:relative;
+	margin-left:5px;
 	top:12px;
 }
 
@@ -488,21 +490,18 @@ background-color: @color-post-background-hover;
 
 .top-list .stats{
 	height:18px;
-	right:66px;
-	position:absolute;
-	top:30px;
-	border-top: 0px;
-	min-width:280px;
-}
 
-#whatisfancrank{
-margin-top:8px;
+	//position:absolute;
+	margin:8px;
+	border-top: 0px;
+	min-width:350px;
+	float:right;
 }
 
 
 .top-list .ranker{
-border-bottom:1px solid @color-ranking-border;
-height:55px;
+border-bottom:1px solid @color-box-border;
+height:40px;
 width:100%;
 position:relative;
 }	
@@ -514,12 +513,21 @@ height:36px;
 .top-list .ranker.first{
 border-top:0 solid;
 }
-	
+
+.user .rank,
 .top-list .rank{
-width:55px;
+width:24px;
+height:24px;
+margin:8px;
+margin-left:2px;
 background-color:@color-ranking-number;
 float:left;
 }	
+
+.user .rank{
+.large-face;
+margin-top:0px;
+}
 
 .top-list.mini .rank{
 width:36px;
@@ -530,12 +538,15 @@ height:36px;
 background-color:@color-ranking-first;
 }	
 
+.user .rank h1,
+.user .rank h2,
+.user .rank h3,
 .top-list .rank h1,
 .top-list .rank h2,
 .top-list .rank h3{
 color: @color-ranking-number-text;
-font: bold 60px/55px Helvetica, Arial,  sans-serif;
-text-align:right;
+font: bold 14px/24px Helvetica, Arial,  sans-serif;
+text-align:center;
 }
 
 .top-list.mini .follow{
@@ -568,10 +579,10 @@ font:bold 35px/55px Helvetica, Arial,sans-serif;
 }
 
 .top-list .user{
-margin:10px 0 0 10px;
+margin:8px;
+margin-left:0px;
 float:left;
-position:absolute;
-left:55px;
+
 //width:180px;
 }
 
@@ -588,16 +599,15 @@ left:0px;
 .top-list.mini .user{
 margin:3px 0 0 5px;
 width:auto;
-
-		left:35px;
+left:35px;
 
 }
 
 .top-list .user .name{
-font:18px Helvetica,Arial,  sans-serif;
-margin-left:10px;
+font:13px Helvetica,Arial,  sans-serif;
+margin-left:8px;
 position:relative;
-top:7px;
+margin-top:4px;
 float:left;
 }
 
@@ -610,7 +620,7 @@ top:8px;
 font:12px Helvetica,Arial,  sans-serif;
 }
 .top-list .user .name.first{
-font:23px Helvetica,Arial,  sans-serif;
+font:14px Helvetica,Arial,  sans-serif;
 top:4px;
 }
 
@@ -620,11 +630,18 @@ top:7px;
 }
 
 .top-list .points{
-position:relative;
-top:4px;
-text-align:right;
 
-//float:right;
+margin:4px;
+
+
+float:right;
+}
+
+.top-list .user-badge{
+
+margin:8px;
+margin-right:2px;
+float:right;
 }
 
 .top-list .points h3{
@@ -714,15 +731,15 @@ padding-bottom:5px;
 }
 
 .post-container{
-background-color:@color-post-background;
+//background-color:@color-post-background;
 position:relative;
 //border-bottom:1px solid @color-main-container-border;
 padding-top:10px;
 }
 
-.post-container:hover{
-background-color: @color-post-background-hover;
-}
+//.post-container:hover{
+//background-color: @color-post-background-hover;
+//}
 
 .post-container .user{
 font: bold 13px Helvetica, Arial, sans-serif;
@@ -778,12 +795,13 @@ margin-top:10px;
 }
 
 .post-container .link .link-left{	
-width:35%;
+max-width:35%;
 display:inline-block;
 }
 
 .post-container .link .link-right{
-width:60%;
+min-width:60%;
+max-width:100%;
 display:inline-block;
 margin-top:1px;
 vertical-align:top;
@@ -1049,21 +1067,21 @@ width:218px;
 
 #followinglist .top-list.mini .ranker,
 #followerslist .top-list.mini .ranker{
-border-bottom:1px solid @color-post-user-border;
+border-bottom:1px solid @color-box-border;
 border-top:0px solid;
 }
 
 #recent_activities{
 overflow: auto;
 padding-left:5px;
-height: 948px;
+max-height: 948px;
 .border-radius(3px);
 }
 
 #user_activities .post-container,
 #recent_activities .post-container{
 font-size:11px;
-background:@color-post-background;
+//background:@color-post-background;
 padding:3px;
 .border-radius(0px);
 margin:1px -5px 0px;
@@ -1072,11 +1090,12 @@ margin:1px -5px 0px;
 #recent_activities .post-container{
 width:229px;
 }
+/*
 #user_activities .post-container:hover,
 #recent_activities .post-container:hover{
 background:@color-post-background-hover;
 }
-
+*/
 
 .track3 {
 width: 5px;
@@ -1127,19 +1146,19 @@ padding:9px;
 }
 
 .upcoming-badges .progress{
-height:50px;
-width:50px;
+height:40px;
+width:40px;
 margin:0px 8px 0px;
 }
 .upcoming-badges .progress a{
 position:relative;
-top:-50px;
+top:-40px;
 float:left;
 
 }
 
 .upcoming-badges .bar{
-height:50px;
+height:40px;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1223,10 +1242,16 @@ position:relative;
 
 }
 
+
+
+/*
 .user-profile h1,
 #myprofile h1{
 	font-size:40px;
 }
+
+*/
+
 .popover-content .post .date{
 font-size:11px;
 float:Right;
@@ -1369,9 +1394,10 @@ margin-right:10px;
 /////////////////////////////////////////////////////////////////////////////////////
 
 #whatisfancrank{
-	margin-top:3px;
-	height:401px;
+
+	height:329px;
 	width:370px;
+	margin-top:8px;
 }
 
 .italic{
@@ -1572,7 +1598,7 @@ to {-o-transform: translate(-810px,0px); /* Safari and Chrome */}
 
 .noclick:hover {
 text-decoration:none;
-color:@color-main-link-text;
+color:@color-text;
 cursor:default;
 }
 
@@ -1679,10 +1705,19 @@ font-size: 12px;
 }
 
 .progress.earned-badges{
-height:50px;
-width:50px;
+height:40px;
+width:40px;
 margin:10px 13.5px 10px;
 display:inline-block
+}
+
+.progress.earned-badges .bar{
+width: 100%;height:40px;
+}
+.progress.earned-badges a{
+float:left;
+position:relative;
+top:-40px;
 }
 
 .post-container .comment-container{
@@ -1693,3 +1728,115 @@ display:inline-block
 position:relative;
 }
 
+.large-face{
+height:40px;
+width:40px;
+}
+
+.small-face{
+height:24px;
+width:24px;
+}
+
+
+
+
+.rvrow{
+width:100%;
+min-height:10px;
+}
+.rvgrid-1{
+width:28px;
+//width:1.75em;
+}
+.rvgrid-2{
+width:73px;
+//width:4.563em;
+}
+.rvgrid-3{
+width:118px;
+//width:7.375em;
+}
+.rvgrid-4{
+width:163px;
+//width:10.188em;
+}
+.rvgrid-5{
+width:208px;
+//width:13.000em;
+}
+.rvgrid-6{
+width:253px;
+//width:15.813em;
+}
+.rvgrid-7{
+width:298px;
+//width:18.625em;
+}
+.rvgrid-8{
+width:343px;
+//width:21.438em;
+}
+.rvgrid-9{
+width:388px;
+//width:24.250em;
+}
+.rvgrid-10{
+width:433px;
+//width:27.063em;
+}
+.rvgrid-11{
+width:478px;
+//width:29.875em;
+}
+.rvgrid-12{
+width:523px;
+//width:32.688em;
+}
+.rvgrid-13{
+width:568px;
+//width:35.500em;
+}
+.rvgrid-14{
+width:613px;
+//width:38.313em;
+}
+.rvgrid-15{
+width:658px;
+//width:41.125em;
+}
+.rvgrid-16{
+width:703px;
+//width:43.938em;
+}
+.rvgrid-17{
+width:748px;
+//width:46.750em;
+}
+.rvgrid-18{
+width:793px;
+//width:49.563em;
+}
+
+[class*='rvgrid-']{
+padding-right:17px;
+//padding-right:1.063em;
+float:left;
+}
+[class*='rvgrid-']:last-of-type {
+padding-right:8.5px;
+//padding-right: 0.531em;
+}
+[class*='rvgrid-']:first-of-type {
+padding-left:8.5px;
+//padding-left: 0.531em;
+}
+
+[class*='rvgrid-'] [class*='rvgrid-']:first-of-type {
+padding-left:0px;
+//padding-left: 0.531em;
+}
+[class*='rvgrid-'] [class*='rvgrid-']:last-of-type {
+padding-right:0px;
+//padding-left: 0.531em;
+}

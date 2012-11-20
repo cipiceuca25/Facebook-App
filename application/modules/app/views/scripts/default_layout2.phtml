@@ -86,11 +86,6 @@
 		<link rel="stylesheet" href="/css/app/joyride-1.0.5.css" />
         <?php $this->selectTheme($this->color, APPLICATION_ENV); ?>
 
-		<style>
-		.container,.navbar-fixed-top .container {
-			width: 794px;
-		}
-		</style>
 
 	</head>
 
@@ -133,9 +128,14 @@
 									<li><a href="#redeem" id="redeem-tab" data-toggle="tab"><img src="/img/icons/Rewards.png" />Redeem</a></li>
 								</ul>
 								<ul class="nav nav-tabs" id="toolbar">
-									<? if ($this->fan->fan_point != '?'){?>
-									<li><a rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?><img src="/img/icons/Points.png" /></a></li>
-									<?php }?>
+									
+									<li>
+										<? if ($this->fan->fan_point != '?'){?>
+											<a rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?><img src="/img/icons/Points.png" /></a>
+										<?php }else{?>
+											<div style="width:60px;height:50px"></div>
+										<?php }?>
+									</li>
 															<!-- <li class="row-fluid" id='notification_upcoming_badges'>
 															 
 															<?php // foreach ($this->notibadges as $b){?>
@@ -158,8 +158,6 @@
 									<li><div class="line"></div></li>
 									<li class="notification" >
 										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/Mail.png" /></a>
-								
-										
 									</li>
 									<li>
 										<div id="logout-tab" class="dropdown">

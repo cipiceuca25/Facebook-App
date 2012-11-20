@@ -1,4 +1,4 @@
-var setFeed = 'all';
+var setFeed = 'start';
 var myfeedoffset = 0;
 
 var ffb = true;
@@ -12,9 +12,9 @@ var backgroundcolor;
 
 $(document).ready(function() {
 	setInterval(MouseWheelHandler, 500);
-	window.addEventListener("mousewheel", MouseWheelHandler, false);  
+	document.addEventListener("mousewheel", MouseWheelHandler, false);  
     // Firefox  
-	window.addEventListener("DOMMouseScroll", MouseWheelHandler, false);  
+	document.addEventListener("DOMMouseScroll", MouseWheelHandler, false);  
 // trick to indentify parent container
 	/*	
 	if (window.location != window.parent.location) {
@@ -103,7 +103,86 @@ $(document).mousemove(function(e) {
 	
 	
 });
+//===========================================================================================
 
+
+$(document).on('mouseenter', '#recent_activities', function (){
+	//console.log('hover on');
+	//console.log(this.scrollHeight);
+	//console.log(parseInt($(this).css('max-height')));
+	if(document.addEventListener  && this.scrollHeight > parseInt($(this).css('max-height'))){ //Firefox only
+	    document.addEventListener("DOMMouseScroll", mouseScroll, true);
+	    document.addEventListener("mousewheel",  mouseScroll, true);  
+	}
+});
+
+$(document).on('mouseleave', '#recent_activities', function (){
+	//console.log('hover off');
+
+	
+	document.removeEventListener("DOMMouseScroll", mouseScroll, true);
+	document.removeEventListener("mousewheel", mouseScroll, true);
+	
+});
+
+$(document).on('mouseenter', '.comments', function (){
+	
+	//console.log($(this).css('max-height'));
+	//console.log($(this).height());
+	if(document.addEventListener && this.scrollHeight > parseInt($(this).css('max-height'))){ //Firefox only
+		//console.log('hover on');
+	    document.addEventListener("DOMMouseScroll",  mouseScroll, true);
+	    document.addEventListener("mousewheel",  mouseScroll, true);  
+	}
+
+});
+
+$(document).on('mouseleave', '.comments', function (){
+	//console.log('hover off');
+	document.removeEventListener("DOMMouseScroll", mouseScroll, true);
+	document.removeEventListener("mousewheel", mouseScroll, true);
+	
+});
+
+$(document).on('mouseenter', '.comments.popup_scroll', function (){
+	
+	//console.log($(this).css('max-height'));
+	if(document.addEventListener && this.scrollHeight > parseInt($(this).css('max-height'))){ //Firefox only
+		//console.log('hover on');
+	    document.addEventListener("DOMMouseScroll",  mouseScroll, true);
+	    document.addEventListener("mousewheel",  mouseScroll, true);  
+	}
+
+});
+
+$(document).on('mouseleave', '.comments.popup_scroll', function (){
+	//console.log('hover off');
+	document.removeEventListener("DOMMouseScroll", mouseScroll, true);
+	document.removeEventListener("mousewheel", mouseScroll, true);
+	
+
+});
+
+
+/**
+$(document).on('mouseenter', '.comments.popup_scoll', function (){
+	console.log('hover on');
+	if(window.addEventListener){ //Firefox only
+	    window.addEventListener("DOMMouseScroll", function(e){e.preventDefault()}, true);
+	    window.addEventListener("mousewheel", function(e){e.preventDefault()}, true);  
+	}
+	
+});
+$(document).on('mouseleave', '.comments.popup_scoll', function (){
+	console.log('hover off');
+	if(window.addEventListener){ //Firefox only
+	    window.addEventListener("DOMMouseScroll", function(e){console.log('trying to move');return true}, true);
+	    window.addEventListener("mousewheel", function(e){console.log('trying to move');return true}, true);  
+	}
+
+});
+**/
+//===========================================================================================
 
 
 $(document).on('mouseover', '[rel=popover]', function() {
@@ -119,7 +198,12 @@ $(document).on('mouseover', '[rel=popover]', function() {
 	
 });
 
-function MouseWheelHandler() {  
+function mouseScroll(e){
+	//console.log('scroll prevented');
+	e.preventDefault();
+}
+
+function MouseWheelHandler() {  $("#toppost").height();
     // cross-browser wheel delta  
     // old IE support  
    // alert(e.wheelDelta);
@@ -610,10 +694,11 @@ function getNewsfeed() {
 		success : function(data) {
 			
 			$('#news-feed').html(data);
-	
-			getTopFan();
+			setFeed = 'start';
+			//getTopFan();
+			getTopList('top-fan-mini', '#topfan');
 			getTopPost();
-			
+			getFancrankfeed('myfeed');
 			changeTime('.time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -828,8 +913,6 @@ function getFancrankfeed(view) {
 			}else{
 				$('#more_post').remove();
 				$('#fancrankfeed').append("<div id='loader' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' style='margin-top:20px'/></div>");
-				
-				
 			}
 			
 		},
@@ -921,7 +1004,12 @@ function getLeaderboard() {
 		},
 		success : function(data) {
 			$('#leaderboard').html(data);
-
+			getTopList('top-fan', '.top-fan.box');
+			getTopList('fan-favorite', '.fan-favorite.box');
+			getTopList('top-talker', '.top-talker.box');
+			getTopList('top-clicker','.top-clicker.box');
+			getTopList('top-followed','.top-followed.box');
+			getTopList('top-fan-all','.top-fan-all.box');
 			//getLatestPost();
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -930,6 +1018,33 @@ function getLeaderboard() {
 			console.log('error getting the leaderboards');
 		}
 	});
+}
+
+function getTopList(list, ui){
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/toplist/' + fanpageId
+				+ '?facebook_user_id=' + userId + "&list=" + list,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+			$(ui).append("<div class='removal' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$(ui + ' .removal').remove();
+			$(ui).append(data);
+				
+			//getLatestPost();
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			//alert(url);
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting the leaderboards');
+		}
+	});
+	
+	
 }
 
 function getMyProfile() {
@@ -1532,11 +1647,13 @@ function timeZone(time) {
 	if (hour == 0) {
 		hour = 12;
 	}
+	
 	if (hour > 12) {
 		hour = hour - 12;
 	}
 	
 	var min = date.getMinutes();
+	
 	if (min < 10) {
 		min = '0' + min;
 	}

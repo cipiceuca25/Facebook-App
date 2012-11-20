@@ -1,8 +1,8 @@
 <div class="panel">
-	<div class="row-fluid">
-		<div class="span6">
+	<div class="rvrow">
+		<div class="rvgrid-9">
 			
-			<div class="row box">
+			<div class="box">
 				<div class="title nopic">
 					
 					<div class="title-header nopic">What is Fancrank?</div>
@@ -13,12 +13,12 @@
 				</div>
 			</div>
 		</div>
-		<div class="span6">
+		<div class="rvgrid-9">
 			<div class="top-fan" id="login">
 				
 				
 			
-					<div class="row box">
+					<div class="box">
 						<div class="title nopic">
 							
 							<div class="title-header nopic">
@@ -47,7 +47,7 @@
 										
 										<div class="photo">
 											<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-												<img class="face" width="35" height="35" src="https://graph.facebook.com/<?=$top_fan['facebook_user_id'] ?>/picture"
+												<img class="small-face"  src="https://graph.facebook.com/<?=$top_fan['facebook_user_id'] ?>/picture"
 												onerror="ImgError(this);">
 											</a>
 										</div>
@@ -61,7 +61,7 @@
 
 									<div class="points">
 										<h3>
-											<?= $top_fan['number_of_posts'] ?>
+											<?= $top_fan['count'] ?>
 										</h3>
 										<span>Points</span>
 									
@@ -85,7 +85,7 @@
 											
 												<div class="photo">
 													<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-													<img class="face" width="35" height="35"
+													<img class="small-face" 
 													src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
 													onerror="ImgError(this);">
 													</a>
@@ -98,7 +98,7 @@
 										</div>
 										<div class="points">
 											<h3>
-												<?= $top_fan['number_of_posts'] ?>
+												<?= $top_fan['count'] ?>
 											</h3>
 											<span>Points</span>
 											
@@ -181,7 +181,7 @@
 										</div>
 										<div class="user">
 											<div class="photo">
-												<img class="face" width="35" height="35"
+												<img class="small-face"
 													src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 													onerror="ImgError(this);">
 											</div>
@@ -207,11 +207,11 @@
 	</div><!-- row -->
 
 	
-	<div class= "row-fluid">
-		<div class="span6">
+	<div class= "rvrow">
+		<div class="rvgrid-9">
 			<div class="fan-favorite">
 				
-				<div class="row box">
+				<div class="box">
 					<div class="title  nopic">
 					
 						<div class="title-header nopic">
@@ -237,8 +237,8 @@
 								<div class="user">
 									<div class="photo">
 										<a class="noclick"rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-											<img class="face"
-											width="35" height="35"
+											<img class="small-face"
+										
 											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);">
 										</a>
@@ -275,8 +275,8 @@
 								<div class="user">
 									<div class="photo">
 										<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-											<img class="face"
-											width="35" height="35"
+											<img class="small-face"
+							
 											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);">
 										</a>
@@ -371,7 +371,7 @@
 									</div>
 									<div class="user">
 										<div class="photo">
-											<img class="face" width="35" height="35"
+											<img class="small-face"
 												src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 												onerror="ImgError(this);">
 										</div>
@@ -395,10 +395,10 @@
 				
 			</div><!-- fanfav -->
 		</div><!-- span -->
-		<div class="span6">
+		<div class="rvgrid-9">
 			<div class="top-talker">
 				
-				<div class="row box">
+				<div class="box">
 					<div class="title nopic">
 				
 						<div class="title-header nopic">
@@ -425,8 +425,8 @@
 								<div class="user">
 									<div class="photo">
 										<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-											<img class="face"
-											width="35" height="35"
+											<img class="small-face"
+					
 											src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);">
 										</a>
@@ -440,7 +440,7 @@
 
 								<div class="points">
 									<h3>
-										<?= $talker['number_of_posts'] ?>
+										<?= $talker['count'] ?>
 									</h3>
 									<span>Posts</span>
 								
@@ -463,8 +463,8 @@
 								<div class="user">
 									<div class="photo">
 										<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-											<img class="face"
-											width="35" height="35"
+											<img class="small-face"
+						
 											src="https://graph.facebook.com/<?= $talker['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);">
 										</a>
@@ -478,7 +478,7 @@
 								</div>
 								<div class="points">
 									<h3>
-										<?= $talker['number_of_posts'] ?>
+										<?= $talker['count'] ?>
 									</h3>
 									<span>Posts</span>
 									
@@ -560,7 +560,7 @@
 									</div>
 									<div class='user'>
 										<div class="photo">
-											<img class="face" width="35" height="35"
+											<img class="small-face"
 												src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 												onerror="ImgError(this);"> 
 										</div>
@@ -587,11 +587,11 @@
 	</div><!-- row -->
 
 
-	<div class="row-fluid">
-		<div class="span6">
+	<div class="rvrow">
+		<div class="rvgrid-9">
 			<div class="top-clicker">
 				
-				<div class="row box">
+				<div class="box">
 					<div class="title nopic">
 						<div class="title-header nopic">
 							Top Clickers this Week
@@ -616,8 +616,8 @@
 								<div class="user">
 									<div class="photo">
 										<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-											<img class="face"
-											width="35" height="35"
+											<img class="small-face"
+							
 											src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);">
 										</a>
@@ -631,7 +631,7 @@
 
 								<div class="points">
 									<h3>
-										<?= $clicker['number_of_likes'] ?>
+										<?= $clicker['count'] ?>
 									</h3>
 									<span>Likes</span>
 
@@ -655,7 +655,7 @@
 								<div class="user">
 									<div class="photo">
 										<a class="noclick" rel="tooltip"  data-placement="right" title="Login to FanCrank to see this user's information">
-											<img class="face" width="35" height="35"
+											<img class="small-face"
 											src="https://graph.facebook.com/<?= $clicker['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);">
 										</a>
@@ -668,7 +668,7 @@
 								</div>
 								<div class="points">
 									<h3>
-										<?= $clicker['number_of_likes'] ?>
+										<?= $clicker['count'] ?>
 									</h3>
 									<span>Likes</span>
 								
@@ -751,7 +751,7 @@
 									</div>
 									<div class="user">
 									<div class="photo">
-									<img class="face" width="35" height="35"
+									<img class="small-face"
 											src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 											onerror="ImgError(this);">
 									</div>
@@ -775,10 +775,10 @@
 				
 			</div><!-- topclicker -->
 		</div>
-		<div class="span6">
+		<div class="rvgrid-9">
 			<div class="top-followed">
 				
-				<div class="row box">
+				<div class="box">
 					<div class="title nopic">
 				
 						<div class="title-header nopic">
@@ -804,8 +804,8 @@
 								<div class="user">
 									<div class="photo">
 										<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-											<img class="face"
-											width="35" height="35"
+											<img class="small-face"
+											
 											src="https://graph.facebook.com/<?= $followed['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);">
 										</a>
@@ -845,8 +845,8 @@
 								<div class="user">
 									<div class="photo">
 										<a rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-											<img class="face"
-											width="35" height="35"
+											<img class="small-face"
+							
 											src="https://graph.facebook.com/<?= $followed['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);">
 										</a>
@@ -946,7 +946,7 @@
 									</div>
 									<div class="user">
 									<div class="photo">
-										<img class="face" width="35" height="35"
+										<img class="small-face"
 											src="https://graph.facebook.com/<?= $this->user_id ?>/picture"
 											onerror="ImgError(this);">
 									</div>
