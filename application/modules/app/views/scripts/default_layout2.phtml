@@ -84,7 +84,8 @@
         <?= $this->headScript(); ?>
 		
 		<link rel="stylesheet" href="/css/app/joyride-1.0.5.css" />
-        <?php $this->selectTheme($this->color, APPLICATION_ENV); ?>
+		<link rel="stylesheet" href="/css/loadstyle1.css" />
+        <?php //$this->selectTheme($this->color, APPLICATION_ENV); ?>
 
 
 	</head>
@@ -152,7 +153,7 @@
 									</li>
 									<li><div class="line"></div></li>
 									<li class="notification" >
-										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/Mail.png" /></a>
+										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/mail.png" /></a>
 									</li>
 									<li>
 										<div id="logout-tab" class="dropdown">
