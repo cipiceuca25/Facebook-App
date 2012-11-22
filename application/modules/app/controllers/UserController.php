@@ -956,17 +956,22 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	}
 
 	public function savechosenbadgesAction(){
-		
+		$fp = $this->_getParam('fanpage');
 		$c1 = $this->_getParam('c1');
 		$c2 = $this->_getParam('c2');
 		$c3 = $this->_getParam('c3');
-		$fan = new Model_Fans($this->_user->facebook_user_id, $this->_user->fanpage_id);
+		
+		$fan = new Model_Fans($this->_user->facebook_user_id, $fp);
+		
+		// need to find why to parse commas
+	
 		$fan->updateBadgeChoices($c1.','.$c2.','.$c3);
 		echo 'badges save';
 	}
 	
 	public function savelastnotificationAction(){
-		$fan = new Model_Fans($this->_user->facebook_user_id, $this->_user->fanpage_id);
+		$fp = $this->_getParam('fanpage');
+		$fan = new Model_Fans($this->_user->facebook_user_id, $fp);
 		$fan->updateLastNotification();
 	
 	}

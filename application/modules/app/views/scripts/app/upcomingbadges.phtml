@@ -1,5 +1,5 @@
 <?php foreach ($this->upcoming as $b){?>
-	<div class="span2 upcoming-badges">
+	<div class="upcoming-badges title">
 		<div class="progress">
 			<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
 			<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
@@ -7,6 +7,13 @@
 				
 				<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
 			</a>
+		</div>
+		<div class="badge-description">
+			<?=$b['stylename'].' '. $b['name']?>
+			<br/>
+			<?=$b['description']?>
+			<br/>
+			<?= $b['percentage'].'% Completed'?>
 		</div>
 	</div>
 <?php }?> 

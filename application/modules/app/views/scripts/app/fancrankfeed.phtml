@@ -18,7 +18,7 @@
 
 
 <?php foreach ($this->post as $post):?>		
-	<?php if (isset($post->story)){?>
+	<?php if (isset($post->story) || count($post) == 0 ){?>
 	
 	<?php }else{?>
 		
@@ -61,7 +61,7 @@
 		<?php }else{?>
 			class="noclick"
 		<?}?>
-	><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);">
+	><img class="large-face"  src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);">
 	</a></div>
 	
 	<div class="name"><a data-toggle="modal"
@@ -263,7 +263,7 @@
 								data-placement="right" 
 								data-userid="<?=$comments->from->id?>"
 							<?php }?> 
-						><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $comments->from->id ?>/picture" onerror="ImgError(this);"></a></div>
+						><img class="small-face" src="https://graph.facebook.com/<?= $comments->from->id ?>/picture" onerror="ImgError(this);"></a></div>
 						
 					
 					
@@ -459,3 +459,11 @@
 <li id ="more_post"><button  class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>
 
 <?php }?>	
+
+<script>
+$('.comments').enscroll({
+showOnHover: true,
+clickTrackToScroll: false,
+verticalTrackClass: 'track3 popup',
+verticalHandleClass: 'handle3 popup'});	
+</script>

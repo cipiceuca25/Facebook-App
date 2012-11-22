@@ -1,13 +1,13 @@
 <?php
 /**
- * Francrank
+ * FanCrank
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Fancrank OEM license
+ * This source file is subject to the FanCrank OEM license
  *
  * @category    service
- * @copyright   Copyright (c) 2012 Francrank
+ * @copyright   Copyright (c) 2012 FanCrank
  * @license
  */
 class Service_FancrankCollectorService {

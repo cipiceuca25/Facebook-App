@@ -37,7 +37,7 @@
 				<ul class="nav nav-list">
 				<li class="nav-header">Your Pages</li>
 				<li class="divider"></li>
-				<?php foreach($this->pages as $page){ ?>
+				<?php foreach($this->active_pages as $page){ ?>
 					<?php
 						$url = '/admin/dashboard/dashboard?id='.$page['fanpage_id'];
 					?>
@@ -76,6 +76,9 @@
 						<a href="#dashboard" id="dashboard-tab"data-toggle="tab" >Dashboard</a>
 					</li>
 					<li>
+						<a href="#admin" id="admin-tab" data-toggle="tab">Admin</a>
+					</li>
+					<li>
 						<a href="#users" id="users-tab" data-toggle="tab">Users</a>
 					</li>
 					<li>
@@ -101,7 +104,7 @@
 
 				</div>
 				<div id="facebook" class="tab-pane"></div>
-	
+				<div id="admin" class="tab-pane"></div>
 				<div id="users" class="tab-pane"></div>
 				<div id="badges" class="tab-pane"></div>
 				<div id="points" class="tab-pane"></div>

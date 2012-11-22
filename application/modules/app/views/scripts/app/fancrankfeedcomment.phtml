@@ -23,7 +23,7 @@
 				data-placement="right" 
 				data-userid="<?=$post->from->id?>"
 			<?php }?> 
-		><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></a></div>
+		><img class="small-face" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></a></div>
 		
 	
 	
@@ -129,7 +129,7 @@
 
 
 	<div class="comment-container">
-		<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->user_id?>/picture" onerror="ImgError(this);"></div>
+		<div class="photo"><img class="small-face"  src="https://graph.facebook.com/<?= $this->user_id?>/picture" onerror="ImgError(this);"></div>
 	
 		<form action="#" class="submit-form" >
 		

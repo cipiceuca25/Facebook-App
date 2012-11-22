@@ -414,7 +414,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
     	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
-		$collector->updateFanpageFeed('10+days+ago', 'now');
+		$collector->updateFanpageFeed('500+days+ago', 'now');
     }
     
     public function test3Action () {

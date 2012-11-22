@@ -1,6 +1,6 @@
 <?php $count = 0?>
 <?php if (empty($this->top_post)) {?>
-		<li class=" row box post-container noline" >
+		<li class="box post-container noline" >
 			<div class="post">
 				<div class="message">
 						There are no Top Posts this week
@@ -26,7 +26,7 @@
 					}
 				}
 		?>
-		<li class="row box post-container <?=$post->id?>" >
+		<li class="box post-container <?=$post->id?>" >
 			<div class="user">
 				<div class="user-badge">
 						<a rel="tooltip-follow"  <?php switch($this->relation[$count]) { 
@@ -58,7 +58,7 @@
 							data-userid="<?=$post->from->id?>"
 					
 						>
-						<img class="face" width="30" height="30" src="https://graph.facebook.com/<?=$post->from->id?>/picture" onerror="ImgError(this);">
+						<img class="small-face" src="https://graph.facebook.com/<?=$post->from->id?>/picture" onerror="ImgError(this);">
 					</a>
 				</div>
 				<div class="name">

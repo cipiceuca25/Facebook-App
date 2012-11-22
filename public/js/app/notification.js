@@ -10,8 +10,8 @@ var notifiercount = 0;
 var notifier=false;
 
 jQuery(document).ready(function($){
-	color1 = $('.toolbar li').css("color");
-	color2 = $('.toolbar li').css("background-color");
+	//color1 = $('.toolbar li').css("color");
+	//color2 = $('.toolbar li').css("background-color");
 	//alert(color1 + color2);
 	isLoginNotification();
 	
@@ -19,20 +19,23 @@ jQuery(document).ready(function($){
 	
 });
 
+
+
 $('.notification').live('click', function(){
 	//alert(notifier);
 	if(!notifier){
+		pointlog = false;
 	//if(pointCount + badgeCount > 0 ){
 		getListNotification();
 		
 		setviewedbadges();
 		
-		$('.notification').css('background-color',color2);
-		$('.notification a').css('color',color1);
-		$('.notification').css('opacity','1');
+		//$('.notification').css('background-color',color2);
+		//$('.notification a').css('color',color1);
+		//$('.notification').css('opacity','1');
 		$('.notification a').attr('data-original-title','You have no new Notifications');
 		$('#badge-notification-count').html('0');
-		$(this).stop();
+
 		//$('.notification a').addClass('noclick');
 		badgeIds = new Array();
 		//alert(date);
@@ -40,6 +43,7 @@ $('.notification').live('click', function(){
 	}else{
 		$('.notifier').remove();
 		notifier = false;
+		pointlog = false;
 	}
 	
 });
@@ -61,9 +65,9 @@ function pointlogNotification() {
 				//$('.notification a').removeClass('noclick');
 				$('#badge-notification-count').html(pointCount + badgeCount);
 				$('.notification a').attr('data-original-title','You have ' + (badgeCount + pointCount) + ' new Notifications');
-				$('.notification').css('background-color','#56A556');
-				$('.notification a').css('color',color2);
-				$('.notification').effect("pulsate", { times:3 }, 300);
+				//$('.notification').css('background-color','#56A556');
+				//$('.notification a').css('color',color2);
+				//$('.notification').effect("pulsate", { times:3 }, 300);
 			}
 			date = new Date();
 			lastViewNotification = date.getUTCFullYear()+'-'+(date.getUTCMonth() + 1)+'-'+date.getUTCDate() +' '+ (date.getUTCHours()) + ':' + (date.getUTCMinutes()) + ':' + date.getUTCSeconds(); 
@@ -104,9 +108,9 @@ function isLoginNotification() {
 				//$('.notification a').removeClass('noclick');
 				$('#badge-notification-count').html(notifiercount);
 				$('.notification a').attr('data-original-title','You have ' + notifiercount + ' new Notifications');
-				$('.notification').css('background-color','#56A556');
-				$('.notification a').css('color',color2);
-				$('.notification').effect("pulsate", { times:3 }, 300);
+				//$('.notification').css('background-color','#56A556');
+				//$('.notification a').css('color',color2);
+				//$('.notification').effect("pulsate", { times:3 }, 300);
 			
 				//$('.notification').animate({'background-color':color2 , 'color': color1});
 			}

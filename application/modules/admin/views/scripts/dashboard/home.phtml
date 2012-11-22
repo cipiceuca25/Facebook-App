@@ -42,13 +42,13 @@ var first_time_use = '<?= $this->first_time?>';
 				<span class="description">Page Likes: </span>
 				<br/>
 				<a onclick = "getHomePageLikes('all')"><span class="description">All: </span></a>
-				<span class="amount"><?= $this->likes ?></span>
+				<span class="amount"><?= $this->likes['all'] ?></span>
 				<br/>
 				<a onclick = "getHomePageLikes('month')"><span class="description">This Month: </span></a>
-				<span class="amount">x</span>
+				<span class="amount"><?= $this->likes['month'] ?></span>
 				<br/>
 				<a onclick = "getHomePageLikes('week')"><span class="description">This Week: </span></a>
-				<span class="amount">x</span>
+				<span class="amount"><?= $this->likes['week'] ?></span>
 				
 			</div>
 		</div>
@@ -57,16 +57,16 @@ var first_time_use = '<?= $this->first_time?>';
 				<span class="description">New Fans: </span>
 				<br/>
 				<a onclick = "getHomeFans('all')"><span class="description">All: </span></a>
-				<span class="amount"><?= $this->fans['all'] ?></span>
+				<span class="amount"><?= $this->fans[0]['all'] ?></span>
 				<br/>
 				<a onclick = "getHomeFans('month')"><span class="description">This Month: </span></a>
-				<span class="amount"><?= $this->fans['month'] ?></span>
+				<span class="amount"><?= $this->fans[0]['month'] ?></span>
 				<br/>
 				<a onclick = "getHomeFans('week')"><span class="description">This Week: </span></a>
-				<span class="amount"><?= $this->fans['week'] ?></span>
+				<span class="amount"><?= $this->fans[0]['week'] ?></span>
 				<br/>
 				<a onclick = "getHomeFans('today')"><span class="description">Today: </span></a>
-				<span class="amount"><?= $this->fans['today'] ?></span>
+				<span class="amount"><?= $this->fans[0]['today'] ?></span>
 			</div>
 		</div>	
 			
@@ -146,36 +146,37 @@ var first_time_use = '<?= $this->first_time?>';
 			<div class="info">
 				<span class="description">Interactions from Unique Users on FanCrank(No Admin): </span>
 				<br/>
-				<a onclick = "getHomeFanCrankInteractions('all')"><span class="description">All: </span></a>
-				<span class="amount"><?= $this->fancrank_interactions[0]['all'] ?></span>
+				<a onclick = "getHomeFanCrankInteractionsUniqueUsers('all')"><span class="description">All: </span></a>
+				<span class="amount"><?= $this->fancrank_interactions_unique_users[0]['all'] ?></span>
 				<br/>
-				<a onclick = "getHomeFanCrankInteractions('month')"><span class="description">This Month: </span></a>
-				<span class="amount"><?= $this->fancrank_interactions[0]['month'] ?></span>
+				<a onclick = "getHomeFanCrankInteractionsUniqueUsers('month')"><span class="description">This Month: </span></a>
+				<span class="amount"><?= $this->fancrank_interactions_unique_users[0]['month'] ?></span>
 				<br/>
-				<a onclick = "getHomeFanCrankInteractions('week')"><span class="description">This Week: </span></a>
-				<span class="amount"><?= $this->fancrank_interactions[0]['week'] ?></span>
+				<a onclick = "getHomeFanCrankInteractionsUniqueUsers('week')"><span class="description">This Week: </span></a>
+				<span class="amount"><?= $this->fancrank_interactions_unique_users[0]['week'] ?></span>
 				<br/>
-				<a onclick = "getHomeFanCrankInteractions('today')"><span class="description">Today: </span></a>
-				<span class="amount"><?= $this->fancrank_interactions[0]['today'] ?></span>
+				<a onclick = "getHomeFanCrankInteractionsUniqueUsers('today')"><span class="description">Today: </span></a>
+				<span class="amount"><?= $this->fancrank_interactions_unique_users[0]['today'] ?></span>
 			</div>
 		</div>
 		
 		
 		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">	
-			
-	
-			<div class="info">
-				<span class="description">Fans Increase: </span>
-				<span class="amount"></span>
-			</div>
-	
 
 			<div class="info">
-				
-				<a onclick="getHomePointsAwarded('#placeholder')"><span class="description">Points Awarded:</span></a>
-				<span class="amount"></span>
+				<span class="description">Points Awarded:</span>
 				<br/>
-				Today - <?= ($this->points[2]['points'] != null)?$this->points[2]['points']:0 ?> | This Week - <?= ($this->points[1]['points'] != null)?$this->points[1]['points']:0?> | Month - <?= ($this->points[0]['points'] != null)?$this->points[0]['points']:0?>
+				<a onclick = "getHomePointsAwarded('all')"><span class="description">All: </span></a>
+				<span class="amount"><?= $this->points[0]['all'] ?></span>
+				<br/>
+				<a onclick = "getHomePointsAwarded('month')"><span class="description">This Month: </span></a>
+				<span class="amount"><?= $this->points[0]['month'] ?></span>
+				<br/>
+				<a onclick = "getHomePointsAwarded('week')"><span class="description">This Week: </span></a>
+				<span class="amount"><?= $this->points[0]['week'] ?></span>
+				<br/>
+				<a onclick = "getHomePointsAwarded('today')"><span class="description">Today: </span></a>
+				<span class="amount"><?= $this->points[0]['today'] ?></span>
 			</div>
 		</div>
 	
@@ -192,13 +193,8 @@ var first_time_use = '<?= $this->first_time?>';
 		<div class="row-fluid">
 			<div class="span12">
 				<div id="placeholder">
-				
 				</div>
-		
-			</div>
-			
-			
-			
+			</div>	
 		</div>
 		<div class="row-fluid">
 			<div class="span12">
@@ -218,24 +214,7 @@ var first_time_use = '<?= $this->first_time?>';
 		<div class="row-fluid">
 			
 			<div class="span12">
-				<table class="table" id="topPostByLike">
-					<thead>
-						<tr>
-							<th><a>Fan</a></th>
-							<th><a>Message</a></th>
-							<th><a>Number of Interactions</a></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach($this->topPostByLike as $post): ?>
-							<tr>
-								<td style="width:20%"><?=$post['fan_name']?></td>
-								<td style="width:70%"><?=$this->escape($post['message'])?></td>
-								<td style="width:10%"><?=$post['total_interactions']?></td>
-							</tr>
-						<?php endforeach; ?>
-				</tbody>
-				</table>
+				<table id="tableholder" style="width:100%;"></table>
 		
 			</div>
 		

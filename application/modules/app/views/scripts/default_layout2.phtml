@@ -86,11 +86,6 @@
 		<link rel="stylesheet" href="/css/app/joyride-1.0.5.css" />
         <?php $this->selectTheme($this->color, APPLICATION_ENV); ?>
 
-		<style>
-		.container,.navbar-fixed-top .container {
-			width: 794px;
-		}
-		</style>
 
 	</head>
 
@@ -136,7 +131,7 @@
 									<? if ($this->fan->fan_point != '?'){?>
 									<li><a class="my_fan_point_tooltip" rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><span class ="my_fan_point"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></span><img src="/img/icons/points.png" /></a></li>
 									<?php }?>
-															<!-- <li class="row-fluid" id='notification_upcoming_badges'>
+								<!-- <li class="row-fluid" id='notification_upcoming_badges'>
 															 
 															<?php // foreach ($this->notibadges as $b){?>
 																<div class="ub">
@@ -157,9 +152,7 @@
 									</li>
 									<li><div class="line"></div></li>
 									<li class="notification" >
-										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/mail.png" /></a>
-								
-										
+										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/Mail.png" /></a>
 									</li>
 									<li>
 										<div id="logout-tab" class="dropdown">
