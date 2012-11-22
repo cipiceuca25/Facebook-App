@@ -15,10 +15,14 @@ class Service_InsightCollectorService extends Service_FancrankCollectorService {
 	/*
 	 * @format if false, it will return native format
 	 */ 
-	public function getFullInsightData($format=true) {
-		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/insights?access_token=' .$this->_accessToken .'&since=30+days+ago';
+	public function getFullInsightData($format=true, $since=0) {
+		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/insights?access_token=' .$this->_accessToken;
+		
+		if (!empty($since)) {
+			$url .= '&since=' .$since; 
+		}
 		$insights = array();
-		$this->getFanpageInsights($url, 30, null, $insights);
+		$this->getFanpageInsights($url, 365, null, $insights);
 		return $format ? $this->formatInsight($insights) : $insights;
 	}
 
@@ -77,6 +81,7 @@ class Service_InsightCollectorService extends Service_FancrankCollectorService {
 		}
 		return $result;
 	}
+	
 }
 
 ?>

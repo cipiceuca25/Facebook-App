@@ -128,8 +128,9 @@ class Fc_IndexController extends Fancrank_Fc_Controller_BaseController
 		return $result;
 	}
     
-	public function angularAction() {
-		
+	public function testAction() {
+		echo 'test';
+		$this->_helper->viewRenderer->setNoRender(true);
 	}
 	
 	public function appinfoAction() {

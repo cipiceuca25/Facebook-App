@@ -2508,9 +2508,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$accessToken = 'AAAFHFbxmJmgBAPUVD7kjQIquRVpaDPJ8TKUPMXqUSD0BuP7F9KhsXtC1uEnWe0eaVTPebNprupHZC4fhNZA0ZAYTQoAjnNM0lG7ZBWQApc3Ttfphz7Dg';
     	$date = new Zend_Date();
     	//Zend_Debug::dump($date->getDate()->toString('y-M-d')); 
-		$filePath = DATA_PATH .'/temp/' .'376385369079791_2012-11-16_last_insight.data';
+		$filePath = DATA_PATH .'/temp/' .'216821905014540_2012-11-21_last_insight.data';
 		$data = unserialize( file_get_contents( $filePath ) );
-		//Zend_Debug::dump($data);
+		Zend_Debug::dump($data);
 		
 		foreach ($data as $key=>$value) {
 			echo $key .'<br/>';
@@ -2522,6 +2522,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$fanpageId = '376385369079791';
     	$accessToken = '376385369079791|dD06ENQhJjuB5dsCH1ryfvYKG78';
     
+    	$fanpageId = '216821905014540';
+    	$accessToken = 'AAAFHFbxmJmgBAPUVD7kjQIquRVpaDPJ8TKUPMXqUSD0BuP7F9KhsXtC1uEnWe0eaVTPebNprupHZC4fhNZA0ZAYTQoAjnNM0lG7ZBWQApc3Ttfphz7Dg';
+    	 
     	$insightData = array();
     	$testInsighdId = 'full_insight';
     	$insightCollector = new Service_InsightCollectorService(null, $fanpageId, $accessToken, 'insight');
@@ -2531,5 +2534,119 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	echo 'total time: ' .($end - $begin);
     	$insightData = $insightCollector->logInsight($insightData, true);
     	//Zend_Debug::dump($insightData);
+    }
+    
+    // test insight model
+    public function test33Action() {
+    	$model = new Model_Insight_Day_FanpageStory();
+    	//Zend_Debug::dump($model->fetchAll());
+    	echo $model->getTableName() .(assert($model->fetchAll()) ? ' ok' : ' fail') .'<br/>';
+    	
+    	$model = new Model_Insight_Day_FanpageImpression();
+    	//Zend_Debug::dump($model->fetchAll());
+    	echo $model->getTableName() .(assert($model->fetchAll()) ? ' ok' : ' fail') .'<br/>';
+    	 
+    	$model = new Model_Insight_Day_FanpageEngagement();
+    	//Zend_Debug::dump($model->fetchAll());
+    	echo $model->getTableName() .(assert($model->fetchAll()) ? ' ok' : ' fail') .'<br/>';
+
+    	$model = new Model_Insight_Day_FanpageUser();
+    	//Zend_Debug::dump($model->fetchAll());
+    	echo $model->getTableName() .(assert($model->fetchAll()) ? ' ok' : ' fail') .'<br/>';
+
+    	$model = new Model_Insight_Day_FanpageView();
+    	//Zend_Debug::dump($model->fetchAll());
+    	echo $model->getTableName() .(assert($model->fetchAll()) ? ' ok' : ' fail') .'<br/>';
+
+    	$model = new Model_Insight_Day_FanpagePost();
+    	//Zend_Debug::dump($model->fetchAll());
+    	echo $model->getTableName() .(assert($model->fetchAll()) ? ' ok' : ' fail') .'<br/>';
+    	 
+    }
+    
+    public function test34Action() {
+    	$date = new Zend_Date();
+    	//Zend_Debug::dump($date->getDate()->toString('y-M-d'));
+    	$filePath = DATA_PATH .'/temp/' .'216821905014540_2012-11-21_last_insight.data';
+    	$data = unserialize( file_get_contents( $filePath ) );
+    	//Zend_Debug::dump($data);
+    	echo count($data); exit();
+    	$fanpageUserModel = new Model_Insight_Day_FanpageUser();
+    	//Zend_Debug::dump($model->getColumns(array('id', 'end_time', 'fanpage_id'))); exit();
+    	$result = array();
+    	$fanpageId = '216821905014540';
+    	$prefixKey = $fanpageId . '/insights/';
+    	foreach ($fanpageUserModel->getColumns(array('id', 'end_time', 'fanpage_id')) as $searchType) {
+    		foreach ($data[$prefixKey .$searchType .'/day'] as $key=>$value) {
+    			//echo $key .'<br/>';
+    			//Zend_Debug::dump($value);
+    			$newValue = array();
+    			foreach ($value as $i=>$v) {
+    				if (is_object($v)) {
+    					$v = json_encode((array) $v);
+    				}
+    				if (empty($v)) {
+    					continue;
+    				}
+    				$newValue[$i] = array($searchType=>$v);
+    			}
+    			$result = array_merge_recursive($result, $newValue);
+    		}
+    	}
+
+    	foreach ($result as $key=>$value) {
+    		try {
+    			$value['fanpage_id'] = $fanpageId;
+    			$value['end_time'] = date("Y-m-d", strtotime($key));
+    			if (!($found = $fanpageUserModel->fetchRow(sprintf('fanpage_id = "%s" and DATEDIFF(end_time, "%s") = 0', $value['fanpage_id'], $value['end_time']))) ) {
+    				$fanpageUserModel->insert($value);
+    			} else {
+    				foreach ($value as $k=>$v) {
+    					$found->{$k} = $v;
+    				}
+    				$found->save();
+    			}
+    		} catch (Exception $e) {
+    			echo $e->getMessage();
+    		}
+   		}
+    }
+    
+    public function test35Action() {
+    	    	$date = new Zend_Date();
+    	//Zend_Debug::dump($date->getDate()->toString('y-M-d'));
+    	$filePath = DATA_PATH .'/temp/' .'216821905014540_2012-11-21_last_insight.data';
+    	$data = unserialize( file_get_contents( $filePath ) );
+    	//Zend_Debug::dump($data);
+    	$insightFanpageModel = new Model_Insight_Fanpage();
+    	$insightFanpageModel->fetchAll();
+    	
+    	foreach ($data as $key => $values) {
+    		$parts = explode('/', $key);
+    		$fanpageId = $parts[0];
+    		foreach ($values as $k=>$value) {
+    			$row = array(
+    					'fanpage_id' => $parts[0],
+    					'type' => $parts[2],
+    					'peroid' => $parts[3]
+    			);
+    			foreach ($value as $i=>$v) {
+    				$row['end_time'] = $i;
+    				$row['value'] = $v;
+    			}
+   				Zend_Debug::dump($row);
+    		    
+   				// if it exists in database, otherwise update it
+    		    if (!($found = $insightFanpageModel->fetchRow(sprintf('fanpage_id = "%s" and DATEDIFF(end_time, "%s") = 0', $value['fanpage_id'], $value['end_time']))) ) {
+    				$insightFanpageModel->insert($row);
+    			} else {
+    				foreach ($row as $k=>$v) {
+    					$found->{$k} = $v;
+    				}
+    				$found->save();
+    			}
+    		}
+    	}
+    	
     }
 }
