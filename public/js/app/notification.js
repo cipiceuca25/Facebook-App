@@ -24,6 +24,7 @@ jQuery(document).ready(function($){
 $('.notification').live('click', function(){
 	//alert(notifier);
 	if(!notifier){
+		pointlog = false;
 	//if(pointCount + badgeCount > 0 ){
 		getListNotification();
 		

@@ -38,6 +38,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 
 	public function getChosenBadges($fanpage_id, $facebook_user_id, $chosen){
 		
+		
 		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active
 					from badge_events e,
 					(

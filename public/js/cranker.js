@@ -1078,7 +1078,7 @@ $('#pointlog').live('click', function(){
 	if(!pointlog){
 	//if(pointCount + badgeCount > 0 ){
 		getpointlog();
-		
+		notifer = false;
 		
 		
 		//$('.notification').css('background-color',color2);
@@ -1108,7 +1108,7 @@ function getpointlog(){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			//$('.notifier').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.notifier').html("<div class='rvgrid-5' style='text-align:center;'><div class='box'><img src='/img/ajax-loader.gif' /></div></div>");
 		},
 		success : function(data) {
 			$('.notifier').html(data);
@@ -1118,6 +1118,8 @@ function getpointlog(){
 			console.log(xhr.statusText, errorMessage);
 		}
 	});
+	
+	
 	
 }
 function getListNotification(){
