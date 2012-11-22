@@ -542,6 +542,93 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$fans_model = new Model_Fans;
 		$fanStatModel = new Model_FansObjectsStats();
 		$cronModel = new Model_CronLog();
+		$pointsModel = new Model_PointLog();
+		
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$cache = Zend_Registry::get('memcache');
+		$cache->setLifetime(1800);
+		
+		$ac= $fanpageModel->find($fanpageId)->current();
+		//Zend_Debug::dump($token);
+		$ac = $ac ->access_token;
+		
+		try {
+			$adminLikesID = $fanpageId .'_admin_likes';
+			//echo $adminLikesID;
+			//$cache->remove($adminLikesID );
+			if(isset($cache) && !$cache->load($adminLikesID )){
+				
+				$collector = new Service_FancrankCollectorService(null,  $fanpageId, $ac, 'insights');
+				$result = $collector->collectFanpageInsight(5, 'likes');
+
+				//Zend_Debug::dump($this->_fan);
+				//Save to the cache, so we don't have to look it up next time
+				$cache->save($result, $adminLikesID );
+			}else {
+				//echo 'memcache look up';
+				$result = $cache->load($adminLikesID );
+			}
+		} catch (Exception $e) {
+			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+			//echo $e->getMessage();
+		}
+		
+		$date = new Zend_Date();
+			
+		//$date->subDay(1);
+		//$likeStats = array();
+		//$diffStats = array();
+		$previous = 0;
+		$week = 0;
+		$month = 0; 
+		$first = true;
+		$t = 'all';
+		foreach ($result as $data) {
+			foreach($data->values as $value) {
+					
+				$time = explode('T', $value->end_time);
+		
+				//$newTime = str_replace('-', '/', $time[0]);
+				$tempdate = new Zend_Date($time[0]);
+				
+				if ($first){
+					$x = 0;
+					$first=false;
+				}else{
+					$x = $value->value - $previous;
+				}
+				//$diffStats[] = array('value'=> $x,'end_time'=> $newTime);
+				//$value->end_time = $newTime;
+				//$likeStats[] = $value;
+				//echo $date->toString('Y M');
+				if ($tempdate->toString('Y w') == $date->toString('Y w')){
+					
+					$week += $x;
+					//echo 'WEEK ' . $tempdate->toString() . ' ' . $week . '<br/>';
+				}
+				
+				if ($tempdate->toString('Y M') == $date->toString('Y M')){
+					
+					$month += $x;
+					//echo 'MONTH' . $tempdate->toString() . ' ' . $month . '<br/>';
+				}
+				
+				$previous = $value->value;
+			}
+		}
+		;
+		//$a = array();
+		//$a [] = $likeStats;
+		//$a [] = $diffStats;
+		
+		//Zend_Debug::dump($a);
+	
+		
+		//$date = new Zend_Date();
+		//echo $date->toString(Zend_Date::WEEK);
+		
+		
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		//level
 		$level = $fanpageModel->getFanpageLevel($fanpageId);
@@ -584,8 +671,8 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 	//	$newFanCrankUsers = $fanpageModel ->getNewFanCrankUsers($fanpageId);
 	
 		//chart interactions
-		$topPostByLike = $fanpageModel->getTopObjectsWithinTime($fanpageId, 24);
-		$this->view->topPostByLike = $topPostByLike;
+		//$topPostByLike = $fanpageModel->getTopObjectsWithinTime($fanpageId, 24);
+		//$this->view->topPostByLike = $topPostByLike;
 		
 		//$points = new Model_PointLog();
 		//$points = $points ->getFanpagePoints($fanpageId);
@@ -594,7 +681,10 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 	//	$this->view->topFanList = $topFanList;
 		 
 		//Page Likes
-		$likes = $fanpageModel->getFanpageLike($fanpageId);
+		//$likes = $fanpageModel->getFanpageLike($fanpageId);
+		$likes = array('month' =>$month, 'week'=>$week, 'all'=>$previous);
+		//Zend_Debug::dump($likes);
+		
 		$this->view->likes = $likes;
 		
 		//Fans
@@ -616,21 +706,21 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$fancrankinteractions = $activityModel->getFancrankInteractionsNumber($fanpageId);
 		$this->view->fancrank_interactions = $fancrankinteractions;
 		
-		
 		$fancrankinteractionsuniqueusers = $activityModel->getFancrankInteractionsUniqueUsersNumber($fanpageId);
 		$this->view->fancrank_interactions_unique_users = $fancrankinteractionsuniqueusers;
 		
+		$points = $pointsModel->getFanpagePointsNumber($fanpageId);
 		
+		//Zend_Debug::dump($points);
+		
+		$this->view->points = $points;
 		//$this->view->new_fans = $newFans;
 		//$this->view->new_interaction_users = $newInteractionsUsers;
 		//$this->view->new_interaction = $newInteractions;
 		//$this->view->new_fancrank_users = $newFanCrankUsers;
 		//$this->view->fancrank_interaction_users = $fanCrankInteractionUsers;
 		//$this->view->fancrank_interaction = $fanCrankInteractions;
-		
-		
-		//$this->view->points = $points;
-		
+
 		$this->render("home");
 	
 	}

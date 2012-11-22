@@ -1375,8 +1375,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$cb = $fan->getChosenBadges(); 
     	$cb = str_replace("'", "", $cb);
     	$cb = explode(',', $cb);
-    	
-    	
+    	//Zend_Debug::dump($cb);
+    	//exit();
     	$chosenBadges = $badges -> getChosenBadges($this->_fanpageId, $this->_userId, $cb);
 		
     	if(empty($chosenBadges)){
@@ -1443,9 +1443,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
     	}
     	//$this->_fan->chosen_badges;
-    	$cb[0] = $chosenBadges[0]['badge_id'];
-    	$cb[1] = $chosenBadges[1]['badge_id'];
-    	$cb[2] = $chosenBadges[2]['badge_id'];
+    	$cb = array();
+    	foreach ($chosenBadges as $x){
+    		$cb[] = $x['badge_id'];
+    	}
+//     	$cb[0] = $chosenBadges[0]['badge_id'];
+//     	$cb[1] = $chosenBadges[1]['badge_id'];
+//     	$cb[2] = $chosenBadges[2]['badge_id'];
     	//Zend_Debug::dump($cb);
     	$this->view->selected = $cb;
     	$this->view->badges = $badges;

@@ -1,7 +1,9 @@
+
+
 var defaultMax = 10;
 var defaultMin = 0;
 var defaultStep = 1;
-    
+var table;
 //var graphData1 = [], startTime1= null, endTime1 =null ,  graphMargin1 = [];
 //var graphData2 = [], startTime2= null, endTime2 =null , graphMargin2 = [];
 var graphLoaded=false, graphLoaded2= false;
@@ -75,35 +77,10 @@ function getHomePageLikes(time){
 			    	for(i=0; i < data[0].length; i++) {
 			    		
 			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
-			    		graphData1.push ([ (new Date(data[0][i].end_time)), (data[1][i].value)]);
+			    		graphData1.push ([ (new Date(data[1][i].end_time)), (data[1][i].value)]);
 			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
-			    		graphData2.push ([ (new Date(data[1][i].end_time)), (data[0][i].value)]);
+			    		graphData2.push ([ (new Date(data[0][i].end_time)), (data[0][i].value)]);
 			    	}
-			    	
-				      
-			    	//console.log(dataset);
-			    	
-			    	
-			    	//graphData1 = [[1,1],[2,1],[1,1]];
-			    	/*
-			    	if(data[0].length > 0){
-				    	var startTime2 = new Date(data[0][0].end_time);
-				    	var endTime2 = new Date(data[0][data[0].length-1].end_time);
-				    	
-				    	var startTime1 = new Date(data[0][0].end_time);
-				    	var endTime1 = new Date(data[0][data[0].length-1].end_time);
-			    	}else{
-			    		var startTime2 = new Date();
-				    	var endTime2 = startTime2;
-				    
-				    	var startTime1 =  startTime2;
-				    	var endTime1 =  startTime2;
-				    		
-				    }
-			    	*/
-			    	
-//			    	var graphMargin1 = [5,5, 20,40]; // margins
-//			    	var graphMargin2 = [5,5, 20,40]; // margins
 			    	
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
@@ -112,8 +89,8 @@ function getHomePageLikes(time){
 			    	graph2  = new lineGraph('#placeholder2', graphData2, text);
 			    //	$.plot($('#placeholder'), [{ label: 'Facebook Likes',  data:dataset2} ], options);
 			       // $.plot($('#placeholder2'), [{ label: 'Facebook Likes',  data:dataset} ], options);
-			        $('#graphtitle').html('Facebook Likes');
-			        $('#graphtitle2').html('Total Facebook Likes');
+			        $('#graphtitle').html('Facebook Likes ' + time);
+			        $('#graphtitle2').html('Total Facebook Likes ' + time);
 			    }
 			});            
 	   	}
@@ -121,17 +98,7 @@ function getHomePageLikes(time){
 }
 
 function getHomeFans(time){
-	tick = 'day'
-	 switch(time){
-	 	case 'today':
-	 		tick = 'hours';
-	 		break;
-	 	default :
-	 		tick = 'day';
-	 }
-
-
-
+	
 	if(fanpageId) {
 	    	//alert(fanpageId+' '+type); return false;
 			$.ajax({
@@ -146,72 +113,51 @@ function getHomeFans(time){
 					
 					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 					//destroyAll();
+					$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 				},
 			    success: function (data){
 			    	//console.log(data);
-			    	var dataset = [];
-			    	var dataset2 = [];
-			    	var crankdataset = [];
-			    	var crankdataset2 = [];
-			    	
+			    
+			    	var tableData1 = [];
 			    	var graphData1 = [];
 			    	var graphData2 = [];
 			    	//console.log(first_time_use);
-			    	for(i=0; i < data.length; i++) {
+			    	
+			    	//tableData1.push(['Date' ,'Number of New Fans']);
+			    	
+			    	for(i=0; i < data[0].length; i++) {
 			    		
 			    		//dataset.push( [ (new Date(data[i].end_time)).getTime(), (data[0][i].value)]);
-			    		graphData1.push ([new Date(data[i].date), (data[i].like)]);
+			    		graphData1.push ([new Date(data[0][i].date), (data[0][i].like)]);
 			    		//dataset2.push( [ (new Date(data[i].end_time)).getTime(), (data[i].value)]);
-			    		graphData2.push ([new Date(data[i].date), (data[i].total)]);
-			    		/*
+			    		graphData2.push ([new Date(data[0][i].date), (data[0][i].total)]);
 			    		
-			    		if ( ((new Date(data[i].date)).getTime()) >= (new Date(first_time_use).getTime())){
-			    			crankdataset.push( [ (new Date(data[i].date)).getTime(), (data[i].like)]);
-			    			crankdataset2.push( [ (new Date(data[i].date)).getTime(), (data[i].total)]);
-							if (crankdataset.length == 1){
-								dataset.push( [ (new Date(data[i].date)).getTime(), (data[i].like)]);
-				    		
-							}
-							if (crankdataset2.length == 1){
-				    			dataset2.push( [ (new Date(data[i].date)).getTime(), (data[i].total)]);
-							}
-							
-							
-							
-						}else{
-			    			dataset.push( [ (new Date(data[i].date)).getTime(), (data[i].like)]);
-			    			dataset2.push( [ (new Date(data[i].date)).getTime(), (data[i].total)]);
-						}*/
 			    	}
-			    	/*
-			    	if (crankdataset.length == 1){
-			    		var date = new Date(crankdataset[0][0]);
-			    		date.setDate(date.getDate()-1);
-			    		crankdataset.push([date.getTime(), 0]);
+			    	for(i=0; i < data[1].length; i++) {
+			    		tableData1.push([ data[1][i].facebook_user_id , data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].date)).toLocaleString()] );
 			    	}
-			    	if (crankdataset2.length == 1){
-			    		var date = new Date(crankdataset2[0][0]);
-			    		date.setDate(date.getDate()-1);
-			    		crankdataset2.push([date.getTime(), 0]);
+			    	//var data = google.visualization.arrayToDataTable(tableData1);
+			    	//visualization = new google.visualization.Table(document.getElementById('tableholder'));
+			    	//visualization.draw(data, null);
+			    	try{
+			    		table.fnDestroy();
+			    	}catch(e){
+			    		
 			    	}
 			    	
-			    	if (crankdataset.length == 0){
-			    		var date = new Date();
-			    		crankdataset.push([date.getTime(), 0]);
-			    	
-			    		date.setDate(date.getDate()-1);
-			    		crankdataset.push([date.getTime(), 0]);
-			    	}
-			    	if (crankdataset2.length == 0){
-			    		var date = new Date();
-			   
-			    		crankdataset2.push([date.getTime(), 0]);
-			    
-			    		date.setDate(date.getDate()-1);
-			    		crankdataset2.push([date.getTime(), 0]);
-			    	}
-			    	*/
-			
+			    	$('#tableholder').html('');
+			    	table = $('#tableholder').dataTable( {
+			    		"sDom" : "<'length'l>t<'table-info'i><'pages'p>",
+			            "aaData": tableData1,
+			            "aoColumns": [
+			                       { "sTitle": "Facebook User Id" },
+			                       { "sTitle": "Name" },
+			                       { "sTitle": "Gender" },
+			                       { "sTitle": "Date Joined" }
+			                   ],
+			            "aaSorting": [[ 3, "desc" ]],
+			            "bAutoWidth": false
+			               } );
 			    	
 			    	//console.log(data);
 			    	
@@ -222,13 +168,13 @@ function getHomeFans(time){
 			    	graphLoaded2 =true;
 			    	graph = new lineGraph('#placeholder', graphData1, text);
 			    	graph2 = new lineGraph('#placeholder2', graphData2, text);
-			    	
-			    	
-			    	
+			    
+			    
+
 			    	//console.log(dateset2);
 			    	
-			    	$('#graphtitle').html('New Fans');
-			        $('#graphtitle2').html('Total New Fans');
+			    	$('#graphtitle').html('New Fans ' + time);
+			        $('#graphtitle2').html('Total New Fans ' + time);
 			    }
 			});  
 	}
@@ -244,26 +190,7 @@ function getHomeActivedFans(time){
 	 		tick = 'day';
 	 }
 		//console.log(tick);
-	/*
-	var options = {		xaxis: {
-			mode: "time",
-			font:{size:12},
-			minTickSize: [1, tick]
-			},
-		yaxis:{
-			font:{size:12},
-			minTickSize: [1]
-		},
 
-		series: {
-				lines: { show: true }
-			},
-		grid: {
-			hoverable: true, 
-			clickable: true,
-		    backgroundColor: { colors: ["#fff", "#eee"] }
-	    }
-	}*/
 	if(fanpageId) {
 	    	//alert(fanpageId+' '+type); return false;
 			$.ajax({
@@ -278,20 +205,49 @@ function getHomeActivedFans(time){
 					
 					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 					//destroyAll();
+					$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+					
+
 				},
 			    success: function (data){
 			    	//console.log(data);
 			    	var graphData1 = [];
 			    	var graphData2 = [];
-			    	for(i=0; i < data.length; i++) {
+			    	var tableData1 = [];
+			    	for(i=0; i < data[0].length; i++) {
 			    		
 			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
-			    		graphData1.push ([ new Date(data[i].first_login_time), (data[i].active)]);
+			    		graphData1.push ([ new Date(data[0][i].first_login_time), (data[0][i].active)]);
 			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
-			    		graphData2.push ([ new Date(data[i].first_login_time), (data[i].total)]);
+			    		graphData2.push ([ new Date(data[0][i].first_login_time), (data[0][i].total)]);
+			    		
 			    	}
 			    	
-				      
+			    	for(i=0; i<data[1].length;i++){
+			    		
+			    		tableData1.push([data[1][i].facebook_user_id, data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].first_login_time)).toLocaleString()]);
+			    	}
+			    	
+			    	try{
+			    		table.fnDestroy();
+			    	}catch(e){
+			    		
+			    	}
+			    	
+			    	$('#tableholder').html('');
+			    	table = $('#tableholder').dataTable( {
+			    		"sDom" : "<'length'l>t<'table-info'i>",
+			            "aaData": tableData1,
+			            "aoColumns": [
+			                       { "sTitle": "Facebook User Id" },
+			                       { "sTitle": "Name" },
+			                       { "sTitle": "Gender" },
+			                       { "sTitle": "Date" }
+			                      
+			                   ],
+			            "aaSorting": [[ 3, "desc" ]],
+			            "bAutoWidth": false
+			               } );
 			    	//console.log(dataset);
 			    	
 			    	
@@ -303,49 +259,10 @@ function getHomeActivedFans(time){
 			    	graph = new lineGraph('#placeholder', graphData1, text);
 			    	graph2  = new lineGraph('#placeholder2', graphData2, text);
 			    	
-			    	//console.log(first_time_use);
-			    	/*for(i=0; i < data.length; i++) {
-			    		
-			    		dataset.push( [ (new Date(data[i].first_login_time)).getTime(), (data[i].active)]);
-			    		dataset2.push( [ (new Date(data[i].first_login_time)).getTime(), (data[i].total)]);
-						
-			    	}
 			    	
-			    	if (dataset.length == 1){
-			    		console.log(dataset);
-			    		var date = new Date(dataset[0][0]);
-			    		date.setDate(date.getDate()-1);
-			    		dataset.push([date.getTime(), 0]);
-			    	}
-			    	if (dataset2.length == 1){
-			    		var date = new Date(dataset2[0][0]);
-			    		date.setDate(date.getDate()-1);
-			    		dataset2.push([date.getTime(), 0]);
-			    	}
-			    	
-			    	
-			    	if (dataset.length == 0){
-			    		var date = new Date();
-			    		dataset.push([date.getTime(), 0]);
-			    	
-			    		date.setDate(date.getDate()-1);
-			    		dataset.push([date.getTime(), 0]);
-			    	}
-			    	if (dataset2.length == 0){
-			    		var date = new Date();
-			   
-			    		dataset2.push([date.getTime(), 0]);
-			    
-			    		date.setDate(date.getDate()-1);
-			    		dataset2.push([date.getTime(), 0]);
-			    	}
-			    	
-			    	//console.log(dateset2);
-			        //$.plot($('#placeholder'), [ { label: 'Fan Interaction',  data:dataset} ], options);
-			       // $.plot($('#placeholder2'), [{ label: 'Fan Interaction Total',  data:dataset2} ], options);
-			       */
-			        $('#graphtitle').html('Active Fans');
-			        $('#graphtitle2').html('Total Active Fans');
+			       
+			        $('#graphtitle').html('Active Fans ' + time);
+			        $('#graphtitle2').html('Total Active Fans ' + time);
 			    }
 			});  
 	}
@@ -369,20 +286,57 @@ function getHomeFacebookInteractions(time){
 					
 					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 					//destroyAll();
+					$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 				},
 			    success: function (data){
-			    	
+			    	var tableData1 = [];
 			    	var graphData1 = [];
 			    	var graphData2 = [];
 			    	//graphData1.push(['Date', 'Likes']);
 			    	//graphData2.push(['Date', 'Likes']);
-			    	for(i=0; i < data.length; i++) {
+			    	for(i=0; i < data[0].length; i++) {
 			    		
 			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
-			    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes ]);
+			    		graphData1.push ([ new Date(data[0][i].created_time), data[0][i].all , data[0][i].posts, data[0][i].comments, data[0][i].likes ]);
 			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
-			    		graphData2.push ([ new Date(data[i].created_time), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes]);
+			    		graphData2.push ([ new Date(data[0][i].created_time), data[0][i].total_all , data[0][i].total_posts, data[0][i].total_comments, data[0][i].total_likes]);
+			    	
 			    	}
+			    	for(i=0; i < data[1].length; i++) {
+			    		tableData1.push([ data[1][i].type,/*data[1][i].post_id,*/data[1][i].fan_name, data[1][i].facebook_user_id, data[1][i].fan_gender, data[1][i].post_message, 
+			    		                 /* data[1][i].post_type, data[1][i].picture, data[1][i].link, data[1][i].post_description,data[1][i].post_caption, */
+			    		                  (new Date(data[1][i].created_time)).toLocaleString()]);
+			    	}
+			    
+			    	
+			    	try{
+			    		table.fnDestroy();
+			    	}catch(e){
+			    		
+			    	}
+			    	
+			    	$('#tableholder').html('');
+			    	table = $('#tableholder').dataTable( {
+			    		"sDom" : "<'length'l>t<'table-info'i>",
+			    		"aaData": tableData1,
+			    		"aoColumns": [
+			    				   { "sTitle": "Type" },
+			    				   /*{ "sTitle": "Post Id" },*/
+			    				   { "sTitle": "Fan Name" },
+			    				   { "sTitle": "Facebook User Id" },
+			    				   { "sTitle": "Gender" },
+			    				   { "sTitle": "Message" },
+			    				   /*{ "sTitle": "Post Type" },
+			    				   { "sTitle": "Picture" },
+			    				   { "sTitle": "Link" },
+			    				   { "sTitle": "Post Description" },
+			    				   { "sTitle": "Post Caption" },*/
+			    				   { "sTitle": "Date" }
+			    			   ],
+			    		"aaSorting": [[ 5, "desc" ]],
+			    		"bAutoWidth": false
+			    		   } );
+			    	
 			    	
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
@@ -391,8 +345,8 @@ function getHomeFacebookInteractions(time){
 			    	graph2  = new lineGraph('#placeholder2', graphData2, text);
 			    	
 			    	
-			    	$('#graphtitle').html('Interactions');
-			        $('#graphtitle2').html('Total Interactions');
+			    	$('#graphtitle').html('Interactions ' + time);
+			        $('#graphtitle2').html('Total Interactions ' + time);
 			    }
 			});  
 	}
@@ -415,28 +369,69 @@ function getHomeFanCrankInteractions(time){
 				
 				$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 				//destroyAll();
+				$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 			},
 		    success: function (data){
 		    	
-	
+		    	var tableData1 = [];
 			   	var graphData1 = [];
 		    	var graphData2 = [];
 		    	//graphData1.push(['Date', 'Likes']);
 		    	//graphData2.push(['Date', 'Likes']);
-		    	for(i=0; i < data.length; i++) {
+		    	for(i=0; i < data[0].length; i++) {
 		    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
-		    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes,data[i].unlike,data[i].follow,data[i].unfollow ]);
+		    		graphData1.push ([ new Date(data[0][i].created_time), data[0][i].all , data[0][i].posts, 
+		    		                   	data[0][i].comments, data[0][i].likes,data[0][i].unlike,
+		    		                   	data[0][i].follow,data[0][i].unfollow ]);
 		    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
-		    		graphData2.push ([ new Date(data[i].created_time), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes,data[i].total_unlike,data[i].total_follow,data[i].total_unfollow]);
+		    		graphData2.push ([ new Date(data[0][i].created_time), data[0][i].total_all , data[0][i].total_posts, 
+		    		                   data[0][i].total_comments, data[0][i].total_likes,data[0][i].total_unlike,
+		    		                   data[0][i].total_follow,data[0][i].total_unfollow]);
 		    	}
 		    
+		    	for (i=0; i<data[1].length; i++){
+		    		tableData1.push([ data[1][i].activity_type, /*data[1][i].event_object,*/ 
+		    		                  data[1][i].fan_name,
+		    		                  data[1][i].facebook_user_id,
+		    		                  data[1][i].fan_gender,
+		    		                  data[1][i].message,
+		    		                  (new Date(data[1][i].created_time)).toLocaleString()]);
+		    	}
+		    	try{
+		    		table.fnDestroy();
+		    	}catch(e){
+		    		
+		    	}
+		    	$('#tableholder').html('');
+		    
+		    	table = $('#tableholder').dataTable( {
+		    		"sDom" : "<'length'l>t<'table-info'i>",
+		    		"aaData": tableData1,
+		    		"aoColumns": [
+		    				   { "sTitle": "Type" },
+		    				   /*{ "sTitle": "Post Id" },*/
+		    				   { "sTitle": "Fan Name" },
+		    				   { "sTitle": "Facebook User Id" },
+		    				   { "sTitle": "Gender" },
+		    				   { "sTitle": "Message" },
+		    				   /*{ "sTitle": "Post Type" },
+		    				   { "sTitle": "Picture" },
+		    				   { "sTitle": "Link" },
+		    				   { "sTitle": "Post Description" },
+		    				   { "sTitle": "Post Caption" },*/
+		    				   { "sTitle": "Date" }
+		    			   ],
+		    		"aaSorting": [[ 5, "desc" ]],
+		    		"bAutoWidth": false
+		    		   } );
+		    	
 		    	graphLoaded =true;
 		    	graphLoaded2 =true;
 		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow'];
 		    	graph = new lineGraph('#placeholder', graphData1, text);
 		    	graph2  = new lineGraph('#placeholder2', graphData2, text);
-		    	$('#graphtitle').html('Interactions');
-		        $('#graphtitle2').html('Total Interactions');
+		    	$('#graphtitle').html('Interactions ' + time);
+		        $('#graphtitle2').html('Total Interactions ' + time);
 		    }
 		});            
 	}
@@ -475,13 +470,13 @@ function getHomeFacebookInteractionsUniqueUser(time){
 			    	}
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
-			    	var text = ['Activities', 'Posts', 'Comments', 'Likes'];
+			    	var text = ['Users', 'Posts', 'Comments', 'Likes'];
 			    	graph = new lineGraph('#placeholder', graphData1, text);
 			    	graph2  = new lineGraph('#placeholder2', graphData2, text);
 			    	
 			    	
-			    	$('#graphtitle').html('Facebook Interactions from Unique Users');
-			        $('#graphtitle2').html('Total Facebook Interactions from Unique Users');
+			    	$('#graphtitle').html('Facebook Unique Users ' + time);
+			        $('#graphtitle2').html('Total Facebook Unique Users ' + time);
 			    }
 			});  
 	}
@@ -523,8 +518,8 @@ function getHomeFanCrankInteractionsUniqueUsers(time){
 		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow'];
 		    	graph = new lineGraph('#placeholder', graphData1, text);
 		    	graph2  = new lineGraph('#placeholder2', graphData2, text);
-		    	$('#graphtitle').html('Interactions');
-		        $('#graphtitle2').html('Total Interactions');
+		    	$('#graphtitle').html('Unique Users ' + time);
+		        $('#graphtitle2').html('Total Unique Users' + time);
 		    }
 		});            
 	}
@@ -566,50 +561,49 @@ function getInteractionsFanCrank(){
 	
 }
 */
-function getHomePointsAwarded(ui){
-
-	var options = {		xaxis: {
-						mode: "time",
-						font:{size:12},
-						minTickSize: [1, "day"]
-						},
-					yaxis:{
-						font:{size:12},
-						
-					},
-					series: {
-							lines: { show: true }
-						},
-					grid: {
-						hoverable: true, 
-						clickable: true,
-					    backgroundColor: { colors: ["#fff", "#eee"] }
-				    }
-				}
-
+function getHomePointsAwarded(time){
 
 	if(fanpageId) {
 		//alert(fanpageId+' '+type); return false;
 		$.ajax({
-			url: '/admin/fanpage/graphpoints/'+fanpageId,
+			url: '/admin/fanpage/ graphhomepoints/'+fanpageId + '?time=' + time,
 		    type: 'get',
 		    dataType: 'json',
 
 		    error: function( data ) {
 		    	alert('error');
 		    },
+		    beforeSend : function() {
+		    	$('#placeholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				
+				$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				//destroyAll();
+			},
 		    success: function (data){
-		    	//console.log(data);
-		    	
-		    	var dataset = [];
+			   	var graphData1 = [];
+		    	var graphData2 = [];
+		    	//graphData1.push(['Date', 'Likes']);
+		    	//graphData2.push(['Date', 'Likes']);
 		    	for(i=0; i < data.length; i++) {
-		    		dataset.push( [ (new Date(data[i].hours)).getTime(), data[i].sum ]);
-		    	} 
-		
-		       // $.plot($(ui), [{ label: 'Points',  data:dataset}], options);
+		    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
+		    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, 
+		    		                   data[i].comments, data[i].likes, data[i].get_likes,data[i].get_comments, data[i].redeem ]);
+		    		graphData2.push ([ new Date(data[i].created_time), data[i].total_all , data[i].total_posts, 
+		    		                   data[i].total_comments, data[i].total_likes, data[i].total_get_likes,
+		    		                   data[i].total_get_comments, data[i].total_redeem ]);
+		    	}
+		    
+		    	graphLoaded =true;
+		    	graphLoaded2 =true;
+		    	var text = ['All', 'Posts', 'Comments', 'Likes', 'Get Likes', 'Get Comments', 'Redeem'];
+		    	graph = new lineGraph('#placeholder', graphData1, text);
+		    	graph2  = new lineGraph('#placeholder2', graphData2, text);
+		    	$('#graphtitle').html('Points');
+		        $('#graphtitle2').html('Total Points');
 		    }
 		});            
 	}
+
 
 }
 
@@ -673,18 +667,18 @@ function loadHome(){
 		},
 		success : function(data) {
 			$('#home').html(data);
-			getHomePageLikes("#placeholder");
+			getHomePageLikes("all");
 			//loadGraph("#placeholder2", 'Points');
 	
 			$('#placeholder').resize();
 			$('#placeholder2').resize();
 			//topFanTable = $('#topfanTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]} );
-			topPostByLike= $('#topPostByLike').dataTable({"sDom" : "t", "aaSorting": [[ 3, "desc" ]]});
+			//topPostByLike= $('#topPostByLike').dataTable({"sDom" : "t", "aaSorting": [[ 3, "desc" ]]});
 			
 			//topFanTable = $('#topfanTable').dataTable({"sDom" : "<'filter'f><'length'l>t<'info'i>", "aaSorting": [[ 2, "desc" ]]} );
 			//getTopFanTable('topfan', 30);
 			/**************** Fanpage Setting Section *******************************/
-			var previousPoint = null;
+			//var previousPoint = null;
 			/*    
 			$("#placeholder").bind("plothover", function (event, pos, item) {
 				if (item) {
@@ -2025,7 +2019,7 @@ lineGraph =  function (u, d, t, s, e, m){
 	
 	this.graph = d3.select(this.ui).append("svg")
 					.style("float","left")
-					.attr("class", "graph")
+					.attr("class", "linegraph")
 					.attr("width", this.width + this.margin[1] + this.margin[3])
 					.attr("height", this.height + this.margin[0] + this.margin[2])
 	
@@ -2079,7 +2073,7 @@ lineGraph =  function (u, d, t, s, e, m){
 						.attr('height', 10)
 						.attr('transform', 'translate(0, ' + (j*20 + 10) +')');
 		
-		b.on('click',function(){ return self.test(d3.select(this).attr("data-num")) });
+		b.on('click',function(){ return self.show(d3.select(this).attr("data-num")) });
 		//console.log(b);
 	
 	}
@@ -2089,7 +2083,7 @@ lineGraph =  function (u, d, t, s, e, m){
 
 };
 
-lineGraph.prototype.test = function( j ){
+lineGraph.prototype.show = function( j ){
 	//alert(j);
 	//console.log(j);
 	var self = this;

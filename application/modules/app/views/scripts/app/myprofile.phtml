@@ -47,6 +47,7 @@
 						<div class="user noline ">
 						<div class="badgedisplay" >
 							<?php foreach ($this->chosen_badges as $b): ?>
+								<?php if ($b != 'undefined') {?>
 								<div class="progress earned-badges">
 									<div class="bar"></div>
 									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
@@ -54,6 +55,7 @@
 										<img src="<?= $b['picture']?>"/>
 									</a>
 								</div>
+								<?php }?>
 							<?php endforeach;?>
 						</div>
 						<a class="display-badges-button" style="margin-top:6px; float:right" onclick="choosebadges()">Choose Display Badges</a>	
@@ -182,8 +184,7 @@
 	</div>
 	</div>
 	<div class="rvgrid-6">
-	
-		
+
 		<div id = "recent-activities-container">
 		
 			<div class="box">

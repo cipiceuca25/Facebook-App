@@ -41,9 +41,6 @@ margin:0;
 padding:0; 
 }
 
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .tab-container{
@@ -133,14 +130,14 @@ position:relative;
 float:left;
 }
 
-
 .nav-tabs#toolbar{
 	float:right;
 	background-color:@color-menu-right-background;
-	width:195px;
+	width:189px;
 	padding-left:13px;
 	padding-right:6px;
 	font-size:10px;
+	height:50px;
 }
 
 .nav-tabs#log-in-out{
@@ -529,6 +526,8 @@ float:left;
 margin-top:0px;
 }
 
+
+
 .top-list.mini .rank{
 width:36px;
 height:36px;
@@ -545,8 +544,12 @@ background-color:@color-ranking-first;
 .top-list .rank h2,
 .top-list .rank h3{
 color: @color-ranking-number-text;
-font: bold 14px/24px Helvetica, Arial,  sans-serif;
+font: bold 14px/25px Helvetica, Arial,  sans-serif;
 text-align:center;
+}
+
+.user .rank h1{
+font: bold 14px/40px Helvetica, Arial,  sans-serif;
 }
 
 .top-list.mini .follow{
@@ -581,8 +584,8 @@ font:bold 35px/55px Helvetica, Arial,sans-serif;
 .top-list .user{
 margin:8px;
 margin-left:0px;
+margin-right:0px;
 float:left;
-
 //width:180px;
 }
 
@@ -901,7 +904,7 @@ display:none;
 border:1px solid @color-main-container-border;
 background-color: @color-post-button-container;
 border-top:0;
-width:500px;
+width:408px;
 height:20px;
 padding:3px;
 }
@@ -933,7 +936,7 @@ font-size:12px;
 }
 
 .post-box{
-width:498px;
+width:412px;
 margin-left:0;
 overflow:hidden;
 height:20px;
@@ -1145,10 +1148,22 @@ display:inline-block;
 padding:9px;
 }
 
+#upcoming-badges-container .post-container,
+#upcoming-badges-container .post-container .post,{
+padding-top:0px;
+}
+
+.upcoming-badges{
+	height:44px;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
 .upcoming-badges .progress{
 height:40px;
 width:40px;
 margin:0px 8px 0px;
+float:left;
 }
 .upcoming-badges .progress a{
 position:relative;
@@ -1160,6 +1175,12 @@ float:left;
 .upcoming-badges .bar{
 height:40px;
 }
+
+.badge-description{
+float:left;
+
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1615,7 +1636,7 @@ cursor:default;
 
 .pointlog td{
 	padding:5px 3px;
-	width:80%;
+
 }
 
 .pointlog .points{
@@ -1653,40 +1674,55 @@ cursor:default;
 	 .box-shadow(0 0 12px @color-you );
 }
 
+
 .notifier{
 	position:absolute;
 	right:0px;
 	top:50px;
 	
 	background-color:@color-post-background;
-	.box-shadow(0px 2px 5px #888888);
+	//.box-shadow(0px 2px 5px #888888);
 }
+
+.notifier .box{
+	background-color:@color-menu-right-background;
+	color:white;
+	border:0px;
+}
+
 .notifier .comments{
 	max-height:400px;
 	overflow:hidden;
 }
+
+.notifier .comments .comment-container{
+	background-color:transparent;
+}
+
+.notifier a,
+.notifier a:hover {
+	color:white;
+}
+
 .notifier .arrow{
 	width:0px;
 	height:0px;
 	border-top:5px solid transparent;
 	left:50%;
 	position:absolute;
-	border-bottom: 5px solid @color-main-container-border;
+	border-bottom: 5px solid transparent;
 	border-right:5px solid transparent;
 	border-left:5px solid transparent;
 	margin-top:-10px;
 }
 
-.notifier .post-container:hover{
-background-color: @color-post-background;
-}
-
 .notifier .post-container .user{
 font-size: 12px;
+border-bottom:0px;
 }
 
 .notifier .message{
-	color:@color-main-text;
+
 	font-weight:normal;
 	font-size:11px;
 }
@@ -1819,15 +1855,19 @@ width:793px;
 }
 
 [class*='rvgrid-']{
-padding-right:17px;
-//padding-right:1.063em;
 float:left;
 }
-[class*='rvgrid-']:last-of-type {
+
+.rvrow [class*='rvgrid-']{
+padding-right:17px;
+//padding-right:1.063em;
+
+}
+.rvrow [class*='rvgrid-']:last-of-type {
 padding-right:8.5px;
 //padding-right: 0.531em;
 }
-[class*='rvgrid-']:first-of-type {
+.rvrow [class*='rvgrid-']:first-of-type {
 padding-left:8.5px;
 //padding-left: 0.531em;
 }

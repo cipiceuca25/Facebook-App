@@ -41,15 +41,15 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active
 					from badge_events e,
 					(
-					SELECT b.id, b.name, b.description, b.quantity, 
-					if (f.weight <=> null, b.weight, f.weight) as weight,  
-					if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
-					if (f.active <=> null, 1, f.active) as active,
-					b.picture
-					
-					FROM badges b
-					left join fancrank.fanpage_badges f
-					on f.badge_id = b.id && fanpage_id = $fanpage_id
+						SELECT b.id, b.name, b.description, b.quantity, 
+						if (f.weight <=> null, b.weight, f.weight) as weight,  
+						if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
+						if (f.active <=> null, 1, f.active) as active,
+						b.picture
+						
+						FROM badges b
+						left join fancrank.fanpage_badges f
+						on f.badge_id = b.id && fanpage_id = $fanpage_id
 					) as x
 					where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
 					x.active = 1

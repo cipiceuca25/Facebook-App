@@ -131,7 +131,7 @@
 									
 									<li>
 										<? if ($this->fan->fan_point != '?'){?>
-											<a rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?><img src="/img/icons/Points.png" /></a>
+											<a rel="tooltip" id="pointlog" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?><img src="/img/icons/Points.png" /></a>
 										<?php }else{?>
 											<div style="width:60px;height:50px"></div>
 										<?php }?>

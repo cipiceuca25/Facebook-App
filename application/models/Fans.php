@@ -159,7 +159,7 @@ class Model_Fans extends Model_DbTable_Fans
 	}
 	
 	public function updateBadgeChoices($badges){
-	
+		
 		$this->_fanProfile->chosen_badges = $this->getAdapter()->quote($badges);
 		$this->_fanProfile->save();
 	}

@@ -121,29 +121,15 @@ class Model_PointLog extends Model_DbTable_PointLog
 	}
 	
 	
-	public function getFanpagePoints($fanpage){
+	public function getFanpagePointsNumber($fanpage){
 		$select= "
-		SELECT 'Month' as time ,sum(giving_points) as points FROM fancrank.point_log where
-		Month(curdate()) = Month(created_time)
-		&& year(curdate()) = year(created_time)
-		&& fanpage_id = $fanpage
 		
-		union
 		
-		SELECT 'Week' as time ,sum(giving_points) as points FROM fancrank.point_log where
-		yearweek(curdate()) = yearweek(created_time)
-		&& fanpage_id = $fanpage
-		
-		union
-		
-		SELECT 'Today' as time ,sum(giving_points) as points FROM fancrank.point_log where
-		Date(curdate()) = date(created_time)
-		&& fanpage_id = $fanpage
-		
-		union
-		
-		SELECT 'all' as time ,sum(giving_points) as points 
-		FROM fancrank.point_log where fanpage_id = $fanpage
+		SELECT sum(giving_points) as 'all',
+			 sum(case when (Month(curdate()) = Month(created_time)&& year(curdate()) = year(created_time)) then giving_points else 0 end) as 'month',
+			sum(case when(yearweek(curdate()) = yearweek(created_time)) then giving_points else 0 end ) as 'week',
+			sum(case when( date(curdate()) = date(created_time) ) then giving_points else 0 end) as 'today'
+		FROM fancrank.point_log where fanpage_id = $fanpage		
 		";
 		
 		return $this->getAdapter()->fetchAll($select);
@@ -157,8 +143,68 @@ class Model_PointLog extends Model_DbTable_PointLog
 					group by object_type";
 		
 		return $this->getAdapter()->fetchAll($select);
-		
-	
 	}
+	
+	public function getFanpagePointsGraph($fanpage, $time, $graph){
+		$select="SELECT sum(giving_points) as 'all',
+				sum(case when object_type = 'posts' then giving_points else 0 end ) as 'posts',
+				sum(case when object_type = 'comments' then giving_points else  0 end ) as 'comments',
+				sum(case when object_type = 'likes' then giving_points else 0 end ) as 'likes',
+				sum(case when object_type = 'get_comments' then giving_points else  0 end ) as 'get_comments',
+				sum(case when object_type = 'get_likes' then giving_points else 0 end ) as 'get_likes',
+				sum(case when object_type = 'redeem' then giving_points else 0 end ) as 'redeem',
+			 	created_time FROM fancrank.point_log  
+				where fanpage_id = $fanpage	 && fanpage_id != facebook_user_id
+				";
+		
+		switch($time){
+			case 'month':
+				$select = $select . " && year(created_time) = year(curdate()) 
+							&& month(created_time) = month(curdate()) group by date(created_time)";
+				break;
+				
+			case 'week':
+				$select = $select . " && yearweek(created_time) = yearweek(curdate()) group by date(created_time)";
+				break;
+				
+			case 'today':
+				$select = $select . " && date(created_time) = date(curdate()) group by date(created_time)";
+				break;
+			
+			default:
+				$select = $select . " group by date(created_time)";
+				break;
+		}
+		
+		$result =  $this->getAdapter()->fetchAll($select);
+		
+		if ($result){
+			
+			$result[0]['total_all'] = $result[0]['all'];
+			$result[0]['total_posts'] = $result[0]['posts'];
+			$result[0]['total_comments'] = $result[0]['comments'];
+			$result[0]['total_likes'] = $result[0]['likes'];
+			$result[0]['total_get_comments'] = $result[0]['get_comments'];
+			$result[0]['total_get_likes'] = $result[0]['get_likes'];
+			$result[0]['total_redeem'] = $result[0]['redeem'];
+			
+			for($i = 1; $i < count($result); $i++ ){
+		
+				$result[$i]['total_all'] = $result[$i]['all'] +  $result[$i-1]['total_all'] ;
+				$result[$i]['total_posts'] = $result[$i]['posts'] +  $result[$i-1]['total_posts'] ;
+				$result[$i]['total_comments'] = $result[$i]['comments'] +  $result[$i-1]['total_comments'] ;
+				$result[$i]['total_likes'] = $result[$i]['likes'] +  $result[$i-1]['total_likes'] ;
+				$result[$i]['total_get_comments'] = $result[$i]['get_comments'] +  $result[$i-1]['total_get_comments'] ;
+				$result[$i]['total_get_likes'] = $result[$i]['get_likes'] +  $result[$i-1]['total_get_likes'] ;
+				$result[$i]['total_redeem'] = $result[$i]['redeem'] +  $result[$i-1]['total_redeem'] ;
+		
+			}
+		}
+		
+		return $result;
+		
+		
+	}
+	
 }
 

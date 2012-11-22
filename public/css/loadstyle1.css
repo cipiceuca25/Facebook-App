@@ -167,10 +167,11 @@ ol {
 .nav-tabs#toolbar {
   float: right;
   background-color: #647ab1;
-  width: 195px;
+  width: 189px;
   padding-left: 13px;
   padding-right: 6px;
   font-size: 10px;
+  height: 50px;
 }
 .nav-tabs#log-in-out {
   font-size: 12px;
@@ -542,8 +543,11 @@ background-color: @color-post-background-hover;
 .top-list .rank h2,
 .top-list .rank h3 {
   color: #ffffff;
-  font: bold 14px/24px Helvetica, Arial, sans-serif;
+  font: bold 14px/25px Helvetica, Arial, sans-serif;
   text-align: center;
+}
+.user .rank h1 {
+  font: bold 14px/40px Helvetica, Arial, sans-serif;
 }
 .top-list.mini .follow {
   position: relative;
@@ -571,6 +575,7 @@ background-color: @color-post-background-hover;
 .top-list .user {
   margin: 8px;
   margin-left: 0px;
+  margin-right: 0px;
   float: left;
 }
 .span12 .top-list .user {
@@ -825,7 +830,7 @@ background-color: @color-post-background-hover;
   border: 1px solid #c1cee0;
   background-color: #f7f7f7;
   border-top: 0;
-  width: 500px;
+  width: 408px;
   height: 20px;
   padding: 3px;
 }
@@ -858,7 +863,7 @@ background-color: @color-post-background-hover;
   font-size: 12px;
 }
 .post-box {
-  width: 498px;
+  width: 412px;
   margin-left: 0;
   overflow: hidden;
   height: 20px;
@@ -1057,10 +1062,20 @@ background:@color-post-background-hover;
   display: inline-block;
   padding: 9px;
 }
+#upcoming-badges-container .post-container,
+#upcoming-badges-container .post-container .post {
+  padding-top: 0px;
+}
+.upcoming-badges {
+  height: 44px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 .upcoming-badges .progress {
   height: 40px;
   width: 40px;
   margin: 0px 8px 0px;
+  float: left;
 }
 .upcoming-badges .progress a {
   position: relative;
@@ -1069,6 +1084,9 @@ background:@color-post-background-hover;
 }
 .upcoming-badges .bar {
   height: 40px;
+}
+.badge-description {
+  float: left;
 }
 .badge-profile {
   float: right;
@@ -1506,7 +1524,6 @@ background:@color-post-background-hover;
 }
 .pointlog td {
   padding: 5px 3px;
-  width: 80%;
 }
 .pointlog .points {
   text-align: right;
@@ -1546,16 +1563,22 @@ background:@color-post-background-hover;
   right: 0px;
   top: 50px;
   background-color: #ffffff;
-  -webkit-box-shadow: 0px 2px 5px #888888;
-  -moz-box-shadow: 0px 2px 5px #888888;
-  box-shadow: 0px 2px 5px #888888;
-  -webkit-box-shadow: 0px 2px 5px #888888;
-  -moz-box-shadow: 0px 2px 5px #888888;
-  box-shadow: 0px 2px 5px #888888;
+}
+.notifier .box {
+  background-color: #647ab1;
+  color: white;
+  border: 0px;
 }
 .notifier .comments {
   max-height: 400px;
   overflow: hidden;
+}
+.notifier .comments .comment-container {
+  background-color: transparent;
+}
+.notifier a,
+.notifier a:hover {
+  color: white;
 }
 .notifier .arrow {
   width: 0px;
@@ -1563,19 +1586,16 @@ background:@color-post-background-hover;
   border-top: 5px solid transparent;
   left: 50%;
   position: absolute;
-  border-bottom: 5px solid #c1cee0;
+  border-bottom: 5px solid transparent;
   border-right: 5px solid transparent;
   border-left: 5px solid transparent;
   margin-top: -10px;
 }
-.notifier .post-container:hover {
-  background-color: #ffffff;
-}
 .notifier .post-container .user {
   font-size: 12px;
+  border-bottom: 0px;
 }
 .notifier .message {
-  color: #575757;
   font-weight: normal;
   font-size: 11px;
 }
@@ -1678,13 +1698,15 @@ background:@color-post-background-hover;
   width: 793px;
 }
 [class*='rvgrid-'] {
-  padding-right: 17px;
   float: left;
 }
-[class*='rvgrid-']:last-of-type {
+.rvrow [class*='rvgrid-'] {
+  padding-right: 17px;
+}
+.rvrow [class*='rvgrid-']:last-of-type {
   padding-right: 8.5px;
 }
-[class*='rvgrid-']:first-of-type {
+.rvrow [class*='rvgrid-']:first-of-type {
   padding-left: 8.5px;
 }
 [class*='rvgrid-'] [class*='rvgrid-']:first-of-type {

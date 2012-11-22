@@ -18,7 +18,7 @@
 
 
 <?php foreach ($this->post as $post):?>		
-	<?php if (isset($post->story)){?>
+	<?php if (isset($post->story) || count($post) == 0 ){?>
 	
 	<?php }else{?>
 		
@@ -459,3 +459,11 @@
 <li id ="more_post"><button  class="btn-more" onclick="getFancrankfeed(setFeed)">MORE POSTS +</button></li>
 
 <?php }?>	
+
+<script>
+$('.comments').enscroll({
+showOnHover: true,
+clickTrackToScroll: false,
+verticalTrackClass: 'track3 popup',
+verticalHandleClass: 'handle3 popup'});	
+</script>

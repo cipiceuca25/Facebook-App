@@ -778,6 +778,41 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 			}
 			
 			return $result;
+		}else{
+			$select = "SELECT event_object, a.facebook_user_id, f.fan_name, f.fan_gender, activity_type, a.message , a.created_time 
+						FROM fancrank_activities a 
+							left join fans f
+							on a.facebook_user_id = f.facebook_user_id && a.fanpage_id = f.fanpage_id 
+						where a.fanpage_id = $fanpageId
+						";
+			
+			switch($time){
+				
+				case 'month':
+					$select = $select . " && year(a.created_time) = year(curdate()) && 
+										month(a.created_time) = month(curdate())  order by created_time DESC";
+					break;
+				case 'week':
+					$select = $select . " && yearweek(a.created_time) = yearweek(curdate())  order by created_time DESC";
+					break;
+				case 'today':
+					$select = $select . " && date(a.created_time) = date(curdate()) order by created_time DESC";
+					break;
+				default:
+					$select = $select . " order by created_time DESC";
+					break;
+				
+				
+			}
+			
+			
+			$result = $this->getAdapter()->fetchAll($select);
+			
+			
+			return $result;
+			
+			
+			
 		}
 		
 	}

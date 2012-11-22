@@ -723,12 +723,12 @@ height:32px;
 
 
 
-path {
+.linegraph path {
 	stroke-width: 1;
 	fill: none;
 }
 
-.axis {
+.linegraph .axis {
   	shape-rendering: crispEdges;
 	cursor:default;
 	-webkit-touch-callout: none;
@@ -739,84 +739,73 @@ path {
 	user-select: none;
 }
 
-.x.axis line {
+.linegraph .x.axis line {
   stroke: #ddd;
 }
 
-.x.axis .minor {
+.linegraph .x.axis .minor {
   stroke-opacity: .5;
 }
 
-.x.axis path {
+.linegraph .x.axis path {
   display: none;
 }
 
-.x.axis text {
+.linegraph .x.axis text {
 	font-size: 10px;
 	cursor:default;
 }
 
-.y.axis line, .y.axis path {
+.linegraph .y.axis line, .linegraph .y.axis path {
   fill: none;
   stroke: #ddd;
 }
 
-.y.axis text {
+.linegraph .y.axis text {
 	font-size: 12px;
 }
 
-circle.line1, 
-circle.line2, 
-circle.line3, 
-circle.line4,
-circle.line5,
-circle.line6,
-circle.line7,
-circle.line8{
-  fill: #fff;
+.linegraph circle.line1, 
+.linegraph circle.line2, 
+.linegraph circle.line3, 
+.linegraph circle.line4,
+.linegraph circle.line5,
+.linegraph circle.line6,
+.linegraph circle.line7,
+.linegraph circle.line8{
+ fill: #fff;
 }
 
-circle.line1:hover, 
-circle.line2:hover, 
-circle.line3:hover,
-circle.line4:hover,
-circle.line5:hover,
-circle.line6:hover,
-circle.line7:hover,
-circle.line8:hover {
-  fill: #000;
-}
 
-.box1{
+.linegraph circle.line1:hover,  .box1{
 fill:green;
 }
 
-.box2{
+.linegraph circle.line2:hover,  .box2{
 fill:blue;
 }
 
-.box3{
+.linegraph circle.line3:hover, .box3{
 	fill:orange;
-
 }
 
-.box4{
+.linegraph circle.line4:hover, .box4{
 	fill:red;
 }
 
-.box5{
+.linegraph circle.line5:hover, .box5{
 	fill:black;
 }
 
-.box6{
+.linegraph circle.line6:hover, .box6{
 fill:purple;
 }
 
-.box7{
+.linegraph circle.line7:hover, .box7{
 fill:pink;
 }
 
-.box8{
+.linegraph circle.line8:hover, .box8{
 	fill:cyan;
 }
  .line1, .box1 {
@@ -835,15 +824,15 @@ fill:pink;
 
 	stroke: red;
 }
-.line5, .box5 {
+ .line5, .box5 {
 
 	stroke: black;
 }
-.line6, .box6 {
+ .line6, .box6 {
 
 	stroke: purple;
 }
-.data7, .line7, .box7 {
+ .line7, .box7 {
 
 	stroke: pink;
 }
@@ -852,18 +841,18 @@ fill:pink;
 	stroke: cyan;
 }
 
-.line1, .line2, .line3, .line4, .line5, .line6, .line7, .line8{
+.linegraph .line1,.linegraph .line2,.linegraph .line3,.linegraph .line4,.linegraph .line5,.linegraph .line6,.linegraph .line7,.linegraph .line8{
  stroke-width: 1.5px;
 }
 
-.legend .box1,
-.legend .box2,
-.legend .box3,
-.legend .box4,
+ .legend .box1,
+.linegraph .legend .box2,
+ .legend .box3,
+ .legend .box4,
 .legend .box5,
 .legend .box6,
-.legend .box7,
-.legend .box8 {
+ .legend .box7,
+ .legend .box8 {
 	float:right;
 	width:10px;
 	height:10px
@@ -906,4 +895,23 @@ width: 5px;
 width: 5px;
 background: #bcbcbc ;
 left:0px;
+}
+
+.table-info{
+	float:right;
+}
+
+#tableholder tr td{
+padding-top:10px;
+padding-bottom:10px;
+padding-left:5px;
+padding-right:5px;
+}
+
+#tableholder thead {
+text-align:left;
+}
+
+#tableholder tr:hover{
+background-color:light-gray;
 }

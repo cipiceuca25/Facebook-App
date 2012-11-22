@@ -137,8 +137,6 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 			$a [] = $likeStats;
 			$a [] = $diffStats;
 				
-				
-				
 			$this->_helper->json($a);
 	}
 	
@@ -146,9 +144,13 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$time = $this->_getParam('time');
 		$fp = new Model_Fanpages();
 		
-		$x = $fp -> getFanFirstInteractionDateTable( $this->_fanpageId,$time,  true);
-		
-		$this->_helper->json($x);
+		$x = $fp -> getFanFirstInteractionGraph( $this->_fanpageId,$time, true);
+		$y = $fp -> getFanFirstInteractionGraph( $this->_fanpageId,$time, false);
+
+		$a = array() ;
+		$a []=$x;
+		$a []=$y ;
+		$this->_helper->json($a);
 	}
 	
 	public function graphhomeactivefansAction(){
@@ -156,9 +158,14 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$time = $this->_getParam('time');
 		$fp = new Model_Fanpages();
 		
-		$x = $fp ->getActiveFanTable( $this->_fanpageId,$time,  true);
+		$x = $fp ->getActiveFanGraph( $this->_fanpageId, $time,  true);
+		$y = $fp ->getActiveFanGraph( $this->_fanpageId, $time,  false);
 		
-		$this->_helper->json($x);
+		$a = array();
+		$a []=$x;
+		$a []=$y;
+		
+		$this->_helper->json($a);
 		
 	}
 	
@@ -167,9 +174,13 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$time = $this->_getParam('time');
 		$fp = new Model_Fanpages();
 		
-		$x = $fp ->getFacebookInteractions( $this->_fanpageId,$time,  true);
+		$x = $fp ->getFacebookInteractionsGraph( $this->_fanpageId,$time,  true);
+		$y = $fp ->getFacebookInteractionsGraph( $this->_fanpageId,$time,  false);
+		$a = array();
+		$a []=$x;
+		$a []=$y;
 		
-		$this->_helper->json($x);
+		$this->_helper->json($a);
 	
 	}
 	
@@ -179,10 +190,17 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$fp = new Model_FancrankActivities();
 	
 		$x = $fp ->getFancrankInteractionsGraph( $this->_fanpageId,$time,  true);
+		$y = $fp ->getFancrankInteractionsGraph( $this->_fanpageId,$time,  false);
+		
+		$a = array();
+		$a []=$x;
+		$a []=$y;
+		
+		$this->_helper->json($a);
 	
-		$this->_helper->json($x);
 	
 	}
+	
 	public function graphhomefancrankinteractionsuniqueusersAction(){
 	
 		$time = $this->_getParam('time');
@@ -193,25 +211,25 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$this->_helper->json($x);
 	
 	}
+	
 	public function graphhomefacebookinteractionsuniqueusersAction(){
 	
 		$time = $this->_getParam('time');
 		$fp = new Model_Fanpages();
 	
-		$x = $fp ->getFacebookInteractionsUniqueUsers( $this->_fanpageId,$time,  true);
+		$x = $fp ->getFacebookInteractionsUniqueUsersGraph( $this->_fanpageId,$time,  true);
 	
 		$this->_helper->json($x);
 	
 	}
-	
-	
-	public function graphpointsAction(){
-		
-		$points = new Model_PointLog();
-		
-		$pointStats = $points ->getFanpagePointLogByHour($this->_fanpageId, '2012-10-01');
 
-		$this->_helper->json($pointStats);
+	public function graphhomepointsAction(){
+		$time = $this->_getParam('time');
+		
+		$p = new Model_PointLog();
+		$x = $p ->getFanpagePointsGraph($this->_fanpageId, $time, true);
+		
+		$this->_helper->json($x);
 	}
 	
 	public function newFansTableAction(){
@@ -225,13 +243,10 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		
 		$result = $fanpage -> getFanFirstInteractionDateTable($this->_fanpageId, true);
 		
-		Zend_Debug::dump($result);
+		//Zend_Debug::dump($result);
 		
 		return 'graph of new fancrank fans';
 	}
-	
-
-	
 	
 	public function fancrankinteractionsgraphAction(){
 
@@ -248,6 +263,8 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		}
 		$this->_helper->json($act);
 	}
+	
+
 }
 
 ?>

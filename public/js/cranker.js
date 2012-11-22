@@ -5,7 +5,7 @@ var ffb = true;
 var ttb = true;
 var tcb = true;
 var tfdb = true;
-
+var pointlog =false;
 var currentpage = 'newsfeed';
 
 var backgroundcolor;
@@ -431,27 +431,7 @@ function choosebadges(){
 }
 
 
-function pointlog(){
-	popup(true);
-	$.ajax({
-		type : "GET",
-		url : serverUrl + '/app/app/pointlog/' + fanpageId,
-		dataType : "html",
-		cache : false,
-		async : true,
-		beforeSend: function(){
-			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-		},
-		success : function(data) {
-			$('.profile-content').html(data);
-			//$(x).popover('show');
-		},
-		error : function(xhr, errorMessage, thrownErro) {
-			console.log(xhr.statusText, errorMessage);
-		}
-	});
-	
-}
+
 
 function feedbackAnimation(ui, type) {
 
@@ -1093,8 +1073,53 @@ function getRedeem() {
 		}
 	});
 }
+$('#pointlog').live('click', function(){
+	//alert(notifier);
+	if(!pointlog){
+	//if(pointCount + badgeCount > 0 ){
+		getpointlog();
+		
+		
+		
+		//$('.notification').css('background-color',color2);
+		//$('.notification a').css('color',color1);
+		//$('.notification').css('opacity','1');
 
 
+
+		//$('.notification a').addClass('noclick');
+		
+		//alert(date);
+	//}
+	}else{
+		$('.notifier').remove();
+		pointlog = false;
+		notifer = false;
+	}
+	
+});
+function getpointlog(){
+	$('#menu').append('<div class="notifier"></div>');
+	pointlog = true;
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/pointlog/' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+			//$('.notifier').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$('.notifier').html(data);
+			//$(x).popover('show');
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
+	
+}
 function getListNotification(){
 	
 	$('#menu').append('<div class="notifier"></div>');
@@ -1104,48 +1129,23 @@ function getListNotification(){
 	notifier = true;
 	//console.log(points);
 	
-	
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/user/' + userId	+ '/savelastnotification/',
+		url : serverUrl + '/app/user/' + userId	+ '/savelastnotification/'  + '&fanpage=' + fanpageId,
 		dataType : "html",
 		cache : false,
 		async : true,
 		success : function(data) {
+			console.log('saved notification viewed');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
 			console.log('error getting list notification');
 		}
 	})
-	
-	
-	
-	
-	
-	/*
-	$.ajax({
-		type : "GET",
-		url : serverUrl + '/app/app/listnotification/' + fanpageId,
-		dataType : "html",
-		cache : false,
-		async : false,
-		beforeSend: function(){
-			$('.notifier').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-		},
-		success : function(data) {
-			$('.notifier').html(data);
-			//play();
-			notifier = true;
-			//$('#noti').popover('show');
-		},
-		error : function(xhr, errorMessage, thrownErro) {
-			console.log(xhr.statusText, errorMessage);
-			console.log('error getting list notification');
-		}
-	});
-	*/
+
 }
+
 
 function getBadgeNotification(){
 	load = typeof load !== 'undefined' ? load : true;
@@ -2047,7 +2047,8 @@ function submit_badges_choice(){
 
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/user/' + userId + '/savechosenbadges/' + '?c1=' +sbadges[0]+ '&c2=' +sbadges[1] + '&c3=' + sbadges[2],
+		url : serverUrl + '/app/user/' + userId + '/savechosenbadges/' + '?c1=' +sbadges[0]+ '&c2=' +sbadges[1]
+						+ '&c3=' + sbadges[2] + '&fanpage=' + fanpageId,
 		dataType : "html",
 		cache : false,
 		async : true,
@@ -2067,7 +2068,7 @@ function reset_badges_choice(){
 
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/user/' + userId + '/savechosenbadges/',
+		url : serverUrl + '/app/user/' + userId + '/savechosenbadges/ '  + '&fanpage=' + fanpageId,
 		dataType : "html",
 		cache : false,
 		async : true,
