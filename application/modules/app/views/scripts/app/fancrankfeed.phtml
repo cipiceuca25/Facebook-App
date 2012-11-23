@@ -3,7 +3,7 @@
 <?php $count2 = 0?>
 <?php if(empty($this->post)){?>
 	
-	<li class="row box post-container">
+	<li class="box post-container">
 
 		
 			<div class="post">
@@ -22,7 +22,7 @@
 	
 	<?php }else{?>
 		
-	<li class=" row box post-container <?=$post->id?>" >
+	<li class=" box post-container <?=$post->id?>" >
 	
 	<div class="user" >		
 	
@@ -391,30 +391,33 @@
 			 							<?= (isset($post->comments->count)? $post->comments->count : '0')?> , 
 								 		true )"> 
 					<img src="/img/comment.png" />
-			 		<?php if($post->comments->count != 1){?> 
-			 		View all <span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
-						echo $post->comments->count; 
-					 	} else {
-							echo '0'; 
-						}?>>
-			 		<?php if(isset($post->comments->count)){
-						echo $post->comments->count; 
-					 	} else {
-							echo '0'; 
-						}?>
+					
+					<span class="comment_<?= $post->id?>">View all Comments</span>
+					<!-- 
+			 		<?//php if($post->comments->count != 1){?> 
+			 		View all <span class="comment_<?//= $post->id?>" data-comment-count = <?php// if(isset($post->comments->count)){
+					//	echo $post->comments->count; 
+					// 	} else {
+						//	echo '0'; 
+					//	}?>>
+			 		<?//php if(isset($post->comments->count)){
+					//	echo $post->comments->count; 
+					 //	} else {
+						//	echo '0'; 
+						//}?>
 					</span> 
 					comments 
-				<?php }else { ?>
+				<?php// }else { ?>
 					View all<span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
-						echo $post->comments->count; 
-					 	} else {
-							echo '0'; 
-						}?>>
+					//	echo $post->comments->count; 
+					 //	} else {
+					//		echo '0'; 
+					//	}?>>
 			 		
 					 
-					
+					 
 					</span>
-					comments 
+					comments -->
 				<?php }?>
 				</a>
 				

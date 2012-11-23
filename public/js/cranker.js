@@ -1373,10 +1373,11 @@ function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name
 			success : function(data) {
 				//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 				$('#comment_box_'+post_id).val('');
-				post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
+				
+				//post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 				//alert(post_comment_count);
-				$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
-				$('.comment_'+post_id).html(' '+post_comment_count);
+				//$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
+			//	$('.comment_'+post_id).html(' '+post_comment_count);
 				
 				if (isLatestAdminPost){
 					comment_feed2(post_id, post_type,  post_comment_count, false);
@@ -1413,9 +1414,10 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 			success : function(data) {
 				//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 				$('#comment_box_popup_'+post_id).val('');
-				post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
+				
+				//post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 				//alert(post_comment_count);
-				$('.comment_'+post_id).html(post_comment_count);
+				//$('.comment_'+post_id).html(post_comment_count);
 	
 				popup_post(post_id, false);
 			},

@@ -38,6 +38,15 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 
 	public function getChosenBadges($fanpage_id, $facebook_user_id, $chosen){
 		
+		$a = array();
+		
+		foreach ($chosen as $x){
+			if ($x != 'undefined'){
+				$a [] = $x;
+			}
+		}
+		
+		//Zend_Debug::dump($a);
 		
 		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active
 					from badge_events e,
@@ -47,31 +56,35 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 						if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
 						if (f.active <=> null, 1, f.active) as active,
 						b.picture
-						
 						FROM badges b
 						left join fancrank.fanpage_badges f
 						on f.badge_id = b.id && fanpage_id = $fanpage_id
 					) as x
 					where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
-					x.active = 1
-					";
-		switch(count($chosen)){
+					x.active = 1";
+		
+		switch(count($a)){
 			case 3:
-				$select = $select."&& (e.badge_id=$chosen[0] || e.badge_id = $chosen[1] || e.badge_id = $chosen[2])";
+				$select = $select."&& (e.badge_id=$a[0] || e.badge_id = $a[1] || e.badge_id = $a[2])";
 				break;
 			case 2:
-				$select = $select."&& (e.badge_id=$chosen[0] || e.badge_id = $chosen[1])";
+				$select = $select."&& (e.badge_id=$a[0] || e.badge_id = $a[1])";
 				break;
 			case 1:
-				if ($chosen[0] !=null && !empty($chosen[0])){
-					$select = $select."&& (e.badge_id=$chosen[0])";
+				if ($a[0] !=null && !empty($a[0])){
+					$select = $select."&& (e.badge_id=$a[0])";
 				}else{
 					$select = $select.' order by created_time DESC, quantity DESC limit 3';
 				}
-					break;
+				break;
+			case 0:
+				return $chosen;
+				break;
 		}
 					
-
+		
+		
+		
 		return $this->getAdapter()->fetchAll($select);
 
 	}

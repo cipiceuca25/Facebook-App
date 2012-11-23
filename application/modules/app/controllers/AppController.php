@@ -140,7 +140,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$this->view->username = $this->_facebook_user->facebook_user_name;
 		$this->view->facebook_user_access_token = $this->_facebook_user->facebook_user_access_token;
 		$this->view->fanpage_id = $this->_fanpageId;
-		
+		$this->view->fanpage_level = $this->_fanpageProfile -> fanpage_level;
 		$this->view->user_id = $this->_userId;
 		$this->view->color = $color['color_choice'];
 		//Zend_Debug::dump($this->_fan);
@@ -1445,7 +1445,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$this->_fan->chosen_badges;
     	$cb = array();
     	foreach ($chosenBadges as $x){
-    		$cb[] = $x['badge_id'];
+    		if ($x != 'undefined'){
+    			$cb[] = $x['badge_id'];
+    		}
     	}
 //     	$cb[0] = $chosenBadges[0]['badge_id'];
 //     	$cb[1] = $chosenBadges[1]['badge_id'];

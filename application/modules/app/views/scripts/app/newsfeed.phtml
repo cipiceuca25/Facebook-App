@@ -27,8 +27,9 @@
 						<a class="noclick"><?=$this->fanpage_name?></a> 
 					</div>
 				</div>
+				<div class="post">
 				<img src="/img/thin-banner.jpg"/>
-			
+				</div>
 			</div>
 				
 		</div>
@@ -378,22 +379,29 @@
 									<a onclick=" comment_feed2('<?= $post->id ?>','<?= $post->type?>', 10,<?php 
 						 		if(isset($post->comments->count)){
 									echo $post->comments->count; //echo  $post->comments->count;
-						 		} else {echo '0';} ?> , true )"> <img src="/img/comment.png" /><?php if($post->comments->count != 1){?>
-										View all <span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
-									echo $post->comments->count; 
-								 	} else {
-										echo '0'; 
-									}?>><?php if(isset($post->comments->count)){
-									echo $post->comments->count; 
-								 	} else {
-										echo '0'; 
-									}?>
-									</span> comments <?php }else { ?> View all<span
-										class="comment_<?= $post->id?> "data-comment-count = <?php if(isset($post->comments->count)){
-									echo $post->comments->count; 
-								 	} else {
-										echo '0'; 
-									}?>> </span> comments <?php }?>
+						 		} else {echo '0';} ?> , true )"> <img src="/img/comment.png" />
+						 			<span class="comment_<?= $post->id?>">View all Comments</span>
+						 			
+						 			<!--  
+						 			<?//php  if($post->comments->count != 1){?>
+										View all <span class="comment_<? // = $post->id?>" data-comment-count = <?php // if(isset($post->comments->count)){
+									//echo $post->comments->count; 
+								 	//} else {
+									//	echo '0'; 
+									//}?>><?php // if(isset($post->comments->count)){
+									//echo $post->comments->count; 
+								 	//} else {
+									//	echo '0'; 
+									//}?>
+									</span> comments 
+									<?php //}else { ?> 
+									View all<span
+										class="comment_<? //= $post->id?> "data-comment-count = <? //php if(isset($post->comments->count)){
+									//echo $post->comments->count; 
+								 	//} else {
+									//	echo '0'; 
+									//}?>> </span> comments <?//php }?>
+									-->
 									</a>
 									
 									<?php if($post->comments->count > 5){?> 

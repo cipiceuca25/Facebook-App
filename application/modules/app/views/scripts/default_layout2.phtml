@@ -126,47 +126,52 @@
 									<li><a href="#leaderboard" id="leaderboard-tab" data-toggle="tab"><img src="/img/icons/leaderboards.png" />Leaderboard</a></li>
 									<li><a href="#profile" id="profile-tab" data-toggle="tab" ><img src="/img/icons/profile.png" />My Profile</a></li>
 									<!--  <li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>-->
-									<li><a href="#redeem" id="redeem-tab" data-toggle="tab"><img src="/img/icons/rewards.png" />Redeem</a></li>
+									<? if ($this->fanpage_level > 2){?><li><a href="#redeem" id="redeem-tab" data-toggle="tab"><img src="/img/icons/rewards.png" />Redeem</a></li>	<?php }?>
 								</ul>
 								<ul class="nav nav-tabs" id="toolbar">
-									<? if ($this->fan->fan_point != '?'){?>
-									<li><a class="my_fan_point_tooltip" rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><span class ="my_fan_point"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></span><img src="/img/icons/points.png" /></a></li>
-									<?php }?>
+		
+									
 								<!-- <li class="row-fluid" id='notification_upcoming_badges'>
 															 
-															<?php // foreach ($this->notibadges as $b){?>
-																<div class="ub">
-																	<div class="progress">
-																		<div class="bar" style="width: <? //= $b['percentage']?>%;"></div>
-																		<a data-original-title="<?//= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
-																		rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-19px;" >
-																			
-																			<img src="<?//= $b['picture']?>" style="opacity:<?//= $b['percentage']/100?>"/>
-																		</a>
-																	</div> 
-																</div>
-															<?php // }?>
-															</li>-->
-									<li><div class="line"></div></li>
-									<li class="" >
-										<a><img src="/img/icons/badges.png" /></a>
-									</li>
-									<li><div class="line"></div></li>
-									<li class="notification" >
-										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/mail.png" /></a>
-									</li>
+										<?php // foreach ($this->notibadges as $b){?>
+											<div class="ub">
+												<div class="progress">
+													<div class="bar" style="width: <? //= $b['percentage']?>%;"></div>
+													<a data-original-title="<?//= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+													rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-19px;" >
+														
+														<img src="<?//= $b['picture']?>" style="opacity:<?//= $b['percentage']/100?>"/>
+													</a>
+												</div> 
+											</div>
+										<?php // }?>
+										</li>-->
+									
 									<li>
 										<div id="logout-tab" class="dropdown">
 											<a  class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="/img/icons/settings.png" /></a>
 											<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-												<li><a onclick="resetTour()">?</a></li>
+												<li><a>Setting</a></li>
+												<li><a>Help</a></li>
 												<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Log Out</a></li>
 											</ul>
 										</div>
-							
-										
 									</li>
-							
+									
+									<li class="notification" >
+										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/Mail.png" /></a>
+									</li>
+									
+									<li><div class="line"></div></li>
+									
+									<li >
+										<a><img src="/img/icons/badges.png" /></a>
+									</li>
+									
+									<? if ($this->fanpage_level > 2){?>
+										<li><div class="line"></div></li>
+										<li><a class="my_fan_point_tooltip" rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><span class ="my_fan_point"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></span><img src="/img/icons/points.png" /></a></li>
+									<?php }?>
 								</ul>
 								<!-- <ul class="nav nav-tabs" id="log-in-out">
 									

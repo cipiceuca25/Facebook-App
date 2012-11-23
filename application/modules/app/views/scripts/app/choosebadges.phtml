@@ -1,5 +1,8 @@
+
+
+
 <script>
-selected_badges=  <?= count($this->selected)?>;
+selected_badges=  <?= ($this->selected[0] == 'undefined')?0:count($this->selected)?>;
 
 </script>
 
