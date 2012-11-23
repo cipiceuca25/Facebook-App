@@ -399,7 +399,7 @@ top:-13px;
 
 .title.nopic{
 padding-bottom:10px;
-margin-bottom:12px;
+
 }
 
 .title-header.nopic{
@@ -453,13 +453,12 @@ float:right;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-.top-list.first{
-	margin-top:-12px;
-}
 
 .top-list{
 //background-color:@color-ranking-background;
 max-height:224px;
+width:100%;
+color:@color-menu-left-background;
 }
 
 /*
@@ -494,12 +493,39 @@ background-color: @color-post-background-hover;
 .popover .stats,
 .user-profile .stats,
 #myprofile .stats{
-	height:60px;
+	height:40px;
 	border-top: 1px solid @color-post-user-border;
 	//border-bottom: 1px solid @color-post-user-border;
-	margin-bottom:-5px;
+	//margin-bottom:-5px;
 	
 }
+
+.top-list .stats{
+	line-height:39px;
+	//position:absolute;
+	border-top: 0px;
+	min-width:300px;
+	float:right;
+}
+
+
+
+
+.top-list li:last-of-type .ranker{
+border-bottom:0px solid @color-box-border;
+}
+
+.top-list li:last-of-type .ranker.first{
+border-bottom:1px solid @color-box-border;
+}
+
+.top-list.you .ranker,
+.top-list.you li:last-of-type .ranker
+{
+border-top:1px solid black;
+border-bottom:1px solid black;
+}
+
 
 .user-profile .stats.fol{
 	border-top: 0px solid;
@@ -516,9 +542,6 @@ background-color: @color-post-background-hover;
 	top:12px;
 }
 
-.top-list .stats .stats-block{
-	top:0px;
-}
 .linktofb{
 	margin-top:21px;	
 	font-size:11px;
@@ -542,9 +565,28 @@ background-color: @color-post-background-hover;
 	display:inline-block;
 	line-height:18px;
 	text-align:right;
-
+	padding-left:2px;
 	padding-right:2px;
 }
+
+
+.top-list .points{
+	font-weight:bold;
+	line-height:39px;
+	float:right;
+	margin-right:38px;
+}
+
+.top-list .points h3{
+display:inline-block;
+font-size:18px;
+position:relative;
+line-height:39px;
+}
+.top-list .points span{
+	font-size:12px;
+}
+
 .popover .stats h3,
 .user-profile .stats h3,
 #myprofile .stats h3,
@@ -553,15 +595,7 @@ background-color: @color-post-background-hover;
 	vertical-align:bottom;
 }
 
-.top-list .stats{
-	height:18px;
 
-	//position:absolute;
-	margin:8px;
-	border-top: 0px;
-	min-width:350px;
-	float:right;
-}
 
 
 .top-list .ranker{
@@ -569,6 +603,8 @@ border-bottom:1px solid @color-box-border;
 height:40px;
 width:100%;
 position:relative;
+padding-left:2px;
+padding-right:2px;
 }	
 
 .top-list.mini .ranker{
@@ -577,6 +613,7 @@ height:36px;
 	
 .top-list .ranker.first{
 border-top:0 solid;
+
 }
 
 .user .rank,
@@ -650,7 +687,7 @@ font:bold 35px/55px Helvetica, Arial,sans-serif;
 }
 
 .top-list .user{
-margin:8px;
+line-height:39px;
 margin-left:0px;
 margin-right:0px;
 float:left;
@@ -675,10 +712,11 @@ left:35px;
 }
 
 .top-list .user .name{
-font:13px Helvetica,Arial,  sans-serif;
+font:bold 13px/39px Helvetica,Arial,  sans-serif;
 margin-left:8px;
 position:relative;
-margin-top:4px;
+line-height:39px;
+
 float:left;
 }
 
@@ -688,11 +726,11 @@ float:left;
 
 .top-list.mini .user .name{
 top:8px;
-font:12px Helvetica,Arial,  sans-serif;
+font:bold 12px Helvetica,Arial,  sans-serif;
 }
 .top-list .user .name.first{
-font:14px Helvetica,Arial,  sans-serif;
-top:4px;
+font:bold 14px/39px Helvetica,Arial,  sans-serif;
+
 }
 
 .top-list.mini .user .name.first{
@@ -700,25 +738,9 @@ font:14px Helvetica,Arial,  sans-serif;
 top:7px;
 }
 
-.top-list .points{
-
-margin:4px;
-
-
-float:right;
-}
-
 .top-list .user-badge{
-
-margin:8px;
-margin-right:2px;
+line-height:39px;
 float:right;
-}
-
-.top-list .points h3{
-display:inline-block;
-font-size:25px;
-position:relative;
 }
 
 .top-list .points .seerank{
@@ -816,10 +838,13 @@ position:relative;
 font: bold 13px Helvetica, Arial, sans-serif;
 border-bottom:1px solid @color-post-user-border;
 padding-bottom:12px;
-
 padding-left:2px;
 padding-right:2px;
 overflow:hidden;
+}
+
+.post-container .user.pad{
+padding-top:12px;
 }
 
 .post-container .user.noline{
@@ -978,7 +1003,7 @@ display:none;
 border:1px solid @color-main-container-border;
 background-color: @color-post-button-container;
 border-top:0;
-width:438px;
+width:436px;
 height:20px;
 padding:3px;
 }
@@ -1012,7 +1037,7 @@ font-size:12px;
 }
 
 .post-box{
-width:100%;
+width:440px;
 margin-left:0;
 overflow:hidden;
 height:20px;

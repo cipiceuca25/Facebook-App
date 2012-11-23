@@ -1114,7 +1114,7 @@ function getpointlog(){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.notifier').html("<div class='rvgrid-5' style='text-align:center;'><div class='box'><img src='/img/ajax-loader.gif' /></div></div>");
+			$('.notifier').html("<div class='rvgrid-5ex' style='text-align:center;'><div class='box'><img src='/img/ajax-loader.gif' /></div></div>");
 		},
 		success : function(data) {
 			$('.notifier').html(data);

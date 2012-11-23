@@ -11,7 +11,7 @@
 			</div>
 			
 			<div class ="post-container">
-				<div class="user">
+				<div class="user pad">
 					<div class="user-badge">
 
 						<a class="noclick" rel="tooltip-follow" data-original-title="You can't Follow an Admin" >
@@ -55,7 +55,7 @@
 				<?php if(empty($this->latest)){?>
 
 					<li class="box post-container noline">
-						<div class="user"></div>
+						<div class="user pad"></div>
 	
 						<div class="post">
 							<div class="message">Feed Empty/Feed not Available</div>
@@ -64,7 +64,7 @@
 					</li>
 				<?}else{?>
 					<li class="post-container noline">
-						<div class="user">
+						<div class="user pad">
 							<div class="user-badge">
 	
 								<a class="noclick" rel="tooltip-follow" data-original-title="You can't Follow an Admin" >
@@ -256,8 +256,6 @@
 												<?php }?> 
 											><img class="small-face"src="https://graph.facebook.com/<?= $comments->from->id ?>/picture" onerror="ImgError(this);"></a></div>
 											
-										
-						
 						<div class="user">
 							
 							<div class="user-badge">
