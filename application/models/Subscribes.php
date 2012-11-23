@@ -180,6 +180,10 @@ class Model_Subscribes extends Model_DbTable_Subscribes
 	}
 	
 	public function getRelation($user, $target, $fanpage){
+		if (empty($user) || empty($target) || empty($fanpage)) {
+			return;	
+		}
+		
 		if($user == $target){
 			return "You";
 		}

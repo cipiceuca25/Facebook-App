@@ -1,0 +1,243 @@
+
+<div class="rvrow">
+	
+	<div class="rvgrid-12">
+	<div id="myprofile">
+		<div id="general-stats-container">
+		
+			<div class="box">
+				<div class="title nopic">
+					
+					<div class="title-header nopic">
+						Your Profile
+					</div>
+					<!--  <div class="tip">
+						<a rel="tooltip" data-original-title='This is your FanCrank Profile! Check out your points, experience, badges, and other statistics here.'>
+							?
+						</a>
+					</div>-->
+				</div>
+				<div class="rvrow">
+					<div class=" post-container noline">
+						<div class="user noline">
+								<div class="rank">
+									<h1><?= $this->fan->fan_level?></h1>
+								</div>
+								
+								<div class="photo">
+									<a class="noclick"><img class="large-face" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
+						
+								</div>
+								
+								<div class="name">
+									<a class="noclick"><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?></a>
+								
+								</div>	
+								
+								<div class="user-description tip2 italic" onkeyup="charcheck()">
+							
+								<?= substr($this->fan->message, 0, 160)?>
+								
+								</div><a class="user-description-button" onclick="editdescription()">Edit Description</a>	
+								
+						</div>
+					
+					</div>
+					<div class="post-container noline">
+						<div class="user noline ">
+						<div class="badgedisplay" >
+							<?php foreach ($this->chosen_badges as $b): ?>
+								<?php if ($b != 'undefined') {?>
+								<div class="progress earned-badges">
+									<div class="bar"></div>
+									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
+									class=noclick rel="tooltip" data-placement="top" >
+										<img src="<?= $b['picture']?>"/>
+									</a>
+								</div>
+								<?php }?>
+							<?php endforeach;?>
+						</div>
+						<a class="display-badges-button" style="margin-top:6px; float:right" onclick="choosebadges()">Choose Display Badges</a>	
+						</div>
+					</div>
+				</div>
+				
+				<div class="post-container noline">
+					<div class="rvrow ">
+						
+						<div id="exp-container" style="text-align:center">
+							<h4>Fan Experience</h4>
+							<div class="progress">
+								<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;"></div>
+								
+							</div>
+							
+								<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?></h5>
+								<?=$this->fan_exp_required?> Until Next Level
+							
+						</div>
+					</div>
+				</div>
+				
+				<div class="post-container noline">
+					<ul class="stats">
+					<li >
+						<div class="stats-block"><img src="/img/coins.png" /><h3><?= $this->fan->fan_point?></h3>	<br/>
+						Points</div>
+					</li>
+					<li >
+						<div class="stats-block"><img src="/img/post.png" /><h3><?=$this->stat_post?></h3>	<br/>
+						Posts</div>
+					</li>
+					<li >
+						<div class="stats-block"><img src="/img/thumbsup.png" /><h3><?=$this->stat_like?></h3><br/>
+						Likes</div>
+					</li>
+					<li >
+						<div class="stats-block"><img src="/img/comment.png" /><h3><?=$this->stat_comment?></h3><br/>
+						Comments</div>
+					</li>
+					<li >
+						<div class="stats-block"><img src="/img/rthumbsup.png" /><h3><?=$this->stat_get_like?></h3><br/>
+						Recieved<br/>Likes</div>
+					</li>
+					<li style="border:0px">
+						<div class="stats-block"><img src="/img/rcomment.png" /><h3><?=$this->stat_get_comment?></h3><br/>
+						Recieved Comments </div> 
+					</li>
+					</ul>
+				</div>	
+		
+			
+				
+				
+			
+			
+			</div>
+		</div>
+
+		<div class="rvrow" id ="badges-container">
+			
+			<div class="box">
+				<div class="title nopic">
+		
+					<div class="title-header nopic">
+						Earned Badges
+					</div>
+					<div class="tip2">These are Badges that you have earned.
+					</div>
+				
+				</div>
+				<div class="post-container noline">
+					<div class="rvrow post" id="profile_earned_badges" style="overflow:hidden; outline:none">
+						<div style="width:<?=count($this->badges) * 79.5?>px; height:70px;" >
+							<?php foreach ($this->badges as $b): ?>
+						
+								<div class="progress earned-badges" >
+									<div class="bar" ></div>
+									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
+									class=noclick rel="tooltip" data-placement="top"  >
+										<img src="<?= $b['picture']?>"/>
+									</a>
+								</div>
+					
+							<?php endforeach;?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="rvrow " id="follow-list-container">		
+			
+				<div class="rvgrid-6" >	
+				
+				<div class="box">
+					<div class="title nopic">
+						<div class="title-header nopic">
+							 <div class="follow-title"><a onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow.png" /><span class="h3"><?= $this->follower['0']['Follower']?></span><br/>
+							Followers</a></div>
+						</div>
+					</div>
+					<div id="followerslist"></div>
+					
+				</div>
+					</div>
+						
+						
+				<div class="rvgrid-6" >
+			
+					<div class="box">
+					<div class="title nopic">
+						<div class="title-header nopic">
+							 <div class="follow-title"><a onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow2.png" /><span class="h3"><?= $this->following['0']['Following']?></span><br/>
+						Following</a></div>
+						</div>
+					</div>
+					<div id="followinglist"></div>
+					</div>
+				</div>		
+
+		</div>	
+		
+		
+	</div>
+	</div>
+	<div class="rvgrid-6">
+
+		<div id = "recent-activities-container">
+		
+			<div class="box">
+				<div class="title nopic">
+					<div class="title-header nopic">
+						Recent Activities
+					</div>
+					<!--  <div class="tip">
+						<a rel="tooltip" data-original-title='This is your list of recent actitivies, remember that it may not be accurate as it does require time for it to sync up with Facebook'>?</a>
+					</div>-->
+				</div>
+				<div class="scrollbox">
+					<ul id="recent_activities"></ul>
+				</div>
+			</div>
+		</div>
+		
+		<div id ="upcoming-badges-container">
+			
+			<div class="box">
+				<div class="title nopic">
+		
+					<div class="title-header nopic">
+						Upcoming Badges
+					</div>
+					<div class="tip2">These are your upcoming badges.
+					</div>
+				</div>
+				<div class="post-container noline">
+					<div class="row-fluid post" id="profile_upcoming_badges">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+<script>
+	$('#recent_activities').enscroll({
+		showOnHover: true,
+		clickTrackToScroll: false,
+		verticalTrackClass: 'track3',
+		verticalHandleClass: 'handle3'
+	});
+	$('#profile_earned_badges').enscroll({
+		showOnHover: true,
+		clickTrackToScroll: false,
+		horizontalScrolling:true,
+		verticalScrolling:false,
+		horizontalTrackClass: 'htrack',
+		horizontalHandleClass: 'hhandle'
+	});
+	
+</script>

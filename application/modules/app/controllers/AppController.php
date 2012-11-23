@@ -538,7 +538,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		if(!empty($this->_fanpageId)) {
   			$cache = Zend_Registry::get('memcache');
   			$cache->setLifetime(1800);
-  			$cache->remove($this->_fanpageId);
+  			//$cache->remove($this->_fanpageId);
   			try {
   		
   				//Check to see if the $fanpageId is cached and look it up if not
@@ -2210,7 +2210,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		try {
     			$fanActivityId = $this->_fanpageId .'_' .$userid. '_fan_activity';
     			
-    			$cache->remove($fanActivityId);
+    			//$cache->remove($fanActivityId);
     			//$cache->remove($fanActivityId);
     			//Check to see if the $fanpageId is cached and look it up if not
     			if(isset($cache) && !$cache->load($fanActivityId)){

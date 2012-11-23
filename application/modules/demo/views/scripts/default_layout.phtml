@@ -1,0 +1,127 @@
+
+<!--  THIS LAYOUT IS FOR THE MULTIPLE PAGES-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="imagetoolbar" content="no"/>
+
+        <meta http-equiv="Content-Language" content="en"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <meta name="description" content="Fancrank Inc."/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+        <meta name="author" content="FanCrank" />
+        <meta name="generator" content="" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+        <script src="/js/libs/jquery-1.7.2.min.js"></script>
+		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
+    	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+      	<script src="/bootstrap/js/bootstrap.js"></script>
+        <script src="//connect.facebook.net/en_US/all.js"></script>
+      	<script src="/js/startcrank.js"></script>
+
+	    <!-- This following javascripts are used to initialize the iframe look and feel -->
+		<script>
+			var baseAppUrl = "<?= $this->url() ?>";
+			var serverUrl = "<?= $this->fullServerUrl()?>";
+			var appId = "<?= $this->layout()->appKey ?>";
+			var userId = "<?= $this->user_id ?>";
+			var fanpageId = "<?= $this->fanpage_id?>";
+			var newuser = "<?= $this->newuser?>";	
+
+			var fb =false;
+			window.fbAsyncInit = function() {
+				FB.init({
+					 appId  : appId,
+					 status : true, // check login status
+					 cookie : true, // enable cookies to allow the server to access the session
+					 xfbml  : true// parse XFBML
+					 
+				});
+				FB.Canvas.setAutoGrow();
+		
+				fb = true;
+			};
+		 </script>
+	 	<!-- End of iframe initialization -->
+     
+		<script src="/js/app/index/login.js"></script>
+		  	<!-- 
+		  	<?// if (APPLICATION_ENV == 'development'): ?>
+          
+             <link rel="stylesheet/less" href="/css/refactor_style.less">
+            <script type="text/javascript">
+                env = 'development';
+
+                less = {};
+                less.env = 'development';
+
+            </script>
+            <script src="/js/libs/less-1.3.0.min.js"></script>
+        <?// else: ?>
+            <link href="/css/refactor_style.css" rel="stylesheet" type="text/css"/>
+        <?// endif ?>
+		  -->
+        <?= $this->headScript(); ?>
+
+        <?php $this->selectTheme($this->color, APPLICATION_ENV); ?>
+
+       
+    </head>
+
+    <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
+		
+		<div class="container" > 
+		
+			<div id="wrapper">
+	
+		
+			    <div id="content">
+			    	<div class="user-profile">
+						<div class="tip"><a onclick="closeProfile()">X</a></div>
+						<div class="profile-content"></div>
+					</div>
+					<div class="container">
+				    	<div class="tabbable">
+				    		<div id="menu" class="tab-container">
+								<div id="logo"><img src="/img/logo-noline-white.png"/></div>
+							
+								<ul class="nav nav-tabs" id="log-in-out">
+									
+									<li><a class="fancrank_login" href="/app/login/<?= $this->fanpage_id ?>">Login to FanCrank</a></li>
+							
+								</ul>
+								<!-- <ul class="nav nav-tabs" id="log-in-out">
+									
+								
+								 	<li><a id="help-tab" onclick="resetTour()">Help</a></li>
+										</ul>-->
+							</div>
+				   
+		        		
+					   		<div>
+					   	    	      
+							<?= $this->layout()->content ?>
+						
+			        		
+		        			</div>
+		        			<div id="powered">
+								<a href="http://www.fancrank.com" target=_new><img src="/img/fan-footer.png" /></a>
+							</div>
+		        		</div>
+		        	</div>
+        		</div>
+        	</div>
+         </div>
+         <div class="light-box"></div>
+        <div id="fb-root"></div>
+    </body>	
+</html>
+

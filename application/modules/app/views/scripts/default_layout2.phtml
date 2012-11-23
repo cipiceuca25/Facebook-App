@@ -84,7 +84,8 @@
         <?= $this->headScript(); ?>
 		
 		<link rel="stylesheet" href="/css/app/joyride-1.0.5.css" />
-        <?php $this->selectTheme($this->color, APPLICATION_ENV); ?>
+		<link rel="stylesheet" href="/css/loadstyle1.css" />
+        <?php //$this->selectTheme($this->color, APPLICATION_ENV); ?>
 
 
 	</head>
@@ -151,14 +152,14 @@
 											<a  class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="/img/icons/settings.png" /></a>
 											<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 												<li><a>Setting</a></li>
-												<li><a> <!--  onclick="resetTour()"-->Help</a></li>
+												<li><a>Help</a></li>
 												<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Log Out</a></li>
 											</ul>
 										</div>
 									</li>
 									
 									<li class="notification" >
-										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/Mail.png" /></a>
+										<a id="noti" data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="bottom" > <span id="badge-notification-count">0</span><img src="/img/icons/mail.png" /></a>
 									</li>
 									
 									<li><div class="line"></div></li>

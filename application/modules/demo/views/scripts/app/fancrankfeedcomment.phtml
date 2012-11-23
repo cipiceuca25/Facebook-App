@@ -1,0 +1,160 @@
+
+<?php if ($this->popup == 'false' ){?>
+<ul class="comments">
+<?php }else{?>
+<ul class="comments popup_scroll">
+<?php }?>
+
+<?php $count = 0?>
+
+<?php if(!empty($this->comments)){?>
+
+<?php foreach ($this->comments as $post): ?>		
+
+		
+	<li class="comment-container <?= $post->id?>" >
+
+		<div class="photo"><a  
+			<? if (!($this->relation[$count] == 'Fanpage')){?> 
+				onclick="userProfile('<?=$post->from->id?>')"
+				rel="popover" 
+				data-content="" 
+				data-original-title="" 
+				data-placement="right" 
+				data-userid="<?=$post->from->id?>"
+			<?php }?> 
+		><img class="small-face" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);"></a></div>
+		
+	
+	
+	<div class="user">
+		
+		<div class="user-badge">
+			<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" <?php switch($this->relation[$count]) { 
+				case 'Fanpage':?>
+					 class="noclick" data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+				<?break;?>
+				<?case 'You':?>
+					 class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+				<?break;?>
+				<?case 'Following':?>
+					onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
+					data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+				<?break;?>
+					
+				<?default:?>
+					onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')" 				
+					data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+				<?}?>
+			</a>
+		</div>	
+	
+		
+		
+		<div class="name"><a  
+			<? if (!($this->relation[$count] == 'Fanpage')){?> 
+				onclick="userProfile('<?=$post->from->id?>')"
+				rel="popover" 
+				data-content="" 
+				data-original-title="" 
+				data-placement="right" 
+				data-userid="<?=$post->from->id?>"
+			<?php }else{?>
+				class="noclick"
+			<?}?> 
+		><?=  $post->from->name?></a></div>
+		
+		
+	
+		
+		
+
+	<span class="message">
+	
+	<?php if(isset($post->message)){  
+							$reg_ex = "/\n/";
+							$message = $this->escape($post->message);
+							if(preg_match_all($reg_ex, $message, $url)) {
+								$message= preg_replace($reg_ex, "<br/>", $message);
+							} 
+							
+							$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
+						 
+							$m = preg_match_all($reg_exUrl, $message, $match); 
+							
+							if ($m) { 
+							    $links=$match[0]; 
+							    for ($j=0;$j<$m;$j++) { 
+							        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
+							    } 
+							} 
+							
+							echo $message; 
+								//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
+							
+						
+				}?>
+	
+	</span>
+	</div>
+	<div class="social"> 
+	 	
+		<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
+		
+		&middot;
+		
+		<!--  <img src="/img/news-feed/icon-likes.png" /> -->
+		<span class="likes">
+	
+		<a class="like_<?= $post->id?>" data-like-count=<?=isset($post->like_count)?$post->like_count:'0'?>  onclick="getLikesList('<?=$post->id?>',<?=isset($post->like_count)?$post->like_count:'0'?>, true)" rel="tooltip" data-placement="top" data-original-title="Click to See who likes this"><?=isset($post->like_count)?$post->like_count:'0'?></a>
+		 
+		<a class="like-control like_control_<?= $post->id?>" rel="tooltip" data-placement="top"
+		<?php if ($this->likes[$count] == 0) {?>
+			 data-original-title="Click to like this" onclick="like('<?= $post->id?>', '<?=$this->postType?>_comment', '<?=$post->from->id?>','<?=$post->from->name?>')">Like 
+		<?}else{?>
+			 data-original-title="You like this" onclick="unlike('<?= $post->id?>', '<?=$this->postType?>_comment', '<?=$post->from->id?>','<?=$post->from->name?>')">Unlike
+		<?php }?></a>
+		 </span>	 
+
+	 </div>
+
+	</li>
+										
+<?php $count ++;?>
+<?php endforeach; }?>
+
+<?php if ($this->popup == 'false' ){?>
+</ul>
+
+
+
+	<div class="comment-container">
+		<div class="photo"><img class="small-face"  src="https://graph.facebook.com/<?= $this->user_id?>/picture" onerror="ImgError(this);"></div>
+	
+		<form action="#" class="submit-form" >
+		
+			<textarea class="comment-box" id="comment_box_<?= $this->postId ?>" ></textarea>
+			<input type=button class="btn-submit" value="Comment" onclick="commentSubmit(this,'<?= $this->postId ?>','<?=$this->postType?>' ,'<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>',<?= ($this->latest == 'true')?'true':'false'?> )">
+		</form>	
+	</div>
+
+<script>
+	$('.comments').enscroll({
+	showOnHover: true,
+	clickTrackToScroll: false,
+	verticalTrackClass: 'track3 popup',
+	verticalHandleClass: 'handle3 popup'});	
+</script>		
+<?php }else{?>
+<script>
+	$('.comments.popup_scroll').enscroll({
+	showOnHover: true,
+	clickTrackToScroll: false,
+	verticalTrackClass: 'track3 popup',
+	verticalHandleClass: 'handle3 popup'
+	});
+</script>
+
+
+
+<?php }?>

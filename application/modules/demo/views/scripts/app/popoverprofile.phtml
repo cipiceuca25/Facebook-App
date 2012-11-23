@@ -1,0 +1,65 @@
+
+<div class="post-container noline">
+<div class="user noline">
+	<!-- <div class="user-badge">
+		<a rel="tooltip-follow" class ="follow_<?=$this->facebook_user->facebook_user_id?>"<?php switch($this->relation) { 
+			case 'You':?>
+				 data-original-title="This is You"><span class="badge badge-You">You</span>
+			<?break;?>
+			<?case 'Following'?> 
+				onclick="unfollow(<?=$this->facebook_user->facebook_user_id?> ,'<?=$this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>')" 
+				data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+			<?break;?>
+				
+			<?default:?>
+				onclick="follow(<?=$this->facebook_user->facebook_user_id?> , '<?=$this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>')" 
+				data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation?>"><?= $this->relation?></span>
+			<?}?>
+		</a>
+	
+	</div> -->
+	<div class="photo">
+		<a><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id  ?>/picture" onerror="ImgError(this);"></a>
+	</div>
+	<div class="name">
+		<a><?=  $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?></a>
+	</div>
+	
+	<div class="level">
+		<?= isset($this->fan['fan_level'])?$this->fan['fan_level']:1?>
+	</div>
+	<div class="user-description tip2 italic" onkeyup="charcheck()">
+							
+	<?= substr($this->fan->message, 0, 160)?>
+	
+	</div>
+</div>
+
+<div class="post">
+		<ul class="stats">
+			<li >
+				<div class="stats-block"><img src="/img/post.png" /><h3><?= $this->stat[0]['total_posts']?></h3>	<br/>
+				Posts</div>
+			</li>
+			<li >
+				<div class="stats-block"><img src="/img/thumbsup.png" /><h3><?= $this->stat[0]['total_likes']?></h3><br/>
+				Likes</div>
+			</li>
+			<li>
+				<div class="stats-block"><img src="/img/comment.png" /><h3><?= $this->stat[0]['total_comments']?></h3><br/>
+				Comments</div>
+			</li>
+			<li >
+				<div class="stats-block"><img src="/img/rthumbsup.png" /><h3><?= $this->stat[0]['total_get_comments']?></h3><br/>
+				Recieved Likes</div>
+			</li>
+			<li style="border:0px;" >
+				<div class="stats-block"><img src="/img/rcomment.png" /><h3><?= $this->stat[0]['total_get_likes']?></h3><br/>
+				Recieved Comments </div> 
+			</li>
+		
+		</ul>
+	
+	</div>
+	
+</div>

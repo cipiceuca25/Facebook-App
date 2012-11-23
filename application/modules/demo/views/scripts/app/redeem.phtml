@@ -1,0 +1,71 @@
+
+<div class="row">
+	<div class="span12">
+		
+		<div class="row box">
+			<div class="title nopic">
+			
+			<div class="title-header nopic">
+		
+				Redemption
+				
+			</div>
+			</div>
+			<div class="post-container noline">
+
+				<span>Item List:</span>
+				<div class="item-section"></div>
+				<ul>
+					<?php foreach ($this->itemList as $item) {?>
+						<li class="item_<?=$item['id']?>"><span><?=$item['name']?></span><img class="item" width="50" height="50" src="<?=$item['picture']?>"/>
+						<a href="#" onclick="redeem(<?=$item['id']?>); return false;">Redeem</a></li>
+					<? }?>
+				</ul>
+
+				<div class="post">
+					Want to use your points to get cool stuff related to this Fanpage?
+					<br/>
+					<br/>
+					Our minions are working non-stop so you can redeem stuff as fast as possible, so go and collect more points!
+					<br/>
+					<br/>
+					<span style="font-weight:bold">Type in your Airmiles Number</span>
+
+					<form action="#" class="submit-form">
+						<input></input>
+
+						<div >
+							<input type=button class="btn-submit" style="display:inline; float:none" value="Submit">
+						</div>
+					</form>
+					<br/><br/>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+function redeem(itemId) {
+
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/demo/redeem/confirm?itemId='+itemId,
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$(".item_"+itemId).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			if($.trim(data) == 'ok') {
+				alert('you redeem an item');
+				$(".item_"+itemId).remove();
+			}
+			//getLatestPost();
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
+}
+</script>
