@@ -1,4 +1,5 @@
 <?php $count = 0?>
+<?php $count2 = 0?>
 <?php if (empty($this->top_post)) {?>
 		<li class="box post-container noline" >
 			<div class="post">
@@ -208,37 +209,180 @@
 					likes this
 				</a>		
 			</div>
-	 
+	 		<?php if (isset($post->comments->count) && ($post->comments->count < 5)){?>
+ 		<div id="post_<?=$post->id?>"> 
+ 			<ul class="comments">
+ 				
+
+				
+				<?php if(!empty($post->comments->data)){?>
+				
+				<?php foreach ($post->comments->data as $comments): ?>		
+				
+					<li class="comment-container <?= $comments->id?>" >
+				
+						<div class="photo"><a  
+							<? if (!($this->comment_relation[$count2] == 'Fanpage')){?> 
+								onclick="userProfile('<?=$comments->from->id?>')"
+								rel="popover" 
+								data-content="" 
+								data-original-title="" 
+								data-placement="right" 
+								data-userid="<?=$comments->from->id?>"
+							<?php }?> 
+						><img class="small-face" src="https://graph.facebook.com/<?= $comments->from->id ?>/picture" onerror="ImgError(this);"></a></div>
+						
+					
+					
+					<div class="user">
+						
+						<div class="user-badge">
+							<a rel="tooltip-follow" class ="follow_<?=$comments->from->id?>" <?php switch($this->comment_relation[$count2]) { 
+								case 'Fanpage':?>
+									 class="noclick" data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+								<?break;?>
+								<?case 'You':?>
+									 class="noclick" data-original-title="This is You"><span class="badge badge-You">You</span>
+								<?break;?>
+								<?case 'Following':?>
+									onclick="unfollow(<?=$comments->from->id?> ,'<?=$comments->from->name?>')" 
+									data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+								<?break;?>
+									
+								<?default:?>
+									onclick="follow(<?=$comments->from->id?> , '<?=$comments->from->name?>')" 				
+									data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->comment_relation[$count2]?>"><?= $this->comment_relation[$count2]?></span>
+								<?}?>
+							</a>
+						</div>	
+					
+						
+						
+						<div class="name"><a  
+							<? if (!($this->comment_relation[$count2] == 'Fanpage')){?> 
+								onclick="userProfile('<?=$comments->from->id?>')"
+								rel="popover" 
+								data-content="" 
+								data-original-title="" 
+								data-placement="right" 
+								data-userid="<?=$comments->from->id?>"
+							<?php }else{?>
+								class="noclick"
+							<?}?> 
+						><?=  $comments->from->name?></a></div>
+						
+						
+					
+						
+						
+				
+					<span class="message">
+					
+					<?php if(isset($comments->message)){  
+											$reg_ex = "/\n/";
+											$message = $this->escape($comments->message);
+											if(preg_match_all($reg_ex, $message, $url)) {
+												$message= preg_replace($reg_ex, "<br/>", $message);
+											} 
+											
+											$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
+										 
+											$m = preg_match_all($reg_exUrl, $message, $match); 
+											
+											if ($m) { 
+											    $links=$match[0]; 
+											    for ($j=0;$j<$m;$j++) { 
+											        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
+											    } 
+											} 
+											
+											echo $message; 
+												//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
+											
+										
+								}?>
+					
+					</span>
+					</div>
+					<div class="social"> 
+					 	
+						<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=  strtotime($comments->created_time)?>"></a>
+						
+						&middot;
+						
+						<!--  <img src="/img/news-feed/icon-likes.png" /> -->
+						<span class="likes">
+					
+						<a class="like_<?= $comments->id?>" data-like-count=<?=isset($comments->likes)?$comments->likes:'0'?>  onclick="getLikesList('<?=$comments->id?>',<?=isset($comments->likes)?$comments->likes:'0'?>, true)" rel="tooltip" data-placement="top" data-original-title="Click to See who likes this"><?=isset($comments->likes)?$comments->likes:'0'?></a>
+						 
+						<a class="like-control like_control_<?= $comments->id?>" rel="tooltip" data-placement="top"
+							<?php if ($this->commentlikes[$count2] == 0) {?>
+								 data-original-title="Click to like this" onclick="like('<?= $comments->id?>', '<?=$post->type?>_comment', '<?=$comments->from->id?>','<?=$comments->from->name?>')">Like 
+							<?}else{?>
+								 data-original-title="You like this" onclick="unlike('<?= $comments->id?>', '<?=$post->type?>_comment', '<?=$comments->from->id?>','<?=$comments->from->name?>')">Unlike
+							<?php }?>
+						</a>
+						 </span>	 
+				
+					 </div>
+				
+					</li>
+														
+				<?php $count2 ++;?>
+				<?php endforeach; }?>
+				
+				
+				</ul>
+				
+				<!-- 
+				
+					<div class="comment-container">
+						<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->user_id?>/picture" onerror="ImgError(this);"></div>
+					
+						<form action="#" class="submit-form" >
+						
+							<textarea class="comment-box" id="comment_box_<?= $this->postId ?>" ></textarea>
+							<input type=button class="btn-submit" value="Comment" onclick="commentSubmit(this,'<?= $this->postId ?>','<?=$this->postType?>' ,'<?=$this->postOwner['user_id']?>','<?=$this->postOwner['user_name']?>',<?= ($this->latest == 'true')?'true':'false'?> )">
+						</form>	
+					</div>
+ 				 -->
+ 		
+ 		
+ 		</div>
+ 	<?php }else{?>
 			<div class="social comment <?=$post->id?>" <?php if(!isset($post->comments->count) || ($post->comments->count == 0)){?>style="display:none"<? }?>>
 		
 				 <a  onclick="popup_post('<?= $post->id ?>',true )"> 
 						<img src="/img/comment.png" />
-				 		<?php if($post->comments->count != 1){?> 
-					 		View all <span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
-								echo $post->comments->count; 
-							 	} else {
-									echo '0'; 
-								}?>>
-					 		<?php if(isset($post->comments->count)){
-								echo $post->comments->count; 
-							 	} else {
-									echo '0'; 
-								}?>
+				 		<span class="comment_<?= $post->id?>">View all Comments</span>
+				 		<!-- 
+				 		<?//php if($post->comments->count != 1){?> 
+					 		View all <span class="comment_<?//= $post->id?>" data-comment-count = <?//php if(isset($post->comments->count)){
+							//	echo $post->comments->count; 
+							// 	} else {
+							//		echo '0'; 
+							//	}?>>
+					 		<?//php if(isset($post->comments->count)){
+							//	echo $post->comments->count; 
+							// 	} else {
+							//		echo '0'; 
+							//	}?>
 							</span> 
 							comments 
-						<?php }else { ?>
-							View all<span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
-							echo $post->comments->count; 
-						 	} else {
-								echo '0'; 
-							}?>>
+						<?//php }else { ?>
+							View all<span class="comment_<?//= $post->id?>" data-comment-count = <?//php if(isset($post->comments->count)){
+						//	echo $post->comments->count; 
+						// 	} else {
+						//		echo '0'; 
+						//	}?>>
 
 							</span>
 							comments 
-					<?php }?>
+					<?//php }?>
+					 -->
 				</a>
 			</div>
-			
+				<?php }?>
 		</li>	
 								
 		<?php $count ++;?>

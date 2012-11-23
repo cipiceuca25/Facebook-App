@@ -960,8 +960,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
     		$topPostId = $this->_fanpageId .'_toppost';
+    
     		//$topPosts = $model->getTopPosts($this->_fanpageId, 5);
-    		
+    		$cache->remove( $topPostId);
     		try {
     			//$topPosts = $cache->remove($topPostId);
     			//Check to see if the $fanpageId is cached and look it up if not
@@ -993,7 +994,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$likeslist = array();
     	$yourpoints = array();
     	$count=0;
-    	
+    	$count2 = 0;
 
    
 		//Zend_Debug::dump($topPosts);
@@ -1016,7 +1017,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				//Zend_Debug::dump($likes[$count]);
     			}
     		}
+    		if (isset($posts->comments->data)){
     		
+    			foreach($posts->comments->data as $c){
+    					
+    				$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
+    				$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
+    				//Zend_Debug::dump($comment_relation[$count2]);
+    				$count2++;
+    			}
+    		}
+    	
     		//echo $likes[$count];
     		$relation[$count] = $follow->getRelation($this->_userId,  $posts->from->id, $this->_fanpageId);
     		//$pic = $this->getPost($posts['post_id']);
@@ -1026,6 +1037,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//}else{
     		//	$picture[$count] = null;
     		//}
+    		
     		$yourpoints[$count] = 0;
     		$yourpoints[$count] = $this->postPointsCalculate($posts);
     		$count++;
@@ -1038,6 +1050,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//Zend_Debug::dump($topPosts);
     //	$this->view->picture = $picture;
     	//$this->view->likeslist = $likeslist;
+    	$this->view->comment_relation = $comment_relation;
+    	 
+    	$this->view->comment_likes = $likes;
     	$this->view->likes = $likes;
     	$this->view->yourpointslatest = $yourpoints;
     	$this->view->top_post = $topPosts;
