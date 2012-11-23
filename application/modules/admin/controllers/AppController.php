@@ -717,7 +717,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		//Zend_Debug::dump($topPosts);
     	foreach ($topPosts as $posts){
     		//echo $top['facebook_user_id'];
-    
     		
     		$likes[$count]=0;
     		//echo $top['facebook_user_id'];
@@ -736,7 +735,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}
     		
     		//echo $likes[$count];
-    		$relation[$count] = $follow->getRelation($this->_userId,  $posts->from->id, $this->_fanpageId);
+    		if (!empty($posts->from->id)) {
+    			$relation[$count] = $follow->getRelation($this->_userId,  $posts->from->id, $this->_fanpageId);
+    		}
+    		
     		//$pic = $this->getPost($posts['post_id']);
     		//Zend_Debug::dump($pic);
     		//if (($pic->type == 'photo') ||($pic->type == 'video')  ){
