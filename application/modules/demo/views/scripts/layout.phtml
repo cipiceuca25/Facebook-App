@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:fb="http://ogp.me/ns/fb#">
+    <head>
+        <meta charset="UTF-8"/>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="imagetoolbar" content="no"/>
+
+        <meta http-equiv="Content-Language" content="en"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <meta name="description" content="Fancrank Inc."/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+        <meta name="author" content="FanCrank" />
+        <meta name="generator" content="" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+        <script src="/js/libs/jquery-1.7.2.min.js"></script>
+		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
+    	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+    	
+    	<script src="/js/app/index.js"></script>
+    	<script src="/js/app/pagetab.js"></script>
+    	
+        <script src="/bootstrap/js/bootstrap.min.js"></script>
+		<script src="//connect.facebook.net/en_US/all.js"></script>
+ 	    <!-- This following javascripts are used to initialize the iframe look and feel -->
+		<script type="text/javascript">
+			// assign a global access variable for the base url 
+			var baseAppUrl = "<?= $this->serverUrl() .'/app/app/' ?>";
+			var appId = <?= $this->layout()->appKey ?>;
+
+			window.fbAsyncInit = function() {
+				FB.init({
+					 appId  : appId,
+					 status : true, // check login status
+					 cookie : true, // enable cookies to allow the server to access the session
+					 xfbml  : true// parse XFBML
+				});
+				FB.Canvas.setAutoResize(10);
+				//FB.Canvas.setSize();
+			};
+		 </script>
+	 	<!-- End of iframe initialization -->
+        <script src="/js/fancrank.js"></script>
+
+        <?= $this->headScript(); ?>
+
+        <? if (APPLICATION_ENV == 'development'): ?>
+             <link href="/css/loadstyle3.less" rel="stylesheet/less" id="stylesheet"/>
+            <script type="text/javascript">
+                env = 'development';
+
+                less = {};
+                less.env = 'development';
+
+            </script>
+            <script src="/js/libs/less-1.3.0.min.js"></script>
+        <? else: ?>
+            <link href="/css/style.css" rel="stylesheet" type="text/css"/>
+        <? endif ?>
+
+        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+        <link type="text/css" rel="stylesheet" href="/css/jquery/jquery-ui.php"/>
+    	<link type="text/css" rel="stylesheet" href="/css/jquery/reset.css"/>
+    	<link type="text/css" rel="stylesheet" href="/css/jquery/base.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/app/newsfeed.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/app/pagetab.css"/>
+		
+        <style>
+            .container, .navbar-fixed-top .container {
+                width: 810px;
+            }
+        </style>
+        <link type="text/css" rel="stylesheet" href="/css/style2.css" />
+    </head>
+
+    <body style="overflow:auto;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="app">
+    	<div id="fb-root"></div>
+        <div class="navbar navbar-fixed-top">
+            <?= $this->layout()->navbar ?>
+        </div>
+
+
+		<div id="myTabs">
+			<nav>
+				<ul>
+					<li><a id="currentPageTab" href="#newsfeed" title=">"><span>newsfeed</span></a></li>
+					<li><a href="#topfans"><span>topfans</span></a></li>
+					<li><a href="#myprofile"><span>profile</span></a></li>
+					<li><a href="#awards"><span>awards</span></a></li>
+				</ul>
+			</nav>
+			<div id="newsfeed">
+       			<?= $this->layout()->content ?>
+			</div>
+			<div id="topfans"></div>
+			<div id="myprofile"></div>
+			<div id="awards"></div>
+		</div>
+    </body>
+</html>

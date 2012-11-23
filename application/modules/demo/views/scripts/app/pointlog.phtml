@@ -1,0 +1,89 @@
+
+
+<div class="rvgrid-5">
+<div class="box notitle">
+<div class="post-container noline">
+		<div class="user">
+			Here's your points break down for the previous 3 days.
+		
+		</div>
+<?php 
+$currentdate = null;
+$currentpost = null;
+$total=0;
+$totalAll = 0;
+if ($this->point_log == 'x'){?>
+		<div class="post">
+			
+			<div class="message">
+				Points are not available for this fanpage
+			</div>
+		</div>
+
+<?php 	
+}else{?>
+
+		<div class="post">
+			
+			<div class="message">
+				
+			
+			
+				<table class="pointlog">
+				<?php 
+				foreach ($this->point_log as $points){
+					
+					if ($currentdate != $points['created_time']){
+						echo '<tr><td class="no-border" colspan="3">&nbsp;</td></tr>';
+						$currentdate = $points['created_time'];
+						$date = new Zend_Date($currentdate);
+						echo '<tr><th colspan="3">';
+						echo $date->toString(Zend_Date::WEEKDAY).', '.$date->toString(Zend_Date::MONTH_NAME).' '.$date->toString('dd, yyyy');
+						echo '</th></tr>';
+						$currentpost = null;
+					}
+					echo '<tr>';
+						switch($points['object_type']){
+
+							case 'admin_add_point':
+								break;
+								
+							case 'admin_subtract_point':
+								break;
+								
+							default:
+						
+								$x = explode("_",$points['object_id']);
+								
+								if ($points['facebook_user_id'] == $this->user_id){
+									echo '<td><a onclick="popup_post(\''.$x[0].'_'.$x[1].'\', false)">Posting</a> </td>';
+								}else{
+									echo '<td>Interacting with this ';
+									if ($points['facebook_user_id'] == $this->fanpage_id){
+										echo  $this->fanpage_name ;
+									}else{
+										echo '<a onclick="userProfile('.$points['facebook_user_id'].', false)">'. $points['fan_name'] .'</a>';
+									}
+									echo	'\'s <a onclick="popup_post(\''.$x[0].'_'.$x[1].'\', false)">Post</a>';
+								}
+								if ($points['message']){
+									echo ': <span class="italic">"'.$points['message'].'"</span>';
+								}
+								echo '</td>';
+						}
+							
+					echo '<td class="points bold">' . $points['sum'] . ' Points</td>';
+				
+					$totalAll +=$points['sum'];
+					echo '</tr>';
+				}
+				echo '<tr><td class="no-border" colspan="3">&nbsp;</td></tr>';
+				echo '<tr><td><span class="bold">Total for the Past 3 Days</span></td><td class="points bold"> '.$totalAll . ' Points</td></tr>';
+				?>
+				</table>
+			</div>
+		</div>
+
+<?}?>
+	</div>
+</div></div>
