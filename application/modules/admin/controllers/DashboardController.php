@@ -995,8 +995,13 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$this->render("badge");
 	}
 	
-
-	
+	public function redeemAction() {
+		$this->_helper->layout->disableLayout();
+		$leaderboardLogModel = new Model_LeaderboardLog();
+		$fanpageId = $this->_getParam('id');
+		$lastWeekTopFans = $leaderboardLogModel->getLastWeekTopFans($fanpageId);
+		$this->view->lastWeekTopFans = $lastWeekTopFans;
+	}
 	
 	public function showlogAction() {
 		$activityModel = new Model_FancrankActivities();

@@ -503,6 +503,16 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $result;
 	}
 	
+	public function getActiveFanpagesIdList() {
+		$select = $this->select();
+		$select->from($this, array('fanpage_id'))->where('fanpages.active = TRUE');
+		$result = array();
+		foreach ($this->fetchAll($select)->toArray() as $id) {
+			$result[] = $id['fanpage_id'];
+		}
+		return $result;
+	}
+	
 	public function getInstallFanpages() {
 		$select = $this->select();
 		$select->where('fanpages.installed = TRUE');

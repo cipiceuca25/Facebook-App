@@ -912,7 +912,31 @@ function loadSettings(){
 	
 }
 
-
+function loadRedeem() {
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/redeem?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#redemptions').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('#redemptions').html(data)
+			
+			//loadGraph("#placeholder", 'Points');
+			//$('#placeholder').css({'width':'100%', 'height':'200px'});
+			//$('#placeholder').resize();
+		
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting point settings');
+		}
+	});
+}
 
 function loadPoints(){
 	
@@ -972,6 +996,10 @@ $('#home-tab').live('click', function() {
 
 $('#facebook-tab').live('click', function() {
 	loadFacebookInsights();
+});
+
+$('#redemptions-tab').live('click', function() {
+	loadRedeem();
 });
 
 function destroyAll(){

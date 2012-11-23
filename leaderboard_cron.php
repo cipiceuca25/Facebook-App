@@ -43,7 +43,7 @@ saveLeaderboard();
 function saveLeaderboard() {
 	
 	$fanpageModel = new Model_Fanpages();
-	$fanpageList = $fanpageModel->getInstallFanpagesIdList();
+	$fanpageList = $fanpageModel->getActiveFanpagesIdList();
 	
 	$rankingModel = new Model_Rankings();
 	
@@ -56,6 +56,7 @@ function saveLeaderboard() {
 			$result = $rankingModel->getTopFansByWeek($fanpageId, 5);
 			if(!empty($result)) {
 				insertLog($fanpageId, $result, 'top_fans', 'number_of_posts');
+				// apply badge for top fan
 			}
 			
 			//save top clicker
@@ -95,6 +96,7 @@ function insertLog($fanpageId, $result, $type, $countType) {
 	$lastSunday = $date->sub(7, Zend_Date::DAY)->toString('yyyy-MM-dd 00:00:00');
 	
 	$leaderboardLogModel = new Model_LeaderboardLog();
+	$badgeEventModel = new Model_BadgeEvents();
 	
 	$rank = 0;
 	foreach ($result as $key=>$row) {
@@ -108,6 +110,32 @@ function insertLog($fanpageId, $result, $type, $countType) {
 				'rank'=>$rank,
 				'count'=> empty($row[$countType]) ? 0 : $row[$countType]
 		);
-		$leaderboardLogModel->insert($data);
+		//$leaderboardLogModel->insert($data);
+		
+		// hard code badge id for now, need to change it later on
+		if ($type == 'top_fans') {
+			applyBadge($badgeEventModel, $fanpageId, $row['facebook_user_id'], 721);
+		}
+		
+	}
+}
+
+function applyBadge(Model_BadgeEvents $badgeEventModel, $fanpageId, $facebookUserId, $badgeId) {
+	// apply badge
+	// fetch badge id
+	if ($badgeEventModel->hasBadgeEvent($fanpageId, $facebookUserId, $badgeId)) {
+		return;
+	}
+	
+	$badgeData = array(
+			'fanpage_id'		=> $fanpageId,
+			'facebook_user_id'	=> $facebookUserId,
+			'badge_id'		 	=> $badgeId
+	);
+	
+	try {
+		$badgeEventModel->insert($badgeData);
+	} catch (Exception $e) {
+		echo $e->getMessage();
 	}
 }

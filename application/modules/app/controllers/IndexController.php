@@ -55,6 +55,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	$fanpageModel = new Model_Fanpages();
     	
     	$model = new Model_Rankings;
+    	$leaderboardLogModel = new Model_LeaderboardLog();
+    	
     	//$post = new Model_Posts;
     	//$colorChoice = new Model_UsersColorChoice;
     	$user = new Model_FacebookUsers();
@@ -79,6 +81,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	
     	//get top fans list from memcache
     	$fanpage2 = array(
+    				'topFansLastWeek'=>array(),
     				'topFans'=>array(),
     				'mostPopular'=>array(),
     				'topTalker'=>array(),
@@ -117,6 +120,10 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
     				$fanpage2['topFansAllTime'] = $model->getTopFans($this->data['page']['id'], 5);
     				//Save to the cache, so we don't have to look it up next time
+    				
+    				// look up top fans last week
+    				$fanpage2['topFansLastWeek'] =  $leaderboardLogModel->getLastWeekTopFans($this->data['page']['id']);
+    				
     				$cache->save($fanpage2, $fanpageId);
     			}else {
     				//echo 'memcache look up';
@@ -181,14 +188,15 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     		}
     	}
     	*/
-    	
-    	
+    	//Zend_Debug::dump($fanpage2['topFansLastWeek']);
+    	//Zend_Debug::dump($fanpage2['topFans']);
+    	$this->view->top_fans_last_week = $fanpage2['topFansLastWeek'];
     	$this->view->top_fans = $fanpage2['topFans'];
-    	$this->view->most_popular = $fanpage2['mostPopular'];
-    	$this->view->top_talker = $fanpage2['topTalker'];
-    	$this->view->top_clicker = $fanpage2['topClicker'];
-    	$this->view->top_followed = $fanpage2['topFollowed'];
-    	$this->view->top_fans_all_time = $fanpage2['topFansAllTime'];
+//     	$this->view->most_popular = $fanpage2['mostPopular'];
+//     	$this->view->top_talker = $fanpage2['topTalker'];
+//     	$this->view->top_clicker = $fanpage2['topClicker'];
+//     	$this->view->top_followed = $fanpage2['topFollowed'];
+//     	$this->view->top_fans_all_time = $fanpage2['topFansAllTime'];
     	$this->render('index');
     }
     
