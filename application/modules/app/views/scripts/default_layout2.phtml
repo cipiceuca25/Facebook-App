@@ -151,7 +151,7 @@
 											<a  class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="/img/icons/settings.png" /></a>
 											<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 												<li><a>Setting</a></li>
-												<li><a <!--  onclick="resetTour()"--> >Help</a></li>
+												<li><a> <!--  onclick="resetTour()"-->Help</a></li>
 												<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Log Out</a></li>
 											</ul>
 										</div>
@@ -169,7 +169,7 @@
 									
 									<? if ($this->fanpage_level > 2){?>
 										<li><div class="line"></div></li>
-										<li><a class="my_fan_point_tooltip" rel="tooltip" onclick="pointlog()" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><span class ="my_fan_point"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></span><img src="/img/icons/points.png" /></a></li>
+										<li><a class="my_fan_point_tooltip" rel="tooltip" id="pointlog" data-original-title="You have <?=$this->fan->fan_point?> points" data-placement="bottom"><span class ="my_fan_point"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></span><img src="/img/icons/points.png" /></a></li>
 									<?php }?>
 								</ul>
 								<!-- <ul class="nav nav-tabs" id="log-in-out">
