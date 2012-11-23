@@ -117,11 +117,12 @@ padding:0px;
 margin:0px;
 text-align:center;
 color:@color-tab-select-text;
-width:113px;
+width:120px;
 height:50px;
 line-height:50px;
 border:0px solid;
 font-weight:bold;
+vertical-align:bottom;
 }
 
 .nav-tabs{
@@ -133,12 +134,14 @@ float:left;
 .nav-tabs#toolbar{
 	float:right;
 	background-color:@color-menu-right-background;
-	width:189px;
-	padding-left:13px;
-	padding-right:6px;
+	width:201px;
 	font-size:10px;
 	height:50px;
 }
+
+
+
+
 
 .nav-tabs#log-in-out{
 	font-size:12px;
@@ -173,6 +176,13 @@ background-color:lightgray;
 .nav-tabs#toolbar li a{
 	padding-left:5px;
 	padding-right:5px;
+	vertical-align:middle;
+}
+
+
+
+.nav-tabs#toolbar li{
+	float:right;
 }
 
 
@@ -180,20 +190,21 @@ background-color:lightgray;
 display:block;
 height:40px;
 overflow:hidden;
-width:113px;
-padding-left:15px;
+width:100px;
+padding-left:13px;
 padding-top:10px;
 float:left;
 #gradient > .horizontal(@color-menu-right-background, @color-menu-left-background);
 }
 
 #logo img{
-width:100px;
+width:90px;
 }
 
 #logout-tab{
 padding-left:6px;
 padding-right:10px;
+
 }
 
 #logout-tab img{
@@ -201,10 +212,9 @@ margin-right:0px;
 }
 
 #logout-tab .dropdown-menu{
-top:49px;
-left:0px;
-width:50px;
-min-width:0;
+top:50px;
+left:-154px;
+width:201px;
 padding:0;
 margin:0;
 background-color:@color-menu-right-background;
@@ -215,6 +225,12 @@ border:0px solid;
 
 #logout-tab .dropdown-menu li a:hover{
 	background-color:@color-menu-hover;
+}
+
+#logout-tab .dropdown-menu li{
+	float:left;
+	width:201px;
+	text-align:center;
 }
 
 #logout-tab.open .dropdown-toggle {
@@ -295,10 +311,10 @@ filter:alpha(opacity=95);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .box{	
-margin:0 0 20px 0;
+margin:0 0 17px 0;
 background-color:@color-box-background;
 .border-radius(1px);
-padding:30px 8px 8px 8px;
+padding:15px;
 border: 1px solid  @color-box-border;
 }
 
@@ -334,8 +350,9 @@ top:-13px;
 }
 
 .title.nopic{
-margin-top:-20px;
+
 padding-bottom:10px;
+margin-bottom:12px;
 }
 
 .title-header.nopic{
@@ -737,7 +754,7 @@ padding-bottom:5px;
 //background-color:@color-post-background;
 position:relative;
 //border-bottom:1px solid @color-main-container-border;
-padding-top:10px;
+
 }
 
 //.post-container:hover{
@@ -747,7 +764,10 @@ padding-top:10px;
 .post-container .user{
 font: bold 13px Helvetica, Arial, sans-serif;
 border-bottom:1px solid @color-post-user-border;
-padding-bottom:10px;
+padding-bottom:12px;
+
+padding-left:2px;
+padding-right:2px;
 overflow:hidden;
 }
 
@@ -774,8 +794,11 @@ display:inline-block;
 }	
 
 .post-container .post{
-padding-top:8px;
-padding-bottom:8px;
+padding-top:18px;
+padding-bottom:11px;
+padding-left:2px;
+padding-right:2px;
+
 }
 
 .post-container .message,
@@ -836,7 +859,7 @@ position:relative;
 .post-container .social.commentn,
 .post-container .social.like{
 background-color:@color-post-social-background;
-padding-left:10px;
+padding-left:11px;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -904,7 +927,7 @@ display:none;
 border:1px solid @color-main-container-border;
 background-color: @color-post-button-container;
 border-top:0;
-width:408px;
+width:438px;
 height:20px;
 padding:3px;
 }
@@ -919,7 +942,7 @@ margin:0;
 resize: none; 
 overflow:hidden;
 .border-radius(0);
-width:354px;
+width:301px;
 margin:0 5px 0 5px;
 padding:1px;
 height:14px;
@@ -936,7 +959,7 @@ font-size:12px;
 }
 
 .post-box{
-width:412px;
+width:100%;
 margin-left:0;
 overflow:hidden;
 height:20px;
@@ -973,7 +996,7 @@ background-color:@color-main-background;
 width:530px;
 }
 
-.profile-content .row.box{
+.profile-content .box{
 margin: 0 1px 4px 3px;
 }
 
@@ -1060,11 +1083,11 @@ background:@color-badge-bar;
 .box-shadow(0 0 0 0 );
 }
 
-.row.box .half{
+.box .half{
 width:221px;
 }
 
-.row.box .post-container .half{
+.box .post-container .half{
 width:218px;
 }
 
@@ -1799,6 +1822,10 @@ width:163px;
 }
 .rvgrid-5{
 width:208px;
+//width:13.000em;
+}
+.rvgrid-5ex{
+width:201px;
 //width:13.000em;
 }
 .rvgrid-6{

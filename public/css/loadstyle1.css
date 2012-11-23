@@ -153,11 +153,12 @@ ol {
   margin: 0px;
   text-align: center;
   color: #ffffff;
-  width: 113px;
+  width: 120px;
   height: 50px;
   line-height: 50px;
   border: 0px solid;
   font-weight: bold;
+  vertical-align: bottom;
 }
 .nav-tabs {
   border: 0px;
@@ -167,9 +168,7 @@ ol {
 .nav-tabs#toolbar {
   float: right;
   background-color: #647ab1;
-  width: 189px;
-  padding-left: 13px;
-  padding-right: 6px;
+  width: 201px;
   font-size: 10px;
   height: 50px;
 }
@@ -200,13 +199,17 @@ ol {
 .nav-tabs#toolbar li a {
   padding-left: 5px;
   padding-right: 5px;
+  vertical-align: middle;
+}
+.nav-tabs#toolbar li {
+  float: right;
 }
 #logo {
   display: block;
   height: 40px;
   overflow: hidden;
-  width: 113px;
-  padding-left: 15px;
+  width: 100px;
+  padding-left: 13px;
   padding-top: 10px;
   float: left;
   background-color: #3c589d;
@@ -227,7 +230,7 @@ ol {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff647ab1', endColorstr='#ff3c589d', GradientType=1);
 }
 #logo img {
-  width: 100px;
+  width: 90px;
 }
 #logout-tab {
   padding-left: 6px;
@@ -237,10 +240,9 @@ ol {
   margin-right: 0px;
 }
 #logout-tab .dropdown-menu {
-  top: 49px;
-  left: 0px;
-  width: 50px;
-  min-width: 0;
+  top: 50px;
+  left: -154px;
+  width: 201px;
   padding: 0;
   margin: 0;
   background-color: #647ab1;
@@ -260,6 +262,11 @@ ol {
 }
 #logout-tab .dropdown-menu li a:hover {
   background-color: #476dcc;
+}
+#logout-tab .dropdown-menu li {
+  float: left;
+  width: 201px;
+  text-align: center;
 }
 #logout-tab.open .dropdown-toggle {
   background-color: transparent;
@@ -331,7 +338,7 @@ ol {
   filter: alpha(opacity=95);
 }
 .box {
-  margin: 0 0 20px 0;
+  margin: 0 0 17px 0;
   background-color: #f9f9f9;
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
@@ -339,7 +346,7 @@ ol {
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
-  padding: 30px 8px 8px 8px;
+  padding: 15px;
   border: 1px solid #dbdbdb;
 }
 .box.notitle {
@@ -364,8 +371,8 @@ ol {
   top: -13px;
 }
 .title.nopic {
-  margin-top: -20px;
   padding-bottom: 10px;
+  margin-bottom: 12px;
 }
 .title-header.nopic {
   margin-left: 0px;
@@ -694,12 +701,13 @@ background-color: @color-post-background-hover;
 }
 .post-container {
   position: relative;
-  padding-top: 10px;
 }
 .post-container .user {
   font: bold 13px Helvetica, Arial, sans-serif;
   border-bottom: 1px solid #e5e5e5;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
+  padding-left: 2px;
+  padding-right: 2px;
   overflow: hidden;
 }
 .post-container .user.noline {
@@ -721,8 +729,10 @@ background-color: @color-post-background-hover;
   display: inline-block;
 }
 .post-container .post {
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-top: 18px;
+  padding-bottom: 11px;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 .post-container .message,
 .post-container .link,
@@ -774,7 +784,7 @@ background-color: @color-post-background-hover;
 .post-container .social.commentn,
 .post-container .social.like {
   background-color: #edeff4;
-  padding-left: 10px;
+  padding-left: 11px;
 }
 .comments {
   width: 100%;
@@ -830,7 +840,7 @@ background-color: @color-post-background-hover;
   border: 1px solid #c1cee0;
   background-color: #f7f7f7;
   border-top: 0;
-  width: 408px;
+  width: 438px;
   height: 20px;
   padding: 3px;
 }
@@ -848,7 +858,7 @@ background-color: @color-post-background-hover;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  width: 354px;
+  width: 301px;
   margin: 0 5px 0 5px;
   padding: 1px;
   height: 14px;
@@ -863,7 +873,7 @@ background-color: @color-post-background-hover;
   font-size: 12px;
 }
 .post-box {
-  width: 412px;
+  width: 100%;
   margin-left: 0;
   overflow: hidden;
   height: 20px;
@@ -903,7 +913,7 @@ background-color: @color-post-background-hover;
   background-color: #ffffff;
   width: 530px;
 }
-.profile-content .row.box {
+.profile-content .box {
   margin: 0 1px 4px 3px;
 }
 .profile-content .title {
@@ -981,10 +991,10 @@ background-color: @color-post-background-hover;
   -moz-box-shadow: 0 0 0 0;
   box-shadow: 0 0 0 0;
 }
-.row.box .half {
+.box .half {
   width: 221px;
 }
-.row.box .post-container .half {
+.box .post-container .half {
   width: 218px;
 }
 #followinglist .top-list.mini .ranker,
@@ -1657,6 +1667,9 @@ background:@color-post-background-hover;
 }
 .rvgrid-5 {
   width: 208px;
+}
+.rvgrid-5ex {
+  width: 201px;
 }
 .rvgrid-6 {
   width: 253px;
