@@ -342,6 +342,12 @@ border-left:0px;
 border-right:0px;
 margin:0px;
 }
+
+#toppost li:first-of-type .comment-container .user{
+	border-top:0px;
+	padding-top:0px;
+}
+
 #toppost li:first-of-type {
 	border-top:0px
 	
@@ -352,7 +358,7 @@ margin:0px;
 }
 
 
-#toppost li:first-of-type>.post-container >.user{
+#toppost li:first-of-type > .user{
 	border-top:2px solid @color-post-user-border;
 	padding-top:8px;
 }
@@ -392,7 +398,6 @@ top:-13px;
 }
 
 .title.nopic{
-
 padding-bottom:10px;
 margin-bottom:12px;
 }
@@ -447,6 +452,10 @@ float:right;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+.top-list.first{
+	margin-top:-12px;
+}
 
 .top-list{
 //background-color:@color-ranking-background;
