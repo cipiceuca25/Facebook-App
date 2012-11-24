@@ -224,15 +224,15 @@ if($this->fanpage_level >2){
 							</div>
 						</li>
 						<li>
-							<div class="stats-block"><img src="/img/comment.png" /><h5><?= ($this->top_fans_stat[0]['total_comments'])?'99+':$this->top_fans_stat[0]['total_comments']?></h5>
+							<div class="stats-block"><img src="/img/comment.png" /><h5><?= ($this->top_fans_stat[0]['total_comments']>99)?'99+':$this->top_fans_stat[0]['total_comments']?></h5>
 							</div>
 						</li>
 						<li >
-							<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= ($this->top_fans_stat[0]['total_get_comments'])?'99+':$this->top_fans_stat[0]['total_get_comments']?></h5>
+							<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= ($this->top_fans_stat[0]['total_get_comments']>99)?'99+':$this->top_fans_stat[0]['total_get_comments']?></h5>
 							</div>
 						</li>
 						<li  >
-							<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= ($this->top_fans_stat[0]['total_get_likes'])?'99+':$this->top_fans_stat[0]['total_get_likes']?></h5>
+							<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= ($this->top_fans_stat[0]['total_get_likes']>99)?'99+':$this->top_fans_stat[0]['total_get_likes']?></h5>
 							</div> 
 						</li>
 			

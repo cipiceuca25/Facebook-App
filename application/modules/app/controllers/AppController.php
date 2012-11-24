@@ -818,8 +818,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			}
     			*/
     			}else{
-	    			
-	    			$yourpointslatest = $this->postPointsCalculate($l);
+	    			if($this->_fanpageProfile -> fanpage_level > 2){
+	    				$yourpointslatest = $this->postPointsCalculate($l);
+	    			}
 	    			$latestlike=0;
 	    			//echo $top['facebook_user_id'];
 	    			
@@ -861,7 +862,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//Zend_Debug::dump($latestrelation);
     	
     	$this->view->latest_comment_relation = $latest_comment_relation;
-    	$this->view->yourpointslatest = $yourpointslatest;
+    	if($this->_fanpageProfile -> fanpage_level > 2){
+    		$this->view->yourpointslatest = $yourpointslatest;
+    	}
     	//Zend_Debug::dump($latestlike);
     	//Zend_Debug::dump($latest);
     	$this->view->latestlike = $latestlike;
@@ -958,11 +961,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
     	if(!empty($this->_fanpageId)) {
     		$cache = Zend_Registry::get('memcache');
-    		$cache->setLifetime(1800);
+    		$cache->setLifetime(600);
     		$topPostId = $this->_fanpageId .'_toppost';
     
     		//$topPosts = $model->getTopPosts($this->_fanpageId, 5);
-    		//$cache->remove( $topPostId);
+    		$cache->remove( $topPostId);
     		try {
     			//$topPosts = $cache->remove($topPostId);
     			//Check to see if the $fanpageId is cached and look it up if not
@@ -1037,9 +1040,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//}else{
     		//	$picture[$count] = null;
     		//}
-    		
-    		$yourpoints[$count] = 0;
-    		$yourpoints[$count] = $this->postPointsCalculate($posts);
+    		if($this->_fanpageProfile -> fanpage_level > 2){
+    			$yourpoints[$count] = 0;
+    			$yourpoints[$count] = $this->postPointsCalculate($posts);
+    		}
     		$count++;
     		
     	}
@@ -1054,7 +1058,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	 
     	$this->view->comment_likes = $likes;
     	$this->view->likes = $likes;
-    	$this->view->yourpointslatest = $yourpoints;
+    	if($this->_fanpageProfile -> fanpage_level > 2){
+    		$this->view->yourpointslatest = $yourpoints;
+    	}
     	$this->view->top_post = $topPosts;
     	$this->view->relation = $relation;
     	$this->render("gettoppost");
@@ -1781,8 +1787,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 					
 					$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 					//Zend_Debug::dump($posts);
-					$yourpoints[$count] = 0;
-					$yourpoints[$count] = $this->postPointsCalculate($posts);
+					if($this->_fanpageProfile -> fanpage_level > 2){
+						$yourpoints[$count] = 0;
+						$yourpoints[$count] = $this->postPointsCalculate($posts);
+					}
 					//echo $likes[$count];
 					}
 					$count++;
@@ -1790,10 +1798,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				}
 			//}
 		}
-		//Zend_Debug::dump($yourpoints);
-
-		$this->view->yourpoints = $yourpoints;
 		
+
+
+		//Zend_Debug::dump($yourpoints);
+		if($this->_fanpageProfile -> fanpage_level > 2){
+			$this->view->yourpoints = $yourpoints;
+		}
 		$this->view->comment_relation = $comment_relation;
 		
 		$this->view->comment_likes = $likes;
@@ -1806,7 +1817,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->view->myfeedcount = $count;
     		$this->render("fancrankfeedm");
     	}else{*/
-    		$this->render("fancrankfeed");
+    	$this->render("fancrankfeed");
     	//}
     	
     }
@@ -4170,8 +4181,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     }
     
     private function feedFirstQuery() {
-    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/feed?limit=10");
-    	//$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/posts?limit=10");
+    	//$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/feed?limit=10");
+    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/posts?limit=10");
     
     	$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$this->_accessToken;
     
@@ -4195,9 +4206,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	 
     	//$finalResult['feed'] = $feed;
     	$finalResult['posts'] = $posts;
-    
+    	//Zend_Debug::dump($finalResult);
     	return $finalResult;
     }
+    
+    
+    
     
     public function fanrequestAction() {
     	$this->_helper->layout->disableLayout();
@@ -4215,5 +4229,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     }
     
+
 }
 

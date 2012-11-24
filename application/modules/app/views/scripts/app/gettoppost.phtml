@@ -14,18 +14,18 @@
 	<?php foreach($this->top_post as $post): ?>
 										
 		<?php	$displayname= $post->from->name;
-				$name = explode(" ", $displayname);
-				$displayname = $name[0] .' '. end($name);
+// 				$name = explode(" ", $displayname);
+// 				$displayname = $name[0] .' '. end($name);
 		
-				if (strlen($displayname)>16){			
-					if (strlen($name[0] > 16)){
-						$displayname = substr($name[0], 0, 16);
-					}else if(strlen($name[0]) > 14){
-						$displayname = $name[0].' '.substr(end($name),0,1).'.';
-					}else if (strlen($name[0]) + strlen (end($name)) < 16){
-						$displayname = $name[0].' '.end($name);
-					}
-				}
+// 				if (strlen($displayname)>16){			
+// 					if (strlen($name[0] > 16)){
+// 						$displayname = substr($name[0], 0, 16);
+// 					}else if(strlen($name[0]) > 14){
+// 						$displayname = $name[0].' '.substr(end($name),0,1).'.';
+// 					}else if (strlen($name[0]) + strlen (end($name)) < 16){
+// 						$displayname = $name[0].' '.end($name);
+// 					}
+// 				}
 		?>
 		<li class="box post-container <?=$post->id?>" >
 			<div class="user">
@@ -108,25 +108,26 @@
 				
 						<?if (strstr($this->escape($post->link), 'youtube.com')){
 							$temp=explode("http://www.youtube.com/watch?v=", $this->escape($post->link));?>
-							<iframe width="235" height="132" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
+							<?php $temp=explode("&", $this->escape($temp[1]));?>
+							<iframe width="262" height="147" src="http://www.youtube.com/embed/<?= $temp[0]?> "  frameborder="0" allowfullscreen></iframe>
 					
 						<? }else if (strstr($this->escape($post->link), 'vimeo.com')){
 							$temp=explode("http://vimeo.com/", 	$this->escape($post->link));	?>
-							<iframe width="235" height="132" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
+							<iframe width="262" height="147" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
 				
 						<? }else if (strstr($this->escape($post->link), 'facebook.com')){
 							$temp=explode("v=", $this->escape($post->link));?>
-							<object width="235" height="132" > 
+							<object width="262" height="147" > 
 								 <param name="allowfullscreen" value="true" /> 
 								 <param name="allowscriptaccess" value="always" /> 
 								 <param name="movie" value="http://www.facebook.com/v/<?= $temp[1]?>" /> 
 								 <embed src="http://www.facebook.com/v/<?= $temp[1]?>" type="application/x-shockwave-flash"  
-								   allowscriptaccess="always" allowfullscreen="true" width="235" height="132"> 
+								   allowscriptaccess="always" allowfullscreen="true" width="262" height="147"> 
 								 </embed> 
 							</object> 
 						<? }else if (strstr($this->escape($post->link), 'liveleak.com/view')){ 
 							$temp=explode("view?i=", $this->escape($post->link));?>
-							<iframe width="235" height="132" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
+							<iframe width="262" height="147" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
 						<? }?>
 					<?}elseif ($post->type == 'link') {?>
 					<div class="link">
