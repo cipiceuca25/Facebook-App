@@ -235,7 +235,7 @@
 						
 					
 					
-					<div class="user">
+					
 						
 						<div class="user-badge">
 							<a rel="tooltip-follow" class ="follow_<?=$comments->from->id?>" <?php switch($this->comment_relation[$count2]) { 
@@ -257,9 +257,10 @@
 							</a>
 						</div>	
 					
-						
-						
-						<div class="name"><a  
+
+				
+					<div class="message">
+						<span class="name"><a  
 							<? if (!($this->comment_relation[$count2] == 'Fanpage')){?> 
 								onclick="userProfile('<?=$comments->from->id?>')"
 								rel="popover" 
@@ -270,15 +271,7 @@
 							<?php }else{?>
 								class="noclick"
 							<?}?> 
-						><?=  $comments->from->name?></a></div>
-						
-						
-					
-						
-						
-				
-					<span class="message">
-					
+						><?=  $comments->from->name?></a></span>
 					<?php if(isset($comments->message)){  
 											$reg_ex = "/\n/";
 											$message = $this->escape($comments->message);
@@ -303,7 +296,7 @@
 										
 								}?>
 					
-					</span>
+			
 					</div>
 					<div class="social"> 
 					 	
@@ -391,3 +384,12 @@
 	<?php endforeach; ?>
 		
 <?php }?>
+
+<script>
+	$('#toppost .comments').enscroll({
+	showOnHover: true,
+	clickTrackToScroll: false,
+	verticalTrackClass: 'track3 popup',
+	verticalHandleClass: 'handle3 popup'
+	});
+</script>

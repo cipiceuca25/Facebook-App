@@ -195,7 +195,7 @@ $(document).on('mouseover', '[rel=popover]', function() {
 		delay : {show:2000, hide:100},
 		
 	}).trigger('mouseover');
-	
+	//console.log('test');
 });
 
 function mouseScroll(e){

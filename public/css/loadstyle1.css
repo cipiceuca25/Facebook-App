@@ -311,23 +311,16 @@ ol {
   right: 4px;
 }
 .tip a {
-  background-color: #47658e;
-  border: 2px solid #ffffff;
+  background-color: #3c589d;
   color: #ffffff;
-  font: bold 16px/100% Helvetica, Arial, sans-serif;
-  padding: 2px 5px 2px 5px;
+  font: bold 16px/22px Helvetica, Arial, sans-serif;
+  height: 22px;
+  width: 22px;
+  text-align: center;
   display: block;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
 }
 .tip a:hover {
-  background-color: #ffffff;
-  border: 2px solid #47658e;
-  color: #47658e;
+  color: #131313;
   text-decoration: none;
 }
 .tooltip-inner {
@@ -478,13 +471,15 @@ background-color: @color-post-background-hover;
 }
 */
 .top-list .stats li,
-.popover .stats li,
 .user-profile .stats li,
 #myprofile .stats li {
   font: 10px/100% Helvetica, Arial, sans-serif;
   height: 60px;
   float: left;
   width: 16.505606105%;
+}
+.popover .stats li {
+  float: left;
 }
 .user-profile .stats li {
   width: 14.1174530982%;
@@ -497,17 +492,30 @@ background-color: @color-post-background-hover;
   height: 20px;
 }
 .top-list .stats,
-.popover .stats,
 .user-profile .stats,
 #myprofile .stats {
   height: 40px;
   border-top: 1px solid #e5e5e5;
+}
+.popover .stats {
+  height: 40px;
+  padding-left: 18px;
+  padding-right: 18px;
 }
 .top-list .stats {
   line-height: 39px;
   border-top: 0px;
   min-width: 300px;
   float: right;
+}
+.popover .stats {
+  border-top: 2px solid #e5e5e5;
+  height: 40px;
+}
+.stats-block {
+  position: relative;
+  margin-left: 5px;
+  top: 12px;
 }
 .top-list li:last-of-type .ranker {
   border-bottom: 0px solid #dbdbdb;
@@ -526,11 +534,6 @@ background-color: @color-post-background-hover;
 .user-profile .stats.fol li {
   width: 49.79285%;
 }
-.stats-block {
-  position: relative;
-  margin-left: 5px;
-  top: 12px;
-}
 .linktofb {
   margin-top: 21px;
   font-size: 11px;
@@ -548,13 +551,13 @@ background-color: @color-post-background-hover;
 .user-profile .stats h3,
 #myprofile .stats h5,
 #myprofile .stats h3,
-.h3,
 .top-list .stats h5 {
   display: inline-block;
   line-height: 18px;
   text-align: right;
   padding-left: 2px;
   padding-right: 2px;
+  color: #3c589d;
 }
 .top-list .points {
   font-weight: bold;
@@ -709,6 +712,8 @@ background-color: @color-post-background-hover;
   width: 59px;
   text-align: center;
   padding: 2px;
+  margin-left: 5px;
+  margin-bottom: 5px;
 }
 .badge-Follow {
   background-color: #7d98be;
@@ -763,7 +768,7 @@ background-color: @color-post-background-hover;
 }
 .post-container .user {
   font: bold 13px Helvetica, Arial, sans-serif;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 2px solid #e5e5e5;
   padding-bottom: 12px;
   padding-left: 2px;
   padding-right: 2px;
@@ -775,9 +780,8 @@ background-color: @color-post-background-hover;
 .post-container .user.noline {
   border: 0px;
 }
-.post-container .user .user-badge {
+.user-badge {
   position: relative;
-  top: 6px;
   float: right;
   z-index: 1;
 }
@@ -789,6 +793,9 @@ background-color: @color-post-background-hover;
   top: 2px;
   left: 5px;
   display: inline-block;
+}
+.name {
+  font-weight: bold;
 }
 .post-container .post {
   padding-top: 18px;
@@ -851,13 +858,16 @@ background-color: @color-post-background-hover;
 .comments {
   width: 100%;
   max-height: 300px;
-  overflow: auto;
+  overflow: hidden;
 }
 .comment-container {
   background-color: #edeff4;
   margin-bottom: 1px;
   padding: 5px;
   min-height: 30px;
+}
+.comment-container .message {
+  margin-left: 35px;
 }
 .comment-container .user .user-badge {
   position: relative;
@@ -964,18 +974,9 @@ background-color: @color-post-background-hover;
   display: none;
 }
 .profile-content {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  padding: 3px 2px 0 0;
   margin: 0 0 0 144px;
   z-index: 51;
   display: none;
-  background-color: #ffffff;
-  width: 530px;
 }
 .profile-content .box {
   margin: 0 1px 4px 3px;
@@ -995,8 +996,12 @@ background-color: @color-post-background-hover;
 .user-profile .tip {
   z-index: 52;
   position: absolute;
-  right: 125px;
-  top: 10px;
+  right: 165px;
+  top: 5px;
+}
+#popup_post .user {
+  height: 30px;
+  line-height: 42px;
 }
 #popup_post .comments {
   display: block;
@@ -1004,7 +1009,7 @@ background-color: @color-post-background-hover;
 .comments.popup_scroll {
   overflow: auto;
   max-height: 300px;
-  width: 508px;
+  width: 100%;
 }
 .half {
   width: 229px;
@@ -1203,7 +1208,7 @@ background:@color-post-background-hover;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  border: 5px solid #c1cee0;
+  border: 8px solid #c1cee0;
   padding: 0;
   background-color: #c1cee0;
 }
@@ -1217,7 +1222,7 @@ background:@color-post-background-hover;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  padding: 1px 5px 1px;
+  padding: 0px;
 }
 .popover-content .post-container .user {
   overflow: visible;
@@ -1227,6 +1232,23 @@ background:@color-post-background-hover;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
+  height: 22px;
+  padding: 10px;
+}
+.popover-content .post-container .user-description {
+  margin: 0px;
+  padding-bottom: 5px;
+  min-height: 20px;
+}
+.popover-content .post {
+  padding: 12px;
+}
+.popover-content .post-container .user .rank {
+  height: 24px;
+  width: 24px;
+}
+.popover-content .post-container .user h1 {
+  font: bold 14px/24px Helvetica, Arial, sans-serif;
 }
 .user-profile .level,
 #myprofile .level,
@@ -1699,7 +1721,7 @@ background:@color-post-background-hover;
   top: -40px;
 }
 .post-container .comment-container {
-  padding-left: 30px;
+  padding-left: 20px;
 }
 .like-control,
 .likes {
