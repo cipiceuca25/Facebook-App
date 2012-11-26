@@ -972,7 +972,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$topPostId = $this->_fanpageId .'_toppost';
     
     		//$topPosts = $model->getTopPosts($this->_fanpageId, 5);
-    		$cache->remove( $topPostId);
+    		//$cache->remove( $topPostId);
     		try {
     			//$topPosts = $cache->remove($topPostId);
     			//Check to see if the $fanpageId is cached and look it up if not

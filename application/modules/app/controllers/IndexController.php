@@ -84,9 +84,9 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
    		if(!empty($this->data['page']['id'])) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
-     		$cache->remove($this->data['page']['id'] . '_topfan');
-     		$cache->remove($this->data['page']['id'] . '_topfanall');
-     		$cache->remove($this->data['page']['id'] . '_topfanlastweek');
+     		//$cache->remove($this->data['page']['id'] . '_topfan');
+     		//$cache->remove($this->data['page']['id'] . '_topfanall');
+     		//$cache->remove($this->data['page']['id'] . '_topfanlastweek');
 //     		$cache->remove($this->_fanpageId . '_topclicker');
 //     		$cache->remove($this->_fanpageId . '_topfollowed');
 //     		$cache->remove($this->_fanpageId . '_toptalker');
