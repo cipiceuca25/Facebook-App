@@ -924,7 +924,7 @@ function loadRedeem() {
 			//destroyAll();
 		},
 		success : function(data) {
-			$('#redemptions').html(data)
+			$('#redemptions').html(data);
 			
 			//loadGraph("#placeholder", 'Points');
 			//$('#placeholder').css({'width':'100%', 'height':'200px'});

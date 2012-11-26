@@ -1000,6 +1000,15 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$leaderboardLogModel = new Model_LeaderboardLog();
 		$fanpageId = $this->_getParam('id');
 		$lastWeekTopFans = $leaderboardLogModel->getLastWeekTopFans($fanpageId);
+		
+		$itemModel = new Model_Items();
+		$itemList = $itemModel->getFanpageItems($fanpageId);
+		
+		$redeemTransactionModel = new Model_RedeemTransactions();
+		
+		$this->view->requestRedeemItemList = $redeemTransactionModel->getPendingOrdersListByFanpageId($fanpageId);
+		$this->view->redeemHistoryList = $redeemTransactionModel->getRedeemHistory($fanpageId);
+		$this->view->itemList = $itemList;
 		$this->view->lastWeekTopFans = $lastWeekTopFans;
 	}
 	
