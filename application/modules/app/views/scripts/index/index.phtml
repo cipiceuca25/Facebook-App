@@ -1,7 +1,6 @@
 <div class="panel">
 	<div class="rvrow">
 		<div class="rvgrid-9">
-			
 			<div class="box">
 				<div class="title nopic">
 					
@@ -15,55 +14,58 @@
 		</div>
 		<div class="rvgrid-9">
 			<div class="top-fan" id="login">
-				
-				
-			
-					<div class="box">
-						<div class="title nopic">
+				<div class="box">
+					<div class="title nopic">
 							
-							<div class="title-header nopic">
-								Top Fans Last Week
-							</div>
-							<div class="tip2">
-								The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
-							</div>
+						<div class="title-header nopic">
+							Top Fans Last Week
 						</div>
-							
+						<div class="tip2">
+							The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
+						</div>
+					</div>
+						<?php $count = 0; ?> 	
 						<?php foreach($this->top_fans_last_week as $top_fan):  ?>
-						<ul class="top-list first">
-							<li>
-								<div class="ranker first">
-									<div class="rank first">
-										<h1>
-											<?=$top_fan['rank']?>
-										</h1>
-									</div>
-
-									<div class="user">
-										
-										<div class="photo">
-											<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-												<img class="small-face"  src="https://graph.facebook.com/<?=$top_fan['facebook_user_id'] ?>/picture"
-												onerror="ImgError(this);">
-											</a>
+						<?php if ($count == 0){?>
+							<ul class="top-list first">
+								<li>
+									<div class="ranker first">
+										<div class="rank first">
+											<h1>
+												<?=$top_fan['rank']?>
+											</h1>
 										</div>
-												
-										<div class="name first">
-											<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
-												<?=$top_fan['fan_first_name']?>
-											</a>
+	
+										<div class="user">
+											<div class="photo">
+												<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+													<img class="small-face"  src="https://graph.facebook.com/<?=$top_fan['facebook_user_id'] ?>/picture"
+													onerror="ImgError(this);">
+												</a>
+											</div>	
+											<div class="name first">
+												<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+													<?=$top_fan['fan_first_name']?>
+												</a>
+											</div>
 										</div>
+	
 									</div>
+								</li>
+								<?php $count++;?>
+							</ul>
+							<?php }else{?>
+								<?php if ($count == 1){?>
+									<ul  class="top-list">
+								<?php }?>
+								
+								
+								
+							<?php } ?>
+						
+						
+						<?php endforeach; ?>
 
-									<div class="points">
-									
-									</div>
-								</div>
-							</li>
-
-						</ul>
-					
-							<?php endforeach; ?>
 
 							<ul class="top-list bottom">
 								<li>

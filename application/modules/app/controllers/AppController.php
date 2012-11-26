@@ -321,7 +321,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		    			}
 	    				break;
 	    			case 'top-talker':
-    					if(isset($cache) && !$cache->load($this->_fanpageId . '_topfan')){
+    					if(isset($cache) && !$cache->load($this->_fanpageId . '_toptalker')){
     						$toplist = $model->getTopTalkerByWeek($this->_fanpageId, 5);
     				
     						$cache->save($toplist, $this->_fanpageId . '_topfan');
@@ -996,6 +996,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$relation = array();
     	$likeslist = array();
     	$yourpoints = array();
+    	$comment_relation = array();
+    	$comment_likes = array();
     	$count=0;
     	$count2 = 0;
 

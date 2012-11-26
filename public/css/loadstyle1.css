@@ -143,12 +143,12 @@ ol {
   margin-right: 5px;
 }
 .nav-tabs li a {
-  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  border-radius: 1px;
-  -webkit-border-radius: 1px;
-  -moz-border-radius: 1px;
-  border-radius: 1px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
   padding: 0px;
   margin: 0px;
   text-align: center;
@@ -159,6 +159,12 @@ ol {
   border: 0px solid;
   font-weight: bold;
   vertical-align: bottom;
+}
+#menu2 .nav-tabs li a {
+  width: 180px;
+}
+#menu2 .nav-tabs#toolbar {
+  width: 136px;
 }
 .nav-tabs {
   border: 0px;
@@ -228,6 +234,12 @@ ol {
   background-image: linear-gradient(to right, #647ab1, #3c589d);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff647ab1', endColorstr='#ff3c589d', GradientType=1);
+}
+#menu2 #logo {
+  width: 105px;
+}
+#menu2 #logo img {
+  width: 110;
 }
 #logo img {
   width: 90px;

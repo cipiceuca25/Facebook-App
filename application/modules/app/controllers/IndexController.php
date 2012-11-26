@@ -80,88 +80,98 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}
     	
     	//get top fans list from memcache
-    	$fanpage2 = array(
-    				'topFansLastWeek'=>array(),
-    				'topFans'=>array(),
-    				'mostPopular'=>array(),
-    				'topTalker'=>array(),
-    				'topClicker'=>array(),
-    				'topFollowed'=>array(),
-    				'topFansAllTime'=>array()
-    			);
-
-    	$cache = Zend_Registry::get('memcache');
-    	$cache->setLifetime(1800);
-    	
-    	if(!empty($this->data['page']['id'])) {
+   		if(!empty($this->data['page']['id'])) {
+    		$cache = Zend_Registry::get('memcache');
+    		$cache->setLifetime(1800);
+     		$cache->remove($this->data['page']['id'] . '_topfan');
+     		$cache->remove($this->data['page']['id'] . '_topfanall');
+     		$cache->remove($this->data['page']['id'] . '_topfanlastweek');
+//     		$cache->remove($this->_fanpageId . '_topclicker');
+//     		$cache->remove($this->_fanpageId . '_topfollowed');
+//     		$cache->remove($this->_fanpageId . '_toptalker');
+//     		$cache->remove($this->_fanpageId . '_fanfavorite');
+//     		try {
+//     			//Check to see if the $fanpageId is cached and look it up if not
+//     			if(isset($cache) && !$cache->load($this->_fanpageId . '_topfollowed')){
+//     				$toplist = $model->getTopFollowedByWeek($this->_fanpageId, 5);
+//     				$cache->save($toplist, $this->_fanpageId . '_topfollowed');
+//     			}else{
+//     				$toplist = $cache->load($this->_fanpageId . '_topfollowed');
+//     			}
+    				
+//     		} catch (Exception $e) {
+//   				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+//   				//echo $e->getMessage();
+//   			} 
+  			
+//   			try{
+    			
+//     			if(isset($cache) && !$cache->load($this->_fanpageId . '_topclicker')){
+//     				$toplist = $model->getTopClickerByWeek($this->_fanpageId, 5);
+    				
+//     				$cache->save($toplist, $this->_fanpageId . '_topclicker');
+//     			}else{
+//     				$toplist = $cache->load($this->_fanpageId . '_topclicker');
+//     			}
+    				
+//     		} catch (Exception $e) {
+//     			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+//     						//echo $e->getMessage();
+//     		}
     		
-    		try {
-    			$fanpageId = $this->data['page']['id'];
-    			//$cache->remove($fanpageId);
-    			//Check to see if the $fanpageId is cached and look it up if not
-    			if(isset($cache) && !$cache->load($fanpageId)){
+//     		try{
+//     			if(isset($cache) && !$cache->load($this->_fanpageId . '_fanfavorite')){
+//     				$toplist = $model->getMostPopularByWeek($this->_fanpageId, 5);
     				
-    				//echo 'db look up';
-    				//Look up the $fanpageId
-    				$fanpage2['topFans'] = $model->getTopFansByWeek($this->data['page']['id'], 5);
-    				//Zend_Debug::dump($topFans);
+//     				$cache->save($toplist, $this->_fanpageId . '_fanfavorite');
+//     			}else{
+//     				$toplist = $cache->load($this->_fanpageId . '_fanfavorite');
+//     			}
+//     		} catch (Exception $e) {
+//     				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+//     				//echo $e->getMessage();
+//     		}
+	    			
+	    	try{
+    			if(isset($cache) && !$cache->load($this->data['page']['id'] . '_topfanlastweek')){
+    				$topFansLastWeek =  $leaderboardLogModel->getLastWeekTopFans($this->data['page']['id']);
     				
-    				$fanpage2['mostPopular'] = $model->getMostPopularByWeek($this->data['page']['id'], 5);
-    				//Zend_Debug::dump($mostPopular);
-    				
-    				$fanpage2['topTalker'] = $model->getTopTalkerByWeek($this->data['page']['id'], 5);
-    				//Zend_Debug::dump($topTalker);
-    				
-    				$fanpage2['topClicker'] = $model->getTopClickerByWeek($this->data['page']['id'], 5);
-    				//Zend_Debug::dump($topClicker);
-    				 
-    				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    				$fanpage2['topFollowed'] = $model->getTopFollowedByWeek($this->data['page']['id'], 5);
-    				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-    				$fanpage2['topFansAllTime'] = $model->getTopFans($this->data['page']['id'], 5);
-    				//Save to the cache, so we don't have to look it up next time
-    				
-    				// look up top fans last week
-    				$fanpage2['topFansLastWeek'] =  $leaderboardLogModel->getLastWeekTopFans($this->data['page']['id']);
-    				
-    				$cache->save($fanpage2, $fanpageId);
-    			}else {
-    				//echo 'memcache look up';
-    				$fanpage2 = $cache->load($fanpageId);
+    				$cache->save($topFansLastWeek, $this->data['page']['id'] . '_topfanlastweek');
+    			}else{
+    				$topFansLastWeek = $cache->load($this->data['page']['id'] . '_topfanlastweek');
     			}
     		} catch (Exception $e) {
     			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
     			//echo $e->getMessage();
     		}
-    	}
-    	//Zend_Debug::dump($color); exit();
-    	//$this->view->user_name= $this->getUserName();
-    
-    	
-    	
-//     	try {
-//     		$fanpageProfileId = $this->data['page']['id'] .'_profile';
-    	
-//     		//Check to see if the $fanpageId is cached and look it up if not
-//     		if(isset($cache) && !$cache->load($fanpageProfileId)) {
-//     			//echo 'db look up';
-//     			//Look up the $fanpageId
-//     			$fanpage = $fanpageModel->findRow($this->data['page']['id']);
+			
+    		try{
+    			if(isset($cache) && !$cache->load($this->data['page']['id'] . '_topfanall')){
+    				$topfanall = $model->getTopFans($this->data['page']['id'], 5);
+    				$cache->save($topfanall, $this->data['page']['id'] . '_topfanall');
+    			}else{
+    				$topfanall = $cache->load($this->data['page']['id'] . '_topfanall');
+    			}
+    		} catch (Exception $e) {
+    			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    					//echo $e->getMessage();
+    		}
+    		
+    		try{		
+    			if(isset($cache) && !$cache->load($this->data['page']['id'] . '_topfan')){
+    				$topfan = $model->getTopFansByWeek($this->data['page']['id'], 5);
+    				$cache->save($topfan, $this->data['page']['id'] . '_topfan');
+    			}else{
+   					$topfan = $cache->load($this->data['page']['id'] . '_topfan');
+    			}
     			
-//     			//Save to the cache, so we don't have to look it up next time
-//     			if($fanpage) {
-//     				$cache->save($fanpage, $fanpageProfileId);
-//     			}else {
-//     				throw new Exception('fanpage not found');
-//     			}
-//     		}else {
-//     			//echo 'memcache look up';
-//     			$fanpage = $cache->load($fanpageProfileId);
-//     		}
-//     	} catch (Exception $e) {
-//     		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
-//     		//echo $e->getMessage();
-//     	}
+    		} catch (Exception $e) {
+  				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+  				//echo $e->getMessage();
+  			}    	
+    	}
+    	    	
+    	
     
     	$fanpage = $fanpageModel->findRow($this->data['page']['id']);
     	
@@ -190,8 +200,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	*/
     	//Zend_Debug::dump($fanpage2['topFansLastWeek']);
     	//Zend_Debug::dump($fanpage2['topFans']);
-    	$this->view->top_fans_last_week = $fanpage2['topFansLastWeek'];
-    	$this->view->top_fans = $fanpage2['topFans'];
+    	$this->view->top_fans_last_week = $topFansLastWeek;
+    	$this->view->top_fans = $topfan;
 //     	$this->view->most_popular = $fanpage2['mostPopular'];
 //     	$this->view->top_talker = $fanpage2['topTalker'];
 //     	$this->view->top_clicker = $fanpage2['topClicker'];
