@@ -1,7 +1,7 @@
-<div class="row">
-<div class="span8">
+<div class="rvrow">
+<div class="rvgrid-11">
 
-<div class="row box" id="user_list">
+<div class="box" id="user_list">
 
 <div class="title nopic">
 	 
@@ -14,22 +14,7 @@
 			
 		<?php }?>-->
 		<?php $displayname=$this->user_name;?>
-	
-						
-		<?php 
-			if (strlen($displayname)>16){
-				$temp = explode(" ", $displayname);
 
-				if(strlen($temp[0])>16){
-					$displayname = substr($temp[0], 0, 13).'...'	;
-				}else if (strlen($temp[0]>13)){
-					$displayname = $temp[0];
-				}else{
-					$displayname = $temp[0] .' '. substr($temp[0], 0,1) .'.';
-				}
-			}?>
-
-	
 	
 		<?php if ($this->title != 'Likes'){?>
 			<div class="title-header nopic">
@@ -76,7 +61,7 @@
 		<li >
 			<div class="ranker">
 				<div class="user">
-					<div class="photo"><img class="face" width="30" height="30" src="/img/profile-picture.png" onerror="ImgError(this);"></div>
+					<div class="photo"><img class="small-face" src="/img/profile-picture.png" onerror="ImgError(this);"></div>
 				
 					<div class="name">No Users</div>
 				
@@ -91,19 +76,6 @@
 	<?php foreach ($this->result as $user):?>	
 		<?php $displayname=$user['facebook_user_name'];?>
 	
-						
-		<?php 
-			if (strlen($displayname)>16){
-				$temp = explode(" ", $displayname);
-
-				if(strlen($temp[0])>16){
-					$displayname = substr($temp[0], 0, 13).'...'	;
-				}else if (strlen($temp[0]>13)){
-					$displayname = $temp[0];
-				}else{
-					$displayname = $temp[0] .' '. substr($temp[0], 0,1) .'.';
-				}
-			}?>
 		<li>
 			
 			<div class="ranker" >
@@ -114,7 +86,7 @@
 												onclick="userProfile('<?= $user['facebook_user_id'] ?>', false)"
 												 rel="popover" data-content="" data-original-title=""
 												data-placement="top"<?}?>>
-						<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture">
+						<img class="small-face" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture">
 						</a>
 					</div>
 					

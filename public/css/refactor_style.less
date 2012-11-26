@@ -112,7 +112,7 @@ margin-right:5px;
 }
 
 .nav-tabs li a{
-.border-radius(1px);
+.border-radius(0px);
 padding:0px;
 margin:0px;
 text-align:center;
@@ -123,6 +123,15 @@ line-height:50px;
 border:0px solid;
 font-weight:bold;
 vertical-align:bottom;
+}
+ 
+#menu2 .nav-tabs li a{
+width:180px;
+}
+
+#menu2 .nav-tabs#toolbar{
+width:136px;
+
 }
 
 .nav-tabs{
@@ -139,19 +148,15 @@ float:left;
 	height:50px;
 }
 
-
-
-
-
 .nav-tabs#log-in-out{
 	font-size:12px;
 	float:right;
 	background-color:@color-menu-right-background;
-	width:214px;
+	width:180px;
 }
 
 .nav-tabs#log-in-out li a {
-	width:214px;
+	width:180px;
 }
 
 .nav-tabs#toolbar li a{
@@ -179,8 +184,6 @@ background-color:lightgray;
 	vertical-align:middle;
 }
 
-
-
 .nav-tabs#toolbar li{
 	float:right;
 }
@@ -197,13 +200,20 @@ float:left;
 #gradient > .horizontal(@color-menu-right-background, @color-menu-left-background);
 }
 
+#menu2 #logo{
+width:105px;
+}
+
+#menu2 #logo img{
+width:110;
+}
 #logo img{
 width:90px;
 }
 
 #logout-tab{
 padding-left:6px;
-padding-right:10px;
+padding-right:12px;
 
 }
 
@@ -211,7 +221,10 @@ padding-right:10px;
 margin-right:0px;
 }
 
+
+
 #logout-tab .dropdown-menu{
+min-width:100px;
 top:50px;
 left:-154px;
 width:201px;
@@ -221,6 +234,11 @@ background-color:@color-menu-right-background;
 border:0px solid;
 .border-radius(0px);
 .box-shadow(-5px 5px 10px rgba(0, 0, 0, 0.2));
+}
+
+#menu2 #logout-tab .dropdown-menu{
+width:136px;
+left:-87px;
 }
 
 #logout-tab .dropdown-menu li a:hover{
@@ -233,6 +251,9 @@ border:0px solid;
 	text-align:center;
 }
 
+#menu2 #logout-tab .dropdown-menu li{
+	width:136px;
+}
 #logout-tab.open .dropdown-toggle {
 background-color:transparent;
 }
@@ -283,19 +304,21 @@ right:4px
 }
 
 .tip a {
-background-color:@color-tip-background;
-border:2px solid @color-tip-border;
+background-color:@color-menu-left-background;
+
 color:@color-tip-question-mark;
-font:bold 16px/100% Helvetica, Arial,  sans-serif;
-padding:2px 5px 2px 5px;
+font:bold 16px/22px Helvetica, Arial,  sans-serif;
+height:22px;
+width:22px;
+text-align:center;
 display:block;
-.border-radius(3px);
+
 }
 
 .tip a:hover {
-background-color:@color-tip-background-hover;
-border:2px solid @color-tip-border-hover;
-color:@color-tip-question-mark-hover;
+
+
+color:#131313;
 text-decoration:none;
 }
 
@@ -342,27 +365,46 @@ border-left:0px;
 border-right:0px;
 margin:0px;
 }
-#toppost li:first-of-type {
+
+
+
+#toppost>li:first-of-type {
 	border-top:0px
 	
 }
-#toppost li:last-of-type {
+#toppost>li:last-of-type {
 	border-bottom:0px;
 	
 }
 
 
-#toppost li:first-of-type>.post-container >.user{
+#toppost>li:first-of-type > .user{
 	border-top:2px solid @color-post-user-border;
 	padding-top:8px;
 }
 
-#toppost .post-container .user{
+#toppost>li:first-of-type .comments .comment-container .user{
+	border-top:0px;
+	padding-top:0px;
+}
+
+#toppost>.post-container .user{
 	padding-bottom:8px;
 }
 
-#toppost .box{
+#toppost>.post-container .user .name{
+	width:120px;
+	vertical-align:middle;
+}
+
+#toppost>.box{
 	padding-top:8px;
+}
+
+
+#toppost .comments .post-container .user .name{
+	width:120px;
+	vertical-align:middle;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -379,8 +421,6 @@ margin:0px;
 }
 
 .user-description{
-	margin-left:5px;
-	margin-right:5px;
 
 }
 
@@ -392,9 +432,8 @@ top:-13px;
 }
 
 .title.nopic{
-
 padding-bottom:10px;
-margin-bottom:12px;
+
 }
 
 .title-header.nopic{
@@ -448,9 +487,12 @@ float:right;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
 .top-list{
 //background-color:@color-ranking-background;
 max-height:224px;
+width:100%;
+color:@color-menu-left-background;
 }
 
 /*
@@ -460,18 +502,24 @@ background-color: @color-post-background-hover;
 */
 
 .top-list .stats li,
-.popover .stats li,
+
 .user-profile .stats li,
-#myprofile .stats li{
-	font:10px/100% Helvetica, Arial,  sans-serif;
+#profile .stats li{
+	font:12px/100% Helvetica, Arial, sans-serif;
 	//border-right: 1px solid @color-post-user-border;
 	height:60px;
 	float:left;
 	width:16.505606105%;
 }
-.user-profile .stats li{
-	width:14.1174530982%;
+.top-list .stats,
+.top-list .stats li{
+height:40px;
 }
+
+.popover .stats li{
+	float:left;
+}
+
 .top-list .stats li,
 .popover .stats li{
 	width:20%;
@@ -481,16 +529,55 @@ background-color: @color-post-background-hover;
 	height:20px;
 }
 
-.top-list .stats,
-.popover .stats,
+
+
 .user-profile .stats,
-#myprofile .stats{
+#profile .stats{
 	height:60px;
-	border-top: 1px solid @color-post-user-border;
-	//border-bottom: 1px solid @color-post-user-border;
-	margin-bottom:-5px;
-	
 }
+
+.popover .stats{
+	height:40px;
+	padding-left:18px;
+	padding-right:18px;
+
+}
+
+.top-list .stats{
+	line-height:39px;
+	//position:absolute;
+	border-top: 0px;
+	min-width:300px;
+	float:right;
+}
+
+.popover .stats{
+	border-top:2px solid  @color-post-user-border;
+	height:40px;
+}
+
+
+.stats-block{
+	//text-align:center;
+	position:relative;
+	margin-left:5px;
+	top:12px;
+}
+.top-list li:last-of-type .ranker{
+border-bottom:0px solid @color-box-border;
+}
+
+.top-list li:last-of-type .ranker.first{
+border-bottom:1px solid @color-box-border;
+}
+
+.top-list.you .ranker,
+.top-list.you li:last-of-type .ranker
+{
+border-top:1px solid black;
+border-bottom:1px solid black;
+}
+
 
 .user-profile .stats.fol{
 	border-top: 0px solid;
@@ -500,16 +587,8 @@ background-color: @color-post-background-hover;
 	width:49.79285%;
 }
 
-.stats-block{
-	//text-align:center;
-	position:relative;
-	margin-left:5px;
-	top:12px;
-}
 
-.top-list .stats .stats-block{
-	top:0px;
-}
+
 .linktofb{
 	margin-top:21px;	
 	font-size:11px;
@@ -521,37 +600,66 @@ background-color: @color-post-background-hover;
 	text-rendering:optimizelegibility;
 	margin:0;
 }
-.top-list .stats h5,
+
 .popover .stats h5,
 .popover .stats h3,
 .user-profile .stats h5,
-.user-profile .stats h3,
-#myprofile .stats h5,
-#myprofile .stats h3,
-.h3,
+
+#profile .stats h5,
+#profile .stats h4,
 .top-list .stats h5{
 	display:inline-block;
 	line-height:18px;
 	text-align:right;
-
+	padding-left:2px;
 	padding-right:2px;
 }
+
+.user-profile .stats h5,
+#profile .stats h4{
+	display:inline-block;
+	line-height:14px;
+	text-align:right;
+	padding-left:4px;
+	padding-right:2px;
+}
+
+.stats-block img{
+	vertical-align:top;
+	margin-bottom:2px;
+}
+
+.popover .stats h5,
+.popover .stats h3,
+.user-profile .stats h5,
+.user-profile .stats h3,
+.top-list .stats h5{
+color:@color-menu-left-background;
+}
+
+.top-list .points{
+	font-weight:bold;
+	line-height:39px;
+	float:right;
+	margin-right:38px;
+}
+
+.top-list .points h3{
+display:inline-block;
+font-size:18px;
+position:relative;
+line-height:39px;
+}
+.top-list .points span{
+	font-size:12px;
+}
+
 .popover .stats h3,
 .user-profile .stats h3,
-#myprofile .stats h3,
+#profile .stats h3,
 .h3,
 .top-list .stats img{
 	vertical-align:bottom;
-}
-
-.top-list .stats{
-	height:18px;
-
-	//position:absolute;
-	margin:8px;
-	border-top: 0px;
-	min-width:350px;
-	float:right;
 }
 
 
@@ -560,6 +668,8 @@ border-bottom:1px solid @color-box-border;
 height:40px;
 width:100%;
 position:relative;
+padding-left:2px;
+padding-right:2px;
 }	
 
 .top-list.mini .ranker{
@@ -568,6 +678,7 @@ height:36px;
 	
 .top-list .ranker.first{
 border-top:0 solid;
+
 }
 
 .user .rank,
@@ -585,7 +696,11 @@ float:left;
 margin-top:0px;
 }
 
-
+.icon {
+float:right;
+margin-top:-15px;
+position:relative;
+}
 
 .top-list.mini .rank{
 width:36px;
@@ -641,7 +756,7 @@ font:bold 35px/55px Helvetica, Arial,sans-serif;
 }
 
 .top-list .user{
-margin:8px;
+line-height:39px;
 margin-left:0px;
 margin-right:0px;
 float:left;
@@ -666,10 +781,11 @@ left:35px;
 }
 
 .top-list .user .name{
-font:13px Helvetica,Arial,  sans-serif;
+font:bold 13px/39px Helvetica,Arial,  sans-serif;
 margin-left:8px;
 position:relative;
-margin-top:4px;
+line-height:39px;
+
 float:left;
 }
 
@@ -679,11 +795,11 @@ float:left;
 
 .top-list.mini .user .name{
 top:8px;
-font:12px Helvetica,Arial,  sans-serif;
+font:bold 12px Helvetica,Arial,  sans-serif;
 }
 .top-list .user .name.first{
-font:14px Helvetica,Arial,  sans-serif;
-top:4px;
+font:bold 14px/39px Helvetica,Arial,  sans-serif;
+
 }
 
 .top-list.mini .user .name.first{
@@ -691,25 +807,9 @@ font:14px Helvetica,Arial,  sans-serif;
 top:7px;
 }
 
-.top-list .points{
-
-margin:4px;
-
-
-float:right;
-}
-
 .top-list .user-badge{
-
-margin:8px;
-margin-right:2px;
+line-height:39px;
 float:right;
-}
-
-.top-list .points h3{
-display:inline-block;
-font-size:25px;
-position:relative;
 }
 
 .top-list .points .seerank{
@@ -727,6 +827,8 @@ color:@color-tab-text;
 width:59px;
 text-align:center;
 padding: 2px;
+margin-left:5px;
+margin-bottom:5px;
 }
 
 .badge-Follow{
@@ -805,21 +907,24 @@ position:relative;
 
 .post-container .user{
 font: bold 13px Helvetica, Arial, sans-serif;
-border-bottom:1px solid @color-post-user-border;
+border-bottom:2px solid @color-post-user-border;
 padding-bottom:12px;
-
 padding-left:2px;
 padding-right:2px;
 overflow:hidden;
+}
+
+.post-container .user.pad{
+padding-top:12px;
 }
 
 .post-container .user.noline{
 border:0px;
 }
 
-.post-container .user .user-badge{
+.user-badge{
 position:relative;
-top:6px;
+
 float:right;
 z-index:1;
 }	
@@ -833,15 +938,23 @@ position:relative;
 top:2px;
 left:5px;
 display:inline-block;
+
 }	
 
-.post-container .post{
-padding-top:18px;
-padding-bottom:11px;
-padding-left:2px;
-padding-right:2px;
+.name{
+font-weight:bold;
 
 }
+
+
+.post-container .post{
+	padding-top:18px;
+	padding-bottom:11px;
+	padding-left:2px;
+	padding-right:2px;
+}
+
+
 
 .post-container .message,
 .post-container .link,
@@ -910,7 +1023,7 @@ padding-left:11px;
 
 width:100%;
 max-height:300px;
-overflow: auto;
+overflow: hidden;
 }
 
 .comment-container{
@@ -919,6 +1032,12 @@ margin-bottom:1px;
 padding:5px;
 min-height:30px;
 
+
+}
+
+.comment-container .message{
+	margin-left:35px;
+	
 }
 
 .comment-container .user .user-badge{
@@ -932,6 +1051,8 @@ top:0;
 border-bottom:0 solid;
 margin:0 0 0 35px;
 padding-bottom:0px;
+padding-top:0px;
+border-top:0px;
 }
 
 .comment-container .photo{
@@ -969,7 +1090,7 @@ display:none;
 border:1px solid @color-main-container-border;
 background-color: @color-post-button-container;
 border-top:0;
-width:438px;
+width:436px;
 height:20px;
 padding:3px;
 }
@@ -1003,7 +1124,7 @@ font-size:12px;
 }
 
 .post-box{
-width:100%;
+width:440px;
 margin-left:0;
 overflow:hidden;
 height:20px;
@@ -1030,22 +1151,10 @@ display:none;
 }
 
 .profile-content{
-.border-radius(3px);
-padding:3px 2px 0 0;
 margin:0 0 0 144px;
 z-index:51;
-
 display:none;
-background-color:@color-main-background;
-width:530px;
-}
 
-.profile-content .box{
-margin: 0 1px 4px 3px;
-}
-
-.profile-content .title{
-margin-top:-18px;
 }
 
 
@@ -1063,11 +1172,16 @@ display:none;
 .user-profile .tip{
 z-index:52;
 position:absolute;
-right:125px;
-top:10px;
+right:165px;
+top:5px;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#popup_post .user{
+height:30px;
+line-height:42px;
+}
 
 #popup_post .comments{
 display:block;
@@ -1076,8 +1190,9 @@ display:block;
 .comments.popup_scroll{
 overflow: auto;
 max-height: 300px;
-width:508px;
+width:100%;
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .half{
@@ -1116,15 +1231,35 @@ position:relative;
 top:15px;
 }
 
+
+#profile .tip2{
+	margin-top:15px;
+}
+
+
 .progress{
 margin-bottom:0;
 background:@color-badge-background;
-border:2px solid @color-badge-border;
+border:1px solid @color-badge-border;
+.border-radius(0);
 }
 
 .progress .bar{
 background:@color-badge-bar;
+
 .box-shadow(0 0 0 0 );
+}
+
+.progress.exp{
+margin-top:12px;
+margin-bottom:12px;
+border:1px solid @color-menu-left-background;
+background:white;
+}
+
+.progress.exp .bar{
+
+
 }
 
 .box .half{
@@ -1144,7 +1279,7 @@ border-top:0px solid;
 #recent_activities{
 overflow: auto;
 padding-left:5px;
-max-height: 948px;
+max-height: 582px;
 .border-radius(3px);
 }
 
@@ -1158,7 +1293,7 @@ margin:1px -5px 0px;
 
 }
 #recent_activities .post-container{
-width:229px;
+width:220px;
 }
 /*
 #user_activities .post-container:hover,
@@ -1168,16 +1303,15 @@ background:@color-post-background-hover;
 */
 
 .track3 {
-width: 5px;
+width: 10px;
 margin-top:-1px;
+background-color:light-gray;
 }
 
 .handle3 {
-width: 5px;
+width: 10px;
 background: @color-scrollbar ;
-opacity: 0.45;
-filter: alpha(opacity=45);
-left:5px;
+left:15px;
 }
 
 .htrack {
@@ -1221,7 +1355,6 @@ padding-top:0px;
 }
 
 .upcoming-badges{
-	height:44px;
 	padding-top:10px;
 	padding-bottom:10px;
 }
@@ -1236,7 +1369,6 @@ float:left;
 position:relative;
 top:-40px;
 float:left;
-
 }
 
 .upcoming-badges .bar{
@@ -1244,7 +1376,7 @@ height:40px;
 }
 
 .badge-description{
-float:left;
+margin-left:60px;
 
 }
 
@@ -1255,8 +1387,7 @@ float:left;
 .badge-profile{
 float:right;
 position:relative;
-
-top:-16px;
+margin-top:-16px;
 }
 
 .link-back{
@@ -1270,11 +1401,6 @@ padding-left:5px;
 max-height: 200px;
 }
     
-#user_list  .badge-profile{
-top:-9px;
-
-}
-    
 #user_list .top-list .badge-profile{
 top:18px;
 position:relative;
@@ -1284,7 +1410,7 @@ right:8px;
 #user_list_scroll{
 overflow: auto;
 min-height: 300px;
-width:508px;
+width:100%;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1296,7 +1422,7 @@ width:508px;
 .popover-inner{
 
 .border-radius(0px);
-border:5px solid @color-popover-border;
+border:8px solid @color-popover-border;
 padding:0;
 background-color:@color-popover-background;
 }
@@ -1307,16 +1433,40 @@ display:none;
 
 .popover-content{
 .border-radius(0px);
-padding:1px 5px 1px;
+padding:0px;
 }
 
 .popover-content .post-container .user{
 overflow:visible;
 .border-radius(0px);
+height:22px;
+padding:10px;
+}
+
+.popover-content .post-container .user-description{
+	margin:0px;
+	padding-bottom:5px;
+	min-height:20px;
+}
+
+.popover-content .post{
+	padding:12px;
+}
+
+.popover-content .post-container .user .rank{
+height:24px;
+width:24px;
+}
+.popover-content .post-container .user h1{
+	font: bold 14px/24px Helvetica, Arial, sans-serif;
+}
+
+.popover-content .post-container .user .name{
+
 }
 
 .user-profile .level,
-#myprofile .level,
+#profile .level, 
 .popover-content .level{
 float:right;
 text-align:center;
@@ -1334,7 +1484,7 @@ position:relative;
 
 /*
 .user-profile h1,
-#myprofile h1{
+#profile h1{
 	font-size:40px;
 }
 
@@ -1496,10 +1646,12 @@ margin-right:10px;
 	font-weight:bold;
 }	
 
+.display-badges-button,
 .user-description-button{
 	float:right;
 	margin-right:4px;
-	margin-top:30px;
+	margin-top:10px;
+	font-size:12px;
 }
 
 .exp-text{
@@ -1802,16 +1954,24 @@ border-bottom:0px;
 	font-size:11px;
 }
 
-.badgedisplay{
-	min-height:77px;
-	padding-left:10px
+
+#profile .post{
+	border-bottom:1px solid @color-post-user-border;
+
+	padding-top:11px;
+}
+
+
+#profile .user{
+border-bottom:1px solid @color-post-user-border;
 }
 
 .progress.earned-badges{
 height:40px;
 width:40px;
-margin:10px 13.5px 10px;
-display:inline-block
+margin-right:15px;
+margin-bottom:15px;
+display:inline-block;
 }
 
 .progress.earned-badges .bar{
@@ -1824,7 +1984,7 @@ top:-40px;
 }
 
 .post-container .comment-container{
-	padding-left:30px;
+	padding-left:20px;
 }
 
 .like-control, .likes{
@@ -1858,6 +2018,11 @@ width:73px;
 }
 .rvgrid-3{
 width:118px;
+//width:7.375em;
+}
+
+.rvgrid-3ex{
+width:136px;
 //width:7.375em;
 }
 .rvgrid-4{

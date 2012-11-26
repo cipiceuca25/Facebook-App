@@ -120,25 +120,27 @@
 			
 				<?php if (strstr($this->escape($post->link), 'youtube.com')){
 						$temp=explode("http://www.youtube.com/watch?v=", $this->escape($post->link));?>
-						<iframe width="508" height="286" src="http://www.youtube.com/embed/<?= $temp[1]?> "  frameborder="0" allowfullscreen></iframe>
+						<?php $temp=explode("&", $this->escape($temp[1]));?>
+								
+						<iframe width="444" height="250" src="http://www.youtube.com/embed/<?= $temp[0]?> "  frameborder="0" allowfullscreen></iframe>
 				
 				<?php }else if (strstr($this->escape($post->link), 'vimeo.com')){
 						$temp=explode("http://vimeo.com/", 	$this->escape($post->link));	?>
-						<iframe width="508" height="286" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
+						<iframe width="444" height="250" src="http://player.vimeo.com/video/<?= $temp[1]?>"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> 
 			
 				<?php }else if (strstr($this->escape($post->link), 'facebook.com')){
 						$temp=explode("v=", $this->escape($post->link));?>
-					 <object width="508" height="286" > 
+					 <object width="444" height="250" > 
 					 <param name="allowfullscreen" value="true" /> 
 					 <param name="allowscriptaccess" value="always" /> 
 					 <param name="movie" value="http://www.facebook.com/v/<?= $temp[1]?>" /> 
 					 <embed src="http://www.facebook.com/v/<?= $temp[1]?>" type="application/x-shockwave-flash"  
-					   allowscriptaccess="always" allowfullscreen="true" width="508" height="286"> 
+					   allowscriptaccess="always" allowfullscreen="true" width="444" height="250"> 
 					 </embed> 
 					</object> 
 				<?php }else if (strstr($this->escape($post->link), 'liveleak.com/view')){ 
 						$temp=explode("view?i=", $this->escape($post->link));?>
-					<iframe width="508" height="286" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
+					<iframe width="444" height="250" src="http://www.liveleak.com/ll_embed?f=<?= $temp[1] ?>" frameborder="0" allowfullscreen></iframe>
 				<?php }?>
 		<?}elseif ($post->type == 'link') {?>
 			<div class="link">
@@ -211,11 +213,11 @@
 		&middot;
 
 		<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>
-
-		<?if ($this->yourpoints[$count] !=0){?>
-			&middot;
-			<a class="point-display noclick"><?= $this->yourpoints[$count]?>Pts</a>
-		<?}?>
+		<?if ($this->fanpage_level > 2){?>
+			<?if ($this->yourpoints[$count] !=0){?>
+				&middot;
+				<a class="point-display noclick"><?= $this->yourpoints[$count]?>Pts</a>
+		<?} }?>
 		
 	</div>
 	<div class="social like <?=$post->id?>"  <?php if(!isset($post->likes->count) || ($post->likes->count == 0)){?>style="display:none"<?php }?>>
@@ -267,7 +269,7 @@
 						
 					
 					
-					<div class="user">
+				
 						
 						<div class="user-badge">
 							<a rel="tooltip-follow" class ="follow_<?=$comments->from->id?>" <?php switch($this->comment_relation[$count2]) { 
@@ -291,7 +293,15 @@
 					
 						
 						
-						<div class="name"><a  
+						
+						
+						
+					
+						
+						
+				
+					<div class="message">
+					<span class="name"><a  
 							<? if (!($this->comment_relation[$count2] == 'Fanpage')){?> 
 								onclick="userProfile('<?=$comments->from->id?>')"
 								rel="popover" 
@@ -302,15 +312,7 @@
 							<?php }else{?>
 								class="noclick"
 							<?}?> 
-						><?=  $comments->from->name?></a></div>
-						
-						
-					
-						
-						
-				
-					<span class="message">
-					
+						><?=  $comments->from->name?></a></span>
 					<?php if(isset($comments->message)){  
 											$reg_ex = "/\n/";
 											$message = $this->escape($comments->message);
@@ -335,7 +337,7 @@
 										
 								}?>
 					
-					</span>
+				
 					</div>
 					<div class="social"> 
 					 	

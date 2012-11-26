@@ -11,6 +11,8 @@
 					<div class="title-header nopic">
 						Your Profile
 					</div>
+					
+				
 					<!--  <div class="tip">
 						<a rel="tooltip" data-original-title='This is your FanCrank Profile! Check out your points, experience, badges, and other statistics here.'>
 							?
@@ -18,8 +20,8 @@
 					</div>-->
 				</div>
 				<div class="rvrow">
-					<div class=" post-container noline">
-						<div class="user noline">
+					<div class=" post-container">
+						<div class="user pad">
 								<div class="rank">
 									<h1><?= $this->fan->fan_level?></h1>
 								</div>
@@ -43,8 +45,8 @@
 						</div>
 					
 					</div>
-					<div class="post-container noline">
-						<div class="user noline ">
+					<div class="post-container">
+						<div class="post">
 						<div class="badgedisplay" >
 							<?php foreach ($this->chosen_badges as $b): ?>
 								<?php if ($b != 'undefined') {?>
@@ -57,52 +59,60 @@
 								</div>
 								<?php }?>
 							<?php endforeach;?>
+							<a class="display-badges-button" onclick="choosebadges()">Edit Display</a>	
 						</div>
-						<a class="display-badges-button" style="margin-top:6px; float:right" onclick="choosebadges()">Choose Display Badges</a>	
+						
 						</div>
 					</div>
 				</div>
 				
-				<div class="post-container noline">
-					<div class="rvrow ">
+				<div class="post-container">
+			
 						
-						<div id="exp-container" style="text-align:center">
-							<h4>Fan Experience</h4>
-							<div class="progress">
-								<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;"></div>
+						<div class="post" id="exp-container" >
+							<div>
+								<div class="title-header nopic">Your Fan Experience
+								<div style="float:right"><?=$this->fan_exp?>/<?=$this->fan_level_exp?></div>
+								</div>
+								
 							</div>
 							
-								<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?></h5>
-								<?=$this->fan_exp_required?> Until Next Level
+							<div class="progress exp">
+								<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;"></div>
+							</div>
+	
+							Next Level in <?=$this->fan_exp_required?> Points
 							
 						</div>
-					</div>
+			
 				</div>
 				
 				<div class="post-container noline">
 					<ul class="stats">
+					<?php if($this->fanpage_level >2){?>
 					<li >
-						<div class="stats-block"><img src="/img/coins.png" /><h3><?= $this->fan->fan_point?></h3>	<br/>
+						<div class="stats-block"><img src="/img/coins.png" /><h4><?= $this->fan->fan_point?></h4>	<br/>
 						Points</div>
 					</li>
+					<?php }?>
 					<li >
-						<div class="stats-block"><img src="/img/post.png" /><h3><?=$this->stat_post?></h3>	<br/>
+						<div class="stats-block"><img src="/img/post.png" /><h4><?=$this->stat_post?></h4>	<br/>
 						Posts</div>
 					</li>
 					<li >
-						<div class="stats-block"><img src="/img/thumbsup.png" /><h3><?=$this->stat_like?></h3><br/>
+						<div class="stats-block"><img src="/img/thumbsup.png" /><h4><?=$this->stat_like?></h4><br/>
 						Likes</div>
 					</li>
 					<li >
-						<div class="stats-block"><img src="/img/comment.png" /><h3><?=$this->stat_comment?></h3><br/>
+						<div class="stats-block"><img src="/img/comment.png" /><h4><?=$this->stat_comment?></h4><br/>
 						Comments</div>
 					</li>
 					<li >
-						<div class="stats-block"><img src="/img/rthumbsup.png" /><h3><?=$this->stat_get_like?></h3><br/>
+						<div class="stats-block"><img src="/img/rthumbsup.png" /><h4><?=$this->stat_get_like?></h4><br/>
 						Recieved<br/>Likes</div>
 					</li>
-					<li style="border:0px">
-						<div class="stats-block"><img src="/img/rcomment.png" /><h3><?=$this->stat_get_comment?></h3><br/>
+					<li >
+						<div class="stats-block"><img src="/img/rcomment.png" /><h4><?=$this->stat_get_comment?></h4><br/>
 						Recieved Comments </div> 
 					</li>
 					</ul>
@@ -129,8 +139,8 @@
 				
 				</div>
 				<div class="post-container noline">
-					<div class="rvrow post" id="profile_earned_badges" style="overflow:hidden; outline:none">
-						<div style="width:<?=count($this->badges) * 79.5?>px; height:70px;" >
+					<div class="rvrow post" id="profile_earned_badges" style="overflow:hidden; max-height:107px;">
+						<div  >
 							<?php foreach ($this->badges as $b): ?>
 						
 								<div class="progress earned-badges" >
@@ -213,7 +223,7 @@
 					</div>
 				</div>
 				<div class="post-container noline">
-					<div class="row-fluid post" id="profile_upcoming_badges">
+					<div  id="profile_upcoming_badges">
 						
 					</div>
 				</div>
@@ -233,10 +243,8 @@
 	$('#profile_earned_badges').enscroll({
 		showOnHover: true,
 		clickTrackToScroll: false,
-		horizontalScrolling:true,
-		verticalScrolling:false,
-		horizontalTrackClass: 'htrack',
-		horizontalHandleClass: 'hhandle'
+		verticalTrackClass: 'track3 popup',
+		verticalHandleClass: 'handle3 popup'
 	});
 	
 </script>

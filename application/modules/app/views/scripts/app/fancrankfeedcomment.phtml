@@ -27,7 +27,7 @@
 		
 	
 	
-	<div class="user">
+
 		
 		<div class="user-badge">
 			<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" <?php switch($this->relation[$count]) { 
@@ -51,7 +51,15 @@
 	
 		
 		
-		<div class="name"><a  
+		
+		
+		
+	
+		
+		
+
+	<div class="message">
+	<span class="name"><a  
 			<? if (!($this->relation[$count] == 'Fanpage')){?> 
 				onclick="userProfile('<?=$post->from->id?>')"
 				rel="popover" 
@@ -62,15 +70,7 @@
 			<?php }else{?>
 				class="noclick"
 			<?}?> 
-		><?=  $post->from->name?></a></div>
-		
-		
-	
-		
-		
-
-	<span class="message">
-	
+		><?=  $post->from->name?></a></span>
 	<?php if(isset($post->message)){  
 							$reg_ex = "/\n/";
 							$message = $this->escape($post->message);
@@ -95,8 +95,8 @@
 						
 				}?>
 	
-	</span>
 	</div>
+
 	<div class="social"> 
 	 	
 		<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=  strtotime($post->created_time)?>"></a>

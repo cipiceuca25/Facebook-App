@@ -112,14 +112,14 @@
 				-->
 				
 				<div class="user-profile">
-					<div class="tip"><a onclick="closeProfile()">X</a></div>
+					<div class="tip"><a onclick="closeProfile()">x</a></div>
 					<div class="profile-content"></div>
 				</div>
 				<div class="container">
 
 					<div class="tabbable" >
 					
-							<div id="menu" class="tab-container">
+							<div <?php if ($this->fanpage_level >2) {?>id="menu"<?php }else{?>id="menu2"<?php }?> class="tab-container">
 								<div id="logo"><img src="/img/logo-noline-white.png"/></div>
 								<ul class="nav nav-tabs" id="pageTabs">
 									<li class="active"><a href="#news-feed" id="newsfeed-tab" data-toggle="tab"><img src="/img/icons/newsfeed.png" />News Feed</a></li>

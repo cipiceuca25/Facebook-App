@@ -61,7 +61,7 @@ class Model_Rankings extends Model_DbTable_Rankings
                     UNION ALL
                     SELECT l.facebook_user_id FROM photos p INNER JOIN likes l ON(p.photo_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id = p.fanpage_id		
                    	) AS topfans
-					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id && fans.fanpage_id = '".$page_id."')
+					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id && fans.fanpage_id = '".$page_id."' && topfans.facebook_user_id != '".$page_id."')
 					GROUP BY fans.facebook_user_id
 					HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')                    		
 					ORDER BY count DESC";
@@ -78,15 +78,15 @@ class Model_Rankings extends Model_DbTable_Rankings
 		$select = "
 					SELECT fans.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS count
 					FROM
-                    (SELECT l.facebook_user_id FROM posts p INNER JOIN likes l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id = p.fanpage_id AND p.created_time > '$this->_lastSunday'
+                    (SELECT l.facebook_user_id FROM posts p INNER JOIN likes l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id != p.fanpage_id AND p.created_time > '$this->_lastSunday'
 					UNION ALL
-                    SELECT l.facebook_user_id FROM comments c INNER JOIN likes l ON (c.comment_id = l.post_id) WHERE l.fanpage_id = '". $page_id ."' AND c.facebook_user_id = c.fanpage_id AND c.created_time > '$this->_lastSunday'
+                    SELECT l.facebook_user_id FROM comments c INNER JOIN likes l ON (c.comment_id = l.post_id) WHERE l.fanpage_id = '". $page_id ."' AND c.facebook_user_id != c.fanpage_id AND c.created_time > '$this->_lastSunday'
                     UNION ALL
                     SELECT l.facebook_user_id FROM likes l WHERE l.post_type = 'album' AND l.fanpage_id = '". $page_id ."' AND l.created_time > '$this->_lastSunday'
                     UNION ALL
-                    SELECT l.facebook_user_id FROM photos p INNER JOIN likes l ON(p.photo_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id = p.fanpage_id AND p.created_time > '$this->_lastSunday'		
+                    SELECT l.facebook_user_id FROM photos p INNER JOIN likes l ON(p.photo_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id != p.fanpage_id AND p.created_time > '$this->_lastSunday'		
                    	) AS topfans
-					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id && fans.fanpage_id = '".$page_id."')
+					INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id && fans.fanpage_id = '".$page_id."' && topfans.facebook_user_id != '".$page_id."')
 					GROUP BY fans.facebook_user_id
 					HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')                    		
 					ORDER BY count DESC";

@@ -195,7 +195,7 @@ $(document).on('mouseover', '[rel=popover]', function() {
 		delay : {show:2000, hide:100},
 		
 	}).trigger('mouseover');
-	
+	//console.log('test');
 });
 
 function mouseScroll(e){
@@ -1050,7 +1050,7 @@ function getMyProfile() {
 			getRecentActivities('#recent_activities',userId);
 			getMiniFollowingList(userName, userId);
 			getMiniFollowersList(userName, userId);
-			getUpcomingBadges('#profile_upcoming_badges',6);
+			getUpcomingBadges('#profile_upcoming_badges',3);
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1114,7 +1114,7 @@ function getpointlog(){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.notifier').html("<div class='rvgrid-5' style='text-align:center;'><div class='box'><img src='/img/ajax-loader.gif' /></div></div>");
+			$('.notifier').html("<div class='rvgrid-5ex' style='text-align:center;'><div class='box'><img src='/img/ajax-loader.gif' /></div></div>");
 		},
 		success : function(data) {
 			$('.notifier').html(data);
@@ -1131,7 +1131,7 @@ function getpointlog(){
 function getListNotification(){
 	
 	$('#menu').append('<div class="notifier"></div>');
-	
+	$('#menu2').append('<div class="notifier"></div>');
 	$('.notifier').html($('.notification').attr('data-content'));
 	changeTime('.notifier .time');
 	notifier = true;
@@ -1374,7 +1374,7 @@ function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name
 				//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 				$('#comment_box_'+post_id).val('');
 				
-				//post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
+				post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
 				//alert(post_comment_count);
 				//$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
 			//	$('.comment_'+post_id).html(' '+post_comment_count);

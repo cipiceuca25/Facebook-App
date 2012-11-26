@@ -321,7 +321,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		    			}
 	    				break;
 	    			case 'top-talker':
-    					if(isset($cache) && !$cache->load($this->_fanpageId . '_topfan')){
+    					if(isset($cache) && !$cache->load($this->_fanpageId . '_toptalker')){
     						$toplist = $model->getTopTalkerByWeek($this->_fanpageId, 5);
     				
     						$cache->save($toplist, $this->_fanpageId . '_topfan');
@@ -383,7 +383,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    	
 	    	$this->view->top_fans_stat = $topFanStats;
 	    	$this->view->your_stat = $stat;
+    	 
     	}
+    	
+    	
     	
     	$topArray = array();
     	
@@ -497,6 +500,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	//Zend_Debug::dump($userBoardData);
     
+    	//Zend_Debug::dump($toplist);
+    	
     	$this->view->toplist = $toplist;
     	$this->view->toplistYou =  $userBoardData;
     	$this->view->toplistArray = $topArray ;
@@ -524,254 +529,254 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   		*/
   		//$this->view->fanpage_id = $this->_fanpageId;
   		
-  		$follow = new Model_Subscribes();
-  		$model = new Model_Rankings;
-  		$fanpage = array(
-  				'topFans'=>array(),
-  				'mostPopular'=>array(),
-  				'topTalker'=>array(),
-  				'topClicker'=>array(),
-  				'topFollowed'=>array(),
-  				'topFansAllTime'=>array()
-  		);
+//   		$follow = new Model_Subscribes();
+//   		$model = new Model_Rankings;
+//   		$fanpage = array(
+//   				'topFans'=>array(),
+//   				'mostPopular'=>array(),
+//   				'topTalker'=>array(),
+//   				'topClicker'=>array(),
+//   				'topFollowed'=>array(),
+//   				'topFansAllTime'=>array()
+//   		);
   		
-  		if(!empty($this->_fanpageId)) {
-  			$cache = Zend_Registry::get('memcache');
-  			$cache->setLifetime(1800);
-  			//$cache->remove($this->_fanpageId);
-  			try {
+//   		if(!empty($this->_fanpageId)) {
+//   			$cache = Zend_Registry::get('memcache');
+//   			$cache->setLifetime(1800);
+//   			//$cache->remove($this->_fanpageId);
+//   			try {
   		
-  				//Check to see if the $fanpageId is cached and look it up if not
-  				if(isset($cache) && !$cache->load($this->_fanpageId)){
-  					//echo 'db look up';
-  					//Look up the $fanpageId
-  					$fanpage['topFans'] = $model->getTopFansByWeek($this->_fanpageId, 5);
-  					//Zend_Debug::dump($topFans);
+//   				//Check to see if the $fanpageId is cached and look it up if not
+//   				if(isset($cache) && !$cache->load($this->_fanpageId)){
+//   					//echo 'db look up';
+//   					//Look up the $fanpageId
+//   					$fanpage['topFans'] = $model->getTopFansByWeek($this->_fanpageId, 5);
+//   					//Zend_Debug::dump($topFans);
   		
-  					$fanpage['mostPopular'] = $model->getMostPopularByWeek($this->_fanpageId, 5);
-  					//Zend_Debug::dump($mostPopular);
+//   					$fanpage['mostPopular'] = $model->getMostPopularByWeek($this->_fanpageId, 5);
+//   					//Zend_Debug::dump($mostPopular);
  
-  					$fanpage['topTalker'] = $model->getTopTalkerByWeek($this->_fanpageId, 5);
-  					//Zend_Debug::dump($topTalker);
+//   					$fanpage['topTalker'] = $model->getTopTalkerByWeek($this->_fanpageId, 5);
+//   					//Zend_Debug::dump($topTalker);
   		
-  					$fanpage['topClicker'] = $model->getTopClickerByWeek($this->_fanpageId, 5);
-  					//Zend_Debug::dump($topClicker);
+//   					$fanpage['topClicker'] = $model->getTopClickerByWeek($this->_fanpageId, 5);
+//   					//Zend_Debug::dump($topClicker);
   						
-  					//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-  					$fanpage['topFollowed'] = $model->getTopFollowedByWeek($this->_fanpageId, 5);
-  					//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-  					$fanpage['topFansAllTime'] = $model->getTopFans($this->_fanpageId, 5);
-  					//Save to the cache, so we don't have to look it up next time
-  					$cache->save($fanpage, $this->_fanpageId);
-  				}else {
-  					//echo 'memcache look up';
-  					$fanpage = $cache->load($this->_fanpageId);
-  				}
-  			} catch (Exception $e) {
-  				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
-  				//echo $e->getMessage();
-  			}
-  		}
-  		//Zend_Debug::dump($fanpage);
-    	//exit();
+//   					//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
+//   					$fanpage['topFollowed'] = $model->getTopFollowedByWeek($this->_fanpageId, 5);
+//   					//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
+//   					$fanpage['topFansAllTime'] = $model->getTopFans($this->_fanpageId, 5);
+//   					//Save to the cache, so we don't have to look it up next time
+//   					$cache->save($fanpage, $this->_fanpageId);
+//   				}else {
+//   					//echo 'memcache look up';
+//   					$fanpage = $cache->load($this->_fanpageId);
+//   				}
+//   			} catch (Exception $e) {
+//   				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+//   				//echo $e->getMessage();
+//   			}
+//   		}
+//   		//Zend_Debug::dump($fanpage);
+//     	//exit();
     
-    	$stat_model = new Model_FansObjectsStats();
+//     	$stat_model = new Model_FansObjectsStats();
     	
-    	$count=0;
-    	$topArray = array();
-    	$topFanStats = null;
-    	foreach ($fanpage['topFans'] as $top){
-    		//echo $top['facebook_user_id'];
-    		$topArray[$count] = $follow->getRelation($this->_userId, $top['facebook_user_id'],$this->_fanpageId);
-    		//echo $topArray[$count];
+//     	$count=0;
+//     	$topArray = array();
+//     	$topFanStats = null;
+//     	foreach ($fanpage['topFans'] as $top){
+//     		//echo $top['facebook_user_id'];
+//     		$topArray[$count] = $follow->getRelation($this->_userId, $top['facebook_user_id'],$this->_fanpageId);
+//     		//echo $topArray[$count];
     		
-    		$stat = $stat_model ->findFanRecord($this->_fanpageId, $top['facebook_user_id']);
+//     		$stat = $stat_model ->findFanRecord($this->_fanpageId, $top['facebook_user_id']);
     		 
-    		$topFanStats[$count]['total_posts'] = $stat[0]['total_posts'];
-    		$topFanStats[$count]['total_comments'] = $stat[0]['total_comments'];
-    		$topFanStats[$count]['total_likes'] = $stat[0]['total_likes'];
-    		$topFanStats[$count]['total_get_comments'] = $stat[0]['total_get_comments'];
-    		$topFanStats[$count]['total_get_likes'] = $stat[0]['total_get_likes'];
+//     		$topFanStats[$count]['total_posts'] = $stat[0]['total_posts'];
+//     		$topFanStats[$count]['total_comments'] = $stat[0]['total_comments'];
+//     		$topFanStats[$count]['total_likes'] = $stat[0]['total_likes'];
+//     		$topFanStats[$count]['total_get_comments'] = $stat[0]['total_get_comments'];
+//     		$topFanStats[$count]['total_get_likes'] = $stat[0]['total_get_likes'];
     		
-    		$count++;
+//     		$count++;
     		
-    	}    	 
-    	$count=0;
-    	$popularArray = array();
-    	foreach ($fanpage['mostPopular'] as $mp){
-    		//echo $top['facebook_user_id'];
-    		$popularArray[$count] = $follow->getRelation($this->_userId, $mp['facebook_user_id'],$this->_fanpageId);
-    		//echo $topArray[$count];
-    		$count++;
+//     	}    	 
+//     	$count=0;
+//     	$popularArray = array();
+//     	foreach ($fanpage['mostPopular'] as $mp){
+//     		//echo $top['facebook_user_id'];
+//     		$popularArray[$count] = $follow->getRelation($this->_userId, $mp['facebook_user_id'],$this->_fanpageId);
+//     		//echo $topArray[$count];
+//     		$count++;
     	
-    	}    	
-    	$count=0;
-    	$talkerArray = array();
-    	foreach ($fanpage['topTalker'] as $tt){
-    		//echo $top['facebook_user_id'];
-    		$talkerArray[$count] = $follow->getRelation($this->_userId, $tt['facebook_user_id'],$this->_fanpageId);
-    		//echo $topArray[$count];
-    		$count++;
+//     	}    	
+//     	$count=0;
+//     	$talkerArray = array();
+//     	foreach ($fanpage['topTalker'] as $tt){
+//     		//echo $top['facebook_user_id'];
+//     		$talkerArray[$count] = $follow->getRelation($this->_userId, $tt['facebook_user_id'],$this->_fanpageId);
+//     		//echo $topArray[$count];
+//     		$count++;
     		 
-    	}
-  		$count=0;
-  		$clickerArray = array();
-    	foreach ($fanpage['topClicker'] as $tc){
-    		//echo $top['facebook_user_id'];
-    		$clickerArray[$count] = $follow->getRelation($this->_userId, $tc['facebook_user_id'],$this->_fanpageId);
-    		//echo $topArray[$count];
-    		$count++;
+//     	}
+//   		$count=0;
+//   		$clickerArray = array();
+//     	foreach ($fanpage['topClicker'] as $tc){
+//     		//echo $top['facebook_user_id'];
+//     		$clickerArray[$count] = $follow->getRelation($this->_userId, $tc['facebook_user_id'],$this->_fanpageId);
+//     		//echo $topArray[$count];
+//     		$count++;
     		 
-    	}
-    	$count=0;
-    	$followedArray = array();
-    	foreach ($fanpage['topFollowed'] as $tf){
-    		//echo $top['facebook_user_id'];
-    		$followedArray[$count] = $follow->getRelation($this->_userId, $tf['facebook_user_id'],$this->_fanpageId);
-    		//echo $topArray[$count];
-    		$count++;
+//     	}
+//     	$count=0;
+//     	$followedArray = array();
+//     	foreach ($fanpage['topFollowed'] as $tf){
+//     		//echo $top['facebook_user_id'];
+//     		$followedArray[$count] = $follow->getRelation($this->_userId, $tf['facebook_user_id'],$this->_fanpageId);
+//     		//echo $topArray[$count];
+//     		$count++;
     		 
-    	}
-  		$count=0;
+//     	}
+//   		$count=0;
   		
-    	$topFansAllTimeArray = array();
-    	foreach ($fanpage['topFansAllTime'] as $top){
-    		//echo $top['facebook_user_id'];
-    		$topFansAllTimeArray[$count] = $follow->getRelation($this->_userId, $top['facebook_user_id'],$this->_fanpageId);
-    		//echo $topArray[$count];
+//     	$topFansAllTimeArray = array();
+//     	foreach ($fanpage['topFansAllTime'] as $top){
+//     		//echo $top['facebook_user_id'];
+//     		$topFansAllTimeArray[$count] = $follow->getRelation($this->_userId, $top['facebook_user_id'],$this->_fanpageId);
+//     		//echo $topArray[$count];
     		
-    		$stat = $stat_model ->findFanRecord($this->_fanpageId, $top['facebook_user_id']);
+//     		$stat = $stat_model ->findFanRecord($this->_fanpageId, $top['facebook_user_id']);
     		 
-    		$topFansAllTimeStats[$count]['total_posts'] = $stat[0]['total_posts'];
-    		$topFansAllTimeStats[$count]['total_comments'] = $stat[0]['total_comments'];
-    		$topFansAllTimeStats[$count]['total_likes'] = $stat[0]['total_likes'];
-    		$topFansAllTimeStats[$count]['total_get_comments'] = $stat[0]['total_get_comments'];
-    		$topFansAllTimeStats[$count]['total_get_likes'] = $stat[0]['total_get_likes'];
+//     		$topFansAllTimeStats[$count]['total_posts'] = $stat[0]['total_posts'];
+//     		$topFansAllTimeStats[$count]['total_comments'] = $stat[0]['total_comments'];
+//     		$topFansAllTimeStats[$count]['total_likes'] = $stat[0]['total_likes'];
+//     		$topFansAllTimeStats[$count]['total_get_comments'] = $stat[0]['total_get_comments'];
+//     		$topFansAllTimeStats[$count]['total_get_likes'] = $stat[0]['total_get_likes'];
     		
-    		$count++;
+//     		$count++;
     		
-    	} 
+//     	} 
     	
-    	$userLeaderBoardData = array();
+//     	$userLeaderBoardData = array();
     	
-    	if(!empty($this->_fanpageId) && !empty($this->_userId)) {
-    		$cache = Zend_Registry::get('memcache');
-    		$cache->setLifetime(1800);
-    		//$cache->remove($this->_fanpageId .'_' .$this->_userId);
+//     	if(!empty($this->_fanpageId) && !empty($this->_userId)) {
+//     		$cache = Zend_Registry::get('memcache');
+//     		$cache->setLifetime(1800);
+//     		//$cache->remove($this->_fanpageId .'_' .$this->_userId);
     	
-    		try {
+//     		try {
     	
-    			//Check to see if the $fanpageId is cached and look it up if not
-    			if(isset($cache) && !$cache->load($this->_fanpageId .'_' .$this->_userId)){
-    				//Look up the $fanpageId
-    				$userLeaderBoardData['topFans'] = $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
+//     			//Check to see if the $fanpageId is cached and look it up if not
+//     			if(isset($cache) && !$cache->load($this->_fanpageId .'_' .$this->_userId)){
+//     				//Look up the $fanpageId
+//     				$userLeaderBoardData['topFans'] = $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
     	
-    				$userLeaderBoardData['mostPopular'] = $model->getUserMostPopularRank($this->_fanpageId, $this->_userId);
+//     				$userLeaderBoardData['mostPopular'] = $model->getUserMostPopularRank($this->_fanpageId, $this->_userId);
     	
-    				$userLeaderBoardData['topTalker'] = $model->getUserTopTalkerRank($this->_fanpageId, $this->_userId);
-    				//Zend_Debug::dump($topTalker);
+//     				$userLeaderBoardData['topTalker'] = $model->getUserTopTalkerRank($this->_fanpageId, $this->_userId);
+//     				//Zend_Debug::dump($topTalker);
     	
-    				$userLeaderBoardData['topClicker'] = $model->getUserTopClickerRank($this->_fanpageId,$this->_userId);
-    				//Zend_Debug::dump($topClicker);
+//     				$userLeaderBoardData['topClicker'] = $model->getUserTopClickerRank($this->_fanpageId,$this->_userId);
+//     				//Zend_Debug::dump($topClicker);
     	
-    				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
-    				$userLeaderBoardData['topFollowed'] = $model->getTopFollowedRankByWeek($this->_fanpageId, $this->_userId);
-    				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
-    				$userLeaderBoardData['topFansAllTime'] = $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
-    				//Save to the cache, so we don't have to look it up next time
-    				$cache->save($userLeaderBoardData, $this->_fanpageId .'_' .$this->_userId);
-    			}else {
-    				//echo 'memcache look up';
-    				$userLeaderBoardData = $cache->load($this->_fanpageId .'_' .$this->_userId);
-    			}
-    		} catch (Exception $e) {
-    			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
-    			//echo $e->getMessage();
-    		}
-    	}
+//     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
+//     				$userLeaderBoardData['topFollowed'] = $model->getTopFollowedRankByWeek($this->_fanpageId, $this->_userId);
+//     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
+//     				$userLeaderBoardData['topFansAllTime'] = $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
+//     				//Save to the cache, so we don't have to look it up next time
+//     				$cache->save($userLeaderBoardData, $this->_fanpageId .'_' .$this->_userId);
+//     			}else {
+//     				//echo 'memcache look up';
+//     				$userLeaderBoardData = $cache->load($this->_fanpageId .'_' .$this->_userId);
+//     			}
+//     		} catch (Exception $e) {
+//     			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+//     			//echo $e->getMessage();
+//     		}
+//     	}
 		
-    	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level < 3) {
-    		for ($i=0; $i<count($fanpage['topFans']); $i++){
-    			$fanpage['topFans'][$i]['number_of_posts'] = '?';
-    		}	
+//     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level < 3) {
+//     		for ($i=0; $i<count($fanpage['topFans']); $i++){
+//     			$fanpage['topFans'][$i]['number_of_posts'] = '?';
+//     		}	
     		
-    		for ($i=0; $i<count($fanpage['mostPopular']); $i++){
-    			$fanpage['mostPopular'][$i]['count'] = '?';
-    		}	
+//     		for ($i=0; $i<count($fanpage['mostPopular']); $i++){
+//     			$fanpage['mostPopular'][$i]['count'] = '?';
+//     		}	
     		
-    		for ($i=0; $i<count($fanpage['topTalker']); $i++){
-    			$fanpage['topTalker'][$i]['number_of_posts'] = '?';
-    		}
+//     		for ($i=0; $i<count($fanpage['topTalker']); $i++){
+//     			$fanpage['topTalker'][$i]['number_of_posts'] = '?';
+//     		}
     		
-    		for ($i=0; $i<count($fanpage['topClicker']); $i++){
-    			$fanpage['topClicker'][$i]['number_of_likes'] = '?';
+//     		for ($i=0; $i<count($fanpage['topClicker']); $i++){
+//     			$fanpage['topClicker'][$i]['number_of_likes'] = '?';
     		
-    		}
+//     		}
     		
-    		for ($i=0; $i<count($fanpage['topFollowed']); $i++){
-    			$fanpage['topFollowed'][$i]['count'] = '?';
-    		}
-    		for ($i=0; $i<count($fanpage['topFansAllTime']); $i++){
-    			$fanpage['topFansAllTime'][$i]['number_of_posts'] = '?';
-    		}
+//     		for ($i=0; $i<count($fanpage['topFollowed']); $i++){
+//     			$fanpage['topFollowed'][$i]['count'] = '?';
+//     		}
+//     		for ($i=0; $i<count($fanpage['topFansAllTime']); $i++){
+//     			$fanpage['topFansAllTime'][$i]['number_of_posts'] = '?';
+//     		}
     		
     	
     		
-    		if 	($userLeaderBoardData['topFans'] !=null) {
-    			$userLeaderBoardData['topFans']['number_of_posts'] = '?';
-    		}
+//     		if 	($userLeaderBoardData['topFans'] !=null) {
+//     			$userLeaderBoardData['topFans']['number_of_posts'] = '?';
+//     		}
     		
-    		if 	($userLeaderBoardData['mostPopular'] !=null) {
-    			$userLeaderBoardData['mostPopular']['count'] = '?';
-    		}	
+//     		if 	($userLeaderBoardData['mostPopular'] !=null) {
+//     			$userLeaderBoardData['mostPopular']['count'] = '?';
+//     		}	
     		
-    		if 	($userLeaderBoardData['topTalker'] !=null) {
-    			$userLeaderBoardData['topTalker']['number_of_posts'] = '?';
-    		}	
+//     		if 	($userLeaderBoardData['topTalker'] !=null) {
+//     			$userLeaderBoardData['topTalker']['number_of_posts'] = '?';
+//     		}	
     		
-    		if 	($userLeaderBoardData['topClicker'] !=null) {
-    			$userLeaderBoardData['topClicker']['number_of_likes'] = '?';
-    		}
+//     		if 	($userLeaderBoardData['topClicker'] !=null) {
+//     			$userLeaderBoardData['topClicker']['number_of_likes'] = '?';
+//     		}
     		
-    		if 	($userLeaderBoardData['topFollowed'] !=null) {
-    			$userLeaderBoardData['topFollowed']['count'] = '?';
-    		}
-    		if 	($userLeaderBoardData['topFansAllTime'] !=null) {
-    			$userLeaderBoardData['topFansAllTime']['count'] = '?';
-    		}
-    	}
-    	$stat = new Model_FansObjectsStats();
-    	$stat = $stat->findFanRecord($this->_fanpageId, $this->_userId);
-    	//Zend_Debug::dump($userLeaderBoardData['topFans']);
-    	$stat2 = new Model_FansObjectsStats();
-    	$stat2 = $stat2->findFanRecord($this->_fanpageId, $this->_userId);
+//     		if 	($userLeaderBoardData['topFollowed'] !=null) {
+//     			$userLeaderBoardData['topFollowed']['count'] = '?';
+//     		}
+//     		if 	($userLeaderBoardData['topFansAllTime'] !=null) {
+//     			$userLeaderBoardData['topFansAllTime']['count'] = '?';
+//     		}
+//     	}
+//     	$stat = new Model_FansObjectsStats();
+//     	$stat = $stat->findFanRecord($this->_fanpageId, $this->_userId);
+//     	//Zend_Debug::dump($userLeaderBoardData['topFans']);
+//     	$stat2 = new Model_FansObjectsStats();
+//     	$stat2 = $stat2->findFanRecord($this->_fanpageId, $this->_userId);
     	
     	
-    	$this->view->top_fans_stat = $topFanStats;
-    	$this->view->top_fans_all_time_stat = $topFansAllTimeStats;
-    	$this->view->your_stat = $stat;
-    	$this->view->your_all_time_stat = $stat2;
+//     	$this->view->top_fans_stat = $topFanStats;
+//     	$this->view->top_fans_all_time_stat = $topFansAllTimeStats;
+//     	$this->view->your_stat = $stat;
+//     	$this->view->your_all_time_stat = $stat2;
     	
-    	$this->view->top_fans = $fanpage['topFans'];
-    	$this->view->most_popular = $fanpage['mostPopular'];
-    	$this->view->top_talker = $fanpage['topTalker'];
-    	$this->view->top_clicker = $fanpage['topClicker'];
-    	$this->view->top_followed = $fanpage['topFollowed'];
-    	$this->view->top_fans_all_time = $fanpage['topFansAllTime'];
+//     	$this->view->top_fans = $fanpage['topFans'];
+//     	$this->view->most_popular = $fanpage['mostPopular'];
+//     	$this->view->top_talker = $fanpage['topTalker'];
+//     	$this->view->top_clicker = $fanpage['topClicker'];
+//     	$this->view->top_followed = $fanpage['topFollowed'];
+//     	$this->view->top_fans_all_time = $fanpage['topFansAllTime'];
 
-    	$this->view->topFanYou =  $userLeaderBoardData['topFans'];
-    	$this->view->popularYou = $userLeaderBoardData['mostPopular'];
-    	$this->view->talkerYou = $userLeaderBoardData['topTalker'];
-    	$this->view->clickerYou = $userLeaderBoardData['topClicker'];
-    	$this->view->followedYou = $userLeaderBoardData['topFollowed'];
-    	$this->view->topFansAllTimeYou = $userLeaderBoardData['topFansAllTime'];
+//     	$this->view->topFanYou =  $userLeaderBoardData['topFans'];
+//     	$this->view->popularYou = $userLeaderBoardData['mostPopular'];
+//     	$this->view->talkerYou = $userLeaderBoardData['topTalker'];
+//     	$this->view->clickerYou = $userLeaderBoardData['topClicker'];
+//     	$this->view->followedYou = $userLeaderBoardData['topFollowed'];
+//     	$this->view->topFansAllTimeYou = $userLeaderBoardData['topFansAllTime'];
 		
-    	$this->view->topFanArray = $topArray ;
-    	$this->view->popularArray = $popularArray ;
-    	$this->view->talkerArray = $talkerArray ;
-    	$this->view->clickerArray = $clickerArray ;
-    	$this->view->followedArray = $followedArray ;
-    	$this->view->topFansAllTimeArray = $topFansAllTimeArray ;
+//     	$this->view->topFanArray = $topArray ;
+//     	$this->view->popularArray = $popularArray ;
+//     	$this->view->talkerArray = $talkerArray ;
+//     	$this->view->clickerArray = $clickerArray ;
+//     	$this->view->followedArray = $followedArray ;
+//     	$this->view->topFansAllTimeArray = $topFansAllTimeArray ;
     	
     	$this->render('leaderboard');
   	}
@@ -786,6 +791,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$result = $this->feedFirstQuery();
 
 		$latest = $result['posts']->data;
+		
+		//Zend_Debug::dump($latest);
 // 		$post = new Model_Posts();
 		
 // 		$post = $post->getMyFeedPost($this->_fanpageId, $this->_userId , 10, null);
@@ -818,8 +825,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			}
     			*/
     			}else{
-	    			
-	    			$yourpointslatest = $this->postPointsCalculate($l);
+	    			if($this->_fanpageProfile -> fanpage_level > 2){
+	    				$yourpointslatest = $this->postPointsCalculate($l);
+	    			}
 	    			$latestlike=0;
 	    			//echo $top['facebook_user_id'];
 	    			
@@ -861,7 +869,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//Zend_Debug::dump($latestrelation);
     	
     	$this->view->latest_comment_relation = $latest_comment_relation;
-    	$this->view->yourpointslatest = $yourpointslatest;
+    	if($this->_fanpageProfile -> fanpage_level > 2){
+    		$this->view->yourpointslatest = $yourpointslatest;
+    	}
     	//Zend_Debug::dump($latestlike);
     	//Zend_Debug::dump($latest);
     	$this->view->latestlike = $latestlike;
@@ -958,7 +968,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     
     	if(!empty($this->_fanpageId)) {
     		$cache = Zend_Registry::get('memcache');
-    		$cache->setLifetime(1800);
+    		$cache->setLifetime(600);
     		$topPostId = $this->_fanpageId .'_toppost';
     
     		//$topPosts = $model->getTopPosts($this->_fanpageId, 5);
@@ -993,6 +1003,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$relation = array();
     	$likeslist = array();
     	$yourpoints = array();
+    	$comment_relation = array();
+    	$comment_likes = array();
     	$count=0;
     	$count2 = 0;
 
@@ -1037,9 +1049,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		//}else{
     		//	$picture[$count] = null;
     		//}
-    		
-    		$yourpoints[$count] = 0;
-    		$yourpoints[$count] = $this->postPointsCalculate($posts);
+    		if($this->_fanpageProfile -> fanpage_level > 2){
+    			$yourpoints[$count] = 0;
+    			$yourpoints[$count] = $this->postPointsCalculate($posts);
+    		}
     		$count++;
     		
     	}
@@ -1054,7 +1067,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	 
     	$this->view->comment_likes = $likes;
     	$this->view->likes = $likes;
-    	$this->view->yourpointslatest = $yourpoints;
+    	if($this->_fanpageProfile -> fanpage_level > 2){
+    		$this->view->yourpointslatest = $yourpoints;
+    	}
     	$this->view->top_post = $topPosts;
     	$this->view->relation = $relation;
     	$this->render("gettoppost");
@@ -1781,8 +1796,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 					
 					$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 					//Zend_Debug::dump($posts);
-					$yourpoints[$count] = 0;
-					$yourpoints[$count] = $this->postPointsCalculate($posts);
+					if($this->_fanpageProfile -> fanpage_level > 2){
+						$yourpoints[$count] = 0;
+						$yourpoints[$count] = $this->postPointsCalculate($posts);
+					}
 					//echo $likes[$count];
 					}
 					$count++;
@@ -1790,10 +1807,13 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				}
 			//}
 		}
-		//Zend_Debug::dump($yourpoints);
-
-		$this->view->yourpoints = $yourpoints;
 		
+
+
+		//Zend_Debug::dump($yourpoints);
+		if($this->_fanpageProfile -> fanpage_level > 2){
+			$this->view->yourpoints = $yourpoints;
+		}
 		$this->view->comment_relation = $comment_relation;
 		
 		$this->view->comment_likes = $likes;
@@ -1806,7 +1826,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$this->view->myfeedcount = $count;
     		$this->render("fancrankfeedm");
     	}else{*/
-    		$this->render("fancrankfeed");
+    	$this->render("fancrankfeed");
     	//}
     	
     }
@@ -4170,8 +4190,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     }
     
     private function feedFirstQuery() {
-    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/feed?limit=10");
-    	//$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/posts?limit=10");
+    	//$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/feed?limit=10");
+    	$tmp[] = array('method'=>'GET', 'relative_url'=> "/$this->_fanpageId/posts?limit=10");
     
     	$batchQueries =  'batch=' .urlencode(json_encode($tmp)) .'&access_token=' .$this->_accessToken;
     
@@ -4195,9 +4215,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	 
     	//$finalResult['feed'] = $feed;
     	$finalResult['posts'] = $posts;
-    
+    	//Zend_Debug::dump($finalResult);
     	return $finalResult;
     }
+    
+    
+    
     
     public function fanrequestAction() {
     	$this->_helper->layout->disableLayout();
@@ -4215,5 +4238,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     }
     
+
 }
 

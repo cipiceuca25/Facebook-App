@@ -1,4 +1,4 @@
-
+<!--  LOGIN -->
 <!--  THIS LAYOUT IS FOR THE MULTIPLE PAGES-->
 <!DOCTYPE html>
 <html lang="en">
@@ -85,12 +85,12 @@
 		
 			    <div id="content">
 			    	<div class="user-profile">
-						<div class="tip"><a onclick="closeProfile()">X</a></div>
+						<div class="tip"><a onclick="closeProfile()">x</a></div>
 						<div class="profile-content"></div>
 					</div>
 					<div class="container">
 				    	<div class="tabbable">
-				    		<div id="menu" class="tab-container">
+				    		<div <?php if($this->fanpage->fanpage_level > 2){?>id="menu"<?}else{?>id="menu2"<?php }?> class="tab-container">
 								<div id="logo"><img src="/img/logo-noline-white.png"/></div>
 							
 								<ul class="nav nav-tabs" id="log-in-out">
@@ -99,15 +99,14 @@
 							
 								</ul>
 								<!-- <ul class="nav nav-tabs" id="log-in-out">
-									
-								
+
 								 	<li><a id="help-tab" onclick="resetTour()">Help</a></li>
-										</ul>-->
+								</ul>-->
 							</div>
 				   
 		        		
 					   		<div>
-					   	    	      
+					   	    	 
 							<?= $this->layout()->content ?>
 						
 			        		

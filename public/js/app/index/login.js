@@ -4,15 +4,15 @@ jQuery(document).ready(function($){
 
 		//confirmFunction();
 		if(newuser) {
-			$(".profile-content").html("<div class='title '>" +
+			$(".profile-content").html("<div class='rvrow'><div class='rvgrid-11'><div class='box'><div class='title nopic '>" +
 					"						<div class='title-header nopic' style='text-align:center'>" +
 					"							Policy Message" +
 					"						</div>" +
 					"					</div>" +
-					"					<div class='row box'> " +
+					"					 " +
 					"						<div class='post-container'>" +
 					"							<div class='post' style='text-align:center'>" +
-					"							Hello, You're about to use Fancrank. <br/>" +
+					"							Hello, You're about to use FanCrank. <br/>" +
 					"							We're going to be needing some of your information:<br/>" +
 					"							" +
 					"								Your Basic Information,<br/> Birthday,<br/> Hometown,<br/> Locale,<br/>" +
@@ -20,8 +20,8 @@ jQuery(document).ready(function($){
 					"								Also, we're going to be posting on your behalf, don't worry though its only on this Fanpage. <br/>We won't post on your feed<br/>" +
 					"							" +
 					"							</div>" +
-					"						</div><button  class='btn-more' onclick=confirmFunction()>Login To Fancrank</button> " +
-					"					</div>" +
+					"						</div><button  class='btn-more' onclick=confirmFunction()>Login To FanCrank</button> " +
+					"					</div></div></div>" +
 					""
 					);
 			popup();

@@ -1,3 +1,41 @@
+<?php switch($this->list){
+	case 'top-fan':
+		if($this->fanpage_level >2){
+			$term = 'Points';
+		}else{
+			$term = 'Interactions';
+		}
+		break;
+	case 'top-fan-all':
+if($this->fanpage_level >2){
+			$term = 'Points';
+		}else{
+			$term = 'Interactions';
+		}
+		break;
+	case 'top-fan-mini':
+		if($this->fanpage_level >2){
+			$term = 'Points';
+		}else{
+			$term = 'Interactions';
+		}
+		break;
+	case 'fan-favorite':
+		$term = 'Props';
+		break;
+	case 'top-talker':
+		$term = 'Posts';
+		break;
+	case 'top-clicker':
+		$term = 'Likes';
+		break;
+	case 'top-followed':
+		$term = 'Followers';
+		break;
+	
+	
+}?>
+
 
 <?php if ($this->list == 'top-fan' || $this->list =='top-fan-all' || $this->list =='top-fan-mini'){?>
 		
@@ -85,28 +123,27 @@
 					<h3>
 						<?= $top_fan['count'] ?>
 					</h3>
-					<span>Points <br/>
-					</span>
+					<span><?= $term ?></span>
 				</div>
 				<ul class="stats">
 					<li >
-						<div class="stats-block"><img src="/img/post.png" /><h5><?= $this->top_fans_stat[0]['total_posts']?></h5>	
+						<div class="stats-block"><img src="/img/post.png" /><h5><?= ($this->top_fans_stat[$count]['total_posts']>99)?'99+':$this->top_fans_stat[$count]['total_posts']?></h5>	
 					</div>
 					</li>
 						<li >
-						<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= $this->top_fans_stat[0]['total_likes']?></h5>
+						<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= ($this->top_fans_stat[$count]['total_likes']>99)?'99+':$this->top_fans_stat[$count]['total_likes']?></h5>
 						</div>
 					</li>
 					<li>
-						<div class="stats-block"><img src="/img/comment.png" /><h5><?= $this->top_fans_stat[0]['total_comments']?></h5>
+						<div class="stats-block"><img src="/img/comment.png" /><h5><?= ($this->top_fans_stat[$count]['total_comments']>99)?'99+':$this->top_fans_stat[$count]['total_comments']?></h5>
 						</div>
 					</li>
 					<li >
-						<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= $this->top_fans_stat[0]['total_get_comments']?></h5>
+						<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= ($this->top_fans_stat[$count]['total_get_comments']>99)?'99+':$this->top_fans_stat[$count]['total_get_comments']?></h5>
 						</div>
 					</li>
 					<li  >
-						<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= $this->top_fans_stat[0]['total_get_likes']?></h5>
+						<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= ($this->top_fans_stat[$count]['total_get_likes']>99)?'99+':$this->top_fans_stat[$count]['total_get_likes']?></h5>
 						</div> 
 					</li>
 			
@@ -175,31 +212,30 @@
 						<h3>
 							<?= $top_fan['count'] ?>
 						</h3>
-						<span>Points <br/>
-						</span>
+						<span><?= $term?></span>
 					</div>
 					<ul class="stats">
 						<li >
-							<div class="stats-block"><img src="/img/post.png" /><h5><?= $this->top_fans_stat[$count]['total_posts']?></h5>	
-							</div>
+							<div class="stats-block"><img src="/img/post.png" /><h5><?= ($this->top_fans_stat[$count]['total_posts']>99)?'99+':$this->top_fans_stat[$count]['total_posts']?></h5>	
+						</div>
 						</li>
-						<li >
-							<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= $this->top_fans_stat[$count]['total_likes']?></h5>
+							<li >
+							<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= ($this->top_fans_stat[$count]['total_likes']>99)?'99+':$this->top_fans_stat[$count]['total_likes']?></h5>
 							</div>
 						</li>
 						<li>
-							<div class="stats-block"><img src="/img/comment.png" /><h5><?= $this->top_fans_stat[$count]['total_comments']?></h5>
+							<div class="stats-block"><img src="/img/comment.png" /><h5><?= ($this->top_fans_stat[$count]['total_comments']>99)?'99+':$this->top_fans_stat[$count]['total_comments']?></h5>
 							</div>
 						</li>
 						<li >
-							<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= $this->top_fans_stat[$count]['total_get_comments']?></h5>
+							<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= ($this->top_fans_stat[$count]['total_get_comments']>99)?'99+':$this->top_fans_stat[$count]['total_get_comments']?></h5>
 							</div>
 						</li>
 						<li  >
-							<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= $this->top_fans_stat[$count]['total_get_likes']?></h5>
+							<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= ($this->top_fans_stat[$count]['total_get_likes']>99)?'99+':$this->top_fans_stat[$count]['total_get_likes']?></h5>
 							</div> 
 						</li>
-					
+			
 					</ul>
 					
 					<?php }?>
@@ -255,11 +291,11 @@
 			</li>
 			
 		
-	<?}?>
+		<?}?>
 	<?}?>		
 		</ul>
 	
-		<ul class="top-list">
+		<ul class="top-list you">
 			<li>
 				<div class="ranker">
 					<div class="rank">
@@ -304,32 +340,31 @@
 						<h3>
 							<?= isset( $this->toplistYou['count'])?$this->toplistYou['count']:'?'?>
 						</h3>
-						<span>Points<br />
-						</span>
+						<span><?= $term?></span>
 						
 					</div>
 					<ul class="stats">
+					<li >
+						<div class="stats-block"><img src="/img/post.png" /><h5><?= ($this->your_stat[0]['total_posts']>99)?'99+':$this->your_stat[0]['total_posts']?></h5>	
+					</div>
+					</li>
 						<li >
-							<div class="stats-block"><img src="/img/post.png" /><h5><?= $this->your_stat[0]['total_posts']?></h5>	
-							</div>
-						</li>
-						<li >
-							<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= $this->your_stat[0]['total_likes']?></h5>
-							</div>
-						</li>
-						<li>
-							<div class="stats-block"><img src="/img/comment.png" /><h5><?=$this->your_stat[0]['total_comments']?></h5>
-							</div>
-						</li>
-						<li >
-							<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= $this->your_stat[0]['total_get_comments']?></h5>
-							</div>
-						</li>
-						<li  >
-							<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= $this->your_stat[0]['total_get_likes']?></h5>
-							</div> 
-						</li>
-					
+						<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= ($this->your_stat[0]['total_likes']>99)?'99+':$this->your_stat[0]['total_likes']?></h5>
+						</div>
+					</li>
+					<li>
+						<div class="stats-block"><img src="/img/comment.png" /><h5><?= ($this->your_stat[0]['total_comments']>99)?'99+':$this->your_stat[0]['total_comments']?></h5>
+						</div>
+					</li>
+					<li >
+						<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= ($this->your_stat[0]['total_get_comments']>99)?'99+':$this->your_stat[0]['total_get_comments']?></h5>
+						</div>
+					</li>
+					<li  >
+						<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= ($this->your_stat[0]['total_get_likes']>99)?'99+':$this->your_stat[0]['total_get_likes']?></h5>
+						</div> 
+					</li>
+			
 					</ul>
 					<?php }?>
 				</div>
@@ -402,8 +437,7 @@
 									<h3>
 										<?= $popular['count'] ?>
 									</h3>
-									<span>Props<br/>
-									</span>
+									<span><?= $term?></span>
 									
 								
 								</div>
@@ -471,8 +505,7 @@
 									<h3>
 										<?= $popular['count'] ?>
 									</h3>
-									<span>Props<br/>
-										</span>
+									<span><?= $term?></span>
 									
 								</div>
 							</div>
@@ -530,7 +563,7 @@
 						<?}	?>
 
 						</ul>
-						<ul class="top-list">
+						<ul class="top-list you">
 							<li>
 								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
 									<div class="rank">
@@ -571,8 +604,7 @@
 										<h3>
 											<?= isset($this->toplistYou['count'])? $this->toplistYou['count']:'?'?>
 										</h3>
-										<span>Props<br/>
-										</span>
+										<span><?= $term?></span>
 										
 									</div>
 									
