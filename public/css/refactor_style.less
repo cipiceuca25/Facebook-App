@@ -681,7 +681,11 @@ float:left;
 margin-top:0px;
 }
 
-
+.icon {
+float:right;
+margin-top:-15px;
+position:relative;
+}
 
 .top-list.mini .rank{
 width:36px;
@@ -1211,15 +1215,34 @@ position:relative;
 top:15px;
 }
 
+
+#myprofile .tip2{
+	margin-top:15px;
+}
+
+
 .progress{
 margin-bottom:0;
-background:@color-badge-background;
-border:2px solid @color-badge-border;
+background:white;
+border:1px solid @color-badge-border;
+.border-radius(0);
 }
 
 .progress .bar{
 background:@color-badge-bar;
+
 .box-shadow(0 0 0 0 );
+}
+
+.progress.exp{
+margin-top:12px;
+margin-bottom:12px;
+border:1px solid @color-menu-left-background;
+}
+
+.progress.exp .bar{
+
+
 }
 
 .box .half{
@@ -1263,16 +1286,15 @@ background:@color-post-background-hover;
 */
 
 .track3 {
-width: 5px;
+width: 10px;
 margin-top:-1px;
+background-color:light-gray;
 }
 
 .handle3 {
-width: 5px;
+width: 10px;
 background: @color-scrollbar ;
-opacity: 0.45;
-filter: alpha(opacity=45);
-left:5px;
+left:15px;
 }
 
 .htrack {
@@ -1615,10 +1637,12 @@ margin-right:10px;
 	font-weight:bold;
 }	
 
+.display-badges-button,
 .user-description-button{
 	float:right;
 	margin-right:4px;
-	margin-top:30px;
+	margin-top:10px;
+	font-size:12px;
 }
 
 .exp-text{
@@ -1921,16 +1945,19 @@ border-bottom:0px;
 	font-size:11px;
 }
 
-.badgedisplay{
-	min-height:77px;
-	padding-left:10px
+#myprofile .post{
+border-bottom:1px solid @color-post-user-border;
+}
+
+#myprofile .user{
+border-bottom:1px solid @color-post-user-border;
 }
 
 .progress.earned-badges{
 height:40px;
 width:40px;
-margin:10px 13.5px 10px;
-display:inline-block
+
+display:inline-block;
 }
 
 .progress.earned-badges .bar{

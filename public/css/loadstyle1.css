@@ -629,6 +629,11 @@ background-color: @color-post-background-hover;
   width: 40px;
   margin-top: 0px;
 }
+.icon {
+  float: right;
+  margin-top: -15px;
+  position: relative;
+}
 .top-list.mini .rank {
   width: 36px;
   height: 36px;
@@ -1060,10 +1065,19 @@ background-color: @color-post-background-hover;
   position: relative;
   top: 15px;
 }
+#myprofile .tip2 {
+  margin-top: 15px;
+}
 .progress {
   margin-bottom: 0;
-  background: #edeff4;
-  border: 2px solid #c4cde0;
+  background: white;
+  border: 1px solid #c4cde0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .progress .bar {
   background: #c4cde0;
@@ -1073,6 +1087,11 @@ background-color: @color-post-background-hover;
   -webkit-box-shadow: 0 0 0 0;
   -moz-box-shadow: 0 0 0 0;
   box-shadow: 0 0 0 0;
+}
+.progress.exp {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #3c589d;
 }
 .box .half {
   width: 221px;
@@ -1118,15 +1137,14 @@ background:@color-post-background-hover;
 }
 */
 .track3 {
-  width: 5px;
+  width: 10px;
   margin-top: -1px;
+  background-color: light-gray;
 }
 .handle3 {
-  width: 5px;
+  width: 10px;
   background: #173d71;
-  opacity: 0.45;
-  filter: alpha(opacity=45);
-  left: 5px;
+  left: 15px;
 }
 .htrack {
   height: 5px;
@@ -1412,10 +1430,12 @@ background:@color-post-background-hover;
 .bold {
   font-weight: bold;
 }
+.display-badges-button,
 .user-description-button {
   float: right;
   margin-right: 4px;
-  margin-top: 30px;
+  margin-top: 10px;
+  font-size: 12px;
 }
 .exp-text {
   font-weight: bold;
@@ -1715,14 +1735,15 @@ background:@color-post-background-hover;
 .notifier .time {
   font-size: 11px;
 }
-.badgedisplay {
-  min-height: 77px;
-  padding-left: 10px;
+#myprofile .post {
+  border-bottom: 1px solid #e5e5e5;
+}
+#myprofile .user {
+  border-bottom: 1px solid #e5e5e5;
 }
 .progress.earned-badges {
   height: 40px;
   width: 40px;
-  margin: 10px 13.5px 10px;
   display: inline-block;
 }
 .progress.earned-badges .bar {

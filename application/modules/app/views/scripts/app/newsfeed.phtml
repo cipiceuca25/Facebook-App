@@ -7,7 +7,9 @@
 				<div class="title-header nopic">
 					Featured Post
 				</div>
-				
+				<div class="icon">
+					<img src="/img/icons/icon_star.png" />
+				</div>
 			</div>
 			
 			<div class ="post-container">
@@ -18,7 +20,7 @@
 							<span class="badge badge-Fanpage">Admin</span>
 						</a>
 					</div>
-
+	
 					<div class="photo"><a class="noclick" > <img class="large-face" 
 							src="https://graph.facebook.com/<?= $this->fanpage_id?>/picture"
 							onerror="ImgError(this);"></a> </div> 
@@ -28,7 +30,14 @@
 					</div>
 				</div>
 				<div class="post">
-				<img src="/img/thin-banner.jpg"/>
+				<?php if ($this->fanpage_id == 216821905014540){?>
+					<img src="/img/jg-feature.png"/>
+					<br/>
+					<br/>
+					In love with Jason? Win a Signed Copy of Men's Health featuring Jason!
+				<?php }else{?>
+					<img src="/img/thin-banner.jpg"/>
+				<?php }?>
 				</div>
 			</div>
 				
