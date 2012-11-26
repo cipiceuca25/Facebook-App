@@ -83,22 +83,22 @@
 							<div class="stats-block"><img src="/img/rcomment.png" /><h5><?=($this->stat_get_comment > 99)? '99+':$this->stat_get_comment?></h5><br/>
 							</div> 
 						</li>
-						
-					</ul>
-					<ul class="stats">
 						<li>
 							<div class="stats-block">
-							<a onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow.png" /><h4><?= $this->follower['0']['Follower']?></h4><br/>
-							</a>
+							<h5><a onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow.png" /><?= $this->follower['0']['Follower']?>
+							</a></h5>
 							
 							</div>
 						</li>
 						<li >
 							<div class="stats-block">
-								<a onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow2.png" /><h4><?= $this->following['0']['Following']?></h4><br/>
-								</a>
+								<h5><a onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow2.png" /><?= $this->following['0']['Following']?>
+								</a></h5>
 							</div>
 						</li>
+					</ul>
+					<ul class="stats">
+						
 					</ul>
 				</div>
 				<div class="title nopic">
