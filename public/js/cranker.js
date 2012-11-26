@@ -1131,7 +1131,7 @@ function getpointlog(){
 function getListNotification(){
 	
 	$('#menu').append('<div class="notifier"></div>');
-	
+	$('#menu2').append('<div class="notifier"></div>');
 	$('.notifier').html($('.notification').attr('data-content'));
 	changeTime('.notifier .time');
 	notifier = true;

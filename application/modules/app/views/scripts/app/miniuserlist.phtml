@@ -1,12 +1,12 @@
 
 <?php $count=0;?>
 
-<ul class="top-list mini">
+<ul class="top-list">
 <?php if(count($this->result)==0){?>
 	<li>
 		<div class="ranker">
 			<div class="user">
-				<div class="photo"><img class="face" width="30" height="30" src="/img/profile-picture.png" onerror="ImgError(this);"></div>
+				<div class="photo"><img class="small-face"  src="/img/profile-picture.png" onerror="ImgError(this);"></div>
 				
 				<div class="name">No users</div>
 			</div>
@@ -32,7 +32,7 @@
 					<?}else{?>
 						class="noclick"
 					<? }?>>
-					<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+					<img class="small-face"  src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 				</a>
 			</div>
 			<div class="name">

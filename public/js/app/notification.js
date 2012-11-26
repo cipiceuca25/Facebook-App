@@ -35,7 +35,7 @@ $('.notification').live('click', function(){
 		//$('.notification').css('opacity','1');
 		$('.notification a').attr('data-original-title','You have no new Notifications');
 		$('#badge-notification-count').html('0');
-
+		console.log
 		//$('.notification a').addClass('noclick');
 		badgeIds = new Array();
 		//alert(date);

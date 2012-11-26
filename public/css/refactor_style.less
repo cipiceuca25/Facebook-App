@@ -152,11 +152,11 @@ float:left;
 	font-size:12px;
 	float:right;
 	background-color:@color-menu-right-background;
-	width:214px;
+	width:180px;
 }
 
 .nav-tabs#log-in-out li a {
-	width:214px;
+	width:180px;
 }
 
 .nav-tabs#toolbar li a{
@@ -221,7 +221,10 @@ padding-right:10px;
 margin-right:0px;
 }
 
+
+
 #logout-tab .dropdown-menu{
+min-width:100px;
 top:50px;
 left:-154px;
 width:201px;
@@ -233,6 +236,12 @@ border:0px solid;
 .box-shadow(-5px 5px 10px rgba(0, 0, 0, 0.2));
 }
 
+#menu2 #logout-tab .dropdown-menu{
+width:136px;
+left:-89px;
+}
+
+
 #logout-tab .dropdown-menu li a:hover{
 	background-color:@color-menu-hover;
 }
@@ -243,6 +252,9 @@ border:0px solid;
 	text-align:center;
 }
 
+#menu2 #logout-tab .dropdown-menu li{
+	width:136px;
+}
 #logout-tab.open .dropdown-toggle {
 background-color:transparent;
 }
@@ -1121,17 +1133,8 @@ display:none;
 .profile-content{
 margin:0 0 0 144px;
 z-index:51;
-
 display:none;
 
-}
-
-.profile-content .box{
-margin: 0 1px 4px 3px;
-}
-
-.profile-content .title{
-margin-top:-18px;
 }
 
 
@@ -1974,6 +1977,11 @@ width:73px;
 }
 .rvgrid-3{
 width:118px;
+//width:7.375em;
+}
+
+.rvgrid-3ex{
+width:136px;
 //width:7.375em;
 }
 .rvgrid-4{

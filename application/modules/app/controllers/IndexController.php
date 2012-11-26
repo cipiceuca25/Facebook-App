@@ -28,9 +28,10 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
                 $this->data['page']['id'] = $this->_getParam('id');
                 $this->data['user_id'] = $this->_getParam('user_id');
             }
-			
+            $fanpageModel = new Model_Fanpages();
 			$this->view->user_id = $this->data['user_id'];
 			$this->view->fanpage_id = $this->data['page']['id'];
+			$this->view->fanpage = $fanpageModel->findRow($this->data['page']['id']);
         }
 
         if(empty($this->view->fanpage_id)) {
@@ -144,18 +145,6 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
     			//echo $e->getMessage();
     		}
-			
-    		try{
-    			if(isset($cache) && !$cache->load($this->data['page']['id'] . '_topfanall')){
-    				$topfanall = $model->getTopFans($this->data['page']['id'], 5);
-    				$cache->save($topfanall, $this->data['page']['id'] . '_topfanall');
-    			}else{
-    				$topfanall = $cache->load($this->data['page']['id'] . '_topfanall');
-    			}
-    		} catch (Exception $e) {
-    			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
-    					//echo $e->getMessage();
-    		}
     		
     		try{		
     			if(isset($cache) && !$cache->load($this->data['page']['id'] . '_topfan')){
@@ -173,7 +162,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	    	
     	
     
-    	$fanpage = $fanpageModel->findRow($this->data['page']['id']);
+    	
     	
     	/*
     	if(isset($fanpage->fanpage_level) && $fanpage->fanpage_level != 3) {
@@ -199,7 +188,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}
     	*/
     	//Zend_Debug::dump($fanpage2['topFansLastWeek']);
-    	//Zend_Debug::dump($fanpage2['topFans']);
+    	
     	$this->view->top_fans_last_week = $topFansLastWeek;
     	$this->view->top_fans = $topfan;
 //     	$this->view->most_popular = $fanpage2['mostPopular'];
