@@ -1050,7 +1050,7 @@ function getMyProfile() {
 			getRecentActivities('#recent_activities',userId);
 			getMiniFollowingList(userName, userId);
 			getMiniFollowersList(userName, userId);
-			getUpcomingBadges('#profile_upcoming_badges',6);
+			getUpcomingBadges('#profile_upcoming_badges',3);
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);

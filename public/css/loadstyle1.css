@@ -494,6 +494,10 @@ background-color: @color-post-background-hover;
   float: left;
   width: 16.505606105%;
 }
+.top-list .stats,
+.top-list .stats li {
+  height: 40px;
+}
 .popover .stats li {
   float: left;
 }
@@ -504,7 +508,6 @@ background-color: @color-post-background-hover;
 .top-list .stats li {
   height: 20px;
 }
-.top-list .stats,
 .user-profile .stats,
 #profile .stats {
   height: 60px;
@@ -1116,7 +1119,7 @@ background-color: @color-post-background-hover;
 #recent_activities {
   overflow: auto;
   padding-left: 5px;
-  max-height: 948px;
+  max-height: 582px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -1187,7 +1190,6 @@ background:@color-post-background-hover;
   padding-top: 0px;
 }
 .upcoming-badges {
-  height: 44px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -1206,7 +1208,7 @@ background:@color-post-background-hover;
   height: 40px;
 }
 .badge-description {
-  float: left;
+  margin-left: 60px;
 }
 .badge-profile {
   float: right;
@@ -1220,9 +1222,6 @@ background:@color-post-background-hover;
   overflow: auto;
   padding-left: 5px;
   max-height: 200px;
-}
-#user_list .badge-profile {
-  top: -9px;
 }
 #user_list .top-list .badge-profile {
   top: 18px;
