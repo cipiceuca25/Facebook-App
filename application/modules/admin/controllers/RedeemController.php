@@ -32,6 +32,7 @@ class Admin_RedeemController extends Fancrank_Admin_Controller_BaseController
 	public function indexAction() {
 		echo 'admin redeem';
 	}
+	
 }
 
 ?>

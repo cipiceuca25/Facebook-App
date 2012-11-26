@@ -264,7 +264,72 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$this->_helper->json($act);
 	}
 	
+	public function landingpageAction() {
+		$fanpageId = $this->_getParam('id');
+		$landingPageImageUrl = $this->_getParam('landingPageImageUrl');
+		$landingPageImageEnable = $this->_getParam('landingPageImageEnable');
 
+		$fanpageSettingModel = new Model_FanpageSetting();
+		$fanpageSetting = $fanpageSettingModel->findRow($fanpageId);
+		//Zend_Debug::dump($fanpageSetting); exit();
+		if ($fanpageSetting) {
+			$fanpageSetting->landingpage_image_url = empty($landingPageImageUrl) ? $fanpageSetting->landingpage_image_url : $landingPageImageUrl;
+			$fanpageSetting->landingpage_image_enable = empty($landingPageImageEnable) ? 0 : $landingPageImageEnable;
+			$fanpageSetting->save();
+			
+			$adminActivityModel = new Model_AdminActivities();
+			$dataLog = array();
+			$dataLog['activity_type'] = 'admin_change_landingpage_setting';
+			$dataLog['event_object'] = '';
+			$dataLog['facebook_user_id'] = $this->_auth->getIdentity()->facebook_user_id;
+			$dataLog['facebook_user_name'] = $this->_auth->getIdentity()->facebook_user_name;
+			$dataLog['fanpage_id'] = $fanpageId;
+			$dataLog['target_user_id'] = $fanpageId;
+			$dataLog['target_user_name'] = '';
+			$dataLog['message'] = 'admin updated landingpage setting';
+			$adminActivityModel->insert($dataLog);
+		}
+	}
+	
+	public function listitemsAction() {
+		$itemModel = new Model_Items();
+		$itemList = $itemModel->getFanpageItems($this->_fanpageId);
+
+		$result = array(
+				'sEcho'=> 1,
+				'iTotalRecords'=> 10,
+				'iTotalDisplayRecords'=> 10,
+				'aaData'=> empty($itemList) ? array() : $itemList->toArray()
+		);
+		
+		$this->_helper->json($result);
+	}
+	
+	public function additemAction() {
+		$itemName = $this->_getParam('itemName');
+		$itemDescription = $this->_getParam('itemDescription');
+		$itemPictureUrl = $this->_getParam('itemPictureUrl');
+		$itemPoint = $this->_getParam('itemPrice');
+	
+		$item = array(
+				'fanpage_id' => $this->_fanpageId,
+				'name' => $itemName,
+				'description' => $itemDescription,
+				'picture' => $itemPictureUrl,
+				'points' => $itemPoint
+		);
+	
+		$itemModel = new Model_Items();
+		$itemModel->insert($item);
+		echo 'ok';
+	}
+	
+	public function deleteitemAction() {
+		$itemModel = new Model_Items();
+		$where = $itemModel->quoteInto('fanpage_id = ? and id = ?',$this->_fanpageId, $this->getParams('itemId'));
+		echo $itemModel->delete($where);
+	}
+	
 }
 
 ?>
