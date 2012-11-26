@@ -422,8 +422,6 @@ margin:0px;
 }
 
 .user-description{
-	margin-left:5px;
-	margin-right:5px;
 
 }
 
@@ -507,8 +505,8 @@ background-color: @color-post-background-hover;
 .top-list .stats li,
 
 .user-profile .stats li,
-#myprofile .stats li{
-	font:10px/100% Helvetica, Arial,  sans-serif;
+#profile .stats li{
+	font:12px/100% Helvetica, Arial,  sans-serif;
 	//border-right: 1px solid @color-post-user-border;
 	height:60px;
 	float:left;
@@ -519,9 +517,6 @@ background-color: @color-post-background-hover;
 	float:left;
 }
 
-.user-profile .stats li{
-	width:14.1174530982%;
-}
 .top-list .stats li,
 .popover .stats li{
 	width:20%;
@@ -534,11 +529,8 @@ background-color: @color-post-background-hover;
 .top-list .stats,
 
 .user-profile .stats,
-#myprofile .stats{
-	height:40px;
-	border-top: 1px solid @color-post-user-border;
-	//border-bottom: 1px solid @color-post-user-border;
-	//margin-bottom:-5px;
+#profile .stats{
+	height:60px;
 }
 
 .popover .stats{
@@ -605,22 +597,42 @@ border-bottom:1px solid black;
 	text-rendering:optimizelegibility;
 	margin:0;
 }
-.top-list .stats h5,
+
 .popover .stats h5,
 .popover .stats h3,
 .user-profile .stats h5,
-.user-profile .stats h3,
-#myprofile .stats h5,
-#myprofile .stats h3,
+
+#profile .stats h5,
+#profile .stats h4,
 .top-list .stats h5{
 	display:inline-block;
 	line-height:18px;
 	text-align:right;
 	padding-left:2px;
 	padding-right:2px;
-	color:@color-menu-left-background;
+	
+}
+.user-profile .stats h4,
+#profile .stats h4{
+	display:inline-block;
+	line-height:14px;
+	text-align:right;
+	padding-left:4px;
+	padding-right:2px;
 }
 
+.stats-block img{
+	vertical-align:top;
+	margin-bottom:2px;
+}
+
+.popover .stats h5,
+.popover .stats h3,
+.user-profile .stats h5,
+.user-profile .stats h3,
+.top-list .stats h5{
+color:@color-menu-left-background;
+}
 
 .top-list .points{
 	font-weight:bold;
@@ -641,7 +653,7 @@ line-height:39px;
 
 .popover .stats h3,
 .user-profile .stats h3,
-#myprofile .stats h3,
+#profile .stats h3,
 .h3,
 .top-list .stats img{
 	vertical-align:bottom;
@@ -933,12 +945,13 @@ font-weight:bold;
 
 
 .post-container .post{
-padding-top:18px;
-padding-bottom:11px;
-padding-left:2px;
-padding-right:2px;
-
+	padding-top:18px;
+	padding-bottom:11px;
+	padding-left:2px;
+	padding-right:2px;
 }
+
+
 
 .post-container .message,
 .post-container .link,
@@ -1216,14 +1229,14 @@ top:15px;
 }
 
 
-#myprofile .tip2{
+#profile .tip2{
 	margin-top:15px;
 }
 
 
 .progress{
 margin-bottom:0;
-background:white;
+background:@color-badge-background;
 border:1px solid @color-badge-border;
 .border-radius(0);
 }
@@ -1238,6 +1251,7 @@ background:@color-badge-bar;
 margin-top:12px;
 margin-bottom:12px;
 border:1px solid @color-menu-left-background;
+background:white;
 }
 
 .progress.exp .bar{
@@ -1276,7 +1290,7 @@ margin:1px -5px 0px;
 
 }
 #recent_activities .post-container{
-width:229px;
+width:220px;
 }
 /*
 #user_activities .post-container:hover,
@@ -1372,8 +1386,7 @@ float:left;
 .badge-profile{
 float:right;
 position:relative;
-
-top:-16px;
+margin-top:-16px;
 }
 
 .link-back{
@@ -1401,7 +1414,7 @@ right:8px;
 #user_list_scroll{
 overflow: auto;
 min-height: 300px;
-width:508px;
+width:100%;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1457,7 +1470,7 @@ width:24px;
 }
 
 .user-profile .level,
-#myprofile .level,
+#profile .level, 
 .popover-content .level{
 float:right;
 text-align:center;
@@ -1475,7 +1488,7 @@ position:relative;
 
 /*
 .user-profile h1,
-#myprofile h1{
+#profile h1{
 	font-size:40px;
 }
 
@@ -1945,18 +1958,23 @@ border-bottom:0px;
 	font-size:11px;
 }
 
-#myprofile .post{
-border-bottom:1px solid @color-post-user-border;
+
+#profile .post{
+	border-bottom:1px solid @color-post-user-border;
+
+	padding-top:11px;
 }
 
-#myprofile .user{
+
+#profile .user{
 border-bottom:1px solid @color-post-user-border;
 }
 
 .progress.earned-badges{
 height:40px;
 width:40px;
-
+margin-right:15px;
+margin-bottom:15px;
 display:inline-block;
 }
 

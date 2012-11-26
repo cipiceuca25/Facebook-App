@@ -791,6 +791,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$result = $this->feedFirstQuery();
 
 		$latest = $result['posts']->data;
+		
+		//Zend_Debug::dump($latest);
 // 		$post = new Model_Posts();
 		
 // 		$post = $post->getMyFeedPost($this->_fanpageId, $this->_userId , 10, null);

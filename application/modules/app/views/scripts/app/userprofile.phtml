@@ -1,23 +1,11 @@
 
 <?php $username=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name;?>
 <?php $displayname= $username;?>
-	
-<?php 
-	if (strlen($username)>16){
-		if(strlen($this->facebook_user->facebook_user_first_name)>16){
-			$displayname = substr($this->facebook_user->facebook_user_first_name, 0, 13).'...'	;
-		}else if (strlen($this->facebook_user->facebook_user_first_name)>13){
-			$displayname = $this->facebook_user->facebook_user_first_name;
-		}else{
-			$displayname = $this->facebook_user->facebook_user_first_name .' '. substr($this->facebook_user->facebook_user_last_name, 0,1) .'.';
-		}
-}?>
-
 
 <div id="userprofile">
-	<div class="row">
-		<div class="span8">
-			<div class="row box">
+	<div class="rvrow">
+		<div class="rvgrid-11">
+			<div class="box">
 				<div class="title nopic">
 						
 					<div class="title-header nopic"> 		
@@ -40,103 +28,113 @@
 							</a>
 						</div>
 				</div>
-				<div class="row-fluid">
-					<div class="span6 post-container noline">
+	
+				<div class="post-container">
+				
+					<div class="user pad">
 					
-						<div class="user noline">
-								<div class="level">
-									<?= $this->fan->fan_level?>
-								</div>
-								
-								<div class="photo">
-									<a class="noclick"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
-						
-								</div>
-								
-								<div class="name">
-									<a class="noclick"><?= $username?></a>
-								
-								</div>	
-								
-								<div class="user-description tip2 italic" onkeyup="charcheck()">
-							
-								<?= substr($this->fan->message, 0, 160)?>
-								
-								</div>
-						</div>
-						<div class="linktofb">
-							Go to <?= $username?>'s <a href="http://www.facebook.com/<?=$this->facebook_user->facebook_user_id?> " target="_new" >Facebook Profile</a>
-						</div>
-					</div>  
-					<div class="span6">
-						<div style="padding:0 5px 0 5px; ">
-							<?php foreach ($this->badges as $b): ?>
-								<div class="progress" style="height:50px;width:50px;margin:10px 11px 10px;display:inline-block">
-								<div class="bar" style="width: 100%;height:50px"></div>
-								<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
-								class=noclick rel="tooltip" data-placement="top" style="float:left; position:relative;top:-50px;" >
-									<img src="<?= $b['picture']?>"/>
-								</a>
+							<div class="rank">
+								<h1><?= isset( $this->fan->fan_level)? $this->fan->fan_level:1?></h1>
 							</div>
+					
+							
+							<div class="photo">
+								<a class="noclick"><img class="large-face" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
+					
+							</div>
+							
+							<div class="name">
+								<a class="noclick"><?= $username?></a>
+							
+							</div>	
+							
+							<div class="user-description tip2 " onkeyup="charcheck()">
 						
-							<?php endforeach;?>
-						</div>
+							<?= substr($this->fan->message, 0, 160)?>
+							
+							</div>
+							<div class="linktofb">
+								Go to <?= $username?>'s <a href="http://www.facebook.com/<?=$this->facebook_user->facebook_user_id?> " target="_new" >Facebook Profile</a>
+							</div>
 					</div>
-				</div>
+					
+				</div>  
+					
 				<div class="post-container noline">
 					<ul class="stats">
-						<li>
-							<div class="stats-block"><a onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow.png" /><span class="h3"><?= $this->follower['0']['Follower']?></span><br/>
-							Followers</a></div>
-						</li>
+						
 						<li >
-								<div class="stats-block">
-									<a onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow2.png" /><span class="h3"><?= $this->following['0']['Following']?></span><br/>
-								Following</a>
-							</div>
-						</li>
-						<li >
-							<div class="stats-block"><img src="/img/post.png" /><h3><?=$this->stat_post?></h3>	<br/>
+							<div class="stats-block"><img src="/img/post.png" /><h4><?=($this->stat_post > 99)? '99+':$this->stat_post?></h4>	<br/>
 							Posts</div>
 						</li>
 						<li >
-							<div class="stats-block"><img src="/img/thumbsup.png" /><h3><?=$this->stat_like?></h3><br/>
+							<div class="stats-block"><img src="/img/thumbsup.png" /><h4><?=($this->stat_like > 99)? '99+':$this->stat_like?></h4><br/>
 							Likes</div>
 						</li>
 						<li>
-							<div class="stats-block"><img src="/img/comment.png" /><h3><?=$this->stat_comment?></h3><br/>
+							<div class="stats-block"><img src="/img/comment.png" /><h4><?=($this->stat_comment > 99)? '99+':$this->stat_comment?></h4><br/>
 							Comments</div>
 						</li>
 						<li >
-							<div class="stats-block"><img src="/img/rthumbsup.png" /><h3><?=$this->stat_get_like?></h3><br/>
+							<div class="stats-block"><img src="/img/rthumbsup.png" /><h4><?=($this->stat_get_like > 99)? '99+':$this->stat_get_like?></h4><br/>
 							Recieved<br/>Likes</div>
 						</li>
-						<li style="border:0px;">
-							<div class="stats-block"><img src="/img/rcomment.png" /><h3><?=$this->stat_get_comment?></h3><br/>
+						<li>
+							<div class="stats-block"><img src="/img/rcomment.png" /><h4><?=($this->stat_get_comment > 99)? '99+':$this->stat_get_comment?></h4><br/>
 							Recieved Comments </div> 
 						</li>
 						
 					</ul>
-				
-				</div>	
-				<!-- <div class="post-container noline">
-					<div class="row-fluid ">
-						
-						<div class="span12 center" id="exp-container">
-							<h4>Fan Experience</h4>
-							<div class="progress">
-								<div class="bar" style="width: <?= isset($this->fan_exp_percentage)?$this->fan_exp_percentage:0?>%;"></div>
-								
+					<ul class="stats">
+						<li>
+							<div class="stats-block">
+							<a onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow.png" /><h4><?= $this->follower['0']['Follower']?></h4><br/>
+							Followers</a>
+							
 							</div>
-							
-								<h5><?=$this->fan_exp?>/<?=$this->fan_level_exp?></h5>
-								<?=$this->fan_exp_required?> Until Next Level
-							
+						</li>
+						<li >
+							<div class="stats-block">
+								<a onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow2.png" /><h4><?= $this->following['0']['Following']?></h4><br/>
+								Following</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="title nopic">
+						
+					<div class="title-header nopic"> 		
+						Earned Badges
+					</div>	
+					
+				</div>
+				<div class="post-container noline">
+					<div class="post badgedisplay">
+						<?php foreach ($this->badges as $b): ?>
+							<div class="progress  earned-badges" >
+							<div class="bar" style="width: 100%;height:50px"></div>
+							<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
+							class=noclick rel="tooltip" data-placement="top" style="float:left; position:relative;top:-50px;" >
+								<img src="<?= $b['picture']?>"/>
+							</a>
 						</div>
+					
+						<?php endforeach;?>
 					</div>
-				</div> -->
-				
+				</div>
+
 	
+				<div class="title nopic">
+					<div class="title-header nopic">
+				
+						<?echo $username ?>'s Recent Activities
+					</div>
+				</div>
+				<ul id="user_activities">
+				
+			
+			
+				</ul>
 
 				
 			
@@ -145,26 +143,7 @@
 			</div>
 		</div>
 </div>
-<div class="row">
-<div class="span8">
 
-
-
-<div class="row box" ><div class="title nopic">
-	<div class="title-header nopic">
-
-		<?echo $username ?>'s Recent Activities
-	</div>
-</div>
-	<ul id="user_activities">
-	
-
-
-	</ul>
-</div>
-</div>
-	</div>
-</div>
 <script>
 	$('#user_activities').enscroll({
 	showOnHover: true,

@@ -91,28 +91,28 @@
 					<ul class="stats">
 					<?php if($this->fanpage_level >2){?>
 					<li >
-						<div class="stats-block"><img src="/img/coins.png" /><h3><?= $this->fan->fan_point?></h3>	<br/>
+						<div class="stats-block"><img src="/img/coins.png" /><h4><?= $this->fan->fan_point?></h4>	<br/>
 						Points</div>
 					</li>
 					<?php }?>
 					<li >
-						<div class="stats-block"><img src="/img/post.png" /><h3><?=$this->stat_post?></h3>	<br/>
+						<div class="stats-block"><img src="/img/post.png" /><h4><?=$this->stat_post?></h4>	<br/>
 						Posts</div>
 					</li>
 					<li >
-						<div class="stats-block"><img src="/img/thumbsup.png" /><h3><?=$this->stat_like?></h3><br/>
+						<div class="stats-block"><img src="/img/thumbsup.png" /><h4><?=$this->stat_like?></h4><br/>
 						Likes</div>
 					</li>
 					<li >
-						<div class="stats-block"><img src="/img/comment.png" /><h3><?=$this->stat_comment?></h3><br/>
+						<div class="stats-block"><img src="/img/comment.png" /><h4><?=$this->stat_comment?></h4><br/>
 						Comments</div>
 					</li>
 					<li >
-						<div class="stats-block"><img src="/img/rthumbsup.png" /><h3><?=$this->stat_get_like?></h3><br/>
+						<div class="stats-block"><img src="/img/rthumbsup.png" /><h4><?=$this->stat_get_like?></h4><br/>
 						Recieved<br/>Likes</div>
 					</li>
-					<li style="border:0px">
-						<div class="stats-block"><img src="/img/rcomment.png" /><h3><?=$this->stat_get_comment?></h3><br/>
+					<li >
+						<div class="stats-block"><img src="/img/rcomment.png" /><h4><?=$this->stat_get_comment?></h4><br/>
 						Recieved Comments </div> 
 					</li>
 					</ul>
@@ -139,8 +139,8 @@
 				
 				</div>
 				<div class="post-container noline">
-					<div class="rvrow post" id="profile_earned_badges" style="overflow:hidden; outline:none">
-						<div style="width:<?=count($this->badges) * 79.5?>px; height:70px;" >
+					<div class="rvrow post" id="profile_earned_badges" style="overflow:hidden; max-height:107px;">
+						<div  >
 							<?php foreach ($this->badges as $b): ?>
 						
 								<div class="progress earned-badges" >
@@ -243,10 +243,8 @@
 	$('#profile_earned_badges').enscroll({
 		showOnHover: true,
 		clickTrackToScroll: false,
-		horizontalScrolling:true,
-		verticalScrolling:false,
-		horizontalTrackClass: 'htrack',
-		horizontalHandleClass: 'hhandle'
+		verticalTrackClass: 'track3 popup',
+		verticalHandleClass: 'handle3 popup'
 	});
 	
 </script>
