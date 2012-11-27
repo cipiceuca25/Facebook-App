@@ -15,15 +15,15 @@
 							<a rel="tooltip-follow" class ="follow_<?= $this->facebook_user->facebook_user_id?>"
 								<?php switch($this->relation) { 
 									case 'You':?>
-										class="noclick" data-original-title="This is You"><span class="fc-You">You</span>
+										class="noclick" data-original-title="This is You"><span class="btn fc-You">You</span>
 									<?break;?>
 									<?case 'Following'?>
 										onclick="unfollow(<?= $this->facebook_user->facebook_user_id?> ,'<?= $username ?>')" 
-										data-original-title="Click to Unfollow this User"><span class="fc-Following">Following</span>
+										data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
 									<?break;?>	
 									<?default:?>
 										onclick="follow(<?= $this->facebook_user->facebook_user_id?> , '<?= $username ?>')" 
-										data-original-title="Click to Follow this User"><span class="fc-<?=$this->relation?>"><?=$this->relation?></span>
+										data-original-title="Click to Follow this User"><span class="btn fc-<?=$this->relation?>"><?=$this->relation?></span>
 									<?}?>
 							</a>
 						</div>

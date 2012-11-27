@@ -202,8 +202,8 @@
 				<div class="box">
 					<div class="title nopic">
 						<div class="title-header nopic">
-							 <div class="follow-title"><a onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow.png" /><span class="h3"><?= $this->follower['0']['Follower']?></span><br/>
-							Followers</a></div>
+							 <div class="follow-title"><h4><a onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow.png" /><?= $this->follower['0']['Follower']?><br/>
+							Followers</a></h4></div>
 						</div>
 					</div>
 					<div id="followerslist"></div>
@@ -217,8 +217,8 @@
 					<div class="box">
 					<div class="title nopic">
 						<div class="title-header nopic">
-							 <div class="follow-title"><a onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow2.png" /><span class="h3"><?= $this->following['0']['Following']?></span><br/>
-						Following</a></div>
+							 <div class="follow-title"><h4><a onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow2.png" /><?= $this->following['0']['Following']?><br/>
+						Following</a></h4></div>
 						</div>
 					</div>
 					<div id="followinglist"></div>

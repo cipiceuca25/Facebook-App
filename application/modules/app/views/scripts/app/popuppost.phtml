@@ -10,21 +10,21 @@
 							<?php switch($this->relation[$count]) { 
 								case 'Fanpage':?>
 									class="noclick" data-original-title="You can't Follow an Admin">
-										<span class="fc-Fanpage">Admin</span>
+										<span class="btn fc-Fanpage">Admin</span>
 								<?break;?> 
 								<?case 'You':?>
 									class="noclick" data-original-title="This is You">
-										<span class="fc-You">You</span>
+										<span class="btn fc-You">You</span>
 								<?break;?>
 								<?case 'Following':?>
 									onclick="unfollow(<?=$this->post->from->id?> ,'<?=$this->post->from->name?>')" 
 									data-original-title="Click to Unfollow this User">
-										<span class="fc-Following">Following</span>
+										<span class="btn fc-Following">Following</span>
 								<?break;?>
 								<?default:?>
 									onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>')" 				
 									data-original-title="Click to Follow this User">
-										<span class="fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+										<span class="btn fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 							<?}?>
 						</a>
 					</div>
@@ -248,19 +248,19 @@
 									<a rel="tooltip-follow" class ="follow_<?=$post->from->id?>" 
 										<?php switch($this->relation[$count]) { 
 											case 'Fanpage':?>
-										 		class="noclick" data-original-title="You can't Follow an Admin"><span class="fc-Fanpage">Admin</span>
+										 		class="noclick" data-original-title="You can't Follow an Admin"><span class="btn fc-Fanpage">Admin</span>
 											<?break;?>
 											<?case 'You':?>
-										 		class="noclick"  data-original-title="This is You"><span class="fc-You">You</span>
+										 		class="noclick"  data-original-title="This is You"><span class="btn fc-You">You</span>
 											<?break;?>
 											<?case 'Following':?>
 												onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
-												data-original-title="Click to Unfollow this User"><span class="fc-Following">Following</span>
+												data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
 											<?break;?>
 										
 											<?default:?>
 												onclick="follow(<?=$post->from->id?> , '<?=$post->from->name?>')" 				
-												data-original-title="Click to Follow this User"><span class="fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+												data-original-title="Click to Follow this User"><span class="btn fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 											<?}?>
 									</a>
 								</div>	
