@@ -1,6 +1,5 @@
 
 jQuery(document).ready(function($){
-
 	//set up ajax call
 	$.ajaxSetup({	
 		'contentType': 'application/x-www-form-urlencoded',

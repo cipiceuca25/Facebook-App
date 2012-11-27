@@ -11,7 +11,7 @@ class Model_RedeemTransactions extends Model_DbTable_RedeemTransactions
 	}
 	
 	public function getRedeemHistory($fanpageId) {
-		return $this->findAll("fanpage_id = $fanpageId AND status = 2");
+		return $this->findAll("fanpage_id = $fanpageId AND status != 1");
 	}
 }
 
