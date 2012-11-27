@@ -84,9 +84,9 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
    		if(!empty($this->data['page']['id'])) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
-     		$cache->remove($this->data['page']['id'] . '_topfan');
-     		$cache->remove($this->data['page']['id'] . '_topfanall');
-     		$cache->remove($this->data['page']['id'] . '_topfanlastweek');
+     		//$cache->remove($this->data['page']['id'] . '_topfan');
+     		//$cache->remove($this->data['page']['id'] . '_topfanall');
+     		//$cache->remove($this->data['page']['id'] . '_topfanlastweek');
 //     		$cache->remove($this->_fanpageId . '_topclicker');
 //     		$cache->remove($this->_fanpageId . '_topfollowed');
 //     		$cache->remove($this->_fanpageId . '_toptalker');
@@ -188,7 +188,12 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}
     	*/
     	//Zend_Debug::dump($fanpage2['topFansLastWeek']);
+    	$fp_settings = new Model_FanpageSetting();
     	
+    	$isEnabled = $fp_settings ->isProfileImageEnable($this->data['page']['id']);
+    	$imageURL = $fp_settings ->profileImageUrl($this->data['page']['id']);
+    	$this->view->is_enable = $isEnabled;
+    	$this->view->image_url = $imageURL;
     	$this->view->top_fans_last_week = $topFansLastWeek;
     	$this->view->top_fans = $topfan;
 //     	$this->view->most_popular = $fanpage2['mostPopular'];

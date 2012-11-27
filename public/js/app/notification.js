@@ -28,7 +28,7 @@ $('.notification').live('click', function(){
 	//if(pointCount + badgeCount > 0 ){
 		getListNotification();
 		
-		setviewedbadges();
+		//setviewedbadges();
 		
 		//$('.notification').css('background-color',color2);
 		//$('.notification a').css('color',color1);

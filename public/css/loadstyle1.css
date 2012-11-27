@@ -495,7 +495,7 @@ background-color: @color-post-background-hover;
   width: 16.505606105%;
 }
 .user-profile .stats li {
-  width: 14.289%;
+  width: 14.287%;
 }
 .top-list .stats,
 .top-list .stats li {
@@ -511,7 +511,10 @@ background-color: @color-post-background-hover;
 .top-list .stats li {
   height: 20px;
 }
-.user-profile .stats,
+.user-profile .stats {
+  height: 40px;
+  padding-top: 11px;
+}
 #profile .stats {
   height: 60px;
 }
@@ -907,6 +910,7 @@ background-color: @color-post-background-hover;
 }
 .comment-container .message {
   margin-left: 35px;
+  margin-right: 80px;
 }
 .comment-container .user .user-badge {
   position: relative;
@@ -1102,6 +1106,9 @@ background-color: @color-post-background-hover;
   -moz-box-shadow: 0 0 0 0;
   box-shadow: 0 0 0 0;
 }
+.progress .bar img {
+  width: 40px;
+}
 .progress.exp {
   margin-top: 12px;
   margin-bottom: 12px;
@@ -1225,6 +1232,7 @@ background:@color-post-background-hover;
   overflow: auto;
   padding-left: 5px;
   max-height: 200px;
+  width: 100%;
 }
 #user_list .top-list .badge-profile {
   top: 18px;
@@ -1441,12 +1449,12 @@ background:@color-post-background-hover;
 .bold {
   font-weight: bold;
 }
-.display-badges-button,
 .user-description-button {
   float: right;
-  margin-right: 4px;
-  margin-top: 10px;
-  font-size: 12px;
+}
+.display-badges-button {
+  float: right;
+  margin-top: -20px;
 }
 .exp-text {
   font-weight: bold;
@@ -1784,6 +1792,23 @@ background:@color-post-background-hover;
   height: 24px;
   width: 24px;
 }
+.badge-time {
+  padding-top: 40px;
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  font-size: 10px;
+  font-weight: bold;
+  top: 15px;
+  opacity: 0;
+}
+.badge-time:hover {
+  top: -25px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  padding-top: 0px;
+}
 .rvrow {
   width: 100%;
   min-height: 10px;
@@ -1865,4 +1890,286 @@ background:@color-post-background-hover;
 }
 [class*='rvgrid-'] [class*='rvgrid-']:last-of-type {
   padding-right: 0px;
+}
+.btn {
+  height: 1.2em;
+  width: 4.5em;
+  border-bottom-color: #5a6371;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  *zoom: 1;
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+.fc-Follow,
+.fc-Follow:hover {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+}
+.fc-Follow {
+  color: #ffffff;
+  font-weight: bold;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.4em;
+  background-color: #476DCC;
+  background-image: -moz-linear-gradient(top, #6593e8, #476dcc);
+  background-image: -ms-linear-gradient(top, #6593e8, #476dcc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6593e8), to(#476dcc));
+  background-image: -webkit-linear-gradient(top, #6593e8, #476dcc);
+  background-image: -o-linear-gradient(top, #6593e8, #476dcc);
+  background-image: linear-gradient(top, #6593e8, #476dcc);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#6593E8', endColorstr='#476DCC', GradientType=0);
+  border-color: #476DCC #476DCC #5A6371;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+.fc-Follow:active,
+.fc-Follow.active,
+.fc-Follow.disabled,
+.fc-Follow[disabled] {
+  background-color: #476DCC;
+  color: #f0f0f0;
+}
+.fc-Following,
+.fc-Following:hover {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+}
+.fc-Follow:hover,
+.fc-Following {
+  color: #ffffff;
+  font-weight: bold;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.4em;
+  background-color: #7D91C4;
+  background-image: -moz-linear-gradient(top, #647ab1, #7d91c4);
+  background-image: -ms-linear-gradient(top, #647ab1, #7d91c4);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#647ab1), to(#7d91c4));
+  background-image: -webkit-linear-gradient(top, #647ab1, #7d91c4);
+  background-image: -o-linear-gradient(top, #647ab1, #7d91c4);
+  background-image: linear-gradient(top, #647ab1, #7d91c4);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#647AB1', endColorstr='#7D91C4', GradientType=0);
+  border-color: #7D91C4 #7D91C4 #5A6371;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+.fc-Following.active,
+.fc-Following.disabled,
+.fc-Following[disabled] {
+  background-color: #7D91C4;
+  color: #f0f0f0;
+}
+.fc-unfollow,
+.fc-unfollow:hover {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+}
+.fc-Following:hover,
+.fc-unfollow {
+  color: #ffffff;
+  font-weight: bold;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.4em;
+  background-color: #cc4747;
+  background-image: -moz-linear-gradient(top, #e86565, #cc4747);
+  background-image: -ms-linear-gradient(top, #e86565, #cc4747);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e86565), to(#cc4747));
+  background-image: -webkit-linear-gradient(top, #e86565, #cc4747);
+  background-image: -o-linear-gradient(top, #e86565, #cc4747);
+  background-image: linear-gradient(top, #e86565, #cc4747);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#E86565', endColorstr='#CC4747', GradientType=0);
+  border-color: #CC4747 #CC4747 #5A6371;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+.fc-Following:active,
+.fc-Following:hover,
+.fc-unfollow:hover,
+.fc-unfollow:active,
+.fc-unfollow.active,
+.fc-unfollow.disabled,
+.fc-unfollow[disabled] {
+  background-color: #CC4747;
+  color: #f0f0f0;
+}
+.fc-You:hover,
+.fc-You {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+}
+.fc-You {
+  color: #ffffff;
+  font-weight: bold;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.4em;
+  background-color: #FAC13C;
+  background-image: -moz-linear-gradient(top, #f7bb2c, #e7a509);
+  background-image: -ms-linear-gradient(top, #f7bb2c, #e7a509);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f7bb2c), to(#e7a509));
+  background-image: -webkit-linear-gradient(top, #f7bb2c, #e7a509);
+  background-image: -o-linear-gradient(top, #f7bb2c, #e7a509);
+  background-image: linear-gradient(top, #f7bb2c, #e7a509);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#F7BB2C', endColorstr='#E7A509', GradientType=0);
+  border-color: #E7A509 #E7A509 #D98020;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+.fc-You:hover,
+.fc-You:active,
+.fc-You.active,
+.fc-You.disabled,
+.fc-You[disabled] {
+  background-color: #E7A509;
+  color: #f0f0f0;
+}
+.fc-Fanpage:hover,
+.fc-Fanpage {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+}
+.fc-Fanpage {
+  color: #ffffff;
+  font-weight: bold;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.4em;
+  background-color: #62A67D;
+  background-image: -moz-linear-gradient(top, #0bb09b, #009a80);
+  background-image: -ms-linear-gradient(top, #0bb09b, #009a80);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0bb09b), to(#009a80));
+  background-image: -webkit-linear-gradient(top, #0bb09b, #009a80);
+  background-image: -o-linear-gradient(top, #0bb09b, #009a80);
+  background-image: linear-gradient(top, #0bb09b, #009a80);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#0BB09B', endColorstr='#009A80', GradientType=0);
+  border-color: #009A80 #009A80 #5A6371;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+  width: auto;
+}
+.fc-Fanpage:hover,
+.fc-Fanpage:active,
+.fc-Fanpage.active,
+.fc-Fanpage.disabled,
+.fc-Fanpage[disabled] {
+  background-color: #009A80;
+  color: #f0f0f0;
+}
+.fc-admin-blue,
+.fc-admin-blue:hover {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
+  color: #ffffff;
+}
+.fc-admin-blue {
+  color: #ffffff;
+  font-weight: bold;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.4em;
+  background-color: #36629C;
+  background-image: -moz-linear-gradient(top, #396cb9, #3c539d);
+  background-image: -ms-linear-gradient(top, #396cb9, #3c539d);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#396cb9), to(#3c539d));
+  background-image: -webkit-linear-gradient(top, #396cb9, #3c539d);
+  background-image: -o-linear-gradient(top, #396cb9, #3c539d);
+  background-image: linear-gradient(top, #396cb9, #3c539d);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#396CB9', endColorstr='#3C539D', GradientType=0);
+  border-color: #3C539D #3C539D #5A6371;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+  width: auto;
+}
+.fc-admin-blue:hover,
+.fc-admin-blue:active,
+.fc-admin-blue.active,
+.fc-admin-blue.disabled,
+.fc-admin-blue[disabled] {
+  background-color: #3C539D;
+  color: #f0f0f0;
+}
+.fc-edit,
+.fc-edit:hover {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+  color: #3c589d;
+}
+.fc-edit {
+  width: auto;
+  color: #3c589d;
+  font-weight: bold;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.4em;
+  background-color: #f0f0f0;
+  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: linear-gradient(top, #ffffff, #e6e6e6);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#E6E6E6', GradientType=0);
+  border-color: #E6E6E6 #E6E6E6 #CBCBCB;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+.fc-edit:hover,
+.fc-edit:active,
+.fc-edit.active,
+.fc-edit.disabled,
+.fc-edit[disabled] {
+  background-color: #E6E6E6;
+  color: #3c589d;
+}
+.fc-edit-2,
+.fc-edit-2:hover {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+  color: #3c589d;
+}
+.fc-edit-2 {
+  width: auto;
+  color: #3c589d;
+  font-weight: bold;
+  font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.4em;
+  background-color: #f0f0f0;
+  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+  background-image: linear-gradient(top, #ffffff, #e6e6e6);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#E6E6E6', GradientType=0);
+  border-color: #E6E6E6 #E6E6E6 #CBCBCB;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+.fc-edit-2:hover,
+.fc-edit-2:active,
+.fc-edit-2.active,
+.fc-edit-2.disabled,
+.fc-edit-2[disabled] {
+  background-color: #E6E6E6;
+  color: #3c589d;
 }

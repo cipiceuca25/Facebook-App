@@ -28,18 +28,18 @@
 								
 									case 'You':?>
 										class ="noclick"
-										 data-original-title="This is You"><span class="badge badge-You">You</span>
+										 data-original-title="This is You"><span class="btn fc-You">You</span>
 									<?break;?>
 									<?case 'Following'?>
 										class ="follow_<?=$top_fan['facebook_user_id']?>"
 										onclick="unfollow(<?=$top_fan['facebook_user_id']?> ,'<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
-										data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+										data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
 									<?break;?>
 										
 									<?default:?>
 										class ="follow_<?=$top_fan['facebook_user_id']?>"
 										onclick="follow(<?=$top_fan['facebook_user_id']?> , '<?=$top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
-										data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
+										data-original-title="Click to Follow this User"><span class="btn fc-<?= $this->topFanArray[$count]?>"><?= $this->topFanArray[$count]?></span>
 									<?}?>
 								</a>
 							</div>

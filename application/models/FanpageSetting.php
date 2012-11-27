@@ -44,6 +44,14 @@ class Model_FanpageSetting extends Model_DbTable_FanpageSetting
 		return false;
 	}
 	
+	public function profileImageUrl($fanpage_id) {
+		$result = $this -> find($fanpage_id)->current();
+		if($result && isset($result->profile_image_url)) {
+			return $result->profile_image_url;
+		}
+		return false;
+	}
+	
 	public function setTheme($fanpage_id, $color){
 		$data = array('color_choice' => $color);
 		$where = $this ->getAdapter() ->quoteInto('fanpage_id =?', $fanpage_id);

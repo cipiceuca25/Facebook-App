@@ -40,7 +40,7 @@
 							
 								<?= substr($this->fan->message, 0, 160)?>
 								
-								</div><a class="user-description-button" onclick="editdescription()">Edit Description</a>	
+								</div><a class="user-description-button" onclick="editdescription()"><span class="btn fc-edit-2"><img src="/img/icons/edit_icon.png" class="edit_icon" />Edit Description</span></a>	
 								
 						</div>
 					
@@ -48,6 +48,7 @@
 					<div class="post-container">
 						<div class="post">
 						<div class="badgedisplay" >
+							<div>
 							<?php foreach ($this->chosen_badges as $b): ?>
 								<?php if ($b != 'undefined') {?>
 								<div class="progress earned-badges">
@@ -59,7 +60,8 @@
 								</div>
 								<?php }?>
 							<?php endforeach;?>
-							<a class="display-badges-button" onclick="choosebadges()">Edit Display</a>	
+							</div>
+							<a class="display-badges-button" onclick="choosebadges()"><span class="btn fc-edit">Edit Displayed Badges</span></a>	
 						</div>
 						
 						</div>
@@ -145,11 +147,11 @@
 						
 								<div class="progress earned-badges" >
 									<div class="bar" ></div>
-									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
+									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/>' . $b['created_time'] ?>" 
 									class=noclick rel="tooltip" data-placement="top"  >
 										<img src="<?= $b['picture']?>"/>
 									</a>
-									<?= $b['created_time']?>
+									
 								</div>
 					
 							<?php endforeach;?>
@@ -158,6 +160,41 @@
 				</div>
 			</div>
 		</div>
+				
+		<div class="rvrow" id ="badges-container2">
+			
+			<div class="box">
+				<div class="title nopic">
+		
+					<div class="title-header nopic">
+						Redeemable Badges
+					</div>
+					<div class="tip2">
+						These are Badges that you have earned but have yet to redeem, please click on the badge to redeem it.
+					</div>
+				
+				</div>
+				<div class="post-container noline">
+					<div class="rvrow post" id="profile_redeem_badges" style="overflow:hidden; max-height:107px;">
+						<div>
+							<?php foreach ($this->badges2 as $b): ?>
+						
+								<div class="progress earned-badges" >
+									<div class="bar"></div>
+									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/>' . $b['created_time'] ?>"
+										class=noclick rel="tooltip" data-placement="top"  >
+										<img src="<?= $b['picture']?>"/>
+									</a>
+									
+								</div>
+					
+							<?php endforeach;?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 		<div class="rvrow " id="follow-list-container">		
 			
 				<div class="rvgrid-6" >	
@@ -247,5 +284,10 @@
 		verticalTrackClass: 'track3 popup',
 		verticalHandleClass: 'handle3 popup'
 	});
-	
+	$('#profile_redeem_badges').enscroll({
+		showOnHover: true,
+		clickTrackToScroll: false,
+		verticalTrackClass: 'track3 popup',
+		verticalHandleClass: 'handle3 popup'
+	});
 </script>

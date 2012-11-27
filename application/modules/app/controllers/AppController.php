@@ -24,7 +24,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	 */
 	public function preDispatch() {
 		parent::preDispatch();
-	
 		
 		if (APPLICATION_ENV != 'stage') {
 			$this->_fanpageId = $this->_getParam('id');
@@ -107,7 +106,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 								'login_count'		=> 1,
 								'updated_time'		=> $updateTime->toString('YYYY-MM-dd HH:mm:ss')
 						);
-						
+
 						$this->_fan->insertNewFan($fansData);
 						$this->_fan = new Model_Fans($this->_userId, $this->_fanpageId);
 					}
@@ -136,7 +135,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$color = new Model_UsersColorChoice();
 		$color = $color->getColorChoice($this->_fanpageId);
 		
-	
 		$this->view->username = $this->_facebook_user->facebook_user_name;
 		$this->view->facebook_user_access_token = $this->_facebook_user->facebook_user_access_token;
 		$this->view->fanpage_id = $this->_fanpageId;
@@ -146,9 +144,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		//Zend_Debug::dump($this->_fan);
 		$this->view->fan = $this->_fan;
 		//$this->view->notibadges = $badges;
-		
-		
-		
 	}
 
     public function indexAction()
@@ -1401,21 +1396,26 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$fan->fan_point = '?';
     	}
     	
-    	$badges = new Model_BadgeEvents() ;
+    	$badgesModel = new Model_BadgeEvents() ;
     	$cb = $fan->getChosenBadges(); 
     	$cb = str_replace("'", "", $cb);
     	$cb = explode(',', $cb);
     	//Zend_Debug::dump($cb);
     	//exit();
-    	$chosenBadges = $badges -> getChosenBadges($this->_fanpageId, $this->_userId, $cb);
+    	$chosenBadges = $badgesModel -> getChosenBadges($this->_fanpageId, $this->_userId, $cb);
 		
     	if(empty($chosenBadges)){
-    		$chosenBadges = $badges -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 3);
+    		$chosenBadges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 3);
     	}
     	
-    	$badges = $badges -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, false);
+    	$badges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, false);
     	for($count=0;$count < count($badges); $count++){
     		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
+    	}
+    	
+    	$badges2 = $badgesModel -> getBadgesByFanpageIdAndFanIDUnread($this->_fanpageId, $this->_userId, false);
+    	for($count=0;$count < count($badges2); $count++){
+    		$badges2[$count]['description'] = str_replace('[quantity]',$badges2[$count]['quantity'] ,$badges2[$count]['description']);
     	}
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
     	for($count=0;$count < count($chosenBadges); $count++){
@@ -1423,6 +1423,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
 
     	$this->view->badges = $badges;
+    	$this->view->badges2 = $badges2;
     	$this->view->chosen_badges = $chosenBadges;
     	$this->view->fan_exp = $fan_exp;
     	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
