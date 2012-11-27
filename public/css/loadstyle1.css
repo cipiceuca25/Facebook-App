@@ -102,8 +102,11 @@ ol {
   margin-bottom: 20px;
 }
 .follow-title {
-  font: 10px/100% Helvetica, Arial sans-serif;
+  font: 12px/100% Helvetica, Arial, sans-serif;
   text-align: center;
+}
+.follow-title h4 a {
+  font: 12px/100% Helvetica, Arial, sans-serif;
 }
 .toolbar #notification_upcoming_badges .upcoming-badges {
   width: 20px;
