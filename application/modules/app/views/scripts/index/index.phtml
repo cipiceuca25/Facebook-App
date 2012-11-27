@@ -14,6 +14,14 @@
 			</div>
 		</div>
 		<div class="rvgrid-9">
+		
+		<?php if ($this->is_enabled && $this->image_url){?>
+			<div class="im">
+				<div class="box">
+					<img src ="<?=  $this->image_url ?>"/>
+				</div>
+			</div>
+		<?php }else{?>
 			<div class="top-fan-last-week">
 
 					<div class="box">
@@ -190,6 +198,8 @@
 			
 			</div><!-- topfan -->
 		</div><!-- grid -->
+		
+		<?php  }?>
 	</div><!-- row -->
 	
 	<div class="rvrow">

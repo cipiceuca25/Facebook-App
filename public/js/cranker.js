@@ -254,23 +254,23 @@ $(document).on('mouseover', '[rel=tooltip-award]', function() {
 
 });
 
-$('.badge-Following').live("mouseenter", function() {
+$('.fc-Following').live("mouseenter", function() {
 	$(this).text('Unfollow');
-	$(this).css('background-color', '#BD362F');
+	//$(this).css('background-color', '#BD362F');
 });
 
-$('.badge-Following').live("mouseleave", function() {
+$('.fc-Following').live("mouseleave", function() {
 	$(this).text('Following');
-	$(this).css('background-color', '#56A556');
+	//$(this).css('background-color', '#56A556');
 });
 
-$('.badge-Follower').live("mouseenter", function() {
+$('.fc-Follower').live("mouseenter", function() {
 	$(this).text('Follow');
-	$(this).css('background-color', '#BD362F');
+	//$(this).css('background-color', '#BD362F');
 });
-$('.badge-Follower').live("mouseleave", function() {
+$('.fc-Follower').live("mouseleave", function() {
 	$(this).text('Follower');
-	$(this).css('background-color', '#56A556');
+	//$(this).css('background-color', '#56A556');
 });
 
 
@@ -1222,7 +1222,7 @@ function getRelation(target, ui) {
 					data = $.trim(data);
 					
 					$('.' + ui).html(
-							'<span class="badge badge-' + data + '">' + data
+							'<span class="fc-' + data + '">' + data
 									+ '</span>');
 				},
 				error : function(xhr, errorMessage, thrownErro) {

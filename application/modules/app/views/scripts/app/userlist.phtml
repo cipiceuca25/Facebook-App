@@ -25,21 +25,21 @@
 			<div class="badge-profile">
 					<a rel="tooltip-follow" class ="follow_<?=$this->target?>" <?php switch($this->relationTarget) { 
 						case 'Fanpage':?>
-							 data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+							 data-original-title="You can't Follow an Admin"><span class="btn fc-Fanpage">Admin</span>
 						<?break;?>
 						
 						<?case 'You':?>
-							 data-original-title="This is You"><span class="badge badge-You">You</span>
+							 data-original-title="This is You"><span class="btn fc-You">You</span>
 						<?break;?>
 						
 						<?case 'Following':?>
 							onclick="unfollow(<?= $this->target ?>, '<?= $displayname?>')" 
-							data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+							data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
 						<?break;?>
 							
 						<?default:?>
 							onclick="follow(<?= $this->target ?>, '<?= $displayname?>')" 				
-							data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relationTarget?>"><?= $this->relationTarget?></span>
+							data-original-title="Click to Follow this User"><span class="btn fc-<?= $this->relationTarget?>"><?= $this->relationTarget?></span>
 						<?}?>
 					</a>
 
@@ -106,21 +106,21 @@
 					<a rel="tooltip-follow" class ="follow_<?= $user['facebook_user_id']?>" 
 					<?php switch($this->relation[$count]) { 
 						case 'Fanpage':?>
-							 data-original-title="You can't Follow an Admin"><span class="badge badge-Fanpage">Admin</span>
+							 data-original-title="You can't Follow an Admin"><span class="btn fc-Fanpage">Admin</span>
 						<?break;?>
 						
 						<?case 'You':?>
-							 data-original-title="This is You"><span class="badge badge-You">You</span>
+							 data-original-title="This is You"><span class="btn fc-You">You</span>
 						<?break;?>
 						
 						<?case 'Following':?>
 							onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')" 
-							data-original-title="Click to Unfollow this User"><span class="badge badge-Following">Following</span>
+							data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
 						<?break;?>
 							
 						<?default:?>
 							onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')" 				
-							data-original-title="Click to Follow this User"><span class="badge badge-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+							data-original-title="Click to Follow this User"><span class="btn fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 						<?}?>
 					</a>
 						

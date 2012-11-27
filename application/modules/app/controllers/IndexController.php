@@ -188,7 +188,12 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     	}
     	*/
     	//Zend_Debug::dump($fanpage2['topFansLastWeek']);
+    	$fp_settings = new Model_FanpageSetting();
     	
+    	$isEnabled = $fp_settings ->isProfileImageEnable($this->data['page']['id']);
+    	$imageURL = $fp_settings ->profileImageUrl($this->data['page']['id']);
+    	$this->view->is_enable = $isEnabled;
+    	$this->view->image_url = $imageURL;
     	$this->view->top_fans_last_week = $topFansLastWeek;
     	$this->view->top_fans = $topfan;
 //     	$this->view->most_popular = $fanpage2['mostPopular'];
