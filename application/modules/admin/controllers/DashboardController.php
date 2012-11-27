@@ -931,7 +931,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$this->_helper->layout->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);	
 		
-	$fanpageId = $this->_request->getParam('id');
+		$fanpageId = $this->_request->getParam('id');
 		
 		$result = $this->feedFirstQuery($fanpageId);
 		
@@ -1001,14 +1001,10 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$fanpageId = $this->_getParam('id');
 		$lastWeekTopFans = $leaderboardLogModel->getLastWeekTopFans($fanpageId);
 		
-		$itemModel = new Model_Items();
-		$itemList = $itemModel->getFanpageItems($fanpageId);
-		
 		$redeemTransactionModel = new Model_RedeemTransactions();
 		
 		$this->view->requestRedeemItemList = $redeemTransactionModel->getPendingOrdersListByFanpageId($fanpageId);
 		$this->view->redeemHistoryList = $redeemTransactionModel->getRedeemHistory($fanpageId);
-		$this->view->itemList = $itemList;
 		$this->view->lastWeekTopFans = $lastWeekTopFans;
 	}
 	

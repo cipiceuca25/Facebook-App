@@ -57,7 +57,7 @@ if (count($fanpageList) > 0) {
 
 	foreach ($fanpageList as $fanpage) {
 		// this line is for filtering out other fanpage
-		if($fanpage->fanpage_level < 3) continue;
+		if(empty($fanpage->installed)) continue;
 
 		$fanpageHasUpdatedBefore = false;
 		if ($cronlogModel->getLastUpdate($fanpage->fanpage_id)) {

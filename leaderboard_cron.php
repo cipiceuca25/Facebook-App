@@ -110,7 +110,7 @@ function insertLog($fanpageId, $result, $type, $countType) {
 				'rank'=>$rank,
 				'count'=> empty($row[$countType]) ? 0 : $row[$countType]
 		);
-		//$leaderboardLogModel->insert($data);
+		$leaderboardLogModel->insert($data);
 		
 		// hard code badge id for now, need to change it later on
 		if ($type == 'top_fans') {

@@ -324,9 +324,14 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		echo 'ok';
 	}
 	
+	public function updateitemAction() {
+		$value = $this->_getParam('value');
+		echo $value;	
+	}
+	
 	public function deleteitemAction() {
 		$itemModel = new Model_Items();
-		$where = $itemModel->quoteInto('fanpage_id = ? and id = ?',$this->_fanpageId, $this->getParams('itemId'));
+		$where = $itemModel->quoteInto('fanpage_id = ? and id = ?',$this->_fanpageId, $this->_getParam('itemId'));
 		echo $itemModel->delete($where);
 	}
 	
