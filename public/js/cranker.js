@@ -2255,3 +2255,79 @@ function numberFormat(num) {
     }
     return num;
 }
+
+/**redeemable badge section*********************/
+// confirm popup, note: following script can be moved to cranker.js
+$(document).ready(function() {
+	var selectBadgeId;
+	
+	$('.redeemableBadge').live('click', function() {
+		selectBadgeId = $(this).attr('data-redeem-id');
+		console.log(selectBadgeId);
+		// show popup
+		popup(true);
+		$.ajax({
+			type : "GET",
+			url : serverUrl + '/app/redeem/index/' + fanpageId,
+			dataType : "html",
+			cache : false,
+			async : false,
+			beforeSend: function(){
+				$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			},
+			success : function(data) {
+				$('.profile-content').html(data);
+				//$(x).popover('show');
+			},
+			error : function(xhr, errorMessage, thrownErro) {
+				console.log(xhr.statusText, errorMessage);
+			}
+		});
+	});
+
+	// add redeem confirm listner
+	$('.btn-redeem-confirm').live('click', function(e) {
+		e.preventDefault();
+		console.log('redeem confirm');
+		var formData = $('#redeem-form').serialize();
+		console.log(formData+selectBadgeId);
+		
+		if ($('#redeemItemId').val() == '') {
+			alert('please select an item to redeem');
+			return;
+		}
+		
+		if (!$('#redeem-form').valid()) {
+			$('#redeem-form').validate().focusInvalid();
+		} else {
+			$.ajax({
+				type : "POST",
+				url : serverUrl + '/app/redeem/confirm/' + fanpageId,
+				dataType : "html",
+				cache : false,
+				async : true,
+				data : formData+"&badgeId="+selectBadgeId,
+				beforeSend : function(){
+					$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				},
+				success : function(data) {
+					//$('.profile-content').html(data);
+					if ($.trim(data) == 'ok') {
+						alert('done!');
+					}
+					closeProfile();
+					//$(x).popover('show');
+				},
+				error : function(xhr, errorMessage, thrownErro) {
+					console.log(xhr.statusText, errorMessage);
+				}
+			});			
+		}
+	});
+
+	// redeem form validate function
+	function confimFormValidate(formData, jqForm, options) { 
+
+	}
+});
+

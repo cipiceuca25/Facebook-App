@@ -1,0 +1,151 @@
+<form id="redeem-form" class="form-horizontal">
+
+	<div class="row-fluid">
+		<div class="span6">
+			<h2>Please select an item</h2>
+			<input type="hidden" name="redeemItemId" id="redeemItemId"/>
+			<table class="table" id="redeemItemTable">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>description</th>
+						<th>picture</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach($this->itemList as $item): ?>
+					<tr>
+						<td><?= $item['id']?></td>	
+						<td><?= $item['name']?></td>
+						<td><?= $item['description']?></td>		
+						<td><?= $item['picture']?></td>
+						<td><input data-item-id="<?= $item['id']?>" type="checkbox" /></td>									
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>	
+	</div>
+
+	<div>
+		<h2>Shipping Info</h2>
+		<div class="control-group">
+			<label class="control-label" for="contactName">Contact Name *</label>
+			<div class="controls">
+				<input type="text" name="contactName" id="contactName" value="<?=$this->shippingInfo['name']?>" />
+			</div>
+		</div>			
+		<div class="control-group">
+			<label class="control-label" for="address">Street Address *</label>
+			<div class="controls">
+				<input type="text" name="address" id="address" value="<?=$this->shippingInfo['address']?>" />
+			</div>
+		</div>	
+		<div class="control-group">
+			<label class="control-label" for="city">City *</label>
+			<div class="controls">
+				<input type="text" name="city" id="city" value="<?=$this->shippingInfo['city']?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="region">State/Province *</label>
+			<div class="controls">
+				<input type="text" name="region" id="region" value="<?=$this->shippingInfo['region']?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="country">Country *</label>
+			<div class="controls">
+				<input type="text" name="country" id="country" value="<?=$this->shippingInfo['country']?>" />
+			</div>
+		</div>		
+		<div class="control-group">
+			<label class="control-label" for="postCode">Zip/Postal Code *</label>
+			<div class="controls">
+				<input type="text" name="postcode" id="postcode" value="<?=$this->shippingInfo['postcode']?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="trackingEmail">Email *</label>
+			<div class="controls">
+				<input type="text" name="trackingEmail" id="trackingEmail" value="<?=$this->shippingInfo['email']?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="confirmEmail">Confirm Email *</label>
+			<div class="controls">
+				<input type="text" name="confirmEmail" id="confirmEmail" />
+			</div>
+		</div>						
+		<div class="form-actions">
+			<button type="reset" class="btn">Cancel</button>
+			<button type="button" class="btn btn-primary btn-redeem-confirm">Confirm</button>
+		</div>
+	</div>
+</form>
+
+<script>
+	$(document).ready(function() {
+		initFormValidate();
+		$('#redeemItemTable  input[type=checkbox]').live('click', function() {
+			$('#redeemItemTable  input[type=checkbox]').removeAttr('checked');
+			$(this).attr('checked', true);
+			$('#redeemItemId').val($(this).attr('data-item-id'));
+		});
+
+		var addresspicker = $( "#address" ).addresspicker();
+	});
+
+	function initFormValidate() {
+
+		$('#redeem-form').validate({
+			rules: {
+				//About yourself section
+				contactName: {
+					required: true,
+					minlength: 2,
+					maxlength: 100
+				},
+				trackingEmail: {
+					required: true,
+					email: true
+				},
+				confirmEmail:{
+					required: true,
+					equalTo: '#trackingEmail'
+				},
+				address: {
+					required: true,
+					minlength: 2,
+					maxlength: 100
+				},
+				city: {
+					required: true,
+					minlength: 2,
+					maxlength: 45
+				},
+				region: {
+					required: true,
+					minlength: 2,
+					maxlength: 45
+				},
+				country: {
+					required: true,
+					minlength: 2,
+					maxlength: 45
+				},
+				postcode: {
+					required: true,
+					minlength: 2,
+					maxlength: 15					
+				}
+			},	
+			focusInvalid: true,
+			focusCleanup: true,
+			onkeyup: false
+		});
+		
+	}
+		
+</script>

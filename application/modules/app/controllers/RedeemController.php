@@ -14,6 +14,7 @@
 class App_RedeemController extends Fancrank_App_Controller_BaseController
 {
 	protected $_identity;
+	protected $_fanpageId;
 	
 	public function preDispatch() {
 		$this->_helper->layout()->disableLayout();
@@ -31,67 +32,102 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 			$this->_helper->json(array('message'=>'authentication failed'));
 			//set the proper navbar
 		}
+		
+		$this->_fanpageId = $this->_getParam('id');
 	}
 	
 	public function indexAction() {
-
+		$itemModel = new Model_Items();
+		$itemList = $itemModel->getFanpageItems($this->_fanpageId);
+		$this->view->itemList = $itemList;
+		
+		$shippingInfoModel = new Model_ShippingInfo();
+		$shippingInfo = $shippingInfoModel->findByUserId($this->_identity->facebook_user_id);
+		if ($shippingInfo) {
+			$this->view->shippingInfo = $shippingInfo;
+		}
+		
+		$this->render('index');
 	}
 	
 	public function confirmAction() {
-		$itemId = $this->_getParam('itemId');
+		$itemId = $this->_getParam('redeemItemId');
 		$itemModel = new Model_Items();
 		
 		$item = $itemModel->findRow($itemId);
+		
+		if (!$item) {
+			echo 'item not found';
+			return;
+		}
+
 		$redeemModel = new Model_RedeemTransactions();
-		
-		$rankingModel = new Model_Rankings;
-		$userLeaderBoardData = array();
-		
-		$cache = Zend_Registry::get('memcache');
-		//$cache->remove($this->_fanpageId .'_' .$user->facebook_user_id);
-		try {
-			//Check to see if the $fanpageId is cached and look it up if not
-			if(isset($cache) && !$cache->load($this->_identity->fanpage_id .'_' .$this->_identity->facebook_user_id)){
-				//Look up the $fanpageId
-				$userLeaderBoardData['topFans'] = $rankingModel->getUserTopFansRank($this->_identity->fanpage_id, $this->_identity->facebook_user_id);
-	
-			}else {
-				//echo 'memcache look up';
-				$userLeaderBoardData = $cache->load($this->_identity->fanpage_id .'_' .$this->_identity->facebook_user_id);
-			}
-		} catch (Exception $e) {
-			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
-			//echo $e->getMessage();
+		$badgeEventsModel = new Model_BadgeEvents();
+		// check top fan last week, note: badge id 721 = top_fans 
+		if (!$badgeEventsModel->hasBadgeEvent($this->_fanpageId, $this->_identity->facebook_user_id, 721)) {
+			echo 'redeemable badge not found';
+			return;
 		}
 		
-// 		if(empty($userLeaderBoardData['topFans']['my_rank']) || $userLeaderBoardData['topFans']['my_rank'] > 5) {
-// 			return;
-// 		}
-		
-		$date = Zend_Date::now();
-		
-		if(isset($item->id)) {
-			$data = array(
-						'fanpage_id' => $this->_identity->fanpage_id,
+		try {
+			$shippingInfo = $this->getShippingInfo();
+			$shippingInfoModel = new Model_ShippingInfo();
+			
+			$shippingId = '';
+			$foundShipping = $shippingInfoModel->findByUserId($this->_identity->facebook_user_id);
+			if ($foundShipping) {
+				foreach ($shippingInfo as $key => $field) {
+					$foundShipping->{$key} = $field;
+				}
+				$foundShipping->save();
+				$shippingId = $foundShipping->id;
+			} else {
+				$shippingId = $shippingInfoModel->insert($shippingInfo);
+			}
+			
+			$date = Zend_Date::now();
+			
+			if(isset($item->id) && !empty($shippingId)) {
+				$data = array(
+						'fanpage_id' => $this->_fanpageId,
 						'facebook_user_id' => $this->_identity->facebook_user_id,
 						'item_id'	=> $item->id,
 						'status'	=> 1,
+						'shipping_info_id' => $shippingId,
 						'created_time'	=> $date->toString( 'yyyy-MM-dd HH:mm:ss' ),
 						'updated_time'	=> $date->toString( 'yyyy-MM-dd HH:mm:ss' )
-					);
-			try {
+				);
+				
 				$redeemId = $redeemModel->insert($data);
-					
+
+				//update activity log
+				$activityData['activity_type'] = 'redeem_by_badge';
+				$activityData['event_object'] = $redeemId;
+				$activityData['facebook_user_id'] = $this->_identity->facebook_user_id;
+				$activityData['facebook_user_name'] = $this->_identity->facebook_user_name;
+				$activityData['fanpage_id'] = $this->_fanpageId;
+				$activityData['target_user_id'] = $this->_fanpageId;
+				$activityData['target_user_name'] = '';
+				$activityData['message'] = 'redeem item';
+				
+				$activityModel = new Model_FancrankActivities();
+				$activityModel->insert($activityData);
+				
 				$encryptData['redeem_id'] = $redeemId;
 				$encryptData['code'] = 'fancrank';
 				$link = $_SERVER['SERVER_NAME'] .'/app/redeem/track?data=' .Fancrank_Crypt::encrypt($encryptData);
-				$mailModel = new Fancrank_Mail($this->_identity->facebook_user_email);
+				$mailModel = new Fancrank_Mail($shippingInfo['email']);
 				$mailModel->sendMail($link);
-				echo 'ok';				
-			} catch (Exception $e) {
-				echo 'fail';
 			}
+			echo 'ok';	
+		} catch (Fancrank_Exception_InvalidParameterException $f) {
+			echo 'invalid shipping info';
+			return;
+		} catch (Exception $e) {
+			echo $e->getMessage();
+			return;
 		}
+		
 	}
 	
 	protected function sendMail($link) {
@@ -114,6 +150,32 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 			}
 		} catch (Exception $e) {
 		}
+	}
+	
+	private function getShippingInfo() {
+		$shippingInfo = array();
+		$shippingInfo['name'] = $this->_getParam('contactName');
+		$shippingInfo['address'] = $this->_getParam('address');
+		$shippingInfo['city'] = $this->_getParam('city');
+		$shippingInfo['region'] = $this->_getParam('region');
+		$shippingInfo['country'] = $this->_getParam('country');
+		$shippingInfo['postcode'] = $this->_getParam('postcode');
+		$shippingInfo['email'] = $this->_getParam('trackingEmail');
+		$shippingInfo['confirmEmail'] = $this->_getParam('confirmEmail');
+
+		foreach ($shippingInfo as $field) {
+			if (empty($field)) {
+				throw new Fancrank_Exception_InvalidParameterException();
+			}
+		}
+		
+		if ($shippingInfo['email'] != $shippingInfo['confirmEmail']) {
+			throw new Fancrank_Exception_InvalidParameterException();
+		}
+
+		$shippingInfo['facebook_user_id'] = $this->_identity->facebook_user_id;
+		unset($shippingInfo['confirmEmail']);
+		return $shippingInfo;
 	}
 }
 

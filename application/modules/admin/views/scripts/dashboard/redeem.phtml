@@ -40,7 +40,6 @@
 </div>
 
 <br/><br/>
-
 <div class="row-fluid">
 	<div class="span9">
 		<h2>Redeem Item Request</h2>
@@ -82,7 +81,6 @@
 </div>
 
 <br/><br/>
-
 <div class="row-fluid">
 	<div class="span9">
 		<h2>Item Inventory</h2>
@@ -152,6 +150,7 @@ $(document).ready(function() {
 		"bServerSide": false,
 		"sPaginationType" : "full_numbers",
 		bJQueryUI : true,
+		"bDestroy": true,
 		"aoColumns": [
 		              { "mData": "id"},
 		              { "mData": "item_id"},
@@ -174,6 +173,23 @@ $(document).ready(function() {
 		"sAjaxSource": "/admin/redeem/request/" +fanpageId
 	});
 
+	/* hisotry table section */
+	var redeemHistoryTable = $('#redeemHistoryTable').dataTable({
+		"bProcessing": false,
+		"bServerSide": false,
+		"sPaginationType" : "full_numbers",
+		bJQueryUI : true,
+		"bDestroy": true,
+		"aoColumns": [
+		              { "mData": "id"},
+		              { "mData": "item_id"},
+		              { "mData": "facebook_user_id" },
+		              { "mData": "created_time" },
+		              { "mData": "status" }
+		          ],
+		"sAjaxSource": "/admin/redeem/history/" +fanpageId
+	});
+	
 	// handle approve request item action
 	$('.approve-request-item').live('click', function(e){
 		e.preventDefault();
@@ -228,32 +244,16 @@ $(document).ready(function() {
     	});
 	});
 
-	/* hisotry table section */
-	var redeemHistoryTable = $('#redeemHistoryTable').dataTable({
-		"bProcessing": false,
-		"bServerSide": false,
-		"sPaginationType" : "full_numbers",
-		bJQueryUI : true,
-		"aoColumns": [
-		              { "mData": "id"},
-		              { "mData": "item_id"},
-		              { "mData": "facebook_user_id" },
-		              { "mData": "created_time" },
-		              { "mData": "status" }
-		          ],
-		"sAjaxSource": "/admin/redeem/history/" +fanpageId
-	});
-
 	/* add item form*/
 	$('#fanpage-item-form').submit(function(e) {
 		e.preventDefault();
-		$formData = $(this).serialize();
-		console.log($formData);
+		var formData = $(this).serialize();
+		console.log(formData);
 		$.ajax({
 			url: '/admin/fanpage/additem/'+fanpageId,
 		    type: 'post',
 		    dataType: 'html',
-		    data: $formData,
+		    data: formData,
 		    error: function( data ) {
 		    	console.log('error'+data);
 		    },
@@ -278,6 +278,7 @@ $(document).ready(function() {
 		"bServerSide": false,
 		"sPaginationType" : "full_numbers",
 		bJQueryUI : true,
+		"bDestroy": true,
 		"aoColumns": [
 		              { "mData": "id"},
 		              { "mData": "name"},
