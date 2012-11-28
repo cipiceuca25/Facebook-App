@@ -211,7 +211,13 @@
 				</a>		
 			</div>
 	 		<?php if (isset($post->comments->count) && ($post->comments->count < 5)){?>
- 		<div id="post_<?=$post->id?>"> 
+	 		<div class="social comment <?=$post->id?>">
+		
+ 		<div id="post_<?=$post->id?>"  data-comment-count = <?php if(isset($post->comments->count)){
+						echo $post->comments->count; 
+					 	} else {
+							echo '0'; 
+						}?>> 
  			<ul class="comments">
  				
 
@@ -321,13 +327,21 @@
 					 </div>
 				
 					</li>
-														
+							
 				<?php $count2 ++;?>
 				<?php endforeach; }?>
 				
 				
 				</ul>
+				<div class="comment-container">
+					<div class="photo"><img class="small-face"  src="https://graph.facebook.com/<?= $this->user_id?>/picture" onerror="ImgError(this);"></div>
 				
+					<form action="#" class="submit-form" >
+					
+						<textarea class="comment-box" id="comment_box_<?= $post->id?>" ></textarea>
+						<input type=button class="btn-submit" value="Comment" onclick="commentSubmit(this,'<?= $post->id?>','<?= $post->type?>' ,'<?=$post->from->id?>','<?=$post->from->name?>',<?= ($this->latest == 'true')?'true':'false'?> )">
+					</form>	
+				</div>
 				<!-- 
 				
 					<div class="comment-container">
@@ -341,7 +355,7 @@
 					</div>
  				 -->
  		
- 		
+ 			</div>		
  		</div>
  	<?php }else{?>
 			<div class="social comment <?=$post->id?>" <?php if(!isset($post->comments->count) || ($post->comments->count == 0)){?>style="display:none"<? }?>>
@@ -376,6 +390,7 @@
 					 -->
 				</a>
 			</div>
+			
 				<?php }?>
 		</li>	
 								

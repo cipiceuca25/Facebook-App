@@ -87,15 +87,11 @@ if($this->fanpage_level >2){
 							onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
 							rel="popover" data-content="" data-original-title=""
 							data-placement="top-left"><?= $displayname ?>						
-												</a>
-											</div>
-										</div>
+						</a>
+					</div>
+				</div>
 				
-						
-		
-				
-				
-				
+
 				<div class="user-badge">
 					<a rel="tooltip-follow" <?php switch($this->toplistArray[$count]) { 
 						case 'You':?>
@@ -121,7 +117,7 @@ if($this->fanpage_level >2){
 				
 				<div class="points">
 					<h3>
-						<?= $top_fan['count'] ?>
+						<?= ($top_fan['count']>999)?'999+':$top_fan['count'] ?>
 					</h3>
 					<span><?= $term ?></span>
 				</div>
@@ -210,7 +206,7 @@ if($this->fanpage_level >2){
 					<?php if ($this->list != 'top-fan-mini'){?>
 					<div class="points">
 						<h3>
-							<?= $top_fan['count'] ?>
+							<?= ($top_fan['count']>999)?'999+':$top_fan['count'] ?>
 						</h3>
 						<span><?= $term?></span>
 					</div>
@@ -298,7 +294,8 @@ if($this->fanpage_level >2){
 		<ul class="top-list you">
 			<li>
 				<div class="ranker">
-					<div class="rank">
+					<div class="rank you">
+						<?php if (!empty($this->toplistYou)){?>
 						<? if (strlen($this->toplistYou['my_rank'])== 1){?>
 						<h1>
 							<?= $this->toplistYou['my_rank']?>
@@ -312,6 +309,8 @@ if($this->fanpage_level >2){
 							<?= $this->toplistYou['my_rank']?>
 						</h3>
 						<?php }else{?>
+						<h1>*</h1>
+						<?php } }else{?>
 						<h1>*</h1>
 						<?php }?>
 					</div>
@@ -338,7 +337,7 @@ if($this->fanpage_level >2){
 					<?php if ($this->list != 'top-fan-mini'){?>
 					<div class="points">
 						<h3>
-							<?= isset( $this->toplistYou['count'])?$this->toplistYou['count']:'?'?>
+							<?= isset( $this->toplistYou['count'])?( ($this->toplistYou['count']>99)?'99+':$this->toplistYou['count'] ):'?'?>
 						</h3>
 						<span><?= $term?></span>
 						
@@ -435,7 +434,7 @@ if($this->fanpage_level >2){
 								
 								<div class="points">
 									<h3>
-										<?= $popular['count'] ?>
+										<?= ($popular['count']>99)?'99+;':$popular['count']; ?>
 									</h3>
 									<span><?= $term?></span>
 									
@@ -503,7 +502,7 @@ if($this->fanpage_level >2){
 								</div>
 								<div class="points">
 									<h3>
-										<?= $popular['count'] ?>
+										<?= ($popular['count']>99)?'99+;':$popular['count']; ?>
 									</h3>
 									<span><?= $term?></span>
 									
@@ -565,23 +564,28 @@ if($this->fanpage_level >2){
 						</ul>
 						<ul class="top-list you">
 							<li>
-								<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
-									<div class="rank">
-										<? if (strlen($this->toplistYou['my_rank'])== 1){?>
-										<h1>
-											<?= $this->toplistYou['my_rank']?>
-										</h1>
-										<?php }elseif (strlen($this->toplistYou['my_rank'])== 2) { ?>
-										<h2>
-											<?= $this->toplistYou['my_rank']?>
-										</h2>
-										<?php }elseif (strlen($this->toplistYou['my_rank'])== 3) { ?>
-										<h3>
-											<?= $this->toplistYou['my_rank']?>
-										</h3>
-										<?php }else{?>
-										<h1>*</h1>
+								<div class="ranker">
+									<div class="rank you">
+										<?php if (empty($this->toplistYou)){?>
+											<? if (strlen($this->toplistYou['my_rank'])== 1){?>
+											<h1>
+												<?= $this->toplistYou['my_rank']?>
+											</h1>
+											<?php }elseif (strlen($this->toplistYou['my_rank'])== 2) { ?>
+											<h2>
+												<?= $this->toplistYou['my_rank']?>
+											</h2>
+											<?php }elseif (strlen($this->toplistYou['my_rank'])== 3) { ?>
+											<h3>
+												<?= $this->toplistYou['my_rank']?>
+											</h3>
+											<?php }else{?>
+											<h1>*</h1>
+										<?php } }else{ ?>
+											<h1>*</h1>
+											
 										<?php }?>
+										
 									</div>
 									<div class="user">
 									<div class="photo">
@@ -602,7 +606,7 @@ if($this->fanpage_level >2){
 									</div>
 									<div class="points">
 										<h3>
-											<?= isset($this->toplistYou['count'])? $this->toplistYou['count']:'?'?>
+											<?= isset($this->toplistYou['count'])? (($this->toplistYou['count']>99)?'99+':$this->toplistYou['count']):'?'?>
 										</h3>
 										<span><?= $term?></span>
 										

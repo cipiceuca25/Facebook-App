@@ -279,8 +279,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($this->_fanpageId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
-//     		$cache->remove($this->_fanpageId . '_topfan');
-//     		$cache->remove($this->_fanpageId . '_topfanall');
+    		$cache->remove($this->_fanpageId . '_topfan');
+     		$cache->remove($this->_fanpageId . '_topfanall');
 //     		$cache->remove($this->_fanpageId . '_topclicker');
 //     		$cache->remove($this->_fanpageId . '_topfollowed');
 //     		$cache->remove($this->_fanpageId . '_toptalker');
@@ -398,12 +398,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
  
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topclicker');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfollowed');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfan');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_toptalker');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_fanfavorite');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfanall');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topclicker');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfollowed');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfan');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_toptalker');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_fanfavorite');
+    		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfanall');
     		try {
     			switch($list){
     				case 'top-followed':
@@ -456,7 +456,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     						if(isset($cache) && !$cache->load($this->_fanpageId .'_' .$this->_userId . '_topfanall')){
     							//Look up the $fanpageId
     							$userBoardData= $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
-    								
     							$cache->save($userBoardData, $this->_fanpageId .'_' .$this->_userId . '_topfanall');
     						}else {
     							//echo 'memcache look up';
@@ -467,7 +466,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     					if(isset($cache) && !$cache->load($this->_fanpageId .'_' .$this->_userId . '_topfan')){
     						//Look up the $fanpageId
     						$userBoardData= $model->getUserTopFansRankByWeek($this->_fanpageId, $this->_userId);
-    					
     						$cache->save($userBoardData, $this->_fanpageId .'_' .$this->_userId . '_topfan');
     					}else {
     						//echo 'memcache look up';
@@ -482,7 +480,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			//echo $e->getMessage();
     		}
     	}
-    	
+    	/*
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level < 3) {
     		for ($i=0; $i<count($toplist); $i++){
     			$toplist[$i]['count'] = '?';
@@ -492,9 +490,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			$userBoardData['count'] = '?';
     		}
     	}
-    	
-    	//Zend_Debug::dump($userBoardData);
-    
+    	*/
     	//Zend_Debug::dump($toplist);
     	
     	$this->view->toplist = $toplist;
@@ -847,12 +843,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    			}
 	    			if(isset($l->comments->data)){
 		    			$count=0;
-		    			foreach ( $l->comments->data as $x){
-		    				$latest_comment_relation[$count] = $follow->getRelation($this->_userId, $x->from->id,$this->_fanpageId);
-		    				
-		    				$latest_comment_like[$count] = $likesModel->getLikes($this->_fanpageId, $x->id, $this->_userId );
-		    				
-		    				$count++;
+		    			if($l->comments->count < 5){ 
+			    			foreach ( $l->comments->data as $x){
+			    				
+			    				$latest_comment_relation[$count] = $follow->getRelation($this->_userId, $x->from->id,$this->_fanpageId);
+			    				
+			    				$latest_comment_like[$count] = $likesModel->getLikes($this->_fanpageId, $x->id, $this->_userId );
+			    				
+			    				$count++;
+			    			}
 		    			}
 	    			}
 	    			$latest = $l;
@@ -863,6 +862,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	//Zend_Debug::dump($latestrelation);
     	
+    
     	$this->view->latest_comment_relation = $latest_comment_relation;
     	if($this->_fanpageProfile -> fanpage_level > 2){
     		$this->view->yourpointslatest = $yourpointslatest;
@@ -1025,13 +1025,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			}
     		}
     		if (isset($posts->comments->data)){
-    		
-    			foreach($posts->comments->data as $c){
-    					
-    				$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
-    				$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
-    				//Zend_Debug::dump($comment_relation[$count2]);
-    				$count2++;
+    			if($posts->comments->count < 5){
+	    			foreach($posts->comments->data as $c){
+	    					
+	    				$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
+	    				$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
+	    				//Zend_Debug::dump($comment_relation[$count2]);
+	    				$count2++;
+	    			}	
     			}
     		}
     	
@@ -1785,13 +1786,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 					
 					
 					if (isset($posts->comments->data)){
-				
-						foreach($posts->comments->data as $c){
-													
-							$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
-							$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
-							//Zend_Debug::dump($comment_relation[$count2]);
-							$count2++;
+						if($posts->comments->count < 5){
+							foreach($posts->comments->data as $c){
+														
+								$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
+								$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
+								//Zend_Debug::dump($comment_relation[$count2]);
+								$count2++;
+							}
 						}
 					}
 					
@@ -2129,21 +2131,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$result = array();
     	//Zend_Debug::dump($limit);
-    	if ($filter == 'true'){
-    		
+    	if ($filter == 'true'){	
     		$result = $this->filterComments($this->getFeedComment($postId, $total));
     	}else{
     		$result = $this->getFeedComment($postId, $total);
     	}
     	//$result = json_encode($result);
 		
-    	
     	$follow = new Model_Subscribes();
     	$likesModel = new Model_Likes();
     	$likes = array();
     	$relation = array();
     	$count=0;
-		
 
     	if(!empty($result)) {
     		foreach ($result as $posts){
@@ -2170,6 +2169,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}    		
     	}
     	 
+    	
+    	//Zend_Debug::dump($result);
 
     	//$postTop = explode('_', $postId);
     	//$postTop = $postTop[0].'_'.$postTop[1];
@@ -2192,6 +2193,58 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->view->popup = $popup;
     	$this->render("fancrankfeedcomment");
     }
+    
+    public function allactivitiesAction(){
+    	$this->_helper->layout->disableLayout();
+    	$cache = Zend_Registry::get('memcache');
+    	$cache->setLifetime(1800);
+    	$activitiesModel = new Model_FancrankActivities();
+    	$limit = 20;
+    	$activities = null;
+    	try {
+    		$fanActivityId = $this->_fanpageId . '_all_activity';
+    		 
+    		//$cache->remove($fanActivityId);
+    		//$cache->remove($fanActivityId);
+    		//Check to see if the $fanpageId is cached and look it up if not
+    		if(isset($cache) && !$cache->load($fanActivityId)){
+    			//echo 'db look up';
+    			//$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    			$activities = $activitiesModel->getAllActivities($this->_fanpageId, $limit);
+    	
+    			//Save to the cache, so we don't have to look it up next time
+    			$cache->save($activities, $fanActivityId);
+    		}else {
+    			//echo 'memcache look up';
+    			$activities = $cache->load($fanActivityId);
+    	
+    			// merge new activity
+    			$newActivity = array();
+    			if(!empty($activities[0]['created_time'])) {
+    				$newActivity = $activitiesModel->getAllActivitiesSince($this->_fanpageId, $limit, $activities[0]['created_time']);
+    			}
+    	
+    	
+    			if(count($newActivity) >= $limit) {
+    				//Zend_Debug::dump($newActivity);
+    	
+    				$activities = $newActivity;
+    				$cache->save($activities, $fanActivityId);
+    				 
+    			}else if(count($newActivity) > 0){
+    				//echo"there are new activities";
+    				$activities = array_merge($newActivity, array_slice($activities, count($newActivity)));
+    				 
+    			}
+    		}
+    	} catch (Exception $e) {
+    		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    		//echo $e->getMessage();
+    	}
+    	
+    }
+    
+    
     
     public function recentactivitiesAction(){
     	$this->_helper->layout->disableLayout();
@@ -2309,11 +2362,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$this->_helper->layout->disableLayout();
 		
 		$limit = $this->_request->getParam('limit');
+		$notifier = $this->_request->getParam('notifier');
 		$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, $limit);
 		
 		//$badges = $this->badgeArray($this->_fanpageId, $this->_userId, $limit);
 		//Zend_Debug::dump($badges);
 		//exit();
+		
+		$this->view->notifier = $notifier;
 		$this->view->upcoming = $badges;
 		$this->render("upcomingbadges");
 	}

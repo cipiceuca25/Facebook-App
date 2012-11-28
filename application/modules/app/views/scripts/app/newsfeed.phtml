@@ -246,7 +246,13 @@
 							</div> 		
 							<!--  	/////////////////////////////////////		-->		
 							<?php if (isset($post->comments->count) && ($post->comments->count < 5)){?>
-					 		<div id="postn_<?=$post->id?>">
+					 		<div class="social commentn <?=$post->id?>" >
+			
+					 		<div id="postn_<?=$post->id?>"  data-comment-count = <?php if(isset($post->comments->count)){
+						echo $post->comments->count; 
+					 	} else {
+							echo '0'; 
+						}?>>
 					 			<ul class="comments">
 					 				
 									<?php $count2 = 0?>
@@ -289,53 +295,44 @@
 									<?}?>
 								</a>
 							</div>	
-						
-							
-							
-							
-							
-							
-						
-							
-							
-					
+
 						<div class="message">
-						<span class="name"><a  
-								<? if (!($this->latest_comment_relation[$count2] == 'Fanpage')){?> 
-									onclick="userProfile('<?=$comments->from->id?>')"
-									rel="popover" 
-									data-content="" 
-									data-original-title="" 
-									data-placement="right" 
-									data-userid="<?=$comments->from->id?>"
-								<?php }else{?>
-									class="noclick"
-								<?}?> 
-							><?=  $comments->from->name?></a></span>
-						<?php if(isset($comments->message)){  
-												$reg_ex = "/\n/";
-												$message = $this->escape($comments->message);
-												if(preg_match_all($reg_ex, $message, $url)) {
-													$message= preg_replace($reg_ex, "<br/>", $message);
-												} 
+							<span class="name"><a  
+									<? if (!($this->latest_comment_relation[$count2] == 'Fanpage')){?> 
+										onclick="userProfile('<?=$comments->from->id?>')"
+										rel="popover" 
+										data-content="" 
+										data-original-title="" 
+										data-placement="right" 
+										data-userid="<?=$comments->from->id?>"
+									<?php }else{?>
+										class="noclick"
+									<?}?> 
+								><?=  $comments->from->name?></a></span>
+							<?php if(isset($comments->message)){  
+													$reg_ex = "/\n/";
+													$message = $this->escape($comments->message);
+													if(preg_match_all($reg_ex, $message, $url)) {
+														$message= preg_replace($reg_ex, "<br/>", $message);
+													} 
+													
+													$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
+												 
+													$m = preg_match_all($reg_exUrl, $message, $match); 
+													
+													if ($m) { 
+													    $links=$match[0]; 
+													    for ($j=0;$j<$m;$j++) { 
+													        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
+													    } 
+													} 
+													
+													echo $message; 
+														//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
+													
 												
-												$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
-											 
-												$m = preg_match_all($reg_exUrl, $message, $match); 
-												
-												if ($m) { 
-												    $links=$match[0]; 
-												    for ($j=0;$j<$m;$j++) { 
-												        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
-												    } 
-												} 
-												
-												echo $message; 
-													//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
-												
-											
-									}?>
-						
+										}?>
+							
 							
 								</div>
 								<div class="social"> 
@@ -369,7 +366,15 @@
 							
 							
 							</ul>
+							<div class="comment-container">
+								<div class="photo"><img class="small-face"  src="https://graph.facebook.com/<?= $this->user_id?>/picture" onerror="ImgError(this);"></div>
 							
+								<form action="#" class="submit-form" >
+								
+									<textarea class="comment-box" id="comment_box_<?= $post->id?>" ></textarea>
+									<input type=button class="btn-submit" value="Comment" onclick="commentSubmit(this,'<?= $post->id?>','<?= $post->type?>' ,'<?=$post->from->id?>','<?=$post->from->name?>',<?= ($this->latest == 'true')?'true':'false'?> )">
+								</form>	
+							</div>
 							<!-- 
 								<div class="comment-container">
 									<div class="photo"><img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->user_id?>/picture" onerror="ImgError(this);"></div>
@@ -382,6 +387,7 @@
 								</div>
 			 				 -->
 			 		</div>
+			 		</div>
 			 	<?php }else{?>	
 				
 					<div class="social commentn <?=$post->id?>" <?php if(!isset($post->comments->count) || ($post->comments->count == 0)){?>style="display:none"<? }?> >
@@ -390,7 +396,11 @@
 						 		if(isset($post->comments->count)){
 									echo $post->comments->count; //echo  $post->comments->count;
 						 		} else {echo '0';} ?> , true )"> <img src="/img/comment.png" />
-						 			<span class="comment_<?= $post->id?>">View all Comments</span>
+						 			<span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
+									echo $post->comments->count; 
+								 	} else {
+										echo '0'; 
+									}?>>View all Comments</span>
 						 			
 						 			<!--  
 						 			<?//php  if($post->comments->count != 1){?>
@@ -428,7 +438,11 @@
 									<?php }?>
 			
 								</div> 
-								<div id="postn_<?=$post->id?>"></div>
+								<div id="postn_<?=$post->id?>"  data-comment-count = <?php if(isset($post->comments->count)){
+						echo $post->comments->count; 
+					 	} else {
+							echo '0'; 
+						}?>></div>
 						<?php }?>
 						
 						

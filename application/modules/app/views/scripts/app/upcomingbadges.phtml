@@ -1,4 +1,43 @@
+<?php if ($this->notifier == 'true'){?>
+
+<div <?if ($this->fanpage_level > 2 ){ ?>class="rvgrid-5ex"<?php } else {?> class="rvgrid-3ex" <?php }?>>
+
+<div class="box notitle">
+	<div class="post-container noline">
+		<div class="user">
+			<div class="name">Upcoming Badges</div>
+		</div>			
+	</div>
+<ul>
 <?php foreach ($this->upcoming as $b){?>
+<li>
+	<div class="post-container noline">
+		<div class="photo">
+			<div class="progress">
+				<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
+				<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+				rel="tooltip" data-placement="bottom"  >
+					
+					<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
+				</a>
+			</div>
+		</div>
+		<div class="message">
+			<?=$b['stylename'].' '. $b['name']?>
+			<br/>
+			<?=$b['description']?>
+			<br/>
+			<?= $b['percentage'].'% Completed'?>
+		</div>
+	</div>
+</li>
+<?php }?> 
+</ul>
+</div>
+</div>
+
+<?php }else{ ?>
+
 	<div class="upcoming-badges title">
 		<div class="progress">
 			<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
@@ -16,4 +55,4 @@
 			<?= $b['percentage'].'% Completed'?>
 		</div>
 	</div>
-<?php }?> 
+<?php }?>

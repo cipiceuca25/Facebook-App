@@ -69,7 +69,7 @@ body {
 a,
 a:visited,
 .time {
-  color: #3b5998;
+  color: #3c589d;
   cursor: pointer;
 }
 a:hover {
@@ -102,8 +102,11 @@ ol {
   margin-bottom: 20px;
 }
 .follow-title {
-  font: 10px/100% Helvetica, Arial sans-serif;
+  font: 12px/100% Helvetica, Arial, sans-serif;
   text-align: center;
+}
+.follow-title h4 a {
+  font: 12px/100% Helvetica, Arial, sans-serif;
 }
 .toolbar #notification_upcoming_badges .upcoming-badges {
   width: 20px;
@@ -251,10 +254,14 @@ ol {
 #logout-tab img {
   margin-right: 0px;
 }
+menu2 .notifier .message {
+  margin-right: 0px;
+  margin-left: 0px;
+}
 #logout-tab .dropdown-menu {
   min-width: 100px;
   top: 50px;
-  left: -154px;
+  left: -152px;
   width: 201px;
   padding: 0;
   margin: 0;
@@ -389,7 +396,7 @@ ol {
   border-bottom: 0px;
 }
 #toppost > li:first-of-type > .user {
-  border-top: 2px solid #e5e5e5;
+  border-top: 2px solid #b5bec4;
   padding-top: 8px;
 }
 #toppost > li:first-of-type .comments .comment-container .user {
@@ -411,7 +418,7 @@ ol {
   vertical-align: middle;
 }
 .title {
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 2px solid #b5bec4;
 }
 .tip2 {
   color: #999999;
@@ -530,7 +537,7 @@ background-color: @color-post-background-hover;
   float: right;
 }
 .popover .stats {
-  border-top: 2px solid #e5e5e5;
+  border-top: 2px solid #b5bec4;
   height: 40px;
 }
 .stats-block {
@@ -539,15 +546,15 @@ background-color: @color-post-background-hover;
   top: 12px;
 }
 .top-list li:last-of-type .ranker {
-  border-bottom: 0px solid #dbdbdb;
+  border-bottom: 0px solid #d8dfe4;
 }
 .top-list li:last-of-type .ranker.first {
-  border-bottom: 1px solid #dbdbdb;
+  border-bottom: 1px solid #d8dfe4;
 }
 .top-list.you .ranker,
 .top-list.you li:last-of-type .ranker {
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
+  border-top: 1px solid #565b5f;
+  border-bottom: 1px solid #565b5f;
 }
 .user-profile .stats.fol {
   border-top: 0px solid;
@@ -600,7 +607,9 @@ background-color: @color-post-background-hover;
   font-weight: bold;
   line-height: 39px;
   float: right;
-  margin-right: 38px;
+  margin-right: 15px;
+  width: 100px;
+  text-align: right;
 }
 .top-list .points h3 {
   display: inline-block;
@@ -638,8 +647,11 @@ background-color: @color-post-background-hover;
   height: 24px;
   margin: 8px;
   margin-left: 2px;
-  background-color: #47658e;
+  background-color: #7a91c9;
   float: left;
+}
+.top-list .rank.you {
+  background-color: #3c589d;
 }
 .user .rank {
   height: 40px;
@@ -656,7 +668,7 @@ background-color: @color-post-background-hover;
   height: 36px;
 }
 .top-list .rank.first {
-  background-color: #173d71;
+  background-color: #647ab1;
 }
 .user .rank h1,
 .user .rank h2,
@@ -810,7 +822,7 @@ background-color: @color-post-background-hover;
 }
 .post-container .user {
   font: bold 13px Helvetica, Arial, sans-serif;
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 1px solid #b5bec4;
   padding-bottom: 12px;
   padding-left: 2px;
   padding-right: 2px;
@@ -975,7 +987,7 @@ background-color: @color-post-background-hover;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  width: 301px;
+  width: 300px;
   margin: 0 5px 0 5px;
   padding: 1px;
   height: 14px;
@@ -1183,7 +1195,7 @@ background:@color-post-background-hover;
   width: 0px;
 }
 .handle3.popup {
-  left: -5px;
+  left: 0px;
 }
 .track3.userpro {
   width: 0px;
@@ -1718,12 +1730,25 @@ background:@color-post-background-hover;
   color: white;
   border: 0px;
 }
-.notifier .comments {
+.notifier ul {
   max-height: 400px;
   overflow: hidden;
 }
-.notifier .comments .comment-container {
+.notifier ul li {
   background-color: transparent;
+  padding-top: 5px;
+  border-top: 1px solid white;
+  padding-bottom: 5px;
+}
+#menu .notifier ul li .photo {
+  float: left;
+}
+#menu .notifier ul li .social,
+#menu .notifier ul li .message {
+  margin-left: 35px;
+}
+#menu2 .notifier ul li .photo {
+  text-align: center;
 }
 .notifier a,
 .notifier a:hover {
@@ -1754,6 +1779,21 @@ background:@color-post-background-hover;
 .notifier .time {
   font-size: 11px;
 }
+.notifier .progress {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+.notifier .progress a {
+  top: -24px;
+  float: left;
+  position: relative;
+}
+.notifier .bar {
+  height: 24px;
+}
 #profile .post {
   border-bottom: 1px solid #e5e5e5;
   padding-top: 11px;
@@ -1778,7 +1818,7 @@ background:@color-post-background-hover;
   top: -40px;
 }
 .post-container .comment-container {
-  padding-left: 20px;
+  padding-left: 18px;
 }
 .like-control,
 .likes {
@@ -1893,7 +1933,7 @@ background:@color-post-background-hover;
 }
 .btn {
   height: 1.2em;
-  width: 4.5em;
+  min-width: 4.5em;
   border-bottom-color: #5a6371;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -2061,7 +2101,6 @@ background:@color-post-background-hover;
   border-color: #009A80 #009A80 #5A6371;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:dximagetransform.microsoft.gradient(enabled=false);
-  width: auto;
 }
 .fc-Fanpage:hover,
 .fc-Fanpage:active,
@@ -2172,4 +2211,15 @@ background:@color-post-background-hover;
 .fc-edit-2[disabled] {
   background-color: #E6E6E6;
   color: #3c589d;
+}
+.policy_message {
+  font-size: 25px;
+  padding-left: 15px;
+  padding-bottom: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #3c589d;
+  margin-left: -15px;
+  margin-right: -15px;
+  border-bottom: 2px solid #dbdbdb;
 }

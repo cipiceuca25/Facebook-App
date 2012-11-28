@@ -50,8 +50,15 @@ class Model_Rankings extends Model_DbTable_Rankings
 
 	public function getTopFans($page_id, $limit = 5)
 	{
-		$select = "
-					SELECT fans.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS count
+		$select="SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
+				left join fans f
+				on f.facebook_user_id = p.facebook_user_id
+				where f.fanpage_id = $page_id && f.facebook_user_id != f.fanpage_id
+				group by f.facebook_user_id
+				having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $page_id)
+				order by count DESC";
+		/*
+		$select = "	SELECT fans.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS count
 					FROM
                     (SELECT l.facebook_user_id FROM posts p INNER JOIN likes l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id = p.fanpage_id
 					UNION ALL
@@ -65,18 +72,24 @@ class Model_Rankings extends Model_DbTable_Rankings
 					GROUP BY fans.facebook_user_id
 					HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')                    		
 					ORDER BY count DESC";
-		
+		*/
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
-		
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
 	public function getTopFansByWeek($page_id, $limit = 5)
 	{
 
-		$select = "
-					SELECT fans.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS count
+		$select="SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
+				left join fans f
+				on f.facebook_user_id = p.facebook_user_id
+				where f.fanpage_id = $page_id && f.facebook_user_id != f.fanpage_id && p.created_time > $this->_lastSunday
+				group by f.facebook_user_id
+				having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $page_id)
+				order by count DESC";
+		
+		/*$select = " SELECT fans.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS count
 					FROM
                     (SELECT l.facebook_user_id FROM posts p INNER JOIN likes l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $page_id ."' AND p.facebook_user_id != p.fanpage_id AND p.created_time > '$this->_lastSunday'
 					UNION ALL
@@ -90,7 +103,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 					GROUP BY fans.facebook_user_id
 					HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $page_id ."')                    		
 					ORDER BY count DESC";
-	
+		*/
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
 	
@@ -263,20 +276,13 @@ class Model_Rankings extends Model_DbTable_Rankings
 					    select rank.*, @rownum:=@rownum+1 as my_rank
 					    FROM
 						    (
-						    SELECT fans.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS number_of_posts
-						    FROM
-						    (SELECT l.facebook_user_id FROM posts p INNER JOIN likes l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $fanpage_id ."' AND p.facebook_user_id = p.fanpage_id
-						    UNION ALL
-						    SELECT l.facebook_user_id FROM comments c INNER JOIN likes l ON (c.comment_id = l.post_id) WHERE l.fanpage_id = '". $fanpage_id ."' AND c.facebook_user_id = c.fanpage_id
-						    UNION ALL
-							SELECT l.facebook_user_id FROM likes l WHERE l.post_type = 'album' AND l.fanpage_id = '". $fanpage_id ."'
-		                    UNION ALL
-        		            SELECT l.facebook_user_id FROM photos p INNER JOIN likes l ON(p.photo_id = l.post_id) WHERE p.fanpage_id = '". $fanpage_id ."' AND p.facebook_user_id = p.fanpage_id		
-						    ) AS topfans
-						    INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id && fans.fanpage_id = '".$fanpage_id."')
-						    GROUP BY fans.facebook_user_id
-						    HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage_id ."')
-						    ORDER BY number_of_posts DESC
+						  SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
+				left join fans f
+				on f.facebook_user_id = p.facebook_user_id
+				where f.fanpage_id = $fanpage_id && f.facebook_user_id != f.fanpage_id
+				group by f.facebook_user_id
+				having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $fanpage_id)
+				order by count DESC
 					    ) as rank, (SELECT @rownum:=0) r
 					) as topfans_rank
 					WHERE facebook_user_id = '". $facebook_user_id ."'
@@ -287,7 +293,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 			return $result[0];
 		}
 	
-		return;
+		return null;
 	}
 
 	public function getUserTopFansRankByWeek($fanpage_id, $facebook_user_id)
@@ -298,31 +304,28 @@ class Model_Rankings extends Model_DbTable_Rankings
 					    select rank.*, @rownum:=@rownum+1 as my_rank
 					    FROM
 						    (
-						    SELECT fans.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS count
-						    FROM
-						    (SELECT l.facebook_user_id FROM posts p INNER JOIN likes l ON(p.post_id = l.post_id) WHERE p.fanpage_id = '". $fanpage_id ."' AND p.facebook_user_id = p.fanpage_id AND p.created_time > '$this->_lastSunday'
-						    UNION ALL
-						    SELECT l.facebook_user_id FROM comments c INNER JOIN likes l ON (c.comment_id = l.post_id) WHERE l.fanpage_id = '". $fanpage_id ."' AND c.facebook_user_id = c.fanpage_id AND c.created_time > '$this->_lastSunday'
-						    UNION ALL
-							SELECT l.facebook_user_id FROM likes l WHERE l.post_type = 'album' AND l.fanpage_id = '". $fanpage_id ."' AND l.created_time > '$this->_lastSunday'
-		                    UNION ALL
-        		            SELECT l.facebook_user_id FROM photos p INNER JOIN likes l ON(p.photo_id = l.post_id) WHERE p.fanpage_id = '". $fanpage_id ."' AND p.facebook_user_id = p.fanpage_id
-						    ) AS topfans
-						    INNER JOIN fans ON (fans.facebook_user_id = topfans.facebook_user_id && fans.fanpage_id = '".$fanpage_id."')
-						    GROUP BY fans.facebook_user_id
-						    HAVING fans.facebook_user_id NOT IN(SELECT facebook_user_id FROM fanpage_admins WHERE fanpage_id = '". $fanpage_id ."')
-						    ORDER BY count DESC
+						     SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
+								left join fans f
+								on f.facebook_user_id = p.facebook_user_id
+								where f.fanpage_id = $fanpage_id && f.facebook_user_id != f.fanpage_id && p.created_time >$this->_lastSunday
+								group by f.facebook_user_id
+								having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $fanpage_id)
+								order by count DESC
 					    ) as rank, (SELECT @rownum:=0) r
 					) as topfans_rank
 					WHERE facebook_user_id = '". $facebook_user_id ."'
 				";
 	
 		$result = $this->getAdapter()->fetchAll($select);
+		
+		
+		
 		if(!empty($result[0])) {
+			echo 'the hell?';
 			return $result[0];
 		}
 	
-		return;
+		return null;
 	}
 	
 	public function getUserTopTalkerRank($fanpage_id, $facebook_user_id)

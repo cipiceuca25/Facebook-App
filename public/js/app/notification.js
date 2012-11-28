@@ -9,6 +9,7 @@ var pointCount = 0;
 var notifiercount = 0;
 var notifier=false;
 
+
 jQuery(document).ready(function($){
 	//color1 = $('.toolbar li').css("color");
 	//color2 = $('.toolbar li').css("background-color");
@@ -21,10 +22,16 @@ jQuery(document).ready(function($){
 
 
 
-$('.notification').live('click', function(){
+
+
+$('.notification').live('click', function(event){
 	//alert(notifier);
+
 	if(!notifier){
+		//console.log('reload/open');
 		pointlog = false;
+		upcoming_badges = false;
+		notifier = true;
 	//if(pointCount + badgeCount > 0 ){
 		getListNotification();
 		
@@ -41,9 +48,11 @@ $('.notification').live('click', function(){
 		//alert(date);
 	//}
 	}else{
-		$('.notifier').remove();
+		$('#menu .notifier').remove();
+		$('#menu2 .notifier').remove();
 		notifier = false;
 		pointlog = false;
+		upcoming_badges = false;
 	}
 	
 });

@@ -4,23 +4,23 @@ jQuery(document).ready(function($){
 
 		//confirmFunction();
 		if(newuser) {
-			$(".profile-content").html("<div class='rvrow'><div class='rvgrid-11'><div class='box'><div class='title nopic '>" +
-					"						<div class='title-header nopic' style='text-align:center'>" +
+			$(".profile-content").html("<div class='rvrow'><div class='rvgrid-11'><div class='box'><div class='user'>" +
+					"					<div class='policy_message'>"	+		
 					"							Policy Message" +
-					"						</div>" +
+					"					</div>" +
 					"					</div>" +
 					"					 " +
 					"						<div class='post-container'>" +
-					"							<div class='post' style='text-align:center'>" +
-					"							Hello, You're about to use FanCrank. <br/>" +
-					"							We're going to be needing some of your information:<br/>" +
+					"							<div class='post' >" +
+					"							Hello, You're about to use <span class='bold'>FanCrank</span>. <br/>" +
+					"							We're going to be needing some of your information:<br/><br/>" +
 					"							" +
-					"								Your Basic Information,<br/> Birthday,<br/> Hometown,<br/> Locale,<br/>" +
-					"								Your Friends List <br/>" +
-					"								Also, we're going to be posting on your behalf, don't worry though its only on this Fanpage. <br/>We won't post on your feed<br/>" +
-					"							" +
-					"							</div>" +
-					"						</div><button  class='btn-more' onclick=confirmFunction()>Login To FanCrank</button> " +
+					"								<span class='bold'>Your Basic Information,<br/> Birthday,<br/> Hometown,<br/> Locale,<br/>" +
+					"								Your Friends List <br/></span><br/>" +
+					"								Also, we're going to be posting on your behalf, don't worry though its only on this Fanpage; we won't post on your feed<br/>" +
+					"							 "+
+					"							</div> <div style='text-align:center; margin-top:5px; margin-bottom:5px;'><button  class='btn fc-Follow' style='width:200px; height:auto;' onclick=confirmFunction()>Login To FanCrank</button></div>" +
+					"						</div> " +
 					"					</div></div></div>" +
 					""
 					);
