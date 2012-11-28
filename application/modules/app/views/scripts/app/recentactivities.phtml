@@ -5,15 +5,6 @@
 		 	$displayname= $username;
 			
 		
-			if (strlen($username)>16){
-				if(strlen($this->target_fan->fan_first_name)>16){
-					$displayname = substr($this->target_fan->fan_first_name, 0, 13).'...'	;
-				}else if (strlen($this->target_fan->fan_first_name)>13){
-					$displayname = $this->target_fan->fan_first_name;
-				}else{
-					$displayname = $this->target_fan->fanfirst_name .' '. substr($this->target_fan->fan_last_name, 0,1) .'.';
-				}
-			}
 		}
 		$popup = $this->source;
 		
