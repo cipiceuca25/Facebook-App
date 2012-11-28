@@ -2240,7 +2240,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
     		//echo $e->getMessage();
     	}
-    	Zend_Debug::dump($activities);
+    	//Zend_Debug::dump($activities);
+    	$this->view->activities = $activities;
+    	
+    	$this->render("allactivities");
     }
     
     

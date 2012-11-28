@@ -1234,13 +1234,13 @@ function getAllActivities() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#info-box-container').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('#allactivities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
 	
-			$('#info-box-container').html(data);
-			changeTime('#info-box-container .time');
+			$('#allactivities').html(data);
+			changeTime('#allactivities .time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
