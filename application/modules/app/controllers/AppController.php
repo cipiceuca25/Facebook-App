@@ -2193,6 +2193,58 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->render("fancrankfeedcomment");
     }
     
+    public function allactivitiesAction(){
+    	$this->_helper->layout->disableLayout();
+    	$cache = Zend_Registry::get('memcache');
+    	$cache->setLifetime(1800);
+    	$activitiesModel = new Model_FancrankActivities();
+    	$limit = 20;
+    	$activities = null;
+    	try {
+    		$fanActivityId = $this->_fanpageId . '_all_activity';
+    		 
+    		//$cache->remove($fanActivityId);
+    		//$cache->remove($fanActivityId);
+    		//Check to see if the $fanpageId is cached and look it up if not
+    		if(isset($cache) && !$cache->load($fanActivityId)){
+    			//echo 'db look up';
+    			//$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    			$activities = $activitiesModel->getAllActivities($this->_fanpageId, $limit);
+    	
+    			//Save to the cache, so we don't have to look it up next time
+    			$cache->save($activities, $fanActivityId);
+    		}else {
+    			//echo 'memcache look up';
+    			$activities = $cache->load($fanActivityId);
+    	
+    			// merge new activity
+    			$newActivity = array();
+    			if(!empty($activities[0]['created_time'])) {
+    				$newActivity = $activitiesModel->getAllActivitiesSince($this->_fanpageId, $limit, $activities[0]['created_time']);
+    			}
+    	
+    	
+    			if(count($newActivity) >= $limit) {
+    				//Zend_Debug::dump($newActivity);
+    	
+    				$activities = $newActivity;
+    				$cache->save($activities, $fanActivityId);
+    				 
+    			}else if(count($newActivity) > 0){
+    				//echo"there are new activities";
+    				$activities = array_merge($newActivity, array_slice($activities, count($newActivity)));
+    				 
+    			}
+    		}
+    	} catch (Exception $e) {
+    		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    		//echo $e->getMessage();
+    	}
+    	
+    }
+    
+    
+    
     public function recentactivitiesAction(){
     	$this->_helper->layout->disableLayout();
     	$source = $this->_request->getParam('source');
