@@ -2130,21 +2130,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$result = array();
     	//Zend_Debug::dump($limit);
-    	if ($filter == 'true'){
-    		
+    	if ($filter == 'true'){	
     		$result = $this->filterComments($this->getFeedComment($postId, $total));
     	}else{
     		$result = $this->getFeedComment($postId, $total);
     	}
     	//$result = json_encode($result);
 		
-    	
     	$follow = new Model_Subscribes();
     	$likesModel = new Model_Likes();
     	$likes = array();
     	$relation = array();
     	$count=0;
-		
 
     	if(!empty($result)) {
     		foreach ($result as $posts){
@@ -2171,6 +2168,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		}    		
     	}
     	 
+    	
+    	//Zend_Debug::dump($result);
 
     	//$postTop = explode('_', $postId);
     	//$postTop = $postTop[0].'_'.$postTop[1];
@@ -2310,11 +2309,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$this->_helper->layout->disableLayout();
 		
 		$limit = $this->_request->getParam('limit');
+		$notifier = $this->_request->getParam('notifier');
 		$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, $limit);
 		
 		//$badges = $this->badgeArray($this->_fanpageId, $this->_userId, $limit);
 		//Zend_Debug::dump($badges);
 		//exit();
+		
+		$this->view->notifier = $notifier;
 		$this->view->upcoming = $badges;
 		$this->render("upcomingbadges");
 	}

@@ -608,7 +608,7 @@ background-color: @color-post-background-hover;
   line-height: 39px;
   float: right;
   margin-right: 15px;
-  width: 75px;
+  width: 100px;
   text-align: right;
 }
 .top-list .points h3 {
@@ -987,7 +987,7 @@ background-color: @color-post-background-hover;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  width: 301px;
+  width: 300px;
   margin: 0 5px 0 5px;
   padding: 1px;
   height: 14px;
@@ -1779,6 +1779,21 @@ background:@color-post-background-hover;
 .notifier .time {
   font-size: 11px;
 }
+.notifier .progress {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+.notifier .progress a {
+  top: -24px;
+  float: left;
+  position: relative;
+}
+.notifier .bar {
+  height: 24px;
+}
 #profile .post {
   border-bottom: 1px solid #e5e5e5;
   padding-top: 11px;
@@ -1803,7 +1818,7 @@ background:@color-post-background-hover;
   top: -40px;
 }
 .post-container .comment-container {
-  padding-left: 20px;
+  padding-left: 18px;
 }
 .like-control,
 .likes {

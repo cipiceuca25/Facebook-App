@@ -6,6 +6,7 @@ var ttb = true;
 var tcb = true;
 var tfdb = true;
 var pointlog =false;
+var upcoming_badges = false;
 var currentpage = 'newsfeed';
 
 var backgroundcolor;
@@ -16,56 +17,7 @@ $(document).ready(function() {
     // Firefox  
 	document.addEventListener("DOMMouseScroll", MouseWheelHandler, false);  
 // trick to indentify parent container
-	/*	
-	if (window.location != window.parent.location) {
-			$(document.body).css({
-				'overflow' : 'hidden'
-			});
-		} else {
-			$(document.body).css({
-				'overflow' : 'auto'
-			});
-		}	
-		$('#logo').html('<img src ="/img/thin-banner.jpg" />');
-	
-		*/
-		/*
-		if ($('#logo').attr('data-login') == "true"){
-			
-			$('#logo').html('<img src ="/img/test.png" />');
-			
-		}else{
-			if(fanpageId == 216821905014540) {
-				$('#logo').html('<img src ="/img/beach.jpg" />');
-			
-			}else{
-			FB.api(fanpageId, function(response) {
-				if (!response || response.error) {
-				} else {
-					var x = 0;
-					var y;
-					try {
-						y = response.cover.offset_y;
-					} catch (err) {
-						y = 0;
-					}
-	
-					if (y > 35) {
-						x = -1 * (parseInt(y) + 50);
-					} else {
-						x = 0;
-					}
-	
-					try {	
-							$('#logo').html(
-							'<img src =" ' + response.cover.source
-								+ '"style=" top:' + x + 'px" />');
-					} catch (err) {
-					}
-				}
-	
-			});}
-		}*/
+
 	
 	backgroundcolor = $('.profile-content').css('background-color');
 	getNewsfeed('#news-feed');
@@ -431,8 +383,6 @@ function choosebadges(){
 }
 
 
-
-
 function feedbackAnimation(ui, type) {
 
 	switch(type){
@@ -513,7 +463,7 @@ function getUpcomingBadges(ui, limit){
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/upcomingbadges/' + fanpageId + '/?limit='
-				+ limit,
+				+ limit + '&notifier=false',
 		dataType : "html",
 		cache : false,
 		async : true,
@@ -568,6 +518,7 @@ function comment_feed3_filter(post_id, type, total, toggle) {
 function comment_feed(post_id, type, total, toggle) {
 	ui = '#post_' + post_id;
 	//alert(ui);
+	console.log(ui);
 	getFeedComment(ui, post_id, type, total, toggle, false, false,false);
 	//$('.social.comment.' + post_id).css('display', 'none');
 	
@@ -1079,34 +1030,73 @@ function getRedeem() {
 		}
 	});
 }
-$('#pointlog').live('click', function(){
+
+
+$('#noti2').live('click', function(event){
 	//alert(notifier);
-	if(!pointlog){
+	
+	if(!upcoming_badges){
+		//console.log('reload/open');
 	//if(pointCount + badgeCount > 0 ){
-		getpointlog();
-		notifer = false;
-		
-		
+		getupcomingbadges_notifier();
+		notifier = false;
+		pointlog=false;
+		upcoming_badges =true;
 		//$('.notification').css('background-color',color2);
 		//$('.notification a').css('color',color1);
 		//$('.notification').css('opacity','1');
-
-
-
 		//$('.notification a').addClass('noclick');
-		
 		//alert(date);
 	//}
 	}else{
-		$('.notifier').remove();
+		$('#menu .notifier').remove();
+		$('#menu2 .notifier').remove();
 		pointlog = false;
-		notifer = false;
+		notifier = false;
+		upcoming_badges = false;
+	}
+	
+});
+
+$('#logout-noti').live('click', function(){
+
+	console.log('h');
+	pointlog = false;
+	upcoming_badges = false;
+	notifier=false;
+	$('#menu .notifier').remove();
+	$('#menu2 .notifier').remove();
+});
+
+
+$('#pointlog').live('click', function(event){
+	//alert(notifier);
+	
+	if(!pointlog){
+		//console.log('reload/open');
+	//if(pointCount + badgeCount > 0 ){
+		getpointlog();
+		notifier = false;
+		upcoming_badges = false;
+		pointlog = true;
+		//$('.notification').css('background-color',color2);
+		//$('.notification a').css('color',color1);
+		//$('.notification').css('opacity','1');
+		//$('.notification a').addClass('noclick');
+		//alert(date);
+	//}
+	}else{
+		$('#menu .notifier').remove();
+		$('#menu2 .notifier').remove();
+		pointlog = false;
+		notifier = false;
+		upcoming_badges = false;
 	}
 	
 });
 function getpointlog(){
 	$('#menu').append('<div class="notifier"></div>');
-	pointlog = true;
+	
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/pointlog/' + fanpageId,
@@ -1124,19 +1114,45 @@ function getpointlog(){
 			console.log(xhr.statusText, errorMessage);
 		}
 	});
-	
-	
-	
 }
+
+function getupcomingbadges_notifier(){
+	$('#menu').append('<div class="notifier"></div>');
+	$('#menu2').append('<div class="notifier"></div>');
+	upcoming_badges= true;
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/upcomingbadges/' + fanpageId + '/?limit=3&notifier=true',
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+	
+			$('.notifier').html("<div  style='width:"+$('#toolbar').css('width') +"; text-align:center;'><div class='box'><img src='/img/ajax-loader.gif' /></div></div>");
+		},
+		success : function(data) {
+			$('.notifier').html(data);
+			upcoming_badges = true;
+			//$(x).popover('show');
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
+}
+
+
 function getListNotification(){
 	
 	$('#menu').append('<div class="notifier"></div>');
 	$('#menu2').append('<div class="notifier"></div>');
 	$('.notifier').html($('.notification').attr('data-content'));
 	changeTime('.notifier .time');
-	notifier = true;
+	
 	//console.log(points);
 	
+	
+	//SAVE THE LAST TIME THE NOTIFICATION WAS SEEN
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/user/' + userId	+ '/savelastnotification/'  + '&fanpage=' + fanpageId,
@@ -1374,7 +1390,8 @@ function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name
 				//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 				$('#comment_box_'+post_id).val('');
 				
-				post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
+				post_comment_count = parseInt($('#post_'+post_id).attr('data-comment-count')) + 1;
+				console.log(post_comment_count);
 				//alert(post_comment_count);
 				//$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
 			//	$('.comment_'+post_id).html(' '+post_comment_count);
@@ -1415,7 +1432,7 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 				//addActivities('comment-' + post_type, post_id, post_owner_id, post_owner_name, mes.substring(0,99));
 				$('#comment_box_popup_'+post_id).val('');
 				
-				//post_comment_count = parseInt($('.comment_'+post_id).attr('data-comment-count')) + 1;
+				post_comment_count = parseInt($('#post_'+post_id).attr('data-comment-count')) + 1;
 				//alert(post_comment_count);
 				//$('.comment_'+post_id).html(post_comment_count);
 	
