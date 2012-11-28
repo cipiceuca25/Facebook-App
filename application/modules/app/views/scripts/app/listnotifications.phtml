@@ -9,8 +9,8 @@
 				</div>			
 			</div>
 			<?php if (count($this->events) == 0 ){?>
-				<ul class="comments">
-					<li class="comment-container" >
+				<ul >
+					<li  >
 	
 						
 						<div class="post">
@@ -23,16 +23,16 @@
 					</li>
 				</ul>
 			<? }else{?>
-				<ul class="comments">
+				<ul>
 				<?php foreach ($this->events as $e){?>
 				
-					<li class="comment-container">
+					<li >
 								<? switch($e['activity_type']){
 									case 'points':?>	
 										<? if($e['event_object'] == 'admin_add_point'){?>
 											<div class="photo">
 												<a>
-													<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->fanpage_id ?>/picture">
+													<img class="small-face"  src="https://graph.facebook.com/<?= $this->fanpage_id ?>/picture">
 												</a>
 											</div>
 											<div class="message">
@@ -48,7 +48,7 @@
 										<?} else if ($e['event_object'] == 'admin_subtract_point'){?>
 											<div class="photo">
 												<a>
-													<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $this->fanpage_id ?>/picture">
+													<img class="small-face"  src="https://graph.facebook.com/<?= $this->fanpage_id ?>/picture">
 												</a>
 											</div>
 											<div class="message">
@@ -66,7 +66,7 @@
 										<?} else {?>
 											<div class="photo">
 										
-													<img class="face" width="30" height="30" src="/img/coins.png">
+													<img class="small-face"src="/img/coins.png">
 											
 											</div>
 											<div class="message">
@@ -88,7 +88,7 @@
 									<?case 'badge':?>
 										<div class="photo">
 											<a>
-												<img class="face" width="30" height="30" src="<?= $e['picture']?>">
+												<img class="small-face" src="<?= $e['picture']?>">
 											</a>
 										</div>
 										<div class="message">
@@ -113,7 +113,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											>
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -149,7 +149,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											>
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -186,7 +186,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											<?  }?> >
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face"  src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -223,7 +223,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											<?  }?> >
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -260,7 +260,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											<?  }?> >
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -297,7 +297,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											<?  }?> >
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -334,7 +334,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											<?  }?> >
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -369,7 +369,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											<?  }?> >
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -404,7 +404,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											<?  }?> >
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -441,7 +441,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											<?  }?> >
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">
@@ -477,7 +477,7 @@
 												data-placement="right" 
 												data-userid="<?=$post->from->id?>"
 											<?  }?> >
-												<img class="face" width="30" height="30" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
 											</a>
 										</div>
 										<div class="message">

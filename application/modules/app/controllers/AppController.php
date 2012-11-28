@@ -279,8 +279,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($this->_fanpageId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
-//     		$cache->remove($this->_fanpageId . '_topfan');
-//     		$cache->remove($this->_fanpageId . '_topfanall');
+    		$cache->remove($this->_fanpageId . '_topfan');
+     		$cache->remove($this->_fanpageId . '_topfanall');
 //     		$cache->remove($this->_fanpageId . '_topclicker');
 //     		$cache->remove($this->_fanpageId . '_topfollowed');
 //     		$cache->remove($this->_fanpageId . '_toptalker');
@@ -398,12 +398,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
  
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topclicker');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfollowed');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfan');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_toptalker');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_fanfavorite');
-//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfanall');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topclicker');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfollowed');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfan');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_toptalker');
+     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_fanfavorite');
+    		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfanall');
     		try {
     			switch($list){
     				case 'top-followed':
@@ -456,7 +456,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     						if(isset($cache) && !$cache->load($this->_fanpageId .'_' .$this->_userId . '_topfanall')){
     							//Look up the $fanpageId
     							$userBoardData= $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
-    								
     							$cache->save($userBoardData, $this->_fanpageId .'_' .$this->_userId . '_topfanall');
     						}else {
     							//echo 'memcache look up';
@@ -467,7 +466,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     					if(isset($cache) && !$cache->load($this->_fanpageId .'_' .$this->_userId . '_topfan')){
     						//Look up the $fanpageId
     						$userBoardData= $model->getUserTopFansRankByWeek($this->_fanpageId, $this->_userId);
-    					
     						$cache->save($userBoardData, $this->_fanpageId .'_' .$this->_userId . '_topfan');
     					}else {
     						//echo 'memcache look up';
@@ -482,7 +480,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			//echo $e->getMessage();
     		}
     	}
-    	
+    	/*
     	if(isset($this->_fanpageProfile->fanpage_level) && $this->_fanpageProfile->fanpage_level < 3) {
     		for ($i=0; $i<count($toplist); $i++){
     			$toplist[$i]['count'] = '?';
@@ -492,9 +490,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			$userBoardData['count'] = '?';
     		}
     	}
-    	
-    	//Zend_Debug::dump($userBoardData);
-    
+    	*/
     	//Zend_Debug::dump($toplist);
     	
     	$this->view->toplist = $toplist;
@@ -847,12 +843,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    			}
 	    			if(isset($l->comments->data)){
 		    			$count=0;
-		    			foreach ( $l->comments->data as $x){
-		    				$latest_comment_relation[$count] = $follow->getRelation($this->_userId, $x->from->id,$this->_fanpageId);
-		    				
-		    				$latest_comment_like[$count] = $likesModel->getLikes($this->_fanpageId, $x->id, $this->_userId );
-		    				
-		    				$count++;
+		    			if($l->comments->count < 5){ 
+			    			foreach ( $l->comments->data as $x){
+			    				
+			    				$latest_comment_relation[$count] = $follow->getRelation($this->_userId, $x->from->id,$this->_fanpageId);
+			    				
+			    				$latest_comment_like[$count] = $likesModel->getLikes($this->_fanpageId, $x->id, $this->_userId );
+			    				
+			    				$count++;
+			    			}
 		    			}
 	    			}
 	    			$latest = $l;
@@ -863,6 +862,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	//Zend_Debug::dump($latestrelation);
     	
+    
     	$this->view->latest_comment_relation = $latest_comment_relation;
     	if($this->_fanpageProfile -> fanpage_level > 2){
     		$this->view->yourpointslatest = $yourpointslatest;
@@ -1025,13 +1025,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			}
     		}
     		if (isset($posts->comments->data)){
-    		
-    			foreach($posts->comments->data as $c){
-    					
-    				$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
-    				$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
-    				//Zend_Debug::dump($comment_relation[$count2]);
-    				$count2++;
+    			if($posts->comments->count < 5){
+	    			foreach($posts->comments->data as $c){
+	    					
+	    				$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
+	    				$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
+	    				//Zend_Debug::dump($comment_relation[$count2]);
+	    				$count2++;
+	    			}	
     			}
     		}
     	
@@ -1784,13 +1785,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 					
 					
 					if (isset($posts->comments->data)){
-				
-						foreach($posts->comments->data as $c){
-													
-							$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
-							$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
-							//Zend_Debug::dump($comment_relation[$count2]);
-							$count2++;
+						if($posts->comments->count < 5){
+							foreach($posts->comments->data as $c){
+														
+								$comment_likes[$count2] =  $likesModel->getLikes($this->_fanpageId, $c->id, $this->_userId );
+								$comment_relation[$count2] = $follow->getRelation($this->_userId, $c->from->id,$this->_fanpageId);
+								//Zend_Debug::dump($comment_relation[$count2]);
+								$count2++;
+							}
 						}
 					}
 					

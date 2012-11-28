@@ -274,19 +274,19 @@
 						<div class="user-badge">
 							<a rel="tooltip-follow" class ="follow_<?=$comments->from->id?>" <?php switch($this->comment_relation[$count2]) { 
 								case 'Fanpage':?>
-									 class="noclick" data-original-title="You can't Follow an Admin"><span class="btn fc-Fanpage">Admin</span>
+									 class="noclick" data-original-title="You can't Follow an Admin"><span class="btn btn-mini fc-Fanpage">Admin</span>
 								<?break;?>
 								<?case 'You':?>
-									 class="noclick" data-original-title="This is You"><span class="btn fc-You">You</span>
+									 class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
 								<?break;?>
 								<?case 'Following':?>
 									onclick="unfollow(<?=$comments->from->id?> ,'<?=$comments->from->name?>')" 
-									data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
+									data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
 								<?break;?>
 									
 								<?default:?>
 									onclick="follow(<?=$comments->from->id?> , '<?=$comments->from->name?>')" 				
-									data-original-title="Click to Follow this User"><span class="btn fc-<?= $this->comment_relation[$count2]?>"><?= $this->comment_relation[$count2]?></span>
+									data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?= $this->comment_relation[$count2]?>"><?= $this->comment_relation[$count2]?></span>
 								<?}?>
 							</a>
 						</div>	
