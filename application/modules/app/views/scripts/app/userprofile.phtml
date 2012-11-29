@@ -72,9 +72,9 @@
 								<div class=" post badgedisplay">
 									<?php foreach ($this->badges as $b): ?>
 										<div class="progress  earned-badges" >
-										<div class="bar" style="width: 100%;height:50px"></div>
+										<div class="bar" ></div>
 										<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
-										class=noclick rel="tooltip" data-placement="top" style="float:left; position:relative;top:-50px;" >
+										class=noclick rel="tooltip" data-placement="top">
 											<img src="<?= $b['picture']?>"/>
 										</a>
 									</div>
@@ -93,35 +93,35 @@
 					<ul class="post stats">
 						
 						<li >
-							<div class="stats-block"><img src="/img/post.png" /><h5><?=($this->stat_post > 99)? '99+':$this->stat_post?></h5>	<br/>
+							<div class="stats-block" ><h5><a class="noclick rel="tooltip" data-original-title="Posts" data-placement="top" ><img src="/img/post.png" /><?=($this->stat_post > 99)? '99+':$this->stat_post?></a></h5>
 							</div>
 						</li>
 						<li >
-							<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?=($this->stat_like > 99)? '99+':$this->stat_like?></h5><br/>
+							<div class="stats-block"><h5><a class="noclick rel="tooltip" data-original-title="Likes" data-placement="top" ><img src="/img/thumbsup.png" /><?=($this->stat_like > 99)? '99+':$this->stat_like?></a></h5>
 							</div>
 						</li>
 						<li>
-							<div class="stats-block"><img src="/img/comment.png" /><h5><?=($this->stat_comment > 99)? '99+':$this->stat_comment?></h5><br/>
+							<div class="stats-block"><h5><a class="noclick rel="tooltip" data-original-title="Comments" data-placement="top" ><img src="/img/comment.png" /><?=($this->stat_comment > 99)? '99+':$this->stat_comment?></a></h5>
 							</div>
 						</li>
 						<li >
-							<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?=($this->stat_get_like > 99)? '99+':$this->stat_get_like?></h5><br/>
+							<div class="stats-block"><h5><a class="noclick rel="tooltip" data-original-title="Recieved Likes" data-placement="top" ><img src="/img/rthumbsup.png" /><?=($this->stat_get_like > 99)? '99+':$this->stat_get_like?></a></h5>
 							</div>
 						</li>
 						<li>
-							<div class="stats-block"><img src="/img/rcomment.png" /><h5><?=($this->stat_get_comment > 99)? '99+':$this->stat_get_comment?></h5><br/>
+							<div class="stats-block"><h5><img src="/img/rcomment.png" /><a class="noclick rel="tooltip" data-original-title="Recieved Comments" data-placement="top" ><?=($this->stat_get_comment > 99)? '99+':$this->stat_get_comment?></a></h5>
 							</div> 
 						</li>
 						<li>
 							<div class="stats-block">
-							<h5><a onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow.png" /><?= $this->follower['0']['Follower']?>
+							<h5><a class="noclick rel="tooltip" data-original-title="Followers" data-placement="top" onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow.png" /><?= $this->follower['0']['Follower']?>
 							</a></h5>
 							
 							</div>
 						</li>
 						<li >
 							<div class="stats-block">
-								<h5><a onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow2.png" /><?= $this->following['0']['Following']?>
+								<h5><a class="noclick rel="tooltip" data-original-title="Following" data-placement="top"  onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow2.png" /><?= $this->following['0']['Following']?>
 								</a></h5>
 							</div>
 						</li>
@@ -155,6 +155,6 @@
 	$('#user_activities').enscroll({
 	showOnHover: true,
 	clickTrackToScroll: false,
-	verticalTrackClass: 'track3 userpro',
-	verticalHandleClass: 'handle3 userpro'});
+	verticalTrackClass: 'track3',
+	verticalHandleClass: 'handle3'});
 </script>

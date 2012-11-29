@@ -643,8 +643,6 @@ function getNewsfeed() {
 
 function getTopPost() {
 	//alert('getting top postsss');
-
-
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/gettoppost/' + fanpageId,
@@ -968,7 +966,7 @@ function getTopList(list, ui){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$(ui).append("<div class='removal' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$(ui).append("<div class='removal' style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$(ui + ' .removal').remove();
@@ -1210,7 +1208,7 @@ function getRecentActivities(ui, user_id) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$(ui).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$(ui).html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
@@ -1235,7 +1233,7 @@ function getAllActivities() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#allactivities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('#allactivities').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
