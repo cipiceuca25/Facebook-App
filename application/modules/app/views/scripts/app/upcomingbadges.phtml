@@ -37,7 +37,7 @@
 </div>
 
 <?php }else{ ?>
-
+<?php foreach ($this->upcoming as $b){?>
 	<div class="upcoming-badges title">
 		<div class="progress">
 			<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
@@ -55,4 +55,5 @@
 			<?= $b['percentage'].'% Completed'?>
 		</div>
 	</div>
+<?php }?> 
 <?php }?>

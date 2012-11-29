@@ -630,6 +630,7 @@ function getNewsfeed() {
 			getTopList('top-fan-mini', '#topfan');
 			getTopPost();
 			getFancrankfeed('myfeed');
+			getAllActivities();
 			changeTime('.time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -1215,6 +1216,31 @@ function getRecentActivities(ui, user_id) {
 	
 			$(ui).html(data);
 			changeTime('#recent_activities .time');
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting user recent activities');
+		}
+	});
+}
+
+function getAllActivities() {
+
+
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/app/app/allactivities/' + fanpageId ,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend: function(){
+			$('#allactivities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		
+		},
+		success : function(data) {
+	
+			$('#allactivities').html(data);
+			changeTime('#allactivities .time');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -2303,7 +2329,7 @@ $(document).ready(function() {
 	});
 
 	// add redeem confirm listner
-	$('.btn-redeem-confirm').live('click', function(e) {
+	$('#redeem_submit').live('click', function(e) {
 		e.preventDefault();
 		console.log('redeem confirm');
 		var formData = $('#redeem-form').serialize();

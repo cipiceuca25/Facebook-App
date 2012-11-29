@@ -5,15 +5,6 @@
 		 	$displayname= $username;
 			
 		
-			if (strlen($username)>16){
-				if(strlen($this->target_fan->fan_first_name)>16){
-					$displayname = substr($this->target_fan->fan_first_name, 0, 13).'...'	;
-				}else if (strlen($this->target_fan->fan_first_name)>13){
-					$displayname = $this->target_fan->fan_first_name;
-				}else{
-					$displayname = $this->target_fan->fanfirst_name .' '. substr($this->target_fan->fan_last_name, 0,1) .'.';
-				}
-			}
 		}
 		$popup = $this->source;
 		
@@ -297,6 +288,9 @@
 			case 'post-video':?>
 				made a <a  onclick="popup_post('<?=$act['event_object']?>',  <?=$popup?>)">video post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
+			case 'redeem_by_badge':?>
+				have redeemed an item #<?=$act['event_object']?>.
+				<?break;				
 			default:
 		}?>
 		</div>

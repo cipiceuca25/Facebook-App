@@ -1,88 +1,114 @@
 <form id="redeem-form" class="form-horizontal">
 
-	<div class="row-fluid">
-		<div class="span6">
-			<h2>Please select an item</h2>
-			<input type="hidden" name="redeemItemId" id="redeemItemId"/>
-			<table class="table" id="redeemItemTable">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Name</th>
-						<th>description</th>
-						<th>picture</th>
-					</tr>
-				</thead>
-				<tbody>
-				<?php foreach($this->itemList as $item): ?>
-					<tr>
-						<td><?= $item['id']?></td>	
-						<td><?= $item['name']?></td>
-						<td><?= $item['description']?></td>		
-						<td><?= $item['picture']?></td>
-						<td><input data-item-id="<?= $item['id']?>" type="checkbox" /></td>									
-					</tr>
-				<?php endforeach; ?>
-				</tbody>
-			</table>
+	<div class="rvrow">
+		<div class="rvgrid-11">
+			<div class="box"  >
+				<div class="post-container" style="min-height:445px;">
+					<div class="page1">
+						<div class="title nopic">
+							<div class="title-header nopic">
+								Please Select an Item
+								<button type="button" id='next_page' class="btn fc-edit" style="float:right; margin-top:-9px; z-index:2">Next</button>
+							</div>
+							
+						</div>
+						<div class="post">
+							<input type="hidden" name="redeemItemId" id="redeemItemId"/>
+							
+							<table class="table" id="redeemItemTable">
+								<thead>
+									<tr>
+										<th style="width:25px">Selected Items</th>
+										<th></th>
+										<th>Name</th>
+										<th>Description</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php foreach($this->itemList as $item): ?>
+									<tr>
+										<td><input data-item-id="<?= $item['id']?>" type="checkbox" /></td>		
+										<td><img src='/img/item/<?= $item['picture']?>' width="40px" /></td>	
+										<td><?= $item['name']?></td>
+										<td><?= $item['description']?></td>		
+																
+									</tr>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+				
+					</div>
+					<div class="page2"  style="display:none;">
+						<div class="title nopic">
+							
+							<div class="title-header nopic">
+								
+								Shipping Info
+								<button type="button" id="last_page" class="btn fc-edit" style="float:right; margin-top:-9px; z-index:2">Back</button>
+							</div>
+							
+						</div>
+						<div class="post">
+							<div class="control-group">
+								<label class="control-label" for="contactName">Contact Name *</label>
+								<div class="controls">
+									<input type="text" name="contactName" id="contactName" value="<?=$this->shippingInfo['name']?>" />
+								</div>
+							</div>			
+							<div class="control-group">
+								<label class="control-label" for="address">Street Address *</label>
+								<div class="controls">
+									<input type="text" name="address" id="address" value="<?=$this->shippingInfo['address']?>" />
+								</div>
+							</div>	
+							<div class="control-group">
+								<label class="control-label" for="city">City *</label>
+								<div class="controls">
+									<input type="text" name="city" id="city" value="<?=$this->shippingInfo['city']?>" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="region">State/Province *</label>
+								<div class="controls">
+									<input type="text" name="region" id="region" value="<?=$this->shippingInfo['region']?>" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="country">Country *</label>
+								<div class="controls">
+									<input type="text" name="country" id="country" value="<?=$this->shippingInfo['country']?>" />
+								</div>
+							</div>		
+							<div class="control-group">
+								<label class="control-label" for="postCode">Zip/Postal Code *</label>
+								<div class="controls">
+									<input type="text" name="postcode" id="postcode" value="<?=$this->shippingInfo['postcode']?>" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="trackingEmail">Email *</label>
+								<div class="controls">
+									<input type="text" name="trackingEmail" id="trackingEmail" value="<?=$this->shippingInfo['email']?>" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label" for="confirmEmail">Confirm Email *</label>
+								<div class="controls">
+									<input type="text" name="confirmEmail" id="confirmEmail" />
+								</div>
+							</div>						
+							
+							<div style="margin-left:191px;margin-top:10px">
+							<button id="redeem_submit" type="submit" class="btn fc-Follow" >Confirm</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>	
 	</div>
 
-	<div>
-		<h2>Shipping Info</h2>
-		<div class="control-group">
-			<label class="control-label" for="contactName">Contact Name *</label>
-			<div class="controls">
-				<input type="text" name="contactName" id="contactName" value="<?=$this->shippingInfo['name']?>" />
-			</div>
-		</div>			
-		<div class="control-group">
-			<label class="control-label" for="address">Street Address *</label>
-			<div class="controls">
-				<input type="text" name="address" id="address" value="<?=$this->shippingInfo['address']?>" />
-			</div>
-		</div>	
-		<div class="control-group">
-			<label class="control-label" for="city">City *</label>
-			<div class="controls">
-				<input type="text" name="city" id="city" value="<?=$this->shippingInfo['city']?>" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="region">State/Province *</label>
-			<div class="controls">
-				<input type="text" name="region" id="region" value="<?=$this->shippingInfo['region']?>" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="country">Country *</label>
-			<div class="controls">
-				<input type="text" name="country" id="country" value="<?=$this->shippingInfo['country']?>" />
-			</div>
-		</div>		
-		<div class="control-group">
-			<label class="control-label" for="postCode">Zip/Postal Code *</label>
-			<div class="controls">
-				<input type="text" name="postcode" id="postcode" value="<?=$this->shippingInfo['postcode']?>" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="trackingEmail">Email *</label>
-			<div class="controls">
-				<input type="text" name="trackingEmail" id="trackingEmail" value="<?=$this->shippingInfo['email']?>" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="confirmEmail">Confirm Email *</label>
-			<div class="controls">
-				<input type="text" name="confirmEmail" id="confirmEmail" />
-			</div>
-		</div>						
-		<div class="form-actions">
-			<button type="reset" class="btn">Cancel</button>
-			<button type="button" class="btn btn-primary btn-redeem-confirm">Confirm</button>
-		</div>
-	</div>
 </form>
 
 <script>
@@ -95,6 +121,20 @@
 		});
 
 		var addresspicker = $( "#address" ).addresspicker();
+
+		$('#next_page').live('click',function(){
+			$('.page1').css('display','none');
+
+			$('.page2').css('display','block');
+			
+		});
+		
+		$('#last_page').live('click',function(){
+			$('.page2').css('display','none');
+
+			$('.page1').css('display','block');
+		});
+		
 	});
 
 	function initFormValidate() {
