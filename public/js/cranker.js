@@ -1264,7 +1264,7 @@ function getRelation(target, ui) {
 					data = $.trim(data);
 					
 					$('.' + ui).html(
-							'<span class="fc-' + data + '">' + data
+							'<span class="btn fc-' + data + '">' + data
 									+ '</span>');
 				},
 				error : function(xhr, errorMessage, thrownErro) {
