@@ -279,8 +279,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($this->_fanpageId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
-    		$cache->remove($this->_fanpageId . '_topfan');
-     		$cache->remove($this->_fanpageId . '_topfanall');
+    		//$cache->remove($this->_fanpageId . '_topfan');
+     		//$cache->remove($this->_fanpageId . '_topfanall');
 //     		$cache->remove($this->_fanpageId . '_topclicker');
 //     		$cache->remove($this->_fanpageId . '_topfollowed');
 //     		$cache->remove($this->_fanpageId . '_toptalker');
@@ -398,12 +398,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
  
-     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topclicker');
-     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfollowed');
-     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfan');
-     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_toptalker');
-     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_fanfavorite');
-    		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfanall');
+//      		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topclicker');
+//      		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfollowed');
+//      		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfan');
+//      		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_toptalker');
+//      		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_fanfavorite');
+//     		$cache->remove( $this->_fanpageId .'_' .$this->_userId . '_topfanall');
     		try {
     			switch($list){
     				case 'top-followed':
