@@ -1454,7 +1454,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$data['fanpage_name'] = 'dan club';
     	$data['access_token'] = 'AAAFHFbxmJmgBAMSA4ZAdwftxnE4X9BRWOtZBehbIe4F923gH8PreivIqkF6JnZChO8idLwSTX4HqXRpfyaH18JKrjMldKHdq14wEMJnUAZDZD';
     	//$data['post_id'] = $this->_getParam('post_id');
-    	$data['message'] = 'data load cant post in this page';
+    	$data['message'] = 'data load spam via app';
     	//Zend_Debug::dump($data); exit();
     	try{
     
@@ -1477,8 +1477,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
 //     				$params);
     		$response = $client->request();
     		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-    		Zend_Debug::dump($result); exit();
-
+    		Zend_Debug::dump($result);
+    		$data['post_id'] = $result->id;
     		//$data['post_id'] = $postId;
     		Zend_Debug::dump($data['post_id']);	
     		$client = new Zend_Http_Client;
