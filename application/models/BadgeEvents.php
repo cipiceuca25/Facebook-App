@@ -27,7 +27,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 					on f.badge_id = b.id && fanpage_id = $fanpage_id
 					) as x
 					where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
-					x.active = 1 && e.notification_read = 1
+					x.active = 1 
 					order by created_time DESC , quantity DESC";
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
@@ -36,7 +36,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 
 	}
 
-	public function getBadgesByFanpageIdAndFanIDUnread($fanpage_id, $facebook_user_id, $limit){
+	public function getRedeemableBadges($fanpage_id, $facebook_user_id, $limit){
 		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active
 		from badge_events e,
 		(
@@ -44,6 +44,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		if (f.weight <=> null, b.weight, f.weight) as weight,
 		if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
 		if (f.active <=> null, 1, f.active) as active,
+		if (f.redeemable <=> null, 0, f.redeemable) as redeemable,
 		b.picture
 			
 		FROM badges b
@@ -51,7 +52,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		on f.badge_id = b.id && fanpage_id = $fanpage_id
 		) as x
 		where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
-		x.active = 1 && e.notification_read = 0
+		x.active = 1 && x.redeemable = 1
 		order by created_time DESC , quantity DESC";
 		if($limit !== false)
 		$select = $select . " LIMIT $limit";
@@ -60,7 +61,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	
 	}
 	
-	
+	/*
 	// note we hard code the top fan badge id in the query
 	public function getRedeemableBadges($fanpage_id, $facebook_user_id, $limit) {
 		// check fanpage level
@@ -84,7 +85,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		$select = $select . " LIMIT $limit";
 		
 		return $this->getAdapter()->fetchAll($select);
-	}
+	}*/
  	
 	public function getChosenBadges($fanpage_id, $facebook_user_id, $chosen){
 		

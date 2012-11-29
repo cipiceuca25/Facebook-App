@@ -146,7 +146,6 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 			if(!empty($data['redeem_id'])) {
 				$redeem = $redeemModel->findRow($data['redeem_id']);
 				Zend_Debug::dump($status[$redeem->status]);
-				
 			}
 		} catch (Exception $e) {
 		}

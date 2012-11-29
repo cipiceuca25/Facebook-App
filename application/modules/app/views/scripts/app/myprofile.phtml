@@ -175,17 +175,18 @@
 				
 				</div>
 				<div class="post-container noline">
-					<div class="rvrow post" id="profile_redeem_badges" style="overflow:hidden; max-height:107px;">
-						<div>
+					<div class="rvrow post" style="overflow:hidden; max-height:107px;">
+						<div id="profile_redeem_badges">
+			
 							<?php foreach ($this->badges2 as $b): ?>
 						
 								<div class="progress earned-badges" >
 									<div class="bar"></div>
 									<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/>' . $b['created_time'] ?>"
-										class="redeemableBadge noclick" rel="tooltip" data-placement="top">
+										class="redeemableBadge" rel="tooltip" data-placement="top">
 										<img src="<?= $b['picture']?>"/>
 									</a>
-									
+									  
 								</div>
 					
 							<?php endforeach;?>
