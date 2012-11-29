@@ -879,7 +879,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		
 			try {
 		
-				$cache->remove($fanpageId);
+				//$cache->remove($fanpageId);
 				//Check to see if the $fanpageId is cached and look it up if not
 				if(isset($cache) && !$cache->load($fanpageId)){
 		
