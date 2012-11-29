@@ -5,6 +5,12 @@
 .dataTables_filter {
 	float: right;
 }
+.dataTables_info {
+	float: left;
+}
+.dataTables_paginate {
+	float: right;	
+}
 
 .thumbnails > li {
     display: inline-block;
@@ -199,7 +205,7 @@ $(document).ready(function() {
     		type: "GET",
     		url:  '/admin/redeem/approve/'+ fanpageId +'?redeemId=' + redeemId,
     		cache: false,
-    		async: false,
+    		async: true,
     		dataType: 'html',
     		success: function( data ) {
         		console.log(data);
@@ -226,7 +232,7 @@ $(document).ready(function() {
     		type: "GET",
     		url:  '/admin/redeem/disapprove/'+ fanpageId +'?redeemId=' + redeemId,
     		cache: false,
-    		async: false,
+    		async: true,
     		dataType: 'html',
     		success: function( data ) {
         		console.log(data);
@@ -298,6 +304,44 @@ $(document).ready(function() {
 
 	itemTable.makeEditable({
         //sUpdateURL: "/admin/fanpage/updateitem/"+fanpageId,
+        "aoColumns": [
+						null,
+					{
+							//submit: 'save',
+							//onblur: 'submit',
+							submit: 'save',
+                          	sUpdateURL: function(value, settings) {
+                            	var target = $(this).closest('tr').find('td:first');
+                              	var itemId = target.text();
+                              	//updateItemField(itemId, 'name', value, target);
+                              	return updateItemField(itemId, 'name', value, target);
+                          	}                              	
+                    },
+  					{
+  						onblur: 'submit',
+                        sUpdateURL: function(value, settings) {
+							var target = $(this).closest('tr').find('td:first');
+                          	var itemId = target.text();
+							return updateItemField(itemId, 'description', value, target);
+                        }                                	
+					},
+  					{
+  						onblur: 'submit',
+                        sUpdateURL: function(value, settings) {
+							var target = $(this).closest('tr').find('td:first');
+                          	var itemId = target.text();
+							return updateItemField(itemId, 'picture', value, target);
+                        }                                	
+					},
+  					{
+  						onblur: 'submit',
+                        sUpdateURL: function(value, settings) {
+							var target = $(this).closest('tr').find('td:first');
+                          	var itemId = target.text();
+							return updateItemField(itemId, 'points', value, target);
+                        }                                	
+					}										
+		],
         sAddURL: "/admin/fanpage/additem/"+fanpageId,
         sDeleteURL: "/admin/fanpage/deleteitem/"+fanpageId
 	});
@@ -318,7 +362,7 @@ $(document).ready(function() {
     		type: "GET",
     		url:  '/admin/fanpage/deleteitem/'+ fanpageId +'?itemId=' + itemId,
     		cache: false,
-    		async: false,
+    		async: true,
     		success: function( data ) {
         		console.log(data);
         		if (data == 1 && typeof itemTable != 'undefined') {
@@ -331,6 +375,37 @@ $(document).ready(function() {
     		}
     	});
 	});
+
+	function updateItemField(id, fName, fValue, target) {
+		var itemId = id || '', fieldName = fName || '', fieldValue = fValue || '';
+		 
+		if (itemId.length > 0 && fieldName.length > 0 && fieldValue.length > 0) {
+			$.ajax({
+	    		type: "POST",
+	    		url:  "/admin/fanpage/updateitem/"+fanpageId,
+	    		cache: false,
+	    		async: false,
+	    		dataType: 'html',
+	    		data: 'itemId='+itemId+'&'+fieldName+'='+fieldValue,
+	    		success: function( data ) {
+	        		if ($.trim(data) == 'ok') {
+		        		console.log(data);
+		        		target.css({'background-color' : 'rgb(190, 220, 190)'});
+	        		} else {
+	        			target.css({'background-color' : 'rgb(215, 130, 140)'});
+	        		}
+	    		},	
+	    		error: function( xhr, errorMessage, thrownErro ) {
+	    			alert(xhr.statusText);
+	    			console.log(xhr.statusText, errorMessage);
+	    		}
+	    	});
+		}
+		return fValue;
+	}
+
+	// form validation
+	
 });
 
 </script>

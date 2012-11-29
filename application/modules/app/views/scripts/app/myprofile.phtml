@@ -38,7 +38,7 @@
 								
 								<div class="user-description tip2 italic" onkeyup="charcheck()">
 							
-								<?= substr($this->fan->message, 0, 160)?>
+								<?= substr(stripslashes($this->fan->message), 0, 160)?>
 								
 								</div><a class="user-description-button" onclick="editdescription()"><span class="btn fc-edit-2"><img src="/img/icons/edit_icon.png" class="edit_icon" />Edit Description</span></a>	
 								

@@ -19,5 +19,14 @@ class Model_FanpageBadges extends Model_DbTable_FanpageBadges
 		
 		return $this->getDefaultAdapter()->fetchAll($query);
 	}
+	
+	public function getRedeemableBadges($fanpageId) {
+		$query = $this->getDefaultAdapter()->select()
+				->from(array('f' => 'fanpage_badges'), array('f.fanpage_id'))
+				->join(array('b' => 'badges'), 'f.badge_id = b.id', array('b.*'))
+				->where('f.fanpage_id = ?', $fanpageId)
+				->where('f.redeemable = 1');
+		return $this->getDefaultAdapter()->fetchAll($query);
+	}
 }
 

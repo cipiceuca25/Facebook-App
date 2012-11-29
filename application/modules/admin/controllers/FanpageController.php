@@ -325,8 +325,28 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 	}
 	
 	public function updateitemAction() {
-		$value = $this->_getParam('value');
-		echo $value;	
+		$itemId = $this->_getParam('itemId');
+		$itemModel = new Model_Items();
+		$foundItem = $itemModel->findRow($itemId);
+		$updateParam = array('name', 'description', 'picture', 'points');
+		try {
+			if ($foundItem) {
+				foreach ($updateParam as $fieldName) {
+					$newValue = $this->_getParam($fieldName);
+					if (isset($newValue)) {
+						if ($newValue != $foundItem->{$fieldName}) {
+							$foundItem->{$fieldName} = $newValue;
+							$foundItem->save();
+						}
+						// early terminate, update 1 field at a time
+						break;
+					}
+				}
+			}
+			echo 'ok';
+		} catch (Exception $e) {
+			echo 'fail';
+		}
 	}
 	
 	public function deleteitemAction() {

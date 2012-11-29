@@ -2329,7 +2329,7 @@ $(document).ready(function() {
 	});
 
 	// add redeem confirm listner
-	$('redeem_submit').live('click', function(e) {
+	$('#redeem_submit').live('click', function(e) {
 		e.preventDefault();
 		console.log('redeem confirm');
 		var formData = $('#redeem-form').serialize();
