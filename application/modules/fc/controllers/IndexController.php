@@ -17,8 +17,9 @@ class Fc_IndexController extends Fancrank_Fc_Controller_BaseController
         $this->view->fans = $fans_model->countAll();
         
         $insightData = $this->getInsightData();
+		//Zend_Debug::dump($insightData); exit();
         $appInfo = $this->insightDataParser($insightData);
-        
+        //Zend_Debug::dump($appInfo); exit();
         if (!($query = $this->_request->getParam('q'))) {
         }
         
@@ -58,12 +59,25 @@ class Fc_IndexController extends Fancrank_Fc_Controller_BaseController
 				//echo 'look up facebook graph api';
 		
 				$appId = $fancrankFBService->getAppId();
+				//Zend_Debug::dump($appId);
 				$appAccessToken = $fancrankFBService->getAppAccessToken();
-		
-				// note: zend client setUri not accept the app access token format
-				$result = $fancrankFBService->api("/$appId/insights", 'GET', array('access_token'=>$appAccessToken));
-				if(!empty($result['data'])) {
-					$insightData = $result['data'];
+				//Zend_Debug::dump($appAccessToken);
+				
+				$params = array(
+						'access_token'=>$appAccessToken
+				);
+				
+				$url = "https://graph.facebook.com/$appId/insights?" .http_build_query($params);
+				
+				$client = new Zend_Http_Client;
+				$client->setUri($url);
+				$client->setMethod(Zend_Http_Client::GET);
+				
+				$response = $client->request();
+				$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+
+				if(!empty($result->data)) {
+					$insightData = $result->data;
 					//Save to the cache, so we don't have to look it up next time
 					$cache->save($insightData, $appInsightId, array(), 72000);
 				}
@@ -82,40 +96,40 @@ class Fc_IndexController extends Fancrank_Fc_Controller_BaseController
 		$result = array();
 		$counter = 6;
 		foreach ($insightData as $data) {
-			if(preg_match('/\/day$/', $data['id'])) {
-				switch($data['name']) {
+			if(preg_match('/\/day$/', $data->id)) {
+				switch($data->name) {
 					case 'application_installation_adds_unique' :
-						if(!empty($data['values'])) {
-							$value = $data['values'][sizeof($data['values'])-1];
-							$result['application_installation_adds_unique'] = empty($value['value']) ? 0 : $value['value'];
+						if(!empty($data->values)) {
+							$value = $data->values[sizeof($data->values)-1];
+							$result['application_installation_adds_unique'] = empty($value->value) ? 0 : $value->value;
 						}
 						$counter--;
 						break;
 					case 'application_installation_removes_unique' :
-						if(!empty($data['values'])) {
-							$value = $data['values'][sizeof($data['values'])-1];
-							$result['application_installation_removes_unique'] = empty($value['value']) ? 0 : $value['value'];
+						if(!empty($data->values)) {
+							$value = $data->values[sizeof($data->values)-1];
+							$result['application_installation_removes_unique'] = empty($value->value) ? 0 : $value->value;
 						}
 						$counter--;
 						break;
 					case 'application_active_users' :
-						if(!empty($data['values'])) {
-							$value = $data['values'][sizeof($data['values'])-1];
-							$result['application_active_users'] = empty($value['value']) ? 0 : $value['value'];
+						if(!empty($data->values)) {
+							$value = $data->values[sizeof($data->values)-1];
+							$result['application_active_users'] = empty($value->value) ? 0 : $value->value;
 						}
 						$counter--;
 						break;
 					case 'application_api_calls' :
-						if(!empty($data['values'])) {
-							$value = $data['values'][sizeof($data['values'])-1];
-							$result['application_api_calls'] = empty($value['value']) ? 0 : $value['value'];
+						if(!empty($data->values)) {
+							$value = $data->values[sizeof($data->values)-1];
+							$result['application_api_calls'] = empty($value->value) ? 0 : $value->value;
 						}
 						$counter--;
 						break;
 					case 'application_api_errors' :
-						if(!empty($data['values'])) {
-							$value = $data['values'][sizeof($data['values'])-1];
-							$result['application_api_errors'] = empty($value['value']) ? 0 : $value['value'];
+						if(!empty($data->values)) {
+							$value = $data->values[sizeof($data->values)-1];
+							$result['application_api_errors'] = empty($value->value) ? 0 : $value->value;
 						}
 						$counter--;
 						break;																		
