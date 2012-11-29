@@ -2865,6 +2865,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->json($result);
     }
 	*/
+    
     public function logoutAction()
     {
     	$this->_helper->layout->disableLayout();
