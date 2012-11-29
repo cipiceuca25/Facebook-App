@@ -109,7 +109,7 @@ menu2 .notifier .message{margin-right:0px;margin-left:0px;}
 .top-list .points h3{display:inline-block;font-size:18px;position:relative;line-height:39px;}
 .top-list .points span{font-size:12px;}
 .popover .stats h3,.user-profile .stats h3,#profile .stats h3,.h3,.top-list .stats img{vertical-align:bottom;}
-.top-list .ranker{border-bottom:1px solid #dbdbdb;height:40px;width:100%;position:relative;padding-left:2px;padding-right:2px;}
+.top-list .ranker{border-bottom:1px solid #dbdbdb;height:40px;width:100%;position:relative;padding-left:2px;padding-right:2px;clear:both;}
 .top-list.mini .ranker{height:36px;}
 .top-list .ranker.first{border-top:0 solid;}
 .user .rank,.top-list .rank{width:24px;height:24px;margin:8px;margin-left:2px;background-color:#7a91c9;float:left;}
@@ -160,6 +160,8 @@ menu2 .notifier .message{margin-right:0px;margin-left:0px;}
 .name{font-weight:bold;}
 .post-container .post{padding-top:18px;padding-bottom:11px;padding-left:2px;padding-right:2px;}
 .post-container .message,.post-container .link,.post-box,.comment-box{-ms-word-break:break-all;word-break:break-all;word-break:break-word;-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto;}
+#toppost .comment-box{width:120px;}
+.points.login{width:160px;}
 .post-container .link{font-size:11px;background-color:#f6f7f9;border:1px solid #d3dae8;margin-top:10px;}
 .post-container .link .link-left{max-width:35%;display:inline-block;}
 .post-container .link .link-right{min-width:60%;max-width:100%;display:inline-block;margin-top:1px;vertical-align:top;margin-left:10px;}
@@ -200,7 +202,7 @@ menu2 .notifier .message{margin-right:0px;margin-left:0px;}
 #profile .tip2{margin-top:15px;}
 .progress{margin-bottom:0;background:#edeff4;border:1px solid #c4cde0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
 .progress .bar{background:#c4cde0;-webkit-box-shadow:0 0 0 0;-moz-box-shadow:0 0 0 0;box-shadow:0 0 0 0;}
-.progress .bar img{width:40px;}
+.progress img{width:40px;}
 .progress.exp{margin-top:12px;margin-bottom:12px;border:1px solid #3c589d;background:white;}
 .box .half{width:221px;}
 .box .post-container .half{width:218px;}
@@ -257,7 +259,7 @@ menu2 .notifier .message{margin-right:0px;margin-left:0px;}
 .unlike-animation{background:url(../img/unliked.png) no-repeat center center;}
 .comment-animation{background:url(../img/commented.png) no-repeat center center;}
 .point-display{margin-right:10px;}
-#whatisfancrank{height:329px;width:370px;margin-top:8px;}
+#whatisfancrank{height:302px;text-align:Center;margin-top:8px;}
 .italic{font-style:italic;}
 .bold{font-weight:bold;}
 .user-description-button{float:right;}
