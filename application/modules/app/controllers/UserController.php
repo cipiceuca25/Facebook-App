@@ -907,14 +907,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$time = $this->_request->getParam('time');
 		$pointlog = new Model_PointLog();
 		
-		if ($time=='undefined'){
+		$fan = new Model_Fans($this->_user->facebook_user_id, $fanpage_id);
 			
-			$fan = new Model_Fans($this->_user->facebook_user_id, $fanpage_id);
-			
-			$time = $fan->getLastLoginTime();
-		}
+		$time = $fan->getLastLoginTime();
 		
-		$pointlog = $pointlog -> getPointsGainSinceTimeByDay($fanpage_id, $this->_user->facebook_user_id, $time);
+		
+		$pointlog = $pointlog -> getPointsGainSinceTimeByDay($fanpage_id, $this->_user->facebook_user_id, $time );
 		$this->_helper->json($pointlog);
 	}
 	

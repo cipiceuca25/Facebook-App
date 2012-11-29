@@ -1152,15 +1152,15 @@ function getListNotification(){
 	
 	//console.log(points);
 	
-	
 	//SAVE THE LAST TIME THE NOTIFICATION WAS SEEN
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/user/' + userId	+ '/savelastnotification/'  + '&fanpage=' + fanpageId,
+		url : serverUrl + '/app/user/' + userId	+ '/savelastnotification/'  + '?fanpage=' + fanpageId,
 		dataType : "html",
 		cache : false,
 		async : true,
 		success : function(data) {
+			console.log(data);
 			console.log('saved notification viewed');
 		},
 		error : function(xhr, errorMessage, thrownErro) {

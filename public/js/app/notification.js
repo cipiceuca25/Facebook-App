@@ -35,7 +35,7 @@ $('.notification').live('click', function(event){
 	//if(pointCount + badgeCount > 0 ){
 		getListNotification();
 		
-		//setviewedbadges();
+		setviewedbadges();
 		
 		//$('.notification').css('background-color',color2);
 		//$('.notification a').css('color',color1);
@@ -61,12 +61,13 @@ function pointlogNotification() {
 	//console.log(lastViewNotification);
 	$.ajax({
 		type : "GET",
-		url : serverUrl + '/app/user/' +userId +'/pointlognotification?fanpage_id='+ fanpageId +'&time=' + lastViewNotification ,
+		url : serverUrl + '/app/user/' +userId +'/pointlognotification?fanpage_id='+ fanpageId  ,
 		dataType : "json",
 		cache : false,
 		async : false,
 
 		success : function(data) {
+		
 			points.concat(data);
 			pointCount = points.length;
 			//console.log(points);
@@ -78,8 +79,8 @@ function pointlogNotification() {
 				//$('.notification a').css('color',color2);
 				//$('.notification').effect("pulsate", { times:3 }, 300);
 			}
-			date = new Date();
-			lastViewNotification = date.getUTCFullYear()+'-'+(date.getUTCMonth() + 1)+'-'+date.getUTCDate() +' '+ (date.getUTCHours()) + ':' + (date.getUTCMinutes()) + ':' + date.getUTCSeconds(); 
+			//date = new Date();
+			//lastViewNotification = date.getUTCFullYear()+'-'+(date.getUTCMonth() + 1)+'-'+date.getUTCDate() +' '+ (date.getUTCHours()) + ':' + (date.getUTCMinutes()) + ':' + date.getUTCSeconds(); 
 			 
 			//console.log(lastViewNotification);
 		

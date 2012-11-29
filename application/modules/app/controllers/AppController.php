@@ -2850,9 +2850,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$userBadges = new Model_BadgeEvents();
     	
     	$userBadges = $userBadges -> notify($this->_fanpageId, $this->_userId, $this->_fan->last_notification);
-    	
+    
     	$this->view->events= $userBadges;
-
+		//Zend_Debug::dump($userBadges);
     	$this->render("listnotifications");
     }
     
