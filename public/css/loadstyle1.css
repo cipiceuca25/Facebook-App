@@ -347,7 +347,7 @@ menu2 .notifier .message {
   display: block;
 }
 .tip a:hover {
-  color: #131313;
+  background-color: #647ab1;
   text-decoration: none;
 }
 .tooltip-inner {
@@ -1180,7 +1180,7 @@ background:@color-post-background-hover;
 .track3 {
   width: 10px;
   margin-top: -1px;
-  background-color: light-gray;
+  background-color: black;
 }
 .handle3 {
   width: 10px;
@@ -1251,7 +1251,6 @@ background:@color-post-background-hover;
   overflow: auto;
   padding-left: 5px;
   max-height: 200px;
-  width: 100%;
 }
 #user_list .top-list .badge-profile {
   top: 18px;
@@ -1679,7 +1678,7 @@ background:@color-post-background-hover;
 }
 .noclick:hover {
   text-decoration: none;
-  color: #575757;
+  color: #3c589d;
   cursor: default;
 }
 .pointlog {
@@ -1801,6 +1800,7 @@ background:@color-post-background-hover;
 .notifier .bar {
   height: 24px;
 }
+#userprofile .post,
 #profile .post {
   border-bottom: 1px solid #e5e5e5;
   padding-top: 11px;
@@ -1940,7 +1940,7 @@ background:@color-post-background-hover;
 }
 .btn {
   height: 1.2em;
-  min-width: 4.5em;
+  min-width: 5.5em;
   border-bottom-color: #5a6371;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;

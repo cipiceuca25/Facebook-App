@@ -22,7 +22,7 @@ $(document).ready(function() {
 	backgroundcolor = $('.profile-content').css('background-color');
 	getNewsfeed('#news-feed');
 	getUpcomingBadges('#notification_upcoming_badges' ,3);
-	
+
 	/*
 	if(images.length > 0){
 		setTimeout( function(){;
@@ -370,7 +370,7 @@ function choosebadges(){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div class='rvrow'><div class=' rvgrid-11 '><div class=' box '><div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div></div></div></div>");
 		},
 		success : function(data) {
 			$('.profile-content').html(data);
@@ -442,7 +442,7 @@ function userProfile(user, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div class='rvrow'><div class=' rvgrid-11 '><div class=' box '><div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div></div></div></div>");
 		},
 		success : function(data) {
 
@@ -468,11 +468,12 @@ function getUpcomingBadges(ui, limit){
 		cache : false,
 		async : true,
 		beforeSend: function(){
+			
 			if (ui == '#profile_upcoming_badges'){
 				$(ui).html("<div style='text-align:center;margin-top:-1px; padding: 0 25px 0 ' ><img src='/img/ajax-loader.gif' /></div>");
 			}else{
 				$(ui).html("<div style='text-align:center;margin-top:-1px; padding: 0 25px 0 ' ><img src='/img/ajax-loader-white.gif' /></div>");
-				
+		
 			}
 		},
 		success : function(data) {
@@ -594,7 +595,7 @@ function popup_post(post_id, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div class='rvrow'><div class=' rvgrid-11 '><div class=' box '><div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div></div></div></div>");
 		},
 		success : function(data) {
 			$('.profile-content').html(data);
@@ -1105,7 +1106,7 @@ function getpointlog(){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.notifier').html("<div class='rvgrid-5ex' style='text-align:center;'><div class='box'><img src='/img/ajax-loader.gif' /></div></div>");
+			$('.notifier').html("<div class='rvgrid-5ex' style='text-align:center;'><div class='box'><img src='/img/ajax-loader-white.gif' /></div></div>");
 		},
 		success : function(data) {
 			$('.notifier').html(data);
@@ -1129,7 +1130,7 @@ function getupcomingbadges_notifier(){
 		async : true,
 		beforeSend: function(){
 	
-			$('.notifier').html("<div  style='width:"+$('#toolbar').css('width') +"; text-align:center;'><div class='box'><img src='/img/ajax-loader.gif' /></div></div>");
+			$('.notifier').html("<div  style='width:"+$('#toolbar').css('width') +"; text-align:center;'><div class='box'><img src='/img/ajax-loader-white.gif' /></div></div>");
 		},
 		success : function(data) {
 			$('.notifier').html(data);
@@ -1484,7 +1485,7 @@ function getLikesList(postid, limit, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div class='rvrow'><div class=' rvgrid-11 '><div class=' box '><div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div></div></div></div>");
 		},
 		success : function(data) {
 			$('.profile-content').html(data);
@@ -1509,7 +1510,7 @@ function getFollowingList(targetname, target, limit, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div class='rvrow'><div class=' rvgrid-11 '><div class=' box '><div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div></div></div></div>");
 		
 		},
 		success : function(data) {
@@ -1538,7 +1539,7 @@ function getFollowersList(targetname, target, limit, load) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('.profile-content').html("<div class='rvrow'><div class=' rvgrid-11 '><div class=' box '><div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div></div></div></div>");
 		
 		},
 		success : function(data) {
@@ -1621,15 +1622,16 @@ function getMiniFollowersList(targetname, target) {
 
 }
 
-function growTextbox(x){
 	
+function growTextbox(x){
+
 	var linesCount = 0;
 	//console.log(x);
     var lines = x.value.split('\n');
 
     for (var i=lines.length-1; i>=0; --i)
     {
-        linesCount += Math.floor((lines[i].length / 85) + 1);
+        linesCount += Math.floor((lines[i].length / 72) + 1);
     }
 
     if (linesCount > 1)
@@ -1649,7 +1651,7 @@ function growTextbox2(x){
 
     for (var i=lines.length-1; i>=0; --i)
     {
-        linesCount += Math.floor((lines[i].length / 60) + 1);
+        linesCount += Math.floor((lines[i].length / 50) + 1);
     }
 
     if (linesCount > 1)
@@ -1658,7 +1660,7 @@ function growTextbox2(x){
         x.rows = 1;
     
    // console.log(x.rows);
-    x.style.height = (14 * x.rows) + 'px';
+    x.style.height = (18 * x.rows) + 'px';
 }
 
 
@@ -2316,7 +2318,7 @@ $(document).ready(function() {
 			cache : false,
 			async : false,
 			beforeSend: function(){
-				$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				$('.profile-content').html("<div class='rvrow'><div class=' rvgrid-11 '><div class=' box '><div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div></div></div></div>");
 			},
 			success : function(data) {
 				$('.profile-content').html(data);
@@ -2350,9 +2352,7 @@ $(document).ready(function() {
 				cache : false,
 				async : true,
 				data : formData+"&badgeId="+selectBadgeId,
-				beforeSend : function(){
-					$('.profile-content').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
-				},
+		
 				success : function(data) {
 					//$('.profile-content').html(data);
 					if ($.trim(data) == 'ok') {

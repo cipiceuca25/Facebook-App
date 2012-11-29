@@ -276,7 +276,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					$db->closeConnection();
 					print $e->getMessage();
 					$appLogger = Zend_Registry::get('appLog');
-					$appLogger->log(sprintf('Unable to save post %s from fanpage %s to database. Error Message: %s ', $post->id, $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
+					$appLogger->log(sprintf('Unable to save post %s from fanpage %s to database. Error Message: %s ', $post->id,$data['fanpage_id'], $e->getMessage()), Zend_log::ERR);
 					return;
 				}
 			}
@@ -285,7 +285,7 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		} catch (Exception $e){
 			echo $e;
 			$appLogger = Zend_Registry::get('appLog');
-			$appLogger->log(sprintf('Unable to save post from fanpage %s to database. Error Message: %s ', $this->_fanpageId, $e->getMessage()), Zend_log::ERR);
+			$appLogger->log(sprintf('Unable to save post from fanpage %s to database. Error Message: %s ', $data['fanpage_id'], $e->getMessage()), Zend_log::ERR);
 		}
 		echo '<br/>' .time() - $starttime . 'sec';
 	}

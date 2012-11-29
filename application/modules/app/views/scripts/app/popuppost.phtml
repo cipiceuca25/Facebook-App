@@ -174,7 +174,8 @@
 							 likes this.
 						</a>		
 					</div>
-					<div class="social comment <?=$this->post->id?>" <?php if(!isset($this->post->comments->count) || ($this->post->comments->count == 0)){?>style="display:none"<?}?>>
+					
+					<div style="display:none" class="social comment <?=$this->post->id?>" <?php if(!isset($this->post->comments->count) || ($this->post->comments->count == 0)){?>style="display:none"<?}?>>
 						
 						 <a  onclick=" comment_feed3('<?= $this->post->id ?>',
 			 							'<?= $this->post->type?>', 
