@@ -106,7 +106,7 @@ menu2 .notifier .message{margin-right:0px;margin-left:0px;}
 .stats-block img{vertical-align:top;margin-bottom:2px;}
 .popover .stats h5,.popover .stats h3,.user-profile .stats h5,.user-profile .stats h3,.top-list .stats h5{color:#3c589d;}
 .top-list .points{font-weight:bold;line-height:39px;float:right;margin-right:15px;width:100px;text-align:right;}
-.top-list .points h3{display:inline-block;font-size:18px;position:relative;line-height:39px;}
+.top-list .points h3{display:inline-block;font-size:16px;position:relative;line-height:39px;}
 .top-list .points span{font-size:12px;}
 .popover .stats h3,.user-profile .stats h3,#profile .stats h3,.h3,.top-list .stats img{vertical-align:bottom;}
 .top-list .ranker{border-bottom:1px solid #dbdbdb;height:40px;width:100%;position:relative;padding-left:2px;padding-right:2px;clear:both;}
