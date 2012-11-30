@@ -64,9 +64,9 @@
 						var accessToken = response.authResponse.accessToken;
 						console.log(uid +' '+accessToken);
 					} else if (response.status === 'not_authorized') {
-						var uid = response.authResponse.userID;
+						//var uid = response.authResponse.userID;
 						// indentify new user
-						console.log(uid);
+						//console.log(uid);
 					} else {
 						// logout user if not log in facebook
 						window.location.href = '/app/app/logout/'+fanpageId+'?user_id='+userId;							    
