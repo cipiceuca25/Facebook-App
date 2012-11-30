@@ -445,11 +445,13 @@ function userProfile(user, load) {
 			$('.profile-content').html("<div class='rvrow'><div class=' rvgrid-11 '><div class=' box '><div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div></div></div></div>");
 		},
 		success : function(data) {
-
-			$('.profile-content').html(data);
-			getRecentActivities('#user_activities', user); 
-			changeTime('.profile-content .time');
-			
+			if (data.length < 1) {
+				window.location.href = '/app/index/index/'+fanpageId+'?user_id='+userId;
+			} else {
+				$('.profile-content').html(data);
+				getRecentActivities('#user_activities', user); 
+				changeTime('.profile-content .time');
+			}	
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -625,14 +627,18 @@ function getNewsfeed() {
 		},
 		success : function(data) {
 			
-			$('#news-feed').html(data);
-			setFeed = 'start';
-			//getTopFan();
-			getTopList('top-fan-mini', '#topfan');
-			getTopPost();
-			getFancrankfeed('myfeed');
-			getAllActivities();
-			changeTime('.time');
+			if (data.length < 1) {
+				window.location.href = '/app/index/index/'+fanpageId+'?user_id='+userId;
+			} else {
+				$('#news-feed').html(data);
+				setFeed = 'start';
+				//getTopFan();
+				getTopList('top-fan-mini', '#topfan');
+				getTopPost();
+				getFancrankfeed('myfeed');
+				getAllActivities();
+				changeTime('.time');
+			}
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -643,8 +649,6 @@ function getNewsfeed() {
 
 function getTopPost() {
 	//alert('getting top postsss');
-
-
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/app/gettoppost/' + fanpageId,
@@ -942,13 +946,17 @@ function getLeaderboard() {
 			$('#leaderboard').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
-			$('#leaderboard').html(data);
-			getTopList('top-fan', '.top-fan.box');
-			getTopList('fan-favorite', '.fan-favorite.box');
-			getTopList('top-talker', '.top-talker.box');
-			getTopList('top-clicker','.top-clicker.box');
-			getTopList('top-followed','.top-followed.box');
-			getTopList('top-fan-all','.top-fan-all.box');
+			if (data.length < 1) {
+				window.location.href = '/app/index/index/'+fanpageId+'?user_id='+userId;
+			} else {
+				$('#leaderboard').html(data);
+				getTopList('top-fan', '.top-fan.box');
+				getTopList('fan-favorite', '.fan-favorite.box');
+				getTopList('top-talker', '.top-talker.box');
+				getTopList('top-clicker','.top-clicker.box');
+				getTopList('top-followed','.top-followed.box');
+				getTopList('top-fan-all','.top-fan-all.box');
+			}
 			//getLatestPost();
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -968,7 +976,7 @@ function getTopList(list, ui){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$(ui).append("<div class='removal' style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$(ui).append("<div class='removal' style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
 			$(ui + ' .removal').remove();
@@ -999,11 +1007,16 @@ function getMyProfile() {
 		},
 		success : function(data) {
 			//alert("rdy");
-			$('#profile').html(data);
-			getRecentActivities('#recent_activities',userId);
-			getMiniFollowingList(userName, userId);
-			getMiniFollowersList(userName, userId);
-			getUpcomingBadges('#profile_upcoming_badges',3);
+			// if data empty, reload page
+			if (data.length < 1) {
+				window.location.href = '/app/index/index/'+fanpageId+'?user_id='+userId;
+			} else {
+				$('#profile').html(data);
+				getRecentActivities('#recent_activities',userId);
+				getMiniFollowingList(userName, userId);
+				getMiniFollowersList(userName, userId);
+				getUpcomingBadges('#profile_upcoming_badges',3);
+			}
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1024,7 +1037,11 @@ function getRedeem() {
 			$('#redeem').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		},
 		success : function(data) {
-			$('#redeem').html(data);
+			if (data.length < 1) {
+				window.location.href = '/app/index/index/'+fanpageId+'?user_id='+userId;
+			} else {
+				$('#redeem').html(data);
+			}
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1210,7 +1227,7 @@ function getRecentActivities(ui, user_id) {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$(ui).html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$(ui).html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {
@@ -1235,7 +1252,7 @@ function getAllActivities() {
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('#allactivities').html("<div style='text-align:center; padding:10px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			$('#allactivities').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 		
 		},
 		success : function(data) {

@@ -56,9 +56,27 @@
 					 xfbml  : true// parse XFBML 
 				});
 				FB.Canvas.setAutoGrow();
-				fb = true;
-			};
+				
+				// verify user is logged in to facebook
+				FB.getLoginStatus(function(response) {
+					if (response.status === 'connected') {
+						var uid = response.authResponse.userID;
+						var accessToken = response.authResponse.accessToken;
+						console.log(uid +' '+accessToken);
+					} else if (response.status === 'not_authorized') {
+						var uid = response.authResponse.userID;
+						// indentify new user
+						console.log(uid);
+					} else {
+						// logout user if not log in facebook
+						window.location.href = '/app/app/logout/'+fanpageId+'?user_id='+userId;							    
+					}
+				});
 
+				fb = true;
+				console.log(userId);
+				
+			};
 		</script>
 		<script src="/js/cranker.js"></script>
 		<script src="/js/badgeAnimation.js"></script>

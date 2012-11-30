@@ -1448,22 +1448,22 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     public function testpostAction() {
     
     	$starttime = time();
-    	$postId = '197221680326345_428051090576735';
+    	$postId = '197221680326345_444110845637426';
     	$data['facebook_user_id'] = '100004566963982';
     	$data['fanpage_id'] = '197221680326345';
     	$data['fanpage_name'] = 'dan club';
+    	$data['access_token'] = 'AAAFHFbxmJmgBAK0cWd4MnrvHxizTE3TyLDlKt3Xhh4lxZCxofZB2LeXZCPRr8ohLKAmq7ZACc4zyCwVZASR517s0A8IT8AZBHeJWy35psKOZBR3dOYjsyPJ';
     	$data['access_token'] = 'AAAFHFbxmJmgBAMSA4ZAdwftxnE4X9BRWOtZBehbIe4F923gH8PreivIqkF6JnZChO8idLwSTX4HqXRpfyaH18JKrjMldKHdq14wEMJnUAZDZD';
     	//$data['post_id'] = $this->_getParam('post_id');
-    	$data['message'] = 'data load spam via app';
+    	$data['message'] = 'data load spam again via app with long access token';
     	//Zend_Debug::dump($data); exit();
     	try{
-    
+/*    
     		$client = new Zend_Http_Client;
     		$client->setUri("https://graph.facebook.com/". $data['fanpage_id']  .'/feed');
     		$client->setMethod(Zend_Http_Client::POST);
-    		$client->setParameterGet('access_token', $data['access_token']);
-    		$client->setParameterGet('message', $data['message']);
-
+    		$client->setParameterPost('access_token', $data['access_token']);
+    		$client->setParameterPost('message', $data['message']);
 
 //     		$fancrankFB = new Service_FancrankFBService();
 //     		$params =  array(
@@ -1480,9 +1480,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     		Zend_Debug::dump($result);
     		$data['post_id'] = $result->id;
     		//$data['post_id'] = $postId;
-    		Zend_Debug::dump($data['post_id']);	
+    		Zend_Debug::dump($data['post_id']);
+*/    			
     		$client = new Zend_Http_Client;
-    		$client->setUri("https://graph.facebook.com/". $data['post_id']);
+    		$client->setUri("https://graph.facebook.com/". $postId);
     		$client->setMethod(Zend_Http_Client::GET);
     		$client->setParameterGet('access_token', $data['access_token']);
     

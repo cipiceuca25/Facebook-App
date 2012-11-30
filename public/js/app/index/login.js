@@ -44,7 +44,8 @@ jQuery(document).ready(function($){
 			dialog.style.width='250px';
 			dialog.style.height='150px';*/
 		}else {
-			confirmFunction();
+			checkLoginUser();
+			//confirmFunction();
 		}
 	});	
 });
@@ -53,6 +54,7 @@ function confirmFunction() {
 	var url = '/auth/facebook/authorize/' + fanpageId;
 	//alert($('#fancrank_fanpage_id').val());
 	//alert(getFanpageId()); return;
+	// check isLogin
 	$.oauthpopup({
         path: url,
         callback: function(){
@@ -103,6 +105,28 @@ function popup(){
 		}, 10, function() {
 	
 		});
+}
 
-	
+function checkLoginUser() {
+	//alert('getting top postsss');
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/auth/facebook/islogin/' + fanpageId,
+		dataType : "json",
+		cache : false,
+		async : false,
+		success : function(data) {
+			console.log(data.isLogin == 1);
+			if (data.isLogin == 1) {
+				window.location.href = '/app/app/index/'+fanpageId;
+				//top.location.href='https://facebook.com/' +fanpageId+'?sk=app_359633657407080';
+				//console.log(data.isLogin);
+			} else {
+				confirmFunction();
+			}	
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+		}
+	});
 }

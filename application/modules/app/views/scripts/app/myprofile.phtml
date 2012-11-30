@@ -37,9 +37,8 @@
 								</div>	
 								
 								<div class="user-description tip2 italic" onkeyup="charcheck()">
-							
-								<?= substr(stripslashes($this->fan->message), 0, 160)?>
-								
+
+								<?= substr(stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$this->fan->message)), 0, 160)?>
 								</div><a class="user-description-button" onclick="editdescription()"><span class="btn fc-edit-2"><img src="/img/icons/edit_icon.png" class="edit_icon" />Edit Description</span></a>	
 								
 						</div>
@@ -282,13 +281,13 @@
 	$('#profile_earned_badges').enscroll({
 		showOnHover: true,
 		clickTrackToScroll: false,
-		verticalTrackClass: 'track3 popup',
-		verticalHandleClass: 'handle3 popup'
+		verticalTrackClass: 'track3',
+		verticalHandleClass: 'handle3'
 	});
 	$('#profile_redeem_badges').enscroll({
 		showOnHover: true,
 		clickTrackToScroll: false,
-		verticalTrackClass: 'track3 popup',
-		verticalHandleClass: 'handle3 popup'
+		verticalTrackClass: 'track3',
+		verticalHandleClass: 'handle3'
 	});
 </script>
