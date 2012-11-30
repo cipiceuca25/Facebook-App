@@ -460,8 +460,8 @@ function closeProfile() {
 	$('.profile-content').css('display', 'none');
 	$('.profile-content').css('background-color', backgroundcolor);
 	$('.profile-content').html('');
-	document.removeEventListener("DOMMouseScroll", mouseScroll, true);
-	document.removeEventListener("mousewheel", mouseScroll, true);
+	//document.removeEventListener("DOMMouseScroll", mouseScroll, true);
+	//document.removeEventListener("mousewheel", mouseScroll, true);
 }
 
 
@@ -1619,8 +1619,8 @@ function popup(load){
 			$('.user-profile').css('top', info.scrollTop +100);
 	});
 	if (load) {
-		document.addEventListener("DOMMouseScroll", mouseScroll, true);
-		document.addEventListener("mousewheel",  mouseScroll, true); 
+		//document.addEventListener("DOMMouseScroll", mouseScroll, true);
+		//document.addEventListener("mousewheel",  mouseScroll, true); 
 		$('.profile-content').animate({
 			height : 'toggle',
 		//top:'20px'

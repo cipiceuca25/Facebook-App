@@ -53,9 +53,9 @@
 								
 								<?php if ($b != 'undefined') {?>
 								
-								<div class="progress earned-badges">
+								<div class="progress chosen-badges">
 									<div class="bar"></div>
-									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
+									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . $b['created_time']?>" 
 									class=noclick rel="tooltip" data-placement="top" >
 										<img src="<?= $b['picture']?>"/>
 									</a>
@@ -155,7 +155,7 @@
 						
 								<div class="progress earned-badges" >
 									<div class="bar" ></div>
-									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/>' . $b['created_time'] ?>" 
+									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . $b['created_time']?>" 
 									class=noclick rel="tooltip" data-placement="top-left"  >
 										<img src="<?= $b['picture']?>"/>
 									</a>
@@ -190,7 +190,7 @@
 						
 								<div class="progress earned-badges" >
 									<div class="bar"></div>
-									<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/>' . $b['created_time'] ?>"
+									<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . $b['created_time'] ?>"
 										class="redeemableBadge" rel="tooltip" data-placement="top-left">
 										<img src="<?= $b['picture']?>"/>
 									</a>

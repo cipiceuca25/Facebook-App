@@ -42,6 +42,7 @@ $('.notification').live('click', function(event){
 		//$('.notification').css('opacity','1');
 		$('.notification a').attr('data-original-title','You have no new Notifications');
 		$('#badge-notification-count').html('0');
+		$('#badge-notification-count').css('display','none');
 		console.log
 		//$('.notification a').addClass('noclick');
 		badgeIds = new Array();
@@ -73,11 +74,14 @@ function pointlogNotification() {
 			//console.log(points);
 			if (pointCount + badgeCount > 0){
 				//$('.notification a').removeClass('noclick');
+				$('#badge-notification-count').css('display','block');
 				$('#badge-notification-count').html(pointCount + badgeCount);
 				$('.notification a').attr('data-original-title','You have ' + (badgeCount + pointCount) + ' new Notifications');
 				//$('.notification').css('background-color','#56A556');
 				//$('.notification a').css('color',color2);
-				//$('.notification').effect("pulsate", { times:3 }, 300);
+				$('#badge-notification-count').effect("pulsate", { times:3 }, 300);
+			}else{
+				
 			}
 			//date = new Date();
 			//lastViewNotification = date.getUTCFullYear()+'-'+(date.getUTCMonth() + 1)+'-'+date.getUTCDate() +' '+ (date.getUTCHours()) + ':' + (date.getUTCMinutes()) + ':' + date.getUTCSeconds(); 
@@ -117,10 +121,11 @@ function isLoginNotification() {
 			if (notifiercount > 0){
 				//$('.notification a').removeClass('noclick');
 				$('#badge-notification-count').html(notifiercount);
+				$('#badge-notification-count').css('display','block');
 				$('.notification a').attr('data-original-title','You have ' + notifiercount + ' new Notifications');
 				//$('.notification').css('background-color','#56A556');
 				//$('.notification a').css('color',color2);
-				//$('.notification').effect("pulsate", { times:3 }, 300);
+				$('#badge-notification-count').effect("pulsate", { times:3 }, 300);
 			
 				//$('.notification').animate({'background-color':color2 , 'color': color1});
 			}

@@ -1,3 +1,11 @@
+<?php 
+if($this->fanpage_level >2){
+	$term = 'Points';
+}else{
+	$term = 'Interactions';
+}
+?>
+
 <div class="panel">
 	<div class="rvrow">
 		<div class="rvgrid-9">
@@ -69,7 +77,7 @@
 										<h3>
 											<?= $top_fan['count'] ?>
 										</h3>
-										<span>Points</span>
+										<span><?=$term?></span>
 									
 									</div>
 								</div>
@@ -106,7 +114,7 @@
 											<h3>
 												<?= $top_fan['count'] ?>
 											</h3>
-											<span>Points</span>
+											<span><?=$term?></span>
 											
 										</div>
 									</div>
@@ -251,7 +259,7 @@
 										<h3>
 											<?= $top_fan['count'] ?>
 										</h3>
-										<span>Points</span>
+										<span><?=$term?></span>
 									
 									</div>
 								</div>
@@ -288,7 +296,7 @@
 											<h3>
 												<?= $top_fan['count'] ?>
 											</h3>
-											<span>Points</span>
+											<span><?=$term?></span>
 											
 										</div>
 									</div>
