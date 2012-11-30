@@ -226,14 +226,14 @@
 						<?php 	$likeslist = (isset($post->likes->data))?$post->likes->data:array();
 								$countlikes = count($likeslist);
 								for($i = 0; $i < $countlikes - 1; $i++){
-									echo $likeslist[$i]->name.', ';
+									echo $likeslist[$i]->name.', <br/>';
 								}
 
 								echo $likeslist[$i]->name;
 								if ($countlikes < $post->likes->count){
 									echo " and ".($post->likes->count - $countlikes)." others";
 								}
-						?> likes this.
+						?><br/> Likes this.
 						">
 				<img src = "/img/thumbsup.png" />
 				<span class="like_<?= $post->id?>" data-like-count =<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?> ><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>

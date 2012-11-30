@@ -1420,8 +1420,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$badges2[$count]['description'] = str_replace('[quantity]',$badges2[$count]['quantity'] ,$badges2[$count]['description']);
     	}
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
+    	
+
     	for($count=0;$count < count($chosenBadges); $count++){
-    		$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
+    		if ($chosenBadges[$count] != 'undefined'){    		
+    			$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
+    		}
     	}
 
     	$this->view->badges = $badges;

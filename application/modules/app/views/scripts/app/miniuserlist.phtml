@@ -30,7 +30,7 @@
 					<? if (!($this->relation[$count] == 'Fanpage')){?>
 						onclick="userProfile('<?= $user['facebook_user_id'] ?>', true)"
 						 rel="popover" data-content="" data-original-title=""
-						data-placement="top"
+						data-placement="right"
 					<?}else{?>
 						class="noclick"
 					<? }?>>
@@ -42,7 +42,7 @@
 					<? if (!($this->relation[$count] == 'Fanpage')){?>
 						onclick="userProfile('<?= $user['facebook_user_id'] ?>', true)"
 						 rel="popover" data-content="" data-original-title=""
-						data-placement="top"<?}else{?> class="noclick" <? }?>>
+						data-placement="right"<?}else{?> class="noclick" <? }?>>
 					<?= $user['facebook_user_first_name'] .' '. $user['facebook_user_last_name'] ?>
 				</a>
 			</div>
