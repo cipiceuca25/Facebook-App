@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 $(document).mousemove(function(e) {
 	
-	$('.popover').css('display', 'none');
+	//$('.popover').css('display', 'none');
 	//FB.Canvas.setAutoGrow();
 	
 	if (fb == false){
@@ -144,7 +144,7 @@ $(document).on('mouseover', '[rel=popover]', function() {
 		return;
 	}
 	$(this).data('isPopoverLoaded', true).popover({
-		delay : {show:2000, hide:100},
+		delay : {show:2000, hide:500},
 		
 	}).trigger('mouseover');
 	//console.log('test');
@@ -191,8 +191,7 @@ $(document).on('mouseover', '[rel=tooltip-follow]', function() {
 		return;
 	}
 	$(this).data('isTooltipLoaded', true).tooltip({
-		delay : {show:3000, hide:100},
-		
+		delay : {show:2000, hide:500},
 	}).trigger('mouseover');
 });
 
@@ -1267,29 +1266,25 @@ function getAllActivities() {
 	});
 }
 
-
-
 function getRelation(target, ui) {
-
 	$.ajax({
-				type : "GET",
-				url : serverUrl + '/app/user/' + userId
-						+ '/relation/?target_id=' + target + '&fanpage_id='
-						+ fanpageId,
-				dataType : "html",
-				cache : false,
-				success : function(data) {
-					data = $.trim(data);
-					
-					$('.' + ui).html(
-							'<span class="btn fc-' + data + '">' + data
-									+ '</span>');
-				},
-				error : function(xhr, errorMessage, thrownErro) {
-					console.log(xhr.statusText, errorMessage);
-					console.log('there was an error getting the user relation');
-				}
-			});
+		type : "GET",
+		url : serverUrl + '/app/user/' + userId
+				+ '/relation/?target_id=' + target + '&fanpage_id='
+				+ fanpageId,
+		dataType : "html",
+		cache : false,
+		success : function(data) {
+			data = $.trim(data);
+			$('.' + ui).html(
+					'<span class="btn btn-mini fc-' + data + '">' + data
+							+ '</span>');
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('there was an error getting the user relation');
+		}
+	});
 
 }
 
@@ -1759,9 +1754,8 @@ function timeZone(time) {
 
 function editdescription(){
 	msg = $('.user-description').html();
-	
-	$('.user-description').html("<textarea id='user-description-box'>"+$.trim(msg)+"</textarea><input type=button class='btn-submit' value='Save Description' onclick='submit_user_description()' />");
 	$('.user-description-button').remove();
+	$('.user-description').html("<textarea id='user-description-box'>"+$.trim(msg)+"</textarea><a class='user-description-button' onclick='submit_user_description()'><span class='btn btn-mini fc-edit'>Save Description</span></a>");
 	$('.user-description').after('<div id="charcount" style="margin-left:9px; color:#bbb">160 Characters Left</div>');
 	charcheck();
 
@@ -1774,7 +1768,7 @@ function submit_user_description(){
 		alert("Your description is too long, please reduce it to 160 characters");	
 	}else{
 		$('.user-description').html($.trim(msg));
-		$('.user-description').after('<a class="user-description-button" onclick="editdescription()">Edit</a>');
+		$('.user-description').after('<a class="user-description-button" onclick="editdescription()"><span class="btn btn-mini fc-edit-2"><img src="/img/icons/edit_icon.png" class="edit_icon" />Edit Description</span></a>');
 		$('#charcount').remove();
 		$.ajax({
 			type : "GET",

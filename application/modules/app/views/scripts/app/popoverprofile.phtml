@@ -9,7 +9,7 @@
 	</div>
 	<div class="name">
 		<a><?=  $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?></a>
-		</div>
+	</div>
 		
 	
 	</div>
@@ -17,7 +17,7 @@
 	<div class="post">
 		<div class="user-description tip2">
 							
-			<?= substr($this->fan->message, 0, 160)?>
+			<?= substr(stripslashes($this->fan->message), 0, 160)?>
 	
 		</div>
 	</div>
