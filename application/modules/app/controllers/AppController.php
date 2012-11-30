@@ -291,7 +291,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				case 'top-followed':
     					if(isset($cache) && !$cache->load($this->_fanpageId . '_topfollowed')){
     						$toplist = $model->getTopFollowedByWeek($this->_fanpageId, 5);
-    				
+    							
     						$cache->save($toplist, $this->_fanpageId . '_topfollowed');
     					}else{
     						$toplist = $cache->load($this->_fanpageId . '_topfollowed');
@@ -332,19 +332,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    				}else{
 	    					$toplist = $cache->load($this->_fanpageId . '_topfanall');
 	    				}
-	    				
 	    				break;
     				
     				default:
     					if(isset($cache) && !$cache->load($this->_fanpageId . '_topfan')){
-    						$toplist = $model->getTopFansByWeek($this->_fanpageId, 5);
+    						$toplist = $model->getTopFansByMonth($this->_fanpageId, 5);
+    						//$toplist = $model->getTopFansByWeek($this->_fanpageId, 5);
     						$cache->save($toplist, $this->_fanpageId . '_topfan');
     					}else{
     						$toplist = $cache->load($this->_fanpageId . '_topfan');
     					}
     					break;
     			}
-    			
     		} catch (Exception $e) {
   				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
   				//echo $e->getMessage();

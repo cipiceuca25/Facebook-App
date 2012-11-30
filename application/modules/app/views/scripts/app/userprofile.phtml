@@ -32,11 +32,11 @@
 				<div class="post-container">
 				
 					<div class="user pad">
-					
+							<? if($this->fanpage_level !=1){?>
 							<div class="rank you">
 								<h1><?= isset( $this->fan->fan_level)? $this->fan->fan_level:1?></h1>
 							</div>
-					
+							<?php }?>
 							
 							<div class="photo">
 								<a class="noclick"><img class="large-face" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
