@@ -40,7 +40,13 @@
 			 <?// if ($isSelf) {?>
 				<?//echo $displayname ?>
 			<?//php }else{?>
-				<?echo $act['facebook_user_name']?>
+			<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+				data-original-title="" 
+				data-placement="<?= $popover?>" 
+				data-userid="<?=$act['facebook_user_id']?>">
+				<?= $act['facebook_user_name']?>
+			</a> 
+				
 			<?//php }?>
 		<? }?>
 		

@@ -10,21 +10,21 @@
 							<?php switch($this->relation[$count]) { 
 								case 'Fanpage':?>
 									class="noclick" data-original-title="You can't Follow an Admin">
-										<span class="btn fc-Fanpage">Admin</span>
+										<span class="btn btn-mini fc-Fanpage">Admin</span>
 								<?break;?> 
 								<?case 'You':?>
 									class="noclick" data-original-title="This is You">
-										<span class="btn fc-You">You</span>
+										<span class="btn btn-mini fc-You">You</span>
 								<?break;?>
 								<?case 'Following':?>
 									onclick="unfollow(<?=$this->post->from->id?> ,'<?=$this->post->from->name?>')" 
 									data-original-title="Click to Unfollow this User">
-										<span class="btn fc-Following">Following</span>
+										<span class="btn btn-mini fc-Following">Following</span>
 								<?break;?>
 								<?default:?>
 									onclick="follow(<?=$this->post->from->id?> , '<?=$this->post->from->name?>')" 				
 									data-original-title="Click to Follow this User">
-										<span class="btn fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+										<span class="btn btn-mini fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 							<?}?>
 						</a>
 					</div>
@@ -158,13 +158,13 @@
 							<?php 	$likeslist = (isset($post->likes->data))?$post->likes->data:array();
 									$countlikes = count($likeslist);
 										for($i = 0; $i < $countlikes - 1; $i++){
-											echo $likeslist[$i]->name.', ';
+											echo $likeslist[$i]->name.', <br/>';
 										}
 										echo $likeslist[$i]->name;
 										if ($countlikes < $this->post->likes->count){
 											echo " and ".($this->post->likes->count - $countlikes)." others";
 										}
-							?> likes this.
+							?><br/> Likes this.
 						">
 							<img src = "/img/thumbsup.png" />
 							<span class="like_<?= $this->post->id?>" data-like-count = <? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>>

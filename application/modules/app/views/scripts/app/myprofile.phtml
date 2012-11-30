@@ -22,7 +22,7 @@
 				<div class="rvrow">
 					<div class=" post-container">
 						<div class="user pad">
-								<div class="rank">
+								<div class="rank you">
 									<h1><?= $this->fan->fan_level?></h1>
 								</div>
 								
@@ -46,10 +46,13 @@
 					</div>
 					<div class="post-container">
 						<div class="post">
-						<div class="badgedisplay" >
-							<div>
+						<div class="badgedisplay">
+							<div style="min-height:60px;">
+							<?php $cb = 0;?>
 							<?php foreach ($this->chosen_badges as $b): ?>
+								
 								<?php if ($b != 'undefined') {?>
+								
 								<div class="progress earned-badges">
 									<div class="bar"></div>
 									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
@@ -57,8 +60,14 @@
 										<img src="<?= $b['picture']?>"/>
 									</a>
 								</div>
+								<?php }else{?>
+									<?php $cb++;?>
 								<?php }?>
 							<?php endforeach;?>
+	
+							<?php if ($cb == 3){?>
+								You haven't picked any badges.
+							<?php }?>
 							</div>
 							<a class="display-badges-button" onclick="choosebadges()"><span class="btn btn-mini fc-edit">Edit Displayed Badges</span></a>	
 						</div>
@@ -147,7 +156,7 @@
 								<div class="progress earned-badges" >
 									<div class="bar" ></div>
 									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/>' . $b['created_time'] ?>" 
-									class=noclick rel="tooltip" data-placement="top"  >
+									class=noclick rel="tooltip" data-placement="top-left"  >
 										<img src="<?= $b['picture']?>"/>
 									</a>
 									
@@ -182,7 +191,7 @@
 								<div class="progress earned-badges" >
 									<div class="bar"></div>
 									<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/>' . $b['created_time'] ?>"
-										class="redeemableBadge" rel="tooltip" data-placement="top">
+										class="redeemableBadge" rel="tooltip" data-placement="top-left">
 										<img src="<?= $b['picture']?>"/>
 									</a>
 									  

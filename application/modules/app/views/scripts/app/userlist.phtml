@@ -80,8 +80,8 @@
 					<!--   <br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?>  since <span class="time"
 									title="" data-unix-time="<?= strtotime($user['created_time'])?>"></span>	-->
 				</div>
-				
-				<div class="badge-profile">
+			
+				<div class="user-badge">
 					<a rel="tooltip-follow" class ="follow_<?= $user['facebook_user_id']?>" 
 					<?php switch($this->relation[$count]) { 
 						case 'Fanpage':?>

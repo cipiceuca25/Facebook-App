@@ -1,14 +1,20 @@
-
+<?php $display = $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name ;
+	if (strlen($display) > 20){
+		$display = substr($display, 0, 18);
+		$display = $display.'...';
+	}
+?>
+<?//=  $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>
 <div class="post-container noline">
 	<div class="user ">
-		<div class="rank">
+		<div class="rank you">
 			<h1><?= isset($this->fan['fan_level'])?$this->fan['fan_level']:1?></h1>
 	</div>
 	<div class="photo">
 		<a><img class="small-face"  src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id  ?>/picture" onerror="ImgError(this);"></a>
 	</div>
 	<div class="name">
-		<a><?=  $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?></a>
+		<a><?= $display?></a>
 	</div>
 		
 	
@@ -17,7 +23,7 @@
 	<div class="post">
 		<div class="user-description tip2">
 							
-			<?= substr(stripslashes($this->fan->message), 0, 160)?>
+			<?= substr(stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$this->fan->message)), 0, 160)?>
 	
 		</div>
 	</div>

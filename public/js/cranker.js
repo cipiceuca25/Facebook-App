@@ -57,6 +57,45 @@ $(document).mousemove(function(e) {
 });
 //===========================================================================================
 
+$(document).on('mouseenter', '#badges2-container', function (){
+	//console.log('hover on');
+	//console.log(this.scrollHeight);
+	//console.log(parseInt($(this).css('max-height')));
+	if(document.addEventListener  && this.scrollHeight > parseInt($(this).css('max-height'))){ //Firefox only
+	    document.addEventListener("DOMMouseScroll", mouseScroll, true);
+	    document.addEventListener("mousewheel",  mouseScroll, true);  
+	}
+});
+
+$(document).on('mouseleave', '#badges2-container', function (){
+	//console.log('hover off');
+
+	
+	document.removeEventListener("DOMMouseScroll", mouseScroll, true);
+	document.removeEventListener("mousewheel", mouseScroll, true);
+	
+});
+
+
+$(document).on('mouseenter', '#profile_earned_badges', function (){
+	//console.log('hover on');
+	//console.log(this.scrollHeight);
+	//console.log(parseInt($(this).css('max-height')));
+	if(document.addEventListener  && this.scrollHeight > parseInt($(this).css('max-height'))){ //Firefox only
+	    document.addEventListener("DOMMouseScroll", mouseScroll, true);
+	    document.addEventListener("mousewheel",  mouseScroll, true);  
+	}
+});
+
+$(document).on('mouseleave', '#profile_earned_badges', function (){
+	//console.log('hover off');
+
+	
+	document.removeEventListener("DOMMouseScroll", mouseScroll, true);
+	document.removeEventListener("mousewheel", mouseScroll, true);
+	
+});
+
 
 $(document).on('mouseenter', '#recent_activities', function (){
 	//console.log('hover on');
@@ -421,14 +460,17 @@ function closeProfile() {
 	$('.profile-content').css('display', 'none');
 	$('.profile-content').css('background-color', backgroundcolor);
 	$('.profile-content').html('');
-	
+	document.removeEventListener("DOMMouseScroll", mouseScroll, true);
+	document.removeEventListener("mousewheel", mouseScroll, true);
 }
+
 
 function ImgError(source) {
 	source.src = "/img/profile-picture.png";
 	source.onerror = "";
 	return true;
 }
+
 
 function userProfile(user, load) {
 	load = typeof load !== 'undefined' ? load : true;
@@ -691,7 +733,7 @@ function like(post_id, post_type, target_id, target_name) {
 					;
 					//alert("target followed")
 					//alert(post_id + 'liked');
-					feedbackAnimation('.like_control_' + post_id, 'like');
+					//feedbackAnimation('.like_control_' + post_id, 'like');
 					//addActivities('like-' + post_type, post_id, target_id, target_name, mes);
 					//console.log(data.fan_point);
 					// update fan point on top menu bar
@@ -762,7 +804,7 @@ function unlike(post_id, post_type, target_id, target_name) {
 					console.log(data);
 					//alert("target followed")
 					//alert(post_id + 'liked');
-					feedbackAnimation('.like_control_' + post_id, 'unlike');
+					//feedbackAnimation('.like_control_' + post_id, 'unlike');
 					
 					
 				
@@ -1308,7 +1350,7 @@ function follow(target, name) {
 				$('.' + ui).attr('onclick',	"unfollow('" + target + "','" + name + "','" + ui + "')");
 				$('.' + ui).attr('data-original-title', 'Click to Unfollow this User');
 				//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
-				feedbackAnimation('.' + ui, 'follow');
+				//feedbackAnimation('.' + ui, 'follow');
 			},
 			error : function(xhr, errorMessage, thrownErro) {
 				console.log(xhr.statusText, errorMessage);
@@ -1337,7 +1379,7 @@ function unfollow(target, name) {
 			$('.' + ui).attr('data-original-title', 'Click to Follow this User');
 		
 			//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
-			feedbackAnimation('.'+ui, 'unfollow');
+			//feedbackAnimation('.'+ui, 'unfollow');
 
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -1577,6 +1619,8 @@ function popup(load){
 			$('.user-profile').css('top', info.scrollTop +100);
 	});
 	if (load) {
+		document.addEventListener("DOMMouseScroll", mouseScroll, true);
+		document.addEventListener("mousewheel",  mouseScroll, true); 
 		$('.profile-content').animate({
 			height : 'toggle',
 		//top:'20px'
@@ -1584,6 +1628,7 @@ function popup(load){
 
 		});
 	}
+	 
 }
 
 

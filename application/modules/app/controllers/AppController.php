@@ -1420,8 +1420,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$badges2[$count]['description'] = str_replace('[quantity]',$badges2[$count]['quantity'] ,$badges2[$count]['description']);
     	}
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
+    	
+
     	for($count=0;$count < count($chosenBadges); $count++){
-    		$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
+    		if ($chosenBadges[$count] != 'undefined'){    		
+    			$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
+    		}
     	}
 
     	$this->view->badges = $badges;
@@ -2752,13 +2756,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		
 		$likes = $this->getPostLikes($postid, $limit);
 		$result = array();
-		foreach ($likes as $r){
-			$result[$count]['facebook_user_id'] = $r->id;
-			$result[$count]['facebook_user_name'] = $r->name;
-			$relation[$count] = $follow->getRelation($this->_userId, $r->id, $this->_fanpageId);
-			$count++;
+		$relation = array();
+		if($likes){
+			foreach ($likes as $r){
+				$result[$count]['facebook_user_id'] = $r->id;
+				$result[$count]['facebook_user_name'] = $r->name;
+				$relation[$count] = $follow->getRelation($this->_userId, $r->id, $this->_fanpageId);
+				$count++;
+			}
 		}
-		
 		
 		$this->view->result = $result;
 		$this->view->relation= $relation;
