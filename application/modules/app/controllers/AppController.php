@@ -1681,15 +1681,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$chosenBadges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 3);
     	}
     	 
-    	
+    	$cbcount = 0;
     	for($count=0;$count < count($chosenBadges); $count++){
     		if ($chosenBadges[$count] != 'undefined'){
     			$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
+    		}else{
+    			$cbcount++;
     		}
     	}
     	
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
     	$fan = $fan->getFanProfile();
+    	$this->view->cbcount = $cbcount;
     	$this->view->badges = $chosenBadges;
     	$this->view->fan_exp = $fan_exp;
     	$this->view->fan_exp_required = ($fan_exp === '?')?'?':$fan_exp_required - $fan_exp;

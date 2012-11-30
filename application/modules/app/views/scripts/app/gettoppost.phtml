@@ -32,13 +32,13 @@
 				<div class="user-badge">
 						<a rel="tooltip-follow"  <?php switch($this->relation[$count]) { 
 						case 'You':?>
-							 class="noclick" data-original-title="This is You"><span class="btn fc-You">You</span>
+							 class="noclick" data-original-title="This is You"><span class="btn fc-You disabled">You</span>
 						<?break;?>
 						
 						<?case 'Following'?>
 							class ="follow_<?=$post->from->id?>"
 							onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
-							data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
+							data-original-title="Click to Unfollow this User"><span class="btn fc-Following disabled">Following</span>
 						<?break;?>
 							
 						<?default:?>
@@ -246,10 +246,10 @@
 						<div class="user-badge">
 							<a rel="tooltip-follow" class ="follow_<?=$comments->from->id?>" <?php switch($this->comment_relation[$count2]) { 
 								case 'Fanpage':?>
-									 class="noclick" data-original-title="You can't Follow an Admin"><span class="btn fc-Fanpage">Admin</span>
+									 class="noclick" data-original-title="You can't Follow an Admin"><span class="btn fc-Fanpage disabled">Admin</span>
 								<?break;?>
 								<?case 'You':?>
-									 class="noclick" data-original-title="This is You"><span class="btn fc-You">You</span>
+									 class="noclick" data-original-title="This is You"><span class="btn fc-You disabled">You</span>
 								<?break;?>
 								<?case 'Following':?>
 									onclick="unfollow(<?=$comments->from->id?> ,'<?=$comments->from->name?>')" 
@@ -339,7 +339,10 @@
 					<form action="#" class="submit-form" >
 					
 						<textarea class="comment-box" id="comment_box_<?= $post->id?>" ></textarea>
-						<input type=button class="btn-submit" value="Comment" onclick="commentSubmit(this,'<?= $post->id?>','<?= $post->type?>' ,'<?=$post->from->id?>','<?=$post->from->name?>',<?= ($this->latest == 'true')?'true':'false'?> )">
+					
+						<a onclick="commentSubmit(this,'<?= $post->id?>','<?= $post->type?>' ,'<?=$post->from->id?>','<?=$post->from->name?>',<?= ($this->latest == 'true')?'true':'false'?> )">
+							<span class="btn btn-mini fc-comment">Comment</span>
+						</a>
 					</form>	
 				</div>
 				<!-- 

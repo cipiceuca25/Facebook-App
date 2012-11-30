@@ -372,7 +372,10 @@
 								<form action="#" class="submit-form" >
 								
 									<textarea class="comment-box" id="comment_box_<?= $post->id?>" ></textarea>
-									<input type=button class="btn-submit" value="Comment" onclick="commentSubmit(this,'<?= $post->id?>','<?= $post->type?>' ,'<?=$post->from->id?>','<?=$post->from->name?>',<?= ($this->latest == 'true')?'true':'false'?> )">
+								
+									<a onclick="commentSubmit(this,'<?= $post->id?>','<?= $post->type?>' ,'<?=$post->from->id?>','<?=$post->from->name?>',<?= ($this->latest == 'true')?'true':'false'?> )">
+										<span class="btn btn-mini fc-comment">Comment</span>
+									</a>
 								</form>	
 							</div>
 							<!-- 
@@ -605,7 +608,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 				</div>
 		
 		</div>
-		
+		<!--
 		<div class="rvrow">
 		
 				<div id="info-box-container" style="position:relative;">
@@ -628,7 +631,7 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 				</div>
 			</div>
 		</div>
-		
+		 --> 
 
 
 </div>	
