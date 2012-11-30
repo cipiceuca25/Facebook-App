@@ -3,12 +3,14 @@
 class Model_Rankings extends Model_DbTable_Rankings
 {
 	protected $_lastSunday;
+	protected $_lastMonth;
 	
 	public function __construct() {
 		parent::__construct();
 		$date = new Zend_Date();
 		$lastWeekday = $date->sub($date->get(Zend_Date::WEEKDAY_DIGIT), Zend_Date::DAY);
 		$this->_lastSunday = $lastWeekday->toString('yyyy-MM-dd 00:00:00');
+		$this->_lastMonth = date('y-m-d', strtotime('last month'));
 	}
 
 	public function getRanking($page_id, $type, $user_id = false, $limit = 5)
@@ -110,6 +112,23 @@ class Model_Rankings extends Model_DbTable_Rankings
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
+	public function getTopFansByMonth($page_id, $limit = 5) {
+	
+		$select="SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
+		left join fans f
+		on f.facebook_user_id = p.facebook_user_id
+		where f.fanpage_id = $page_id && f.facebook_user_id != f.fanpage_id && p.created_time > '$this->_lastMonth'
+		group by f.facebook_user_id
+		having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $page_id)
+		order by count DESC";
+	
+		if($limit !== false) {
+			$select = $select . " LIMIT $limit";
+		}
+	
+		return $this->getAdapter()->fetchAll($select);
+	}
+		
 	public function getTopTalker($page_id, $limit = 5)
 	{
 		//$relevant_period = new Zend_Date(time() - 15552000);
@@ -307,7 +326,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 						     SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
 								left join fans f
 								on f.facebook_user_id = p.facebook_user_id
-								where f.fanpage_id = $fanpage_id && f.facebook_user_id != f.fanpage_id && p.created_time >$this->_lastSunday
+								where f.fanpage_id = $fanpage_id && f.facebook_user_id != f.fanpage_id && p.created_time > '$this->_lastSunday'
 								group by f.facebook_user_id
 								having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $fanpage_id)
 								order by count DESC
@@ -318,8 +337,6 @@ class Model_Rankings extends Model_DbTable_Rankings
 	
 		$result = $this->getAdapter()->fetchAll($select);
 		
-		
-		
 		if(!empty($result[0])) {
 			echo 'the hell?';
 			return $result[0];
@@ -328,6 +345,34 @@ class Model_Rankings extends Model_DbTable_Rankings
 		return null;
 	}
 	
+	public function getUserTopFansRankByMonth($fanpage_id, $facebook_user_id) {
+		$select = "select *
+				from
+				(
+				select rank.*, @rownum:=@rownum+1 as my_rank
+				FROM
+				(
+					SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
+					left join fans f
+					on f.facebook_user_id = p.facebook_user_id
+					where f.fanpage_id = $fanpage_id && f.facebook_user_id != f.fanpage_id && p.created_time > '$this->_lastMonth'
+					group by f.facebook_user_id
+					having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $fanpage_id)
+					order by count DESC
+				) as rank, (SELECT @rownum:=0) r
+				) as topfans_rank
+				WHERE facebook_user_id = '". $facebook_user_id ."'
+				";
+	
+		$result = $this->getAdapter()->fetchAll($select);
+	
+		if(!empty($result[0])) {
+			return $result[0];
+		}
+	
+		return null;
+	}
+		
 	public function getUserTopTalkerRank($fanpage_id, $facebook_user_id)
 	{
 		$select = "select * 

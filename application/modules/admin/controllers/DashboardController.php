@@ -529,6 +529,8 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		
 		Zend_Debug::dump($insights);
 		$this->view->pageFanData = json_encode($this->insightPageFansByCountry($insights));
+		
+		Zend_Debug::dump($this->view->pageFanData);
 		$this->render("facebookinsights");
 	}
 	
@@ -1126,10 +1128,10 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$insightData = null;
 		try {
 			$cache = Zend_Registry::get('memcache');
-				
+			//$cache->remove($insightId);	
 			if(isset($cache) && !$cache->load($insightId)){
 				//Look up the facebook graph api
-				//echo 'look up facebook graph api';
+				echo 'look up facebook graph api';
 				
 				$fanpageModel = new Model_Fanpages();
 				$fanpage = $fanpageModel->findRow($fanpageId);
@@ -1140,7 +1142,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 				$response = $client->request();
 				
 				$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
-				
+				Zend_Debug::dump($result);
 				if(!empty($result->data)) {
 					$insightData = $result->data;
 					//Save to the cache, so we don't have to look it up next time
