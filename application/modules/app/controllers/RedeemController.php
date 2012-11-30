@@ -45,6 +45,15 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 		$shippingInfo = $shippingInfoModel->findByUserId($this->_identity->facebook_user_id);
 		if ($shippingInfo) {
 			$this->view->shippingInfo = $shippingInfo;
+		} else {
+			$shippingInfo['email'] = $this->_identity->facebook_user_email;
+			$shippingInfo['name'] = $this->_identity->facebook_user_name;
+			$shippingInfo['address'] = '';
+			$shippingInfo['city'] = '';
+			$shippingInfo['region'] = '';
+			$shippingInfo['country'] = '';
+			$shippingInfo['postcode'] = '';
+			$this->view->shippingInfo = $shippingInfo;
 		}
 		
 		$this->render('index');
