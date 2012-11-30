@@ -2756,13 +2756,15 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		
 		$likes = $this->getPostLikes($postid, $limit);
 		$result = array();
-		foreach ($likes as $r){
-			$result[$count]['facebook_user_id'] = $r->id;
-			$result[$count]['facebook_user_name'] = $r->name;
-			$relation[$count] = $follow->getRelation($this->_userId, $r->id, $this->_fanpageId);
-			$count++;
+		$relation = array();
+		if($likes){
+			foreach ($likes as $r){
+				$result[$count]['facebook_user_id'] = $r->id;
+				$result[$count]['facebook_user_name'] = $r->name;
+				$relation[$count] = $follow->getRelation($this->_userId, $r->id, $this->_fanpageId);
+				$count++;
+			}
 		}
-		
 		
 		$this->view->result = $result;
 		$this->view->relation= $relation;

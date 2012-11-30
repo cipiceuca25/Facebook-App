@@ -343,7 +343,7 @@ switch($this->list){
 					<?php if ($this->list != 'top-fan-mini'){?>
 					<div class="points">
 						<h3>
-							<?= isset( $this->toplistYou['count'])?( ($this->toplistYou['count']>99)?'99+':$this->toplistYou['count'] ):'?'?>
+							<?= isset( $this->toplistYou['count'])?( ($this->toplistYou['count']>99)?'99+':$this->toplistYou['count'] ):'0'?>
 						</h3>
 						<span><?= $term?></span>
 						
@@ -612,7 +612,7 @@ switch($this->list){
 									</div>
 									<div class="points">
 										<h3>
-											<?= isset($this->toplistYou['count'])? (($this->toplistYou['count']>99)?'99+':$this->toplistYou['count']):'?'?>
+											<?= isset($this->toplistYou['count'])? (($this->toplistYou['count']>99)?'99+':$this->toplistYou['count']):'0'?>
 										</h3>
 										<span><?= $term?></span>
 										
