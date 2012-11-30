@@ -55,7 +55,7 @@
 							rel="popover" 
 							data-content="" 
 							data-original-title="" 
-							data-placement="toppost" 
+							data-placement="left" 
 							data-userid="<?=$post->from->id?>"
 					
 						>
@@ -69,7 +69,7 @@
 							rel="popover" 
 							data-content="" 
 							data-original-title="" 
-							data-placement="toppost" 
+							data-placement="left" 
 							data-userid="<?=$post->from->id?>>"
 					>
 						<?=$displayname?>
@@ -234,7 +234,7 @@
 								rel="popover" 
 								data-content="" 
 								data-original-title="" 
-								data-placement="right" 
+								data-placement="left" 
 								data-userid="<?=$comments->from->id?>"
 							<?php }?> 
 						><img class="small-face" src="https://graph.facebook.com/<?= $comments->from->id ?>/picture" onerror="ImgError(this);"></a></div>
@@ -269,10 +269,10 @@
 						<span class="name"><a  
 							<? if (!($this->comment_relation[$count2] == 'Fanpage')){?> 
 								onclick="userProfile('<?=$comments->from->id?>')"
-								rel="popover" 
+								rel="" 
 								data-content="" 
 								data-original-title="" 
-								data-placement="right" 
+								data-placement="left" 
 								data-userid="<?=$comments->from->id?>"
 							<?php }else{?>
 								class="noclick"

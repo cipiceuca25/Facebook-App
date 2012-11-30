@@ -40,7 +40,7 @@
 							
 								<?= substr(stripslashes($this->fan->message), 0, 160)?>
 								
-								</div><a class="user-description-button" onclick="editdescription()"><span class="btn fc-edit-2"><img src="/img/icons/edit_icon.png" class="edit_icon" />Edit Description</span></a>	
+								</div><a class="user-description-button" onclick="editdescription()"><span class="btn btn-mini fc-edit-2"><img src="/img/icons/edit_icon.png" class="edit_icon" />Edit Description</span></a>	
 								
 						</div>
 					
@@ -61,7 +61,7 @@
 								<?php }?>
 							<?php endforeach;?>
 							</div>
-							<a class="display-badges-button" onclick="choosebadges()"><span class="btn fc-edit">Edit Displayed Badges</span></a>	
+							<a class="display-badges-button" onclick="choosebadges()"><span class="btn btn-mini fc-edit">Edit Displayed Badges</span></a>	
 						</div>
 						
 						</div>
@@ -204,7 +204,7 @@
 					<div class="title nopic">
 						<div class="title-header nopic">
 							 <div class="follow-title"><h4><a onclick="getFollowersList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow.png" /><?= $this->follower['0']['Follower']?><br/>
-							Followers</a></h4></div>
+							<span>Followers</span></a></h4></div>
 						</div>
 					</div>
 					<div id="followerslist"></div>
@@ -219,7 +219,7 @@
 					<div class="title nopic">
 						<div class="title-header nopic">
 							 <div class="follow-title"><h4><a onclick="getFollowingList('<?=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name?>', '<?=$this->facebook_user->facebook_user_id?>', 0)"><img src="/img/eye_arrow2.png" /><?= $this->following['0']['Following']?><br/>
-						Following</a></h4></div>
+						<span>Following</span></a></h4></div>
 						</div>
 					</div>
 					<div id="followinglist"></div>

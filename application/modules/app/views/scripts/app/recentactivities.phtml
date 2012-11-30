@@ -3,11 +3,13 @@
 <?php 	if ($this->act_user != $this->user_id){
 			$username=$this->target_fan->fan_first_name .' '. $this->target_fan->fan_last_name;
 		 	$displayname= $username;
-			
-		
+
 		}
 		$popup = $this->source;
-		
+		$popover = 'right';
+		if($popup){
+			$popover = 'left';
+		}
 ?>
 
 
@@ -63,7 +65,7 @@
 			case 'follow': ?>
 				followed <?if ($isSelf){?>you<?php }else{?><a onclick="userProfile('<?=$act['event_object']?>')" data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>">
 																		<?=$act['target_user_name']?>
 						</a> <?php }?>
@@ -76,7 +78,7 @@
 			case 'unfollow' :?>
 				unfollowed <?if ($isSelf){?>you<?php }else{?><a onclick="userProfile('<?=$act['event_object']?>')" data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>">
 																		<?=$act['target_user_name']?>
 							</a> <?php }?>
@@ -92,7 +94,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		><?=$act['target_user_name']?>
 																		</a>'s <?php }?>
@@ -107,7 +109,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?>
@@ -123,7 +125,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?></a>'s
@@ -136,7 +138,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?>
@@ -150,7 +152,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?>
@@ -164,7 +166,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?>
@@ -178,7 +180,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?></a>'s
@@ -191,7 +193,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?></a>'s
@@ -204,7 +206,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?></a>'s
@@ -217,7 +219,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?></a>'s
@@ -230,7 +232,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?></a>'s 
@@ -244,7 +246,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?></a>'s 
@@ -257,7 +259,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?></a>'s 
@@ -270,7 +272,7 @@
 																		rel="popover" 
 																		data-content="" 
 																		data-original-title="" 
-																		data-placement="top" 
+																		data-placement="<?= $popover?>" 
 																		data-userid="<?=$act['target_user_id']?>"
 																		>
 																		<?=$act['target_user_name']?></a>'s 

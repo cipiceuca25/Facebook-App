@@ -1,4 +1,7 @@
-<?php switch($this->list){
+<?php 
+$popover = 'right';
+
+switch($this->list){
 	case 'top-fan':
 		if($this->fanpage_level >2){
 			$term = 'Points';
@@ -7,7 +10,7 @@
 		}
 		break;
 	case 'top-fan-all':
-if($this->fanpage_level >2){
+		if($this->fanpage_level >2){
 			$term = 'Points';
 		}else{
 			$term = 'Interactions';
@@ -19,18 +22,21 @@ if($this->fanpage_level >2){
 		}else{
 			$term = 'Interactions';
 		}
+		$popover='left';
 		break;
 	case 'fan-favorite':
 		$term = 'Props';
 		break;
 	case 'top-talker':
 		$term = 'Posts';
+		$popover='left';
 		break;
 	case 'top-clicker':
 		$term = 'Likes';
 		break;
 	case 'top-followed':
 		$term = 'Followers';
+		$popover='left';
 		break;
 	
 	
@@ -73,7 +79,7 @@ if($this->fanpage_level >2){
 					
 							onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
 							 rel="popover" data-content="" data-original-title=""
-							data-placement="top-left">
+							data-placement="<?= $popover?>">
 							<img class="small-face"
 						
 							src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
@@ -86,7 +92,7 @@ if($this->fanpage_level >2){
 						
 							onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
 							rel="popover" data-content="" data-original-title=""
-							data-placement="top-left"><?= $displayname ?>						
+							data-placement="<?= $popover?>"><?= $displayname ?>						
 						</a>
 					</div>
 				</div>
@@ -96,19 +102,19 @@ if($this->fanpage_level >2){
 					<a rel="tooltip-follow" <?php switch($this->toplistArray[$count]) { 
 						case 'You':?>
 							class ="noclick"
-							data-original-title="This is You"><span class="btn fc-You">You</span>
+							data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
 	
 						<?break;?>
 						<?case 'Following'?>
 							class ="follow_<?=$top_fan['facebook_user_id']?>"
 							onclick="unfollow(<?= $top_fan['facebook_user_id']?> ,'<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
-							data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
+							data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
 						<?break;?>
 							
 						<?default:?>
 							class ="follow_<?=$top_fan['facebook_user_id']?>"
 							onclick="follow(<?= $top_fan['facebook_user_id']?> , '<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
-							data-original-title="Click to Follow this User"><span class="btn fc-<?=$this->toplistArray[$count]?>"><?=$this->toplistArray[$count]?></span>
+							data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?=$this->toplistArray[$count]?>"><?=$this->toplistArray[$count]?></span>
 						<?}?>
 					</a>
 				</div>
@@ -165,7 +171,7 @@ if($this->fanpage_level >2){
 				
 							onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
 							rel="popover" data-content="" data-original-title=""
-							data-placement="top-left"><img class="small-face"
+							data-placement="<?= $popover?>"><img class="small-face"
 							
 								src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
 								onerror="ImgError(this);">
@@ -176,7 +182,7 @@ if($this->fanpage_level >2){
 						
 							onclick="userProfile('<?= $top_fan['facebook_user_id'] ?>')"
 							rel="popover" data-content="" data-original-title=""
-							data-placement="top-left"><?= $displayname ?>
+							data-placement="<?= $popover?>"><?= $displayname ?>
 						</a></div>
 						
 					</div>
@@ -187,19 +193,19 @@ if($this->fanpage_level >2){
 							case 'You':?>
 	
 								class ="noclick"
-								data-original-title="This is You"><span class="btn fc-You">You</span>
+								data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
 	
 							<?break;?>
 							<?case 'Following'?>
 								class ="follow_<?=$top_fan['facebook_user_id']?>"
 								onclick="unfollow(<?= $top_fan['facebook_user_id']?> ,'<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
-								data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
+								data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
 							<?break;?>
 								
 							<?default:?>
 								class ="follow_<?=$top_fan['facebook_user_id']?>"
 								onclick="follow(<?= $top_fan['facebook_user_id']?> , '<?= $top_fan['fan_first_name'].' '.$top_fan['fan_last_name']?>')" 
-								data-original-title="Click to Follow this User"><span class="btn fc-<?=$this->toplistArray[$count]?>"><?=$this->toplistArray[$count]?></span>
+								data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?=$this->toplistArray[$count]?>"><?=$this->toplistArray[$count]?></span>
 							<?}?>
 						</a>
 					</div>
@@ -329,7 +335,7 @@ if($this->fanpage_level >2){
 					<div class="user-badge">
 					
 						<a rel="tooltip-follow" data-original-title="This is You" class="noclick">
-						<span class="btn fc-You">
+						<span class="btn btn-mini fc-You">
 							You
 						</span></a>
 					</div>
@@ -390,7 +396,7 @@ if($this->fanpage_level >2){
 									
 										onclick="userProfile('<?= $popular['facebook_user_id'] ?>')"
 										rel="popover" data-content="" data-original-title=""
-										data-placement="top-left"><img class="small-face"
+										data-placement="<?= $popover?>"><img class="small-face"
 								
 											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);"></a></div>
@@ -401,7 +407,7 @@ if($this->fanpage_level >2){
 					
 										onclick="userProfile('<?= $popular['facebook_user_id'] ?>')"
 										rel="popover" data-content="" data-original-title=""
-										data-placement="top-left">
+										data-placement="<?= $popover?>">
 											<?= $popular['fan_first_name'] ?></a>
 									</div>
 									
@@ -414,19 +420,19 @@ if($this->fanpage_level >2){
 										case 'You':?>
 
 											class ="noclick"
-											data-original-title="This is You"><span class="btn fc-You">You</span>
+											data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
 
 										<?break;?>
 										<?case 'Following'?>
 											class ="follow_<?=$popular['facebook_user_id']?>"
 											onclick="unfollow(<?= $popular['facebook_user_id']?> ,'<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
-											data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
+											data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
 											class ="follow_<?=$popular['facebook_user_id']?>"
 											onclick="follow(<?= $popular['facebook_user_id']?> , '<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
-											data-original-title="Click to Follow this User"><span class="btn fc-<?=$this->toplistArray[$count]?>"><?=$this->toplistArray[$count]?></span>
+											data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?=$this->toplistArray[$count]?>"><?=$this->toplistArray[$count]?></span>
 										<?}?>
 									</a>
 								
@@ -460,7 +466,7 @@ if($this->fanpage_level >2){
 									
 										onclick="userProfile('<?= $popular['facebook_user_id'] ?>')"
 										rel="popover" data-content="" data-original-title=""
-										data-placement="top-left"><img class="small-face"
+										data-placement="<?= $popover?>"><img class="small-face"
 								
 											src="https://graph.facebook.com/<?= $popular['facebook_user_id'] ?>/picture"
 											onerror="ImgError(this);"></a></div>
@@ -471,7 +477,7 @@ if($this->fanpage_level >2){
 								
 										onclick="userProfile('<?= $popular['facebook_user_id'] ?>')"
 										rel="popover" data-content="" data-original-title=""
-										data-placement="top-left"><?= $popular['fan_first_name'] ?></a></div>
+										data-placement="<?= $popover?>"><?= $popular['fan_first_name'] ?></a></div>
 									
 								</div>
 								
@@ -481,20 +487,20 @@ if($this->fanpage_level >2){
 										case 'You':?>
 
 											class ="noclick"
-											data-original-title="This is You"><span class="btn fc-You">You</span>
+											data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
 
 										<?break;?>
 										
 										<?case 'Following'?>
 											class ="follow_<?=$popular['facebook_user_id']?>"
 											onclick="unfollow(<?= $popular['facebook_user_id']?> ,'<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
-											data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
+											data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
 										<?break;?>
 											
 										<?default:?>
 											class ="follow_<?=$popular['facebook_user_id']?>"
 											onclick="follow(<?= $popular['facebook_user_id']?> , '<?= $popular['fan_first_name'].' '.$popular['fan_last_name']?>')" 
-											data-original-title="Click to Follow this User"><span class="btn fc-<?=$this->toplistArray[$count]?>"><?=$this->toplistArray[$count]?></span>
+											data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?=$this->toplistArray[$count]?>"><?=$this->toplistArray[$count]?></span>
 										<?}?>
 									</a>
 								
@@ -599,7 +605,7 @@ if($this->fanpage_level >2){
 									</div>
 									<div class="user-badge">
 										<a rel="tooltip-follow" data-original-title="This is You" class="noclick">
-										<span class="btn fc-You">
+										<span class="btn btn-mini fc-You">
 											You
 										</span></a>
 									

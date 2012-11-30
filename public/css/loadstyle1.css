@@ -105,7 +105,7 @@ ol {
   font: 12px/100% Helvetica, Arial, sans-serif;
   text-align: center;
 }
-.follow-title h4 a {
+.follow-title span {
   font: 12px/100% Helvetica, Arial, sans-serif;
 }
 .toolbar #notification_upcoming_badges .upcoming-badges {
@@ -1800,8 +1800,8 @@ background:@color-post-background-hover;
 .notifier .bar {
   height: 24px;
 }
-#userprofile .post,
-#profile .post {
+#user_activities .post,
+#recent_activities .post {
   border-bottom: 1px solid #e5e5e5;
   padding-top: 11px;
 }
@@ -2221,6 +2221,13 @@ button.btn {
 .fc-edit-2[disabled] {
   background-color: #E6E6E6;
   color: #3c589d;
+}
+.btn-small {
+  padding: 3px 9px;
+  font-size: 12px;
+}
+.btn-small [class^="icon-"] {
+  margin-top: 0;
 }
 .policy_message {
   font-size: 25px;
