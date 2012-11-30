@@ -2424,6 +2424,61 @@ $(document).ready(function() {
 		}
 	});
 
+	// open update shipping info form
+	$('#updateShipping').live('click', function(e) {
+		e.preventDefault();
+		// show popup
+		popup(true);
+		$.ajax({
+			type : "GET",
+			url : serverUrl + '/app/redeem/updateshipping/' + fanpageId,
+			dataType : "html",
+			cache : false,
+			async : true,
+			beforeSend: function(){
+				$('.profile-content').html("<div class='rvrow'><div class=' rvgrid-11 '><div class=' box '><div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div></div></div></div>");
+			},
+			success : function(data) {
+				$('.profile-content').html(data);
+				//$(x).popover('show');
+			},
+			error : function(xhr, errorMessage, thrownErro) {
+				console.log(xhr.statusText, errorMessage);
+			}
+		});
+	});
+	
+	// update shipping info
+	$('#updateShippingConfirm').live('click', function(e) {
+		e.preventDefault();
+
+		var formData = $('#update-shipping-form').serialize();
+		console.log(formData+selectBadgeId);
+		
+		if (!$('#update-shipping-form').valid()) {
+			$('#update-shipping-form').validate().focusInvalid();
+		} else {
+			$.ajax({
+				type : "POST",
+				url : serverUrl + '/app/redeem/updateshipping/' + fanpageId,
+				dataType : "html",
+				cache : false,
+				async : true,
+				data : formData,
+				success : function(data) {
+					//$('.profile-content').html(data);
+					if ($.trim(data) == 'ok') {
+						alert('done!');
+					}
+					closeProfile();
+					//$(x).popover('show');
+				},
+				error : function(xhr, errorMessage, thrownErro) {
+					console.log(xhr.statusText, errorMessage);
+				}
+			});			
+		}
+	});
 	// redeem form validate function
 	function confimFormValidate(formData, jqForm, options) { 
 

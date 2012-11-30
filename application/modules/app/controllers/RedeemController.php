@@ -185,6 +185,29 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 		unset($shippingInfo['confirmEmail']);
 		return $shippingInfo;
 	}
+	
+	public function updateshippingAction() {
+		$shippingInfoModel = new Model_ShippingInfo();
+		$foundShipping = $shippingInfoModel->findByUserId($this->_identity->facebook_user_id);
+		if ( !empty($_POST['confirmEmail']) ) {
+			$shippingInfo = $this->getShippingInfo();
+			$shippingId = '';
+			if ($foundShipping) {
+				foreach ($shippingInfo as $key => $field) {
+					$foundShipping->{$key} = $field;
+				}
+				$foundShipping->save();
+			} else {
+				$shippingId = $shippingInfoModel->insert($shippingInfo);
+			}
+			echo 'ok';
+		} else {
+			if ($foundShipping) {
+				$this->view->shippingInfo = $foundShipping->toArray();
+			}
+			$this->render('updateshipping');
+		} 
+	}
 }
 
 ?>
