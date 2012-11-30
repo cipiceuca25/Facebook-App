@@ -2650,4 +2650,12 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	}
     	
     }
+    
+    public function test36Action() {
+    	echo 'yes';
+		$fanpageId = '216821905014540';
+    	$facebook_user_id = '508061175';
+		$rank = new Model_Rankings();
+		Zend_Debug::dump($rank->getUserTopFansRankByMonth($fanpageId, $facebook_user_id));
+    }
 }
