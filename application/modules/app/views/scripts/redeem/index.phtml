@@ -3,12 +3,12 @@
 	<div class="rvrow">
 		<div class="rvgrid-11">
 			<div class="box"  >
-				<div class="post-container" style="min-height:445px;">
+				<div class="post-container" style="min-height:445px; ">
 					<div class="page1">
 						<div class="title nopic">
 							<div class="title-header nopic">
 								Please Select an Item
-								<button type="button" id='next_page' class="btn fc-edit" style="float:right; margin-top:-9px; z-index:2">Next</button>
+								<button type="button" id='next_page' class="btn fc-comment" style="float:right; margin-top:-9px; z-index:2">Next</button>
 							</div>
 							
 						</div>
@@ -39,12 +39,12 @@
 						</div>
 				
 					</div>
-					<div class="page2"  style="display:none;">
+					<div class="page2"  style="display:none; margin-bottom:50px;">
 						<div class="title nopic">
 							
 							<div class="title-header nopic">
 								Shipping Info
-								<button type="button" id="last_page" class="btn fc-edit" style="float:right; margin-top:-9px; z-index:2">Back</button>
+								<button type="button" id="last_page" class="btn fc-comment" style="float:right; margin-top:-9px; z-index:2">Back</button>
 							</div>
 							
 						</div>
@@ -99,7 +99,7 @@
 							</div>						
 							
 							<div style="float:right">
-							<button id="redeem_submit" type="submit" class="btn fc-Follow" >Confirm</button>
+								<button id="redeem_submit" type="submit" class="btn fc-share" >Confirm</button>
 							</div>
 						</div>
 					</div>
@@ -119,8 +119,8 @@
 			$('#redeemItemId').val($(this).attr('data-item-id'));
 		});
 
-		var addresspicker = $( "#address" ).addresspicker();
-
+		//var addresspicker = $( "#address" ).addresspicker();
+		
 		$('#next_page').live('click',function(){
 			$('.page1').css('display','none');
 

@@ -73,7 +73,11 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 		$redeemModel = new Model_RedeemTransactions();
 		$badgeEventsModel = new Model_BadgeEvents();
 		// check top fan last week, note: badge id 721 = top_fans 
-		if (!$badgeEventsModel->hasBadgeEvent($this->_fanpageId, $this->_identity->facebook_user_id, 721)) {
+		
+		$fp = new Model_Fanpages();
+		$fp = $fp->find($item['fanpage_id'])->current();
+		
+		if (!$badgeEventsModel->hasBadgeEvent($this->_fanpageId, $this->_identity->facebook_user_id, 1)) {
 			echo 'redeemable badge not found';
 			return;
 		}
@@ -108,7 +112,7 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 				);
 				
 				$redeemId = $redeemModel->insert($data);
-
+				
 				//update activity log
 				$activityData['activity_type'] = 'redeem_by_badge';
 				$activityData['event_object'] = $redeemId;
@@ -125,8 +129,25 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 				$encryptData['redeem_id'] = $redeemId;
 				$encryptData['code'] = 'fancrank';
 				$link = $_SERVER['SERVER_NAME'] .'/app/redeem/track?data=' .Fancrank_Crypt::encrypt($encryptData);
+				
+				
+				$html = new Zend_View();
+				$html->setScriptPath(APPLICATION_PATH . '/modules/app/views/scripts/redeem/');
+				$html->assign('link', $link);
+				$html->assign('date', date("F j, Y"));
+				$html->assign('shipping',$shippingInfo);
+				$html->assign('item',$item);
+				$html->assign('fanpage',$fp);
+				
+				$bodyText = $html->render('emailTemplate.phtml');
+				Zend_Debug::dump($shippingInfo);
 				$mailModel = new Fancrank_Mail($shippingInfo['email']);
-				$mailModel->sendMail($link);
+			
+				$mailModel->setSubject('FanCrank: Your Request has been Submitted');
+				$mailModel->setFrom('redemption@fancrank.com', 'FanCrank Redemptions');
+
+				
+				$mailModel->sendMail($bodyText);
 			}
 			echo 'ok';	
 		} catch (Fancrank_Exception_InvalidParameterException $f) {
@@ -158,6 +179,9 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 			}
 		} catch (Exception $e) {
 		}
+		
+		Zend_Debug::dump($redeem);
+		
 	}
 	
 	private function getShippingInfo() {

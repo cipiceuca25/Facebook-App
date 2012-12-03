@@ -2398,7 +2398,7 @@ $(document).ready(function() {
 		console.log(formData+selectBadgeId);
 		
 		if ($('#redeemItemId').val() == '') {
-			alert('please select an item to redeem');
+			alert('Please Select an Item to Redeem');
 			return;
 		}
 		
@@ -2415,10 +2415,11 @@ $(document).ready(function() {
 		
 				success : function(data) {
 					//$('.profile-content').html(data);
+					console.log(data);
 					if ($.trim(data) == 'ok') {
 						alert('done!');
 					}
-					closeProfile();
+					//closeProfile();
 					//$(x).popover('show');
 				},
 				error : function(xhr, errorMessage, thrownErro) {

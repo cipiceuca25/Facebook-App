@@ -1,0 +1,43 @@
+<body style="width: 800px; background-color: white;">
+
+	<div style="width:800px; height:50px; background-color:#3c589d">
+		<img src="http://www.fancrankapp.com/img/logo-noline-white.png" 
+		style="height:40px; padding-left:13px; float:left; padding-top:10px; background-color: #3C589D;" />
+	</div>
+	<br/>
+	<br/>
+	<div style="margin-left:20px">
+	<h2>Your Redeem Request has been Submitted</h2>
+	Fanpage: <?= $this->fanpage['fanpage_name']?><br/>
+	Redeem Date: <?= $this->date; ?><br/>
+	<br/>
+	<br/>
+	<h3>Item Information</h3>
+	<br/>
+	<img src="http://www.fancrankapp.com/img/item/<?= $this->item->picture?>" style="height:100px"/> 
+	<span style="font-weight:bold"><?= $this->item->name?></span>
+	<?= $this->item->description?>
+	
+	<br/>
+	<br/>
+	<h3>Shipping Information</h3>
+	<br/>
+	Name: <?= $this->shipping['name']?><br/>
+	Address: <?= $this->shipping['address']?><br/>
+	City: <?= $this->shipping['city']?><br/>
+	Province/State: <?= $this->shipping['region']?><br/>
+	Country: <?= $this->shipping['country']?><br/>
+	Zip Code/Postal Code: <?= $this->shipping['postcode']?><br/>
+	
+	<br/>
+	<br/>
+	
+	Please check that the submitted information is correct.
+	If you need to change the shipping address please 
+	<a href="http://www.facebook.com/<?=$this->item->fanpage_id?>?sk=app_359633657407080">login to FanCrank</a> <br/>
+	and change it in your FanCrank Profile as soon as possible.
+
+	</div>
+</body>
+
+
