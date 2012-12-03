@@ -253,10 +253,12 @@ ol {
 #logout-tab img {
   margin-right: 0px;
 }
-menu2 .notifier .message {
-  margin-right: 0px;
-  margin-left: 0px;
+/*
+menu2 .notifier  .message{
+margin-right:0px;
+margin-left:0px;
 }
+*/
 #logout-tab .dropdown-menu {
   min-width: 100px;
   top: 50px;
@@ -539,7 +541,7 @@ background-color: @color-post-background-hover;
   float: right;
 }
 .popover .stats {
-  border-top: 2px solid #b5bec4;
+  border-top: 1px solid #b5bec4;
   height: 40px;
 }
 .stats-block {
@@ -1490,9 +1492,8 @@ background:@color-post-background-hover;
   margin-right: 10px;
 }
 #whatisfancrank {
-  height: 296px;
+  height: 322px;
   text-align: Center;
-  margin-top: 26px;
 }
 .box.border {
   border: 5px solid #3c589d;
@@ -1764,8 +1765,14 @@ background:@color-post-background-hover;
 .notifier {
   position: absolute;
   right: 0px;
-  top: 50px;
+  top: 60px;
   background-color: #ffffff;
+  -webkit-box-shadow: -5px 6px 7px #6f6f6f;
+  -moz-box-shadow: -5px 6px 7px #6f6f6f;
+  box-shadow: -5px 6px 7px #6f6f6f;
+  -webkit-box-shadow: -5px 6px 7px #6f6f6f;
+  -moz-box-shadow: -5px 6px 7px #6f6f6f;
+  box-shadow: -5px 6px 7px #6f6f6f;
 }
 .notifier .box {
   background-color: #647ab1;
@@ -1782,16 +1789,18 @@ background:@color-post-background-hover;
   border-top: 1px solid white;
   padding-bottom: 5px;
 }
-#menu .notifier ul li .photo {
+.notifier ul li .photo {
   float: left;
 }
-#menu .notifier ul li .social,
-#menu .notifier ul li .message {
+.notifier ul li .social,
+.notifier ul li .message {
   margin-left: 35px;
 }
-#menu2 .notifier ul li .photo {
-  text-align: center;
+/*
+#menu2 .notifier ul li .photo{	
+	text-align:center;
 }
+*/
 .notifier a,
 .notifier a:hover {
   color: white;
@@ -1799,12 +1808,12 @@ background:@color-post-background-hover;
 .notifier .arrow {
   width: 0px;
   height: 0px;
-  border-top: 5px solid transparent;
-  left: 50%;
+  border-top: 0px solid transparent;
+  left: 64%;
   position: absolute;
-  border-bottom: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-left: 5px solid transparent;
+  border-bottom: 10px solid #647ab1;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
   margin-top: -10px;
 }
 .notifier .post-container .user {

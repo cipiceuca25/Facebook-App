@@ -220,12 +220,12 @@ padding-right:12px;
 #logout-tab img{
 margin-right:0px;
 }
-
+/*
 menu2 .notifier  .message{
 margin-right:0px;
 margin-left:0px;
 }
-
+*/
 
 
 #logout-tab .dropdown-menu{
@@ -572,7 +572,7 @@ height:40px;
 }
 
 .popover .stats{
-	border-top:2px solid  @color-mid-line;
+	border-top:1px solid  @color-mid-line;
 	height:40px;
 }
 
@@ -1971,10 +1971,9 @@ cursor:default;
 .notifier{
 	position:absolute;
 	right:0px;
-	top:50px;
-	
+	top:60px;
 	background-color:@color-post-background;
-	//.box-shadow(0px 2px 5px #888888);
+	.box-shadow(-5px 6px 7px #6f6f6f);
 }
 
 .notifier .box{
@@ -1995,18 +1994,20 @@ cursor:default;
 	padding-bottom:5px;
 }
 
-#menu .notifier ul li .photo{
+ .notifier ul li .photo{
  	float:left;
 }
-#menu .notifier ul li .social,
-#menu .notifier ul li .message{
-	margin-left:35px;
+
+.notifier ul li .social,
+.notifier ul li .message{
+	margin-left:35px; 
 }
 
+/*
 #menu2 .notifier ul li .photo{	
 	text-align:center;
-
 }
+*/
 
 .notifier a,
 .notifier a:hover {
@@ -2016,12 +2017,12 @@ cursor:default;
 .notifier .arrow{
 	width:0px;
 	height:0px;
-	border-top:5px solid transparent;
-	left:50%;
+	border-top:0px solid transparent;
+	left:64%;
 	position:absolute;
-	border-bottom: 5px solid transparent;
-	border-right:5px solid transparent;
-	border-left:5px solid transparent;
+	border-bottom: 10px solid  @color-menu-right-background;
+	border-right:10px solid transparent;
+	border-left:10px solid transparent;
 	margin-top:-10px;
 }
 

@@ -279,8 +279,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($this->_fanpageId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
-    		//$cache->remove($this->_fanpageId . '_topfan');
-     		//$cache->remove($this->_fanpageId . '_topfanall');
+    		$cache->remove($this->_fanpageId . '_topfan');
+     		$cache->remove($this->_fanpageId . '_topfanall');
 //     		$cache->remove($this->_fanpageId . '_topclicker');
 //     		$cache->remove($this->_fanpageId . '_topfollowed');
 //     		$cache->remove($this->_fanpageId . '_toptalker');
@@ -336,7 +336,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				
     				default:
     					if(isset($cache) && !$cache->load($this->_fanpageId . '_topfan')){
-    						$toplist = $model->getTopFansByMonth($this->_fanpageId, 5);
+    						$toplist = $model->getTopFansByCurrentMonth($this->_fanpageId, 5);
     						//$toplist = $model->getTopFansByWeek($this->_fanpageId, 5);
     						$cache->save($toplist, $this->_fanpageId . '_topfan');
     					}else{

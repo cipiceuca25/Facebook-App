@@ -1155,6 +1155,7 @@ $('#pointlog').live('click', function(event){
 	
 });
 function getpointlog(){
+	$('.notifier').remove();
 	$('#menu').append('<div class="notifier"></div>');
 	
 	$.ajax({
@@ -1164,10 +1165,11 @@ function getpointlog(){
 		cache : false,
 		async : true,
 		beforeSend: function(){
-			$('.notifier').html("<div class='rvgrid-5ex' style='text-align:center;'><div class='box'><img src='/img/ajax-loader-white.gif' /></div></div>");
+			$('.notifier').html("<div class='arrow' style='left:140px'></div><div class='rvgrid-7' style='text-align:center;'><div class='box'><img src='/img/ajax-loader-white.gif' /></div></div>");
 		},
 		success : function(data) {
 			$('.notifier').html(data);
+			$('.notifier .arrow').css('left','140px');
 			//$(x).popover('show');
 		},
 		error : function(xhr, errorMessage, thrownErro) {
@@ -1177,6 +1179,7 @@ function getpointlog(){
 }
 
 function getupcomingbadges_notifier(){
+	$('.notifier').remove();
 	$('#menu').append('<div class="notifier"></div>');
 	$('#menu2').append('<div class="notifier"></div>');
 	upcoming_badges= true;
@@ -1188,10 +1191,11 @@ function getupcomingbadges_notifier(){
 		async : true,
 		beforeSend: function(){
 	
-			$('.notifier').html("<div  style='width:"+$('#toolbar').css('width') +"; text-align:center;'><div class='box'><img src='/img/ajax-loader-white.gif' /></div></div>");
+			$('.notifier').html("<div class='arrow' style='left:190px'></div><div class='rvgrid-7' style= text-align:center;'><div class='box'><img src='/img/ajax-loader-white.gif' /></div></div>");
 		},
 		success : function(data) {
 			$('.notifier').html(data);
+			$('.notifier .arrow').css('left','190px');
 			upcoming_badges = true;
 			//$(x).popover('show');
 		},
@@ -1203,12 +1207,12 @@ function getupcomingbadges_notifier(){
 
 
 function getListNotification(){
-	
+	$('.notifier').remove();
 	$('#menu').append('<div class="notifier"></div>');
 	$('#menu2').append('<div class="notifier"></div>');
 	$('.notifier').html($('.notification').attr('data-content'));
 	changeTime('.notifier .time');
-	
+	$('.notifier .arrow').css('left','227px');
 	//console.log(points);
 	
 	//SAVE THE LAST TIME THE NOTIFICATION WAS SEEN

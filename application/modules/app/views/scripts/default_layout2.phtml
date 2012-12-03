@@ -193,7 +193,7 @@
 									<? if ($this->fanpage_level > 2){?>
 										<!--  <li><div class="line"></div></li>-->
 										<!--rel="tooltip" id="pointlog" data-original-title="You have <?//=$this->fan->fan_point?> points" data-placement="top" -->
-										<li><a class="my_fan_point_tooltip" ><span class ="my_fan_point"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></span><img src="/img/icons/points.png" /></a></li>
+										<li><a class="my_fan_point_tooltip"  id="pointlog"><span class ="my_fan_point"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></span><img src="/img/icons/points.png" /></a></li>
 									<?php }?>
 								</ul>
 								<!-- <ul class="nav nav-tabs" id="log-in-out">
