@@ -17,7 +17,11 @@ if($this->fanpage_level >2){
 					
 				</div>
 				<div id="whatisfancrank">
-					<a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>"><img src="/img/whatisfancrank.png"/></a>
+					<?php if ( $this->fanpage_id ==  216821905014540){?>
+						<a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>"><img src="/img/whatisfancrank.png"/></a>
+					<?php }else{?>
+						<a class='fancrank_login' href="/app/login/<?= $this->fanpage_id ?>"><img src="/img/whatisfancrank2.png"/></a>
+					<?php }?>
 				</div>
 			</div>
 		</div>
@@ -36,7 +40,7 @@ if($this->fanpage_level >2){
 						<div class="title nopic">
 							
 							<div class="title-header nopic">
-								Top Fans Last Week
+								Top Fans Last Month
 							</div>
 							<div class="tip2">
 								The following list of fans have earned the most points last week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
@@ -218,10 +222,10 @@ if($this->fanpage_level >2){
 						<div class="title nopic">
 							
 							<div class="title-header nopic">
-								Top Fans This Week
+								Top Fans for <?= date("F") ?>
 							</div>
 							<div class="tip2">
-								The following list of fans have earned the most points This week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
+								The following list of fans have earned the most points This Month!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
 							</div>
 						</div>
 							

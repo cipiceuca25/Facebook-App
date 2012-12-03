@@ -149,7 +149,8 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     		
     		try{		
     			if(isset($cache) && !$cache->load($this->data['page']['id'] . '_topfan')){
-    				$topfan = $model->getTopFansByWeek($this->data['page']['id'], 5);
+    			
+    				$topfan = $model->getTopFansByMonth($this->data['page']['id'], 5);
     				$cache->save($topfan, $this->data['page']['id'] . '_topfan');
     			}else{
    					$topfan = $cache->load($this->data['page']['id'] . '_topfan');
