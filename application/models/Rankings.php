@@ -114,20 +114,19 @@ class Model_Rankings extends Model_DbTable_Rankings
 		return $this->getAdapter()->fetchAll($select);
 	}
 	
-	public function getTopFansByMonth($page_id, $limit = 5) {
-	
+	public function getTopFansByCurrentMonth($page_id, $limit = 5) {
+		//echo $this->_firstdayOfTheMonth;
 		$select="SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
 		left join fans f
 		on f.facebook_user_id = p.facebook_user_id
-		where f.fanpage_id = $page_id && f.facebook_user_id != f.fanpage_id && p.created_time > '$this->_firstdayOfTheMonth' 
+		where f.fanpage_id = $page_id && f.facebook_user_id != f.fanpage_id && p.created_time > '$this->_firstdayOfTheMonth'
 		group by f.facebook_user_id
 		having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $page_id)
 		order by count DESC";
 	
 		if($limit !== false) {
-			$select = $select . " LIMIT $limit";
+		$select = $select . " LIMIT $limit";
 		}
-	
 		return $this->getAdapter()->fetchAll($select);
 	}
 
@@ -152,7 +151,6 @@ class Model_Rankings extends Model_DbTable_Rankings
 	{
 		//$relevant_period = new Zend_Date(time() - 15552000);
 		//$relevant_period = $relevant_period->toString(Zend_Date::ISO_8601);
-	
 		$select = "
 			SELECT posts_count.facebook_user_id, fans.fan_first_name, fans.fan_last_name, COUNT(fans.facebook_user_id) AS number_of_posts
 			FROM
@@ -173,8 +171,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 			
 		if($limit !== false)
 			$select = $select . " LIMIT $limit";
-			
-	
+
 		return $this->getAdapter()->fetchAll($select);
 	}
 	

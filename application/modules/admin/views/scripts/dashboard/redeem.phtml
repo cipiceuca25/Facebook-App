@@ -226,7 +226,7 @@ $(document).ready(function() {
 		"bDestroy": true,
 		"aoColumns": [
 			{ 
-				"mData": "id"
+				"mData": "id",
 				"fnRender": function(oObj) {
 					return "<a class='redeem-detail' data-redeem-id='"+ oObj.aData['id'] +"' ></a>";
 				}					 
@@ -272,7 +272,12 @@ $(document).ready(function() {
 		bJQueryUI : true,
 		"bDestroy": true,
 		"aoColumns": [
-			{ "mData": "id" },
+			{ 
+				"mData": "id",
+				"fnRender": function(oObj) {
+					return "<a class='redeem-detail' data-redeem-id='"+ oObj.aData['id'] +"' ></a>";
+				}					
+			},
 	        { "mData": "item_id", "bVisible": false },
 			{ 
 				"mData": "name",

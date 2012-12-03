@@ -279,8 +279,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($this->_fanpageId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
-    		//$cache->remove($this->_fanpageId . '_topfan');
-     		//$cache->remove($this->_fanpageId . '_topfanall');
+    		$cache->remove($this->_fanpageId . '_topfan');
+     		$cache->remove($this->_fanpageId . '_topfanall');
 //     		$cache->remove($this->_fanpageId . '_topclicker');
 //     		$cache->remove($this->_fanpageId . '_topfollowed');
 //     		$cache->remove($this->_fanpageId . '_toptalker');
@@ -291,7 +291,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     				case 'top-followed':
     					if(isset($cache) && !$cache->load($this->_fanpageId . '_topfollowed')){
     						$toplist = $model->getTopFollowedByWeek($this->_fanpageId, 5);
-    				
+    							
     						$cache->save($toplist, $this->_fanpageId . '_topfollowed');
     					}else{
     						$toplist = $cache->load($this->_fanpageId . '_topfollowed');
@@ -332,19 +332,18 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    				}else{
 	    					$toplist = $cache->load($this->_fanpageId . '_topfanall');
 	    				}
-	    				
 	    				break;
     				
     				default:
     					if(isset($cache) && !$cache->load($this->_fanpageId . '_topfan')){
-    						$toplist = $model->getTopFansByWeek($this->_fanpageId, 5);
+    						$toplist = $model->getTopFansByCurrentMonth($this->_fanpageId, 5);
+    						//$toplist = $model->getTopFansByWeek($this->_fanpageId, 5);
     						$cache->save($toplist, $this->_fanpageId . '_topfan');
     					}else{
     						$toplist = $cache->load($this->_fanpageId . '_topfan');
     					}
     					break;
     			}
-    			
     		} catch (Exception $e) {
   				Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
   				//echo $e->getMessage();
@@ -1619,28 +1618,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	
     	
-    	$cache = Zend_Registry::get('memcache');
-    	$cache->setLifetime(1800);
-    	$fan = null;
-    	try {
-    		$fanProfileId = $this->_fanpageId .'_' .$user->facebook_user_id .'_fan';
-    		
-    		//Check to see if the $fanpageId is cached and look it up if not
-    		if(isset($cache) && !$cache->load($fanProfileId)){
-    			//echo 'db look up';
-    			$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
-    			//Save to the cache, so we don't have to look it up next time
-    			$fan = $fan->getFanProfile();
-    			$cache->save($fan, $fanProfileId);
-    		}else {
-    			//echo 'memcache look up';
-    			$fan = $cache->load($fanProfileId);
-    		}
-    	} catch (Exception $e) {
-    		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
-    		//echo $e->getMessage();
-    	}
-    	
+    
     	
     	//Zend_Debug::dump($fan);
     	//$userBadges = new Model_BadgeEvents();
@@ -1689,17 +1667,33 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 
     		$fan->fan_point = '?';
     	} 
+    	#abcd
+   
+    	$badgesModel = new Model_BadgeEvents() ;
+    	$cb = $fan->getChosenBadges();
+    	$cb = str_replace("'", "", $cb);
+    	$cb = explode(',', $cb);
+    	//Zend_Debug::dump($cb);
+    	//exit();
+    	$chosenBadges = $badgesModel -> getChosenBadges($this->_fanpageId, $this->_userId, $cb);
     	
-    	$badges = new Model_BadgeEvents() ;
-    	$badges = $badges -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $user->facebook_user_id, 6);
-    	for($count=0;$count < count($badges); $count++){
-    		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
-
+    	if(empty($chosenBadges)){
+    		$chosenBadges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 3);
     	}
-
-    	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
+    	 
+    	$cbcount = 0;
+    	for($count=0;$count < count($chosenBadges); $count++){
+    		if ($chosenBadges[$count] != 'undefined'){
+    			$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
+    		}else{
+    			$cbcount++;
+    		}
+    	}
     	
-    	$this->view->badges = $badges;
+    	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
+    	$fan = $fan->getFanProfile();
+    	$this->view->cbcount = $cbcount;
+    	$this->view->badges = $chosenBadges;
     	$this->view->fan_exp = $fan_exp;
     	$this->view->fan_exp_required = ($fan_exp === '?')?'?':$fan_exp_required - $fan_exp;
     	$this->view->fan_level_exp = $fan_exp_required;

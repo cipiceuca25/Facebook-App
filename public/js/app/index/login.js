@@ -4,7 +4,7 @@ jQuery(document).ready(function($){
 
 		//confirmFunction();
 		if(newuser) {
-			$(".profile-content").html("<div class='rvrow'><div class='rvgrid-11'><div class='box'><div class='user'>" +
+			$(".profile-content").html("<div class='rvrow'><div class='rvgrid-11'><div class='box border'><div class='user'>" +
 					"					<div class='policy_message'>"	+		
 					"							Policy Message" +
 					"					</div>" +

@@ -32,11 +32,11 @@
 				<div class="post-container">
 				
 					<div class="user pad">
-					
+							<? if($this->fanpage_level !=1){?>
 							<div class="rank you">
 								<h1><?= isset( $this->fan->fan_level)? $this->fan->fan_level:1?></h1>
 							</div>
-					
+							<?php }?>
 							
 							<div class="photo">
 								<a class="noclick"><img class="large-face" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
@@ -60,10 +60,11 @@
 							
 							<br/>
 							<br/>
+							<?php if($this->cbcount < 3){?>
 							<div class="title nopic">
 						
 								<div class="title-header nopic"> 		
-									Earned Badges
+									Display Badges
 								</div>	
 								
 							</div>
@@ -71,17 +72,20 @@
 							<div class="post-container">
 								<div class=" post badgedisplay">
 									<?php foreach ($this->badges as $b): ?>
-										<div class="progress  earned-badges" >
-										<div class="bar" ></div>
-										<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
-										class=noclick rel="tooltip" data-placement="top">
-											<img src="<?= $b['picture']?>"/>
-										</a>
-									</div>
-								
+										<?php if ($b != 'undefined') {?>
+											<div class="progress  chosen-badges" >
+												<div class="bar" ></div>
+												<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . $b['created_time']?>" 
+												class=noclick rel="tooltip" data-placement="top">
+													<img src="<?= $b['picture']?>"/>
+												</a>
+											</div>
+										<?php }?>
+									
 									<?php endforeach;?>
 								</div>
-							</div>		
+							</div>	
+							<?php }?>	
 					</div>
 					
 					
@@ -93,35 +97,35 @@
 					<ul class="post stats">
 						
 						<li >
-							<div class="stats-block" ><h5><a class="noclick rel="tooltip" data-original-title="Posts" data-placement="top" ><img src="/img/post.png" /><?=($this->stat_post > 99)? '99+':$this->stat_post?></a></h5>
+							<div class="stats-block" ><h5><a class="noclick" rel="tooltip" data-original-title="Posts" data-placement="top" ><img src="/img/post.png" /><?=($this->stat_post > 99)? '99+':$this->stat_post?></a></h5>
 							</div>
 						</li>
 						<li >
-							<div class="stats-block"><h5><a class="noclick rel="tooltip" data-original-title="Likes" data-placement="top" ><img src="/img/thumbsup.png" /><?=($this->stat_like > 99)? '99+':$this->stat_like?></a></h5>
+							<div class="stats-block"><h5><a class="noclick" rel="tooltip" data-original-title="Likes" data-placement="top" ><img src="/img/thumbsup.png" /><?=($this->stat_like > 99)? '99+':$this->stat_like?></a></h5>
 							</div>
 						</li>
 						<li>
-							<div class="stats-block"><h5><a class="noclick rel="tooltip" data-original-title="Comments" data-placement="top" ><img src="/img/comment.png" /><?=($this->stat_comment > 99)? '99+':$this->stat_comment?></a></h5>
+							<div class="stats-block"><h5><a class="noclick" rel="tooltip" data-original-title="Comments" data-placement="top" ><img src="/img/comment.png" /><?=($this->stat_comment > 99)? '99+':$this->stat_comment?></a></h5>
 							</div>
 						</li>
 						<li >
-							<div class="stats-block"><h5><a class="noclick rel="tooltip" data-original-title="Recieved Likes" data-placement="top" ><img src="/img/rthumbsup.png" /><?=($this->stat_get_like > 99)? '99+':$this->stat_get_like?></a></h5>
+							<div class="stats-block"><h5><a class="noclick" rel="tooltip" data-original-title="Recieved Likes" data-placement="top" ><img src="/img/rthumbsup.png" /><?=($this->stat_get_like > 99)? '99+':$this->stat_get_like?></a></h5>
 							</div>
 						</li>
 						<li>
-							<div class="stats-block"><h5><img src="/img/rcomment.png" /><a class="noclick rel="tooltip" data-original-title="Recieved Comments" data-placement="top" ><?=($this->stat_get_comment > 99)? '99+':$this->stat_get_comment?></a></h5>
+							<div class="stats-block"><h5><img src="/img/rcomment.png" /><a class="noclick" rel="tooltip" data-original-title="Recieved Comments" data-placement="top" ><?=($this->stat_get_comment > 99)? '99+':$this->stat_get_comment?></a></h5>
 							</div> 
 						</li>
 						<li>
 							<div class="stats-block">
-							<h5><a class="noclick rel="tooltip" data-original-title="Followers" data-placement="top" onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow.png" /><?= $this->follower['0']['Follower']?>
+							<h5><a class="noclick" rel="tooltip" data-original-title="Followers" data-placement="top" onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow.png" /><?= $this->follower['0']['Follower']?>
 							</a></h5>
 							
 							</div>
 						</li>
 						<li >
 							<div class="stats-block">
-								<h5><a class="noclick rel="tooltip" data-original-title="Following" data-placement="top"  onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow2.png" /><?= $this->following['0']['Following']?>
+								<h5><a class="noclick" rel="tooltip" data-original-title="Following" data-placement="top"  onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow2.png" /><?= $this->following['0']['Following']?>
 								</a></h5>
 							</div>
 						</li>

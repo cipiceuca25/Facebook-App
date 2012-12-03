@@ -53,13 +53,9 @@ switch($this->list){
 		
 	<?php 
 		if (strlen($username)>16){
-			if(strlen($top_fan['fan_first_name'])>16){
-				$displayname = substr($top_fan['fan_first_name'], 0, 13).'...'	;
-			}else if (strlen($top_fan['fan_first_name'])>13){
-				$displayname = $top_fan['fan_first_name'];
-			}else{
-				$displayname = $top_fan['fan_first_name'] .' '. substr($top_fan['fan_last_name'], 0,1) .'.';
-			}
+			
+			$displayname = substr($username, 0, 13).'...'	;
+		
 	}?>
 	
 	<?php if ($count == 0){?>

@@ -1,25 +1,22 @@
-
+<div class="arrow" style="left:227px"></div>
 <span id="notifynumber" style="display:none"><?=count($this->events)?></span>
-
-	<div <?if ($this->fanpage_level > 2 ){ ?>class="rvgrid-5ex"<?php } else {?> class="rvgrid-3ex" <?php }?>>
-		<div class="box notitle">
+<!--  
+<?//if ($this->fanpage_level > 2 ){ ?>class="rvgrid-5ex"<?//php } else {?> class="rvgrid-3ex" <?//php }?>-->
+	<div class="rvgrid-7">
+		<div class="box">
 			<div class="post-container noline">
 				<div class="user">
-					<div class="name">Notifications</div>
+					<div class="title-header nopic">Notifications</div>
 				</div>			
 			</div>
 			<?php if (count($this->events) == 0 ){?>
-				<ul >
-					<li  >
-	
-						
+				<ul>
+					<li>
 						<div class="post">
-							
-							<div class="message">
+							<div class="message" style="margin-left:0">
 								No Notifications
 							</div>
-						</div>
-				
+						</div>	
 					</li>
 				</ul>
 			<? }else{?>

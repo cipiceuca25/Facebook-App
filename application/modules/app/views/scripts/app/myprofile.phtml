@@ -22,10 +22,11 @@
 				<div class="rvrow">
 					<div class=" post-container">
 						<div class="user pad">
-								<div class="rank you">
-									<h1><?= $this->fan->fan_level?></h1>
-								</div>
-								
+								<? if($this->fanpage_level !=1){?>
+									<div class="rank you">
+										<h1><?= $this->fan->fan_level?></h1>
+									</div>
+								<?php }?>
 								<div class="photo">
 									<a class="noclick"><img class="large-face" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
 						
@@ -45,7 +46,7 @@
 					
 					</div>
 					<div class="post-container">
-						<div class="post">
+						<div class="user pad">
 						<div class="badgedisplay">
 							<div style="min-height:60px;">
 							<?php $cb = 0;?>
@@ -53,9 +54,9 @@
 								
 								<?php if ($b != 'undefined') {?>
 								
-								<div class="progress earned-badges">
+								<div class="progress chosen-badges">
 									<div class="bar"></div>
-									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
+									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . $b['created_time']?>" 
 									class=noclick rel="tooltip" data-placement="top" >
 										<img src="<?= $b['picture']?>"/>
 									</a>
@@ -75,28 +76,27 @@
 						</div>
 					</div>
 				</div>
-				
-				<div class="post-container">
-			
-						
-						<div class="post" id="exp-container" >
-							<div>
-								<div class="title-header nopic">Your Fan Experience
-								<div style="float:right"><?=$this->fan_exp?>/<?=$this->fan_level_exp?></div>
+				<? if($this->fanpage_level !=1){?>
+					<div class="post-container">
+							
+							<div class="user pad" id="exp-container" >
+								<div>
+									<div class="title-header nopic">Your Fan Experience
+									<div style="float:right"><?=$this->fan_exp?>/<?=$this->fan_level_exp?></div>
+									</div>
+									
 								</div>
 								
+								<div class="progress exp">
+									<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;"></div>
+								</div>
+		
+								Next Level in <?=$this->fan_exp_required?> Points
+								
 							</div>
-							
-							<div class="progress exp">
-								<div class="bar" style="width: <?= $this->fan_exp_percentage?>%;"></div>
-							</div>
-	
-							Next Level in <?=$this->fan_exp_required?> Points
-							
-						</div>
-			
-				</div>
-				
+					
+					</div>
+				<?php }?>
 				<div class="post-container noline">
 					<ul class="stats">
 					<?php if($this->fanpage_level >2){?>
@@ -155,7 +155,7 @@
 						
 								<div class="progress earned-badges" >
 									<div class="bar" ></div>
-									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/>' . $b['created_time'] ?>" 
+									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . $b['created_time']?>" 
 									class=noclick rel="tooltip" data-placement="top-left"  >
 										<img src="<?= $b['picture']?>"/>
 									</a>
@@ -190,7 +190,7 @@
 						
 								<div class="progress earned-badges" >
 									<div class="bar"></div>
-									<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/>' . $b['created_time'] ?>"
+									<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . $b['created_time'] ?>"
 										class="redeemableBadge" rel="tooltip" data-placement="top-left">
 										<img src="<?= $b['picture']?>"/>
 									</a>
