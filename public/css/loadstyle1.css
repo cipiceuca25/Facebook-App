@@ -1150,6 +1150,7 @@ background-color: @color-post-background-hover;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+  position: relative;
 }
 .progress .bar {
   background: #c4cde0;
@@ -2389,8 +2390,27 @@ button.btn {
   margin-right: -15px;
   border-bottom: 2px solid #dbdbdb;
 }
-.ui-autocomplete {
-  border: 1px solid #aaa;
-  background: white;
-  max-width: 250px;
+.redeemable-icon {
+  background-color: #3c589d;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  text-align: center;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 13px;
+  height: 13px;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+}
+.redeemable-icon .active {
+  background-color: red;
+}
+.redeemableBadge:hover {
+  cursor: pointer;
 }
