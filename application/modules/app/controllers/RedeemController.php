@@ -61,6 +61,7 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 	
 	public function confirmAction() {
 		$itemId = $this->_getParam('redeemItemId');
+		$badgeId = $this->_getParam('badgeId');
 		$itemModel = new Model_Items();
 		
 		$item = $itemModel->findRow($itemId);
@@ -72,7 +73,8 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 
 		$redeemModel = new Model_RedeemTransactions();
 		$badgeEventsModel = new Model_BadgeEvents();
-		// check top fan last week, note: badge id 721 = top_fans 
+		// check top fan last week, note: badge id 721 = top_fans
+
 		if (!$badgeEventsModel->hasBadgeEvent($this->_fanpageId, $this->_identity->facebook_user_id, 721)) {
 			echo 'redeemable badge not found';
 			return;

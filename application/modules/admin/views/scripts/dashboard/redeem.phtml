@@ -214,6 +214,15 @@
 	</div>
 </div>
 
+<div id="redeemDetailModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="redeemConfirmDialog" aria-hidden="true">
+	<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+	<h3 id="redeemConfirmDialog">Redeemed Transaction Detail</h3>
+	</div>
+	<div class="modal-body" id="redeemDetailContent">
+	</div>
+</div>
+
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
 
@@ -226,9 +235,9 @@ $(document).ready(function() {
 		"bDestroy": true,
 		"aoColumns": [
 			{ 
-				"mData": "id",
+				"mData": null,
 				"fnRender": function(oObj) {
-					return "<a class='redeem-detail' data-redeem-id='"+ oObj.aData['id'] +"' ></a>";
+					return "<a class='redeem-detail' data-redeem-id='"+ oObj.aData['id'] +"' >"+ oObj.aData['id'] +"</a>";
 				}					 
 			},
 			
@@ -256,9 +265,10 @@ $(document).ready(function() {
 			{ 
 				"mData": null, 
 				"fnRender": function (oObj) {
-					return "<ul class='unstyled thumbnails'><li><a class='approve-request-item' data-id= '"+ oObj.aData['id']+"' href='#'><i class='icon-ok-sign'></i>approve</a></li>" +
-						"<li><a class='disapprove-request-item' data-id= '"+ oObj.aData['id']+"' href='#'><i class='icon-ban-circle'></i>disapprove</a></li></ul>";;
-					}
+					var redeemId = oObj.aData['id'];
+					return "<ul class='unstyled thumbnails'><li><a class='approve-request-item' data-id='"+ redeemId +"' href='#'><i class='icon-ok-sign'></i>approve</a></li>" +
+						"<li><a class='disapprove-request-item' data-id='"+ redeemId +"' href='#'><i class='icon-ban-circle'></i>disapprove</a></li></ul>";
+				}
 			}						  	
 		],
 		"sAjaxSource": "/admin/redeem/request/" +fanpageId
@@ -275,7 +285,7 @@ $(document).ready(function() {
 			{ 
 				"mData": "id",
 				"fnRender": function(oObj) {
-					return "<a class='redeem-detail' data-redeem-id='"+ oObj.aData['id'] +"' ></a>";
+					return "<a class='redeem-detail' data-redeem-id='"+ oObj.aData['id'] +"' >"+ oObj.aData['id'] +"</a>";
 				}					
 			},
 	        { "mData": "item_id", "bVisible": false },
@@ -576,7 +586,31 @@ $(document).ready(function() {
 		    }
 		}); 
 	});
+
 	
+	// handle redeem detail popup
+	$('.redeem-detail').live('click', function(e) {
+		e.preventDefault();
+		$('#redeemDetailContent').html('');
+		var redeemId = $(this).attr('data-redeem-id');
+		if (redeemId) {
+			$.ajax({
+	    		type: "get",
+	    		url:  "/admin/redeem/detail/"+fanpageId+"?redeemId="+redeemId,
+	    		cache: false,
+	    		async: true,
+	    		dataType: 'html',
+	    		success: function( data ) {
+					$('#redeemDetailContent').html(data);
+		    		$('#redeemDetailModal').modal('show');
+	    		},	
+	    		error: function( xhr, errorMessage, thrownErro ) {
+	    			alert(xhr.statusText);
+	    			console.log(xhr.statusText, errorMessage);
+	    		}
+	    	});
+		}
+	});
 });
 
 </script>

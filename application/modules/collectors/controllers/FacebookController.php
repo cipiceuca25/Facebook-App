@@ -2672,10 +2672,15 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     
     public function test37Action() {
     	$fanpageId = '197221680326345';
+    	$facebookUserId = '100004566963982';
     	$redeemModel = new Model_RedeemTransactions();
     	$result = $redeemModel->getRedeemDetailById(16);
     	Zend_Debug::dump($result);
     	
+    	$badgeId = '721';
     	
+    	$badgeEventModel = new Model_BadgeEvents();
+    	
+    	echo $badgeEventModel->hasRedeemableBadgeEvent($fanpageId, $facebookUserId, $badgeId);
     }
 }

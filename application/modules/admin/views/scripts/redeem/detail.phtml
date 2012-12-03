@@ -1,0 +1,96 @@
+<!--  pre login page -->
+<h2>Basic Fans Info</h2>
+<div>
+	<div class="facebook-user-name">
+		<span>Fan Name: </span><a><?=$this->redeemDetail['fan_first_name']?></a>
+	</div>
+	<div class="image">
+		<a><img src="<?=$this->redeemDetail['fan_user_avatar']?>" /></a>
+	</div>
+</div>
+
+<h2>Request Redeem Item</h2>
+<div>
+	<div class="item-name">
+		<span>Item Name: </span><a><?=$this->redeemDetail['name']?></a>
+	</div>
+	<div class="item-description">
+		<span>Item Description: </span><a><?=$this->redeemDetail['description']?></a>
+	</div>	
+	<div class="item-image">
+		<a><img src="/img/item/target-gift-card.png" /></a>
+	</div>		
+</div>
+
+<h2>Redeem By Badge</h2>
+<div>
+	<div class="badge-name">
+		<span>Badge Name: </span><a><?=$this->badgeDetail['name']?></a>
+	</div>
+	<div class="badge-name">
+		<span>Badge Image: </span><a><img src="<?=$this->badgeDetail['picture']?>" alt=""/></a>
+	</div>
+</div>
+
+<h2>Shipping Info</h2>
+<div class="rvrow">
+	<div class="rvgrid-11">
+		<div class="box"  >
+			<div class="post-container" style="min-height:445px;">
+				<div class="page2">
+					<div class="title nopic">
+						
+						<div class="title-header nopic">
+							Shipping Info
+						</div>
+						
+					</div>
+					<div class="post">
+						<div class="control-group">
+							<label class="control-label" for="contactName">Contact Name</label>
+							<div class="controls">
+								<input type="text" name="contactName" id="contactName" value="<?=$this->shippingInfo['name']?>" />
+							</div>
+						</div>			
+						<div class="control-group">
+							<label class="control-label" for="address">Street Address</label>
+							<div class="controls">
+								<input type="text" name="address" id="address" value="<?=$this->shippingInfo['address']?>" />
+							</div>
+						</div>	
+						<div class="control-group">
+							<label class="control-label" for="city">City</label>
+							<div class="controls">
+								<input type="text" name="city" id="city" value="<?=$this->shippingInfo['city']?>" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="region">State/Province</label>
+							<div class="controls">
+								<input type="text" name="region" id="region" value="<?=$this->shippingInfo['region']?>" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="country">Country</label>
+							<div class="controls">
+								<input type="text" name="country" id="country" value="<?=$this->shippingInfo['country']?>" />
+							</div>
+						</div>		
+						<div class="control-group">
+							<label class="control-label" for="postCode">Zip/Postal Code</label>
+							<div class="controls">
+								<input type="text" name="postcode" id="postcode" value="<?=$this->shippingInfo['postcode']?>" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="trackingEmail">Email</label>
+							<div class="controls">
+								<input type="text" name="trackingEmail" id="trackingEmail" value="<?=$this->shippingInfo['email']?>" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>
