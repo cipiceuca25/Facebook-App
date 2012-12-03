@@ -39,11 +39,13 @@ class Admin_RedeemController extends Fancrank_Admin_Controller_BaseController
 
 	public function approveAction() {
 		$redeemId = $this->_getParam('redeemId');
+		$note = $this->_getParam('note');		
 		$redeemTransactionModel = new Model_RedeemTransactions();
 		$redeemTransaction = $redeemTransactionModel->findRow($redeemId);
 		
 		if ($redeemTransaction) {
 			$redeemTransaction->status = 2;
+			$redeemTransaction->note = $note;
 			$redeemTransaction->save();
 			echo 'ok';
 		}
@@ -51,11 +53,13 @@ class Admin_RedeemController extends Fancrank_Admin_Controller_BaseController
 	
 	public function disapproveAction() {
 		$redeemId = $this->_getParam('redeemId');
+		$note = $this->_getParam('note');
 		$redeemTransactionModel = new Model_RedeemTransactions();
 		$redeemTransaction = $redeemTransactionModel->findRow($redeemId);
 	
 		if ($redeemTransaction) {
 			$redeemTransaction->status = 0;
+			$redeemTransaction->note = $note;
 			$redeemTransaction->save();
 			echo 'ok';
 		}
@@ -67,9 +71,8 @@ class Admin_RedeemController extends Fancrank_Admin_Controller_BaseController
 		
 		$result = array(
 				'sEcho'=> 1,
-				'iTotalRecords'=> 10,
-				'iTotalDisplayRecords'=> 10,
-				'aaData'=> empty($historyList) ? array() : $historyList->toArray()
+				'iTotalRecords'=> count($historyList),
+				'aaData'=> empty($historyList) ? array() : $historyList
 		);
 		
 		$this->_helper->json($result);
@@ -81,12 +84,28 @@ class Admin_RedeemController extends Fancrank_Admin_Controller_BaseController
 		
 		$result = array(
 				'sEcho'=> 1,
-				'iTotalRecords'=> 10,
-				'iTotalDisplayRecords'=> 10,
-				'aaData'=> empty($requestList) ? array() : $requestList->toArray()
+				'iTotalRecords'=> count($requestList),
+				'aaData'=> empty($requestList) ? array() : $requestList
 		);
 		
 		$this->_helper->json($result);
+	}
+	
+	public function detailAction() {
+		$redeemId = $this->_getParam('redeemId');
+		$redeemTransactionModel = new Model_RedeemTransactions();
+		$result =$redeemTransactionModel->getRedeemDetailById($redeemId);
+		$badgeEventModel = new Model_BadgeEvents();
+
+		Zend_Debug::dump($result);
+		
+		if (!empty($result['badge_event_id'])) {
+			// get badge information
+			$badgeInfo	= $badgeEventModel->findRow($result['badge_event_id']);
+			if ($badgeInfo) {
+				Zend_Debug::dump($badgeInfo->toArray());				
+			}
+		}
 	}
 }
 

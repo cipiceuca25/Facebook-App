@@ -2652,10 +2652,30 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test36Action() {
+    	$badgeModel = new Model_Badges();
+    	$topFanMonthBadge = $badgeModel->findByBadgeName('Top-Fan-Month');
+    	
+    	$topFanMonthBadge[0]->id;
+    	Zend_Debug::dump($topFanMonthBadge[0]->id);
     	echo 'yes';
 		$fanpageId = '216821905014540';
     	$facebook_user_id = '508061175';
-		$rank = new Model_Rankings();
-		Zend_Debug::dump($rank->getUserTopFansRankByMonth($fanpageId, $facebook_user_id));
+    	
+    	$firstdayOfLastMonth = Fancrank_Util_Date::firstdayOfLastMonth();
+    	$firstdayOfNextMonth = Fancrank_Util_Date::firstdayOfNextMonth();
+    	
+    	echo $firstdayOfLastMonth . ' ' .$firstdayOfNextMonth;
+    	 
+		$rankingModel = new Model_Rankings();
+		Zend_Debug::dump($rankingModel->getTopFansByLastMonth($fanpageId, 5));
+    }
+    
+    public function test37Action() {
+    	$fanpageId = '197221680326345';
+    	$redeemModel = new Model_RedeemTransactions();
+    	$result = $redeemModel->getRedeemDetailById(16);
+    	Zend_Debug::dump($result);
+    	
+    	
     }
 }

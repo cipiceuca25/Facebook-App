@@ -16,12 +16,15 @@
     display: inline-block;
 	float: none;
 }
-
+.facebook-user-face {
+	width: 35px;
+	height: 35px;
+}
 </style>
 
 <div class="row-fluid">
-		<div class="span9">
-		topfan last week
+		<div class="span10">
+		topfan last month
 		<table class="table" id="topFansLastWeekTable">
 			<thead>
 				<tr>
@@ -32,7 +35,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach($this->lastWeekTopFans as $fans): ?>
+				<?php foreach($this->lastMonthTopFans as $fans): ?>
 					<tr>
 						<td><?= $fans['facebook_user_id']?></td>	
 						<td><?= $fans['rank']?></td>
@@ -47,15 +50,16 @@
 
 <br/><br/>
 <div class="row-fluid">
-	<div class="span9">
+	<div class="span10">
 		<h2>Redeem Item Request</h2>
 		<table class="table" id="requestRedeemTable">
 			<thead>
 				<tr>
 					<th>Transaction ID</th>
 					<th>Item ID</th>
-					<th>Facebook User ID</th>
-					<th>Created Time</th>
+					<th>Item Name</th>
+					<th>Facebook User</th>
+					<th>Redeemed Time (GMT-0)</th>
 					<th>Status</th>
 					<th>Confirmation</th>
 				</tr>
@@ -68,16 +72,18 @@
 
 <br/><br/>
 <div class="row-fluid">
-	<div class="span9">
+	<div class="span10">
 		<h2>Redeem Item History</h2>
 		<table class="table" id="redeemHistoryTable">
 			<thead>
 				<tr>
 					<th>Transaction ID</th>
 					<th>Item ID</th>
-					<th>Facebook User ID</th>
-					<th>Created Time</th>
+					<th>Item Name</th>
+					<th>Facebook User</th>
+					<th>Redeemed Time (GMT-0)</th>
 					<th>Status</th>
+					<th>Memo</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -147,6 +153,67 @@
 	</div>
 </div>
 
+<div id="editItemModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myItemModalLabel" aria-hidden="true">
+	<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+	<h3 id="myItemModalLabel">Edit Item</h3>
+	</div>
+	<div class="modal-body">
+		<form id="edit-item-form">
+			<div class="control-group">
+				<label class="control-label" for="itemName">Item Name</label>
+				<div class="controls">
+					<input type="text" name="itemName" id="itemName">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="itemDescription">Item Description</label>
+				<div class="controls">
+					<input type="text" name="itemDescription" id="itemDescription">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="itemPictureUrl">Picture Url</label>
+				<div class="controls">
+					<input type="text" name="itemPictureUrl" id="itemPictureUrl">
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="itemPrice">Item Price</label>
+				<div class="controls">
+					<input type="text" name="itemPrice" id="itemPrice">
+				</div>
+			</div>		
+	    	<div class="form-actions">
+	    		<input type="hidden" name="itemId" value="" />
+	    		<button type="submit" class="btn btn-primary" id="edit-item-btn">Save</button>
+	    		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	    	</div>		
+		</form>
+	</div>
+</div>
+
+<div id="redeemConfirmDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="redeemConfirmDialog" aria-hidden="true">
+	<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
+	<h3 id="redeemConfirmDialog">Are you sure ?</h3>
+	</div>
+	<div class="modal-body">
+		<form id="confirm-dialog-form">
+			<div class="control-group">
+				<label class="control-label" for="note">Additional note for current operation: </label>
+				<div class="controls">
+					<textarea rows="3" name="note" id="note"></textarea>
+				</div>
+			</div>
+	    	<div class="form-actions">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	    		<button type="submit" class="btn btn-primary" id="request-confirm-btn"  data-redeem-id="" data-request-action="">Ok</button>
+	    	</div>		
+		</form>
+	</div>
+</div>
+
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
 
@@ -158,24 +225,42 @@ $(document).ready(function() {
 		bJQueryUI : true,
 		"bDestroy": true,
 		"aoColumns": [
-		              { "mData": "id"},
-		              { "mData": "item_id"},
-		              { "mData": "facebook_user_id" },
-		              { "mData": "created_time" },
-		              { 
-			              "mData": null, 
-			              "fnRender": function (oObj) {
-										return 'pending';
-						  			}
-					  },
-		              { 
-			              "mData": null, 
-			              "fnRender": function (oObj) {
-										return "<ul class='unstyled thumbnails'><li><a class='approve-request-item' data-id= '"+ oObj.aData['id']+"' href='#'><i class='icon-ok-sign'></i></a></li>" +
-												"<li><a class='disapprove-request-item' data-id= '"+ oObj.aData['id']+"' href='#'><i class='icon-ban-circle'></i></a></li></ul>";;
-						  			}
-					  }						  	
-		          ],
+			{ 
+				"mData": "id"
+				"fnRender": function(oObj) {
+					return "<a class='redeem-detail' data-redeem-id='"+ oObj.aData['id'] +"' ></a>";
+				}					 
+			},
+			
+			{ "mData": "item_id", "bVisible": false },
+			{ 
+				"mData": "name",
+				"fnRender": function(oObj) {
+					return "<a class='item-info' data-item-id='"+ oObj.aData['item_id'] +"' >"+ oObj.aData['name']+"</a>";
+				}
+			},
+			{ 
+				"mData": "facebook_user_id",
+				"fnRender": function(oObj) {
+					return "<a class='face' data-id= '"+ oObj.aData['facebook_user_id'] +"' href='#'><img class='facebook-user-face' src='https://graph.facebook.com/"+ oObj.aData['facebook_user_id'] +
+						"/picture' onerror='ImgError(this);'> <span class='facebook-user-name'>"+ oObj.aData['facebook_user_name'] +"</span></a>";
+					}
+			},
+			{ "mData": "created_time" },
+			{ 
+				"mData": null, 
+				"fnRender": function (oObj) {
+					return 'requested';
+				}
+			},
+			{ 
+				"mData": null, 
+				"fnRender": function (oObj) {
+					return "<ul class='unstyled thumbnails'><li><a class='approve-request-item' data-id= '"+ oObj.aData['id']+"' href='#'><i class='icon-ok-sign'></i>approve</a></li>" +
+						"<li><a class='disapprove-request-item' data-id= '"+ oObj.aData['id']+"' href='#'><i class='icon-ban-circle'></i>disapprove</a></li></ul>";;
+					}
+			}						  	
+		],
 		"sAjaxSource": "/admin/redeem/request/" +fanpageId
 	});
 
@@ -187,56 +272,80 @@ $(document).ready(function() {
 		bJQueryUI : true,
 		"bDestroy": true,
 		"aoColumns": [
-		              { "mData": "id"},
-		              { "mData": "item_id"},
-		              { "mData": "facebook_user_id" },
-		              { "mData": "created_time" },
-		              { "mData": "status" }
-		          ],
+			{ "mData": "id" },
+	        { "mData": "item_id", "bVisible": false },
+			{ 
+				"mData": "name",
+				"fnRender": function(oObj) {
+					return "<a class='item-info' data-item-id='"+ oObj.aData['item_id'] +"' >"+ oObj.aData['name']+"</a>";
+				}
+			},
+			{ 
+				"mData": "facebook_user_id",
+				"fnRender": function(oObj) {
+					return "<a class='face' data-id= '"+ oObj.aData['facebook_user_id'] +"' href='#'><img class='facebook-user-face' src='https://graph.facebook.com/"+ oObj.aData['facebook_user_id'] +
+			    		"/picture' onerror='ImgError(this);'> <span class='facebook-user-name'>"+ oObj.aData['facebook_user_name'] +"</span></a>";
+				}
+			},
+			{ "mData": "created_time" },
+			{ 
+				"mData": "status",
+				"fnRender": function(oObj) {
+					var status = ['disapprove', 'pending', 'approve', 'fullfill'];
+					return status[oObj.aData['status']];
+				}
+			},
+			{ "mData": "note" }
+		],
 		"sAjaxSource": "/admin/redeem/history/" +fanpageId
 	});
 	
-	// handle approve request item action
-	$('.approve-request-item').live('click', function(e){
+	// handle approve request popup dialog
+	$('.approve-request-item').live('click', function(e) {
 		e.preventDefault();
 		var redeemId = $(this).attr('data-id');
-		
-		$.ajax({
-    		type: "GET",
-    		url:  '/admin/redeem/approve/'+ fanpageId +'?redeemId=' + redeemId,
-    		cache: false,
-    		async: true,
-    		dataType: 'html',
-    		success: function( data ) {
-        		console.log(data);
-        		if ($.trim(data) == 'ok' && typeof requestRedeemTable != 'undefined') {
-        			requestRedeemTable.fnReloadAjax();
-        			if (typeof redeemHistoryTable != 'undefined') {
-        				redeemHistoryTable.fnReloadAjax();
-        			}
-        		}
-    		},	
-    		error: function( xhr, errorMessage, thrownErro ) {
-    			alert(xhr.statusText);
-    			console.log(xhr.statusText, errorMessage);
-    		}
-    	});
+		$('#request-confirm-btn').attr('data-redeem-id', redeemId);
+		$('#request-confirm-btn').attr('data-request-action', 'approve');
+		$('#note').text('');
+		$('#redeemConfirmDialog').modal('show');
 	});
 
-	// handle disaprove request item action
+	// handle disaprove request popup dialog
 	$('.disapprove-request-item').live('click', function(e){
 		e.preventDefault();
 		var redeemId = $(this).attr('data-id');
-		
+		$('#request-confirm-btn').attr('data-redeem-id', redeemId);
+		$('#request-confirm-btn').attr('data-request-action', 'disapprove');
+		$('#note').text('');
+		$('#redeemConfirmDialog').modal('show');
+	});
+	
+	// handle request form
+	$('#confirm-dialog-form').submit(function(e) {
+		e.preventDefault();
+		var redeemId = $('#request-confirm-btn').attr('data-redeem-id'),
+			requestFormData =  $(this).serialize() + '&redeemId=' + redeemId,
+			requestAction = $('#request-confirm-btn').attr('data-request-action');
+		if (redeemId) {
+			console.log(requestAction + ' ' + requestFormData);
+			requestActionConfirm(requestAction, requestFormData);
+		}
+	});
+
+	function requestActionConfirm(action, requestFormData) {
 		$.ajax({
-    		type: "GET",
-    		url:  '/admin/redeem/disapprove/'+ fanpageId +'?redeemId=' + redeemId,
+    		type: "POST",
+    		url:  '/admin/redeem/'+ action +'/'+ fanpageId,
     		cache: false,
     		async: true,
     		dataType: 'html',
+    		data: requestFormData,
     		success: function( data ) {
         		console.log(data);
         		if ($.trim(data) == 'ok' && typeof requestRedeemTable != 'undefined') {
+        			$('#request-confirm-btn').attr('data-redeem-id', '');
+        			$('#request-confirm-btn').attr('data-request-action', '');
+        			$('#redeemConfirmDialog').modal('hide');
         			requestRedeemTable.fnReloadAjax();
         			if (typeof redeemHistoryTable != 'undefined') {
         				redeemHistoryTable.fnReloadAjax();
@@ -248,8 +357,7 @@ $(document).ready(function() {
     			console.log(xhr.statusText, errorMessage);
     		}
     	});
-	});
-
+	}
 	/* add item form*/
 	$('#fanpage-item-form').submit(function(e) {
 		e.preventDefault();
@@ -286,61 +394,60 @@ $(document).ready(function() {
 		bJQueryUI : true,
 		"bDestroy": true,
 		"aoColumns": [
-		              { "mData": "id"},
-		              { "mData": "name"},
-		              { "mData": "description" },
-		              { "mData": "picture" },
-		              { "mData": "points" },
-		              { 
-		            	  "mData": null,
-		            	  "bSearchable": false,
-	                      "fnRender": function (oObj) {
-	                            return "<a class='remove-fanpage-item' data-id= '"+ oObj.aData['id']+"' href='#'><i class='icon-remove'></i></a>";
-	                      }
-		              }
-		          ],
+			{ "mData": "id"},
+			{ "mData": "name"},
+			{ "mData": "description" },
+			{ "mData": "picture" },
+			{ "mData": "points" },
+			{ 
+				"mData": null,
+				"bSearchable": false,
+				"fnRender": function (oObj) {
+					return "<a class='remove-fanpage-item' data-id= '"+ oObj.aData['id']+"' href='#'><i class='icon-trash'></i>delete</a>";
+				}
+			}
+		],
 		"sAjaxSource": "/admin/fanpage/listitems/" +fanpageId
 	});
 
 	itemTable.makeEditable({
         //sUpdateURL: "/admin/fanpage/updateitem/"+fanpageId,
-        "aoColumns": [
-						null,
-					{
-							//submit: 'save',
-							//onblur: 'submit',
-							submit: 'save',
-                          	sUpdateURL: function(value, settings) {
-                            	var target = $(this).closest('tr').find('td:first');
-                              	var itemId = target.text();
-                              	//updateItemField(itemId, 'name', value, target);
-                              	return updateItemField(itemId, 'name', value, target);
-                          	}                              	
-                    },
-  					{
-  						onblur: 'submit',
-                        sUpdateURL: function(value, settings) {
-							var target = $(this).closest('tr').find('td:first');
-                          	var itemId = target.text();
-							return updateItemField(itemId, 'description', value, target);
-                        }                                	
-					},
-  					{
-  						onblur: 'submit',
-                        sUpdateURL: function(value, settings) {
-							var target = $(this).closest('tr').find('td:first');
-                          	var itemId = target.text();
-							return updateItemField(itemId, 'picture', value, target);
-                        }                                	
-					},
-  					{
-  						onblur: 'submit',
-                        sUpdateURL: function(value, settings) {
-							var target = $(this).closest('tr').find('td:first');
-                          	var itemId = target.text();
-							return updateItemField(itemId, 'points', value, target);
-                        }                                	
-					}										
+		"aoColumns": [
+			null,
+			{
+				//submit: 'save',
+				//onblur: 'submit',
+				submit: 'save',
+				sUpdateURL: function(value, settings) {
+					var target = $(this).closest('tr').find('td:first'),
+						itemId = target.text();
+						return updateItemField(itemId, 'name', value, target);
+				}                              	
+			},
+			{
+				onblur: 'submit',
+				sUpdateURL: function(value, settings) {
+					var target = $(this).closest('tr').find('td:first'),
+						itemId = target.text();
+					return updateItemField(itemId, 'description', value, target);
+				}                                	
+			},
+			{
+				onblur: 'submit',
+				sUpdateURL: function(value, settings) {
+					var target = $(this).closest('tr').find('td:first'),
+						itemId = target.text();
+					return updateItemField(itemId, 'picture', value, target);
+				}                                	
+			},
+			{
+				onblur: 'submit',
+				sUpdateURL: function(value, settings) {
+					var target = $(this).closest('tr').find('td:first'),
+                        itemId = target.text();
+					return updateItemField(itemId, 'points', value, target);
+				}                                	
+			}										
 		],
         sAddURL: "/admin/fanpage/additem/"+fanpageId,
         sDeleteURL: "/admin/fanpage/deleteitem/"+fanpageId
@@ -376,6 +483,7 @@ $(document).ready(function() {
     	});
 	});
 
+	// update item field in item table
 	function updateItemField(id, fName, fValue, target) {
 		var itemId = id || '', fieldName = fName || '', fieldValue = fValue || '';
 		 
@@ -404,7 +512,65 @@ $(document).ready(function() {
 		return fValue;
 	}
 
-	// form validation
+	// handle item information popup
+	$('.item-info').live('click', function(e) {
+		e.preventDefault();
+		$('#edit-item-form')[0].reset();
+		var itemId = $(this).attr('data-item-id');
+		if (itemId) {
+			$.ajax({
+	    		type: "get",
+	    		url:  "/admin/fanpage/iteminfo/"+fanpageId+"?itemId="+itemId,
+	    		cache: false,
+	    		async: true,
+	    		dataType: 'json',
+	    		success: function( data ) {
+		    		console.log(data.id);
+		    		if (data.id) {
+		    			$('form#edit-item-form input[name="itemId"]').val(data.id);
+						$('form#edit-item-form input[name="itemName"]').val(data.name);
+						$('form#edit-item-form input[name="itemDescription"]').val(data.description);
+						$('form#edit-item-form input[name="itemPictureUrl"]').val(data.picture);
+						$('form#edit-item-form input[name="itemPrice"]').val(data.points);
+						$('#editItemModal').modal('show');
+		    		} else {
+			    		alert('item not found');
+		    		}
+	    		},	
+	    		error: function( xhr, errorMessage, thrownErro ) {
+	    			alert(xhr.statusText);
+	    			console.log(xhr.statusText, errorMessage);
+	    		}
+	    	});
+		}
+	});
+
+	// handle item edit form save action
+	$('#edit-item-form').submit(function(e) {
+		e.preventDefault();
+		var formData = $(this).serialize();
+		$.ajax({
+			url:  "/admin/fanpage/edititem/"+fanpageId,
+		    type: 'POST',
+		    dataType: 'html',
+		    data: formData,
+		    error: function( data ) {
+		    	console.log('error'+data);
+		    },
+		    beforeSend : function() {
+			},
+		    success: function (data) {
+		    	console.log(data);
+		    	$('#editItemModal').modal('hide');
+		    	if (typeof itemTable == 'undefined') {
+			    	console.log('itemTable is undefined');
+		    	} else {
+		    		itemTable.fnReloadAjax();
+		    	}
+		    	//loadRedeem();
+		    }
+		}); 
+	});
 	
 });
 

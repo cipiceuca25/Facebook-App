@@ -297,8 +297,7 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 
 		$result = array(
 				'sEcho'=> 1,
-				'iTotalRecords'=> 10,
-				'iTotalDisplayRecords'=> 10,
+				'iTotalRecords'=> count($itemList),
 				'aaData'=> empty($itemList) ? array() : $itemList->toArray()
 		);
 		
@@ -349,12 +348,54 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		}
 	}
 	
+	public function edititemAction() {
+		$itemId = $this->_getParam('itemId');
+		$itemName = $this->_getParam('itemName');
+		$itemDescription = $this->_getParam('itemDescription');
+		$itemPictureUrl = $this->_getParam('itemPictureUrl');
+		$itemPoint = $this->_getParam('itemPrice');
+		
+		$itemModel = new Model_Items();
+		$foundItem = $itemModel->findRow($itemId);
+		
+		try {
+			if ($foundItem) {
+				$foundItem->name = $itemName;
+				$foundItem->description = $itemDescription;
+				$foundItem->picture = $itemPictureUrl;
+				$foundItem->points = $itemPoint;
+				$foundItem->save();
+			}
+			echo 'ok';
+		} catch (Exception $e) {
+			echo 'fail';
+		}
+	}
+	
 	public function deleteitemAction() {
 		$itemModel = new Model_Items();
 		$where = $itemModel->quoteInto('fanpage_id = ? and id = ?',$this->_fanpageId, $this->_getParam('itemId'));
 		echo $itemModel->delete($where);
 	}
 	
+	public function iteminfoAction() {
+		$itemId = $this->_getParam('itemId');
+		$itemModel = new Model_Items();
+		$foundItem = $itemModel->findRow($itemId);
+		$item = array(
+				'fanpage_id' => $this->_fanpageId,
+				'name' => '',
+				'description' => '',
+				'picture' => '',
+				'points' => 0
+		);
+		
+		if ($foundItem) {
+			$item = $foundItem->toArray();
+		}
+		
+		$this->_helper->json($item);
+	}
 }
 
 ?>

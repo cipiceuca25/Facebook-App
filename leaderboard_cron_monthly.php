@@ -44,43 +44,21 @@ function saveLeaderboard() {
 	
 	$fanpageModel = new Model_Fanpages();
 	$fanpageList = $fanpageModel->getActiveFanpagesIdList();
-	
+	$badgeModel = new Model_Badges();
 	$rankingModel = new Model_Rankings();
 	
 	$writer = new Zend_Log_Writer_Stream('./cron_error.log');
 	$logger = new Zend_Log($writer);
 	
 	try {
+		$topFanMonthBadge = $badgeModel->findByBadgeName('Top-Fan-Month');
+		$badgeId = $topFanMonthBadge[0]->id;
 		foreach ($fanpageList as $fanpageId) {
 			//save top fans
-			$result = $rankingModel->getTopFansByWeek($fanpageId, 5);
-			if(!empty($result)) {
-				insertLog($fanpageId, $result, 'top_fans', 'number_of_posts');
+			$result = $rankingModel->getTopFansByLastMonth($fanpageId, 5);
+			if (!empty($result)) {
+				insertLog($fanpageId, $result, $badgeId, 'Top-Fan-Month', 'count');
 				// apply badge for top fan
-			}
-			
-			//save top clicker
-			$result = $rankingModel->getTopClickerByWeek($fanpageId, 5);
-			if(!empty($result)) {
-				insertLog($fanpageId, $result, 'top_clicker', 'number_of_likes');
-			}
-			
-			//save top talker
-			$result = $rankingModel->getTopTalkerByWeek($fanpageId, 5);
-			if(!empty($result)) {
-				insertLog($fanpageId, $result, 'top_talker', 'number_of_posts');
-			}
-			
-			//save most popular
-			$result = $rankingModel->getMostPopularByWeek($fanpageId, 5);
-			if(!empty($result)) {
-				insertLog($fanpageId, $result, 'most_popular', 'count');
-			}
-			
-			//save top follower
-			$result = $rankingModel->getTopFollowedByWeek($fanpageId, 5);
-			if(!empty($result)) {
-				insertLog($fanpageId, $result, 'top_follow', 'count');
 			}
 		}
 		//
@@ -90,10 +68,9 @@ function saveLeaderboard() {
 	}
 }
 
-function insertLog($fanpageId, $result, $type, $countType) {
-	$date = new Zend_Date();
-	$today = $date->toString('yyyy-MM-dd 00:00:00');
-	$lastSunday = $date->sub(7, Zend_Date::DAY)->toString('yyyy-MM-dd 00:00:00');
+function insertLog($fanpageId, $result, $badgeId, $type, $countType) {
+	$firstdayOfLastMonth = Fancrank_Util_Date::firstdayOfLastMonth();
+	$lastdayOfLastMonth = Fancrank_Util_Date::lastdayOfLastMonth();
 	
 	$leaderboardLogModel = new Model_LeaderboardLog();
 	$badgeEventModel = new Model_BadgeEvents();
@@ -105,16 +82,16 @@ function insertLog($fanpageId, $result, $type, $countType) {
 				'type'=>$type,
 				'facebook_user_id'=>$row['facebook_user_id'],
 				'fanpage_id'=>$fanpageId,
-				'start_time'=>$lastSunday,
-				'end_time'=>$today,
+				'start_time'=>$firstdayOfLastMonth,
+				'end_time'=>$lastdayOfLastMonth,
 				'rank'=>$rank,
 				'count'=> empty($row[$countType]) ? 0 : $row[$countType]
 		);
 		$leaderboardLogModel->insert($data);
 		
 		// hard code badge id for now, need to change it later on
-		if ($type == 'top_fans') {
-			applyBadge($badgeEventModel, $fanpageId, $row['facebook_user_id'], 721);
+		if ($type == 'Top-Fan-Month') {
+			applyBadge($badgeEventModel, $fanpageId, $row['facebook_user_id'], $badgeId);
 		}
 		
 	}

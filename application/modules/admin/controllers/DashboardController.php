@@ -999,15 +999,15 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 	
 	public function redeemAction() {
 		$this->_helper->layout->disableLayout();
-		$leaderboardLogModel = new Model_LeaderboardLog();
 		$fanpageId = $this->_getParam('id');
-		$lastWeekTopFans = $leaderboardLogModel->getLastWeekTopFans($fanpageId);
+		$leaderboardModel = new Model_LeaderboardLog();	
+		$lastMonthTopFans = $leaderboardModel->getLastMonthTopFans($fanpageId);
 		
 		$redeemTransactionModel = new Model_RedeemTransactions();
 		
 		$this->view->requestRedeemItemList = $redeemTransactionModel->getPendingOrdersListByFanpageId($fanpageId);
 		$this->view->redeemHistoryList = $redeemTransactionModel->getRedeemHistory($fanpageId);
-		$this->view->lastWeekTopFans = $lastWeekTopFans;
+		$this->view->lastMonthTopFans = $lastMonthTopFans;
 	}
 	
 	public function showlogAction() {
