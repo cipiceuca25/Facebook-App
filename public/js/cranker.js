@@ -2412,14 +2412,13 @@ $(document).ready(function() {
 				cache : false,
 				async : true,
 				data : formData+"&badgeId="+selectBadgeId,
-		
 				success : function(data) {
 					//$('.profile-content').html(data);
 					console.log(data);
 					if ($.trim(data) == 'ok') {
 						alert('done!');
 					}
-					//closeProfile();
+					closeProfile();
 					//$(x).popover('show');
 				},
 				error : function(xhr, errorMessage, thrownErro) {
