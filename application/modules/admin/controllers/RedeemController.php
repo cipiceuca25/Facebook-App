@@ -95,18 +95,23 @@ class Admin_RedeemController extends Fancrank_Admin_Controller_BaseController
 		$redeemId = $this->_getParam('redeemId');
 		$redeemTransactionModel = new Model_RedeemTransactions();
 		$result =$redeemTransactionModel->getRedeemDetailById($redeemId);
-		$badgeEventModel = new Model_BadgeEvents();
-
-		Zend_Debug::dump($result);
+		//Zend_Debug::dump($result);
 		
+		$badgeEventModel = new Model_BadgeEvents();
+		
+		$badgeInfo = array();
 		if (!empty($result['badge_event_id'])) {
 			// get badge information
-			$badgeInfo	= $badgeEventModel->findRow($result['badge_event_id']);
-			if ($badgeInfo) {
-				Zend_Debug::dump($badgeInfo->toArray());				
-			}
+			$badgeInfo	= $badgeEventModel->getRedeemableBadgeDetail($result['fanpage_id'], $result['facebook_user_id'], $result['badge_event_id']);
 		}
-	}
+		
+		$shippingModel = new Model_ShippingInfo();
+		$shippingInfo = $shippingModel->findByUserId($result['facebook_user_id']);
+		$this->view->redeemDetail = $result;
+		$this->view->badgeDetail = $badgeInfo;
+		$this->view->shippingInfo = $shippingInfo;
+		$this->render('detail');
+	}	
 }
 
 ?>

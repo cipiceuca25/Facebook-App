@@ -28,5 +28,6 @@ class Model_FanpageBadges extends Model_DbTable_FanpageBadges
 				->where('f.redeemable = 1');
 		return $this->getDefaultAdapter()->fetchAll($query);
 	}
+	
 }
 

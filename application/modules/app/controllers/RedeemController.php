@@ -61,6 +61,7 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 	
 	public function confirmAction() {
 		$itemId = $this->_getParam('redeemItemId');
+		$badgeId = $this->_getParam('badgeId');
 		$itemModel = new Model_Items();
 		
 		$item = $itemModel->findRow($itemId);
@@ -72,12 +73,13 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 
 		$redeemModel = new Model_RedeemTransactions();
 		$badgeEventsModel = new Model_BadgeEvents();
+
 		// check top fan last week, note: badge id 721 = top_fans 
 		
 		$fp = new Model_Fanpages();
 		$fp = $fp->find($item['fanpage_id'])->current();
-		
-		if (!$badgeEventsModel->hasBadgeEvent($this->_fanpageId, $this->_identity->facebook_user_id, 1)) {
+		$badgeEventId = '';
+		if (! $badgeEventId = $badgeEventsModel->hasRedeemableBadgeEvent($this->_fanpageId, $this->_identity->facebook_user_id, $badgeId)) {
 			echo 'redeemable badge not found';
 			return;
 		}
@@ -100,12 +102,13 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 			
 			$date = Zend_Date::now();
 			
-			if(isset($item->id) && !empty($shippingId)) {
+			if (isset($item->id) && !empty($shippingId) && !empty($badgeEventId)) {
 				$data = array(
 						'fanpage_id' => $this->_fanpageId,
 						'facebook_user_id' => $this->_identity->facebook_user_id,
 						'item_id'	=> $item->id,
 						'status'	=> 1,
+						'badge_event_id' => $badgeEventId,
 						'shipping_info_id' => $shippingId,
 						'created_time'	=> $date->toString( 'yyyy-MM-dd HH:mm:ss' ),
 						'updated_time'	=> $date->toString( 'yyyy-MM-dd HH:mm:ss' )

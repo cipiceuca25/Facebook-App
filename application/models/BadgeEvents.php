@@ -193,10 +193,39 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		
 		$result = $this->fetchAll($query)->count();
 		
-		if($result) {
+		if ($result) {
 			return true;
 		}
 		return false;
+	}
+	
+	public function hasRedeemableBadgeEvent($fanpage_id, $facebook_user_id, $badge_id) {
+		$query = $this->select()
+			->from(array('e'=>'badge_events'), array('id'))
+			->join(array('f'=>'fanpage_badges'), 'f.badge_id = e.badge_id AND f.fanpage_id = e.fanpage_id', array())
+			->where('e.fanpage_id = ?', $fanpage_id)
+			->where('e.facebook_user_id = ?', $facebook_user_id)
+			->where('e.badge_id = ?', $badge_id)
+			->where('f.redeemable = 1')
+			->limit(1);
+		
+		$result = $this->fetchRow($query);
+
+		if ($result) {
+			return $result['id'];
+		}
+		return false;
+	}
+	
+	public function getRedeemableBadgeDetail($fanpage_id, $facebook_user_id, $badge_event_id) {
+		$query = $this->getDefaultAdapter()->select()
+			->from(array('e'=>'badge_events'), array('e.id'))
+			->join(array('b'=>'badges'), 'b.id = e.badge_id', array('b.name', 'b.picture'))
+			->join(array('f'=>'fanpage_badges'), 'f.badge_id = e.badge_id AND f.fanpage_id = e.fanpage_id', array('f.*'))
+			->where('e.id = ?', $badge_event_id)
+			->where('f.redeemable = 1')
+			->limit(1);
+		return $this->getDefaultAdapter()->fetchrow($query);
 	}
 	
 	public function getRemaindDefaultBadgeByUser($fanpage_id, $facebook_user_id) {
