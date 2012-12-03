@@ -297,7 +297,7 @@
 				made a <a  onclick="popup_post('<?=$act['event_object']?>',  <?=$popup?>)">video post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
 				<?break;
 			case 'redeem_by_badge':?>
-				have redeemed an item #<?=$act['event_object']?>.
+				have redeemed <?=$act['message']?>.
 				<?break;				
 			default:
 		}?>

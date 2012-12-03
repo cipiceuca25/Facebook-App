@@ -121,7 +121,7 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 				$activityData['fanpage_id'] = $this->_fanpageId;
 				$activityData['target_user_id'] = $this->_fanpageId;
 				$activityData['target_user_name'] = '';
-				$activityData['message'] = 'redeem item';
+				$activityData['message'] = $item->name;
 				
 				$activityModel = new Model_FancrankActivities();
 				$activityModel->insert($activityData);

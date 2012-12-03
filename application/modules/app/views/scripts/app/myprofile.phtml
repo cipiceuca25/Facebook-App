@@ -156,8 +156,8 @@
 						
 								<div class="progress earned-badges" >
 									<div class="bar" ></div>
-									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . $b['created_time']?>" 
-									class=noclick rel="tooltip" data-placement="top-left" <?php if ($b['redeemable']== 1) {?>class="redeemableBadge"<?php }?> >
+									<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . date('Y/m/d',strtotime(date($b['created_time'])))?>" 
+									 rel="tooltip" data-placement="top-left" <?php if ($b['redeemable']== 1) {?>class="redeemableBadge"<?php }else{?>class=noclick<?php }?> >
 										<img src="<?= $b['picture']?>"/>
 									</a>
 									<?php if ($b['redeemable']== 1) {?><div class="redeemable-icon">R</div> <?php }?>
@@ -191,7 +191,7 @@
 						
 								<div class="progress earned-badges" >
 									<div class="bar"></div>
-									<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . $b['created_time'] ?>"
+									<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' .  date('Y/m/d',strtotime(date($b['created_time']))) ?>"
 										class="redeemableBadge" rel="tooltip" data-placement="top-left">
 										<img src="<?= $b['picture']?>"/>
 									</a>
