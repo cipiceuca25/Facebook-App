@@ -73,9 +73,13 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 
 		$redeemModel = new Model_RedeemTransactions();
 		$badgeEventsModel = new Model_BadgeEvents();
-		// check top fan last week, note: badge id 721 = top_fans
 
-		if (!$badgeEventsModel->hasBadgeEvent($this->_fanpageId, $this->_identity->facebook_user_id, 721)) {
+		// check top fan last week, note: badge id 721 = top_fans 
+		
+		$fp = new Model_Fanpages();
+		$fp = $fp->find($item['fanpage_id'])->current();
+		$badgeEventId = '';
+		if (! $badgeEventId = $badgeEventsModel->hasRedeemableBadgeEvent($this->_fanpageId, $this->_identity->facebook_user_id, $badgeId)) {
 			echo 'redeemable badge not found';
 			return;
 		}
@@ -98,19 +102,20 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 			
 			$date = Zend_Date::now();
 			
-			if(isset($item->id) && !empty($shippingId)) {
+			if (isset($item->id) && !empty($shippingId) && !empty($badgeEventId)) {
 				$data = array(
 						'fanpage_id' => $this->_fanpageId,
 						'facebook_user_id' => $this->_identity->facebook_user_id,
 						'item_id'	=> $item->id,
 						'status'	=> 1,
+						'badge_event_id' => $badgeEventId,
 						'shipping_info_id' => $shippingId,
 						'created_time'	=> $date->toString( 'yyyy-MM-dd HH:mm:ss' ),
 						'updated_time'	=> $date->toString( 'yyyy-MM-dd HH:mm:ss' )
 				);
 				
 				$redeemId = $redeemModel->insert($data);
-
+				
 				//update activity log
 				$activityData['activity_type'] = 'redeem_by_badge';
 				$activityData['event_object'] = $redeemId;
@@ -127,8 +132,25 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 				$encryptData['redeem_id'] = $redeemId;
 				$encryptData['code'] = 'fancrank';
 				$link = $_SERVER['SERVER_NAME'] .'/app/redeem/track?data=' .Fancrank_Crypt::encrypt($encryptData);
+				
+				
+				$html = new Zend_View();
+				$html->setScriptPath(APPLICATION_PATH . '/modules/app/views/scripts/redeem/');
+				$html->assign('link', $link);
+				$html->assign('date', date("F j, Y"));
+				$html->assign('shipping',$shippingInfo);
+				$html->assign('item',$item);
+				$html->assign('fanpage',$fp);
+				
+				$bodyText = $html->render('emailTemplate.phtml');
+				Zend_Debug::dump($shippingInfo);
 				$mailModel = new Fancrank_Mail($shippingInfo['email']);
-				$mailModel->sendMail($link);
+			
+				$mailModel->setSubject('FanCrank: Your Request has been Submitted');
+				$mailModel->setFrom('redemption@fancrank.com', 'FanCrank Redemptions');
+
+				
+				$mailModel->sendMail($bodyText);
 			}
 			echo 'ok';	
 		} catch (Fancrank_Exception_InvalidParameterException $f) {
@@ -160,6 +182,9 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 			}
 		} catch (Exception $e) {
 		}
+		
+		Zend_Debug::dump($redeem);
+		
 	}
 	
 	private function getShippingInfo() {

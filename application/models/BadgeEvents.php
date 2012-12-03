@@ -13,13 +13,14 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	}
 	
 	public function getBadgesByFanpageIdAndFanID($fanpage_id, $facebook_user_id, $limit){
-		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active
+		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active, x.redeemable
 					from badge_events e,
 					(
 					SELECT b.id, b.name, b.description, b.quantity, 
 					if (f.weight <=> null, b.weight, f.weight) as weight,  
 					if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
 					if (f.active <=> null, 1, f.active) as active,
+					if (f.redeemable <=> null, 0, f.redeemable) as redeemable,
 					b.picture
 					
 					FROM badges b
@@ -37,7 +38,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	}
 
 	public function getRedeemableBadges($fanpage_id, $facebook_user_id, $limit){
-		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active
+		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture,x.redeemable, x.active
 		from badge_events e,
 		(
 		SELECT b.id, b.name, b.description, b.quantity,
@@ -192,7 +193,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		
 		$result = $this->fetchAll($query)->count();
 		
-		if($result) {
+		if ($result) {
 			return true;
 		}
 		return false;
@@ -208,10 +209,10 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 			->where('f.redeemable = 1')
 			->limit(1);
 		
-		$result = $this->fetchAll($query)->count();
+		$result = $this->fetchRow($query);
 
-		if($result) {
-			return true;
+		if ($result) {
+			return $result['id'];
 		}
 		return false;
 	}

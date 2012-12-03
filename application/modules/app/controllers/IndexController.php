@@ -136,7 +136,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 	    			
 	    	try{
     			if(isset($cache) && !$cache->load($this->data['page']['id'] . '_topfanlastweek')){
-    				$topFansLastWeek =  $leaderboardLogModel->getLastWeekTopFans($this->data['page']['id']);
+    				$topFansLastWeek =  $leaderboardLogModel->getLastMonthTopFans($this->data['page']['id']);
     				
     				$cache->save($topFansLastWeek, $this->data['page']['id'] . '_topfanlastweek');
     			}else{

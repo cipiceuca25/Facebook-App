@@ -2677,7 +2677,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$result = $redeemModel->getRedeemDetailById(16);
     	Zend_Debug::dump($result);
     	
-    	$badgeId = '721';
+    	$badgeId = '725';
     	
     	$badgeEventModel = new Model_BadgeEvents();
     	

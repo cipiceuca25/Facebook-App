@@ -22,9 +22,9 @@ class Fancrank_Mail extends Zend_Mail {
 	}
 	
 	public function sendMail($msg) {
-		$this->setBodyHtml($this->formatMessage($msg));
-		$this->setFrom($this->_server, 'fancrank');
-
+		$this->setBodyHtml($msg);
+		//$this->setFrom($this->_server, 'fancrank');
+		
 		$this->addTo($this->_mailTo);
 		
 		try {

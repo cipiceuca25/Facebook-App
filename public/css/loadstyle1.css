@@ -203,7 +203,7 @@ ul,ol{list-style-type:none;margin:0;padding:0;}
 .profile-block h3{display:inline-block;font-size:25px;position:relative;}
 .profile-block.vertical-center{position:relative;top:15px;}
 #profile .tip2{margin-top:15px;}
-.progress{margin-bottom:0;background:#edeff4;border:1px solid #c4cde0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
+.progress{margin-bottom:0;background:#edeff4;border:1px solid #c4cde0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;position:relative;}
 .progress .bar{background:#c4cde0;-webkit-box-shadow:0 0 0 0;-moz-box-shadow:0 0 0 0;box-shadow:0 0 0 0;}
 .progress img{width:40px;}
 .progress.exp{margin-top:12px;margin-bottom:12px;border:1px solid #3c589d;background:white;}
@@ -262,7 +262,7 @@ ul,ol{list-style-type:none;margin:0;padding:0;}
 .unlike-animation{background:url(../img/unliked.png) no-repeat center center;}
 .comment-animation{background:url(../img/commented.png) no-repeat center center;}
 .point-display{margin-right:10px;}
-#whatisfancrank{height:322px;text-align:Center;}
+#whatisfancrank{height:312px;text-align:Center;margin-top:10px;}
 .box.border{border:5px solid #3c589d;}
 .italic{font-style:italic;}
 .bold{font-weight:bold;}
@@ -378,3 +378,6 @@ button.btn{height:auto;}
 .fc-share:hover,.fc-share:active,.fc-share.active,.fc-share.disabled,.fc-share[disabled]{color:#3c589d;background-color:#edf1f8;*background-color:#edf1f8;background-position:0 -30em;-webkit-transition:background-position 0.1s linear;-moz-transition:background-position 0.1s linear;-o-transition:background-position 0.1s linear;transition:background-position 0.1s linear;-webkit-border-radius:0px;-moz-border-radius:0px;border-radius:0px;}
 .fc-share:active,.fc-share.active{background-color:#c3cce3 \9;}
 .policy_message{font-size:25px;padding-left:15px;padding-bottom:10px;text-transform:uppercase;font-weight:bold;color:#3c589d;margin-left:-15px;margin-right:-15px;border-bottom:2px solid #dbdbdb;}
+.redeemable-icon{background-color:#3c589d;-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;text-align:center;position:absolute;top:2px;left:2px;width:13px;height:13px;color:white;font-size:10px;font-weight:bold;}
+.redeemable-icon .active{background-color:red;}
+.redeemableBadge:hover{cursor:pointer;}
