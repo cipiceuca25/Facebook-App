@@ -479,7 +479,7 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 		return $this->fetchAll($query)->current();
 	}
 	
-	public function findFanRecord($fanpage_id, $facebook_user_id){
+	public function findFanRecord($fanpage_id, $facebook_user_id, $limit=false){
 		
 		$select = "	SELECT 
 				f.fan_post_status_count + 
@@ -542,6 +542,165 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 				order by f.updated_time DESC
 				limit 1";
 		//Zend_Debug::dump($query);
+		if($limit !== false) {
+			$select = "select a.total_posts - b.total_posts as total_posts, 
+		a.total_comments - b.total_comments as total_comments, 
+		a.total_likes - b.total_likes as total_likes,
+		a.total_get_likes - b.total_get_likes as total_get_likes,
+		a.total_get_comments - b.total_get_comments as total_get_comments,
+		a.link_comments - b.link_comments as link_comments,
+		a.video_comments - b.video_comments as video_comments, 
+		a.photo_comments - b.photo_comments as photo_comments,
+		a.status_comments - b.status_comments as status_comments, 
+		a.link_likes - b.link_likes as link_likes,
+		a.video_likes - b.video_likes as video_likes, 
+		a.photo_likes - b.photo_likes as photo_likes, 
+		a.status_likes - b.status_likes as status_likes,
+		a.comment_likes - b.comment_likes as comment_likes,
+		a.get_video_likes - b.get_video_likes as get_video_likes, 
+		a.get_photo_likes - b.get_photo_likes as get_photo_likes, 
+		a.get_link_likes - b.get_link_likes as get_link_likes, 
+		a.get_status_likes - b.get_status_likes as get_status_likes,
+		a.get_comment_likes - b.get_comment_likes as get_comment_likes, 
+
+		a.get_video_comments - b.get_video_comments as get_video_comments, 
+		a.get_status_comments - b.get_status_comments as get_status_comments, 
+		a.get_photo_comments - b.get_photo_comments as get_photo_comments, 
+		a.post_status - b.post_status as post_status,
+		a.post_photo - b.post_photo as post_photo, 
+		a.post_video - b.post_video as post_video,
+		a.post_link - b.post_link as post_link
+
+ from 
+(SELECT f.fan_post_status_count + 
+				f.fan_post_photo_count + 
+				f.fan_post_video_count + 
+				f.fan_post_link_count	as total_posts, 
+				
+				f.fan_comment_status_count + 
+				f.fan_comment_photo_count + 
+				f.fan_comment_video_count + 
+				f.fan_comment_link_count	as total_comments,
+				
+				f.fan_like_status_count + 
+				f.fan_like_photo_count + 
+				f.fan_like_video_count + 
+				f.fan_like_link_count + 
+				f.fan_like_comment_count	as total_likes,
+				
+				f.fan_get_like_status_count + 
+				f.fan_get_like_photo_count + 
+				f.fan_get_like_video_count + 
+				f.fan_get_like_link_count + 
+				f.fan_get_like_comment_count as total_get_likes	,
+				
+				f.fan_get_comment_status_count + 
+				f.fan_get_comment_photo_count + 
+				f.fan_get_comment_video_count + 
+				f.fan_get_comment_link_count as total_get_comments,
+				
+				f.fan_comment_link_count 						as link_comments,
+				f.fan_comment_video_count						as video_comments,
+				f.fan_comment_photo_count 						as photo_comments,
+				f.fan_comment_status_count						as status_comments,
+				
+				f.fan_like_link_count 							as link_likes,
+				f.fan_like_video_count 							as video_likes,
+				f.fan_like_photo_count 							as photo_likes,
+				f.fan_like_status_count 						as status_likes,
+				f.fan_like_comment_count						as comment_likes,
+				
+				f.fan_get_like_video_count						as get_video_likes,
+				f.fan_get_like_photo_count 						as get_photo_likes,
+				f.fan_get_like_link_count 						as get_link_likes,
+				f.fan_get_like_status_count 					as get_status_likes,
+				f.fan_get_like_comment_count					as get_comment_likes,
+				
+				f.fan_get_comment_link_count						as get_link_comments,
+				f.fan_get_comment_video_count 						as get_video_comments,
+				f.fan_get_comment_status_count 					as get_status_comments,
+				f.fan_get_comment_photo_count					as get_photo_comments,
+		
+				f.fan_post_status_count							as post_status,
+				f.fan_post_photo_count 							as post_photo,
+				f.fan_post_video_count 							as post_video,
+				f.fan_post_link_count 								as post_link, 
+				f.updated_time,
+				DATEDIFF(f.updated_time, '$limit') as d
+				
+				FROM fans_objects_stats f
+				WHERE f.fanpage_id = $fanpage_id AND f.facebook_user_id = $facebook_user_id
+		
+				order by  f.updated_time DESC
+				limit 1) as a,
+
+				(SELECT f.fan_post_status_count + 
+				f.fan_post_photo_count + 
+				f.fan_post_video_count + 
+				f.fan_post_link_count	as total_posts, 
+				
+				f.fan_comment_status_count + 
+				f.fan_comment_photo_count + 
+				f.fan_comment_video_count + 
+				f.fan_comment_link_count	as total_comments,
+				
+				f.fan_like_status_count + 
+				f.fan_like_photo_count + 
+				f.fan_like_video_count + 
+				f.fan_like_link_count + 
+				f.fan_like_comment_count	as total_likes,
+				
+				f.fan_get_like_status_count + 
+				f.fan_get_like_photo_count + 
+				f.fan_get_like_video_count + 
+				f.fan_get_like_link_count + 
+				f.fan_get_like_comment_count as total_get_likes	,
+				
+				f.fan_get_comment_status_count + 
+				f.fan_get_comment_photo_count + 
+				f.fan_get_comment_video_count + 
+				f.fan_get_comment_link_count as total_get_comments,
+				
+				f.fan_comment_link_count 						as link_comments,
+				f.fan_comment_video_count						as video_comments,
+				f.fan_comment_photo_count 						as photo_comments,
+				f.fan_comment_status_count						as status_comments,
+				
+				f.fan_like_link_count 							as link_likes,
+				f.fan_like_video_count 							as video_likes,
+				f.fan_like_photo_count 							as photo_likes,
+				f.fan_like_status_count 						as status_likes,
+				f.fan_like_comment_count						as comment_likes,
+				
+				f.fan_get_like_video_count						as get_video_likes,
+				f.fan_get_like_photo_count 						as get_photo_likes,
+				f.fan_get_like_link_count 						as get_link_likes,
+				f.fan_get_like_status_count 					as get_status_likes,
+				f.fan_get_like_comment_count					as get_comment_likes,
+				
+				f.fan_get_comment_link_count						as get_link_comments,
+				f.fan_get_comment_video_count 						as get_video_comments,
+				f.fan_get_comment_status_count 					as get_status_comments,
+				f.fan_get_comment_photo_count					as get_photo_comments,
+		
+				f.fan_post_status_count							as post_status,
+				f.fan_post_photo_count 							as post_photo,
+				f.fan_post_video_count 							as post_video,
+				f.fan_post_link_count 								as post_link, 
+				f.updated_time,
+				DATEDIFF(f.updated_time, '$limit') as d
+				
+				FROM fans_objects_stats f
+				WHERE f.fanpage_id = $fanpage_id AND f.facebook_user_id = $facebook_user_id
+				&& f.updated_time > '$limit'
+				order by  DATEDIFF(f.updated_time, '$limit') ASC
+				limit 1) as b
+			";
+		}
+		
+		
+		
+		
 		
 		$result=$this->getAdapter()->fetchAll($select);
 		

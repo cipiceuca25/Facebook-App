@@ -279,8 +279,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(!empty($this->_fanpageId)) {
     		$cache = Zend_Registry::get('memcache');
     		$cache->setLifetime(1800);
-    		$cache->remove($this->_fanpageId . '_topfan');
-     		$cache->remove($this->_fanpageId . '_topfanall');
+    		//$cache->remove($this->_fanpageId . '_topfan');
+     		//$cache->remove($this->_fanpageId . '_topfanall');
 //     		$cache->remove($this->_fanpageId . '_topclicker');
 //     		$cache->remove($this->_fanpageId . '_topfollowed');
 //     		$cache->remove($this->_fanpageId . '_toptalker');
@@ -350,17 +350,17 @@ class App_AppController extends Fancrank_App_Controller_BaseController
   			}    	
     	}
     	
-    	if ($list == 'top-fan' || $list == 'top-fan-all'){
+    	if ($list == 'top-fan'){
 	    	$stat_model = new Model_FansObjectsStats();
 	    	 
 	    	$count=0;
-	    	$topArray = array();
+	    	//$topArray = array();
 	    	$topFanStats = null;
 	    	foreach ($toplist as $top){
 	    		//echo $top['facebook_user_id'];
-	    		$topArray[$count] = $follow->getRelation($this->_userId, $top['facebook_user_id'],$this->_fanpageId);
+	    		//$topArray[$count] = $follow->getRelation($this->_userId, $top['facebook_user_id'],$this->_fanpageId);
 	    		//echo $topArray[$count];
-	    		$stat = $stat_model ->findFanRecord($this->_fanpageId, $top['facebook_user_id']);
+	    		$stat = $stat_model ->findFanRecord($this->_fanpageId, $top['facebook_user_id'], Fancrank_Util_Date::firstdayOfTheMonth() );
 	    		 
 	    		$topFanStats[$count]['total_posts'] = $stat[0]['total_posts'];
 	    		$topFanStats[$count]['total_comments'] = $stat[0]['total_comments'];
@@ -373,11 +373,39 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    	}
 	    	
 	    	$stat = new Model_FansObjectsStats();
-	    	$stat = $stat->findFanRecord($this->_fanpageId, $this->_userId);
+	    	$stat = $stat->findFanRecord($this->_fanpageId, $this->_userId, Fancrank_Util_Date::firstdayOfTheMonth());
 	    	
 	    	$this->view->top_fans_stat = $topFanStats;
 	    	$this->view->your_stat = $stat;
     	 
+    	}else if($list == 'top-fan-all'){
+    		$stat_model = new Model_FansObjectsStats();
+    		 
+    		$count=0;
+    		//$topArray = array();
+    		$topFanStats = null;
+    		foreach ($toplist as $top){
+    			//echo $top['facebook_user_id'];
+    			//$topArray[$count] = $follow->getRelation($this->_userId, $top['facebook_user_id'],$this->_fanpageId);
+    			//echo $topArray[$count];
+    			$stat = $stat_model ->findFanRecord($this->_fanpageId, $top['facebook_user_id']);
+    		
+    			$topFanStats[$count]['total_posts'] = $stat[0]['total_posts'];
+    			$topFanStats[$count]['total_comments'] = $stat[0]['total_comments'];
+    			$topFanStats[$count]['total_likes'] = $stat[0]['total_likes'];
+    			$topFanStats[$count]['total_get_comments'] = $stat[0]['total_get_comments'];
+    			$topFanStats[$count]['total_get_likes'] = $stat[0]['total_get_likes'];
+    		
+    			$count++;
+    		
+    		}
+    		
+    		$stat = new Model_FansObjectsStats();
+    		$stat = $stat->findFanRecord($this->_fanpageId, $this->_userId);
+    		
+    		$this->view->top_fans_stat = $topFanStats;
+    		$this->view->your_stat = $stat;
+    		
     	}
     	
     	

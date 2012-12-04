@@ -169,12 +169,19 @@
 									
 									<li>
 										<div id="logout-tab" class="dropdown">
-											<a  id="logout-noti" class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="/img/icons/settings.png" /></a>
-											<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-												<!--  <li><a>Setting</a></li>
-												<li><a>Help</a></li>-->
-												<li><a href="/app/app/logout/<?= $this->fanpage_id ?>">Log Out</a></li>
-											</ul>
+											<a  id="logout-noti" href="#" 
+											data-content="<div class='arrow' style='left:262px'></div>
+														<div class='rvgrid-7'>
+															<div class='box' id='logout-menu'>
+																<ul >
+																	<!-- <li><a href=''>Help</a></li>
+																	<li><a href=''>Settings</a></li> -->
+																	<li><a href='/app/app/logout/<?= $this->fanpage_id ?>'>Log Out</a></li>
+																</ul>
+															</div>
+														</div>"
+											><img src="/img/icons/settings.png" /></a>
+										
 										</div>
 									</li>
 									

@@ -10,9 +10,15 @@
 						<div class="title-header nopic">
 							Top Fans for <?= date("F") ?>
 						</div>
+						<?php if ($this->fanpage_level >2){?>
 						<div class="tip2">
 							The following list of fans have earned the most points this Month!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
 						</div>
+						<?php }else{?>
+						<div class="tip2">
+							The following list of fans have the highest score this Month!  Increase your score by liking, commenting, and posting on this Facebook page.  Further increase your score when others like your comments or reply to your posts!
+						</div>
+						<?php }?>
 						<!--  <div class="tip">
 								<a rel="tooltip" title="The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!">?</a>
 							</div>-->
@@ -95,11 +101,7 @@
 						
 						</div>
 					</div>
-					
-		
-		
-					
-			
+
 			</div><!-- topclicker -->
 		</div>
 		<div class="rvgrid-9">
@@ -143,9 +145,16 @@
 						<div class="title-header nopic">
 							Top Fans of All Time
 						</div>
+						<?php if ($this->fanpage_level >2){?>
 						<div class="tip2">
 							The following list of fans have earned the most points for all time!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
 						</div>
+						<?php }else{?>
+						<div class="tip2">
+							The following list of fans have the highest score for all time!  Increase your score by liking, commenting, and posting on this Facebook page.  You can further increase your score when others like your comments or reply to your posts!
+						</div>
+						<?php }?>
+						
 						<!--  <div class="tip">
 								<a rel="tooltip" title="The following list of fans have earned the most points this week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!">?</a>
 							</div>-->

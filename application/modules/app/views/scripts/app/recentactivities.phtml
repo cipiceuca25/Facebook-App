@@ -30,45 +30,92 @@
 	$isFanpage = ($act['target_user_id'] == $this->fanpage_id)?true:false;
 	$isSelf = ($act['target_user_id'] == $this->user_id)?true:false;	
 	?>
-	<li class="post-container" >
 	
-		<div class="post">
-		<div class="message">
-		<? if ($act['facebook_user_id'] == $this->user_id) {?>
-			 You 
-		<?}else{?>
-			 <?// if ($isSelf) {?>
-				<?//echo $displayname ?>
-			<?//php }else{?>
-			<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
-				data-original-title="" 
-				data-placement="<?= $popover?>" 
-				data-userid="<?=$act['facebook_user_id']?>">
-				<?= $act['facebook_user_name']?>
-			</a> 
-				
-			<?//php }?>
-		<? }?>
 		
 	
 		<?switch($act['activity_type']){ 
 			
 			case 'admin_add_point': ?> 
-
+				<?php if ($this->fanpage_level >2){?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				awarded you <?=$act['event_object']?> points
 				<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 
 				(note: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>)
+							</div>
+					</div>
+				</li>
+				<?php }?>
 				<?break;
 				
-			case 'admin_subtract_point': ?> 
-
+			case 'admin_subtract_point': ?>
+				<?php if($this->fanpage_level >2){?> 
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				removed <?=$act['event_object']?> points from your account
 				<a rel="tooltip" data-placement="top" class="time" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
 
 				(note: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>)
+				</div>
+				</div>
+			</li>
+			<?php }?>
 				<?break;		
 			case 'follow': ?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				followed <?if ($isSelf){?>you<?php }else{?><a onclick="userProfile('<?=$act['event_object']?>')" data-content="" 
 																		data-original-title="" 
 																		data-placement="<?= $popover?>" 
@@ -79,9 +126,31 @@
 						<a rel="tooltip" class="time noclick" data-placement="top"  
 													data-original-title="" 
 													data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			
 			case 'unfollow' :?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				unfollowed <?if ($isSelf){?>you<?php }else{?><a onclick="userProfile('<?=$act['event_object']?>')" data-content="" 
 																		data-original-title="" 
 																		data-placement="<?= $popover?>" 
@@ -90,9 +159,31 @@
 							</a> <?php }?>
 					
 						<a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>.
+				</div>
+		</div>
+	</li>
 				<?break;	
 				
 			case 'like-status':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				liked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?>
@@ -107,8 +198,30 @@
 																	
 																		
 						<a onclick="popup_post('<?=$act['event_object']?>', <?=$popup?>)">status post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'unlike-status':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				unliked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -123,8 +236,30 @@
 																		<?php }?> 
 																		
 						<a onclick="popup_post('<?=$act['event_object']?>' , <?=$popup?>)">status post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'like-photo':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				liked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -136,8 +271,30 @@
 																		>
 																		<?=$act['target_user_name']?></a>'s
 																		<?php }?> <a onclick="popup_post('<?=$act['event_object']?>',<?=$popup?>)">photo post</a>. 
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'unlike-photo':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				unliked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -150,8 +307,30 @@
 																		<?=$act['target_user_name']?>
 																		</a>'s
 																		<?php }?> <a  onclick="popup_post('<?=$act['event_object']?>' , <?=$popup?>)">photo post</a>. 
+				</div>
+		</div>
+	</li>
 				<?break;	
 			case 'like-video':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				liked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -164,8 +343,30 @@
 																		<?=$act['target_user_name']?>
 																		</a>'s
 																		<?php }?> <a  onclick="popup_post('<?=$act['event_object']?>',  <?=$popup?>)">video post</a>. 
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'unlike-video':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				unliked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -178,8 +379,30 @@
 																		<?=$act['target_user_name']?>
 																		</a>'s
 																		<?php }?> <a  onclick="popup_post('<?=$act['event_object']?>' ,  <?=$popup?>)">video post</a>. 
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'like-link':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				liked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -191,8 +414,30 @@
 																		>
 																		<?=$act['target_user_name']?></a>'s
 																		<?php }?> <a  onclick="popup_post('<?=$act['event_object']?>', <?=$popup?>)">link post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'unlike-link':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				unliked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -204,8 +449,30 @@
 																		>
 																		<?=$act['target_user_name']?></a>'s
 																		<?php }?> <a  onclick="popup_post('<?=$act['event_object']?>' ,<?=$popup?>)">link post</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'like-comment':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				liked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -217,8 +484,30 @@
 																		>
 																		<?=$act['target_user_name']?></a>'s
 																		<?php }?> <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' ,  <?=$popup?>)">comment</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'unlike-comment':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				unliked <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -230,8 +519,30 @@
 																		>
 																		<?=$act['target_user_name']?></a>'s
 																		<?php }?> <a  onclick="popup_post('<?$temp = explode("_", $act['event_object']); echo $temp[0].'_'.$temp[1];?>' ,  <?=$popup?>)">comment</a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>. 
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'comment-status':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				commented on <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -244,8 +555,30 @@
 																		<?=$act['target_user_name']?></a>'s 
 																		
 																		<?php }?> <a onclick="popup_post('<?=$act['event_object']?>',  <?=$popup?>)">status post</a> <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'comment-photo':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				commented on <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -257,8 +590,30 @@
 																		>
 																		<?=$act['target_user_name']?></a>'s 
 																		<?php }?> <a  onclick="popup_post('<?=$act['event_object']?>', <?=$popup?>)">photo post</a> <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'comment-video':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				commented on <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -270,8 +625,30 @@
 																		>
 																		<?=$act['target_user_name']?></a>'s 
 																		<?php }?> <a  onclick="popup_post('<?=$act['event_object']?>', <?=$popup?>)">video post</a> <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'comment-link':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				commented on <?php if ($isFanpage){?><?=$act['target_user_name']?>'s
 						<?php } else if ($isSelf) {?>your
 						<?php }else{ ?><a onclick="userProfile('<?=$act['target_user_id']?>')"
@@ -283,27 +660,136 @@
 																		>
 																		<?=$act['target_user_name']?></a>'s 
 																		<?php }?> <a onclick="popup_post('<?=$act['event_object']?>', <?=$popup?>)">link post</a> <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'post-status':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				made a <a  onclick="popup_post('<?=$act['event_object']?>',<?=$popup?>)">status post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'post-photo':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				made a <a  onclick="popup_post('<?=$act['event_object']?>', <?=$popup?>)">photo post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'post-link':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				made a <a  onclick="popup_post('<?=$act['event_object']?>',  <?=$popup?>)">link post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'post-video':?>
+				<li class="post-container" >
+	
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
 				made a <a  onclick="popup_post('<?=$act['event_object']?>',  <?=$popup?>)">video post</a> on <?=$act['target_user_name']?>'s Fanpage <a rel="tooltip" data-placement="top" class="time noclick" data-original-title="" data-unix-time="<?=strtotime($act['created_time'])?>"></a>: <span class="italic">"<?=substr(trim($act['message']), 0, 160)?>"</span>.
+				</div>
+		</div>
+	</li>
 				<?break;
 			case 'redeem_by_badge':?>
-				have redeemed <?=$act['message']?>.
+				<li class="post-container" >
+				<div class="post">
+				<div class="message">
+				<? if ($act['facebook_user_id'] == $this->user_id) {?>
+					 You 
+				<?}else{?>
+					 <?// if ($isSelf) {?>
+						<?//echo $displayname ?>
+					<?//php }else{?>
+					<a onclick="userProfile('<?=$act['facebook_user_id']?>')" data-content="" 
+						data-original-title="" 
+						data-placement="<?= $popover?>" 
+						data-userid="<?=$act['facebook_user_id']?>">
+						<?= $act['facebook_user_name']?>
+					</a> 
+						
+					<?//php }?>
+				<? }?>
+				have redeemed <?=$act['message']?>.</div>
+		</div>
+	</li>
 				<?break;				
 			default:
 		}?>
-		</div>
-		</div>
-	</li>
+		
 
 		<?endforeach; ?>
 
