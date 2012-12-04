@@ -2681,7 +2681,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	
     }
     
-    public function test38Action() {
-    	
+    public function cleanmemcacheAction() {
+    	$cache = Zend_Registry::get('memcache');
+    	if (isset($cache)) {
+    		$cache->clean();
+    	}
     }
 }
