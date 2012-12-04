@@ -33,15 +33,15 @@ class Fancrank_Util_Date extends Zend_Date
 	}
 
 	public static function firstdayOfLastMonth() {
-		return date('y-m-01', strtotime('last month'));
+		return date('Y-m-01', strtotime('last month'));
 	}
 	
 	public static function lastdayOfLastMonth() {
-		return date('y-m-t', strtotime('last month'));
+		return date('Y-m-t', strtotime('last month'));
 	}
 	
 	public static function firstdayOfNextMonth() {
-		return date('y-m-01', strtotime('next month'));
+		return date('Y-m-01', strtotime('next month'));
 	}
 	
 }
