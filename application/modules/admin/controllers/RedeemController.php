@@ -111,7 +111,34 @@ class Admin_RedeemController extends Fancrank_Admin_Controller_BaseController
 		$this->view->badgeDetail = $badgeInfo;
 		$this->view->shippingInfo = $shippingInfo;
 		$this->render('detail');
-	}	
+	}
+
+	public function fullfillAction() {
+		$redeemId = $this->_getParam('redeemId');
+		$note = $this->_getParam('note');
+		$redeemTransactionModel = new Model_RedeemTransactions();
+		$redeemTransaction = $redeemTransactionModel->findRow($redeemId);
+		
+		if ($redeemTransaction) {
+			$redeemTransaction->status = 3;
+			$redeemTransaction->note = $note;
+			$redeemTransaction->save();
+			echo 'ok';
+		}
+	}
+	
+	public function shippingAction() {
+		$redeemTransactionModel = new Model_RedeemTransactions();
+		$shippingList = $redeemTransactionModel->getShippingList($this->_fanpageId);
+		
+		$result = array(
+				'sEcho'=> 1,
+				'iTotalRecords'=> count($shippingList),
+				'aaData'=> empty($shippingList) ? array() : $shippingList
+		);
+		
+		$this->_helper->json($result);
+	}
 }
 
 ?>

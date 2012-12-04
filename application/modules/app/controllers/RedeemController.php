@@ -235,6 +235,7 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 			$this->render('updateshipping');
 		} 
 	}
+	
 }
 
 ?>

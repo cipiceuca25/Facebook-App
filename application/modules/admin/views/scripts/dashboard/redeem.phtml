@@ -60,7 +60,31 @@
 					<th>Item Name</th>
 					<th>Facebook User</th>
 					<th>Redeemed Time (GMT-0)</th>
-					<th>Status</th>
+					<th>Confirmation</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<br/><br/>
+<div class="row-fluid">
+	<div class="span10">
+		<h2>Shipping Management</h2>
+		<table class="table" id="shippingInfoTable">
+			<thead>
+				<tr>
+					<th>Transaction ID</th>
+					<th>Item Name</th>
+					<th>Fan Contact Name</th>
+					<th>Fan Contact Email</th>
+					<th>Address</th>
+					<th>City</th>
+					<th>Region/State/Province</th>
+					<th>Country</th>
+					<th>Postcode</th>
 					<th>Confirmation</th>
 				</tr>
 			</thead>
@@ -259,12 +283,6 @@ $(document).ready(function() {
 			{ 
 				"mData": null, 
 				"fnRender": function (oObj) {
-					return 'requested';
-				}
-			},
-			{ 
-				"mData": null, 
-				"fnRender": function (oObj) {
 					var redeemId = oObj.aData['id'];
 					return "<ul class='unstyled thumbnails'><li><a class='approve-request-item' data-id='"+ redeemId +"' href='#'><i class='icon-ok-sign'></i>approve</a></li>" +
 						"<li><a class='disapprove-request-item' data-id='"+ redeemId +"' href='#'><i class='icon-ban-circle'></i>disapprove</a></li></ul>";
@@ -274,6 +292,50 @@ $(document).ready(function() {
 		"sAjaxSource": "/admin/redeem/request/" +fanpageId
 	});
 
+	/* shipping info table section */
+	var shippingInfoTable = $('#shippingInfoTable').dataTable({
+		"bProcessing": false,
+		"bServerSide": false,
+		"sPaginationType" : "full_numbers",
+		bJQueryUI : true,
+		"bDestroy": true,
+		"aoColumns": [
+			{ 
+				"mData": null,
+				"fnRender": function(oObj) {
+					return "<a class='redeem-detail' data-redeem-id='"+ oObj.aData['id'] +"' >"+ oObj.aData['id'] +"</a>";
+				}					 
+			},
+			{ 
+				"mData": "item_name",
+				"fnRender": function(oObj) {
+					return "<a class='item-info' data-item-id='"+ oObj.aData['item_id'] +"' >"+ oObj.aData['item_name']+"</a>";
+				}
+			},
+			{ 
+				"mData": "facebook_user_id",
+				"fnRender": function(oObj) {
+					return "<a class='face' data-id= '"+ oObj.aData['facebook_user_id'] +"' href='#'><img class='facebook-user-face' src='https://graph.facebook.com/"+ oObj.aData['facebook_user_id'] +
+						"/picture' onerror='ImgError(this);'> <span class='facebook-user-name'>"+ oObj.aData['name'] +"</span></a>";
+				}
+			},
+			{ "mData": "email" },
+			{ "mData": "address" },
+			{ "mData": "city" },
+			{ "mData": "region" },
+			{ "mData": "country" },
+			{ "mData": "postcode" },									
+			{ 
+				"mData": null, 
+				"fnRender": function (oObj) {
+					var redeemId = oObj.aData['id'];
+					return "<a class='fullfill-request-item' data-id='"+ redeemId +"' href='#'><i class='icon-ok-sign'></i>fullfill</a>";
+				}
+			}						  	
+		],
+		"sAjaxSource": "/admin/redeem/shipping/" +fanpageId
+	});
+	
 	/* hisotry table section */
 	var redeemHistoryTable = $('#redeemHistoryTable').dataTable({
 		"bProcessing": false,
@@ -306,7 +368,7 @@ $(document).ready(function() {
 			{ 
 				"mData": "status",
 				"fnRender": function(oObj) {
-					var status = ['disapprove', 'pending', 'approve', 'fullfill'];
+					var status = ['disapproved', 'pending', 'approved', 'fullfilled'];
 					return status[oObj.aData['status']];
 				}
 			},
@@ -314,7 +376,7 @@ $(document).ready(function() {
 		],
 		"sAjaxSource": "/admin/redeem/history/" +fanpageId
 	});
-	
+
 	// handle approve request popup dialog
 	$('.approve-request-item').live('click', function(e) {
 		e.preventDefault();
@@ -331,6 +393,16 @@ $(document).ready(function() {
 		var redeemId = $(this).attr('data-id');
 		$('#request-confirm-btn').attr('data-redeem-id', redeemId);
 		$('#request-confirm-btn').attr('data-request-action', 'disapprove');
+		$('#note').text('');
+		$('#redeemConfirmDialog').modal('show');
+	});
+
+	// handle shipping request popup dialog
+	$('.fullfill-request-item').live('click', function(e){
+		e.preventDefault();
+		var redeemId = $(this).attr('data-id');
+		$('#request-confirm-btn').attr('data-redeem-id', redeemId);
+		$('#request-confirm-btn').attr('data-request-action', 'fullfill');
 		$('#note').text('');
 		$('#redeemConfirmDialog').modal('show');
 	});
@@ -357,13 +429,26 @@ $(document).ready(function() {
     		data: requestFormData,
     		success: function( data ) {
         		console.log(data);
-        		if ($.trim(data) == 'ok' && typeof requestRedeemTable != 'undefined') {
+        		if ($.trim(data) == 'ok') {
         			$('#request-confirm-btn').attr('data-redeem-id', '');
         			$('#request-confirm-btn').attr('data-request-action', '');
         			$('#redeemConfirmDialog').modal('hide');
-        			requestRedeemTable.fnReloadAjax();
-        			if (typeof redeemHistoryTable != 'undefined') {
-        				redeemHistoryTable.fnReloadAjax();
+        			if (typeof requestRedeemTable != 'undefined' && (action == 'approve' || action == 'disapprove')) {
+        				requestRedeemTable.fnReloadAjax();
+        				if (typeof shippingInfoTable != 'undefined' && action == 'approve') {
+        					shippingInfoTable.fnReloadAjax();
+        				} 
+
+        				if (typeof redeemHistoryTable != 'undefined' && action == 'disapprove') {
+        					redeemHistoryTable.fnReloadAjax();
+        				}
+        			}
+
+        			if (typeof shippingInfoTable != 'undefined' && action == 'fullfill') {
+        				shippingInfoTable.fnReloadAjax();
+        				if (typeof redeemHistoryTable != 'undefined') {
+        					redeemHistoryTable.fnReloadAjax();
+        				}
         			}
         		}
     		},	

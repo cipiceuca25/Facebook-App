@@ -414,7 +414,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
     	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
-		$collector->updateFanpageFeed('500+days+ago', 'now');
+		//$collector->updateFanpageFeed('2+days+ago', 'now');
+		$result = $collector->getFanpageFeed('5+days+ago', 'now');
+		Zend_Debug::dump($result);
     }
     
     public function test3Action () {
@@ -2674,13 +2676,12 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$fanpageId = '197221680326345';
     	$facebookUserId = '100004566963982';
     	$redeemModel = new Model_RedeemTransactions();
-    	$result = $redeemModel->getRedeemDetailById(16);
+    	$result = $redeemModel->getShippingList($fanpageId);
     	Zend_Debug::dump($result);
     	
-    	$badgeId = '725';
+    }
+    
+    public function test38Action() {
     	
-    	$badgeEventModel = new Model_BadgeEvents();
-    	
-    	echo $badgeEventModel->hasRedeemableBadgeEvent($fanpageId, $facebookUserId, $badgeId);
     }
 }
