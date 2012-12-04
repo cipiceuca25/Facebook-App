@@ -692,8 +692,8 @@ class Model_FansObjectsStats extends Model_DbTable_FansObjectsStats
 				
 				FROM fans_objects_stats f
 				WHERE f.fanpage_id = $fanpage_id AND f.facebook_user_id = $facebook_user_id
-				&& f.updated_time > '$limit'
-				order by  DATEDIFF(f.updated_time, '$limit') ASC
+				&& f.updated_time <= '$limit'
+				order by  abs(DATEDIFF(f.updated_time, '$limit')) ASC
 				limit 1) as b
 			";
 		}
