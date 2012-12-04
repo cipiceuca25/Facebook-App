@@ -671,6 +671,7 @@ display:inline-block;
 font-size:16px;
 position:relative;
 line-height:39px;
+min-width:30px;
 }
 .top-list .points span{
 	font-size:12px;
@@ -2255,7 +2256,7 @@ padding-left:0px;
 padding-right:0px;
 //padding-left: 0.531em;
 }
-
+////////////////////////RV BUTTONS
 .btn {
 	height: 1.2em;
 	width: 4.5em;
@@ -2270,230 +2271,206 @@ padding-right:0px;
 	text-align: center;
 	line-height: 1.4em;
 }
+
 .btn.disabled {
 	opacity: 1;
 }
-button.btn{
-	height:auto;
+
+/* Follow */
+.fc-Follow {
+  color: #f0f0f0;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+  background-color: #476DCC;
+  *background-color: #476DCC;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6593E8), to(#476DCC));
+  background-image: -webkit-linear-gradient(top, #6593E8, #476DCC);
+  background-image: -o-linear-gradient(top, #6593E8, #476DCC);
+  background-image: linear-gradient(to bottom, #6593E8, #476DCC);
+  background-image: -moz-linear-gradient(top, #6593E8, #476DCC);
+  background-repeat: repeat-x;
+  border-color: #476DCC #476DCC #5A6371;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#6593E8', endColorstr='#476DCC', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 }
 
-.fc-Follow, 
-.fc-Follow:hover { 
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
-	color: #ffffff; 
-} 
-.fc-Follow { 
-	color: #ffffff; 
-	font-weight: bold;
-	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
-	font-size: 12px;
-	letter-spacing: 0.08em;
-	line-height: 1.4em;
-	background-color: #476DCC; 
-	background-image: -moz-linear-gradient(top, #6593E8, #476DCC); 
-	background-image: -ms-linear-gradient(top, #6593E8, #476DCC); 
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6593E8), to(#476DCC)); 
-	background-image: -webkit-linear-gradient(top, #6593E8, #476DCC); 
-	background-image: -o-linear-gradient(top, #6593E8, #476DCC); 
-	background-image: linear-gradient(top, #6593E8, #476DCC); 
-	background-repeat: repeat-x; 
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6593E8', endColorstr='#476DCC', GradientType=0); 
-	border-color: #476DCC #476DCC #5A6371; 
-	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); 
-	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); 
-} 
- 
-.fc-Follow:active, 
-.fc-Follow.active, 
-.fc-Follow.disabled, 
-.fc-Follow[disabled] { 
-	background-color: #476DCC;
-	color: #f0f0f0; 
-}
-
-.fc-Following, 
-.fc-Following:hover { 
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
-	color: #ffffff;
-} 
 .fc-Follow:hover,
-.fc-Following { 
-	color: #ffffff; 
-	font-weight: bold;
-	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
-	font-size: 12px;
-	letter-spacing: 0.08em;
-	line-height: 1.4em;
-	background-color: #7D91C4; 
-	background-image: -moz-linear-gradient(top, #647AB1, #7D91C4); 
-	background-image: -ms-linear-gradient(top, #647AB1, #7D91C4); 
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#647AB1), to(#7D91C4)); 
-	background-image: -webkit-linear-gradient(top, #647AB1, #7D91C4); 
-	background-image: -o-linear-gradient(top, #647AB1, #7D91C4); 
-	background-image: linear-gradient(top, #647AB1, #7D91C4); 
-	background-repeat: repeat-x; 
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#647AB1', endColorstr='#7D91C4', GradientType=0); 
-	border-color: #7D91C4 #7D91C4 #5A6371; 
-	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); 
-	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); 
-} 
- 
-
-.fc-Following.active, 
-.fc-Following.disabled, 
-.fc-Following[disabled] { 
-	background-color: #7D91C4;
-	color: #f0f0f0; 
+.fc-Follow:active,
+.fc-Follow.active,
+.fc-Follow.disabled,
+.fc-Follow[disabled] {
+  color: #fff;
+  font-weight: bold;
+  background-color: #476DCC;
+  *background-color: #476DCC;
+  -webkit-transition: background-position 0.1s linear;
+  -moz-transition: background-position 0.1s linear;
+  -o-transition: background-position 0.1s linear;
+  transition: background-position 0.1s linear;
 }
 
-.fc-unfollow, 
-.fc-unfollow:hover { 
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75); 
-	color: #ffffff;
-} 
-
-.fc-Following:hover,
-.fc-unfollow { 
-	color: #ffffff; 
-	font-weight: bold;
-	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
-	font-size: 12px;
-	letter-spacing: 0.08em;
-	line-height: 1.4em;
-	background-color: #cc4747; 
-	background-image: -moz-linear-gradient(top, #E86565, #CC4747); 
-	background-image: -ms-linear-gradient(top, #E86565, #CC4747); 
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#E86565), to(#CC4747)); 
-	background-image: -webkit-linear-gradient(top, #E86565, #CC4747); 
-	background-image: -o-linear-gradient(top, #E86565, #CC4747); 
-	background-image: linear-gradient(top, #E86565, #CC4747); 
-	background-repeat: repeat-x; 
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E86565', endColorstr='#CC4747', GradientType=0); 
-	border-color: #CC4747 #CC4747 #5A6371; 
-	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); 
-	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); 
-} 
-.fc-Following:active, 
-.fc-Following:hover,
-.fc-unfollow:hover, 
-.fc-unfollow:active, 
-.fc-unfollow.active, 
-.fc-unfollow.disabled, 
-.fc-unfollow[disabled] { 
-	background-color: #CC4747; 
-	color: #f0f0f0;
+.fc-Follow:active,
+.fc-Follow.active {
+  background-color: #476DCC \9;
 }
-.fc-You:hover,
-.fc-You
- { 
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75);
-	color: #ffffff;
-} 
+/* End */
 
-.fc-You { 
-	color: #ffffff; 
-	font-weight: bold;
-	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
-	font-size: 12px;
-	letter-spacing: 0.08em;
-	line-height: 1.4em;
-	background-color: #FAC13C; 
-	background-image: -moz-linear-gradient(top, #F7BB2C, #E7A509); 
-	background-image: -ms-linear-gradient(top, #F7BB2C, #E7A509); 
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F7BB2C), to(#E7A509)); 
-	background-image: -webkit-linear-gradient(top, #F7BB2C, #E7A509); 
-	background-image: -o-linear-gradient(top, #F7BB2C, #E7A509); 
-	background-image: linear-gradient(top, #F7BB2C, #E7A509); 
-	background-repeat: repeat-x; 
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F7BB2C', endColorstr='#E7A509', GradientType=0); 
-	border-color: #E7A509 #E7A509 #D98020; 
-	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); 
-	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); 
-} 
-
-.fc-You:hover, 
-.fc-You:active, 
-.fc-You.active, 
-.fc-You.disabled, 
-.fc-You[disabled] { 
-	background-color: #E7A509; 
-	color: #f0f0f0;
+/* Following */
+.fc-Following {
+  color: #f0f0f0;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+  background-color: #74b164;
+  *background-color: #96c47d;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#74b164), to(#96c47d));
+  background-image: -webkit-linear-gradient(top, #74b164, #96c47d);
+  background-image: -o-linear-gradient(top, #74b164, #96c47d);
+  background-image: linear-gradient(to bottom, #74b164, #96c47d);
+  background-image: -moz-linear-gradient(top, #74b164, #96c47d);
+  background-repeat: repeat;
+  background-position: 0 -30em;
+  border-color: #74b164 #74b164 #5A6371;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#74b164', endColorstr='#96c47d', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
 }
 
-
-.fc-Fanpage:hover,
-.fc-Fanpage { 
-   	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75); 
-	color: #ffffff;
-} 
-.fc-Fanpage { 
-	color: #ffffff; 
-	font-weight: bold;
-	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
-	font-size: 12px;
-	letter-spacing: 0.08em;
-	line-height: 1.4em;
-	background-color: #62A67D; 
-	background-image: -moz-linear-gradient(top, #0BB09B, #009A80); 
-	background-image: -ms-linear-gradient(top, #0BB09B, #009A80); 
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0BB09B), to(#009A80)); 
-	background-image: -webkit-linear-gradient(top, #0BB09B, #009A80); 
-	background-image: -o-linear-gradient(top, #0BB09B, #009A80); 
-	background-image: linear-gradient(top, #0BB09B, #009A80); 
-	background-repeat: repeat-x; 
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0BB09B', endColorstr='#009A80', GradientType=0); 
-	border-color: #009A80 #009A80 #5A6371; 
-	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); 
-	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); 
-
-} 
-
-.fc-Fanpage:hover, 
-.fc-Fanpage:active, 
-.fc-Fanpage.active, 
-.fc-Fanpage.disabled, 
-.fc-Fanpage[disabled] { 
-	background-color: #009A80; 
-	color: #f0f0f0;
+.fc-Following:hover {
+  color: #f0f0f0;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  background-color: #cc4747;
+  *background-color: #cc4747;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#E86565), to(#cc4747));
+  background-image: -webkit-linear-gradient(top, #E86565, #cc4747);
+  background-image: -o-linear-gradient(top, #E86565, #cc4747);
+  background-image: linear-gradient(to bottom, #E86565, #cc4747);
+  background-image: -moz-linear-gradient(top, #E86565, #cc4747);
+  background-repeat: repeat-x;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#E86565', endColorstr='#cc4747', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
-.fc-admin-blue, 
-.fc-admin-blue:hover { 
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.75); 
-	color: #ffffff;
-} 
-.fc-admin-blue { 
-	color: #ffffff; 
-	font-weight: bold;
-	font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
-	font-size: 12px;
-	letter-spacing: 0.08em;
-	line-height: 1.4em;
-	background-color: #36629C; 
-	background-image: -moz-linear-gradient(top, #396CB9, #3C539D); 
-	background-image: -ms-linear-gradient(top, #396CB9, #3C539D); 
-	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#396CB9), to(#3C539D)); 
-	background-image: -webkit-linear-gradient(top, #396CB9, #3C539D); 
-	background-image: -o-linear-gradient(top, #396CB9, #3C539D); 
-	background-image: linear-gradient(top, #396CB9, #3C539D); 
-	background-repeat: repeat-x; 
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#396CB9', endColorstr='#3C539D', GradientType=0); 
-	border-color: #3C539D #3C539D #5A6371; 
-	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); 
-	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false); 
-	width: auto;
-} 
-.fc-admin-blue:hover, 
-.fc-admin-blue:active, 
-.fc-admin-blue.active, 
-.fc-admin-blue.disabled, 
-.fc-admin-blue[disabled] { 
-	background-color: #3C539D;
-	color: #f0f0f0; 
+.fc-Following.disabled,
+.fc-Following[disabled] {
+  color: #fff;
+  background-color: #96c47d;
+  *background-color: #96c47d;
+  -webkit-transition: background-position 0.1s linear;
+  -moz-transition: background-position 0.1s linear;
+  -o-transition: background-position 0.1s linear;
+  transition: background-position 0.1s linear;
+}
+
+.fc-Following:active,
+.fc-Following.active {
+  background-color: #96c47d \9;
+}
+
+.fc-Unfollow {
+  color: #f0f0f0;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  background-color: #E86565;
+  *background-color: #cc4747;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#E86565), to(#cc4747));
+  background-image: -webkit-linear-gradient(top, #E86565, #cc4747);
+  background-image: -o-linear-gradient(top, #E86565, #cc4747);
+  background-image: linear-gradient(to bottom, #E86565, #cc4747);
+  background-image: -moz-linear-gradient(top, #E86565, #cc4747);
+  background-repeat: repeat-x;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#E86565', endColorstr='#cc4747', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.fc-Unfollow:hover,
+.fc-Unfollow:active,
+.fc-Unfollow.active,
+.fc-Unfollow.disabled,
+.fc-Unfollow[disabled] {
+  color: #fff;
+  background-color: #CC4747;
+  *background-color: #CC4747;
+  -webkit-transition: background-position 0.1s linear;
+  -moz-transition: background-position 0.1s linear;
+  -o-transition: background-position 0.1s linear;
+  transition: background-position 0.1s linear;
+}
+
+.fc-unfollow:active,
+.fc-unfollow.active {
+  background-color: #cc4747 \9;
+}
+
+
+.fc-You,
+.fc-You.disabled,
+.fc-You[disabled] {
+  color: #f0f0f0;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  background-color: #FAC13C;
+  *background-color: #FAC13C;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F7BB2C), to(#E7A509));
+  background-image: -webkit-linear-gradient(top, #F7BB2C, #E7A509);
+  background-image: -o-linear-gradient(top, #F7BB2C, #E7A509);
+  background-image: linear-gradient(to bottom, #F7BB2C, #E7A509);
+  background-image: -moz-linear-gradient(top, #F7BB2C, #E7A509);
+  background-repeat: repeat-x;
+  border-color: 7bc4c4 #7bc4c4 #d98020;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#F7BB2C', endColorstr='#E7A509', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.fc-You:hover {
+  background-position: 0 0;
+}
+
+.fc-Fanpage,
+.fc-Fanpage.disabled,
+.fc-Fanpage[disabled] {
+  min-width:4.5em;
+  color: #F0f0f0;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  background-color: #0BB09B;
+  *background-color: #009a80;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0BB09B), to(#009a80));
+  background-image: -webkit-linear-gradient(top, #0BB09B, #009a80);
+  background-image: -o-linear-gradient(top, #0BB09B, #009a80);
+  background-image: linear-gradient(to bottom, #0BB09B, #009a80);
+  background-image: -moz-linear-gradient(top, #0BB09B, #009a80);
+  background-repeat: repeat-x;
+  border-color: #cc302f #cc302f #009a80;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#0BB09B', endColorstr='#009a80', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+  width: auto;
+  cursor: default;
+}
+
+.fc-Fanpage:hover {
+  background-position: 0 0;
 }
 
 
 .fc-edit {
+  width:auto;
   color: #3c589d;
   font-size: 12px;
   font-weight: bold;
@@ -2510,7 +2487,6 @@ button.btn{
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15);
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fff', endColorstr='#E6E6E6', GradientType=0);
   filter: progid:dximagetransform.microsoft.gradient(enabled=false);
-  width:auto;
 }
 
 .fc-edit:hover,
@@ -2534,6 +2510,7 @@ button.btn{
 }
 
 .fc-edit-2 {
+  width:auto;
   color: #3c589d;
   font-size: 12px;
   font-weight: bold;
@@ -2550,7 +2527,6 @@ button.btn{
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15);
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#fff', endColorstr='#E6E6E6', GradientType=0);
   filter: progid:dximagetransform.microsoft.gradient(enabled=false);
-  width: auto;
 }
 
 .fc-edit-2:hover,
@@ -2601,7 +2577,6 @@ button.btn{
   -moz-border-radius: 0px;
   border-radius: 0px;
   width: auto;
-
 }
 
 .fc-comment:hover,
@@ -2706,4 +2681,30 @@ button.btn{
 
 .redeemableBadge:hover{
 	cursor:pointer;
+}
+
+
+#logout-menu{
+	text-align:center;
+	padding:0px;
+}
+
+#logout-menu ul li{
+	border:0px;
+	width:100%;
+	padding:0px;
+}
+
+#logout-menu ul li a{
+	text-decoration:none;
+	font-weight:bold;
+	width:100%;
+	height:20px;
+	padding-top:5px;
+	padding-bottom:5px;
+	display:block;
+}
+
+#logout-menu ul li a:hover{
+	background-color:@color-menu-hover;
 }

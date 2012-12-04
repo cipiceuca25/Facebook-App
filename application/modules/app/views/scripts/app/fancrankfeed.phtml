@@ -29,11 +29,11 @@
 	<div class="user-badge">
 		<a rel="tooltip-follow"  <?php switch($this->relation[$count]) { 
 			case 'Fanpage':?>
-				 class="noclick" data-original-title="You can't Follow an Admin"><span class="btn btn-mini fc-Fanpage">Admin</span>
+				 class="noclick" data-original-title="You can't Follow an Admin"><span class="btn btn-mini fc-Fanpage disabled">Admin</span>
 			<?break;?>
 			
 			<?case 'You':?>
-				 class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
+				 class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You disabled">You</span>
 			<?break;?>
 			
 			<?case 'Following':?>
@@ -231,7 +231,7 @@
 
 								echo $likeslist[$i]->name;
 								if ($countlikes < $post->likes->count){
-									echo " and ".($post->likes->count - $countlikes)." others";
+									echo "<br/> and ".($post->likes->count - $countlikes)." others";
 								}
 						?><br/> Likes this.
 						">
@@ -280,10 +280,10 @@
 						<div class="user-badge">
 							<a rel="tooltip-follow" class ="follow_<?=$comments->from->id?>" <?php switch($this->comment_relation[$count2]) { 
 								case 'Fanpage':?>
-									 class="noclick" data-original-title="You can't Follow an Admin"><span class="btn btn-mini fc-Fanpage">Admin</span>
+									 class="noclick" data-original-title="You can't Follow an Admin"><span class="btn btn-mini fc-Fanpage disabled">Admin</span>
 								<?break;?>
 								<?case 'You':?>
-									 class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
+									 class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You disabled">You</span>
 								<?break;?>
 								<?case 'Following':?>
 									onclick="unfollow(<?=$comments->from->id?> ,'<?=$comments->from->name?>')" 

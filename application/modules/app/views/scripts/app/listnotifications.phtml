@@ -26,6 +26,7 @@
 					<li >
 								<? switch($e['activity_type']){
 									case 'points':?>	
+										<?php if ($this->fanpage_level >2){?>
 										<? if($e['event_object'] == 'admin_add_point'){?>
 											<div class="photo">
 												<a>
@@ -59,7 +60,7 @@
 			
 											</div>
 										
-										
+											<?php }?>
 										<?} else {?>
 											<div class="photo">
 										

@@ -6,6 +6,7 @@ var ttb = true;
 var tcb = true;
 var tfdb = true;
 var pointlog =false;
+var logout =false;
 var upcoming_badges = false;
 var currentpage = 'newsfeed';
 
@@ -1102,6 +1103,7 @@ $('#noti2').live('click', function(event){
 		notifier = false;
 		pointlog=false;
 		upcoming_badges =true;
+		logout = false;
 		//$('.notification').css('background-color',color2);
 		//$('.notification a').css('color',color1);
 		//$('.notification').css('opacity','1');
@@ -1114,18 +1116,26 @@ $('#noti2').live('click', function(event){
 		pointlog = false;
 		notifier = false;
 		upcoming_badges = false;
+		logout = false;
 	}
 	
 });
 
 $('#logout-noti').live('click', function(){
-
-	console.log('h');
-	pointlog = false;
-	upcoming_badges = false;
-	notifier=false;
-	$('#menu .notifier').remove();
-	$('#menu2 .notifier').remove();
+	if(!logout){
+		getLogout();
+		pointlog = false;
+		upcoming_badges = false;
+		notifier=false;
+		logout = true;
+	}else{
+		$('#menu .notifier').remove();
+		$('#menu2 .notifier').remove();
+		pointlog = false;
+		notifier = false;
+		upcoming_badges = false;
+		logout = false;
+	}
 });
 
 
@@ -1138,6 +1148,7 @@ $('#pointlog').live('click', function(event){
 		getpointlog();
 		notifier = false;
 		upcoming_badges = false;
+		logout = false;
 		pointlog = true;
 		//$('.notification').css('background-color',color2);
 		//$('.notification a').css('color',color1);
@@ -1151,6 +1162,7 @@ $('#pointlog').live('click', function(event){
 		pointlog = false;
 		notifier = false;
 		upcoming_badges = false;
+		logout = false;
 	}
 	
 });
@@ -1176,6 +1188,15 @@ function getpointlog(){
 			console.log(xhr.statusText, errorMessage);
 		}
 	});
+}
+
+
+function getLogout(){
+	$('.notifier').remove();
+	$('#menu').append('<div class="notifier"></div>');
+	$('#menu2').append('<div class="notifier"></div>');
+	$('.notifier').html($('#logout-noti').attr('data-content'));
+	$('.notifier .arrow').css('left','262px');
 }
 
 function getupcomingbadges_notifier(){

@@ -42,9 +42,15 @@ if($this->fanpage_level >2){
 							<div class="title-header nopic">
 								Top Fans Last Month
 							</div>
+								<?php if ($this->fanpage_level >2){?>
 							<div class="tip2">
-								The following list of fans have earned the most points last week!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
+								The following list of fans have earned the most points last Month!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
 							</div>
+							<?php }else{?>
+							<div class="tip2">
+								The following list of fans have the highest score last Month!  Increase your score by liking, commenting, and posting on this Facebook page.  Further increase your score when others like your comments or reply to your posts!
+							</div>
+							<?php }?>
 						</div>
 							
 						<?php $count = 0; ?> 
@@ -224,9 +230,15 @@ if($this->fanpage_level >2){
 							<div class="title-header nopic">
 								Top Fans for <?= date("F") ?>
 							</div>
+							<?php if ($this->fanpage_level >2){?>
 							<div class="tip2">
-								The following list of fans have earned the most points This Month!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
+								The following list of fans have earned the most points this Month!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
 							</div>
+							<?php }else{?>
+							<div class="tip2">
+								The following list of fans have the highest score this Month!  Increase your score by liking, commenting, and posting on this Facebook page.  You can further increase your score when others like your comments or reply to your posts!
+							</div>
+							<?php }?>
 						</div>
 							
 						<?php $count = 0; ?> 

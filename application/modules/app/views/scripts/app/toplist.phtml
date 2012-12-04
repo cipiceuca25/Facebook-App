@@ -6,21 +6,21 @@ switch($this->list){
 		if($this->fanpage_level >2){
 			$term = 'Points';
 		}else{
-			$term = 'Interactions';
+			$term = 'Score';
 		}
 		break;
 	case 'top-fan-all':
 		if($this->fanpage_level >2){
 			$term = 'Points';
 		}else{
-			$term = 'Interactions';
+			$term = 'Score';
 		}
 		break;
 	case 'top-fan-mini':
 		if($this->fanpage_level >2){
 			$term = 'Points';
 		}else{
-			$term = 'Interactions';
+			$term = 'Score';
 		}
 		$popover='left';
 		break;
@@ -117,12 +117,24 @@ switch($this->list){
 				
 				<?php if ($this->list != 'top-fan-mini'){?>
 				
+				<?php if ($this->fanpage_level >3){?>
 				<div class="points">
+					
 					<h3>
 						<?= ($top_fan['count']>999)?'999+':$top_fan['count'] ?>
 					</h3>
 					<span><?= $term ?></span>
 				</div>
+				<?php }else{?>
+				<div class="points">
+					<span><?= $term ?></span>
+					<h3>
+						<?= ($top_fan['count']>999)?'999+':$top_fan['count'] ?>
+					</h3>
+				
+				</div>
+				<?php }?>
+				
 				<ul class="stats">
 					<li >
 						<div class="stats-block"><img src="/img/post.png" /><h5><?= ($this->top_fans_stat[$count]['total_posts']>99)?'99+':$this->top_fans_stat[$count]['total_posts']?></h5>	
@@ -189,7 +201,7 @@ switch($this->list){
 							case 'You':?>
 	
 								class ="noclick"
-								data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
+								data-original-title="This is You"><span class="btn btn-mini fc-You disabled">You</span>
 	
 							<?break;?>
 							<?case 'Following'?>
@@ -206,12 +218,24 @@ switch($this->list){
 						</a>
 					</div>
 					<?php if ($this->list != 'top-fan-mini'){?>
-					<div class="points">
-						<h3>
+				
+						<?php if ($this->fanpage_level >3){?>
+						<div class="points">
+							
+							<h3>
 							<?= ($top_fan['count']>999)?'999+':$top_fan['count'] ?>
-						</h3>
-						<span><?= $term?></span>
-					</div>
+							</h3>
+							<span><?= $term ?></span>
+						</div>
+						<?php }else{?>
+						<div class="points">
+							<span><?= $term ?></span>
+							<h3>
+							<?= ($top_fan['count']>999)?'999+':$top_fan['count'] ?>
+							</h3>
+						
+						</div>
+						<?php }?>
 					<ul class="stats">
 						<li >
 							<div class="stats-block"><img src="/img/post.png" /><h5><?= ($this->top_fans_stat[$count]['total_posts']>99)?'99+':$this->top_fans_stat[$count]['total_posts']?></h5>	
@@ -331,19 +355,30 @@ switch($this->list){
 					<div class="user-badge">
 					
 						<a rel="tooltip-follow" data-original-title="This is You" class="noclick">
-						<span class="btn btn-mini fc-You">
+						<span class="btn btn-mini fc-You disabled">
 							You
 						</span></a>
 					</div>
 					
 					<?php if ($this->list != 'top-fan-mini'){?>
-					<div class="points">
-						<h3>
+						<?php if ($this->fanpage_level >3){?>
+						<div class="points">
+							
+							<h3>
 							<?= isset( $this->toplistYou['count'])?( ($this->toplistYou['count']>99)?'99+':$this->toplistYou['count'] ):'0'?>
 						</h3>
-						<span><?= $term?></span>
+							<span><?= $term ?></span>
+						</div>
+						<?php }else{?>
+						<div class="points">
+							<span><?= $term ?></span>
+							<h3>
+							<?= isset( $this->toplistYou['count'])?( ($this->toplistYou['count']>99)?'99+':$this->toplistYou['count'] ):'0'?>
+							</h3>
 						
-					</div>
+						</div>
+						<?php }?>
+				
 					<ul class="stats">
 					<li >
 						<div class="stats-block"><img src="/img/post.png" /><h5><?= ($this->your_stat[0]['total_posts']>99)?'99+':$this->your_stat[0]['total_posts']?></h5>	
@@ -416,7 +451,7 @@ switch($this->list){
 										case 'You':?>
 
 											class ="noclick"
-											data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
+											data-original-title="This is You"><span class="btn btn-mini fc-You disabled">You</span>
 
 										<?break;?>
 										<?case 'Following'?>
@@ -483,7 +518,7 @@ switch($this->list){
 										case 'You':?>
 
 											class ="noclick"
-											data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
+											data-original-title="This is You"><span class="btn btn-mini fc-You disabled">You</span>
 
 										<?break;?>
 										
@@ -601,7 +636,7 @@ switch($this->list){
 									</div>
 									<div class="user-badge">
 										<a rel="tooltip-follow" data-original-title="This is You" class="noclick">
-										<span class="btn btn-mini fc-You">
+										<span class="btn btn-mini fc-You disabled">
 											You
 										</span></a>
 									
