@@ -372,9 +372,10 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 	    	
 	    	}
 	    	
+	    	//echo Fancrank_Util_Date::firstdayOfTheMonth();
 	    	$stat = new Model_FansObjectsStats();
 	    	$stat = $stat->findFanRecord($this->_fanpageId, $this->_userId, Fancrank_Util_Date::firstdayOfTheMonth());
-	    	
+	    		
 	    	$this->view->top_fans_stat = $topFanStats;
 	    	$this->view->your_stat = $stat;
     	 
@@ -519,6 +520,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	*/
     	//Zend_Debug::dump($toplist);
+    	
+    	
     	
     	$this->view->toplist = $toplist;
     	$this->view->toplistYou =  $userBoardData;

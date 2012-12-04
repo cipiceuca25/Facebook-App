@@ -904,16 +904,26 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 	
 		$fanpage_id = $this->_getParam('fanpage_id');
 		
-		$time = $this->_request->getParam('time');
-		$pointlog = new Model_PointLog();
-		
-		$fan = new Model_Fans($this->_user->facebook_user_id, $fanpage_id);
+		$fanpage = new Model_Fanpages();
+		$fanpage = $fanpage->find($fanpage_id)->current();
+
+		if($fanpage -> fanpage_level >2){
+			//$time = $this->_request->getParam('time');
+			$pointlog = new Model_PointLog();
 			
-		$time = $fan->getLastLoginTime();
+			$fan = new Model_Fans($this->_user->facebook_user_id, $fanpage_id);
+				
+			$time = $fan->getLastNotification();
+			
+			$pointlog = $pointlog -> getPointsGainSinceTimeByDay($fanpage_id, $this->_user->facebook_user_id, $time );
+			
+			
+			
+			$this->_helper->json($pointlog);
+		}else{
+			$this->_helper->json(null);
+		}
 		
-		
-		$pointlog = $pointlog -> getPointsGainSinceTimeByDay($fanpage_id, $this->_user->facebook_user_id, $time );
-		$this->_helper->json($pointlog);
 	}
 	
 	public function notificationAction() {

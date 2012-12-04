@@ -119,7 +119,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 		$select="SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
 		left join fans f
 		on f.facebook_user_id = p.facebook_user_id
-		where f.fanpage_id = $page_id && f.facebook_user_id != f.fanpage_id && p.created_time > '$this->_firstdayOfTheMonth'
+		where f.fanpage_id = $page_id && f.facebook_user_id != f.fanpage_id && p.created_time >= '$this->_firstdayOfTheMonth'
 		group by f.facebook_user_id
 		having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $page_id)
 		order by count DESC";
@@ -135,7 +135,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 		$select="SELECT f.fan_last_name, f.fan_first_name, f.facebook_user_id, sum(if(p.giving_points>0, p.giving_points, 0)) as count FROM fancrank.point_log p
 				left join fans f
 				on f.facebook_user_id = p.facebook_user_id
-				where f.fanpage_id = $page_id && f.facebook_user_id != f.fanpage_id && p.created_time > '$this->_firstdayOfLastMonth' && p.created_time < '$this->_firstdayOfTheMonth'
+				where f.fanpage_id = $page_id && f.facebook_user_id != f.fanpage_id && p.created_time >= '$this->_firstdayOfLastMonth' && p.created_time < '$this->_firstdayOfTheMonth'
 				group by f.facebook_user_id
 				having f.facebook_user_id not in (Select facebook_user_id from fanpage_admins where fanpage_id = $page_id)
 				order by count DESC";
