@@ -65,6 +65,19 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         $this->view->pages = $pages;
     }
 
+    
+    public function userprofileAction(){
+    	
+    	$this->_helper->layout()->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender();
+    	$fanpageId = $this->_getParam('id');
+    	$userId = $this->_getParam('user_id');
+    	
+    	
+    	
+    	$this->render("userprofile");
+    }
+    
     public function pointsAction() {
     	$this->_helper->layout()->disableLayout();
     	$this->_helper->viewRenderer->setNoRender();

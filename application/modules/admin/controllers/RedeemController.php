@@ -87,7 +87,7 @@ class Admin_RedeemController extends Fancrank_Admin_Controller_BaseController
 				'iTotalRecords'=> count($requestList),
 				'aaData'=> empty($requestList) ? array() : $requestList
 		);
-		
+
 		$this->_helper->json($result);
 	}
 	
