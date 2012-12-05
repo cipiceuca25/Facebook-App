@@ -2,7 +2,7 @@
 if($this->fanpage_level >2){
 	$term = 'Points';
 }else{
-	$term = 'Interactions';
+	$term = 'Score';
 }
 ?>
 
@@ -82,7 +82,7 @@ if($this->fanpage_level >2){
 											</a>
 										</div>
 									</div>
-
+								<?php  if($this->fanpage_level >2){ ?>
 									<div class="points login">
 										<h3>
 											<?= $top_fan['count'] ?>
@@ -90,6 +90,16 @@ if($this->fanpage_level >2){
 										<span><?=$term?></span>
 									
 									</div>
+								<?php }else {?>
+									<div class="points login">
+										<span><?=$term?></span>
+										<h3>
+											<?= $top_fan['count'] ?>
+										</h3>
+										
+									
+									</div>
+								<?php }?>
 								</div>
 							</li>
 
@@ -120,13 +130,25 @@ if($this->fanpage_level >2){
 													</a>
 												</div>
 										</div>
-										<div class="points login">
-											<h3>
-												<?= $top_fan['count'] ?>
-											</h3>
-											<span><?=$term?></span>
+										<?php  if($this->fanpage_level >2){ ?>
+											<div class="points login">
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												<span><?=$term?></span>
+												
+											</div>
+										<?php }else {?>
+											<div class="points login">
+												<span><?=$term?></span>
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												
 											
-										</div>
+											</div>
+										<?php }?>
+										
 									</div>
 								</li>
 	
@@ -270,14 +292,25 @@ if($this->fanpage_level >2){
 											</a>
 										</div>
 									</div>
-
-									<div class="points login">
-										<h3>
-											<?= $top_fan['count'] ?>
-										</h3>
-										<span><?=$term?></span>
-									
-									</div>
+										<?php  if($this->fanpage_level >2){ ?>
+											<div class="points login">
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												<span><?=$term?></span>
+												
+											</div>
+										<?php }else {?>
+											<div class="points login">
+												<span><?=$term?></span>
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												
+											
+											</div>
+										<?php }?>
+								
 								</div>
 							</li>
 
@@ -308,13 +341,25 @@ if($this->fanpage_level >2){
 													</a>
 												</div>
 										</div>
-										<div class="points login">
-											<h3>
-												<?= $top_fan['count'] ?>
-											</h3>
-											<span><?=$term?></span>
+										<?php  if($this->fanpage_level >2){ ?>
+											<div class="points login">
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												<span><?=$term?></span>
+												
+											</div>
+										<?php }else {?>
+											<div class="points login">
+												<span><?=$term?></span>
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												
 											
-										</div>
+											</div>
+										<?php }?>
+									
 									</div>
 								</li>
 	

@@ -789,6 +789,7 @@ margin-left:0px;
 margin-right:0px;
 float:left;
 //width:180px;
+
 }
 
 .span12 .top-list .user{
@@ -809,10 +810,10 @@ left:35px;
 }
 
 .top-list .user .name{
-font:bold 13px/41px Helvetica,Arial,  sans-serif;
+font:bold 13px/42px Helvetica,Arial,  sans-serif;
 margin-left:8px;
 position:relative;
-line-height:39px;
+
 
 float:left;
 }
@@ -1461,6 +1462,10 @@ position:relative;
 margin-top:-16px;
 }
 
+.popover .badge-profile{
+margin-top:0px;
+}
+
 .link-back{
 font-size:11px;
 
@@ -2073,9 +2078,7 @@ border-bottom:0px;
 	padding-top:11px;
 }
 
-#profile .user{
-border-bottom:1px solid @color-post-user-border;
-}
+
 
 .progress.earned-badges{
 height:40px;
@@ -2102,6 +2105,23 @@ width: 100%;height:40px;
 float:left;
 position:relative;
 top:-40px;
+}
+
+.progress.popover.chosen-badges{
+height:24px;
+width:24px;
+margin-right:15px;
+padding:0px;
+}
+
+.progress.popover.chosen-badges .bar,
+.progress.popover.earned-badges .bar{
+height:24px;
+}
+
+.progress.popover.chosen-badges a{
+
+top:-24px;
 }
 
 .post-container .comment-container{
@@ -2577,6 +2597,7 @@ padding-right:0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
   width: auto;
+  height:auto;
 }
 
 .fc-comment:hover,
@@ -2623,6 +2644,7 @@ padding-right:0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
   width: auto;
+  height:auto;
   opacity: 0.9;
 }
 
@@ -2675,7 +2697,16 @@ padding-right:0px;
 	font-weight:bold;
 }
 
-.redeemable-icon .active{
+.redeemable-icon.pending{
+	background-color:yellow;
+	color:black;
+}
+
+.redeemable-icon.approved{
+	background-color:green;
+}
+
+.redeemable-icon.disapproved{
 	background-color:red;
 }
 

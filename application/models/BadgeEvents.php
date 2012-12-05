@@ -13,7 +13,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	}
 	
 	public function getBadgesByFanpageIdAndFanID($fanpage_id, $facebook_user_id, $limit){
-		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active, x.redeemable, r.*
+		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active, x.redeemable, r.status
 					from badge_events e left join fancrank.redeem_transactions r
 					on r.badge_event_id = e.id && r.fanpage_id = $fanpage_id,
 					(
@@ -39,7 +39,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	}
 
 	public function getRedeemableBadges($fanpage_id, $facebook_user_id, $limit){
-		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture,x.redeemable, x.active, r.*
+		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture,x.redeemable, x.active, r.status
 
 		from badge_events e left join fancrank.redeem_transactions r
 		on r.badge_event_id = e.id && r.fanpage_id = $fanpage_id,

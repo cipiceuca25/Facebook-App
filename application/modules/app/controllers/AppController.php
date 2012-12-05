@@ -1436,6 +1436,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	if(empty($chosenBadges)){
     		$chosenBadges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 3);
     	}
+    	for($count=0;$count < count($chosenBadges); $count++){
+    		if ($chosenBadges[$count] != 'undefined'){    		
+    			$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
+    		}
+    	}
     	
     	$badges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, false);
     	for($count=0;$count < count($badges); $count++){
@@ -1450,11 +1455,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
     	
 
-    	for($count=0;$count < count($chosenBadges); $count++){
-    		if ($chosenBadges[$count] != 'undefined'){    		
-    			$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
-    		}
-    	}
+    
 
     	$this->view->badges = $badges;
     	$this->view->badges2 = $badges2;
@@ -1561,11 +1562,29 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	
     	$follow = new Model_Subscribes();
     	$relation = $follow->getRelation($this->_userId, $user->facebook_user_id, $this->_fanpageId);
-    	$fan = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
-    	$fan = $fan->getFanProfile();
+    	$fanModel = new Model_Fans($user->facebook_user_id, $this->_fanpageId);
+    	$fan = $fanModel->getFanProfile();
     	$stat = new Model_FansObjectsStats();
     	$stat = $stat->findFanRecord($this->_fanpageId, $user->facebook_user_id);
     	
+    	$badgesModel = new Model_BadgeEvents() ;
+    	$cb = $fanModel->getChosenBadges();
+    	$cb = str_replace("'", "", $cb);
+    	$cb = explode(',', $cb);
+    	//Zend_Debug::dump($cb);
+    	//exit();
+    	$chosenBadges = $badgesModel -> getChosenBadges($this->_fanpageId, $user->facebook_user_id, $cb);
+    	
+    	if(empty($chosenBadges)){
+    		$chosenBadges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 3);
+    	}
+    	for($count=0;$count < count($chosenBadges); $count++){
+    		if ($chosenBadges[$count] != 'undefined'){
+    			$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
+    		}
+    	}
+    	
+    	$this->view->badges = $chosenBadges;
     	$this->view->facebook_user = $user;
     	$this->view->relation=$relation;
     	$this->view->stat= $stat;

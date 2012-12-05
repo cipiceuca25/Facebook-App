@@ -40,6 +40,17 @@ class Model_RedeemTransactions extends Model_DbTable_RedeemTransactions
 		return $this->getDefaultAdapter()->fetchRow($query);
 	}
 	
+	public function getRedeemDetailByBadgeIdAndUser($redeemId, $facebook_user_id) {
+		$query = $this->getDefaultAdapter()->select()
+		->from(array('r'=>'redeem_transactions'), array('r.*'))
+		->join(array('i'=>'items'), 'r.item_id = i.id AND r.fanpage_id = i.fanpage_id', array('i.name', 'i.description', 'i.picture', 'i.points', 'i.enable'))
+		->where('r.badge_event_id = ?', $redeemId)
+		->where('r.facebook_user_id = ?', $facebook_user_id);
+	
+		return $this->getDefaultAdapter()->fetchRow($query);
+	}
+	
+	
 	public function getShippingList($fanpageId, $limit=100) {
 		$query = $this->getDefaultAdapter()->select()
 			->from(array('r'=>'redeem_transactions'), array('r.id', 'r.item_id'))

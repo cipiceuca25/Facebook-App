@@ -19,9 +19,37 @@
 			<a><?= $display?></a>
 		</div>
 		
-	
+		<div class="badge-profile">
+			<a rel="tooltip-follow" class ="follow_<?= $this->facebook_user->facebook_user_id?>"
+				<?php switch($this->relation) { 
+					case 'You':?>
+						class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
+					<?break;?>
+					<?case 'Following'?>
+						onclick="unfollow(<?= $this->facebook_user->facebook_user_id?> ,'<?= $display ?>')" 
+						data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
+					<?break;?>	
+					<?default:?>
+						onclick="follow(<?= $this->facebook_user->facebook_user_id?> , '<?= $display ?>')" 
+						data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?=$this->relation?>"><?=$this->relation?></span>
+					<?}?>
+			</a>
+		</div>
 	</div>
-	
+	<!-- 
+	<div class=" post badgedisplay">
+		<?//php foreach ($this->badges as $b): ?>
+			<?//php if ($b != 'undefined') {?>
+				<div class="progress popover chosen-badges" >
+					<div class="bar" ></div>
+					<a >
+						<img src="<?= $b['picture']?>"/>
+					</a>
+				</div>
+			<?//php }?>
+		
+		<?//php endforeach;?>
+	</div> -->
 	<div class="post">
 		<div class="user-description tip2">
 							

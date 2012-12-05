@@ -184,7 +184,7 @@ $(document).on('mouseover', '[rel=popover]', function() {
 		return;
 	}
 	$(this).data('isPopoverLoaded', true).popover({
-		delay : {show:2000, hide:500},
+		delay : {show:1500, hide:500},
 		
 	}).trigger('mouseover');
 	//console.log('test');
@@ -2394,7 +2394,7 @@ $(document).ready(function() {
 		popup(true);
 		$.ajax({
 			type : "GET",
-			url : serverUrl + '/app/redeem/index/' + fanpageId,
+			url : serverUrl + '/app/redeem/index/' + fanpageId + '?redeemId=' + selectBadgeId,
 			dataType : "html",
 			cache : false,
 			async : false,
