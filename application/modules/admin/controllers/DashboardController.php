@@ -16,7 +16,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		}
 		
 		if(!empty($fanpageId)) {
-			
 			$fanpage = $fp->find($this->_getParam('id'))->current();
 			$this->view->page_id = $fanpageId;
 			$this->view->fanpage_name = $fanpage->fanpage_name;
@@ -26,7 +25,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		
 		$pages = $fp->getActiveFanpagesByUserId( $this->_identity->facebook_user_id);
 		$this->view->pages = $pages;
-		
 		
 		$activepages = array();
 		

@@ -76,6 +76,11 @@ a:hover {
 .brand img {
   width: 100px;
 }
+#requestRedeemTable_wrapper,
+#shippingInfoTable_wrapper,
+#redeemHistoryTable_wrapper {
+  min-height: 200px;
+}
 .table th,
 .table td {
   padding: 0px;
@@ -742,4 +747,22 @@ padding:10px;
 }
 .modal:focus {
   outline: none;
+}
+.progress {
+  margin-bottom: 0;
+  background: #edeff4;
+  border: 1px solid #c4cde0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  position: relative;
+}
+.progress .bar {
+  background: #c4cde0;
+  -webkit-box-shadow: 0 0 0 0;
+  -moz-box-shadow: 0 0 0 0;
+  box-shadow: 0 0 0 0;
+}
+.progress img {
+  width: 40px;
 }

@@ -80,7 +80,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			
 			try {
 				$fanProfileId = $this->_fanpageId .'_' .$this->_userId .'_fan';
-				//$cache->remove($fanProfileId);
+				$cache->remove($fanProfileId);
 				//Check to see if the $fanpageId is cached and look it up if not
 				if(isset($cache) && !$cache->load($fanProfileId)){
 		
@@ -1794,7 +1794,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		$totalpoints = array();
 		$yourpoints = array();
 		
-	
 		if ($result != null){
 		
 				//Zend_Debug::dump($result);
@@ -1830,7 +1829,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 						}
 					}
 					
-					
 					if (isset($posts->comments->data)){
 						if($posts->comments->count < 5){
 							foreach($posts->comments->data as $c){
@@ -1842,7 +1840,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 							}
 						}
 					}
-					
 					
 					$relation[$count] = $follow->getRelation($this->_userId, $posts->from->id,$this->_fanpageId);
 					//Zend_Debug::dump($posts);
@@ -1857,9 +1854,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 				}
 			//}
 		}
-		
-
-
 		//Zend_Debug::dump($yourpoints);
 		if($this->_fanpageProfile -> fanpage_level > 2){
 			$this->view->yourpoints = $yourpoints;
@@ -2896,9 +2890,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$this->_helper->viewRenderer->setNoRender(true);
     	
     	$userBadges = new Model_BadgeEvents();
-    	
-    	$userBadges = $userBadges -> notify($this->_fanpageId, $this->_userId, $this->_fan->last_notification);
-    
+    	$redeemBadges = $userBadges -> notifyRedeemable($this->_fanpageId, $this->_userId);
+    	//Zend_Debug::dump($redeemBadges);
+    	$userBadges = $userBadges -> notify($this->_fanpageId, $this->_userId, $this->_fan->last_notification,$this->_fanpageProfile->fanpage_level );
+    	$userBadges = array_merge($redeemBadges, $userBadges);
+    	//Zend_Debug::dump($redeemBadges);
     	$this->view->events= $userBadges;
 		//Zend_Debug::dump($userBadges);
     	$this->render("listnotifications");

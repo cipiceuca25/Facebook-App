@@ -214,6 +214,13 @@ a:hover{
 	width:100px;
 }
 
+#requestRedeemTable_wrapper,
+#shippingInfoTable_wrapper,
+#redeemHistoryTable_wrapper
+{
+	min-height:200px;
+}
+
 .table th, .table td{
 padding:0px;
 }
@@ -941,4 +948,22 @@ margin-left:-260px;
 
 .modal:focus{
 	outline:none;
+}
+
+.progress{
+margin-bottom:0;
+background:@color-badge-background;
+border:1px solid @color-badge-border;
+.border-radius(0);
+position:relative;
+
+}
+
+.progress .bar{
+background:@color-badge-bar;
+.box-shadow(0 0 0 0 );
+}
+
+.progress img{
+width:40px;
 }
