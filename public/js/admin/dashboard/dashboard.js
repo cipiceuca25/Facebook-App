@@ -913,6 +913,7 @@ function loadSettings(){
 }
 
 function loadRedeem() {
+
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/admin/dashboard/redeem?id=' + fanpageId,
@@ -982,6 +983,7 @@ function loadUserProfile(user_id){
 			//destroyAll();
 		},
 		success : function(data) {
+			console.log(data);
 			$('#autoModel .modal-body').html(data)
 			$('#autoModel .modal-header h3').html("User Profile");
 			$('#autoModel').modal('show');
@@ -2290,18 +2292,17 @@ chart.attr("height", Math.round(targetWidth / aspect));
 }).trigger("resize");
 */
 $(window).resize(function(){
-	if (graph){
+
 		if (graphLoaded){
 			graph.resize();
 		//graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
 		}
-	}
-	if (graph2){
+
 		if (graphLoaded2){
 			graph2.resize();
 			//graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
 		}
-	}
+
 	
 });
 

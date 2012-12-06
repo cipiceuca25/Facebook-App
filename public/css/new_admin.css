@@ -735,3 +735,11 @@ padding:10px;
   left: 50%;
   margin-left: -260px;
 }
+.modal {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+.modal:focus {
+  outline: none;
+}

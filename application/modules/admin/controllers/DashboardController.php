@@ -73,8 +73,13 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$fanpageId = $this->_getParam('id');
     	$userId = $this->_getParam('user_id');
     	
+    	$fanModel = new Model_Fans($userId, $fanpageId);
+    	$fan = $fanModel->getFanProfile();
+    	//Zend_Debug::dump($fan);
     	
     	
+    	$this->view->fan = $fan ;
+    	$this->view->userId = $userId;
     	$this->render("userprofile");
     }
     
