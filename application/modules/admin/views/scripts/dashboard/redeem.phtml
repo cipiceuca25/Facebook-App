@@ -248,7 +248,7 @@
 	</div>
 	<div class="modal-body" id="redeemDetailContent">
 	</div>
-</div>
+</div> 
 
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
@@ -259,7 +259,7 @@ $(document).ready(function() {
 		"bProcessing": false,
 		"bServerSide": false,
 		"sPaginationType" : "full_numbers",
-		bJQueryUI : false,
+		 bJQueryUI : false,
 		"bAutoWidth":false,
 		"bDestroy": true,
 		"aoColumns": [
@@ -281,7 +281,7 @@ $(document).ready(function() {
 			{ 
 				"mData": "picture",
 				"fnRender": function(oObj) {
-					return "<img src='"+ oObj.aData['picture'] +"' />";
+					return "<img src='/img/"+ oObj.aData['picture'] +"' />";
 				}
 			},
 			
