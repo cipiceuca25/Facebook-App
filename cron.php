@@ -87,6 +87,8 @@ if (count($messages) > 0) {
         	$data['end_time'] =	$date->toString('YYYY-MM-dd HH:mm:ss');
         	$dbLog->insert($data);
         	
+        	Model_Fanpages::createFanpageSpace($job->fanpage_id);
+        	
         	$userModel = new Model_FacebookUsers();
         	$adminUser = $userModel->findRow($job->facebook_user_id);
         	

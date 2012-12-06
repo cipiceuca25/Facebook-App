@@ -88,6 +88,7 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
      		//$cache->remove($this->data['page']['id'] . '_topfan');
      		//$cache->remove($this->data['page']['id'] . '_topfanall');
      		//$cache->remove($this->data['page']['id'] . '_topfanlastweek');
+     		//$cache->remove($this->data['page']['id'] . '_topfan');
 //     		$cache->remove($this->_fanpageId . '_topclicker');
 //     		$cache->remove($this->_fanpageId . '_topfollowed');
 //     		$cache->remove($this->_fanpageId . '_toptalker');
@@ -149,7 +150,6 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
     		
     		try{		
     			if(isset($cache) && !$cache->load($this->data['page']['id'] . '_topfan')){
-    			
     				$topfan = $model->getTopFansByCurrentMonth($this->data['page']['id'], 5);
     				$cache->save($topfan, $this->data['page']['id'] . '_topfan');
     			}else{

@@ -1503,6 +1503,32 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 				$select= $select." where date(z.created_time) = date(curdate())";
 				break;
 		}
-	}	
+	}
+
+	/*
+	 * create an image storage folder structure for giving fanpage
+	 */
+	public static function createFanpageSpace($fanpageId) {
+	
+		$fanpageDestination = DATA_PATH .'/images/fanpages/' .$fanpageId;
+		
+		if (empty($fanpageId) || is_dir($fanpageDestination)) {
+			return;
+		}
+			
+		try {
+			if (Fancrank_Util_Util::createDir($fanpageDestination)) {
+	
+				$subFolderList = array('badge', 'feature', 'item', 'landingpage');
+				 
+				foreach ($subFolderList as $subFolder) {
+					Fancrank_Util_Util::createDir($fanpageDestination . "/$subFolder");
+				}
+	
+			}
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
+	}
 }	
 

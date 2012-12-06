@@ -2664,9 +2664,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$facebook_user_id = '508061175';
     	
     	$firstdayOfLastMonth = Fancrank_Util_Date::firstdayOfLastMonth();
-    	$firstdayOfNextMonth = Fancrank_Util_Date::firstdayOfNextMonth();
-    	
-    	echo $firstdayOfLastMonth . ' ' .$firstdayOfNextMonth;
+    	$firstdayOfTheMonth = Fancrank_Util_Date::firstdayOfTheMonth();
+    	echo $firstdayOfLastMonth . ' ' .$firstdayOfTheMonth;
     	 
 		$rankingModel = new Model_Rankings();
 		Zend_Debug::dump($rankingModel->getTopFansByLastMonth($fanpageId, 5));
@@ -2686,5 +2685,16 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	if (isset($cache)) {
     		$cache->clean();
     	}
+    }
+    
+    public function test38Action() {
+    	$fanpageId = '216821905014540';
+   	
+    	try {
+			echo Model_Fanpages::createFanpageSpace($fanpageId);
+    	} catch (Exception $e) {
+    		echo $e->getMessage();
+    	}
+    	 
     }
 }

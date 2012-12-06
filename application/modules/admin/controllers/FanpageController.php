@@ -265,16 +265,22 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 	}
 	
 	public function landingpageAction() {
+		$this->_helper->layout()->enableLayout();
 		$fanpageId = $this->_getParam('id');
-		$landingPageImageUrl = $this->_getParam('landingPageImageUrl');
+
 		$landingPageImageEnable = $this->_getParam('landingPageImageEnable');
+		$landingPageTopfanPeriod = $this->_getParam('landingPageTopfanPeriod');
 
 		$fanpageSettingModel = new Model_FanpageSetting();
 		$fanpageSetting = $fanpageSettingModel->findRow($fanpageId);
 		//Zend_Debug::dump($fanpageSetting); exit();
-		if ($fanpageSetting) {
-			$fanpageSetting->landingpage_image_url = empty($landingPageImageUrl) ? $fanpageSetting->landingpage_image_url : $landingPageImageUrl;
+		if (!empty($_POST['landing-confirm']) && $fanpageSetting) {
+			$coverExtension = substr($this->_getParam('landingCoverFile'), strripos($this->_getParam('landingCoverFile'), '.'));
+			$logoExtension = substr($this->_getParam('landingLogoFile'), strripos($this->_getParam('landingLogoFile'), '.'));
+			$fanpageSetting->landingpage_image_url = empty($coverExtension) ? '' : 'landing_image' .$coverExtension;
+			$fanpageSetting->landingpage_logo_url = empty($logoExtension) ? '' : 'landing_logo' .$logoExtension;
 			$fanpageSetting->landingpage_image_enable = empty($landingPageImageEnable) ? 0 : $landingPageImageEnable;
+			$fanpageSetting->landingpage_topfan_period = empty($landingPageTopfanPeriod) ? 'week' : $landingPageTopfanPeriod;
 			$fanpageSetting->save();
 			
 			$adminActivityModel = new Model_AdminActivities();
@@ -288,7 +294,77 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 			$dataLog['target_user_name'] = '';
 			$dataLog['message'] = 'admin updated landingpage setting';
 			$adminActivityModel->insert($dataLog);
+		} else {
+			echo 'no';
 		}
+		$this->view->landingPageImageUrl = '';
+		$this->view->fanpage_id = $fanpageId;
+		$this->render('landingpage');
+	}
+	
+	public function imageuploadAction() {
+		try {
+			$imageDestination = $this->getImageLocation();
+			$upload = new Zend_File_Transfer_Adapter_Http();
+			$upload//->addValidator('Count', false, 1)     // ensure only 1 file
+				->addValidator('Size', false, 1000000) // limit to 100K
+				->addValidator('Extension' ,false, 'png,jpg,gif');
+			
+			$imageFileName = 'landingpage_cover' .strrchr($upload->getFileName(), '.');
+			$fullFilePath = $imageDestination .DIRECTORY_SEPARATOR .$imageFileName;
+		
+			if ($upload->isValid()) {
+				$upload->setDestination($imageDestination);
+				$upload->addFilter('Rename', array('target' => $fullFilePath, 'overwrite' => true));
+				//check upload file
+				if ($upload->receive()) {
+					echo 'ok';
+				}else {
+					//TO LOG
+					throw new Exception('unable to save');
+				}
+			}else {
+				//TO LOG
+				throw new Exception(implode(PHP_EOL, $upload->getErrors()));
+			}
+		} catch (Exception $e) {
+			//TO LOG
+			echo $e->getMessage();
+		}
+		return;
+	}
+	
+	public function logouploadAction() {
+		$imageDestination = DATA_PATH .DIRECTORY_SEPARATOR .'images' .DIRECTORY_SEPARATOR .'fanpages'
+				.DIRECTORY_SEPARATOR .$this->_fanpageId .DIRECTORY_SEPARATOR .'landingpage';
+	
+		try {
+			$upload = new Zend_File_Transfer_Adapter_Http();
+			$upload//->addValidator('Count', false, 1)     // ensure only 1 file
+			->addValidator('Size', false, 1000000) // limit to 100K
+			->addValidator('Extension' ,false, 'jpg,png,gif');
+			$imageFileName = 'landing_l' .strrchr($upload->getFileName(), '.');
+			$fullFilePath = $imageDestination .DIRECTORY_SEPARATOR .$imageFileName;
+	
+			if ($upload->isValid()) {
+				$upload->setDestination($imageDestination);
+				$upload->addFilter('Rename', array('target' => $fullFilePath, 'overwrite' => true));
+				//check upload file
+				if ($upload->receive()) {
+					echo 'ok';
+				}else {
+					//TO LOG
+					throw new Exception('unable to save');
+				}
+			}else {
+				//TO LOG
+				throw new Exception(implode(PHP_EOL, $upload->getErrors()));
+			}
+		} catch (Exception $e) {
+			//TO LOG
+			echo $e->getMessage();
+		}
+		return;
 	}
 	
 	public function listitemsAction() {
@@ -396,6 +472,12 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		
 		$this->_helper->json($item);
 	}
+	
+	private function getImageLocation() {
+		return $imageDestination = DATA_PATH .DIRECTORY_SEPARATOR .'images' .DIRECTORY_SEPARATOR .'fanpages'
+				.DIRECTORY_SEPARATOR .$this->_fanpageId .DIRECTORY_SEPARATOR .'landingpage';
+	}
+	
 }
 
 ?>
