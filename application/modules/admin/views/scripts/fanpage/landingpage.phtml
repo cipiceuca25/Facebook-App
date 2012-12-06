@@ -1,0 +1,94 @@
+<div title="Landing Page Setting">
+    <form id='landing-dialog-form' action="/admin/fanpage/landingpage?id=<?= $this->fanpage_id ?>" method="post">
+    <fieldset>
+		<div class="control-group">
+			<div class="topfan-period-option">
+				<h2>Top Fan Period</h2>
+				<select name="topfanPeriod">
+					<option value="week">week</option>
+					<option value="month">month</option>
+					<option value="alltime">all time</option>
+				</select>
+			</div>
+			
+			<label for="optionsCheckbox" class="control-label">Landing Page Image</label>
+			<div class="controls">
+				<label class="checkbox">
+					<input type="checkbox" value="1" id="enableLandingPageImage" name = "landingPageImageEnable" />
+						Enable Landing Page Image 
+				</label>
+			</div>
+
+			<div class="control-group upload_image">
+	    		<input type="hidden" name="MAX_FILE_SIZE" value="100000" />
+	        	<span class="control-label">Select an image</span>
+	    		<input type="file" name="datafile" />
+				<input type="button" value="upload"
+	        		onClick="fileUpload(this.form,'/admin/fanpage/imageupload/<?= $this->fanpage_id  ?>','uploadCover'); return false;" >
+				<div id="uploadCover"></div>
+			</div>
+
+			<input type="submit" name="landing-confirm" value="Save Landing Page Settings" />
+		</div>
+	</fieldset>
+    </form>
+</div>
+
+<script>
+$(document).ready(function() {
+	$('#landing-dialog-form').submit(function(e) {
+		//e.preventDefault();
+		console.log('hi');
+	});
+});
+
+function fileUpload(form, action_url, div_id) {
+    // Create the iframe...
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("id", "upload_iframe");
+    iframe.setAttribute("name", "upload_iframe");
+    iframe.setAttribute("style", "width: 100; height: 50; border: 1; display:none");
+ 
+    // Add to document...
+    form.parentNode.appendChild(iframe);
+    window.frames['upload_iframe'].name = "upload_iframe";
+ 
+    iframeId = document.getElementById("upload_iframe");
+ 
+    // Add event...
+    var eventHandler = function () {
+ 
+            if (iframeId.detachEvent) iframeId.detachEvent("onload", eventHandler);
+            else iframeId.removeEventListener("load", eventHandler, false);
+ 
+            // Message from server...
+            if (iframeId.contentDocument) {
+                content = iframeId.contentDocument.body.innerHTML;
+            } else if (iframeId.contentWindow) {
+                content = iframeId.contentWindow.document.body.innerHTML;
+            } else if (iframeId.document) {
+                content = iframeId.document.body.innerHTML;
+            }
+ 
+            document.getElementById(div_id).innerHTML = content;
+ 
+            // Del the iframe...
+            setTimeout('iframeId.parentNode.removeChild(iframeId)', 250);
+        }
+ 
+    if (iframeId.addEventListener) iframeId.addEventListener("load", eventHandler, true);
+    if (iframeId.attachEvent) iframeId.attachEvent("onload", eventHandler);
+ 
+    // Set properties of form...
+    form.setAttribute("target", "upload_iframe");
+    form.setAttribute("action", action_url);
+    form.setAttribute("method", "post");
+    form.setAttribute("enctype", "multipart/form-data");
+    form.setAttribute("encoding", "multipart/form-data");
+ 
+    // Submit the form...
+    form.submit();
+ 
+    document.getElementById(div_id).innerHTML = "Uploading...";
+}
+</script>

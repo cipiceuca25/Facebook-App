@@ -414,9 +414,9 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
     	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
-		//$collector->updateFanpageFeed('2+days+ago', 'now');
-		$result = $collector->getFanpageFeed('5+days+ago', 'now');
-		Zend_Debug::dump($result);
+		$collector->updateFanpageFeed('10+days+ago', 'now');
+		//$result = $collector->getFanpageFeed('10+days+ago', 'now');
+		//Zend_Debug::dump($result);
     }
     
     public function test3Action () {
@@ -2664,9 +2664,8 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$facebook_user_id = '508061175';
     	
     	$firstdayOfLastMonth = Fancrank_Util_Date::firstdayOfLastMonth();
-    	$firstdayOfNextMonth = Fancrank_Util_Date::firstdayOfNextMonth();
-    	
-    	echo $firstdayOfLastMonth . ' ' .$firstdayOfNextMonth;
+    	$firstdayOfTheMonth = Fancrank_Util_Date::firstdayOfTheMonth();
+    	echo $firstdayOfLastMonth . ' ' .$firstdayOfTheMonth;
     	 
 		$rankingModel = new Model_Rankings();
 		Zend_Debug::dump($rankingModel->getTopFansByLastMonth($fanpageId, 5));
@@ -2681,7 +2680,21 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	
     }
     
+    public function cleanmemcacheAction() {
+    	$cache = Zend_Registry::get('memcache');
+    	if (isset($cache)) {
+    		$cache->clean();
+    	}
+    }
+    
     public function test38Action() {
-    	
+    	$fanpageId = '216821905014540';
+   	
+    	try {
+			echo Model_RedeemStatusRef::APPROVED;
+    	} catch (Exception $e) {
+    		echo $e->getMessage();
+    	}
+    	 
     }
 }

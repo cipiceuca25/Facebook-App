@@ -210,5 +210,15 @@ class Fancrank_Util_Util
 		return $result;
 	}
 	
+	public static function createDir($path, $mode = '0777') {
+		if(!is_dir($path)) {
+			if(!mkdir($path)){
+				echo "cant create " . $path;
+				return 0;
+			}
+		}
+		return 1;
+	}
+	
 }
 ?>
