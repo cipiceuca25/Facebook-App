@@ -2691,7 +2691,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$fanpageId = '216821905014540';
    	
     	try {
-			echo Model_Fanpages::createFanpageSpace($fanpageId);
+			echo Model_RedeemStatusRef::APPROVED;
     	} catch (Exception $e) {
     		echo $e->getMessage();
     	}
