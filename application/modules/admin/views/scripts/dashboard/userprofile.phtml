@@ -1,0 +1,69 @@
+<div class="row-fluid">
+	<div class="span1">
+		<img src = "https://graph.facebook.com/<?=$this->fan['facebook_user_id']?>/picture" /> 
+	</div>
+	<div class="span5">
+		Facebook Id: <?=$this->fan['facebook_user_id']?>
+		<br/>
+		Name: <?=$this->fan['fan_first_name'].' '.$this->fan['fan_last_name']?>
+		<br/>
+		
+	</div>
+	<div class="span5">
+		Gender: <?=$this->fan['fan_gender']?>
+		<br/>
+		Locale: <?=$this->fan['fan_locale']?>
+		<br/>
+		Language: <?=$this->fan['fan_lang']?>
+		<br/>
+		Country: <?=$this->fan['fan_country']?>
+		<br/>
+		Location: <?=$this->fan['fan_location']?>
+	</div>
+</div>
+<br/>
+<br/>
+<div class="row-fluid">
+	<div class="span12">
+		
+		Message: <?= substr(stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$this->fan['message'])), 0, 160)?>
+		
+	</div>
+</div>
+<br/><br/>
+<div class="row-fluid">
+
+	<div class="span6">
+	Fan Created Time: <?=$this->fan['created_time']?>
+	<br/>
+	Fan Updated Time: <?=$this->fan['updated_time']?>
+	<br/>
+	First Login Time: <?=$this->fan['first_login_time']?>
+	<br/>
+	Total Login Count: <?=$this->fan['login_count']?>
+	</div>
+	
+	<div class="span6">
+	Level: <?=$this->fan['fan_level']?>
+	<br/>
+	Experience: <?=$this->fan['fan_exp']?>
+	<br/>
+	Points: <?=$this->fan['fan_point']?>
+	</div>
+
+
+</div>
+<br/>
+<br/>
+
+<div class="row-fluid">
+<div class="span6">
+	User Activites
+
+</div>
+<div class="span6">
+	User Redemption
+
+</div>
+</div>
+

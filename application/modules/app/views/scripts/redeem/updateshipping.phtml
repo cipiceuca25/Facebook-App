@@ -6,9 +6,58 @@
 				<div class="post-container" style="min-height:445px; ">
 					<div class="page1">
 						<div class="title nopic">
+							<div class="title-header nopic">
+								Order Status
+								<button type="button" id='next_page' class="btn fc-comment" style="float:right; margin-top:-9px; z-index:2">Update Shipping Information</button>
+						
+							</div>
+							
+						</div>
+						<div class="post">
+										
+							<table class="table" id="redeemItemTable">
+								<thead>
+									<tr>
+										<th style="width:10px">Items</th>
+										<th></th>
+										<th>Name</th>
+										<th>Description</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><?= $this->item['item_id']?></td>		
+										<td><img src='/img/item/<?= $this->item['picture']?>' width="40px" /></td>	
+										<td><?= $this->item['name']?></td>
+										<td><?= $this->item['description']?></td>		
+										<td><? switch ($this->item['status']) {
+											case '0': echo 'Disapproved';
+											break;
+											case '1' : echo 'Redeemed, Waiting for Approval';
+											break;
+											case '2' : echo 'Approved';
+											break;
+											case '3' : echo 'Shipped';
+											break;
+										
+											}?></td>		
+									</tr>
+								</tbody>
+							</table>
+							
+						</div>
+				
+					</div>
+				
+				
+				
+					<div class="page2"  style="display:none; margin-bottom:50px;">
+						<div class="title nopic">
 							
 							<div class="title-header nopic">
 								Shipping Info
+								<button type="button" id="last_page" class="btn fc-comment" style="float:right; margin-top:-9px; z-index:2">Back</button>
 							</div>
 							
 						</div>
@@ -79,7 +128,17 @@
 		initUpdateFormValidate();
 		//var addresspicker = $( "#address" ).addresspicker();
 	});
+	$('#next_page').live('click',function(){
+		$('.page1').css('display','none');
 
+		$('.page2').css('display','block');
+		
+	});
+	$('#last_page').live('click',function(){
+		$('.page2').css('display','none');
+
+		$('.page1').css('display','block');
+	});
 	function initUpdateFormValidate() {
 
 		$('#update-shipping-form').validate({

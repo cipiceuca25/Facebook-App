@@ -1,4 +1,8 @@
 <style>
+.dataTable {
+	width:100%;
+}
+
 .dataTables_length {
 	float: left;
 }
@@ -22,103 +26,90 @@
 }
 </style>
 
-<div class="row-fluid">
-		<div class="span10">
-		topfan last month
-		<table class="table" id="topFansLastWeekTable">
-			<thead>
-				<tr>
-					<th><a>Facebook User Id</a></th>
-					<th><a>Rank</a></th>
-					<th><a>Name</a></th>
-					<th><a>Count</a></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach($this->lastMonthTopFans as $fans): ?>
-					<tr>
-						<td><?= $fans['facebook_user_id']?></td>	
-						<td><?= $fans['rank']?></td>
-						<td><?= $fans['fan_first_name']?> <?= $fans['fan_last_name']?></td>		
-						<td><?= $fans['count']?></td>									
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-	</div>
-</div>
 
-<br/><br/>
+
+
+
+
 <div class="row-fluid">
+	<div class="span2">
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<div class="info">
+				<span class="description">a </span> 
+				<span class="amount">b</span>
+			</div>
+			
+		
+		</div>
+	</div>
 	<div class="span10">
-		<h2>Redeem Item Request</h2>
-		<table class="table" id="requestRedeemTable">
-			<thead>
-				<tr>
-					<th>Transaction ID</th>
-					<th>Item ID</th>
-					<th>Item Name</th>
-					<th>Facebook User</th>
-					<th>Redeemed Time (GMT-0)</th>
-					<th>Confirmation</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+		<div class="row-fluid">
+			<div class="span6">
+				<h2>Redeem Item Request</h2>
+				<table class="table" id="requestRedeemTable">
+					<thead>
+						<tr>
+							<th>Transaction ID</th>
+							<th>Item ID</th>
+							<th>Item Name</th>
+							<th></th>
+							<th>Facebook User</th>
+							<th>Redeemed Time (GMT-0)</th>
+							<th>Confirm</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="span6">
+				<h2>Shipping Management</h2>
+				<table class="table" id="shippingInfoTable">
+					<thead>
+						<tr>
+							<th>Transaction ID</th>
+							<th>Item Name</th>
+							<th>Fan Name</th>
+							<th>Fan Email</th>
+							<th>Address</th>
+							
+							<th>Confirmation</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span12">
+				<h2>Redeem Item History</h2>
+				<table class="table" id="redeemHistoryTable">
+					<thead>
+						<tr>
+							<th>Transaction ID</th>
+							<th>Item ID</th>
+							<th>Item Name</th>
+							<th>Picture</th>
+							<th>Facebook User</th>
+							<th>Redeemed Time (GMT-0)</th>
+							<th>Status</th>
+							<th>Memo</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>
 
-<br/><br/>
-<div class="row-fluid">
-	<div class="span10">
-		<h2>Shipping Management</h2>
-		<table class="table" id="shippingInfoTable">
-			<thead>
-				<tr>
-					<th>Transaction ID</th>
-					<th>Item Name</th>
-					<th>Fan Contact Name</th>
-					<th>Fan Contact Email</th>
-					<th>Address</th>
-					<th>City</th>
-					<th>Region/State/Province</th>
-					<th>Country</th>
-					<th>Postcode</th>
-					<th>Confirmation</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-	</div>
-</div>
+
 
 <br/><br/>
 <div class="row-fluid">
-	<div class="span10">
-		<h2>Redeem Item History</h2>
-		<table class="table" id="redeemHistoryTable">
-			<thead>
-				<tr>
-					<th>Transaction ID</th>
-					<th>Item ID</th>
-					<th>Item Name</th>
-					<th>Facebook User</th>
-					<th>Redeemed Time (GMT-0)</th>
-					<th>Status</th>
-					<th>Memo</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
-	</div>
-</div>
-
-<br/><br/>
-<div class="row-fluid">
-	<div class="span9">
+	<div class="span12">
 		<h2>Item Inventory</h2>
 		<button id="btnAddNewItem">Add New Item</button>
 		<table class="table" id="redeemItemTable">
@@ -126,10 +117,10 @@
 				<tr>
 					<th>ID</th>
 					<th>Name</th>
-					<th>description</th>
-					<th>picture</th>
-					<th>cost</th>
-					<th>operation</th>					
+					<th>Description</th>
+					<th>Picture</th>
+					<th>Cost</th>
+					<th>Operation</th>					
 				</tr>
 			</thead>
 			<tbody>
@@ -138,7 +129,15 @@
 	</div>	
 </div>
 
-<div id="myItemModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myItemModalLabel" aria-hidden="true">
+<!-- POPUPS -->
+<!--//////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!--//////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!--//////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!--//////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+
+
+<div id="myItemModal" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="myItemModalLabel" aria-hidden="true">
 	<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
 	<h3 id="myItemModalLabel">Add New Item</h3>
@@ -177,12 +176,13 @@
 	</div>
 </div>
 
-<div id="editItemModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myItemModalLabel" aria-hidden="true">
+<div id="editItemModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myItemModalLabel" aria-hidden="true">
 	<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
 	<h3 id="myItemModalLabel">Edit Item</h3>
 	</div>
 	<div class="modal-body">
+		<img name="itemPictureUrl" style="width:100px; float:right; margin-right:90px; margin-top:20px;"/>
 		<form id="edit-item-form">
 			<div class="control-group">
 				<label class="control-label" for="itemName">Item Name</label>
@@ -214,10 +214,13 @@
 	    		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 	    	</div>		
 		</form>
+		
+		
+		
 	</div>
 </div>
 
-<div id="redeemConfirmDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="redeemConfirmDialog" aria-hidden="true">
+<div id="redeemConfirmDialog" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="redeemConfirmDialog" aria-hidden="true">
 	<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
 	<h3 id="redeemConfirmDialog">Are you sure ?</h3>
@@ -238,7 +241,7 @@
 	</div>
 </div>
 
-<div id="redeemDetailModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="redeemConfirmDialog" aria-hidden="true">
+<div id="redeemDetailModal" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="redeemConfirmDialog" aria-hidden="true">
 	<div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
 	<h3 id="redeemConfirmDialog">Redeemed Transaction Detail</h3>
@@ -252,10 +255,12 @@ $(document).ready(function() {
 
 	/* request redeem table section */
 	var requestRedeemTable = $('#requestRedeemTable').dataTable({
+		"sDom":'t',
 		"bProcessing": false,
 		"bServerSide": false,
 		"sPaginationType" : "full_numbers",
-		bJQueryUI : true,
+		bJQueryUI : false,
+		"bAutoWidth":false,
 		"bDestroy": true,
 		"aoColumns": [
 			{ 
@@ -272,6 +277,14 @@ $(document).ready(function() {
 					return "<a class='item-info' data-item-id='"+ oObj.aData['item_id'] +"' >"+ oObj.aData['name']+"</a>";
 				}
 			},
+
+			{ 
+				"mData": "picture",
+				"fnRender": function(oObj) {
+					return "<img src='"+ oObj.aData['picture'] +"' />";
+				}
+			},
+			
 			{ 
 				"mData": "facebook_user_id",
 				"fnRender": function(oObj) {
@@ -294,10 +307,12 @@ $(document).ready(function() {
 
 	/* shipping info table section */
 	var shippingInfoTable = $('#shippingInfoTable').dataTable({
+		"sDom":'t',
 		"bProcessing": false,
 		"bServerSide": false,
 		"sPaginationType" : "full_numbers",
-		bJQueryUI : true,
+		bJQueryUI : false,
+		"bAutoWidth":false,
 		"bDestroy": true,
 		"aoColumns": [
 			{ 
@@ -312,6 +327,7 @@ $(document).ready(function() {
 					return "<a class='item-info' data-item-id='"+ oObj.aData['item_id'] +"' >"+ oObj.aData['item_name']+"</a>";
 				}
 			},
+		
 			{ 
 				"mData": "facebook_user_id",
 				"fnRender": function(oObj) {
@@ -320,11 +336,13 @@ $(document).ready(function() {
 				}
 			},
 			{ "mData": "email" },
-			{ "mData": "address" },
-			{ "mData": "city" },
-			{ "mData": "region" },
-			{ "mData": "country" },
-			{ "mData": "postcode" },									
+			{ "mData": "address",
+			  "fnRender": function(oObj) {
+					return oObj.aData['address'] + oObj.aData['city'] + oObj.aData['region'] 
+							+ oObj.aData['country'] +oObj.aData['postcode'];
+				}
+			},
+										
 			{ 
 				"mData": null, 
 				"fnRender": function (oObj) {
@@ -338,10 +356,12 @@ $(document).ready(function() {
 	
 	/* hisotry table section */
 	var redeemHistoryTable = $('#redeemHistoryTable').dataTable({
+		"sDom":'t',
 		"bProcessing": false,
 		"bServerSide": false,
 		"sPaginationType" : "full_numbers",
-		bJQueryUI : true,
+		bJQueryUI : false,
+		"bAutoWidth":false,
 		"bDestroy": true,
 		"aoColumns": [
 			{ 
@@ -358,9 +378,15 @@ $(document).ready(function() {
 				}
 			},
 			{ 
+				"mData": "picture",
+				"fnRender": function(oObj) {
+					return "<img src='/img/"+ oObj.aData['picture'] +"' style='width:100px' />";
+				}
+			},
+			{ 
 				"mData": "facebook_user_id",
 				"fnRender": function(oObj) {
-					return "<a class='face' data-id= '"+ oObj.aData['facebook_user_id'] +"' href='#'><img class='facebook-user-face' src='https://graph.facebook.com/"+ oObj.aData['facebook_user_id'] +
+					return "<a class='face username'  data-id= '"+ oObj.aData['facebook_user_id'] +"' href='#'><img class='facebook-user-face' src='https://graph.facebook.com/"+ oObj.aData['facebook_user_id'] +
 			    		"/picture' onerror='ImgError(this);'> <span class='facebook-user-name'>"+ oObj.aData['facebook_user_name'] +"</span></a>";
 				}
 			},
@@ -491,7 +517,8 @@ $(document).ready(function() {
 		"bProcessing": false,
 		"bServerSide": false,
 		"sPaginationType" : "full_numbers",
-		bJQueryUI : true,
+		 bJQueryUI : false,
+		"bAutoWidth":false,
 		"bDestroy": true,
 		"aoColumns": [
 			{ "mData": "id"},
@@ -632,6 +659,7 @@ $(document).ready(function() {
 						$('form#edit-item-form input[name="itemDescription"]').val(data.description);
 						$('form#edit-item-form input[name="itemPictureUrl"]').val(data.picture);
 						$('form#edit-item-form input[name="itemPrice"]').val(data.points);
+						$('img.[name="itemPictureUrl"]').attr("src",'/img/'+data.picture);
 						$('#editItemModal').modal('show');
 		    		} else {
 			    		alert('item not found');

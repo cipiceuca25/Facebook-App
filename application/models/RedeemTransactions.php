@@ -5,7 +5,7 @@ class Model_RedeemTransactions extends Model_DbTable_RedeemTransactions
 	public function getPendingOrdersListByFanpageId($fanpageId, $limit=100) {
 		$query = $this->getDefaultAdapter()->select()
 				->from(array('r'=>'redeem_transactions'), array('r.*'))
-				->join(array('i'=>'items'), 'r.item_id = i.id AND r.fanpage_id = i.fanpage_id', array('i.name'))
+				->join(array('i'=>'items'), 'r.item_id = i.id AND r.fanpage_id = i.fanpage_id', array('i.name','i.picture'))
 				->join(array('f'=>'facebook_users'), 'f.facebook_user_id = r.facebook_user_id', array('f.facebook_user_name'))
 				->where('r.fanpage_id = ?', $fanpageId)
 				->where('r.status = 1')
@@ -21,7 +21,7 @@ class Model_RedeemTransactions extends Model_DbTable_RedeemTransactions
 	public function getRedeemHistory($fanpageId, $limit=10000) {
 		$query = $this->getDefaultAdapter()->select()
 			->from(array('r'=>'redeem_transactions'), array('r.*'))
-			->join(array('i'=>'items'), 'r.item_id = i.id AND r.fanpage_id = i.fanpage_id', array('i.name'))
+			->join(array('i'=>'items'), 'r.item_id = i.id AND r.fanpage_id = i.fanpage_id', array('i.name','i.picture'))
 			->join(array('f'=>'facebook_users'), 'f.facebook_user_id = r.facebook_user_id', array('f.facebook_user_name'))
 			->where('r.fanpage_id = ?', $fanpageId)
 			->where('r.status != 1 AND r.status != 2')
@@ -39,6 +39,17 @@ class Model_RedeemTransactions extends Model_DbTable_RedeemTransactions
 		
 		return $this->getDefaultAdapter()->fetchRow($query);
 	}
+	
+	public function getRedeemDetailByBadgeIdAndUser($redeemId, $facebook_user_id) {
+		$query = $this->getDefaultAdapter()->select()
+		->from(array('r'=>'redeem_transactions'), array('r.*'))
+		->join(array('i'=>'items'), 'r.item_id = i.id AND r.fanpage_id = i.fanpage_id', array('i.name', 'i.description', 'i.picture', 'i.points', 'i.enable'))
+		->where('r.badge_event_id = ?', $redeemId)
+		->where('r.facebook_user_id = ?', $facebook_user_id);
+	
+		return $this->getDefaultAdapter()->fetchRow($query);
+	}
+	
 	
 	public function getShippingList($fanpageId, $limit=100) {
 		$query = $this->getDefaultAdapter()->select()

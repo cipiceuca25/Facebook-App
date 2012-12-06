@@ -28,35 +28,82 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 		$this->_auth->setStorage(new Zend_Auth_Storage_Session('Fancrank_App'));
 		$this->_identity = $this->_auth->getIdentity();
 		//
+		//echo $this->_getParam('facebook_user_id');
 		if(!$this->_auth->hasIdentity()) {
 			$this->_helper->json(array('message'=>'authentication failed'));
 			//set the proper navbar
 		}
-		
+
 		$this->_fanpageId = $this->_getParam('id');
 	}
 	
 	public function indexAction() {
 		$itemModel = new Model_Items();
-		$itemList = $itemModel->getFanpageItems($this->_fanpageId);
+
+		$bi = new Model_BadgeItems();
+		
+		$bi = $bi ->getItemsByBadges($this->_fanpageId, $this->_getParam('redeemId'));
+		$x = array();
+		
+		if ($bi){
+			foreach($bi as $b){
+				$x[] = $b['id'];
+			}
+		}
+		$itemList = $itemModel->getItemList($this->_fanpageId, $x);
+			
 		$this->view->itemList = $itemList;
 		
-		$shippingInfoModel = new Model_ShippingInfo();
-		$shippingInfo = $shippingInfoModel->findByUserId($this->_identity->facebook_user_id);
-		if ($shippingInfo) {
-			$this->view->shippingInfo = $shippingInfo;
-		} else {
-			$shippingInfo['email'] = $this->_identity->facebook_user_email;
-			$shippingInfo['name'] = $this->_identity->facebook_user_name;
-			$shippingInfo['address'] = '';
-			$shippingInfo['city'] = '';
-			$shippingInfo['region'] = '';
-			$shippingInfo['country'] = '';
-			$shippingInfo['postcode'] = '';
-			$this->view->shippingInfo = $shippingInfo;
-		}
+		$redeemModel = new Model_RedeemTransactions();
 		
-		$this->render('index');
+		$rm = $redeemModel ->getRedeemDetailByBadgeIdAndUser($this->_getParam('redeemId'), $this->_identity->facebook_user_id);
+		
+		if ($rm == null){
+			
+			$shippingInfoModel = new Model_ShippingInfo();
+			$shippingInfo = $shippingInfoModel->findByUserId($this->_identity->facebook_user_id);
+			
+			if ($shippingInfo) {
+				$this->view->shippingInfo = $shippingInfo;
+			} else {
+				$shippingInfo['email'] = $this->_identity->facebook_user_email;
+				$shippingInfo['name'] = $this->_identity->facebook_user_name;
+				$shippingInfo['address'] = '';
+				$shippingInfo['city'] = '';
+				$shippingInfo['region'] = '';
+				$shippingInfo['country'] = '';
+				$shippingInfo['postcode'] = '';
+				$this->view->shippingInfo = $shippingInfo;
+			}
+			
+			$this->render('index');
+
+		}else{
+
+			$this->view->item = $rm;
+			$shippingInfoModel = new Model_ShippingInfo();
+			$foundShipping = $shippingInfoModel->findByUserId($this->_identity->facebook_user_id);
+			if ( !empty($_POST['confirmEmail']) ) {
+				$shippingInfo = $this->getShippingInfo();
+				$shippingId = '';
+				if ($foundShipping) {
+					foreach ($shippingInfo as $key => $field) {
+						$foundShipping->{$key} = $field;
+					}
+					$foundShipping->save();
+				} else {
+					$shippingId = $shippingInfoModel->insert($shippingInfo);
+				}
+				echo 'ok';
+			} else {
+				if ($foundShipping) {
+					$this->view->shippingInfo = $foundShipping->toArray();
+				}
+				$this->render('updateshipping');
+			}
+			
+			
+		}
 	}
 	
 	public function confirmAction() {

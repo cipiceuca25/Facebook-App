@@ -8,7 +8,9 @@
 						<div class="title nopic">
 							<div class="title-header nopic">
 								Please Select an Item
+								<?php if($this->itemList){?>
 								<button type="button" id='next_page' class="btn fc-comment" style="float:right; margin-top:-9px; z-index:2">Next</button>
+								<?php }?>
 							</div>
 							
 						</div>
@@ -25,6 +27,7 @@
 									</tr>
 								</thead>
 								<tbody>
+								<?php if($this->itemList){?>
 								<?php foreach($this->itemList as $item): ?>
 									<tr>
 										<td><input data-item-id="<?= $item['id']?>" type="checkbox" /></td>		
@@ -33,12 +36,17 @@
 										<td><?= $item['description']?></td>		
 																
 									</tr>
-								<?php endforeach; ?>
+								<?php endforeach; }else{?>
+									<tr>
+										<td colspan=4>No Items Avaliable</td>													
+									</tr>
+								<?php }?>
 								</tbody>
 							</table>
 						</div>
 				
 					</div>
+					<?php if($this->itemList){?>
 					<div class="page2"  style="display:none; margin-bottom:50px;">
 						<div class="title nopic">
 							
@@ -103,6 +111,7 @@
 							</div>
 						</div>
 					</div>
+					<?php }?>
 				</div>
 			</div>
 		</div>	

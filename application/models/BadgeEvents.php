@@ -13,7 +13,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	}
 	
 	public function getBadgesByFanpageIdAndFanID($fanpage_id, $facebook_user_id, $limit){
-		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active, x.redeemable, r.*
+		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture, x.active, x.redeemable, r.status
 					from badge_events e left join fancrank.redeem_transactions r
 					on r.badge_event_id = e.id && r.fanpage_id = $fanpage_id,
 					(
@@ -39,7 +39,7 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 	}
 
 	public function getRedeemableBadges($fanpage_id, $facebook_user_id, $limit){
-		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture,x.redeemable, x.active, r.*
+		$select = "select x.id as badge_id, x.name, x.description, x.quantity, x.weight, x.stylename, e.created_time, x.picture,x.redeemable, x.active, r.status
 
 		from badge_events e left join fancrank.redeem_transactions r
 		on r.badge_event_id = e.id && r.fanpage_id = $fanpage_id,
@@ -249,62 +249,464 @@ class Model_BadgeEvents extends Model_DbTable_BadgeEvents
 		$this->update($data, $where);		
 	}
 	
-	public function notify($fanpage_id, $facebook_user_id, $time){
+	public function notify($fanpage_id, $facebook_user_id, $time, $level){
 		
-		if ($time){
-			$select= "select * 
-					from (
+		
+		if ($level >2){
+		
+			if ($time){
+				$select= "select * from (
+				
+							select e.created_time, 'badge' as activity_type, x.id as event_object, facebook_user_id,
+							null as facebook_user_name, description as message, name, quantity, picture, redeemable, 'x' as status
 					
-					SELECT e.created_time as created_time, 'badge' as activity_type, e.id as event_object, facebook_user_id, null as facebook_user_name, description as message, name, quantity, picture
-					from badges b, badge_events e 
-					where e.badge_id = b.id && e.facebook_user_id = $facebook_user_id
-					&& e.fanpage_id = $fanpage_id && e.notification_read=0
+							from badge_events e,
+							(
+							SELECT b.id, b.name, b.description, b.quantity,
+							if (f.weight <=> null, b.weight, f.weight) as weight,
+							if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
+							if (f.active <=> null, 1, f.active) as active,
+							if (f.redeemable <=> null, 0, f.redeemable) as redeemable,
+							b.picture
+								
+							FROM badges b
+							left join fancrank.fanpage_badges f
+							on f.badge_id = b.id && fanpage_id = $fanpage_id
+							) as x
+							where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
+							x.active = 1 && e.notification_read=0
+								
+							union
 					
-					union
+							select created_time, 'points' as activity_type, null as event_object, null as facebook_user_id, 
+							null as facebook_user_name,
+							null as message, null as name, sum(giving_points) as quantity, null as picture, null as redeemable, 'x' as status
+			  				from point_log p
+							where facebook_user_id = $facebook_user_id && fanpage_id = $fanpage_id && created_time > '$time'
+							group by date(created_time)
+	
+							union 		
+			
+							select created_time, activity_type, event_object, facebook_user_id, facebook_user_name, message, 
+							null as name, null as quantity, null as picture,null as redeemable, 'x' as status
+							 from (
+									/* activities done to target user*/
+										(Select c.fanpage_id, c.facebook_user_id, 
+												(select f.facebook_user_name from facebook_users f where f.facebook_user_id = c.facebook_user_id) as facebook_user_name, 
+												concat('comment-', c.comment_type)as activity_type, 
+												p.post_id as event_object, 
+												p.facebook_user_id as target_user_id,
+												(select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as target_user_name,
+												c.created_time, c.comment_message as message
+												from 
+												comments c, posts p 
+												where c.fanpage_id = $fanpage_id  and p.facebook_user_id = $facebook_user_id and c.comment_post_id = p.post_id && c.created_time > '$time'
+												order by created_time DESC
+												)
 					
-					select created_time, 'points' as activity_type, null as event_object, null as facebook_user_id, null as facebook_user_name,
-					null as message, null as name, sum(giving_points) as quantity, null as picture  from point_log p
-					where facebook_user_id = $facebook_user_id && fanpage_id = $fanpage_id && created_time > '$time'
-					group by date(created_time)
-
-					union 
+										union
 					
-					SELECT created_time, activity_type, event_object, facebook_user_id, facebook_user_name, message, null as name, null as quantity, null as picture
-					FROM fancrank.fancrank_activities 
-					where target_user_id = $facebook_user_id && fanpage_id = $fanpage_id  && facebook_user_id != target_user_id && created_time > '$time'
-					) as a
-					order by created_time DESC
-					";
+										(select p.fanpage_id, 
+											   l.facebook_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+											   (case when (l.likes = 1) then concat('like-', p.post_type) else concat('unlike-', p.post_type) end ) as activity_type,
+											   p.post_id as event_object,
+											   p.facebook_user_id as target_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+											   l.created_time as created_time,
+											   p.post_message as message
+										from posts p, likes l 
+										where l.post_id = p.post_id and p.facebook_user_id = $facebook_user_id
+												and l.fanpage_id = $fanpage_id and l.fanpage_id = p.fanpage_id && l.created_time > '$time'
+												
+										order by l.created_time DESC
+										)
+					
+										union 
+					
+										(select c.fanpage_id, 
+											   l.facebook_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+											   (case when (l.likes = 1) then concat('like-', c.comment_type) else concat('unlike-', c.comment_type) end ) as activity_type,
+											   c.comment_post_id as event_object,
+											   c.facebook_user_id as target_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+											   l.created_time as created_time,
+											   c.comment_message as message
+										from comments c, likes l 
+										where l.post_id = c.comment_id and c.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id and l.fanpage_id = c.fanpage_id && l.created_time > '$time'
+										order by l.created_time DESC
+										)
+					
+										union
+					
+										(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message  
+											from fancrank_activities 
+											where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id  && activity_type != 'admin_add_point' && activity_type != 'admin_sub_point' && created_time > '$time'
+											order by created_time DESC
+											)	
+											
+										union
+										
+										(select fanpage_id, facebook_user_id, (select fanpage_name from fanpages where fanpage_id = $fanpage_id) as facebook_user_name, activity_type, 
+										event_object, target_user_id, target_user_name, created_time, message
+										from admin_activities
+										where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id
+										order by created_time DESC
+											)
+												
+									) as act
+									where target_user_id != facebook_user_id
+									group by fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, created_time, message, redeemable, status
+									
+									order by created_time DESC
+								) as a
+							order by created_time DESC";
+			}else{
+				$select= "select * from (
+				
+							select e.created_time, 'badge' as activity_type, x.id as event_object, facebook_user_id,
+							null as facebook_user_name, description as message, name, quantity, picture, redeemable, 'x' as status
+					
+							from badge_events e,
+							(
+							SELECT b.id, b.name, b.description, b.quantity,
+							if (f.weight <=> null, b.weight, f.weight) as weight,
+							if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
+							if (f.active <=> null, 1, f.active) as active,
+							if (f.redeemable <=> null, 0, f.redeemable) as redeemable,
+							b.picture
+								
+							FROM badges b
+							left join fancrank.fanpage_badges f
+							on f.badge_id = b.id && fanpage_id = $fanpage_id
+							) as x
+							where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
+							x.active = 1 && e.notification_read=0
+								
+							union
+					
+							select created_time, 'points' as activity_type, null as event_object, null as facebook_user_id, 
+							null as facebook_user_name,
+							null as message, null as name, sum(giving_points) as quantity, null as picture, null as redeemable, 'x' as status
+			  				from point_log p
+							where facebook_user_id = $facebook_user_id && fanpage_id = $fanpage_id
+							group by date(created_time)
+	
+							union 		
+			
+							select created_time, activity_type, event_object, facebook_user_id, facebook_user_name, message, 
+							null as name, null as quantity, null as picture,null as redeemable, 'x' as status
+							 from (
+									/* activities done to target user*/
+										(Select c.fanpage_id, c.facebook_user_id, 
+												(select f.facebook_user_name from facebook_users f where f.facebook_user_id = c.facebook_user_id) as facebook_user_name, 
+												concat('comment-', c.comment_type)as activity_type, 
+												p.post_id as event_object, 
+												p.facebook_user_id as target_user_id,
+												(select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as target_user_name,
+												c.created_time, c.comment_message as message
+												from 
+												comments c, posts p 
+												where c.fanpage_id = $fanpage_id  and p.facebook_user_id = $facebook_user_id and c.comment_post_id = p.post_id
+												order by created_time DESC
+												)
+					
+										union
+					
+										(select p.fanpage_id, 
+											   l.facebook_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+											   (case when (l.likes = 1) then concat('like-', p.post_type) else concat('unlike-', p.post_type) end ) as activity_type,
+											   p.post_id as event_object,
+											   p.facebook_user_id as target_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+											   l.created_time as created_time,
+											   p.post_message as message
+										from posts p, likes l 
+										where l.post_id = p.post_id and p.facebook_user_id = $facebook_user_id
+												and l.fanpage_id = $fanpage_id and l.fanpage_id = p.fanpage_id
+												
+										order by l.created_time DESC
+										)
+					
+										union 
+					
+										(select c.fanpage_id, 
+											   l.facebook_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+											   (case when (l.likes = 1) then concat('like-', c.comment_type) else concat('unlike-', c.comment_type) end ) as activity_type,
+											   c.comment_post_id as event_object,
+											   c.facebook_user_id as target_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+											   l.created_time as created_time,
+											   c.comment_message as message
+										from comments c, likes l 
+										where l.post_id = c.comment_id and c.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id and l.fanpage_id = c.fanpage_id
+										order by l.created_time DESC
+										)
+					
+										union
+					
+										(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message  
+											from fancrank_activities 
+											where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id  && activity_type != 'admin_add_point' && activity_type != 'admin_sub_point'
+											order by created_time DESC
+											)	
+											
+										union
+										
+										(select fanpage_id, facebook_user_id, (select fanpage_name from fanpages where fanpage_id = $fanpage_id) as facebook_user_name, activity_type, 
+										event_object, target_user_id, target_user_name, created_time, message
+										from admin_activities
+										where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id
+										order by created_time DESC
+											)
+												
+									) as act
+									where target_user_id != facebook_user_id
+									group by fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, created_time, message, redeemable, status
+									
+									order by created_time DESC
+								) as a
+							order by created_time DESC";
+			}
 		}else{
-			$select= "select *
-						from (
+			if ($time){
+				$select= "select * from (
+				
+							select e.created_time, 'badge' as activity_type, x.id as event_object, facebook_user_id,
+							 null as facebook_user_name, description as message, name, quantity, picture, redeemable, 'x' as status
+					
+							from badge_events e,
+							(
+							SELECT b.id, b.name, b.description, b.quantity,
+							if (f.weight <=> null, b.weight, f.weight) as weight,
+							if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
+							if (f.active <=> null, 1, f.active) as active,
+							if (f.redeemable <=> null, 0, f.redeemable) as redeemable,
+							b.picture
+								
+							FROM badges b
+							left join fancrank.fanpage_badges f
+							on f.badge_id = b.id && fanpage_id = $fanpage_id
+							) as x
+							where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
+							x.active = 1 && e.notification_read=0
 							
-						SELECT e.created_time as created_time, 'badge' as activity_type, e.id as event_object, facebook_user_id, null as facebook_user_name, description as message, name, quantity, picture
-						from badges b, badge_events e
-						where e.badge_id = b.id && e.facebook_user_id = $facebook_user_id
-						&& e.fanpage_id = $fanpage_id && e.notification_read=0
+									
+							union	
+			
+							select created_time, activity_type, event_object, facebook_user_id, facebook_user_name, message, 
+							null as name, null as quantity, null as picture,null as redeemable, 'x' as status
+							 from (
+									/* activities done to target user*/
+										(Select c.fanpage_id, c.facebook_user_id, 
+												(select f.facebook_user_name from facebook_users f where f.facebook_user_id = c.facebook_user_id) as facebook_user_name, 
+												concat('comment-', c.comment_type)as activity_type, 
+												p.post_id as event_object, 
+												p.facebook_user_id as target_user_id,
+												(select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as target_user_name,
+												c.created_time, c.comment_message as message
+												from 
+												comments c, posts p 
+												where c.fanpage_id = $fanpage_id  and p.facebook_user_id = $facebook_user_id and c.comment_post_id = p.post_id && c.created_time > '$time'
+												order by created_time DESC
+												)
+					
+										union
+					
+										(select p.fanpage_id, 
+											   l.facebook_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+											   (case when (l.likes = 1) then concat('like-', p.post_type) else concat('unlike-', p.post_type) end ) as activity_type,
+											   p.post_id as event_object,
+											   p.facebook_user_id as target_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+											   l.created_time as created_time,
+											   p.post_message as message
+										from posts p, likes l 
+										where l.post_id = p.post_id and p.facebook_user_id = $facebook_user_id
+												and l.fanpage_id = $fanpage_id and l.fanpage_id = p.fanpage_id && l.created_time > '$time'
+												
+										order by l.created_time DESC
+										)
+					
+										union 
+					
+										(select c.fanpage_id, 
+											   l.facebook_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+											   (case when (l.likes = 1) then concat('like-', c.comment_type) else concat('unlike-', c.comment_type) end ) as activity_type,
+											   c.comment_post_id as event_object,
+											   c.facebook_user_id as target_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+											   l.created_time as created_time,
+											   c.comment_message as message
+										from comments c, likes l 
+										where l.post_id = c.comment_id and c.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id and l.fanpage_id = c.fanpage_id && l.created_time > '$time'
+										order by l.created_time DESC
+										)
+					
+										union
+					
+										(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message  
+											from fancrank_activities 
+											where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id  && activity_type != 'admin_add_point' && activity_type != 'admin_sub_point' && created_time > '$time'
+											order by created_time DESC
+											)	
+											
+										union
+										
+										(select fanpage_id, facebook_user_id, (select fanpage_name from fanpages where fanpage_id = $fanpage_id) as facebook_user_name, activity_type, 
+										event_object, target_user_id, target_user_name, created_time, message
+										from admin_activities
+										where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id && created_time > '$time'
+										order by created_time DESC
+											)
+												
+									) as act
+									where target_user_id != facebook_user_id
+									group by fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, created_time, message, redeemable, status
+									
+									order by created_time DESC
+								) as a
+							order by created_time DESC";
+			}else{
+				$select= "select * from (
+				
+							select e.created_time, 'badge' as activity_type, x.id as event_object, facebook_user_id,
+							 null as facebook_user_name, description as message, name, quantity, picture, redeemable, 'x' as status
+					
+							from badge_events e,
+							(
+							SELECT b.id, b.name, b.description, b.quantity,
+							if (f.weight <=> null, b.weight, f.weight) as weight,
+							if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
+							if (f.active <=> null, 1, f.active) as active,
+							if (f.redeemable <=> null, 0, f.redeemable) as redeemable,
+							b.picture
+								
+							FROM badges b
+							left join fancrank.fanpage_badges f
+							on f.badge_id = b.id && fanpage_id = $fanpage_id
+							) as x
+							where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
+							x.active = 1 && e.notification_read=0
 							
-						union
-							
-						select created_time, 'points' as activity_type, object_type as event_object, null as facebook_user_id, null as facebook_user_name,
-						note as message, null as name, sum(giving_points+bonus) as quantity, null as picture  from point_log p
-						where facebook_user_id = $facebook_user_id && fanpage_id = $fanpage_id
-						group by date(created_time)
-						
-						union
-							
-						SELECT created_time, activity_type, event_object, facebook_user_id, facebook_user_name, message, null as name, null as quantity, null as picture
-						FROM fancrank.fancrank_activities
-						where target_user_id = $facebook_user_id && fanpage_id = $fanpage_id  && facebook_user_id != target_user_id && activity_type != 'admin_add_point' && activity_type != 'admin_sub_point'
-						) as a
-						order by created_time DESC
-						";
+									
+							union	
+			
+							select created_time, activity_type, event_object, facebook_user_id, facebook_user_name, message, 
+							null as name, null as quantity, null as picture,null as redeemable, 'x' as status
+							 from (
+									/* activities done to target user*/
+										(Select c.fanpage_id, c.facebook_user_id, 
+												(select f.facebook_user_name from facebook_users f where f.facebook_user_id = c.facebook_user_id) as facebook_user_name, 
+												concat('comment-', c.comment_type)as activity_type, 
+												p.post_id as event_object, 
+												p.facebook_user_id as target_user_id,
+												(select f.facebook_user_name from facebook_users f where f.facebook_user_id = p.facebook_user_id) as target_user_name,
+												c.created_time, c.comment_message as message
+												from 
+												comments c, posts p 
+												where c.fanpage_id = $fanpage_id  and p.facebook_user_id = $facebook_user_id and c.comment_post_id = p.post_id
+												order by created_time DESC
+												)
+					
+										union
+					
+										(select p.fanpage_id, 
+											   l.facebook_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+											   (case when (l.likes = 1) then concat('like-', p.post_type) else concat('unlike-', p.post_type) end ) as activity_type,
+											   p.post_id as event_object,
+											   p.facebook_user_id as target_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+											   l.created_time as created_time,
+											   p.post_message as message
+										from posts p, likes l 
+										where l.post_id = p.post_id and p.facebook_user_id = $facebook_user_id
+												and l.fanpage_id = $fanpage_id and l.fanpage_id = p.fanpage_id
+												
+										order by l.created_time DESC
+										)
+					
+										union 
+					
+										(select c.fanpage_id, 
+											   l.facebook_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = l.facebook_user_id) as facebook_user_name,
+											   (case when (l.likes = 1) then concat('like-', c.comment_type) else concat('unlike-', c.comment_type) end ) as activity_type,
+											   c.comment_post_id as event_object,
+											   c.facebook_user_id as target_user_id,
+											   (select f.facebook_user_name from facebook_users f where f.facebook_user_id = $facebook_user_id) as  target_user_name,
+											   l.created_time as created_time,
+											   c.comment_message as message
+										from comments c, likes l 
+										where l.post_id = c.comment_id and c.facebook_user_id = $facebook_user_id and l.fanpage_id = $fanpage_id and l.fanpage_id = c.fanpage_id
+										order by l.created_time DESC
+										)
+					
+										union
+					
+										(select fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, target_user_name, created_time, message  
+											from fancrank_activities 
+											where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id  && activity_type != 'admin_add_point' && activity_type != 'admin_sub_point'
+											order by created_time DESC
+											)	
+											
+										union
+										
+										(select fanpage_id, facebook_user_id, (select fanpage_name from fanpages where fanpage_id = $fanpage_id) as facebook_user_name, activity_type, 
+										event_object, target_user_id, target_user_name, created_time, message
+										from admin_activities
+										where fanpage_id = $fanpage_id && target_user_id = $facebook_user_id
+										order by created_time DESC
+											)
+												
+									) as act
+									where target_user_id != facebook_user_id
+									group by fanpage_id, facebook_user_id, facebook_user_name, activity_type, event_object, target_user_id, created_time, message, redeemable, status
+									
+									order by created_time DESC
+								) as a
+							order by created_time DESC";
+			}		
+	
 		}
-		
-		
+		return $this->getAdapter()->fetchAll($select);
+	}
+	
+	public function notifyRedeemable($fanpage_id, $facebook_user_id){
+		$select= "	select e.created_time, 'redeem-badge' as activity_type, x.id as event_object, 
+		e.facebook_user_id, null as facebook_user_name, description as message, name,
+		 quantity, picture, redeemable, status
+
+		from badge_events e left join fancrank.redeem_transactions r
+		on r.badge_event_id = e.id && r.fanpage_id = $fanpage_id,
+		(
+		SELECT b.id, b.name, b.description, b.quantity,
+		if (f.weight <=> null, b.weight, f.weight) as weight,
+		if (f.stylename <=> null, b.stylename, f.stylename) as stylename,
+		if (f.active <=> null, 1, f.active) as active,
+		if (f.redeemable <=> null, 0, f.redeemable) as redeemable,
+		b.picture
+			
+		FROM badges b
+		left join fancrank.fanpage_badges f
+		on f.badge_id = b.id && fanpage_id = $fanpage_id
+		) as x
+		where e.fanpage_id = $fanpage_id && e.facebook_user_id = $facebook_user_id && e.badge_id = x.id &&
+		x.active = 1 && redeemable = 1 && status <=> null
+		";
 		
 		return $this->getAdapter()->fetchAll($select);
 	}
+	
+	
+	
+	
 	public function getMostAwardedBadges($fanpageId){
 	
 		$select="select count(x.id) as count ,  x.id, x.name, x.description, x.quantity, x.weight, x.stylename, x.picture

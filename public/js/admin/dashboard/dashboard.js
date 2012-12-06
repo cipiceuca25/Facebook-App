@@ -913,6 +913,7 @@ function loadSettings(){
 }
 
 function loadRedeem() {
+
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/admin/dashboard/redeem?id=' + fanpageId,
@@ -965,7 +966,52 @@ function loadPoints(){
 	});	
 }
 
+function loadUserProfile(user_id){
+	$('body').append(
+			'<div id="autoModel" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myItemModalLabel" aria-hidden="true">'+
+			'<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">'
+			+'<i class="icon-remove"></i></button>'
+			+'<h3>Add New Item</h3></div><div class="modal-body"></div></div>')
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/userprofile?id=' + fanpageId +"&user_id=" + user_id,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			//$('#points').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			console.log(data);
+			$('#autoModel .modal-body').html(data)
+			$('#autoModel .modal-header h3').html("User Profile");
+			$('#autoModel').modal('show');
+			//loadGraph("#placeholder", 'Points');
+			//$('#placeholder').css({'width':'100%', 'height':'200px'});
+			//$('#placeholder').resize();
+		
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting point settings');
+		}
+	});	
+}
 
+$('#autoModel .close').live('click', function() {
+	
+
+	$('#autoModel').remove();
+});
+
+
+
+$('a.username').live('click', function() {
+	var id = $(this).attr('data-id'); 
+
+	loadUserProfile(id);
+});
 
 
 
@@ -2246,13 +2292,17 @@ chart.attr("height", Math.round(targetWidth / aspect));
 }).trigger("resize");
 */
 $(window).resize(function(){
-	if (graphLoaded){
-		graph.resize();
+
+		if (graphLoaded){
+			graph.resize();
 		//graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
-	}
-	if (graphLoaded2){
-		graph2.resize();
-		//graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
-	}
+		}
+
+		if (graphLoaded2){
+			graph2.resize();
+			//graph2 = new lineGraph('#placeholder2', graphData2, startTime2, endTime2,  graphMargin2);
+		}
+
+	
 });
 
