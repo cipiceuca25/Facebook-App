@@ -224,6 +224,13 @@ class Fc_IndexController extends Fancrank_Fc_Controller_BaseController
 		Zend_Debug::dump($result);
 		$this->_helper->json(array());
 	}
+	
+	public function clearmemcacheAction() {
+		$cache = Zend_Registry::get('memcache');
+		if (isset($cache)) {
+			$cache->clean();
+		}
+	}
 }
 
 ?>

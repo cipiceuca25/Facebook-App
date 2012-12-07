@@ -718,7 +718,7 @@ class Service_FancrankCollectorService {
 		$this->getLikesFromMyPostRecursive($extraLikesPosts, $fanpageId, $access_token, $offset+25, $likesList);
 	}
 	
-	private function getLikesFromMyPost(&$posts, $level=5, $limit=1000) {
+	private function getLikesFromMyPost(&$posts, $level=5, $limit=5000) {
 		//Zend_Debug::dump($posts);
 		$results = array();
 		$time = new Zend_Date();
@@ -728,7 +728,7 @@ class Service_FancrankCollectorService {
 			$hasMoreLike = false;
 			$time = new Zend_Date(!empty($post->created_time) ? $post->created_time : null, Zend_Date::ISO_8601);
 			$created_time = $time->toString('yyyy-MM-dd HH:mm:ss');
-			if(!empty($post->likes->data)) {
+			if (!empty($post->likes->data)) {
 				$likeCount = count($post->likes->data);
 			}
 			
@@ -736,15 +736,20 @@ class Service_FancrankCollectorService {
 								'post_id'=>$post->id
 							);
 			
-			if($post->from->id === $this->_fanpageId) {
+			if ($post->from->id === $this->_fanpageId) {
 				$likeData['target'] = 'admin';
-			}else {
+			} else {
 				$likeData['target'] = 'user';
 			}
 			
-			if(!empty($post->likes->count) && $post->likes->count > $likeCount) {
+			if (!empty($post->likes->count) && $post->likes->count > $likeCount) {
 				$result = array();
 				$url = $this->_facebookGraphAPIUrl . $post->id .'/likes?access_token=' .$this->_accessToken;
+				
+				if (!empty($limit) && $limit > 1) {
+					$level = ceil($post->likes->count / $limit); 
+				}
+				
 				$this->getFromUrlRecursive($url, $level, $limit, $result);
 				if (!empty($result)) {
 					$posts[$key]->likes->data = $result;

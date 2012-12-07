@@ -410,13 +410,14 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	//$fanpageId = '178384541065';
     	//$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
     	
-    	$fanpageId = '216821905014540';
-    	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
+    	$fanpageId = '153123704737554';
+    	$accessToken = 'AAAFWUgw4ZCZB8BAJofkYwA5mVRpqR6cyO9od48RZAXxYmNfzag2GEOe0AiujnZBlXtpkdQoX5PwlGL1SKXCVLNoSfqTIYdRu3USi5pd2NIpKz7xjzOZCk';
     	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
-		$collector->updateFanpageFeed('10+days+ago', 'now');
-		//$result = $collector->getFanpageFeed('10+days+ago', 'now');
-		//Zend_Debug::dump($result);
+		//$collector->updateFanpageFeed('10+days+ago', 'now');
+		$result = $collector->getFanpageFeed('500+days+ago', 'now');
+		
+		Zend_Debug::dump($result);
     }
     
     public function test3Action () {
@@ -2691,7 +2692,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$fanpageId = '216821905014540';
    	
     	try {
-			echo Model_RedeemStatusRef::APPROVED;
+			
     	} catch (Exception $e) {
     		echo $e->getMessage();
     	}
