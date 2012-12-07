@@ -77,7 +77,11 @@
 												<div class="bar" ></div>
 												<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . date('Y/m/d',strtotime(date($b['created_time'])))?>" 
 												class=noclick rel="tooltip" data-placement="top">
-													<img src="<?= $b['picture']?>"/>
+													<?php if (strpos( $b['picture'], '.') === false){?>
+											<i class="sprite-<?= $b['picture']?>"></i>
+										<?php }else{ ?>
+											<img src="<?= $b['picture']?>"/>
+										<?}?>
 												</a>
 											</div>
 										<?php }?>

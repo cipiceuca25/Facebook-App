@@ -1,24 +1,30 @@
 <div class="row-fluid">
 	<div class="span2">
 		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
-			<div class="info">
-				<span class="description">User with the most Points</span> 
-				<span class="amount">X</span>
-			</div>
-			<div class="info">
-				<span class="description">User with the most Likes</span> 
-				<span class="amount">X</span>
-			</div>
-			<div class="info">
-				<span class="description">User with the most Comments</span> 
-				<span class="amount">X</span>
-			</div>
-			<div class="info">
-				<span class="description">User with the most Post</span> 
-				<span class="amount">X</span>
-			</div>
-		
+			<h2>Top Followed</h2>
+			<?php Zend_Debug::dump($this->topFollowed);?>
 		</div>
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<h2>Top Clicker</h2>
+			<?php Zend_Debug::dump($this->topClicker);?>
+		</div>
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<h2>Fan Favorite</h2>
+			<?php Zend_Debug::dump($this->fanFavorite);?>
+		</div>
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<h2>Top Talker</h2>
+			<?php Zend_Debug::dump($this->topTalker);?>
+		</div>
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<h2>Top Fan All</h2>
+			<?php Zend_Debug::dump($this->topFanAll);?>
+		</div>
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<h2>Top Fan</h2>
+			<?php Zend_Debug::dump($this->topFan);?>
+		</div>
+		
 	</div>
 	<div class="span10">
 		<table class="table" id="userTable">

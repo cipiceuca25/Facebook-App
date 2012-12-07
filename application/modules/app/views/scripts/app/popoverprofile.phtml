@@ -43,7 +43,11 @@
 				<div class="progress popover chosen-badges" >
 					<div class="bar" ></div>
 					<a >
-						<img src="<?= $b['picture']?>"/>
+						<?//php if (strpos( $b['picture'], '.') === false){?>
+											<i class="sprite-<?= $b['picture']?>"></i>
+										<?//php }else{ ?>
+											<img src="<?= $b['picture']?>"/>
+										<?//}?>
 					</a>
 				</div>
 			<?//php }?>

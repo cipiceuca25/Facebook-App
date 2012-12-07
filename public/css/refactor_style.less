@@ -1324,7 +1324,7 @@ position:relative;
 }
 
 .progress .bar{
-background:@color-badge-bar;
+background:@color-menu-hover;
 .box-shadow(0 0 0 0 );
 }
 
@@ -1342,7 +1342,6 @@ background:white;
 
 .progress.exp .bar{
 
-
 }
 
 .box .half{
@@ -1357,6 +1356,10 @@ width:218px;
 #followerslist .top-list.mini .ranker{
 border-bottom:1px solid @color-box-border;
 border-top:0px solid;
+}
+
+#toppost .user .user-badge{
+	line-height:25px;
 }
 
 #recent_activities{
@@ -2018,7 +2021,7 @@ cursor:default;
 
 .notifier ul li .social,
 .notifier ul li .message{
-	margin-left:35px; 
+	margin-left:50px; 
 }
 
 /*
@@ -2064,21 +2067,21 @@ border-bottom:0px;
 }
 
 .notifier .progress{
-	height:24px;
-	width:24px;
+	height:40px;
+	width:40px;
 	position:relative;
 	margin-left:auto;
 	margin-right:auto;
 }
 
 .notifier  .progress a{
-	top:-24px;
+	top:-40px;
 	float:left;
 	position:relative;
 }
 
 .notifier  .bar{
-	height:24px;
+	height:40px;
 }
 
 
@@ -2746,3 +2749,28 @@ padding-right:0px;
 #logout-menu ul li a:hover{
 	background-color:@color-menu-hover;
 }
+
+
+[class^="sprite-"],
+[class*=" sprite-"] {
+	display: inline-block;
+	width: 17px;
+	height: 16px;
+	*margin-right: .3em;
+	line-height: 14px;
+	vertical-align: text-top;
+	background: url('/img/badges/rv/icons-fc-sprite.png') no-repeat top left;
+}
+
+[class^="sprite-"]:last-child,
+[class*=" sprite-"]:last-child {
+  *margin-left: 0;
+}
+
+.sprite-comment-general{ background-position: 0 0; width: 40px; height: 40px; } 
+.sprite-like-general{ background-position: 0 -90px; width: 40px; height: 40px; } 
+.sprite-post-general{ background-position: 0 -180px; width: 40px; height: 40px; } 
+.sprite-post-link{ background-position: 0 -270px; width: 40px; height: 40px; } 
+.sprite-post-picture{ background-position: 0 -360px; width: 40px; height: 40px; } 
+.sprite-post-status{ background-position: 0 -450px; width: 40px; height: 40px; } 
+.sprite-post-video{ background-position: 0 -540px; width: 40px; height: 40px; } 
