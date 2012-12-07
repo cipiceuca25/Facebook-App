@@ -295,7 +295,7 @@ class Model_Rankings extends Model_DbTable_Rankings
 					FROM posts p 
 					INNER JOIN
 					fans f ON(p.facebook_user_id = f.facebook_user_id)
-					WHERE  p.fanpage_id = '".$page_id."' AND f.fanpage_id = '".$page_id ."' 
+					WHERE  p.fanpage_id = '".$page_id."' AND f.fanpage_id = '".$page_id ."' AND p.facebook_user_id != '".$page_id ."'  
 					AND p.created_time > '$this->_lastSunday'
 					ORDER BY count DESC";
 		

@@ -94,7 +94,12 @@
 									<li>
 										<div class="photo">
 											<a>
-												<img class="small-face" src="<?= $e['picture']?>">
+											<?php if (strpos( $e['picture'], '.') === false){?>
+												<i class="sprite-<?= $e['picture']?>"></i>
+											<?php }else{ ?>
+												<img class="small-face" src="<?= $e['picture']?>"/>
+											<?}?>
+										
 											</a>
 										</div>
 										<div class="message">
@@ -536,7 +541,12 @@
 										<li>
 											<div class="photo">
 												<a>
-													<img class="small-face" src="<?= $e['picture']?>">
+												<?php if (strpos( $e['picture'], '.') === false){?>
+													<i class="sprite-<?= $e['picture']?>"></i>
+												<?php }else{ ?>
+													<img class="small-face" src="<?= $e['picture']?>"/>
+												<?}?>
+													
 												</a>
 											</div>
 											<div class="message">
@@ -555,9 +565,7 @@
 									
 									
 								<?php } ?>
-								
-				
-					
+
 				<? }?>
 				</ul>
 			<? }?>

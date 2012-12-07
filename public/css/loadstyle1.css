@@ -164,12 +164,13 @@ ul,ol{list-style-type:none;margin:0;padding:0;}
 .post-container .post{padding-top:18px;padding-bottom:11px;padding-left:2px;padding-right:2px;}
 .post-container .message,.post-container .link,.post-box,.comment-box{-ms-word-break:break-all;word-break:break-all;word-break:break-word;-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto;}
 #toppost .comment-box{width:120px;}
-.points.login{width:160px;}
+.points.login{width:60%;}
 .post-container .link{font-size:11px;background-color:#f6f7f9;border:1px solid #d3dae8;margin-top:10px;}
-.post-container .link .link-left{max-width:35%;display:inline-block;}
-.post-container .link .link-right{min-width:60%;max-width:100%;display:inline-block;margin-top:1px;vertical-align:top;margin-left:10px;}
-.post-container .link .link-right .link-title{font-weight:bold;}
-.post-container .link .link-right .link-caption{color:#575757;}
+.post-container .link .link-left{max-width:30%;display:inline-block;}
+.post-container .link .link-right{max-width:100%;display:inline-block;margin-top:1px;vertical-align:top;margin-left:1%;}
+.post-container .link .link-right.wpic{width:65%;display:inline-block;margin-top:1px;vertical-align:top;margin-left:1%;}
+.post-container .link .link-title{font-weight:bold;}
+.post-container .link .link-caption{color:#575757;}
 .post-container .graphical .image{display:block;text-align:center;margin-top:5px;}
 .post-container .social{line-height:25px;font-size:11px;margin-bottom:1px;position:relative;}
 .post-container .social.comment,.post-container .social.commentn,.post-container .social.like{background-color:#edeff4;padding-left:11px;}
@@ -204,12 +205,13 @@ ul,ol{list-style-type:none;margin:0;padding:0;}
 .profile-block.vertical-center{position:relative;top:15px;}
 #profile .tip2{margin-top:15px;}
 .progress{margin-bottom:0;background:#edeff4;border:1px solid #c4cde0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;position:relative;}
-.progress .bar{background:#c4cde0;-webkit-box-shadow:0 0 0 0;-moz-box-shadow:0 0 0 0;box-shadow:0 0 0 0;}
+.progress .bar{background:#476dcc;-webkit-box-shadow:0 0 0 0;-moz-box-shadow:0 0 0 0;box-shadow:0 0 0 0;}
 .progress img{width:40px;}
 .progress.exp{margin-top:12px;margin-bottom:12px;border:1px solid #3c589d;background:white;}
 .box .half{width:221px;}
 .box .post-container .half{width:218px;}
 #followinglist .top-list.mini .ranker,#followerslist .top-list.mini .ranker{border-bottom:1px solid #dbdbdb;border-top:0px solid;}
+#toppost .user .user-badge{line-height:25px;}
 #recent_activities{overflow:auto;padding-left:5px;max-height:582px;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
 #user_activities .post-container,#recent_activities .post-container{font-size:11px;padding:3px;-webkit-border-radius:0px;-moz-border-radius:0px;border-radius:0px;margin:1px -5px 0px;}
 #recent_activities .post-container{width:220px;}
@@ -295,16 +297,16 @@ ul,ol{list-style-type:none;margin:0;padding:0;}
 .notifier ul{max-height:400px;overflow:hidden;}
 .notifier ul li{background-color:transparent;padding-top:5px;border-top:1px solid white;padding-bottom:5px;}
 .notifier ul li .photo{float:left;}
-.notifier ul li .social,.notifier ul li .message{margin-left:35px;}
+.notifier ul li .social,.notifier ul li .message{margin-left:50px;}
 .notifier a,.notifier a:hover{color:white;}
 .notifier .arrow{width:0px;height:0px;border-top:0px solid transparent;left:64%;position:absolute;border-bottom:10px solid #647ab1;border-right:10px solid transparent;border-left:10px solid transparent;margin-top:-10px;}
 .notifier .post-container .user{font-size:12px;border-bottom:0px;}
 .notifier .message{font-weight:normal;font-size:11px;}
 .notifier .box{margin:0px;}
 .notifier .time{font-size:11px;}
-.notifier .progress{height:24px;width:24px;position:relative;margin-left:auto;margin-right:auto;}
-.notifier .progress a{top:-24px;float:left;position:relative;}
-.notifier .bar{height:24px;}
+.notifier .progress{height:40px;width:40px;position:relative;margin-left:auto;margin-right:auto;}
+.notifier .progress a{top:-40px;float:left;position:relative;}
+.notifier .bar{height:40px;}
 #user_activities .post,#recent_activities .post{border-bottom:1px solid #e5e5e5;padding-top:11px;}
 .progress.earned-badges{height:40px;width:40px;margin-right:15px;margin-bottom:15px;display:inline-block;}
 .progress.chosen-badges{height:40px;width:40px;margin-right:15px;display:inline-block;}
@@ -385,3 +387,12 @@ ul,ol{list-style-type:none;margin:0;padding:0;}
 #logout-menu ul li{border:0px;width:100%;padding:0px;}
 #logout-menu ul li a{text-decoration:none;font-weight:bold;width:100%;height:20px;padding-top:5px;padding-bottom:5px;display:block;}
 #logout-menu ul li a:hover{background-color:#476dcc;}
+[class^="sprite-"],[class*=" sprite-"]{display:inline-block;width:17px;height:16px;*margin-right:.3em;line-height:14px;vertical-align:text-top;background:url('/img/badges/rv/icons-fc-sprite.png') no-repeat top left;}
+[class^="sprite-"]:last-child,[class*=" sprite-"]:last-child{*margin-left:0;}
+.sprite-comment-general{background-position:0 0;width:40px;height:40px;}
+.sprite-like-general{background-position:0 -90px;width:40px;height:40px;}
+.sprite-post-general{background-position:0 -180px;width:40px;height:40px;}
+.sprite-post-link{background-position:0 -270px;width:40px;height:40px;}
+.sprite-post-picture{background-position:0 -360px;width:40px;height:40px;}
+.sprite-post-status{background-position:0 -450px;width:40px;height:40px;}
+.sprite-post-video{background-position:0 -540px;width:40px;height:40px;}

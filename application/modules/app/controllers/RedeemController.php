@@ -35,6 +35,7 @@ class App_RedeemController extends Fancrank_App_Controller_BaseController
 		}
 
 		$this->_fanpageId = $this->_getParam('id');
+		$this->view->fanpageId = $this->_fanpageId;
 	}
 	
 	public function indexAction() {

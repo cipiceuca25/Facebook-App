@@ -2689,10 +2689,10 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test38Action() {
-    	$fanpageId = '216821905014540';
+    	$fanpageId = '197221680326345';
    	
     	try {
-			
+			//echo Model_RedeemStatusRef::APPROVED;
     	} catch (Exception $e) {
     		echo $e->getMessage();
     	}

@@ -248,7 +248,7 @@
 	</div>
 	<div class="modal-body" id="redeemDetailContent">
 	</div>
-</div>
+</div> 
 
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
@@ -259,7 +259,7 @@ $(document).ready(function() {
 		"bProcessing": false,
 		"bServerSide": false,
 		"sPaginationType" : "full_numbers",
-		bJQueryUI : false,
+		 bJQueryUI : false,
 		"bAutoWidth":false,
 		"bDestroy": true,
 		"aoColumns": [
@@ -281,7 +281,7 @@ $(document).ready(function() {
 			{ 
 				"mData": "picture",
 				"fnRender": function(oObj) {
-					return "<img src='"+ oObj.aData['picture'] +"' />";
+					return "<img src='/images/"+ fanpageId +"/item/"+ oObj.aData['picture'] +"' />";
 				}
 			},
 			
@@ -380,7 +380,7 @@ $(document).ready(function() {
 			{ 
 				"mData": "picture",
 				"fnRender": function(oObj) {
-					return "<img src='/img/"+ oObj.aData['picture'] +"' style='width:100px' />";
+					return "<img src='/images/"+ fanpageId +"/item/"+ oObj.aData['picture'] +"' style='width:100px' />";
 				}
 			},
 			{ 
@@ -394,7 +394,7 @@ $(document).ready(function() {
 			{ 
 				"mData": "status",
 				"fnRender": function(oObj) {
-					var status = ['disapproved', 'pending', 'approved', 'fullfilled'];
+					var status = ['Disapproved', 'Pending', 'Approved', 'Fulfilled'];
 					return status[oObj.aData['status']];
 				}
 			},
@@ -524,7 +524,12 @@ $(document).ready(function() {
 			{ "mData": "id"},
 			{ "mData": "name"},
 			{ "mData": "description" },
-			{ "mData": "picture" },
+			{ "mData": "picture",
+			   "fnRender": function (oObj) {
+					return "<img src='/images/"+ fanpageId +"/item/"+ oObj.aData['picture'] +"' style='width:100px' />";
+				}
+			
+			},
 			{ "mData": "points" },
 			{ 
 				"mData": null,

@@ -152,8 +152,7 @@
 					</a>
 					
 				</div>
-			<?php }?>
-				<div class="link-right">
+				<div class="link-right wpic">
 					<a target="_new" class="link-title" href="<?echo $this->escape($post->link)?>">
 						<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
 					</a>
@@ -173,6 +172,28 @@
 						
 					
 				</div>
+			<?php }else{?>
+				<div class="link-right ">
+					<a target="_new" class="link-title" href="<?echo $this->escape($post->link)?>">
+						<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
+					</a>
+					
+					<?php if(isset($post->caption)){?>
+						<br/>
+						<a target="_new" class="link-caption" href="<?echo $this->escape($post->link)?> ">
+							<?php echo $this->escape($post->caption);?>:  
+						</a>
+					<?php }?>	
+				
+					<?php if (isset($post->description)){?>
+						<a target="_new" class="link-caption" href="<?echo $this->escape($post->link)?> ">	
+							<?=$this->escape($post->description)?> 
+						</a>
+					<?php }?>
+						
+					
+				</div>
+			<?php }?>
 			</div>
 		<?}?>
 		</div>
@@ -411,32 +432,32 @@
 								 		true )"> 
 					<img src="/img/comment.png" />
 					
-					<span class="comment_<?= $post->id?>">View all Comments</span>
-					<!-- 
-			 		<?//php if($post->comments->count != 1){?> 
-			 		View all <span class="comment_<?//= $post->id?>" data-comment-count = <?php// if(isset($post->comments->count)){
-					//	echo $post->comments->count; 
-					// 	} else {
-						//	echo '0'; 
-					//	}?>>
-			 		<?//php if(isset($post->comments->count)){
-					//	echo $post->comments->count; 
-					 //	} else {
-						//	echo '0'; 
-						//}?>
+					<!--<span class="comment_<?//= $post->id?>">View all Comments</span>-->
+					
+			 		<?php if($post->comments->count != 1){?> 
+			 		View all <span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
+						echo $post->comments->count; 
+					 	} else {
+							echo '0'; 
+						}?>>
+			 		<?php if(isset($post->comments->count)){
+						echo $post->comments->count; 
+					 	} else {
+							echo '0'; 
+						}?>
 					</span> 
 					comments 
-				<?php// }else { ?>
+				<?php }else { ?>
 					View all<span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
-					//	echo $post->comments->count; 
-					 //	} else {
-					//		echo '0'; 
-					//	}?>>
+						echo $post->comments->count; 
+					 } else {
+							echo '0'; 
+					}?>>
 			 		
 					 
 					 
 					</span>
-					comments -->
+					comments
 				<?php }?>
 				</a>
 				

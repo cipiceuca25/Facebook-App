@@ -751,11 +751,97 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$fanStatModel = new Model_FansObjectsStats();
 		$topFanList = $fanStatModel->getTopFanListByFanpageId($fanpageId);
 		$fanpageModel = new Model_Fanpages;
-			
+		$model = new Model_Rankings;
+		$cache = Zend_Registry::get('memcache');
+		$cache->setLifetime(1800);
+		$topfollowed = array();
+		$topclicker = array();
+		$fanfavorite = array();
+		$toptalker = array();
+		$topfanall = array();
+		$topfan = array();
+
+		try {		
+    		if(isset($cache) && !$cache->load($fanpageId . '_topfollowed')){
+    			$topfollowed = $model->getTopFollowedByWeek($fanpageId, 5);
+    							
+    			$cache->save($topfollowed, $fanpageId . '_topfollowed');
+    		}else{
+    			$topfollowed = $cache->load($fanpageId . '_topfollowed');
+    		}
+    	} catch (Exception $e) {
+    			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    			//echo $e->getMessage();
+    	}
+    	
+    	try{		
+    		if(isset($cache) && !$cache->load($fanpageId . '_topclicker')){
+    			$topclicker = $model->getTopClickerByWeek($fanpageId, 5);
+    				
+    			$cache->save($topclicker, $fanpageId . '_topclicker');
+    		}else{
+    			$topclicker = $cache->load($fanpageId . '_topclicker');
+    		}
+    	
+    	} catch (Exception $e) {
+    		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    			//echo $e->getMessage();
+    	}
+    	
+    	try{			
+		    if(isset($cache) && !$cache->load($fanpageId . '_fanfavorite')){
+		    	$fanfavorite = $model->getMostPopularByWeek($fanpageId, 5);
+		    				
+		    	$cache->save($fanfavorite, $fanpageId . '_fanfavorite');
+		    }else{
+		    	$fanfavorite = $cache->load($fanpageId . '_fanfavorite');
+		    }
+	    
+	    } catch (Exception $e) {
+	    	Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+	    	//echo $e->getMessage();
+	    }
+	    
+	    try{		
+    		if(isset($cache) && !$cache->load($fanpageId . '_toptalker')){
+    			$toptalker = $model->getTopTalkerByWeek($fanpageId, 5);
+    				
+    			$cache->save($toptalker, $fanpageId . '_topfan');
+    		}else{
+    			$toptalker = $cache->load($fanpageId . '_topfan');
+    		}
+    	} catch (Exception $e) {
+    		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    		//echo $e->getMessage();
+    	}
+		try{
+	    	if(isset($cache) && !$cache->load($fanpageId . '_topfanall')){
+	    		$topfanall = $model->getTopFans($fanpageId, 5);
+	    		$cache->save($topfanall, $fanpageId . '_topfanall');
+	    	}else{
+	    		$topfanall = $cache->load($fanpageId . '_topfanall');
+	    	}
+    	} catch (Exception $e) {
+    		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+    		//echo $e->getMessage();
+    	}			
+    	
+    	try{
+    		if(isset($cache) && !$cache->load($fanpageId . '_topfan')){
+    			$topfan = $model->getTopFansByCurrentMonth($fanpageId, 5);
+    			//$toplist = $model->getTopFansByWeek($this->_fanpageId, 5);
+    			$cache->save($topfan, $fanpageId . '_topfan');
+    		}else{
+    			$topfan = $cache->load($fanpageId . '_topfan');
+    		}    			
+    	} catch (Exception $e) {
+  			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
+  				//echo $e->getMessage();
+    	} 
+		
 		//Zend_Debug::dump($topPostByComment);
 		$follow = new Model_Subscribes();
 		for ($count = 0 ;$count <count($topFanList); $count ++ ){
-		
 			$topFanList[$count]['follower'] = $follow->getFollowers($topFanList[$count]['facebook_user_id'], $fanpageId);
 			$topFanList[$count]['follower'] = $topFanList[$count]['follower'][0]['Follower'];
 			$topFanList[$count]['following'] = $follow->getFollowing($topFanList[$count]['facebook_user_id'], $fanpageId);
@@ -764,6 +850,16 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 				$topFanList[$count]['fan_exp'] = '?';
 			}
 		}
+		
+		
+		
+		$this->view->topFollowed =$topfollowed;
+		$this->view->topClicker =$topclicker;
+		$this->view->fanFavorite =$fanfavorite;
+		$this->view->topTalker =$toptalker;
+		$this->view->topFanAll =$topfanall;
+		$this->view->topFan =$topfan;
+		
 		$this->view->topFanList = $topFanList;
 		$this->render("users");
 		

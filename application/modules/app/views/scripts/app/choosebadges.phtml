@@ -33,7 +33,11 @@ selected_badges=  <?= ($this->selected[0] == 'undefined')?0:count($this->selecte
 							<div class="bar" ></div>
 							<a data-original-title="<?=$b['stylename'].' '.$b['name']. '<br/>'.$b['description']?>" 
 							 rel="tooltip" data-placement="top"  >
-								<img src="<?= $b['picture']?>"/>
+								<?php if (strpos( $b['picture'], '.') === false){?>
+											<i class="sprite-<?= $b['picture']?>"></i>
+										<?php }else{ ?>
+											<img src="<?= $b['picture']?>"/>
+										<?}?>
 							</a>
 						</div>
 						

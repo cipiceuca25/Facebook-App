@@ -18,8 +18,12 @@
 				<div class="bar" style="width: <?= $b['percentage']?>%;"></div>
 				<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
 				rel="tooltip" data-placement="top-left"  >
+					<?php if (strpos( $b['picture'], '.') === false){?>
+											<i class="sprite-<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"></i>
+										<?php }else{ ?>
+											<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
+										<?}?>
 					
-					<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
 				</a>
 			</div>
 		</div>
@@ -45,7 +49,11 @@
 			<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
 			rel="tooltip" data-placement="top-left"  >
 				
-				<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
+				<?php if (strpos( $b['picture'], '.') === false){?>
+											<i class="sprite-<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"></i>
+										<?php }else{ ?>
+											<img src="<?= $b['picture']?>" style="opacity:<?= $b['percentage']/100?>"/>
+										<?}?>
 			</a>
 		</div>
 		<div class="badge-description">
