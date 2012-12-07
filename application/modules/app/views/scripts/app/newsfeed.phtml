@@ -1,3 +1,5 @@
+
+
 <div class="rvrow">
 	<div class="rvgrid-11">
 	
@@ -155,7 +157,25 @@
 												<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
 											</a>
 										</div>
-									<?php }?>
+										<div class="link-right wpic">
+										<a target="new" class="link-title" href="<?echo $this->escape($post->link)?>">
+											<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
+										</a>
+										<?php if(isset($post->caption)){?>
+											<br/>
+											<a target="new" class="link-caption" href="<?echo $this->escape($post->link)?> ">
+												<?php echo $this->escape($post->caption);?>:  
+											</a>
+										<?php }?>	
+									
+										<?php if (isset($post->description)){?>
+												<?=$this->escape($post->description)?> 
+											
+										<?php }?>
+											
+										
+									</div>
+									<?php }else{?>
 									<div class="link-right">
 										<a target="new" class="link-title" href="<?echo $this->escape($post->link)?>">
 											<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
@@ -174,6 +194,7 @@
 											
 										
 									</div>
+									<?php }?>
 								</div>
 							<?}?>
 							</div>
@@ -398,32 +419,33 @@
 						 		if(isset($post->comments->count)){
 									echo $post->comments->count; //echo  $post->comments->count;
 						 		} else {echo '0';} ?> , true )"> <img src="/img/comment.png" />
-						 			<span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
+						 			<!--  
+						 			<span class="comment_<?//= $post->id?>" data-comment-count = <?//php if(isset($post->comments->count)){
+									//echo $post->comments->count; 
+								 	//} else {
+									//	echo '0'; 
+									//}?>>View all Comments</span>
+						 			-->
+						 		
+						 			<?php  if($post->comments->count != 1){?>
+										View all <span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
 									echo $post->comments->count; 
 								 	} else {
 										echo '0'; 
-									}?>>View all Comments</span>
-						 			
-						 			<!--  
-						 			<?//php  if($post->comments->count != 1){?>
-										View all <span class="comment_<? // = $post->id?>" data-comment-count = <?php // if(isset($post->comments->count)){
-									//echo $post->comments->count; 
-								 	//} else {
-									//	echo '0'; 
-									//}?>><?php // if(isset($post->comments->count)){
-									//echo $post->comments->count; 
-								 	//} else {
-									//	echo '0'; 
-									//}?>
+									}?>><?php  if(isset($post->comments->count)){
+									echo $post->comments->count; 
+								 	} else {
+										echo '0'; 
+									}?>
 									</span> comments 
-									<?php //}else { ?> 
+									<?php }else { ?> 
 									View all<span
-										class="comment_<? //= $post->id?> "data-comment-count = <? //php if(isset($post->comments->count)){
-									//echo $post->comments->count; 
-								 	//} else {
-									//	echo '0'; 
-									//}?>> </span> comments <?//php }?>
-									-->
+										class="comment_<?= $post->id?> "data-comment-count = <?php if(isset($post->comments->count)){
+									echo $post->comments->count; 
+								 	} else {
+										echo '0'; 
+									}?>> </span> comments <?php }?>
+									
 									</a>
 									
 									<?php if($post->comments->count > 5){?> 
@@ -585,24 +607,24 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 				<div id="top-post-container">
 				
  
-				<div class="box">
-					<div class="title nopic">
-	
-	
-						<div class="title-header nopic"><span id="toppost-tour">Top Posts This Week</span></div>
-						<div class="tip2">
-						The posts listed below are the posts that have gotten the most likes and comments!  This list is updated regularly.
+					<div class="box">
+						<div class="title nopic">
+		
+		
+							<div class="title-header nopic"><span id="toppost-tour">Top Posts This Week</span></div>
+							<div class="tip2">
+							The posts listed below are the posts that have gotten the most likes and comments!  This list is updated regularly.
+							</div>
+							<!--  <div class="tip">
+								<a rel="tooltip" 
+									data-original-title="The posts listed below are the posts that have gotten the most likes and comments!  This list is updated regularly.">?</a>
+							</div>-->
 						</div>
-						<!--  <div class="tip">
-							<a rel="tooltip" 
-								data-original-title="The posts listed below are the posts that have gotten the most likes and comments!  This list is updated regularly.">?</a>
-						</div>-->
+						<ul id="toppost">
+	
+	
+						</ul>
 					</div>
-					<ul id="toppost">
-
-
-					</ul>
-				</div>
 				
 				</div>
 		
@@ -628,11 +650,8 @@ onClick="upload(this.form,'/app/user/<?=$this->fanpage_id?>/upload?fanpage_id=<?
 				
 				
 				</div>
-			</div>
-		</div>
-		 --> 
-
-
+			</div> --> 
+	</div>
 </div>	
 
 

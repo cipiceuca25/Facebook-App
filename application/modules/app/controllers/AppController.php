@@ -1178,8 +1178,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	$likes = array();
     	$relation = array();
     	$count=0;
-
-    	
     	
     	$likesPost[$count]=0;
     	//echo $top['facebook_user_id'];
@@ -1191,8 +1189,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			}
     			//Zend_Debug::dump( $likes[$count]);
     		}
+    		
     		if($likesPost==0){
-    			$likesPost = $likesModel->getLikes($this->_fanpageId, $postId, $this->_userId );
+    			$likesPost[$count] = $likesModel->getLikes($this->_fanpageId, $postId, $this->_userId );
     			//Zend_Debug::dump($likes[$count]);
     		}
     	}
@@ -1226,7 +1225,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$count++;
     		}
     	}
-
+	
+		
     	//$postTop = explode('_', $postId);
     	//$postTop = $postTop[0].'_'.$postTop[1];
     	//$this->view->postTopId = $postTop;

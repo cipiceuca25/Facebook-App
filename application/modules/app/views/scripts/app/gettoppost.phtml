@@ -32,19 +32,19 @@
 				<div class="user-badge">
 						<a rel="tooltip-follow"  <?php switch($this->relation[$count]) { 
 						case 'You':?>
-							 class="noclick" data-original-title="This is You"><span class="btn fc-You disabled">You</span>
+							 class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You disabled">You</span>
 						<?break;?>
 						
 						<?case 'Following'?>
 							class ="follow_<?=$post->from->id?>"
 							onclick="unfollow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
-							data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
+							data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
 						<?break;?>
 							
 						<?default:?>
 							class ="follow_<?=$post->from->id?>"
 							onclick="follow(<?=$post->from->id?> ,'<?=$post->from->name?>')" 
-							data-original-title="Click to Follow this User"><span class="btn fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+							data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
 						<?}?>
 					</a>		
 				</div> 
@@ -139,7 +139,24 @@
 							</a>
 						
 						</div>
-						<?php }?>
+						<div class="link-right wpic">
+							<a target="_new" class="link-title" href="<?echo $this->escape($post->link)?>">
+								<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
+							</a>
+							<?php if(isset($post->caption)){?>
+							<br/>
+							<a target="_new" class="link-caption" href="<?echo $this->escape($post->link)?> ">
+								<?php echo $this->escape($post->caption);?>:  
+							</a>
+							<?php }?>	
+					
+							<?php if (isset($post->description)){?>
+								<a target="_new" class="link-caption" href="<?echo $this->escape($post->link)?> ">	
+									<?=$this->escape($post->description)?> 
+								</a>
+							<?php }?>
+						</div>
+						<?php }else{?>
 						<div class="link-right">
 							<a target="_new" class="link-title" href="<?echo $this->escape($post->link)?>">
 								<?= (isset($post->name)?$this->escape($post->name): $this->escape($post->link))?>
@@ -157,6 +174,7 @@
 								</a>
 							<?php }?>
 						</div>
+						<?php }?>
 					</div>
 					<?}?>
 				</div>
@@ -249,16 +267,16 @@
 									 class="noclick" data-original-title="You can't Follow an Admin"><span class="btn fc-Fanpage disabled">Admin</span>
 								<?break;?>
 								<?case 'You':?>
-									 class="noclick" data-original-title="This is You"><span class="btn fc-You disabled">You</span>
+									 class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You disabled">You</span>
 								<?break;?>
 								<?case 'Following':?>
 									onclick="unfollow(<?=$comments->from->id?> ,'<?=$comments->from->name?>')" 
-									data-original-title="Click to Unfollow this User"><span class="btn fc-Following">Following</span>
+									data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
 								<?break;?>
 									
 								<?default:?>
 									onclick="follow(<?=$comments->from->id?> , '<?=$comments->from->name?>')" 				
-									data-original-title="Click to Follow this User"><span class="btn fc-<?= $this->comment_relation[$count2]?>"><?= $this->comment_relation[$count2]?></span>
+									data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?= $this->comment_relation[$count2]?>"><?= $this->comment_relation[$count2]?></span>
 								<?}?>
 							</a>
 						</div>	
@@ -365,32 +383,32 @@
 		
 				 <a  onclick="popup_post('<?= $post->id ?>',true )"> 
 						<img src="/img/comment.png" />
-				 		<span class="comment_<?= $post->id?>">View all Comments</span>
-				 		<!-- 
-				 		<?//php if($post->comments->count != 1){?> 
-					 		View all <span class="comment_<?//= $post->id?>" data-comment-count = <?//php if(isset($post->comments->count)){
-							//	echo $post->comments->count; 
-							// 	} else {
-							//		echo '0'; 
-							//	}?>>
-					 		<?//php if(isset($post->comments->count)){
-							//	echo $post->comments->count; 
-							// 	} else {
-							//		echo '0'; 
-							//	}?>
+				 		<!--  <span class="comment_<?= $post->id?>">View all Comments</span>-->
+				 		 
+				 		<?php if($post->comments->count != 1){?> 
+					 		View all <span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
+								echo $post->comments->count; 
+							 	} else {
+									echo '0'; 
+								}?>>
+					 		<?php if(isset($post->comments->count)){
+								echo $post->comments->count; 
+							 	} else {
+									echo '0'; 
+								}?>
 							</span> 
 							comments 
-						<?//php }else { ?>
-							View all<span class="comment_<?//= $post->id?>" data-comment-count = <?//php if(isset($post->comments->count)){
-						//	echo $post->comments->count; 
-						// 	} else {
-						//		echo '0'; 
-						//	}?>>
+						<?php }else { ?>
+							View all<span class="comment_<?= $post->id?>" data-comment-count = <?php if(isset($post->comments->count)){
+							echo $post->comments->count; 
+						 	} else {
+								echo '0'; 
+							}?>>
 
 							</span>
 							comments 
-					<?//php }?>
-					 -->
+					<?php }?>
+					 
 				</a>
 			</div>
 			

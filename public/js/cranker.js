@@ -1499,8 +1499,8 @@ function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name
 				post_comment_count = parseInt($('#post_'+post_id).attr('data-comment-count')) + 1;
 				console.log(post_comment_count);
 				//alert(post_comment_count);
-				//$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
-			//	$('.comment_'+post_id).html(' '+post_comment_count);
+				$('.comment_'+post_id).attr('data-comment-count', post_comment_count);
+				$('.comment_'+post_id).html(' '+post_comment_count);
 				
 				if (isLatestAdminPost){
 					comment_feed2(post_id, post_type,  post_comment_count, false);
@@ -1540,7 +1540,7 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 				
 				post_comment_count = parseInt($('#post_'+post_id).attr('data-comment-count')) + 1;
 				//alert(post_comment_count);
-				//$('.comment_'+post_id).html(post_comment_count);
+				$('.comment_'+post_id).html(post_comment_count);
 	
 				popup_post(post_id, false);
 			},

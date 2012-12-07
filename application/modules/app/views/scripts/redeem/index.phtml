@@ -31,7 +31,7 @@
 								<?php foreach($this->itemList as $item): ?>
 									<tr>
 										<td><input data-item-id="<?= $item['id']?>" type="checkbox" /></td>		
-										<td><img src='/img/item/<?= $item['picture']?>' width="40px" /></td>	
+										<td><img src='/images/<?=$this->fanpageId?>/item/<?= $item['picture']?>' width="40px" /></td>	
 										<td><?= $item['name']?></td>
 										<td><?= $item['description']?></td>		
 																
@@ -60,7 +60,7 @@
 							<div class="control-group">
 								<label class="control-label" for="contactName">Contact Name</label>
 								<div class="controls">
-									<input type="text" name="contactName" id="contactName" value="<?=$this->shippingInfo['name']?>" />
+									<input type="text" name="contactName" id="contactName" value="<?=strtoupper($this->shippingInfo['name'])?>" />
 								</div>
 							</div>			
 							<div class="control-group">
