@@ -315,9 +315,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     					if(isset($cache) && !$cache->load($this->_fanpageId . '_toptalker')){
     						$toplist = $model->getTopTalkerByWeek($this->_fanpageId, 5);
     				
-    						$cache->save($toplist, $this->_fanpageId . '_topfan');
+    						$cache->save($toplist, $this->_fanpageId . '_toptalker');
     					}else{
-    						$toplist = $cache->load($this->_fanpageId . '_topfan');
+    						$toplist = $cache->load($this->_fanpageId . '_toptalker');
     					}
     					break;
 
