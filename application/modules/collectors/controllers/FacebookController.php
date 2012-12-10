@@ -2689,13 +2689,50 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test38Action() {
-    	$fanpageId = '197221680326345';
-   	
-    	try {
-			//echo Model_RedeemStatusRef::APPROVED;
-    	} catch (Exception $e) {
-    		echo $e->getMessage();
-    	}
-    	 
+    	$filePath = DATA_PATH .'/badges-dec07.js.csv';
+    	//$jsonData = file_get_contents( $filePath );
+    	$badges = array();
+		try {
+			$row = 1;
+			if (($handle = fopen($filePath, "r")) !== FALSE) {
+				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+					//Zend_Debug::dump($data);
+					$badges[] = array('id'=>$data[0], 'picture'=>$data[4]);
+				}
+				fclose($handle);
+			}
+			
+			$badgeModel = new Model_Badges();
+			foreach ($badges as $badge) {
+				$row = $badgeModel->findRow($badge['id']);
+				if (!empty($row)) {
+					$row->picture = $badge['picture'];
+					$row->save();
+				} else {
+					echo 'fail to save ' . $badge['id'];
+				}
+			}
+			Zend_Debug::dump($badges);
+			//file_put_contents($filePath, serialize($badges));
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
     }
+    
+    public function test39Action() {
+    	$filePath = DATA_PATH .'/badges.dat';
+    	$badgeData = file_get_contents($filePath);
+    	
+    	Zend_Debug::dump(unserialize($badgeData));
+    }
+    
+    public function exportbadge() {
+    	$db = Zend_Db_Table::getDefaultAdapter();
+    	
+    	$sql = 'select * from badges where id < 791';
+    	$badges = $db->fetchAll($sql);
+    	
+    	return $badges;
+    }
+    
 }
