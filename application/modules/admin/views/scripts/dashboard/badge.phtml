@@ -49,11 +49,15 @@
 						<?php foreach($this->mostAwarded as $b): ?>
 							<tr>
 								<td>
-									<div class="progress">
+									<div class="progress badges">
 										<div class="bar" style="width: 100%;"></div>
 										<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description']?>" 
 										rel="tooltip" data-placement="bottom"  >
-											<img src="<?= $b['picture']?>" style="opacity:100"/>
+										<?php if (strpos( $b['picture'], '.') === false){?>
+											<i class="sprite-<?= $b['picture']?>"></i>
+										<?php }else{ ?>
+											<img src="<?= $b['picture']?>"/>
+										<?}?>
 										</a>
 									</div>
 								</td>	
@@ -92,11 +96,15 @@
 								<td><?= $b['description']?></td>	
 								<td><?= $b['created_time']?></td>
 								<td>
-									<div class="progress">
+									<div class="progress badges">
 										<div class="bar" style="width: 100%;"></div>
 										<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description']?>" 
 										rel="tooltip" data-placement="bottom"  >
-											<img src="<?= $b['picture']?>" style="opacity:100"/>
+												<?php if (strpos( $b['picture'], '.') === false){?>
+													<i class="sprite-<?= $b['picture']?>"></i>
+												<?php }else{ ?>
+													<img src="<?= $b['picture']?>"/>
+												<?}?>
 										</a>
 									</div>
 								</td>									

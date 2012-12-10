@@ -1,29 +1,89 @@
+<style>
+
+.facebook-user-face {
+	width: 24px;
+	height: 24px;
+}
+
+</style>
+
+
 <div class="row-fluid">
 	<div class="span2">
+	
 		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
-			<h2>Top Followed</h2>
-			<?php Zend_Debug::dump($this->topFollowed);?>
-		</div>
-		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
-			<h2>Top Clicker</h2>
-			<?php Zend_Debug::dump($this->topClicker);?>
-		</div>
-		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
-			<h2>Fan Favorite</h2>
-			<?php Zend_Debug::dump($this->fanFavorite);?>
-		</div>
-		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
-			<h2>Top Talker</h2>
-			<?php Zend_Debug::dump($this->topTalker);?>
+			<h2>Top Fan</h2>
+			<?php $count = 1;?>
+			<?php foreach ($this->topFan as $a){?>
+				<?= $count?>
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
+				<span><?=$a['count']?></span> <br/>
+				<? $count++?>
+			<?php }?>
 		</div>
 		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
 			<h2>Top Fan All</h2>
-			<?php Zend_Debug::dump($this->topFanAll);?>
+			<?php $count = 1;?>
+			<?php foreach ($this->topFanAll as $a){?>
+				<?= $count?>
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
+				<span><?=$a['count']?></span> <br/>
+				<? $count++?>
+			<?php }?>
+		
 		</div>
 		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
-			<h2>Top Fan</h2>
-			<?php Zend_Debug::dump($this->topFan);?>
+			<h2>Fan Favorite</h2>
+			<?php $count = 1;?>
+			<?php foreach ($this->fanFavorite as $a){?>
+				<?= $count?>
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
+				<span><?=$a['count']?></span> <br/>
+				<? $count++?>
+			<?php }?>
+
 		</div>
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<h2>Top Talker</h2>
+			<?php $count = 1;?>
+			<?php foreach ($this->topTalker as $a){?>
+				<?= $count?>
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
+				<span><?=$a['count']?></span> <br/>
+				<? $count++?>
+			<?php }?>
+	
+		</div>
+	
+		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<h2>Top Clicker</h2>
+			<?php $count = 1;?>
+			<?php foreach ($this->topClicker as $a){?>
+				<?= $count?>
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
+				<span><?=$a['count']?></span> <br/>
+				<? $count++?>
+			<?php }?>
+		</div>
+		
+			<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
+			<h2>Top Followed</h2>
+			<?php $count = 1;?>
+			<?php foreach ($this->topFollowed as $a){?>
+				<?= $count?>
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
+				<span><?=$a['count']?></span> <br/>
+				<? $count++?>
+			<?php }?>
+		
+		</div>
+	
 		
 	</div>
 	<div class="span10">

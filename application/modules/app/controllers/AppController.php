@@ -234,15 +234,11 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     			if(isset($cache) && !$cache->load($this->_fanpageId .'_' .$this->_userId)){
     				//Look up the $fanpageId
     				$userLeaderBoardData['topFans'] = $model->getUserTopFansRank($this->_fanpageId, $this->_userId);
-    				
     				$userLeaderBoardData['mostPopular'] = $model->getUserMostPopularRank($this->_fanpageId, $this->_userId);
-    				 
     				$userLeaderBoardData['topTalker'] = $model->getUserTopTalkerRank($this->_fanpageId, $this->_userId);
     				//Zend_Debug::dump($topTalker);
-    				 
     				$userLeaderBoardData['topClicker'] = $model->getUserTopClickerRank($this->_fanpageId, $this->_userId);
     				//Zend_Debug::dump($topClicker);
-    				 
     				//$topPosts = $model->getTopPosts($this->data['page']['id'], 5);
     				$userLeaderBoardData['topFollowed'] = $model->getTopFollowedRankByWeek($this->_fanpageId, $this->_userId);
     				//$latestPost = $post ->getLatestPost($this->data['page']['id'],5);
@@ -2601,7 +2597,6 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	//Zend_debug::dump($result);
     	
     	if(!empty ($result)) {
-    	
     		return $result;
     	}
     }

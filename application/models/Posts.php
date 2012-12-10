@@ -460,5 +460,34 @@ class Model_Posts extends Model_DbTable_Posts
 		return isset($result[0]['count']) && $result[0]['count'] == 0 ? true : false;
 	}
 	
+	public function getAllAdminPosts($fanpage_id){
+		$select = "SELECT p.*, a.giving_points as points, bonus, unique_user FROM fancrank.posts p
+					left join (select sum(giving_points) as giving_points,sum(bonus) as bonus, object_id from fancrank.point_log where fanpage_id = $fanpage_id group by object_id) as a
+					on a.object_id = post_id
+					
+					left join (select count(distinct facebook_user_id)as unique_user ,post_id from (
+					
+						select facebook_user_id, comment_post_id as post_id from fancrank.comments 
+						where fanpage_id =$fanpage_id and facebook_user_id != fanpage_id
+					
+						union 
+					
+						select facebook_user_id, post_id from fancrank.likes
+						where fanpage_id = $fanpage_id and facebook_user_id != fanpage_id and likes = 1
+					
+						) as c
+					
+						group by post_id
+					) as d 
+					on d.post_id = p.post_id
+					
+					where fanpage_id = $fanpage_id && fanpage_id = facebook_user_id
+					group by post_id
+					order by created_time DESC";
+		$result = $this->getAdapter()->fetchAll($select);
+	
+		return $result;
+	}
+	
 }
 
