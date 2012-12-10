@@ -650,18 +650,18 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 			
 				case 'month':
 					$select= $select. " where month(c.date) = month(curdate()) && year(c.date) = year(curdate())
-										group by date(c.date)";
+										";
 					break;
 				case 'week':
 					$select= $select." where yearweek(c.date) = yearweek(curdate())
-										group by date(c.date)";
+										";
 					break;
 				case 'today':
 					$select= $select." where date(c.date) = date(curdate())
-										group by hour(c.date)";
+										";
 					break;
 				default:
-					$select= $select." group by date(c.date)";
+					$select= $select." ";
 					break;
 			
 			}
@@ -685,7 +685,7 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 						
 						count(case when date(date1)=date(curdate()) then date1 end) as 'today'
 						
-						 from (
+						from (
 						
 						select 
 						

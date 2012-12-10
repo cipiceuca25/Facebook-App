@@ -1,3 +1,4 @@
+*Note: Since Posts are retrieved real time, Comment and Likes numbers may differ
 <div class="row-fluid">
 	<div>
 	<img class="small-face"  src="https://graph.facebook.com/<?= $this->post->from->id ?>/picture" onerror="ImgError(this);">
@@ -81,7 +82,7 @@
 								<?php }?>
 						</div>
 						<?php }else{?>
-						<div ">
+						<div >
 								<a target="_new" class="link-title" href="<?echo $this->escape($this->post->link)?>">
 									<?= (isset($this->post->name)?$this->escape($this->post->name): $this->escape($this->post->link))?>
 								</a>
@@ -97,7 +98,6 @@
 										<?=$this->escape($this->post->description)?> 
 									</a>
 								<?php }?>
-								
 						</div>
 						<?php }?>
 					</div>
@@ -107,6 +107,7 @@
 		<div>
 			Likes <?= isset($this->post->likes)?$this->post->likes->count:'0'?>
 			Comments  <?= isset($this->post->comments)?$this->post->comments->count:'0'?>
+			<?= $this->post->created_time?>
 		</div>
 	
 	
@@ -114,5 +115,45 @@
 </div>	
 	
 <div class="row-fluid">
-	
+	<?php if(!empty($this->comment)){?>
+
+		<?php foreach ($this->comment as $post){ ?>	
+			
+		
+			<div>
+				<div>
+					<img class="small-face" src="https://graph.facebook.com/<?= $post->from->id ?>/picture" onerror="ImgError(this);">
+				</div>
+				<div>
+					<a><?=  $post->from->name?></a> 
+					<?php if(isset($post->message)){  
+							$reg_ex = "/\n/";
+							$message = $this->escape($post->message);
+							if(preg_match_all($reg_ex, $message, $url)) {
+								$message= preg_replace($reg_ex, "<br/>", $message);
+							} 
+							
+							$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,5}(\/\S*)?/";
+						 
+							$m = preg_match_all($reg_exUrl, $message, $match); 
+							
+							if ($m) { 
+							    $links=$match[0]; 
+							    for ($j=0;$j<$m;$j++) { 
+							        $message=str_replace($links[$j],'<a href="'.$links[$j].'" target="_new">'.$links[$j].'</a>',$message); 
+							    } 
+							} 
+							
+							echo $message; 
+								//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
+					}?>
+				</div>
+				<div>
+					Likes <?=isset($post->like_count)?$post->like_count:'0'?>
+					<?= $this->post->created_time?>
+				</div>	
+			</div>
+
+		<?php }?>
+	<?php }?>
 </div>

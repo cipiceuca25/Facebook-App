@@ -453,7 +453,6 @@ function feedbackAnimation(ui, type) {
 	}	
 }
 
-
 function closeProfile() {
 	selected_badges = 0;
 	$('.light-box').css('display', 'none');
@@ -464,6 +463,10 @@ function closeProfile() {
 	//document.removeEventListener("DOMMouseScroll", mouseScroll, true);
 	//document.removeEventListener("mousewheel", mouseScroll, true);
 }
+
+$('.light-box').live('click' , function(){
+	closeProfile();
+});
 
 
 function ImgError(source) {
@@ -1633,6 +1636,8 @@ function getFollowersList(targetname, target, limit, load) {
 	});
 
 }
+
+
 
 
 function popup(load){
