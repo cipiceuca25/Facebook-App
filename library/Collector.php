@@ -12,8 +12,9 @@ class Collector
     		case 'update' :
     			$collector->updateFanpage(null, null);
     			break;	
-    		case 'full' : 
-    			$collector->fullScanFanpage();
+    		case 'full' :
+    			$collector->fullScanFanpage(); 
+    			//$collector->updateFanpageFeed('365+days+ago', 'now');
     			break;	
     		default:
     			break;		

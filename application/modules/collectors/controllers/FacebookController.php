@@ -407,16 +407,19 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test2Action() {
-    	//$fanpageId = '178384541065';
-    	//$accessToken = 'AAAFHFbxmJmgBAJpg48MFFoOl6UNIWdqpAgHGDAyEc2oZC6zCFXP3LxjbCaIuP3fMasbIEGOyXgR3Sa6xr2pzyqWf5XuUZARBgOhTJ914iO57nzIlmm';
-    	
-    	$fanpageId = '216821905014540';
+    	// dan club
+    	$fanpageId = '197221680326345';
     	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
+    	
+    	// lisa fanpage
+    	//$fanpageId = '153123704737554';
+    	//$accessToken = 'AAAFWUgw4ZCZB8BAJofkYwA5mVRpqR6cyO9od48RZAXxYmNfzag2GEOe0AiujnZBlXtpkdQoX5PwlGL1SKXCVLNoSfqTIYdRu3USi5pd2NIpKz7xjzOZCk';
     	   
     	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
-		$collector->updateFanpageFeed('10+days+ago', 'now');
-		//$result = $collector->getFanpageFeed('10+days+ago', 'now');
-		//Zend_Debug::dump($result);
+		//$collector->updateFanpageFeed('10+days+ago', 'now');
+		$result = $collector->getFanpageFeed('100+days+ago', 'now');
+		
+		Zend_Debug::dump($result);
     }
     
     public function test3Action () {
@@ -2688,15 +2691,66 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     }
     
     public function test38Action() {
-    	$fanpageId = '197221680326345';
-   	
-    	try {
-    		Model_Fanpages::createFanpageSpace($fanpageId );
-    		echo "hello mofo";
-			//echo Model_RedeemStatusRef::APPROVED;
-    	} catch (Exception $e) {
-    		echo $e->getMessage();
-    	}
-    	 
+    	$filePath = DATA_PATH .'/badges-dec07.js.csv';
+    	//$jsonData = file_get_contents( $filePath );
+    	$badges = array();
+		try {
+			$row = 1;
+			if (($handle = fopen($filePath, "r")) !== FALSE) {
+				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+					//Zend_Debug::dump($data);
+					$badges[] = array('id'=>$data[0], 'picture'=>$data[4]);
+				}
+				fclose($handle);
+			}
+			
+			$badgeModel = new Model_Badges();
+			foreach ($badges as $badge) {
+				$row = $badgeModel->findRow($badge['id']);
+				if (!empty($row)) {
+					$row->picture = $badge['picture'];
+					$row->save();
+				} else {
+					echo 'fail to save ' . $badge['id'];
+				}
+			}
+			Zend_Debug::dump($badges);
+			//file_put_contents($filePath, serialize($badges));
+		} catch (Exception $e) {
+			echo $e->getMessage();
+		}
     }
+    
+    public function test39Action() {
+    	$filePath = DATA_PATH .'/badges.dat';
+    	$badgeData = file_get_contents($filePath);
+    	
+    	Zend_Debug::dump(unserialize($badgeData));
+    }
+    
+    public function exportbadge() {
+    	$db = Zend_Db_Table::getDefaultAdapter();
+    	
+    	$sql = 'select * from badges where id < 791';
+    	$badges = $db->fetchAll($sql);
+    	
+    	return $badges;
+    }
+    
+    public function test40Action() {
+    	// dan club
+    	$fanpageId = '197221680326345';
+    	$accessToken = 'AAAFHFbxmJmgBAIC75ZAo1l3zZB0e7ZAJM1CuZAPZA8jZAegeabToX13hDhje3czBe3LYFXvNQxcByREt6RwrposGq6J8mOoYDT935pDevkalt2bZCRK5Qno';
+    	 
+    	// lisa fanpage
+    	//$fanpageId = '153123704737554';
+    	//$accessToken = 'AAAFWUgw4ZCZB8BAJofkYwA5mVRpqR6cyO9od48RZAXxYmNfzag2GEOe0AiujnZBlXtpkdQoX5PwlGL1SKXCVLNoSfqTIYdRu3USi5pd2NIpKz7xjzOZCk';
+    	
+    	$collector = new Service_FancrankCollectorService(null, $fanpageId, $accessToken, 'update');
+    	//$collector->updateFanpageFeed('10+days+ago', 'now');
+    	$result = $collector->fullScanFanpage();
+    	
+    	Zend_Debug::dump($result);
+    }
+    
 }

@@ -109,7 +109,7 @@ if (count($fanpageList) > 0) {
 
 		$fanList = array();
 		if ($fanpageHasUpdatedBefore) {
-			$fanList = $fanpageModel->getActiveFansSince($fanpage->fanpage_id, (time()-3600*24*2));
+			$fanList = $fanpageModel->getActiveFansSince($fanpage->fanpage_id, (time()-3600*24*3));
 		} else {
 			$fan = new Model_Fans();
 			$fanList = $fan->fetchFanFieldsByFanpageId($fanpage->fanpage_id, array('facebook_user_id', 'fan_exp', 'fan_point'));
