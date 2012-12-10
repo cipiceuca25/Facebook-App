@@ -66,20 +66,29 @@ class Service_FancrankCollectorService {
 		$url = $this->_facebookGraphAPIUrl . $this->_fanpageId .'/feed?access_token=' .$this->_accessToken .'&until=' .$until .'&since=' .$since;
 		
 		$posts = array();
-		//echo $url; exit();
 		$this->getPostsByTimeRange($url, 10, 100, $posts);
-		Zend_Debug::dump($posts);
+		//Zend_Debug::dump($posts);
 		
 		if(empty($posts)) {
 			return array();
 		}
 		
- 		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
+		// filter story post
+		$filterPosts = array();
+		foreach ($posts as $post) {
+			if (isset ($post->story)) {
+				continue;
+			} else {
+				$filterPosts [] = $post;
+			}
+		}
+		
+ 		$postLikeList = $this->getLikesFromMyPost($filterPosts, 2, 1000);
  		//Zend_Debug::dump($postLikeList); 
 
- 		$postCommentsList = $this->getCommentsAndItsLikesFromPost($posts, 5, 1000);
+ 		$postCommentsList = $this->getCommentsAndItsLikesFromPost($filterPosts, 5, 1000);
  		//Zend_Debug::dump($postCommentsList);
- 		return $posts;
+ 		return $filterPosts;
 	}
 	
 	public function updateFanpageFeed($since=null, $until=null, $synchronization=true) {
@@ -186,15 +195,24 @@ class Service_FancrankCollectorService {
 		$posts = array();
 		
 		$this->getPostsRecursive($url, 5, 1000, $posts);
-		//Zend_Debug::dump($posts);
 		
-		if(empty($posts)) {
+		if (empty($posts)) {
 			return;
 		}
 		
+		$filterPosts = array();
+		foreach ($posts as $post) {
+			if (isset ($post->story)) {
+				continue;
+			} else {
+				$filterPosts [] = $post;
+			}
+		}
+		$posts =$filterPosts;
+		
  		$postLikeList = $this->getLikesFromMyPost($posts, 2, 1000);
  		//Zend_Debug::dump($postLikeList);
-		
+ 		
  		$postCommentsList = $this->getCommentsFromPost($posts, 5, 1000);
  		//Zend_Debug::dump($postCommentsList);
 		
@@ -257,12 +275,6 @@ class Service_FancrankCollectorService {
 			file_put_contents( $filePath, serialize( $lastUpdatedData ) );
 		}
 		
-		$pointResult = $this->calculatePostPoints($posts, $postCommentsList, $postLikeList);
-		$pointResult = $this->calculateAlbumPoints($pointResult, $albumsList, $albumCommentList);
-		$pointResult = $this->calculatePhotoPoints($pointResult, $photoList, $photoCommentList);
-		$pointResult = $this->calculateCommentPoints($pointResult, $commentsList, $commentLikeList);
-		$pointResult = $this->calculateLikesPoints($pointResult, $allLikesList);
-		
 		//Zend_Debug::dump($pointResult);
 		//exit();
 		$db->beginTransaction();
@@ -282,7 +294,7 @@ class Service_FancrankCollectorService {
 			
 			$facebookUsers = $this->getFansList($fansIdsList, $this->_accessToken);
 			//$result = $fdb->saveFans($facebookUsers);
-			$result = $fdb->saveAndUpdateFans($facebookUsers, $pointResult);
+			$result = $fdb->saveAndUpdateFans($facebookUsers, null);
 			
 			$db->commit();
 			$stop = time() - $start;

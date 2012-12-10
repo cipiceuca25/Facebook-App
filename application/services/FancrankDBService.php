@@ -458,13 +458,13 @@ class Service_FancrankDBService extends Fancrank_Db_Table {
 						$fansData['fan_exp'] = $pointResult[$facebookUserData['facebook_user_id']]['total_points'];
 					}
 					$fansModel->insertNewFan($fansData);
-				}else {
+				} else {
 					$fanProfile = $fansModel->getFanProfile();
 					$fanProfile->fan_name = $fansData['fan_name'];
 					$fanProfile->fan_first_name = $fansData['fan_first_name'];
 					$fanProfile->fan_last_name = $fansData['fan_last_name'];
 					$fanProfile->updated_time = $fansData['updated_time'];
-					if(isset($pointResult[$facebookUserData['facebook_user_id']])) {
+					if (isset($pointResult[$facebookUserData['facebook_user_id']])) {
 						//echo $facebookUserData['facebook_user_id'] .'<br/>';
 						$fansModel->updateFanPoints($pointResult[$facebookUserData['facebook_user_id']]['total_points']);
 					}

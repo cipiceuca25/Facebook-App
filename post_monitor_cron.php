@@ -60,7 +60,7 @@ $logger = new Zend_Log($writer);
 
 foreach($fanpageList as $fanpage) {
 
-	if($fanpage->fanpage_level > 2) {
+	if ($fanpage->installed) {
 		$url = 'https://graph.facebook.com/' .$fanpage->fanpage_id .'/posts?access_token=' .$fanpage->access_token .'&since=' .$date->getTimestamp();// .$since;
 		$client = new Zend_Http_Client;
 		$client->setUri($url);
@@ -75,12 +75,12 @@ foreach($fanpageList as $fanpage) {
 			continue;
 		}
 		
-		if(empty($result->data)) continue;
+		if (empty($result->data)) continue;
 		
 		$postModel = new Model_Posts();
 		foreach ($result->data as $post) {
 			// save posts
-			if( empty($post->id) ) continue;
+			if( empty($post->id) || isset($post->story)) continue;
 			$created = new Zend_Date(!empty($post->created_time) ? $post->created_time : null, Zend_Date::ISO_8601);
 			$updated = new Zend_Date(!empty($post->updated_time) ? $post->updated_time : null, Zend_Date::ISO_8601);
 			
