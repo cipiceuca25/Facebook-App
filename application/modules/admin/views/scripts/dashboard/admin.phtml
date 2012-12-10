@@ -81,7 +81,7 @@
 						<?php foreach($this->adminComment as $comment): ?>
 							<tr>
 								<td style="word-break:break-word;word-wrap: break-word; width:25%" ><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['comment_message'])); ?></td>
-								<td style="word-break:break-word;word-wrap: break-word; width:25%" ><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['post_message'])); ?></td>
+								<td style="word-break:break-word;word-wrap: break-word; width:25%" ><a class="post" data-post-id="<?= $comment['comment_post_id']?>"><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['post_message'])); ?></a></td>
 								<td><a class="username" data-id="<?= $comment['p_facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $comment['p_facebook_user_id']?>/picture'/> 
 								<span><?= $comment['fan_first_name'] . ' ' . $comment['fan_last_name']?></span> </a></td>
 								<td><?=$comment['comment_likes_count']?></td>

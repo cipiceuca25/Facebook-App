@@ -11,7 +11,7 @@ var graph, graph2;
 //var downx = Math.NaN;
 //var downscalex;
 
-var lineGraph
+var lineGraph;
 
 jQuery(document).ready(function($){
 	loadHome();
@@ -116,7 +116,7 @@ function getHomeFans(time){
 					$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 				},
 			    success: function (data){
-			    	//console.log(data);
+			    	console.log(data);
 			    
 			    	var tableData1 = [];
 			    	var graphData1 = [];
@@ -134,7 +134,7 @@ function getHomeFans(time){
 			    		
 			    	}
 			    	for(i=0; i < data[1].length; i++) {
-			    		tableData1.push([ data[1][i].facebook_user_id , data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].date)).toLocaleString()] );
+			    		tableData1.push([ data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].date)).toLocaleString()] );
 			    	}
 			    	//var data = google.visualization.arrayToDataTable(tableData1);
 			    	//visualization = new google.visualization.Table(document.getElementById('tableholder'));
@@ -150,13 +150,16 @@ function getHomeFans(time){
 			    		"sDom" : "<'length'l>t<'table-info'i><'pages'p>",
 			            "aaData": tableData1,
 			            "aoColumns": [
-			                       { "sTitle": "Facebook User Id" },
+			                      
 			                       { "sTitle": "Name" },
 			                       { "sTitle": "Gender" },
 			                       { "sTitle": "Date Joined" }
 			                   ],
 			            "aaSorting": [[ 3, "desc" ]],
-			            "bAutoWidth": false
+			            "bAutoWidth": false,
+			            
+			            
+			            
 			               } );
 			    	
 			    	//console.log(data);
@@ -795,7 +798,7 @@ function loadUsers(){
 		},
 		success : function(data) {
 			$('#users').html(data);
-			userTable = $('#userTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]]} );
+			userTable = $('#userTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]], "iDisplayLength": 50} );
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -2301,25 +2304,29 @@ lineGraph.prototype.redraw = function (){
 
 
 lineGraph.prototype.resize = function (){
-	
+
+
 	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3]  - 100;	// width
-		
+
 	this.yAxis = d3.svg.axis().scale(this.y).tickSize(-this.width).ticks(4).orient("left");
 
 	this.x = d3.time.scale().domain(this.x.domain()).range([10, this.width-10]);
 	this.xAxis = d3.svg.axis().scale(this.x).tickSize(-this.height).ticks(8).orient("bottom")
 		.tickFormat(d3.time.format("%b %d"))
-	this.graph = d3.select(this.ui).select(".graph")
+	
+	
+	this.graph = d3.select(this.ui).select(".linegraph")
 			.attr("width", this.width + this.margin[1] + this.margin[3])
 			
 		.select("g")
 			.attr("transform", "translate(" + this.margin[3] + "," + this.margin[0] + ") ");
-	
-	//console.log(this.graph);
+
+
 	this.plot = this.graph.select("rect") 
 			.attr("width", this.width)
 			.call(d3.behavior.zoom().on("zoom", this.redraw()).scaleExtent([0.1,10]).x(this.x).y(this.y));
-	//console.log(this.transx+' '+this.transy+' '+this.scale);
+
+	console.log(this.width);
 	this.graph.select("svg")
     			
     				.attr("width", this.width)
@@ -2335,6 +2342,8 @@ lineGraph.prototype.resize = function (){
 	
 	this.graph.select(".y.axis")
 		.call(this.yAxis);
+
+	
 	
 	
 	//console.log(this.data);
@@ -2359,8 +2368,9 @@ chart.attr("height", Math.round(targetWidth / aspect));
 }).trigger("resize");
 */
 $(window).resize(function(){
-
+	
 		if (graphLoaded){
+			//console.log(graph);
 			graph.resize();
 		//graph = new lineGraph('#placeholder', graphData1, startTime1, endTime1,  graphMargin1);
 		}

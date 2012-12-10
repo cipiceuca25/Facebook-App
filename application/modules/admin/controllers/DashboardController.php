@@ -71,10 +71,17 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$postId = $this->_getParam('post_id');
 
     	$post = $this->getPost($fanpageId,$postId);
-    	Zend_Debug::dump($post);
     	
+    	if (isset($post->comments->count)) {
+    		$comments = $this->getComment($fanpageId, $postId, $post->comments->count);
+    	}
+    	
+    	//Zend_Debug::dump($post);
+    	//Zend_Debug::dump($comments);
+    	$this->view->comment = $comments;
     	$this->view->post = $post;
     	$this->render("post");
+    
     }
     
     public function userprofileAction(){
@@ -87,7 +94,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$fanModel = new Model_Fans($userId, $fanpageId);
     	$fan = $fanModel->getFanProfile();
     	//Zend_Debug::dump($fan);
-    	
     	
     	$this->view->fan = $fan ;
     	$this->view->userId = $userId;
@@ -860,8 +866,8 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			}
 		}
 		
-		Zend_Debug::dump($topFanList);
-		
+		//Zend_Debug::dump($topFanList);
+
 		$this->view->topFollowed =$topfollowed;
 		$this->view->topClicker =$topclicker;
 		$this->view->fanFavorite =$fanfavorite;
@@ -1380,6 +1386,29 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		 
 		if(!empty ($result)) {
 			return $result;
+		}
+	}
+	
+	protected function getComment($fid, $postId, $limit) {
+		$fp = new Model_Fanpages();
+		$fanpage = $fp->find($fid)->current();
+		$client = new Zend_Http_Client;
+		$client->setUri("https://graph.facebook.com/". $postId ."/comments");
+		$client->setMethod(Zend_Http_Client::GET);
+		$client->setParameterGet('access_token', $fanpage->access_token);
+		//echo $limit;
+		//if ($limit !== false){
+		$client->setParameterGet('limit', $limit);
+		//}
+		$response = $client->request();
+		 
+		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+	
+		 
+		//Zend_Debug::dump($result->data);
+		if(!empty ($result->data)) {
+	
+			return $result->data;
 		}
 	}
 	/*
