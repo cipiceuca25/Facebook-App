@@ -315,9 +315,9 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     					if(isset($cache) && !$cache->load($this->_fanpageId . '_toptalker')){
     						$toplist = $model->getTopTalkerByWeek($this->_fanpageId, 5);
     				
-    						$cache->save($toplist, $this->_fanpageId . '_topfan');
+    						$cache->save($toplist, $this->_fanpageId . '_toptalker');
     					}else{
-    						$toplist = $cache->load($this->_fanpageId . '_topfan');
+    						$toplist = $cache->load($this->_fanpageId . '_toptalker');
     					}
     					break;
 
@@ -405,12 +405,8 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		
     	}
     	
-    	
-    	
     	$topArray = array();
     	
-
-		
     	foreach ($toplist as $top){
     		//echo $top['facebook_user_id'];
     		$topArray[] = $follow->getRelation($this->_userId, $top['facebook_user_id'],$this->_fanpageId);

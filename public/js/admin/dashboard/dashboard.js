@@ -151,16 +151,18 @@ function getHomeFans(time){
 			            "aaData": tableData1,
 			            "aoColumns": [
 			                      
-			                       { "sTitle": "Name" },
+			                       { "sTitle": "Name", 
+			                    	  'mRender':function (data){
+			                    		return " <a> " + data + "</a>"
+			                    	  
+			                    	  }
+			                       },
 			                       { "sTitle": "Gender" },
 			                       { "sTitle": "Date Joined" }
 			                   ],
 			            "aaSorting": [[ 3, "desc" ]],
 			            "bAutoWidth": false,
-			            
-			            
-			            
-			               } );
+			    	});
 			    	
 			    	//console.log(data);
 			    	
