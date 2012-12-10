@@ -152,8 +152,8 @@ function getHomeFans(time){
 			            "aoColumns": [
 			                      
 			                       { "sTitle": "Name", 
-			                    	  'mRender':function (data){
-			                    		return " <a> " + data + "</a>"
+			                    	  'mRender':function (oObj){
+			                    		return " <a class='username' data-id = "+oObj.aData['facebook_user_id'] + "> " + oObj.aData['fan_name'] + "</a>"
 			                    	  
 			                    	  }
 			                       },
