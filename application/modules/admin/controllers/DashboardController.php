@@ -63,6 +63,19 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
         $this->view->pages = $pages;
     }
 
+    public function postAction(){
+    	 
+    	$this->_helper->layout()->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender();
+    	$fanpageId = $this->_getParam('id');
+    	$postId = $this->_getParam('post_id');
+
+    	$post = $this->getPost($fanpageId,$postId);
+    	Zend_Debug::dump($post);
+    	
+    	$this->view->post = $post;
+    	$this->render("post");
+    }
     
     public function userprofileAction(){
     	
@@ -777,7 +790,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	try{		
     		if(isset($cache) && !$cache->load($fanpageId . '_topclicker')){
     			$topclicker = $model->getTopClickerByWeek($fanpageId, 5);
-    				
     			$cache->save($topclicker, $fanpageId . '_topclicker');
     		}else{
     			$topclicker = $cache->load($fanpageId . '_topclicker');
@@ -788,10 +800,9 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     			//echo $e->getMessage();
     	}
     	
-    	try{			
+       	try{			
 		    if(isset($cache) && !$cache->load($fanpageId . '_fanfavorite')){
-		    	$fanfavorite = $model->getMostPopularByWeek($fanpageId, 5);
-		    				
+		    	$fanfavorite = $model->getMostPopularByWeek($fanpageId, 5);			
 		    	$cache->save($fanfavorite, $fanpageId . '_fanfavorite');
 		    }else{
 		    	$fanfavorite = $cache->load($fanpageId . '_fanfavorite');
@@ -801,7 +812,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 	    	Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
 	    	//echo $e->getMessage();
 	    }
-	    
 	    try{		
     		if(isset($cache) && !$cache->load($fanpageId . '_toptalker')){
     			$toptalker = $model->getTopTalkerByWeek($fanpageId, 5);
@@ -825,7 +835,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
     		//echo $e->getMessage();
     	}			
-    	
     	try{
     		if(isset($cache) && !$cache->load($fanpageId . '_topfan')){
     			$topfan = $model->getTopFansByCurrentMonth($fanpageId, 5);
@@ -837,7 +846,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	} catch (Exception $e) {
   			Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');
   				//echo $e->getMessage();
-    	} 
+    	}
 		
 		//Zend_Debug::dump($topPostByComment);
 		$follow = new Model_Subscribes();
@@ -851,7 +860,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			}
 		}
 		
-		
+		Zend_Debug::dump($topFanList);
 		
 		$this->view->topFollowed =$topfollowed;
 		$this->view->topClicker =$topclicker;
@@ -871,6 +880,24 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		$fanpageId = $this->_request->getParam('id');
 	
 		$this->render("stats");
+	
+	}
+	
+	public function adminAction(){
+		$this->_helper->layout->disableLayout();
+		$this->_helper->viewRenderer->setNoRender(true);
+		$fanpageId = $this->_request->getParam('id');
+	
+		$postModel = new Model_Posts();
+		$adminPost = $postModel->getAllAdminPosts($fanpageId);
+		$commentModel = new Model_Comments();
+		$adminComment = $commentModel->getAllAdminComments($fanpageId);
+
+		
+		$this->view->adminComment = $adminComment;
+		$this->view->adminPost = $adminPost;
+		
+		$this->render("admin");
 	
 	}
 	
@@ -1335,7 +1362,27 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 	
 		return $result;
 	}
-	
+	protected function getPost($fid,$postId){
+		$fp = new Model_Fanpages();
+		$fanpage = $fp->find($fid)->current();
+		
+		$client = new Zend_Http_Client;
+		$client->setUri("https://graph.facebook.com/". $postId);
+		$client->setMethod(Zend_Http_Client::GET);
+		$client->setParameterGet('access_token', $fanpage->access_token);
+		
+		 
+		$response = $client->request();
+		 
+		$result = Zend_Json::decode($response->getBody(), Zend_Json::TYPE_OBJECT);
+		 
+		//Zend_debug::dump($result);
+		 
+		if(!empty ($result)) {
+			return $result;
+		}
+	}
+	/*
 	private function feedFirstQuery($fanpage_id) {
 		
 		$fanpage = new Model_Fanpages();
@@ -1368,5 +1415,6 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		
 		return $finalResult;
 	}
+	*/
 }
 

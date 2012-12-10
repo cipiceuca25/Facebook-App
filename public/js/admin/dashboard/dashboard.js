@@ -750,7 +750,32 @@ function loadFacebookInsights(){
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
-			console.log('error getting the mini followers list');
+			console.log('error getting facebook insights');
+		}
+	});
+	
+}
+
+function loadAdmin(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/admin?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$('#admin').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$('#admin').html(data);
+			adminPostTable = $('#adminPostTable').dataTable({"sDom" : "tp", "aaSorting": [[ 6, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 15 } );
+			adminCommentTable = $('#adminCommentTable').dataTable({"sDom" : "tp", "aaSorting": [[ 4, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 15} );
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting admin page stats');
 		}
 	});
 	
@@ -774,7 +799,7 @@ function loadUsers(){
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
-			console.log('error getting the mini followers list');
+			console.log('error getting user stats');
 		}
 	});
 	
@@ -798,7 +823,7 @@ function loadDashboard(){
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
-			console.log('error getting the mini followers list');
+			console.log('error getting dashboard');
 		}
 	});
 	
@@ -966,6 +991,40 @@ function loadPoints(){
 	});	
 }
 
+
+function loadPost(post_id){
+	$('body').append(
+			'<div id="autoModel" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myItemModalLabel" aria-hidden="true">'+
+			'<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">'
+			+'<i class="icon-remove"></i></button>'
+			+'<h3>Add New Item</h3></div><div class="modal-body"></div></div>')
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/post?id=' + fanpageId +"&post_id=" + post_id,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			//$('#points').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			console.log(data);
+			$('#autoModel .modal-body').html(data)
+			$('#autoModel .modal-header h3').html("Post");
+			$('#autoModel').modal('show');
+			//loadGraph("#placeholder", 'Points');
+			//$('#placeholder').css({'width':'100%', 'height':'200px'});
+			//$('#placeholder').resize();
+		
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting point settings');
+		}
+	});	
+}
+
 function loadUserProfile(user_id){
 	$('body').append(
 			'<div id="autoModel" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myItemModalLabel" aria-hidden="true">'+
@@ -1013,7 +1072,11 @@ $('a.username').live('click', function() {
 	loadUserProfile(id);
 });
 
+$('a.post').live('click', function() {
+	var id = $(this).attr('data-post-id'); 
 
+	loadPost(id);
+});
 
 
 $('#badges-tab').live('click', function() {
@@ -1026,6 +1089,10 @@ $('#points-tab').live('click', function() {
 
 $('#users-tab').live('click', function() {
 	loadUsers();
+});
+
+$('#admin-tab').live('click', function() {
+	loadAdmin();
 });
 
 $('#settings-tab').live('click', function() {

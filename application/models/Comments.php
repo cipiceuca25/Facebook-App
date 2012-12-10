@@ -142,5 +142,30 @@ class Model_Comments extends Model_DbTable_Comments
 		}
 		return $rows[0]->count;
 	}
+	
+	public function getAllAdminComments($fanpage_id){
+		$select = "SELECT c.*, p.post_message, p.facebook_user_id as p_facebook_user_id, f.fan_first_name, f.fan_last_name FROM fancrank.comments c
+					left join fancrank.posts p on comment_post_id = post_id
+					left join fancrank.fans f on p.facebook_user_id = f.facebook_user_id
+					where c.fanpage_id = $fanpage_id && c.fanpage_id = c.facebook_user_id
+					order by c.created_time DESC";
+		$result = $this->getAdapter()->fetchAll($select);
+		$finalResult = $this->getAdapter()->fetchAll($select);
+		$fanpageModel = new Model_Fanpages();
+		$fanpageName = $fanpageModel->findRow($fanpage_id)->fanpage_name;
+		$finalResult = array();
+		foreach ($result as $row) {
+			if($row['p_facebook_user_id'] === $fanpage_id) {
+				$row['fan_first_name'] = $fanpageName;
+			}
+		
+		
+			$finalResult[] = $row;
+		}
+		
+		return $finalResult;
+		
+	}
+	
 }
 

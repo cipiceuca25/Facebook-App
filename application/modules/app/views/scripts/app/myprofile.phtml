@@ -31,14 +31,10 @@
 									<a class="noclick"><img class="large-face" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
 						
 								</div>
-								
 								<div class="name">
 									<a class="noclick"><?echo $this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name ?></a>
-								
 								</div>	
-								
 								<div class="user-description tip2 italic" onkeyup="charcheck()">
-
 								<?= substr(stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$this->fan->message)), 0, 160)?>
 								</div><a class="user-description-button" onclick="editdescription()"><span class="btn btn-mini fc-edit-2"><img src="/img/icons/edit_icon.png" class="edit_icon" />Edit Description</span></a>	
 								
