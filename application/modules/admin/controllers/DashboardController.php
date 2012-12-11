@@ -19,6 +19,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 			$fanpage = $fp->find($this->_getParam('id'))->current();
 			$this->view->page_id = $fanpageId;
 			$this->view->fanpage_name = $fanpage->fanpage_name;
+			$this->view->fanpage_level = $fanpage->fanpage_level;
 		}else {
 			//$this->_redirect('http://www.fancrank.com');
 		}
@@ -98,6 +99,49 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	$this->view->fan = $fan ;
     	$this->view->userId = $userId;
     	$this->render("userprofile");
+    }
+    
+    public function useractivitiesAction(){
+    	 
+    	$this->_helper->layout()->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender();
+    	$fanpageId = $this->_getParam('id');
+    	$userId = $this->_getParam('user_id');
+    	 
+    	//$fanModel = new Model_Fans($userId, $fanpageId);
+    	//$fan = $fanModel->getFanProfile();
+    	//Zend_Debug::dump($fan);
+    	
+    	//$this->view->fan = $fan ;
+    	
+    	$activitiesModel = new Model_FancrankActivities();
+    	$activity = $activitiesModel->getRecentActivities($userId, $fanpageId , 100);//$activity->getUserActivity($this->_fanpageId, $user->facebook_user_id, 15);
+    	
+    	//Zend_Debug::dump($activity);
+    	
+    	$this->view->act = $activity;
+    	$this->view->userId = $userId;
+    	$this->render("useractivities");
+    }
+    
+    public function userredemptionsAction(){
+    
+    	$this->_helper->layout()->disableLayout();
+    	$this->_helper->viewRenderer->setNoRender();
+    	$fanpageId = $this->_getParam('id');
+    	$userId = $this->_getParam('user_id');
+    
+    	//$fanModel = new Model_Fans($userId, $fanpageId);
+    	//$fan = $fanModel->getFanProfile();
+    	//Zend_Debug::dump($fan);
+    	$redeemModel = new Model_RedeemTransactions();
+    	$trans = $redeemModel -> getRedeemDetailByUserAndFanpage($userId, $fanpageId);
+    	
+    	//Zend_Debug::dump($trans);
+    	//$this->view->fan = $fan ;
+    	$this->view->redemptions = $trans;
+    	$this->view->userId = $userId;
+    	$this->render("userredemptions");
     }
     
     public function pointsAction() {
@@ -822,9 +866,9 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     		if(isset($cache) && !$cache->load($fanpageId . '_toptalker')){
     			$toptalker = $model->getTopTalkerByWeek($fanpageId, 5);
     				
-    			$cache->save($toptalker, $fanpageId . '_topfan');
+    			$cache->save($toptalker, $fanpageId . '_toptalker');
     		}else{
-    			$toptalker = $cache->load($fanpageId . '_topfan');
+    			$toptalker = $cache->load($fanpageId . '_toptalker');
     		}
     	} catch (Exception $e) {
     		Zend_Registry::get('appLogger')->log($e->getMessage() .' ' .$e->getCode(), Zend_Log::NOTICE, 'memcache info');

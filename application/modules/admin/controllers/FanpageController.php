@@ -212,7 +212,7 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$a []=$x;
 		$a []=$y;
 		
-		$this->_helper->json($x);
+		$this->_helper->json($a);
 	
 	}
 	

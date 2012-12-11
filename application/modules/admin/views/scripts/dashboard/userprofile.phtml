@@ -44,28 +44,32 @@
 	</div>
 	
 	<div class="span6">
+	<?php if ($this->fanpage_level > 1){?>
 	Level: <?=$this->fan['fan_level']?>
 	<br/>
 	Experience: <?=$this->fan['fan_exp']?>
 	<br/>
+	<?php }?>
+	<?php if ($this->fanpage_level > 2){?>
 	Points: <?=$this->fan['fan_point']?> 
 	<br/>
+	
 	** REMIND FAN POINTS MAY NOT MATCH ACTUALLY POINTS. 
+	<?php }?>
 	</div>
-
 
 </div>
 <br/>
 <br/>
 
 <div class="row-fluid">
-<div class="span6">
-	User Activites
-
+<div class="span6" >
+	Activities
+	<div id ="user-activities"></div>
 </div>
-<div class="span6">
+<div class="span6" >
 	User Redemption
-
+	<div id ="user-redemptions"></div>
 </div>
 </div>
 

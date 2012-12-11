@@ -86,9 +86,11 @@
 					<li>
 						<a href="#badges"  id="badges-tab" data-toggle="tab">Badges</a>
 					</li>
+					<?php if($this->fanpage_level > 2){  ?>
 					<li>
 						<a href="#points" id="points-tab" data-toggle="tab">Points</a>
 					</li>
+					<?php }?>
 					<li>
 						<a href="#redemptions" id="redemptions-tab" data-toggle="tab">Redemptions</a>
 					</li>
@@ -104,7 +106,9 @@
 				<div id="admin" class="tab-pane"></div>
 				<div id="users" class="tab-pane"></div>
 				<div id="badges" class="tab-pane"></div>
+				<?php if($this->fanpage_level > 2){  ?>
 				<div id="points" class="tab-pane"></div>
+				<?php }?>
 				<div id="redemptions" class="tab-pane"></div>
 				<div id="settings" class="tab-pane"></div>
 			</div>

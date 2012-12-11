@@ -1254,12 +1254,12 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 								) as a
 								order by created_time DESC ) as b
 								
-								month(created_time) = month(curdate()) && year(created_time) = year(curdate())
+								where month(created_time) = month(curdate()) && year(created_time) = year(curdate())
 								
 								group by facebook_user_id 
 								order by created_time DESC ) as num 
 								left join fans f 
-								on num.facebook_user_id = f.facebook_user_id
+								on num.facebook_user_id = f.facebook_user_id && f.fanpage_id=$fanpageId
 								order by num.created_time DESC";
 					
 					break;
@@ -1283,7 +1283,7 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 								group by facebook_user_id
 								order by created_time DESC ) as num
 								left join fans f
-								on num.facebook_user_id = f.facebook_user_id
+								on num.facebook_user_id = f.facebook_user_id && f.fanpage_id=$fanpageId
 								order by num.created_time DESC";
 					
 					break;
@@ -1307,7 +1307,7 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 								group by facebook_user_id
 								order by created_time DESC ) as num
 								left join fans f
-								on num.facebook_user_id = f.facebook_user_id
+								on num.facebook_user_id = f.facebook_user_id && f.fanpage_id=$fanpageId
 								order by num.created_time DESC";
 				
 					break;
@@ -1329,7 +1329,7 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 								group by facebook_user_id
 								order by created_time DESC ) as num
 								left join fans f
-								on num.facebook_user_id = f.facebook_user_id
+								on num.facebook_user_id = f.facebook_user_id && f.fanpage_id=$fanpageId
 								order by num.created_time DESC";
 					break;
 				
