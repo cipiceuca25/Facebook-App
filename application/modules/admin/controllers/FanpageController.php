@@ -207,7 +207,11 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$fp = new Model_FancrankActivities();
 	
 		$x = $fp ->getFancrankInteractionsUniqueUsersGraph( $this->_fanpageId,$time,  true);
-	
+		$y = $fp ->getFancrankInteractionsUniqueUsersGraph( $this->_fanpageId,$time,  false);
+		$a = array();
+		$a []=$x;
+		$a []=$y;
+		
 		$this->_helper->json($x);
 	
 	}
@@ -218,8 +222,11 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 		$fp = new Model_Fanpages();
 	
 		$x = $fp ->getFacebookInteractionsUniqueUsersGraph( $this->_fanpageId,$time,  true);
-	
-		$this->_helper->json($x);
+		$y = $fp ->getFacebookInteractionsUniqueUsersGraph( $this->_fanpageId,$time,  false);
+		$a = array();
+		$a []=$x;
+		$a []=$y;
+		$this->_helper->json($a);
 	
 	}
 

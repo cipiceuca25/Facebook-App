@@ -835,6 +835,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 					sum(case when activity_type like 'unlike-%' then 1 else 0 end ) as unlike, 
 					sum(case when activity_type = 'follow' then 1 else 0 end ) as follow, 
 					sum(case when activity_type = 'unfollow' then 1 else 0 end ) as unfollow, 
+					sum(case when activity_type like 'redeem%'  then 1 else 0 end ) as redeem, 
 					created_time from fancrank_activities
 					where fanpage_id = $fanpageId
 					group by date(created_time)
@@ -863,6 +864,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 				$result[0]['total_unlike'] = $result[0]['unlike'];
 				$result[0]['total_follow'] = $result[0]['follow'];
 				$result[0]['total_unfollow'] = $result[0]['unfollow'];
+				$result[0]['total_redeem'] = $result[0]['redeem'];
 
 				for($i = 1; $i < count($result); $i++ ){
 			
@@ -873,6 +875,7 @@ class Model_FancrankActivities extends Model_DbTable_FancrankActivities
 					$result[$i]['total_unlike'] = $result[$i]['unlike'] +  $result[$i-1]['total_unlike'] ;
 					$result[$i]['total_follow'] = $result[$i]['follow'] +  $result[$i-1]['total_follow'] ;
 					$result[$i]['total_unfollow'] = $result[$i]['unfollow'] +  $result[$i-1]['total_unfollow'] ;
+					$result[$i]['total_redeem'] = $result[$i]['redeem'] +  $result[$i-1]['total_redeem'] ;
 				}
 			}
 			

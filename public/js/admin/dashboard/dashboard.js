@@ -116,7 +116,7 @@ function getHomeFans(time){
 					$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 				},
 			    success: function (data){
-			    	console.log(data);
+			    	//console.log(data);
 			    
 			    	var tableData1 = [];
 			    	var graphData1 = [];
@@ -134,7 +134,7 @@ function getHomeFans(time){
 			    		
 			    	}
 			    	for(i=0; i < data[1].length; i++) {
-			    		tableData1.push([ data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].date)).toLocaleString()] );
+			    		tableData1.push([ data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].date)).toLocaleString(), data[1][i].facebook_user_id] );
 			    	}
 			    	//var data = google.visualization.arrayToDataTable(tableData1);
 			    	//visualization = new google.visualization.Table(document.getElementById('tableholder'));
@@ -152,15 +152,15 @@ function getHomeFans(time){
 			            "aoColumns": [
 			                      
 			                       { "sTitle": "Name", 
-			                    	  'mRender':function (oObj){
-			                    		return " <a class='username' data-id = "+oObj.aData['facebook_user_id'] + "> " + oObj.aData['fan_name'] + "</a>"
-			                    	  
+			                    	  'mRender':function (data, type, full){
+			                    		
+			                    		return " <a class='username' data-id ="+ full[3] +" >" + data + "</a>"
 			                    	  }
 			                       },
 			                       { "sTitle": "Gender" },
 			                       { "sTitle": "Date Joined" }
 			                   ],
-			            "aaSorting": [[ 3, "desc" ]],
+			            "aaSorting": [[ 2, "desc" ]],
 			            "bAutoWidth": false,
 			    	});
 			    	
@@ -230,7 +230,7 @@ function getHomeActivedFans(time){
 			    	
 			    	for(i=0; i<data[1].length;i++){
 			    		
-			    		tableData1.push([data[1][i].facebook_user_id, data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].first_login_time)).toLocaleString()]);
+			    		tableData1.push([data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].first_login_time)).toLocaleString(), data[1][i].facebook_user_id, ]);
 			    	}
 			    	
 			    	try{
@@ -244,13 +244,21 @@ function getHomeActivedFans(time){
 			    		"sDom" : "<'length'l>t<'table-info'i>",
 			            "aaData": tableData1,
 			            "aoColumns": [
-			                       { "sTitle": "Facebook User Id" },
-			                       { "sTitle": "Name" },
+			                       
+			                
+		                    	   { "sTitle": "Name", 
+			                    	  'mRender':function (data, type, full){
+
+			                    		return " <a class='username' data-id ="+ full[3] +" >" + data + "</a>"
+			                    	  }
+			                       },   
+			                       
+		         
 			                       { "sTitle": "Gender" },
 			                       { "sTitle": "Date" }
 			                      
 			                   ],
-			            "aaSorting": [[ 3, "desc" ]],
+			            "aaSorting": [[ 2, "desc" ]],
 			            "bAutoWidth": false
 			               } );
 			    	//console.log(dataset);
@@ -308,9 +316,9 @@ function getHomeFacebookInteractions(time){
 			    	
 			    	}
 			    	for(i=0; i < data[1].length; i++) {
-			    		tableData1.push([ data[1][i].type,/*data[1][i].post_id,*/data[1][i].fan_name, data[1][i].facebook_user_id, data[1][i].fan_gender, data[1][i].post_message, 
+			    		tableData1.push([ data[1][i].type,/*,*/data[1][i].fan_name, data[1][i].fan_gender, data[1][i].post_message, 
 			    		                 /* data[1][i].post_type, data[1][i].picture, data[1][i].link, data[1][i].post_description,data[1][i].post_caption, */
-			    		                  (new Date(data[1][i].created_time)).toLocaleString()]);
+			    		                  (new Date(data[1][i].created_time)).toLocaleString(), data[1][i].facebook_user_id, data[1][i].post_id]);
 			    	}
 			    
 			    	
@@ -327,10 +335,24 @@ function getHomeFacebookInteractions(time){
 			    		"aoColumns": [
 			    				   { "sTitle": "Type" },
 			    				   /*{ "sTitle": "Post Id" },*/
-			    				   { "sTitle": "Fan Name" },
-			    				   { "sTitle": "Facebook User Id" },
+			    				   { "sTitle": "Name", 
+				                    	  'mRender':function (data, type, full){
+				                 
+				                    		return " <a class='username' data-id ="+ full[5] +" >" + data + "</a>"
+				                    	  }
+				                     },
+			    				 
 			    				   { "sTitle": "Gender" },
-			    				   { "sTitle": "Message" },
+			    				   { "sTitle": "Message",
+			    					   'mRender':function (data, type, full){
+				                    		if(full[0] != 'post'){
+				                    			var s = full[6].split('_');
+				                    			console.log(s);
+				                    			full[6] = s[0] +'_'+ s[1];
+				                    		}
+				                    		return " <a class='post' data-post-id ="+ full[6] +" >" + data + "</a>"
+				                    	  }
+			    				   },
 			    				   /*{ "sTitle": "Post Type" },
 			    				   { "sTitle": "Picture" },
 			    				   { "sTitle": "Link" },
@@ -338,7 +360,7 @@ function getHomeFacebookInteractions(time){
 			    				   { "sTitle": "Post Caption" },*/
 			    				   { "sTitle": "Date" }
 			    			   ],
-			    		"aaSorting": [[ 5, "desc" ]],
+			    		"aaSorting": [[ 4, "desc" ]],
 			    		"bAutoWidth": false
 			    		   } );
 			    	
@@ -387,38 +409,55 @@ function getHomeFanCrankInteractions(time){
 		    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
 		    		graphData1.push ([ new Date(data[0][i].created_time), data[0][i].all , data[0][i].posts, 
 		    		                   	data[0][i].comments, data[0][i].likes,data[0][i].unlike,
-		    		                   	data[0][i].follow,data[0][i].unfollow ]);
+		    		                   	data[0][i].follow,  data[0][i].unfollow, data[0][i].redeem ]);
 		    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
 		    		graphData2.push ([ new Date(data[0][i].created_time), data[0][i].total_all , data[0][i].total_posts, 
 		    		                   data[0][i].total_comments, data[0][i].total_likes,data[0][i].total_unlike,
-		    		                   data[0][i].total_follow,data[0][i].total_unfollow]);
+		    		                   data[0][i].total_follow, data[0][i].total_unfollow, data[0][i].total_redeem]);
 		    	}
 		    
 		    	for (i=0; i<data[1].length; i++){
 		    		tableData1.push([ data[1][i].activity_type, /*data[1][i].event_object,*/ 
 		    		                  data[1][i].fan_name,
-		    		                  data[1][i].facebook_user_id,
 		    		                  data[1][i].fan_gender,
 		    		                  data[1][i].message,
-		    		                  (new Date(data[1][i].created_time)).toLocaleString()]);
+		    		                  (new Date(data[1][i].created_time)).toLocaleString(),
+		    		                  data[1][i].facebook_user_id,
+		    		                  data[1][i].event_object]);
 		    	}
 		    	try{
 		    		table.fnDestroy();
 		    	}catch(e){
 		    		
 		    	}
+		    	
 		    	$('#tableholder').html('');
-		    
 		    	table = $('#tableholder').dataTable( {
 		    		"sDom" : "<'length'l>t<'table-info'i>",
 		    		"aaData": tableData1,
 		    		"aoColumns": [
 		    				   { "sTitle": "Type" },
 		    				   /*{ "sTitle": "Post Id" },*/
-		    				   { "sTitle": "Fan Name" },
-		    				   { "sTitle": "Facebook User Id" },
+		    				   { "sTitle": "Name",
+		    					  'mRender':function (data, type, full){  
+			                    		return " <a class='username' data-id ="+ full[5] +" >" + data + "</a>";
+			                    	  }
+		    				   },
 		    				   { "sTitle": "Gender" },
-		    				   { "sTitle": "Message" },
+		    				   { "sTitle": "Message",
+		    					   'mRender':function (data, type, full){
+		    						   if(full[0] == 'post'){
+		    							   return " <a class='username' data-id ="+ full[6] +" >" + data + "</a>";
+		    						   }else if (full[0] == 'comment'){
+		    							    var s = full[6].split('_');
+			                    			full[6] = s[0] +'_'+ s[1];
+			                    			return " <a class='username' data-id ="+ full[6] +" >" + data + "</a>";
+			                    	   }else{
+			                    		   return data;
+			                    	   }
+		                    		
+		                    	  }   
+		    				   },
 		    				   /*{ "sTitle": "Post Type" },
 		    				   { "sTitle": "Picture" },
 		    				   { "sTitle": "Link" },
@@ -432,7 +471,7 @@ function getHomeFanCrankInteractions(time){
 		    	
 		    	graphLoaded =true;
 		    	graphLoaded2 =true;
-		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow'];
+		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow', 'Redeem'];
 		    	graph = new lineGraph('#placeholder', graphData1, text);
 		    	graph2  = new lineGraph('#placeholder2', graphData2, text);
 		    	$('#graphtitle').html('Interactions ' + time);
@@ -460,22 +499,67 @@ function getHomeFacebookInteractionsUniqueUser(time){
 					
 					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 					//destroyAll();
+					$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 				},
 			    success: function (data){
-			    	
+			    	var tableData1 = [];
 			    	var graphData1 = [];
 			    	var graphData2 = [];
 			    	//graphData1.push(['Date', 'Likes']);
 			    	//graphData2.push(['Date', 'Likes']);
-			    	for(i=0; i < data.length; i++) {
+			    	for(i=0; i < data[0].length; i++) {
 			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
-			    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes ]);
+			    		graphData1.push ([ new Date(data[0][i].created_time), data[0][i].all , data[0][i].posts, data[0][i].comments, data[0][i].likes ]);
 			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
-			    		graphData2.push ([ new Date(data[i].created_time2), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes]);
+			    		graphData2.push ([ new Date(data[0][i].created_time2), data[0][i].total_all , data[0][i].total_posts, data[0][i].total_comments, data[0][i].total_likes]);
 			    	}
+			    	
+			    	for (i=0; i<data[1].length; i++){
+			    		tableData1.push([ 
+			    		                  data[1][i].fan_name,
+			    		                  data[1][i].num_of_activities,
+			    		                  data[1][i].num_of_post,
+			    		                  data[1][i].num_of_comment,
+			    		                  data[1][i].num_of_likes,
+			    		                  (new Date(data[1][i].created_time)).toLocaleString(),
+			    		                  data[1][i].facebook_user_id]
+			    		                  );
+			    	}
+			    	
+			    	try{
+			    		table.fnDestroy();
+			    	}catch(e){
+			    		
+			    	}
+			    	
+			    	$('#tableholder').html('');
+			    	table = $('#tableholder').dataTable( {
+			    		"sDom" : "<'length'l>t<'table-info'i>",
+			    		"aaData": tableData1,
+			    		"aoColumns": [
+			    		
+			    				   /*{ "sTitle": "Post Id" },*/
+			    				   { "sTitle": "Name",
+			    					  'mRender':function (data, type, full){  
+				                    		return " <a class='username' data-id ="+ full[6] +" >" + data + "</a>";
+				                    	  }
+			    				   },
+			    				   { "sTitle": "Total # of Activities" },
+			    				   { "sTitle": "# of Post" },
+			    				   { "sTitle": "# of Comment" },
+			    				   { "sTitle": "# of Likes" },
+			    			
+			    				  /* { "sTitle": "Post Caption" },*/
+			    				   { "sTitle": "Most Recent Activity Time" }
+			    			   ],
+			    		"aaSorting": [[ 5, "desc" ]],
+			    		"bAutoWidth": false
+			    		   } );
+			    	
+			    	
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
-			    	var text = ['Users', 'Posts', 'Comments', 'Likes'];
+			    	var text = ['All Users', 'Users who Posted', 'Users who Commented', 'Users who Liked'];
 			    	graph = new lineGraph('#placeholder', graphData1, text);
 			    	graph2  = new lineGraph('#placeholder2', graphData2, text);
 			    	
