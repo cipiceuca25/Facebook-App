@@ -1,0 +1,451 @@
+<?php 
+if($this->fanpage_level >2){
+	$term = 'Points';
+}else{
+	$term = 'Score';
+}
+?>
+
+<div class="panel">
+	<div class="rvrow">
+		<div class="rvgrid-9">
+			
+			<div class="box">
+				<div class="title nopic">
+					
+					<div class="title-header nopic">What is Fancrank?</div>
+
+				</div>
+				<div id="whatisfancrank">
+					<?php if ( $this->fanpage->fanpage_id ==  216821905014540){?>
+						<a class='fancrank_login' href="/admin/preview/app/<?= $this->fanpage->fanpage_id ?>"><img src="/img/whatisfancrank.png"/></a>
+					<?php }else{?>
+						<a class='fancrank_login' href="/admin/preview/app/<?= $this->fanpage->fanpage_id ?>"><img src="/img/whatisfancrank2.png"/></a>
+					<?php }?>
+				</div>
+			</div>
+		</div>
+		<div class="rvgrid-9">
+		
+		<?php if ($this->is_enabled && $this->image_url){?>
+			<div class="im">
+				<div class="box">
+					<img src ="<?=  $this->image_url ?>"/>
+				</div>
+			</div>
+		<?php }else{?>
+			<div class="top-fan-last-week">
+
+					<div class="box">
+						<div class="title nopic">
+							
+							<div class="title-header nopic">
+								Top Fans Last Month
+							</div>
+								<?php if ($this->fanpage_level >2){?>
+							<div class="tip2">
+								The following list of fans have earned the most points last Month!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
+							</div>
+							<?php }else{?>
+							<div class="tip2">
+								The following list of fans have the highest score last Month!  Increase your score by liking, commenting, and posting on this Facebook page.  Further increase your score when others like your comments or reply to your posts!
+							</div>
+							<?php }?>
+						</div>
+							
+						<?php $count = 0; ?> 
+						<?php foreach($this->top_fans_lasttime as $top_fan):  ?>
+						<?php if ($count == 0){?>
+						
+					
+						<ul class="top-list first">
+							<li>
+								<div class="ranker first">
+									<div class="rank first">
+										<h1>
+											<?= $count + 1 ?>
+										</h1>
+									</div>
+
+									<div class="user">
+										
+										<div class="photo">
+											<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+												<img class="small-face"  src="https://graph.facebook.com/<?=$top_fan['facebook_user_id'] ?>/picture"
+												onerror="ImgError(this);">
+											</a>
+										</div>
+												
+										<div class="name first">
+											<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+												<?=$top_fan['fan_first_name']?>
+											</a>
+										</div>
+									</div>
+								<?php  if($this->fanpage_level >2){ ?>
+									<div class="points">
+										<h3>
+											<?= $top_fan['count'] ?>
+										</h3>
+										<span><?=$term?></span>
+									
+									</div>
+								<?php }else {?>
+									<div class="points">
+										<span><?=$term?></span>
+										<h3>
+											<?= $top_fan['count'] ?>
+										</h3>
+										
+									
+									</div>
+								<?php }?>
+								</div>
+							</li>
+
+						</ul>
+						<?php }else{ ?>
+							<?php if ($count == 1){?>
+							<ul id="top-fans" class="top-list">
+							<?php }?>
+								<li>
+									<div class="ranker ">
+										<div class="rank">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+											
+												<div class="photo">
+													<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+													<img class="small-face" 
+													src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
+													onerror="ImgError(this);">
+													</a>
+												</div>
+												<div class="name">
+													<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+														<?=$top_fan['fan_first_name'] ?>
+													</a>
+												</div>
+										</div>
+										<?php  if($this->fanpage_level >2){ ?>
+											<div class="points">
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												<span><?=$term?></span>
+												
+											</div>
+										<?php }else {?>
+											<div class="points">
+												<span><?=$term?></span>
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												
+											
+											</div>
+										<?php }?>
+										
+									</div>
+								</li>
+	
+							<?php }?>
+							
+							<?php $count ++; ?>
+					
+							<?php endforeach; ?>
+
+						<?php if ($count < 5){?>
+							<?php if ($count == 0){?>
+							<ul class="top-list <?= ($count == 0 ? ' first' : '') ?>">
+								<li>
+									<div class="ranker first">
+										<div class="rank first">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+											<div class="photo"></div>
+											<div class="name"></div>
+										</div>
+										<div class="points"></div>
+									</div>
+								</li>
+								<?php $count++;?>
+							</ul>
+							<?php }?>
+						
+						
+							<?php for ( ;$count<5; $count++){ ?>
+						
+							<?php if ($count == 1){?>
+							<ul  id="top-fans" class="top-list">		
+							<?php }?>
+								<li>
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+											<div class="photo"></div>
+											<div class="name"></div>
+										</div>
+										<div class="points"></div>
+									</div>
+								</li>
+								
+							
+							<?}?>
+						<?}?>		
+							</ul>
+						
+							<ul class="top-list you">
+								<li>
+									<div class="ranker">
+										<div class="rank you">
+											
+											<h1>*</h1>
+									
+										</div>
+										<div class="user">
+											<div class="photo">
+												<img class="small-face"
+													src="https://graph.facebook.com/<?= $this->fanpage->fanpage_id ?>/picture"
+													onerror="ImgError(this);">
+											</div>
+											<div class="name">
+												<a class="noclick">YOU</a>
+											</div>
+										</div>
+										
+										<div class="points login">
+											<a class='fancrank_login' href="#">LOGIN TO SEE YOUR RANK!</a>
+										
+											
+										</div>
+									
+									</div>
+								</li>
+							</ul>
+							
+				</div>
+			
+			</div><!-- topfan -->
+		</div><!-- grid -->
+		
+		<?php  }?>
+	</div><!-- row -->
+	
+	<div class="rvrow">
+		<div class="rvgrid-18">
+			<div class="top-fans">
+
+					<div class="box">
+						<div class="title nopic">
+							
+							<div class="title-header nopic">
+								Top Fans for <?= date("F") ?>
+							</div>
+							<?php if ($this->fanpage_level >2){?>
+							<div class="tip2">
+								The following list of fans have earned the most points this Month!  You can earn points by liking, commenting, and posting on this Facebook page.  Bonus points are awarded to you if others like your comments or reply to your posts!
+							</div>
+							<?php }else{?>
+							<div class="tip2">
+								The following list of fans have the highest score this Month!  Increase your score by liking, commenting, and posting on this Facebook page.  You can further increase your score when others like your comments or reply to your posts!
+							</div>
+							<?php }?>
+						</div>
+							
+						<?php $count = 0; ?> 
+						<?php foreach($this->top_fans as $top_fan):  ?>
+						<?php if ($count == 0){?>
+						
+					
+						<ul class="top-list first">
+							<li>
+								<div class="ranker first">
+									<div class="rank first">
+										<h1>
+											<?= $count + 1 ?>
+										</h1>
+									</div>
+
+									<div class="user">
+										
+										<div class="photo">
+											<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+												<img class="small-face"  src="https://graph.facebook.com/<?=$top_fan['facebook_user_id'] ?>/picture"
+												onerror="ImgError(this);">
+											</a>
+										</div>
+												
+										<div class="name first">
+											<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+												<?=$top_fan['fan_first_name']?>
+											</a>
+										</div>
+									</div>
+										<?php  if($this->fanpage_level >2){ ?>
+											<div class="points">
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												<span><?=$term?></span>
+												
+											</div>
+										<?php }else {?>
+											<div class="points">
+												<span><?=$term?></span>
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												
+											
+											</div>
+										<?php }?>
+								
+								</div>
+							</li>
+
+						</ul>
+						<?php }else{ ?>
+							<?php if ($count == 1){?>
+							<ul id="top-fans" class="top-list">
+							<?php }?>
+								<li>
+									<div class="ranker ">
+										<div class="rank">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+											
+												<div class="photo">
+													<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+													<img class="small-face" 
+													src="https://graph.facebook.com/<?= $top_fan['facebook_user_id'] ?>/picture"
+													onerror="ImgError(this);">
+													</a>
+												</div>
+												<div class="name">
+													<a class="noclick" rel="tooltip" data-placement="right" title="Login to FanCrank to see this user's information">
+														<?=$top_fan['fan_first_name'] ?>
+													</a>
+												</div>
+										</div>
+										<?php  if($this->fanpage_level >2){ ?>
+											<div class="points">
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												<span><?=$term?></span>
+												
+											</div>
+										<?php }else {?>
+											<div class="points">
+												<span><?=$term?></span>
+												<h3>
+													<?= $top_fan['count'] ?>
+												</h3>
+												
+											
+											</div>
+										<?php }?>
+									
+									</div>
+								</li>
+	
+							<?php }?>
+							
+							<?php $count ++; ?>
+					
+							<?php endforeach; ?>
+
+						<?php if ($count < 5){?>
+							<?php if ($count == 0){?>
+							<ul class="top-list <?= ($count == 0 ? ' first' : '') ?>">
+								<li>
+									<div class="ranker first">
+										<div class="rank first">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+											<div class="photo"></div>
+											<div class="name"></div>
+										</div>
+										<div class="points"></div>
+									</div>
+								</li>
+								<?php $count++;?>
+							</ul>
+							<?php }?>
+						
+						
+							<?php for ( ;$count<5; $count++){ ?>
+						
+							<?php if ($count == 1){?>
+							<ul  id="top-fans" class="top-list">		
+							<?php }?>
+								<li>
+									<div class="ranker <?= ($count == 0 ? ' first' : '') ?>">
+										<div class="rank <?= ($count == 0 ? ' first' : '') ?>">
+											<h1>
+												<?= $count + 1 ?>
+											</h1>
+										</div>
+										<div class="user">
+											<div class="photo"></div>
+											<div class="name"></div>
+										</div>
+										<div class="points"></div>
+									</div>
+								</li>
+								
+							
+							<?}?>
+						<?}?>		
+							</ul>
+						
+							<ul class="top-list you">
+								<li>
+									<div class="ranker">
+										<div class="rank you">
+											
+											<h1>*</h1>
+									
+										</div>
+										<div class="user">
+											<div class="photo">
+												<img class="small-face"
+													src="https://graph.facebook.com/<?= $this->fanpage->fanpage_id ?>/picture"
+													onerror="ImgError(this);">
+											</div>
+											<div class="name">
+												<a class="noclick">YOU</a>
+											</div>
+										</div>
+										
+										<div class="points login">
+											<a class='fancrank_login' href="#">LOGIN TO SEE YOUR RANK!</a>
+											
+									
+										</div>
+									
+									</div>
+								</li>
+							</ul>
+							
+				</div>
+		</div>
+	</div>
+</div><!-- panel -->

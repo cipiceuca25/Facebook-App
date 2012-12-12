@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--  THIS LAYOUT IS FOR THE MULTIPLE PAGES-->
+<html lang="en">
+
+	<head>
+		<title>Fancrank</title>
+		<meta charset="UTF-8" />
+		
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta http-equiv="imagetoolbar" content="no" />
+		<meta http-equiv="Content-Language" content="en" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+		<meta name="description" content="Fancrank Inc." />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		
+		<meta name="author" content="FanCrank" />
+		<meta name="generator" content="" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		
+		<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+		<script src="/js/libs/jquery-1.7.2.min.js"></script>
+		<script src="/js/libs/jquery.validate.min.js"></script>
+		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
+		<script src="/js/libs/jquery.ui.addresspicker.js"></script>
+		<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+		<script src="/js/libs/jquery.joyride-1.0.5.js"></script>
+		<script src="/bootstrap/js/bootstrap.js"></script>
+		<script src="/js/libs/enscroll-0.2.6.min.js"></script>
+		<script src="//connect.facebook.net/en_US/all.js"></script>
+		
+		<!-- This following javascripts are used to initialize the iframe look and feel -->
+		<script>
+			
+			var baseAppUrl = "<?= $this->url() ?>";
+			var serverUrl = "<?= $this->fullServerUrl()?>";
+			var appId = "<?= $this->layout()->appKey ?>";
+			
+			var fanpageId = "<?= $this->fanpage_id?>";	
+			var fanpageName = "<?= $this->fanpage_name?>";	
+			
+			var userId = "<?= $this->user_id ?>";
+			var userName = "<?= $this->username?>";
+			var userAccessToken = "<?= $this->facebook_user_access_token?>";
+			
+			//alert( accessToken);
+			var fb =false;
+			window.fbAsyncInit = function() {
+				FB.init({
+					 appId  : appId,
+					 status : true, // check login status
+					 cookie : true, // enable cookies to allow the server to access the session
+					 xfbml  : true// parse XFBML 
+				});
+
+				fb = true;
+				console.log(userId);
+				
+			};
+		</script>
+		<script src="/js/admin/preview/cranker.js"></script>
+		<!-- End of iframe initialization -->
+		
+		<link rel="stylesheet" href="/css/loadstyle1.css" />
+	</head>
+
+	<body style="overflow: hidden;"	>
+	<div id="fb-root"></div>
+	<div class="container">
+		<div id="wrapper">
+			<!--
+			<div id="header">
+
+				<div id="logo"></div>
+
+			</div>
+			/end header -->
+
+			<div id="content">
+				<!--  
+				<div id = "like-animation" ></div>
+				<div id = "unlike-animation" ></div>
+				<div id = "comment-animation"></div>
+				<div id = "follow-animation"></div>
+				<div id = "unfollow-animation"></div>
+				-->
+				
+				<div class="user-profile">
+					<div class="tip"><a onclick="closeProfile()">x</a></div>
+					<div class="profile-content"></div>
+				</div>
+				<div class="container">
+
+					<div class="tabbable" >
+					
+							<div <?php if ($this->fanpage_level >2) {?>id="menu"<?php }else{?>id="menu2"<?php }?> class="tab-container">
+								<div id="logo"><img src="/img/logo-noline-white.png"/></div>
+								<ul class="nav nav-tabs" id="pageTabs">
+									<li class="active"><a href="#news-feed" id="newsfeed-tab" data-toggle="tab"><img src="/img/icons/newsfeed.png" />Home</a></li>
+									<li><a href="#leaderboard" id="leaderboard-tab" data-toggle="tab"><img src="/img/icons/leaderboards.png" />Leaderboard</a></li>
+									<li><a href="#profile" id="profile-tab" data-toggle="tab" ><img src="/img/icons/profile.png" />My Profile</a></li>
+									<!--  <li><a href="#achievements" data-toggle="tab"id="achievements-tab">Achievements</a></li>-->
+									<? if ($this->fanpage_level > 2){?><li><a href="#redeem" id="redeem-tab" data-toggle="tab"><img src="/img/icons/rewards.png" />Redeem</a></li>	<?php }?>
+								</ul>
+								<ul class="nav nav-tabs" id="toolbar">
+		
+									
+								<!-- <li class="row-fluid" id='notification_upcoming_badges'>
+															 
+										<?php // foreach ($this->notibadges as $b){?>
+											<div class="ub">
+												<div class="progress">
+													<div class="bar" style="width: <? //= $b['percentage']?>%;"></div>
+													<a data-original-title="<?//= $b['name']. '<br/>'.$b['description'].'<br/>'.$b['percentage'].'% Completed'?>" 
+													rel="tooltip" data-placement="top-left" style="float:left; position:relative;top:-19px;" >
+														
+														<img src="<?//= $b['picture']?>" style="opacity:<?//= $b['percentage']/100?>"/>
+													</a>
+												</div> 
+											</div>
+										<?php // }?>
+										</li>-->
+									
+									<li>
+										<div id="logout-tab" class="dropdown">
+											<a  id="logout-noti" href="#" 
+											data-content="<div class='arrow' style='left:262px'></div>
+														<div class='rvgrid-7'>
+															<div class='box' id='logout-menu'>
+																<ul >
+																	<!-- <li><a href=''>Help</a></li>
+																	<li><a href=''>Settings</a></li> -->
+																	<li><a href='/admin/preview/landingpage/<?= $this->fanpage->fanpage_id ?>'>Log Out</a></li>
+																</ul>
+															</div>
+														</div>"
+											><img src="/img/icons/settings.png" /></a>
+										
+										</div>
+									</li>
+									
+									<li class="notification" >
+									<!--data-content="" rel="tooltip" data-original-title="You have no new Notifications" data-placement="top"-->
+										<a id="noti"><span id="badge-notification-count">0</span><img src="/img/icons/mail.png" /></a>
+									</li>
+									
+									<!--  <li><div class="line"></div></li>-->
+									
+									<li >
+										<!-- rel="tooltip" data-original-title="Click to see your Upcoming Badges" data-placement="top" -->
+										<a id="noti2"><img src="/img/icons/badges.png" /></a>
+									</li>
+									
+									<? if ($this->fanpage->fanpage_level > 2){?>
+										<!--  <li><div class="line"></div></li>-->
+										<!--rel="tooltip" id="pointlog" data-original-title="You have <?//=$this->fan->fan_point?> points" data-placement="top" -->
+										<li><a class="my_fan_point_tooltip"  id="pointlog"><span class ="my_fan_point"><?= ($this->fan->fan_point > 1000)?round($this->fan->fan_point/1000).'K': $this->fan->fan_point?></span><img src="/img/icons/points.png" /></a></li>
+									<?php }?>
+								</ul>
+								<!-- <ul class="nav nav-tabs" id="log-in-out">
+									
+								
+								 	
+										</ul>-->
+							</div>
+				
+<!--						
+						<a href="#" onclick="colorChange(5)">Ocean</a>
+				
+						<a href="#" onclick="colorChange(1)">Grayscale</a> 
+						<a href="#"	onclick="colorChange(2)">Bubblegum</a> 
+						<a href="#"	onclick="colorChange(3)">Original</a>
+						<a href="#" onclick="colorChange(4)">Autumn</a> 
+						 
+						<a href="#" onclick="colorChange(6)">Red</a>
+						  -->
+						<div class="tab-content">
+
+
+							<div class="tab-pane active" id="news-feed"></div>
+							<div class="tab-pane" id="leaderboard"></div>
+							<div class="tab-pane" id="profile"></div>
+							<!-- <div class="tab-pane" id="achievements"></div> -->
+							<div class="tab-pane" id="redeem"></div>
+
+
+						</div>
+						<div id="powered">
+							<a href="http://www.fancrank.com" target=new><img src="/img/fan-footer.png" /></a>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="light-box"></div>
+</body>
+</html>

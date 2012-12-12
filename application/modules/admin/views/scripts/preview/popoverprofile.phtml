@@ -1,0 +1,86 @@
+<?php $display = $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name ;
+	if (strlen($display) > 20){
+		$display = substr($display, 0, 18).'...';
+		
+	}
+?>
+<?//=  $this->facebook_user->facebook_user_first_name.' '.$this->facebook_user->facebook_user_last_name?>
+<div class="post-container noline">
+	<div class="user ">
+		<? if($this->fanpage_level !=1){?>
+			<div class="rank you">
+				<h1><?= isset($this->fan['fan_level'])?$this->fan['fan_level']:1?></h1>
+			</div>
+		<?php }?>
+		<div class="photo">
+			<a><img class="small-face"  src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id  ?>/picture" onerror="ImgError(this);"></a>
+		</div>
+		<div class="name">
+			<a><?= $display?></a>
+		</div>
+		
+		<div class="badge-profile">
+			<a rel="tooltip-follow" class ="follow_<?= $this->facebook_user->facebook_user_id?>"
+				<?php switch($this->relation) { 
+					case 'You':?>
+						class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
+					<?break;?>
+					<?case 'Following'?>
+						onclick="unfollow(<?= $this->facebook_user->facebook_user_id?> ,'<?= $display ?>')" 
+						data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
+					<?break;?>	
+					<?default:?>
+						onclick="follow(<?= $this->facebook_user->facebook_user_id?> , '<?= $display ?>')" 
+						data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?=$this->relation?>"><?=$this->relation?></span>
+					<?}?>
+			</a>
+		</div>
+	</div>
+	<!-- 
+	<div class=" post badgedisplay">
+		<?//php foreach ($this->badges as $b): ?>
+			<?//php if ($b != 'undefined') {?>
+				<div class="progress popover chosen-badges" >
+					<div class="bar" ></div>
+					<a >
+						<?//php if (strpos( $b['picture'], '.') === false){?>
+											<i class="sprite-<?= $b['picture']?>"></i>
+										<?//php }else{ ?>
+											<img src="<?= $b['picture']?>"/>
+										<?//}?>
+					</a>
+				</div>
+			<?//php }?>
+		
+		<?//php endforeach;?>
+	</div> -->
+	<div class="post">
+		<div class="user-description tip2">
+							
+			<?= substr(stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$this->fan->message)), 0, 160)?>
+	
+		</div>
+	</div>
+
+			<ul class="stats">
+				<li>
+					<div class="stats-block" ><img src="/img/post.png" /><h5><?= ($this->stat[0]['total_posts']>99)?'99+':$this->stat[0]['total_posts'] ;?></h5></div>
+				</li>
+				<li>
+					<div class="stats-block"><img src="/img/thumbsup.png" /><h5><?= ($this->stat[0]['total_likes']>99)?'99+':$this->stat[0]['total_likes'];?></h5></div>
+				</li>
+				<li>
+					<div class="stats-block"><img src="/img/comment.png" /><h5><?= ($this->stat[0]['total_comments']>99)?'99+':$this->stat[0]['total_comments'];?></h5></div>
+				</li>
+				<li>
+					<div class="stats-block"><img src="/img/rthumbsup.png" /><h5><?= ($this->stat[0]['total_get_comments']>99)?'99+':$this->stat[0]['total_get_comments'];?></h5></div>
+				</li>
+				<li>
+					<div class="stats-block"><img src="/img/rcomment.png" /><h5><?= ($this->stat[0]['total_get_likes']>99)?'99+':$this->stat[0]['total_get_likes'];?></h5></div> 
+				</li>
+			
+			</ul>
+
+	
+	
+</div>

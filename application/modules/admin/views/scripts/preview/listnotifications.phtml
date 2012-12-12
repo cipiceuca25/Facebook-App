@@ -1,0 +1,583 @@
+<div class="arrow" style="left:227px"></div>
+<span id="notifynumber" style="display:none"><?=count($this->events)?></span>
+<!--  
+<?//if ($this->fanpage_level > 2 ){ ?>class="rvgrid-5ex"<?//php } else {?> class="rvgrid-3ex" <?//php }?>-->
+	<div class="rvgrid-7">
+		<div class="box">
+			<div class="post-container noline">
+				<div class="user">
+					<div class="title-header nopic">Notifications</div>
+				</div>			
+			</div>
+			<?php if (count($this->events) == 0 ){?>
+				<ul>
+					<li>
+						<div class="post">
+							<div class="message" style="margin-left:0">
+								No Notifications
+							</div>
+						</div>	
+					</li>
+				</ul>
+			<? }else{?>
+				<ul>
+	
+				<?php foreach ($this->events as $e){?>
+							
+							
+								<? switch($e['activity_type']){
+									case 'points':?>	
+										<?php if ($this->fanpage_level >2){?>
+										<? if($e['event_object'] == 'admin_add_point'){?>
+											<li >
+											
+											<div class="photo">
+												<a>
+													<img class="small-face"  src="https://graph.facebook.com/<?= $this->fanpage_id ?>/picture">
+												</a>
+											</div>
+											<div class="message">
+												<span class="name"><a class="noclick"><?= $this->fanpage_name?></a></span>
+												
+												has awarded you <?=$e['quantity']?> points 
+											</div>
+											<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+											</li>
+										<?} else if ($e['event_object'] == 'admin_subtract_point'){?>
+										<li >
+											<div class="photo">
+												<a>
+													<img class="small-face"  src="https://graph.facebook.com/<?= $this->fanpage_id ?>/picture">
+												</a>
+											</div>
+											<div class="message">
+												<span class="name"><a class="noclick"><?= $this->fanpage_name?></a></span>
+												
+												has taken away <?= ($e['quantity'])*-1?> points from you
+											</div>
+											<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+												</li>								
+										<?} else {?>
+										<li >
+											<div class="photo">
+										
+													<img class="small-face"src="/img/coins.png">
+											
+											</div>
+											<div class="message">
+												<span class="name"><a class="noclick">You</a></span>
+												
+												<?php if ($e['quantity'] > 0){?>
+													have earned <?=$e['quantity']?> points
+												<?php } else {?>
+													have lost <?=$e['quantity']*-1?> points
+												<?php }?>
+											</div>
+											<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+											</li>
+											<?}?>
+										<?php }?>
+									<?break;?>	
+									<?case 'badge':?>
+									<li>
+										<div class="photo">
+											<a>
+											<?php if (strpos( $e['picture'], '.') === false){?>
+												<i class="sprite-<?= $e['picture']?>"></i>
+											<?php }else{ ?>
+												<img class="small-face" src="<?= $e['picture']?>"/>
+											<?}?>
+										
+											</a>
+										</div>
+										<div class="message">
+											<span class="name"><a class="noclick">You</a></span>
+											
+											have earned the '<?= $e['name'].' '.$e['quantity']?>' Badge!
+										</div>
+										<div class="social">
+											<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time']) ?>"></a>
+					
+		
+										</div>
+										</li>
+									<?break;?>
+									<?case 'follow'?>
+									<li>
+										<div class="photo">
+											<a  
+											 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											>
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+												has followed you
+										</div>
+										<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+										</li>
+									<?break;?>
+									<?case 'unfollow'?>
+									<li>
+										<div class="photo">
+											<a  
+											 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											>
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has unfollowed you
+										</div> 
+										
+										<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+										</li>
+									<?break;?>
+									<?case 'comment-status'?>
+									<li>
+										<div class="photo">
+											<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+												<img class="small-face"  src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">status post</a>: <span class="italic">"<?=substr(trim($e['message']), 0, 160)?>"</span>.
+										</div> 
+										
+										<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+										</li>
+									<?break;?>
+									<?case 'like-status'?>
+									<li>
+										<div class="photo">
+											<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has liked your <a onclick="popup_post('<?=$e['event_object']?>', true)">status post</a>: <span class="italic">"<?=substr(trim($e['message']), 0, 160)?>"</span>.
+										</div> 
+										
+										<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+										</li>
+									<?break;?>
+									<?case 'comment-photo'?>
+									<li>
+										<div class="photo">
+											<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">photo post</a>: <span class="italic">"<?=substr(trim($e['message']), 0, 160)?>"</span>.
+										</div>
+										
+										<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+											</li>
+									<?break;?>
+									<?case 'like-photo'?>
+									<li>
+										<div class="photo">
+											<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has liked your <a onclick="popup_post('<?=$e['event_object']?>', true)">photo post</a>: <span class="italic">"<?=substr(trim($e['message']), 0, 160)?>"</span>.
+										</div> 
+										
+										<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+											</li>
+									<?break;?>
+									<?case 'comment-video'?>
+									<li>
+										<div class="photo">
+											<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">video post</a>: <span class="italic">"<?=substr(trim($e['message']), 0, 160)?>"</span>.
+										</div>
+										
+										<div class="social">
+											<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+										</div>
+										</li>
+									<?break;?>
+									<?case 'like-video'?>
+									<li>
+										<div class="photo">
+											<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has liked  your <a onclick="popup_post('<?=$e['event_object']?>', true)">video post</a>: <span class="italic">"<?=substr(trim($e['message']), 0, 160)?>"</span>.
+										</div>
+										
+										<div class="social">
+											<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+										</div>
+										</li>
+									<?break;?>
+									<?case 'comment-link'?>
+									<li>
+										<div class="photo">
+											<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has commented on your <a onclick="popup_post('<?=$e['event_object']?>', true)">link post</a>: <span class="italic">"<?=substr(trim($e['message']), 0, 160)?>"</span>.
+										</div>
+										
+										<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+										</li>
+									<?break;?>
+									<?case 'like-link'?>
+									<li>
+										<div class="photo">
+											<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has liked your <a onclick="popup_post('<?=$e['event_object']?>', true)">link post</a>: <span class="italic">"<?=substr(trim($e['message']), 0, 160)?>"</span>.
+										</div>
+										
+										<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+											</div>
+										</li>
+									<?break;?>
+									<?case 'like-comment'?>
+									<li>
+										<div class="photo">
+											<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+												<img class="small-face" src="https://graph.facebook.com/<?= $e['facebook_user_id'] ?>/picture" onerror="ImgError(this);">
+											</a>
+										</div>
+										<div class="message">
+											<span class="name">
+												<a  
+											<? if (!($e['facebook_user_id'] == $this->fanpage_id)){?> 
+												onclick="userProfile('<?=$e['facebook_user_id'] ?>')"
+												rel="popover" 
+												data-content="" 
+												data-original-title="" 
+												data-placement="right" 
+												data-userid="<?=$post->from->id?>"
+											<?  }?> >
+													<?= $e['facebook_user_name']?> 
+												</a>
+											</span>
+											has liked  your <a onclick="popup_post('<?=$e['event_object']?>', true)">comment</a>: <span class="italic">"<?=substr(trim($e['message']), 0, 160)?>"</span>.
+										</div>
+										
+										<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time'])?>"></a>
+						
+			
+											</div>
+										</li>
+									<?break;?>
+									<?case 'redeem-badge':?>
+										<li>
+											<div class="photo">
+												<a>
+												<?php if (strpos( $e['picture'], '.') === false){?>
+													<i class="sprite-<?= $e['picture']?>"></i>
+												<?php }else{ ?>
+													<img class="small-face" src="<?= $e['picture']?>"/>
+												<?}?>
+													
+												</a>
+											</div>
+											<div class="message">
+												<span class="name"><a class="noclick">You</a></span>
+												
+												have earned the '<?= $e['name'].' '.$e['quantity']?>' Badge! This Badge can be used to Redeem something.
+												Go to your Profile to find out what that is!
+											</div>
+											<div class="social">
+												<a class="time noclick" data-original-title="" data-unix-time="<?=strtotime($e['created_time']) ?>"></a>
+						
+			
+											</div>
+										</li>
+									<?break;?>
+									
+									
+								<?php } ?>
+
+				<? }?>
+				</ul>
+			<? }?>
+		
+		</div>
+
+</div>
+<script>
+$('.notifier ul').enscroll({
+		showOnHover: true,
+		clickTrackToScroll: false,
+		verticalTrackClass: 'track3 popup',
+		verticalHandleClass: 'handle3 popup'
+	});
+</Script>

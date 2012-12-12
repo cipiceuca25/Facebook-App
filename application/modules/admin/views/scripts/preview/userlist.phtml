@@ -1,0 +1,128 @@
+<div class="rvrow">
+<div class="rvgrid-11">
+
+<div class="box" id="user_list">
+
+<div class="title nopic">
+	 
+
+		<!--<?php if ($this->title != 'Likes'){?>
+			<div class="title-icon">
+				<img class="face" width="50" height="50" src="https://graph.facebook.com/<?= $this->user_id ?>/picture">
+			</div>
+		<?php }else{?>
+			
+		<?php }?>-->
+		<?php $displayname=$this->user_name;?>
+
+	
+		<?php if ($this->title != 'Likes'){?>
+			<div class="title-header nopic">
+		
+			<?php if($this->user_id == $this->this_user_id){?>Your<?php }else{?><?=$displayname?>'s<?php }?> <?= $this->title?> List
+			</div>
+			
+			
+		<?php }else{?>
+			<div class="title-header nopic">
+			People who Like this
+			</div>
+		<?php }?>
+			<?php if ($this->title != 'Likes'){?>
+		<div class="link-back">Go back to <a onclick="userProfile('<?= $this->user_id?>', false)"><?= $this->user_name?></a>'s Profile</div>
+		<?php }?>
+		
+</div>
+
+
+	<ul class="top-list" id="user_list_scroll">
+	<?php if(count($this->result)==0){?>
+		<li >
+			<div class="ranker">
+				<div class="user">
+					<div class="photo"><img class="small-face" src="/img/profile-picture.png" onerror="ImgError(this);"></div>
+				
+					<div class="name">No Users</div>
+				
+				</div>
+			
+			</div>
+		</li>
+	<?php }?>
+	
+	
+	<?php $count=0;?>
+	<?php foreach ($this->result as $user):?>	
+		<?php $displayname=$user['facebook_user_name'];?>
+	
+		<li>
+			
+			<div class="ranker" >
+				<div class="user">
+					<div class="photo">
+						<a data-userid="<?= $user['facebook_user_id'] ?>"
+											<? if (($this->relation[$count] != 'Fanpage')){?>
+												onclick="userProfile('<?= $user['facebook_user_id'] ?>', false)"
+												 rel="popover" data-content="" data-original-title=""
+												data-placement="right"<?}?>>
+						<img class="small-face" src="https://graph.facebook.com/<?= $user['facebook_user_id'] ?>/picture">
+						</a>
+					</div>
+					
+					<div class="name">
+						<a data-userid="<?= $user['facebook_user_id'] ?>"
+											<? if (($this->relation[$count] != 'Fanpage')){?>
+												onclick="userProfile('<?= $user['facebook_user_id'] ?>' , false)"
+												 rel="popover" data-content="" data-original-title=""
+												data-placement="right"<?}?>><?= $displayname?></a>
+						
+					</div>
+					<!--   <br/><?if($this->title == 'Followers') {echo "Followed";}else{ echo "Following";} ?>  since <span class="time"
+									title="" data-unix-time="<?= strtotime($user['created_time'])?>"></span>	-->
+				</div>
+			
+				<div class="user-badge">
+					<a rel="tooltip-follow" class ="follow_<?= $user['facebook_user_id']?>" 
+					<?php switch($this->relation[$count]) { 
+						case 'Fanpage':?>
+							 data-original-title="You can't Follow an Admin"><span class="btn btn-mini fc-Fanpage">Admin</span>
+						<?break;?>
+						
+						<?case 'You':?>
+							 data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
+						<?break;?>
+						
+						<?case 'Following':?>
+							onclick="unfollow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')" 
+							data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
+						<?break;?>
+							
+						<?default:?>
+							onclick="follow(<?= $user['facebook_user_id'] ?>, '<?= $user['facebook_user_name']?>')" 				
+							data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?= $this->relation[$count]?>"><?= $this->relation[$count]?></span>
+						<?}?>
+					</a>
+						
+
+				</div>
+				
+				
+			</div>
+		</li>
+	<?php $count++;?>
+	<?php endforeach; ?>
+	
+	</ul>
+</div>
+
+</div>
+</div>
+
+<script>
+	$('#user_list_scroll').enscroll({
+	showOnHover: true,
+	clickTrackToScroll: false,
+	verticalTrackClass: 'track3 popup',
+	verticalHandleClass: 'handle3 popup'
+	});
+</script>

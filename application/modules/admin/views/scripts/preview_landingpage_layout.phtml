@@ -1,0 +1,85 @@
+<!--  LOGIN -->
+<!--  THIS LAYOUT IS FOR THE MULTIPLE PAGES-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="imagetoolbar" content="no"/>
+
+        <meta http-equiv="Content-Language" content="en"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <meta name="description" content="Fancrank Inc."/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+        <meta name="author" content="FanCrank" />
+        <meta name="generator" content="" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+        <script src="/js/libs/jquery-1.7.2.min.js"></script>
+		<script src="/js/libs/jquery-ui-1.8.21.custom.min.js"></script>
+    	<script src="/js/libs/modernizr-2.5.3.min.js"></script>
+      	<script src="/bootstrap/js/bootstrap.js"></script>
+
+        <?= $this->headScript(); ?>
+
+		<link rel="stylesheet" href="/css/loadstyle1.css" />
+		<script>
+			$(function() {
+				var theme = '<?= $this->theme?>'; 
+			});
+		</script>
+       
+    </head>
+
+    <body style="overflow:hidden;" controller="<?= $this->layout()->controller ?>" action="<?= $this->layout()->action ?>" module="admin">
+		
+		<div class="container" > 
+		
+			<div id="wrapper">
+	
+		
+			    <div id="content">
+			    	<div class="user-profile">
+						<div class="tip"><a onclick="closeProfile()">x</a></div>
+						<div class="profile-content"></div>
+					</div>
+					<div class="container">
+				    	<div class="tabbable">
+				    		<div <?php if($this->fanpage->fanpage_level > 2){?>id="menu"<?}else{?>id="menu2"<?php }?> class="tab-container">
+								<div id="logo"><img src="/img/logo-noline-white.png"/></div>
+							
+								<ul class="nav nav-tabs" id="log-in-out">
+									
+									<li><a class="fancrank_login" href="/admin/preview/app/<?= $this->fanpage->fanpage_id ?>">Login to FanCrank</a></li>
+							
+								</ul>
+								<!-- <ul class="nav nav-tabs" id="log-in-out">
+
+								 	<li><a id="help-tab" onclick="resetTour()">Help</a></li>
+								</ul>-->
+							</div>
+				   
+		        		
+					   		<div>
+					   	    	 
+							<?= $this->layout()->content ?>
+						
+			        		
+		        			</div>
+		        			<div id="powered">
+								<a href="http://www.fancrank.com" target=_new><img src="/img/fan-footer.png" /></a>
+							</div>
+		        		</div>
+		        	</div>
+        		</div>
+        	</div>
+         </div>
+         <div class="light-box"></div>
+    </body>	
+</html>
+

@@ -1,0 +1,168 @@
+
+<?php $username=$this->facebook_user->facebook_user_first_name .' '. $this->facebook_user->facebook_user_last_name;?>
+<?php $displayname= $username;?>
+
+<div id="userprofile">
+	<div class="rvrow">
+		<div class="rvgrid-11">
+			<div class="box">
+				<div class="title nopic">
+						
+					<div class="title-header nopic"> 		
+						Fancrank User Profile
+					</div>	
+					<div class="badge-profile">
+							<a rel="tooltip-follow" class ="follow_<?= $this->facebook_user->facebook_user_id?>"
+								<?php switch($this->relation) { 
+									case 'You':?>
+										class="noclick" data-original-title="This is You"><span class="btn btn-mini fc-You">You</span>
+									<?break;?>
+									<?case 'Following'?>
+										onclick="unfollow(<?= $this->facebook_user->facebook_user_id?> ,'<?= $username ?>')" 
+										data-original-title="Click to Unfollow this User"><span class="btn btn-mini fc-Following">Following</span>
+									<?break;?>	
+									<?default:?>
+										onclick="follow(<?= $this->facebook_user->facebook_user_id?> , '<?= $username ?>')" 
+										data-original-title="Click to Follow this User"><span class="btn btn-mini fc-<?=$this->relation?>"><?=$this->relation?></span>
+									<?}?>
+							</a>
+						</div>
+				</div>
+	
+				<div class="post-container">
+				
+					<div class="user pad">
+							<? if($this->fanpage_level !=1){?>
+							<div class="rank you">
+								<h1><?= isset( $this->fan->fan_level)? $this->fan->fan_level:1?></h1>
+							</div>
+							<?php }?>
+							
+							<div class="photo">
+								<a class="noclick"><img class="large-face" src="https://graph.facebook.com/<?= $this->facebook_user->facebook_user_id ?>/picture" onerror="ImgError(this);"></a>
+					
+							</div>
+							
+							<div class="name">
+								<a class="noclick"><?= $username?></a>
+							
+							</div>	
+							
+							<div class="user-description tip2 ">
+						
+							<?= substr(stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$this->fan->message)), 0, 160)?>
+							
+							</div>
+							<div class="linktofb">
+								Go to <a href="http://www.facebook.com/<?=$this->facebook_user->facebook_user_id?> " target="_new" ><?= $username?>'s Facebook Profile</a>
+							</div>
+							
+							
+							<br/>
+							<br/>
+							<?php if($this->cbcount < 3){?>
+							<div class="title nopic">
+						
+								<div class="title-header nopic"> 		
+									Display Badges
+								</div>	
+								
+							</div>
+						
+							<div class="post-container">
+								<div class=" post badgedisplay">
+									<?php foreach ($this->badges as $b): ?>
+										<?php if ($b != 'undefined') {?>
+											<div class="progress  chosen-badges" >
+												<div class="bar" ></div>
+												<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . date('Y/m/d',strtotime(date($b['created_time'])))?>" 
+												class=noclick rel="tooltip" data-placement="top">
+													<?php if (strpos( $b['picture'], '.') === false){?>
+											<i class="sprite-<?= $b['picture']?>"></i>
+										<?php }else{ ?>
+											<img src="<?= $b['picture']?>"/>
+										<?}?>
+												</a>
+											</div>
+										<?php }?>
+									
+									<?php endforeach;?>
+								</div>
+							</div>	
+							<?php }?>	
+					</div>
+					
+					
+			
+				</div>  
+				
+				
+				<div class="post-container">
+					<ul class="post stats">
+						
+						<li >
+							<div class="stats-block" ><h5><a class="noclick" rel="tooltip" data-original-title="Posts" data-placement="top"><img src="/img/post.png" /><?=($this->stat_post > 99)? '99+':$this->stat_post?></a></h5>
+							</div>
+						</li>
+						<li >
+							<div class="stats-block"><h5><a class="noclick" rel="tooltip" data-original-title="Likes" data-placement="top"><img src="/img/thumbsup.png" /><?=($this->stat_like > 99)? '99+':$this->stat_like?></a></h5>
+							</div>
+						</li>
+						<li>
+							<div class="stats-block"><h5><a class="noclick" rel="tooltip" data-original-title="Comments" data-placement="top"><img src="/img/comment.png" /><?=($this->stat_comment > 99)? '99+':$this->stat_comment?></a></h5>
+							</div>
+						</li>
+						<li >
+							<div class="stats-block"><h5><a class="noclick" rel="tooltip" data-original-title="Recieved Likes" data-placement="top"><img src="/img/rthumbsup.png" /><?=($this->stat_get_like > 99)? '99+':$this->stat_get_like?></a></h5>
+							</div>
+						</li>
+						<li>
+							<div class="stats-block"><h5><a class="noclick" rel="tooltip" data-original-title="Recieved Comments" data-placement="top"><img src="/img/rcomment.png" /><?=($this->stat_get_comment > 99)? '99+':$this->stat_get_comment?></a></h5>
+							</div> 
+						</li>
+						<li>
+							<div class="stats-block">
+							<h5><a class="noclick" rel="tooltip" data-original-title="Followers" data-placement="top" onclick="getFollowersList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow.png" /><?= $this->follower['0']['Follower']?>
+							</a></h5>
+							
+							</div>
+						</li>
+						<li >
+							<div class="stats-block">
+								<h5><a class="noclick" rel="tooltip" data-original-title="Following" data-placement="top"  onclick="getFollowingList('<?=$username?>', '<?=$this->facebook_user->facebook_user_id?>', 0, false)"><img src="/img/eye_arrow2.png" /><?= $this->following['0']['Following']?>
+								</a></h5>
+							</div>
+						</li>
+					</ul>
+				
+				</div>
+				
+
+	
+				<div class="title nopic">
+					<div class="title-header nopic">
+				
+						<?echo $username ?>'s Recent Activities
+					</div>
+				</div>
+				<ul id="user_activities">
+				
+			
+			
+				</ul>
+
+				
+			
+			
+			
+			</div>
+		</div>
+</div>
+
+<script>
+	$('#user_activities').enscroll({
+	showOnHover: true,
+	clickTrackToScroll: false,
+	verticalTrackClass: 'track3',
+	verticalHandleClass: 'handle3'});
+</script>

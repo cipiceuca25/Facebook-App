@@ -5,6 +5,7 @@
 </script>
 
 
+
 <div class="row-fluid">
 	<div class="span3">
 		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">
@@ -25,16 +26,27 @@
 		</div>
 	</div>
 	<div class="span9" >
-		<div id="preview"  >
-			<div class="preview-container">
-			</div>
+		<div class="id="preview-control-group"">
+			<a href="#" class="btn btn-success btn-large" id="btn-reload-preview"><i class="icon-white icon-refresh"></i></a>
+			<a href="#" class="btn btn-success btn-large" id="btn-upload-cover"><i class="icon-white icon-picture"></i></a>
+		    <div class="dropdown">
+			    <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+			    Top Fan Period
+			    <b class="caret"></b>
+			    </a>
+			    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+					<li><a href="#" data-id="<?= $this->page_id ?>">week</a></li>
+				    <li><a href="#" data-id="<?= $this->page_id ?>">month</a></li>
+					<li><a href="#" data-id="<?= $this->page_id ?>">alltime</a></li>				    
+			    </ul>
+		    </div>			
 		</div>
-		
+		<iframe id="previewIframe" src="http://www.fancrank.local/admin/preview/landingpage/<?= $this->page_id?>" style="width:810px; height:1000px; overflow:auto">
+		</iframe>
 	</div>
 </div>
 
 <div class="row-fluid">
-
 	<div class="span12">
 		<form  action="/admin/dashboard/pointsetting/<?= $this->page_id ?>" method="post">
 			<h3>Point Setting Section</h3>
@@ -184,6 +196,15 @@ $(document).ready(function() {
 	$('#landing-dialog-form').submit(function(e) {
 		e.preventDefault();
 		console.log('hi');
+	});
+
+	$('#btn-reload-preview').live('click', function(e) {
+		$('#previewIframe').attr('src', $('#previewIframe').attr('src'));	
+	});
+
+	$('#btn-upload-cover').live('click', function(e) {
+		e.preventDefault();
+		$("#previewIframe").contents().find('.top-fan-last-week').toggle();	
 	});
 });
 </script>

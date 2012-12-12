@@ -107,7 +107,7 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
     	
     	
     	$points = new Model_PointLog();
-    	$allpoints = $points ->getFanpagePoints($fanpageId);
+    	$allpoints = $points ->getFanpagePointsNumber($fanpageId);
     	$x = $points ->getPointsByType($fanpageId);
     	
     
