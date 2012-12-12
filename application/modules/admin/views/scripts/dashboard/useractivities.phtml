@@ -1,0 +1,127 @@
+<?php  if($this->act){?>
+	<?php foreach ($this->act as $a ){?>
+		<div>
+			<a <?if ($a['facebook_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['facebook_user_id']?>"><?= $a['facebook_user_name']?></a>
+			<? switch ($a['activity_type']){ 
+				case 'like-status': ?>
+				
+					liked 
+					<a <?if ($a['target_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['target_user_id']?>"><?= $a['target_user_name']?></a>
+					's 
+					<a class="post" data-post-id="<?= $a['event_object']?>">Post</a>
+		
+				<? break;?>
+				<?php case 'like-photo': ?>
+				
+					liked 
+					<a <?if ($a['target_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['target_user_id']?>"><?= $a['target_user_name']?></a>
+					's 
+					<a class="post" data-post-id="<?= $a['event_object']?>">Photo</a>
+		
+				<? break;?>
+				<?php case 'like-video': ?>
+				
+					liked 
+					<a <?if ($a['target_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['target_user_id']?>"><?= $a['target_user_name']?></a>
+					's 
+					<a class="post" data-post-id="<?= $a['event_object']?>">Video</a>
+		
+				<? break;?>
+				<?php case 'like-link': ?>
+				
+					liked 
+					<a <?if ($a['target_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['target_user_id']?>"><?= $a['target_user_name']?></a>
+					's 
+					<a class="post" data-post-id="<?= $a['event_object']?>">Link</a>
+		
+				<? break;?>
+				<?php case 'like-comment': ?>
+					<?$temp =  explode('_',$a['event_object'])?>
+					
+					liked 
+					<a <?if ($a['target_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['target_user_id']?>"><?= $a['target_user_name']?></a>
+					's 
+					<a class="post" data-post-id="<?= $temp[0].'_'.$temp[1]?>">Comment</a>
+		
+				<? break;?>
+				
+				<?php case 'comment-status': ?>
+					<?$temp =  explode('_',$a['event_object'])?>
+					
+					commented on
+					<a <?if ($a['target_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['target_user_id']?>"><?= $a['target_user_name']?></a>
+					's 
+					<a class="post" data-post-id="<?= $temp[0].'_'.$temp[1]?>">Post</a>
+		
+				<? break;?>
+				<?php case 'comment-photo': ?>
+					<?$temp =  explode('_',$a['event_object'])?>
+					
+					commented on
+					<a <?if ($a['target_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['target_user_id']?>"><?= $a['target_user_name']?></a>
+					's 
+					<a class="post" data-post-id="<?= $temp[0].'_'.$temp[1]?>">Photo</a>
+		
+				<? break;?>
+				<?php case 'comment-video': ?>
+					<?$temp =  explode('_',$a['event_object'])?>
+					
+					commented on
+					<a <?if ($a['target_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['target_user_id']?>"><?= $a['target_user_name']?></a>
+					's 
+					<a class="post" data-post-id="<?= $temp[0].'_'.$temp[1]?>">Video</a>
+		
+				<? break;?>
+				<?php case 'comment-link': ?>
+					<?$temp =  explode('_',$a['event_object'])?>
+					
+					commented on
+					<a <?if ($a['target_user_id'] != $this->page_id){?>class="username"<?php }?> data-id="<?= $a['target_user_id']?>"><?= $a['target_user_name']?></a>
+					's 
+					<a class="post" data-post-id="<?= $temp[0].'_'.$temp[1]?>">link</a>
+		
+				<? break;?>
+				<?php case 'post-status': ?>
+		
+					
+					posted a
+					 
+					<a class="post" data-post-id="<?= $a['event_object']?>">Status</a>
+		
+				<? break;?>
+				<?php case 'post-photo': ?>
+				
+					
+					posted a
+					 
+					<a class="post" data-post-id="<?=$a['event_object']?>">Photo</a>
+		
+				<? break;?>
+				<?php case 'post-video': ?>
+					
+					
+					posted a
+					 
+					<a class="post" data-post-id="<?= $a['event_object']?>">Video</a>
+		
+				<? break;?>
+				<?php case 'post-link': ?>
+			
+					
+					posted a
+					 
+					<a class="post" data-post-id="<?= $a['event_object']?>">Link</a>
+		
+				<? break;?>
+				
+				<?php default:?>
+				
+				<?php break;?>
+			<?php }?>
+		</div>
+		<br/>
+		
+	<?php }?>
+<?php }else{?>
+	This User has no Activities
+<?php }?>

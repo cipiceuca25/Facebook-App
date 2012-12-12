@@ -556,6 +556,7 @@ padding:10px;
 #placeholder2 {
   width: 100%;
   height: 250px;
+  margin-bottom: 30px;
 }
 .linegraph path {
   stroke-width: 1;

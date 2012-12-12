@@ -616,7 +616,6 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 			
 		}else{
 			$select ="select * from (
-							
 							select 
 							f.facebook_user_id,
 								
@@ -838,9 +837,9 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 										where yearweek(y.created_time) = yearweek(curdate())";
 					break;
 				case 'today':
-					$select= $select." group by hour(created_time)
-										order by created_time ASC as y
-										where date(x.created_time) = date(curdate())";
+					$select= $select." where date(x.created_time) = date(curdate())
+										group by hour(created_time)
+										order by created_time ASC) as y";
 					break;
 				default:
 					$select = $select . " group by date(created_time)
@@ -1238,36 +1237,105 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 						//Zend_Debug::$result;
 			return $result;
 		}else{
-			$select = "select facebook_user_id, count(facebook_user_id) as 'activity' from (
-							select facebook_user_id, created_time, 'p' as type from posts where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
-							union all
-							select facebook_user_id, created_time, 'c' as type from comments where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
-							union all
-							select facebook_user_id, created_time ,'l' as type from likes where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
-						) as a
-						";
 			
 			switch($time){
 				case 'month':
-					$select = $select . "where month(created_time) = month(curdate()) && year(created_time) = year(curdate())
-										group by facebook_user_id";
+					$select = "select num.*, f.fan_name from (
+								select *, count(facebook_user_id) as num_of_activities, sum(case when type = 'post' then 1 else 0 end) as num_of_post,
+								sum(case when type = 'comment' then 1 else 0 end) as num_of_comment,sum(case when type = 'like' then 1 else 0 end) as num_of_likes
+								from
+								(select * from
+								(
+								select facebook_user_id, created_time, 'post' as type from posts where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								union all
+								select facebook_user_id, created_time, 'comment' as type from comments where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								union all
+								select facebook_user_id, created_time ,'like' as type from likes where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								) as a
+								order by created_time DESC ) as b
+								
+								where month(created_time) = month(curdate()) && year(created_time) = year(curdate())
+								
+								group by facebook_user_id 
+								order by created_time DESC ) as num 
+								left join fans f 
+								on num.facebook_user_id = f.facebook_user_id && f.fanpage_id=$fanpageId
+								order by num.created_time DESC";
+					
 					break;
 				case 'week':
-					$select = $select . "where yearweek(created_time) = yearweek(curdate())
-										group by facebook_user_id";
+					$select = "select num.*, f.fan_name from (
+								select *, count(facebook_user_id) as num_of_activities, sum(case when type = 'post' then 1 else 0 end) as num_of_post,
+								sum(case when type = 'comment' then 1 else 0 end) as num_of_comment,sum(case when type = 'like' then 1 else 0 end) as num_of_likes
+								from
+								(select * from
+								(
+								select facebook_user_id, created_time, 'post' as type from posts where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								union all
+								select facebook_user_id, created_time, 'comment' as type from comments where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								union all
+								select facebook_user_id, created_time ,'like' as type from likes where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								) as a
+								order by created_time DESC ) as b
+					
+								where yearweek(created_time) = yearweek(curdate())
+					
+								group by facebook_user_id
+								order by created_time DESC ) as num
+								left join fans f
+								on num.facebook_user_id = f.facebook_user_id && f.fanpage_id=$fanpageId
+								order by num.created_time DESC";
+					
 					break;
 				case 'today':
-					$select = $select . "where date(created_time) = date(curdate())
-										group by facebook_user_id";
+					$select = "select num.*, f.fan_name from (
+								select *, count(facebook_user_id) as num_of_activities, sum(case when type = 'post' then 1 else 0 end) as num_of_post,
+								sum(case when type = 'comment' then 1 else 0 end) as num_of_comment,sum(case when type = 'like' then 1 else 0 end) as num_of_likes
+								from
+								(select * from
+								(
+								select facebook_user_id, created_time, 'post' as type from posts where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								union all
+								select facebook_user_id, created_time, 'comment' as type from comments where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								union all
+								select facebook_user_id, created_time ,'like' as type from likes where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								) as a
+								order by created_time DESC ) as b
+			
+								where date(created_time) = date(curdate())
+			
+								group by facebook_user_id
+								order by created_time DESC ) as num
+								left join fans f
+								on num.facebook_user_id = f.facebook_user_id && f.fanpage_id=$fanpageId
+								order by num.created_time DESC";
+				
 					break;
 				default:
-					$select = $select . "where yearweek(created_time) = yearweek(curdate())
-										group by facebook_user_id";
+					$select = "select num.*, f.fan_name from (
+								select *, count(facebook_user_id) as num_of_activities, sum(case when type = 'post' then 1 else 0 end) as num_of_post,
+								sum(case when type = 'comment' then 1 else 0 end) as num_of_comment,sum(case when type = 'like' then 1 else 0 end) as num_of_likes
+								from
+								(select * from
+								(
+								select facebook_user_id, created_time, 'post' as type from posts where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								union all
+								select facebook_user_id, created_time, 'comment' as type from comments where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								union all
+								select facebook_user_id, created_time ,'like' as type from likes where fanpage_id = $fanpageId && facebook_user_id != fanpage_id
+								) as a
+								order by created_time DESC ) as b
+			
+								group by facebook_user_id
+								order by created_time DESC ) as num
+								left join fans f
+								on num.facebook_user_id = f.facebook_user_id && f.fanpage_id=$fanpageId
+								order by num.created_time DESC";
 					break;
 				
 				
 			}
-			
+			$result= $this->getAdapter()->fetchAll($select);
 			return $result;
 		}
 	}

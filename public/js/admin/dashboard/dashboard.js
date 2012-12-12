@@ -116,7 +116,7 @@ function getHomeFans(time){
 					$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 				},
 			    success: function (data){
-			    	console.log(data);
+			    	//console.log(data);
 			    
 			    	var tableData1 = [];
 			    	var graphData1 = [];
@@ -134,7 +134,7 @@ function getHomeFans(time){
 			    		
 			    	}
 			    	for(i=0; i < data[1].length; i++) {
-			    		tableData1.push([ data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].date)).toLocaleString()] );
+			    		tableData1.push([ data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].date)).toLocaleString(), data[1][i].facebook_user_id] );
 			    	}
 			    	//var data = google.visualization.arrayToDataTable(tableData1);
 			    	//visualization = new google.visualization.Table(document.getElementById('tableholder'));
@@ -152,15 +152,15 @@ function getHomeFans(time){
 			            "aoColumns": [
 			                      
 			                       { "sTitle": "Name", 
-			                    	  'mRender':function (oObj){
-			                    		return " <a class='username' data-id = "+oObj.aData['facebook_user_id'] + "> " + oObj.aData['fan_name'] + "</a>"
-			                    	  
+			                    	  'mRender':function (data, type, full){
+			                    		
+			                    		return " <a class='username' data-id ="+ full[3] +" >" + data + "</a>"
 			                    	  }
 			                       },
 			                       { "sTitle": "Gender" },
 			                       { "sTitle": "Date Joined" }
 			                   ],
-			            "aaSorting": [[ 3, "desc" ]],
+			            "aaSorting": [[ 2, "desc" ]],
 			            "bAutoWidth": false,
 			    	});
 			    	
@@ -230,7 +230,7 @@ function getHomeActivedFans(time){
 			    	
 			    	for(i=0; i<data[1].length;i++){
 			    		
-			    		tableData1.push([data[1][i].facebook_user_id, data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].first_login_time)).toLocaleString()]);
+			    		tableData1.push([data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].first_login_time)).toLocaleString(), data[1][i].facebook_user_id, ]);
 			    	}
 			    	
 			    	try{
@@ -244,13 +244,21 @@ function getHomeActivedFans(time){
 			    		"sDom" : "<'length'l>t<'table-info'i>",
 			            "aaData": tableData1,
 			            "aoColumns": [
-			                       { "sTitle": "Facebook User Id" },
-			                       { "sTitle": "Name" },
+			                       
+			                
+		                    	   { "sTitle": "Name", 
+			                    	  'mRender':function (data, type, full){
+
+			                    		return " <a class='username' data-id ="+ full[3] +" >" + data + "</a>"
+			                    	  }
+			                       },   
+			                       
+		         
 			                       { "sTitle": "Gender" },
 			                       { "sTitle": "Date" }
 			                      
 			                   ],
-			            "aaSorting": [[ 3, "desc" ]],
+			            "aaSorting": [[ 2, "desc" ]],
 			            "bAutoWidth": false
 			               } );
 			    	//console.log(dataset);
@@ -308,9 +316,9 @@ function getHomeFacebookInteractions(time){
 			    	
 			    	}
 			    	for(i=0; i < data[1].length; i++) {
-			    		tableData1.push([ data[1][i].type,/*data[1][i].post_id,*/data[1][i].fan_name, data[1][i].facebook_user_id, data[1][i].fan_gender, data[1][i].post_message, 
+			    		tableData1.push([ data[1][i].type,/*,*/data[1][i].fan_name, data[1][i].fan_gender, data[1][i].post_message, 
 			    		                 /* data[1][i].post_type, data[1][i].picture, data[1][i].link, data[1][i].post_description,data[1][i].post_caption, */
-			    		                  (new Date(data[1][i].created_time)).toLocaleString()]);
+			    		                  (new Date(data[1][i].created_time)).toLocaleString(), data[1][i].facebook_user_id, data[1][i].post_id]);
 			    	}
 			    
 			    	
@@ -327,10 +335,24 @@ function getHomeFacebookInteractions(time){
 			    		"aoColumns": [
 			    				   { "sTitle": "Type" },
 			    				   /*{ "sTitle": "Post Id" },*/
-			    				   { "sTitle": "Fan Name" },
-			    				   { "sTitle": "Facebook User Id" },
+			    				   { "sTitle": "Name", 
+				                    	  'mRender':function (data, type, full){
+				                 
+				                    		return " <a class='username' data-id ="+ full[5] +" >" + data + "</a>"
+				                    	  }
+				                     },
+			    				 
 			    				   { "sTitle": "Gender" },
-			    				   { "sTitle": "Message" },
+			    				   { "sTitle": "Message",
+			    					   'mRender':function (data, type, full){
+				                    		if(full[0] != 'post'){
+				                    			var s = full[6].split('_');
+				                    			console.log(s);
+				                    			full[6] = s[0] +'_'+ s[1];
+				                    		}
+				                    		return " <a class='post' data-post-id ="+ full[6] +" >" + data + "</a>"
+				                    	  }
+			    				   },
 			    				   /*{ "sTitle": "Post Type" },
 			    				   { "sTitle": "Picture" },
 			    				   { "sTitle": "Link" },
@@ -338,7 +360,7 @@ function getHomeFacebookInteractions(time){
 			    				   { "sTitle": "Post Caption" },*/
 			    				   { "sTitle": "Date" }
 			    			   ],
-			    		"aaSorting": [[ 5, "desc" ]],
+			    		"aaSorting": [[ 4, "desc" ]],
 			    		"bAutoWidth": false
 			    		   } );
 			    	
@@ -387,38 +409,55 @@ function getHomeFanCrankInteractions(time){
 		    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
 		    		graphData1.push ([ new Date(data[0][i].created_time), data[0][i].all , data[0][i].posts, 
 		    		                   	data[0][i].comments, data[0][i].likes,data[0][i].unlike,
-		    		                   	data[0][i].follow,data[0][i].unfollow ]);
+		    		                   	data[0][i].follow,  data[0][i].unfollow, data[0][i].redeem ]);
 		    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
 		    		graphData2.push ([ new Date(data[0][i].created_time), data[0][i].total_all , data[0][i].total_posts, 
 		    		                   data[0][i].total_comments, data[0][i].total_likes,data[0][i].total_unlike,
-		    		                   data[0][i].total_follow,data[0][i].total_unfollow]);
+		    		                   data[0][i].total_follow, data[0][i].total_unfollow, data[0][i].total_redeem]);
 		    	}
 		    
 		    	for (i=0; i<data[1].length; i++){
 		    		tableData1.push([ data[1][i].activity_type, /*data[1][i].event_object,*/ 
 		    		                  data[1][i].fan_name,
-		    		                  data[1][i].facebook_user_id,
 		    		                  data[1][i].fan_gender,
 		    		                  data[1][i].message,
-		    		                  (new Date(data[1][i].created_time)).toLocaleString()]);
+		    		                  (new Date(data[1][i].created_time)).toLocaleString(),
+		    		                  data[1][i].facebook_user_id,
+		    		                  data[1][i].event_object]);
 		    	}
 		    	try{
 		    		table.fnDestroy();
 		    	}catch(e){
 		    		
 		    	}
+		    	
 		    	$('#tableholder').html('');
-		    
 		    	table = $('#tableholder').dataTable( {
 		    		"sDom" : "<'length'l>t<'table-info'i>",
 		    		"aaData": tableData1,
 		    		"aoColumns": [
 		    				   { "sTitle": "Type" },
 		    				   /*{ "sTitle": "Post Id" },*/
-		    				   { "sTitle": "Fan Name" },
-		    				   { "sTitle": "Facebook User Id" },
+		    				   { "sTitle": "Name",
+		    					  'mRender':function (data, type, full){  
+			                    		return " <a class='username' data-id ="+ full[5] +" >" + data + "</a>";
+			                    	  }
+		    				   },
 		    				   { "sTitle": "Gender" },
-		    				   { "sTitle": "Message" },
+		    				   { "sTitle": "Message",
+		    					   'mRender':function (data, type, full){
+		    						   if(full[0] == 'post'){
+		    							   return " <a class='username' data-id ="+ full[6] +" >" + data + "</a>";
+		    						   }else if (full[0] == 'comment'){
+		    							    var s = full[6].split('_');
+			                    			full[6] = s[0] +'_'+ s[1];
+			                    			return " <a class='username' data-id ="+ full[6] +" >" + data + "</a>";
+			                    	   }else{
+			                    		   return data;
+			                    	   }
+		                    		
+		                    	  }   
+		    				   },
 		    				   /*{ "sTitle": "Post Type" },
 		    				   { "sTitle": "Picture" },
 		    				   { "sTitle": "Link" },
@@ -426,13 +465,13 @@ function getHomeFanCrankInteractions(time){
 		    				   { "sTitle": "Post Caption" },*/
 		    				   { "sTitle": "Date" }
 		    			   ],
-		    		"aaSorting": [[ 5, "desc" ]],
+		    		"aaSorting": [[ 4, "desc" ]],
 		    		"bAutoWidth": false
 		    		   } );
 		    	
 		    	graphLoaded =true;
 		    	graphLoaded2 =true;
-		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow'];
+		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow', 'Redeem'];
 		    	graph = new lineGraph('#placeholder', graphData1, text);
 		    	graph2  = new lineGraph('#placeholder2', graphData2, text);
 		    	$('#graphtitle').html('Interactions ' + time);
@@ -460,22 +499,67 @@ function getHomeFacebookInteractionsUniqueUser(time){
 					
 					$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 					//destroyAll();
+					$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 				},
 			    success: function (data){
-			    	
+			    	var tableData1 = [];
 			    	var graphData1 = [];
 			    	var graphData2 = [];
 			    	//graphData1.push(['Date', 'Likes']);
 			    	//graphData2.push(['Date', 'Likes']);
-			    	for(i=0; i < data.length; i++) {
+			    	for(i=0; i < data[0].length; i++) {
 			    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
-			    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes ]);
+			    		graphData1.push ([ new Date(data[0][i].created_time), data[0][i].all , data[0][i].posts, data[0][i].comments, data[0][i].likes ]);
 			    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
-			    		graphData2.push ([ new Date(data[i].created_time2), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes]);
+			    		graphData2.push ([ new Date(data[0][i].created_time2), data[0][i].total_all , data[0][i].total_posts, data[0][i].total_comments, data[0][i].total_likes]);
 			    	}
+			    	
+			    	for (i=0; i<data[1].length; i++){
+			    		tableData1.push([ 
+			    		                  data[1][i].fan_name,
+			    		                  data[1][i].num_of_activities,
+			    		                  data[1][i].num_of_post,
+			    		                  data[1][i].num_of_comment,
+			    		                  data[1][i].num_of_likes,
+			    		                  (new Date(data[1][i].created_time)).toLocaleString(),
+			    		                  data[1][i].facebook_user_id]
+			    		                  );
+			    	}
+			    	
+			    	try{
+			    		table.fnDestroy();
+			    	}catch(e){
+			    		
+			    	}
+			    	
+			    	$('#tableholder').html('');
+			    	table = $('#tableholder').dataTable( {
+			    		"sDom" : "<'length'l>t<'table-info'i>",
+			    		"aaData": tableData1,
+			    		"aoColumns": [
+			    		
+			    				   /*{ "sTitle": "Post Id" },*/
+			    				   { "sTitle": "Name",
+			    					  'mRender':function (data, type, full){  
+				                    		return " <a class='username' data-id ="+ full[6] +" >" + data + "</a>";
+				                    	  }
+			    				   },
+			    				   { "sTitle": "Total # of Activities" },
+			    				   { "sTitle": "# of Post" },
+			    				   { "sTitle": "# of Comment" },
+			    				   { "sTitle": "# of Likes" },
+			    			
+			    				  /* { "sTitle": "Post Caption" },*/
+			    				   { "sTitle": "Most Recent Activity Time" }
+			    			   ],
+			    		"aaSorting": [[ 5, "desc" ]],
+			    		"bAutoWidth": false
+			    		   } );
+			    	
+			    	
 			    	graphLoaded =true;
 			    	graphLoaded2 =true;
-			    	var text = ['Users', 'Posts', 'Comments', 'Likes'];
+			    	var text = ['All Users', 'Users who Posted', 'Users who Commented', 'Users who Liked'];
 			    	graph = new lineGraph('#placeholder', graphData1, text);
 			    	graph2  = new lineGraph('#placeholder2', graphData2, text);
 			    	
@@ -503,28 +587,77 @@ function getHomeFanCrankInteractionsUniqueUsers(time){
 		    	$('#placeholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
 				
 				$('#placeholder2').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				$('#tableholder').html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+				
 				//destroyAll();
 			},
 		    success: function (data){
-		    
+		    	var tableData1 = [];
 			   	var graphData1 = [];
 		    	var graphData2 = [];
 		    	//graphData1.push(['Date', 'Likes']);
 		    	//graphData2.push(['Date', 'Likes']);
-		    	for(i=0; i < data.length; i++) {
+		    	for(i=0; i < data[0].length; i++) {
 		    		//dataset.push( [ (new Date(data[0][i].end_time)).getTime(), (data[0][i].value)]);
-		    		graphData1.push ([ new Date(data[i].created_time), data[i].all , data[i].posts, data[i].comments, data[i].likes,data[i].unlikes,data[i].follow,data[i].unfollow ]);
+		    		graphData1.push ([ new Date(data[0][i].created_time), data[0][i].all , data[0][i].posts, data[0][i].comments, data[0][i].likes,data[0][i].unlikes,data[0][i].follow,data[0][i].unfollow, data[0][i].redeem ]);
 		    		//dataset2.push( [ (new Date(data[1][i].end_time)).getTime(), (data[1][i].value)]);
-		    		graphData2.push ([ new Date(data[i].created_time2), data[i].total_all , data[i].total_posts, data[i].total_comments, data[i].total_likes,data[i].total_unlikes,data[i].total_follow,data[i].total_unfollow]);
+		    		graphData2.push ([ new Date(data[0][i].created_time2), data[0][i].total_all , data[0][i].total_posts, data[0][i].total_comments, data[0][i].total_likes,data[0][i].total_unlikes,data[0][i].total_follow,data[0][i].total_unfollow, data[0][i].redeem]);
 		    	}
-		    
+		    	for (i=0; i<data[1].length; i++){
+		    		tableData1.push([ 
+		    		                  data[1][i].facebook_user_name,
+		    		                  data[1][i].num_of_activities,
+		    		                  data[1][i].posts,
+		    		                  data[1][i].comments,
+		    		                  data[1][i].likes,
+		    		                  data[1][i].unlike,
+		    		                  data[1][i].follow,
+		    		                  data[1][i].unfollow,
+		    		                  data[1][i].redeem,
+		    		                  (new Date(data[1][i].created_time)).toLocaleString(),
+		    		                  data[1][i].facebook_user_id]
+		    		                  );
+		    	}
+		    	
+		    	try{
+		    		table.fnDestroy();
+		    	}catch(e){
+		    		
+		    	}
+		    	
+		    	$('#tableholder').html('');
+		    	table = $('#tableholder').dataTable( {
+		    		"sDom" : "<'length'l>t<'table-info'i>",
+		    		"aaData": tableData1,
+		    		"aoColumns": [
+		    		
+		    				   /*{ "sTitle": "Post Id" },*/
+		    				   { "sTitle": "Name",
+		    					  'mRender':function (data, type, full){  
+			                    		return " <a class='username' data-id ="+ full[11] +" >" + data + "</a>";
+			                    	  }
+		    				   },
+		    				   { "sTitle": "Total # of Activities" },
+		    				   { "sTitle": "# of Post" },
+		    				   { "sTitle": "# of Comment" },
+		    				   { "sTitle": "# of Likes" },
+		    				   { "sTitle": "# of Unlike" },
+		    				   { "sTitle": "# of Follow" },
+		    				   { "sTitle": "# of Unfollow" },
+		    				   { "sTitle": "# of Redeems" },
+		    				   { "sTitle": "Most Recent Activity Time" }
+		    			   ],
+		    		"aaSorting": [[ 10, "desc" ]],
+		    		"bAutoWidth": false
+		    		   } );
+		    	
 		    	graphLoaded =true;
 		    	graphLoaded2 =true;
-		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow'];
+		    	var text = ['Activities', 'Posts', 'Comments', 'Likes', 'Unlikes', 'Follow', 'Unfollow','Redeem'];
 		    	graph = new lineGraph('#placeholder', graphData1, text);
 		    	graph2  = new lineGraph('#placeholder2', graphData2, text);
-		    	$('#graphtitle').html('Unique Users ' + time);
-		        $('#graphtitle2').html('Total Unique Users' + time);
+		    	$('#graphtitle').html('Unique FanCrank Users ' + time);
+		        $('#graphtitle2').html('Total Unique FanCrank Users ' + time);
 		    }
 		});            
 	}
@@ -1051,10 +1184,57 @@ function loadUserProfile(user_id){
 			$('#autoModel .modal-body').html(data)
 			$('#autoModel .modal-header h3').html("User Profile");
 			$('#autoModel').modal('show');
+			loadUserActivities('#user-activities', user_id);
+			loadUserRedemptions('#user-redemptions', user_id);
 			//loadGraph("#placeholder", 'Points');
 			//$('#placeholder').css({'width':'100%', 'height':'200px'});
 			//$('#placeholder').resize();
 		
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting point settings');
+		}
+	});	
+}
+
+function loadUserActivities(ui, user_id){
+
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/useractivities?id=' + fanpageId +"&user_id=" + user_id,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			
+			$(ui).html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+			//destroyAll();
+		},
+		success : function(data) {
+			$(ui).html(data);
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting point settings');
+		}
+	});	
+}
+
+
+function loadUserRedemptions(ui, user_id){
+
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/dashboard/userredemptions?id=' + fanpageId +"&user_id=" + user_id,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			$(ui).html("<div style='text-align:center; padding:40px 0 40px 0'><img src='/img/ajax-loader.gif' /></div>");
+		},
+		success : function(data) {
+			$(ui).html(data);
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -2060,7 +2240,7 @@ function popover(x){
 */
 
 
-lineGraph =  function (u, d, t, s, e, m){
+lineGraph =  function (u, d, t, s, e, m, l){
 	
 	var self = this;
 
@@ -2123,18 +2303,31 @@ lineGraph =  function (u, d, t, s, e, m){
 	
 	if  (typeof m === "undefined") {
 		// console.log(String(this.maxValue).length + ',' + this.maxValue );
-		 this.margin= [5,5, 20, String(this.maxValue).length * 10 + 5];
+		 this.margin= [5,5, 20, String(this.maxValue).length * 11 + 5];
 	}else{
 		this.margin = m;
 	}
 	
+	if  (typeof l === "undefined") {
+		// console.log(String(this.maxValue).length + ',' + this.maxValue );
+		var tl =0;
+		for(x in this.text){
+			tl = (this.text[x].length > tl)? this.text[x].length: tl;
+		
+		}
+		
+		this.legendwidth= tl * 10 + 10 ;
+		
+	}else{
+		this.legendwidth = l;
+	}
 	
-	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3] - 100;	// width
+	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3] - this.legendwidth - 20;	// width
 	this.height = parseInt($(this.ui).css('height')) - this.margin[0] - this.margin[2]; // height
 	
 	this.x = d3.time.scale().domain([this.startTime, this.endTime]).range([10, this.width-10]);
 	
-	this.y =  d3.scale.linear().domain([this.minValue ,this.maxValue]).range([this.height,0 ]);
+	this.y =  d3.scale.linear().domain([this.minValue/1.1 ,this.maxValue*1.1]).range([this.height,0 ]);
 	//console.log (this.minValue + ' ' + this.maxValue);
 	this.lines = new Array();
 	this.toggle = new Array();
@@ -2178,7 +2371,7 @@ lineGraph =  function (u, d, t, s, e, m){
 					.attr("height", this.height)
 				.style("fill", "#fafafa")
 					.attr("pointer-events", "all")
-					.call(d3.behavior.zoom().on("zoom", this.redraw()).x(this.x).y(this.y));
+					.call(d3.behavior.zoom().on("zoom", this.redraw()).scaleExtent([0.2,10]).x(this.x).y(this.y));
 	//console.log(this.transx+' '+this.transy+' '+this.scale);
 	this.graph.append("svg")
     				.attr("top", 0)
@@ -2199,6 +2392,7 @@ lineGraph =  function (u, d, t, s, e, m){
     			    .call(this.yAxis);
 	this.legend  = d3.select(this.ui).append('svg');
 	this.legend.attr("class", "legend")
+					.attr('style','width:'+this.legendwidth+'px')
 				.append('text')
 					.text('Legend')
 					.attr('transform', 'translate(0, 10)');
@@ -2290,7 +2484,7 @@ lineGraph.prototype.redraw = function (){
 					
 					circle.attr("cx", function(d) { return self.x(d[0]); })
 						.attr("cy", function(d) { return self.y(d[j]); })
-						.attr("r", 3);
+						.attr("r", 2.5);
 					
 					circle.exit().remove();
 				}else{
@@ -2299,7 +2493,7 @@ lineGraph.prototype.redraw = function (){
 				}
 			}
 		}
-		self.graph.call(d3.behavior.zoom().on("zoom", self.redraw).x(self.x).y(self.y));
+		self.graph.call(d3.behavior.zoom().on("zoom", self.redraw).scaleExtent([0.2,10]).x(self.x).y(self.y));
 
 	}
 };
@@ -2308,7 +2502,7 @@ lineGraph.prototype.redraw = function (){
 lineGraph.prototype.resize = function (){
 
 
-	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3]  - 100;	// width
+	this.width = parseInt($(this.ui).css('width')) - this.margin[1] - this.margin[3]  - this.legendwidth -20;	// width
 
 	this.yAxis = d3.svg.axis().scale(this.y).tickSize(-this.width).ticks(4).orient("left");
 
@@ -2326,7 +2520,7 @@ lineGraph.prototype.resize = function (){
 
 	this.plot = this.graph.select("rect") 
 			.attr("width", this.width)
-			.call(d3.behavior.zoom().on("zoom", this.redraw()).scaleExtent([0.1,10]).x(this.x).y(this.y));
+			.call(d3.behavior.zoom().on("zoom", this.redraw()).scaleExtent([0.2,10]).x(this.x).y(this.y));
 
 	console.log(this.width);
 	this.graph.select("svg")

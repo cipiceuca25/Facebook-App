@@ -160,7 +160,7 @@ var first_time_use = '<?= $this->first_time?>';
 			</div>
 		</div>
 		
-		
+		<?php if($this->fanpage_level > 2){?>
 		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">	
 
 			<div class="info">
@@ -179,7 +179,7 @@ var first_time_use = '<?= $this->first_time?>';
 				<span class="amount"><?= $this->points[0]['today'] ?></span>
 			</div>
 		</div>
-	
+		<?php }?>
 		
 	</div>
 	<div class="span10">
