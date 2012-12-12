@@ -113,6 +113,11 @@ class Admin_PreviewController extends Fancrank_Admin_Controller_BaseController {
 			$this->_fan['fan_exp']='?';
 		}
 
+		//pass facebook app key to the layout
+		$sources = new Zend_Config_Json(APPLICATION_PATH . '/configs/sources.json', APPLICATION_ENV);
+		$appKey = $sources->get('facebook')->client_id;
+		$this->_helper->layout()->appKey = $appKey;
+		
 		$this->view->user_id = $this->_userId;
 		$this->view->username = $this->_facebook_user->facebook_user_name;
 		$this->view->facebook_user_access_token = $this->_facebook_user->facebook_user_access_token;
