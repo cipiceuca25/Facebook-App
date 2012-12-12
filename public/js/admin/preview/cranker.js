@@ -1,3 +1,5 @@
+//THIS IS THE ADMIN PREVIEW CRANKER
+
 var setFeed = 'start';
 var myfeedoffset = 0;
 
@@ -33,29 +35,6 @@ $(document).ready(function() {
 */
 });
 
-$(document).mousemove(function(e) {
-	
-	//$('.popover').css('display', 'none');
-	//FB.Canvas.setAutoGrow();
-	
-	if (fb == false){
-		try{
-			FB.init({
-				 appId  : appId,
-				 status : true, // check login status
-				 cookie : true, // enable cookies to allow the server to access the session
-				 xfbml  : true// parse XFBML
-				 
-			});
-			fb=true;
-			FB.Canvas.setAutoGrow();	
-		}catch(err){
-			console.log(err);
-		}
-	}
-	
-	
-});
 //===========================================================================================
 
 $(document).on('mouseenter', '#badges2-container', function (){
@@ -340,10 +319,7 @@ $('#leaderboard-tab').live('click', function() {
 		$('#news-feed').html('');
 		$('#redeem').html('');
 		//$('.bubble').html('');
-		FB.Canvas.setSize({
-			width : 810,
-			height : 600
-		});
+	
 		currentpage = 'leaderboard';
 	}
 
@@ -356,10 +332,7 @@ $('#profile-tab').live('click', function() {
 		//$('#achievements').html('');
 		$('#news-feed').html('');
 		$('#redeem').html('');
-		FB.Canvas.setSize({
-			width : 810,
-			height : 400
-		});
+
 		currentpage = 'profile';
 	}
 });
@@ -372,10 +345,7 @@ $('#redeem-tab').live('click', function() {
 		$('#profile').html('');
 		$('#news-feed').html('');
 		//$('#achievements').html('');
-		FB.Canvas.setSize({
-			width : 810,
-			height : 600
-		});
+
 		currentpage = 'redeem';
 	}
 
@@ -726,69 +696,45 @@ function like(post_id, post_type, target_id, target_name) {
 		mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
 	}
 	
-	$
-			.ajax({
-				type : "GET",
-				url : serverUrl + '/app/user/' + userId + '/likes/?post_id='
-						+ post_id + '&fanpage_id=' + fanpageId + '&post_type='
-						+ post_type + '&target_id='+target_id + '&target_name='+ target_name + '&access_token=' + userAccessToken + '&mes='+mes,
-				dataType : "json",
-				cache : false,
-				async: true,
-				success : function(data) {
-					;
-					//alert("target followed")
-					//alert(post_id + 'liked');
-					//feedbackAnimation('.like_control_' + post_id, 'like');
-					//addActivities('like-' + post_type, post_id, target_id, target_name, mes);
-					//console.log(data.fan_point);
-					// update fan point on top menu bar
-					if (! isNaN(data.fan_point)) {
-						$('.my_fan_point').html(numberFormat(data.fan_point));
-						$('.my_fan_point_tooltip').attr('data-original-title', 'You have '+data.fan_point+ ' points');
-					}
-					num = parseInt($('.like_' + post_id).attr('data-like-count')) + 1;
-					$('.like_' + post_id).attr('data-like-count', num);
-					
-					
-					if (post_type.indexOf('comment') != -1) {
-						
-						$('.like_' + post_id).html(num);
-						
-					} else {
-						if (num == 1) {
-							$('.like_' + post_id).html('1 person');
-							//alert('.social.like.'+post_id);
-
-						} else {
-							$('.like_' + post_id).html(
-									num + ' people');
-
-						}
-					}
-					$('.social.like.' + post_id).css('display', 'block');
-
-					$('.like_control_' + post_id).attr(
-							'onclick',
-							"unlike('" + post_id + "','" + post_type + "','"
-									+ target_id + "','" + target_name + "')");
-					$('.like_control_' + post_id).html('Unlike');
-					$('.like_control_' + post_id).attr('data-original-title', 'You like this');
-					
-					temp=$('.social.like.'+post_id+ ' a').attr('data-original-title');
+	if (! isNaN(data.fan_point)) {
+		$('.my_fan_point').html(numberFormat(data.fan_point));
+		$('.my_fan_point_tooltip').attr('data-original-title', 'You have '+data.fan_point+ ' points');
+	}
+	num = parseInt($('.like_' + post_id).attr('data-like-count')) + 1;
+	$('.like_' + post_id).attr('data-like-count', num);
 	
-					if (num == 1){
-						$('.social.like.'+post_id+ ' a').attr('data-original-title', target_name +' likes this');
-					}else{
-						$('.social.like.'+post_id+ ' a').attr('data-original-title', target_name + ', ' + temp);
-					}
-					
-				},
-				error : function(xhr, errorMessage, thrownErro) {
-					console.log(xhr.statusText, errorMessage);
-					console.log('error processing likes');
-				}
-			});
+	
+	if (post_type.indexOf('comment') != -1) {
+		
+		$('.like_' + post_id).html(num);
+		
+	} else {
+		if (num == 1) {
+			$('.like_' + post_id).html('1 person');
+			//alert('.social.like.'+post_id);
+
+		} else {
+			$('.like_' + post_id).html(
+					num + ' people');
+
+		}
+	}
+	$('.social.like.' + post_id).css('display', 'block');
+
+	$('.like_control_' + post_id).attr(
+			'onclick',
+			"unlike('" + post_id + "','" + post_type + "','"
+					+ target_id + "','" + target_name + "')");
+	$('.like_control_' + post_id).html('Unlike');
+	$('.like_control_' + post_id).attr('data-original-title', 'You like this');
+	
+	temp=$('.social.like.'+post_id+ ' a').attr('data-original-title');
+
+	if (num == 1){
+		$('.social.like.'+post_id+ ' a').attr('data-original-title', target_name +' likes this');
+	}else{
+		$('.social.like.'+post_id+ ' a').attr('data-original-title', target_name + ', ' + temp);
+	}
 }
 
 function unlike(post_id, post_type, target_id, target_name) {
@@ -800,74 +746,47 @@ function unlike(post_id, post_type, target_id, target_name) {
 	}else{
 		mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
 	}
-	$.ajax({
-				type : "GET",
+	num = parseInt($('.like_' + post_id).attr('data-like-count')) - 1;
+	if (num < 1){
+		num = 0;
+	}
+	$('.like_' + post_id).attr('data-like-count', num);
+	
+	
+	if (post_type.indexOf('comment') != -1) {
 		
-				url : serverUrl + '/app/user/' + userId + '/unlike/?post_id='
-						+ post_id + '&fanpage_id=' + fanpageId + '&post_type='
-						+ post_type + '&target_id='+target_id + '&target_name='+ target_name + '&mes='+mes + '&access_token=' + userAccessToken,
-				
-				dataType : "html",
-				cache : false,
-				success : function(data) {
-					console.log(data);
-					//alert("target followed")
-					//alert(post_id + 'liked');
-					//feedbackAnimation('.like_control_' + post_id, 'unlike');
-					
-					
-				
-					
-					//addActivities('unlike-' + post_type, post_id,target_id, target_name, mes);
+		$('.like_' + post_id).html(num);
+		
+	} else {
+		if (num == 1) {
+			$('.like_' + post_id).html('1 person');
+			//alert('.social.like.'+post_id);
 
-					num = parseInt($('.like_' + post_id).attr('data-like-count')) - 1;
-					if (num < 1){
-						num = 0;
-					}
-					$('.like_' + post_id).attr('data-like-count', num);
-					
-					
-					if (post_type.indexOf('comment') != -1) {
-						
-						$('.like_' + post_id).html(num);
-						
-					} else {
-						if (num == 1) {
-							$('.like_' + post_id).html('1 person');
-							//alert('.social.like.'+post_id);
+		} else {
+			$('.like_' + post_id).html(
+					num + ' people');
 
-						} else {
-							$('.like_' + post_id).html(
-									num + ' people');
-
-						}
-					}
-					
-					$('.like_control_' + post_id).attr(
-							'onclick',
-							"like('" + post_id + "','" + post_type + "','"
-									+ target_id + "','" + target_name + "')");
-					$('.like_control_' + post_id).html('Like');
-					$('.like_control_' + post_id).attr('data-original-title', 'Click to like this');
-					
-					
-					temp=$('.social.like.'+post_id+ ' a').attr('data-original-title');
-					
-					
-					if (num > 0){
-						temp = temp.replace(target_name+',', "");
-						temp = temp.replace(', '+target_name, "");
-						$('.social.like.'+post_id+ ' a').attr('data-original-title',temp);
-					} else {
-						$('.social.like.'+post_id+ ' a').attr('data-original-title', 'No one likes this yet');
-					}
-					
-				},
-				error : function(xhr, errorMessage, thrownErro) {
-					console.log(xhr.statusText, errorMessage);
-					console.log('error processing unlikes');
-				}
-			});
+		}
+	}
+	
+	$('.like_control_' + post_id).attr(
+			'onclick',
+			"like('" + post_id + "','" + post_type + "','"
+					+ target_id + "','" + target_name + "')");
+	$('.like_control_' + post_id).html('Like');
+	$('.like_control_' + post_id).attr('data-original-title', 'Click to like this');
+	
+	
+	temp=$('.social.like.'+post_id+ ' a').attr('data-original-title');
+	
+	
+	if (num > 0){
+		temp = temp.replace(target_name+',', "");
+		temp = temp.replace(', '+target_name, "");
+		$('.social.like.'+post_id+ ' a').attr('data-original-title',temp);
+	} else {
+		$('.social.like.'+post_id+ ' a').attr('data-original-title', 'No one likes this yet');
+	}
 }
 
 function getFancrankfeed(view) {
@@ -1368,31 +1287,12 @@ function follow(target, name) {
 	return;
 	
 	ui = "follow_"+target;
+	
+	
 	if (target != userId) {
-
-		$.ajax({
-			type : "GET",
-			url : serverUrl + '/app/user/' + userId + '/follow/?subscribe_to=' 
-					+ target + '&target_name='+ name + '&fanpage_id='
-					+ fanpageId + '&subscribe_ref_id=1',
-			dataType : "html",
-			cache : false,
-			success : function(data) {
-				//alert("target followed")
-				//addActivities('follow', target, target, name, null);
-				//getUserProfile('.profile-content', target);
-				getRelation(target, ui);
-				//alert(relation);
-				$('.' + ui).attr('onclick',	"unfollow('" + target + "','" + name + "','" + ui + "')");
-				$('.' + ui).attr('data-original-title', 'Click to Unfollow this User');
-				//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
-				//feedbackAnimation('.' + ui, 'follow');
-			},
-			error : function(xhr, errorMessage, thrownErro) {
-				console.log(xhr.statusText, errorMessage);
-				console.log('there was an error with following');
-			}
-		});
+		$('.' + ui).attr('onclick',	"unfollow('" + target + "','" + name + "','" + ui + "')");
+		$('.' + ui).attr('data-original-title', 'Click to Unfollow this User');
+		
 	}
 }
 
@@ -1401,31 +1301,9 @@ function unfollow(target, name) {
 	return;
 	
 	ui = "follow_"+target;
-	$.ajax({
-		type : "GET",
-		url : serverUrl + '/app/user/' + userId + '/unfollow/?subscribe_to='
-				+ target + '&target_name='+ name + '&fanpage_id='
-				+ fanpageId + '&subscribe_ref_id=1',
-		dataType : "html",
-		cache : false,
-		success : function(data) {
-			//alert("target unfollowed")
-			//addActivities('unfollow', target, target, name, null);
-			//getUserProfile('.profile-content', target);
-			getRelation(target, ui);
+	$('.' + ui).attr('onclick',	"follow('" + target + "','" + name + "','" + ui + "')");
+	$('.' + ui).attr('data-original-title', 'Click to Follow this User');
 
-			$('.' + ui).attr('onclick',	"follow('" + target + "','" + name + "','" + ui + "')");
-			$('.' + ui).attr('data-original-title', 'Click to Follow this User');
-		
-			//$('.'+ui).html('<span class="badge badge-'+relation+'">'+relation+'</span>');
-			//feedbackAnimation('.'+ui, 'unfollow');
-
-		},
-		error : function(xhr, errorMessage, thrownErro) {
-			console.log(xhr.statusText, errorMessage);
-			console.log('there was an error with unfollow');
-		}
-	});
 }
 
 /*
@@ -1454,7 +1332,7 @@ function addActivities(act_type, event, target_id, target_name, message) {
 
 function post(button) {
 	// preview terminate
-	return;
+
 	
 	button.disabled = true;
 	mes =  $('#post_box').val();
@@ -1462,7 +1340,7 @@ function post(button) {
 		
 	}else{
 			//alert('Post ID: ' + response.id)
-			$.ajax({
+			/*$.ajax({
 				type : "GET",
 				url : serverUrl + '/app/user/' +userId +'/post/?fanpage_id=' + fanpageId + '&access_token=' + userAccessToken + '&fanpage_name='+fanpageName +'&message=' + mes,
 				dataType : "html",
@@ -1482,7 +1360,7 @@ function post(button) {
 				}
 			});
 			//addActivities('post-status', response.id, fanpageId, fanpage_name,mes.substring(0,99) );
-			$('#post_box').val('');
+			$('#post_box').val(''); */
 			getFancrankfeed('post');
 	}
 }
@@ -1490,7 +1368,7 @@ function post(button) {
 
 function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name, isLatestAdminPost){
 	// preview terminate
-	return;
+
 	
 	button.disabled = true;
 	
@@ -1499,6 +1377,7 @@ function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name
 	if (mes == '' || mes == null){
 		
 	}else{
+		/*
 		$.ajax({
 			type : "GET",
 			url : serverUrl + '/app/user/' +userId +'/comment/?post_id='+post_id + '&post_type='+post_type
@@ -1530,7 +1409,7 @@ function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name
 			error : function(xhr, errorMessage, thrownErro) {
 				console.log(xhr.statusText, errorMessage);
 			}
-		});
+		});*/
 	}
 
 	
@@ -1539,12 +1418,13 @@ function commentSubmit(button,post_id, post_type, post_owner_id, post_owner_name
 
 function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 	// preview terminate
-	return;
+
 	//alert($('#comment_box_popup_'+post_id).val());
 	mes= $('#comment_box_'+post_id).val();
 	if (mes == '' || mes == null){
 		
 	}else{
+		/*
 		$.ajax({
 			type : "GET",
 			url : serverUrl + '/app/user/' +userId +'/comment/?post_id='+post_id + '&post_type='+post_type
@@ -1568,7 +1448,8 @@ function commentSubmit2(post_id, post_type, post_owner_id, post_owner_name){
 			error : function(xhr, errorMessage, thrownErro) {
 				console.log(xhr.statusText, errorMessage);
 			}
-		});
+			
+		});*/
 	}
 
 }
@@ -1863,6 +1744,7 @@ function submit_user_description(){
 		$('.user-description').html($.trim(msg));
 		$('.user-description').after('<a class="user-description-button" onclick="editdescription()"><span class="btn btn-mini fc-edit-2"><img src="/img/icons/edit_icon.png" class="edit_icon" />Edit Description</span></a>');
 		$('#charcount').remove();
+		/*
 		$.ajax({
 			type : "GET",
 			url : serverUrl + '/app/user/' + userId + '/saveuserdescription/' + '?fanpage_id='+ fanpageId+ '&message=' + $.trim(msg),
@@ -1878,6 +1760,7 @@ function submit_user_description(){
 				console.log('error saving user description');
 			}
 		});
+		*/
 	}
 	
 }
@@ -2203,7 +2086,9 @@ function submit_badges_choice(){
 	});
 
 	console.log(sbadges[0]+ ' ' +sbadges[1] + ' ' + sbadges[2]) ;
-
+	
+	closeProfile();
+	/*
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/user/' + userId + '/savechosenbadges/' + '?c1=' +sbadges[0]+ '&c2=' +sbadges[1]
@@ -2213,18 +2098,19 @@ function submit_badges_choice(){
 		async : true,
 		success : function(data) {
 			//alert($.trim(data));
-			closeProfile();
+			
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
 			console.log('error saving badge choices');
 		}
 	});
+	*/
 	
 }
 
 function reset_badges_choice(){
-
+	/*
 	$.ajax({
 		type : "GET",
 		url : serverUrl + '/app/user/' + userId + '/savechosenbadges/ '  + '&fanpage=' + fanpageId,
@@ -2240,6 +2126,7 @@ function reset_badges_choice(){
 			console.log('error saving badge choices');
 		}
 	});
+	*/
 	
 }
 /*
@@ -2449,6 +2336,7 @@ $(document).ready(function() {
 		if (!$('#redeem-form').valid()) {
 			$('#redeem-form').validate().focusInvalid();
 		} else {
+			/*
 			$.ajax({
 				type : "POST",
 				url : serverUrl + '/app/redeem/confirm/' + fanpageId,
@@ -2469,6 +2357,7 @@ $(document).ready(function() {
 					console.log(xhr.statusText, errorMessage);
 				}
 			});			
+			*/
 		}
 	});
 
@@ -2477,6 +2366,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		// show popup
 		popup(true);
+		/*
 		$.ajax({
 			type : "GET",
 			url : serverUrl + '/app/redeem/updateshipping/' + fanpageId,
@@ -2494,6 +2384,7 @@ $(document).ready(function() {
 				console.log(xhr.statusText, errorMessage);
 			}
 		});
+		*/
 	});
 	
 	// update shipping info
@@ -2506,6 +2397,7 @@ $(document).ready(function() {
 		if (!$('#update-shipping-form').valid()) {
 			$('#update-shipping-form').validate().focusInvalid();
 		} else {
+			/*
 			$.ajax({
 				type : "POST",
 				url : serverUrl + '/app/redeem/updateshipping/' + fanpageId,
@@ -2524,7 +2416,9 @@ $(document).ready(function() {
 				error : function(xhr, errorMessage, thrownErro) {
 					console.log(xhr.statusText, errorMessage);
 				}
-			});			
+			});	
+			*/	
+			closeProfile();
 		}
 	});
 	// redeem form validate function
