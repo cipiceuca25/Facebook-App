@@ -179,20 +179,21 @@ function MouseWheelHandler() {  $("#toppost").height();
     // old IE support  
    // alert(e.wheelDelta);
 	$('#info-box-container').stop();
-	
+	//$('.user-profile').css('top', $('body').scrollTop() +100);
 	x = $("#toppost").height();
-    FB.Canvas.getPageInfo(function(info) {
+  // FB.Canvas.getPageInfo(function(info) {
 		//alert(info.scrollTop);
-    	if (info.scrollTop > 500 + x){
+    	if ( $('body').scrollTop() > 500 + x){
 			//$('#menu').css('top',info.scrollTop-28);
-    		$('#info-box-container').animate({'top':info.scrollTop-500},150, function(){});
+    		$('#info-box-container').animate({'top': $('body').scrollTop()-500},150, function(){});
     	
     	}else{
     		//$('#menu').css('top','170px');
     		$('#info-box-container').animate({'top':'0px'},150, function(){});
     
     	}
-    });
+//}
+    );
     
     //var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));  
 }
@@ -1543,10 +1544,11 @@ function popup(load){
 	$('.light-box').css('display', 'block');
 	$('.user-profile').css('display', 'block');
 	$('.profile-content').css('height', 'auto');
-	FB.Canvas.getPageInfo(function(info) {
+	//FB.Canvas.getPageInfo(function(info) {
 			//alert(info.scrollTop);
-			$('.user-profile').css('top', info.scrollTop +100);
-	});
+	
+	$('.user-profile').css('top', $('body').scrollTop() +100);
+	//});
 	if (load) {
 		//document.addEventListener("DOMMouseScroll", mouseScroll, true);
 		//document.addEventListener("mousewheel",  mouseScroll, true); 

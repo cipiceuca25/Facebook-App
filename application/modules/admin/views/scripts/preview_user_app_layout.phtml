@@ -46,7 +46,19 @@
 			var userAccessToken = "<?= $this->facebook_user_access_token?>";
 			
 			//alert( accessToken);
-			
+			var fb =false;
+			window.fbAsyncInit = function() {
+				FB.init({
+					 appId  : appId,
+					 status : true, // check login status
+					 cookie : true, // enable cookies to allow the server to access the session
+					 xfbml  : true// parse XFBML 
+				});
+
+				//fb = true;
+				//console.log(userId);
+				
+			};
 		</script>
 		<script src="/js/admin/preview/cranker.js"></script>
 		<!-- End of iframe initialization -->
@@ -55,7 +67,7 @@
 	</head>
 
 	<body	>
-
+	<div id="fb-root"></div>
 	<div class="container">
 		<div id="wrapper">
 			<!--

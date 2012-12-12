@@ -26,171 +26,181 @@
 		</div>
 	</div>
 	<div class="span9" >
-		<div class="id="preview-control-group"">
-			<a href="#" class="btn btn-success btn-large" id="btn-reload-preview"><i class="icon-white icon-refresh"></i></a>
-			<a href="#" class="btn btn-success btn-large" id="btn-upload-cover"><i class="icon-white icon-picture"></i></a>
-		    <div class="dropdown">
-			    <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
-			    Top Fan Period
-			    <b class="caret"></b>
-			    </a>
-			    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-					<li><a href="#" data-id="<?= $this->page_id ?>">week</a></li>
-				    <li><a href="#" data-id="<?= $this->page_id ?>">month</a></li>
-					<li><a href="#" data-id="<?= $this->page_id ?>">alltime</a></li>				    
-			    </ul>
-		    </div>			
-		</div>
-		<iframe id="previewIframe" src="http://www.fancrank.local/admin/preview/landingpage/<?= $this->page_id?>" style="width:810px; height:1000px; overflow:auto">
-		</iframe>
-	</div>
-</div>
-
-<div class="row-fluid">
-	<div class="span12">
-		<form  action="/admin/dashboard/pointsetting/<?= $this->page_id ?>" method="post">
-			<h3>Point Setting Section</h3>
-			<div>
-				<div class="control-group">
-					<label class="control-label" for="point_like_normal">
-						Likes on Any Object(Post, Comment, Photos)
-					</label>
-					<div class="controls point-input">
-						<input type="text" id="point_like_normal" name="point_like_normal" value="<?=$this->setting['point_like_normal']?>" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="point_comment_normal">
-						Commenting on a User Post
-					</label>
-					<div class="controls point-input">
-						<input type="text" id="point_comment_normal" name="point_comment_normal" value="<?=$this->setting['point_comment_normal']?>" />
-					</div>
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="id="preview-control-group"">
+					<a href="#" class="btn btn-success btn-large" id="btn-reload-preview"><i class="icon-white icon-refresh"></i></a>
+					<a href="#" class="btn btn-success btn-large" id="btn-upload-cover"><i class="icon-white icon-picture"></i></a>
+				    <div class="dropdown">
+					    <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
+					    Top Fan Period
+					    <b class="caret"></b>
+					    </a>
+					    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="#" data-id="<?= $this->page_id ?>">week</a></li>
+						    <li><a href="#" data-id="<?= $this->page_id ?>">month</a></li>
+							<li><a href="#" data-id="<?= $this->page_id ?>">alltime</a></li>				    
+					    </ul>
+				    </div>			
 				</div>
 				
-				<div class="control-group">
-					<label class="control-label" for="point_like_admin">
-						Liking an Admin Object
-					</label>
-					<div class="controls point-input">
-						<input type="text" id="point_like_admin" name="point_like_admin" value="<?=$this->setting['point_like_admin']?>" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="point_comment_admin">
-						Commenting on an Admin Object
-					</label>
-					<div class="controls point-input">
-						<input type="text" id="point_comment_admin" name="point_comment_admin" value="<?=$this->setting['point_comment_admin']?>" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="bonus_duration">
-						Bonus Duration
-					</label>
-					<div class="controls point-input">
-						<input type="text" id="point_bonus_duration" name="point_bonus_duration" value="<?=$this->setting['point_bonus_duration']?>" /> minutes
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="point_post_normal">
-						Posting on the Fanpage
-					</label>
-					<div class="controls point-input">
-						<input type="text" id="point_post_normal" name="point_post_normal" value="<?=$this->setting['point_post_normal']?>" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="point_post_virginity">
-						Getting Any Interaction on a Post
-					</label>
-					<div class="controls point-input">
-						<input type="text" id="point_virginity" name="point_virginity" value="<?=$this->setting['point_virginity']?>" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="point_virginity">
-						Commenting Limit 
-					</label>
-					<div class="controls point-input">
-						<input type="text" id="point_comment_limit" name="point_comment_limit" value="<?=$this->setting['point_comment_limit']?>" />
-					</div>
-				</div>												
-			</div>
-			<input type="submit" name="confirm" value="Save Point Settings" />
-		</form>
-	</div>
-</div>
+				
+				<iframe id="previewIframe" src="http://www.fancrank.local/admin/preview/landingpage/<?= $this->page_id?>" style="width:830px; height:1000px; overflow:auto">
+				</iframe>
 
-<div class="row-fluid">
-	<div class="span12">
-		<table class="table" id="allBadgesTable">
-			<thead>
-				<tr>
-					<th><a>Badge Number</a></th>
-					<th><a>Active</a></th>
-					<th><a>Badge</a></th>
-					<th><a>Name</a></th>
-					<th><a>Description</a></th>
-					<th><a>Weight</a></th>
-					<th><a>Type</a></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach($this->allBadges as $b): ?>
-					<tr>
-						<td>
-							<?= $b['id']?>
-						</td>
-						<td>
-							<input type="checkbox" checked = "<?= $b['active']?>" name="<?=$b['id']?>" >
-						</td>
-						<td>
-							<div class="progress">
-								<div class="bar" style="width: 100%;"></div>
-								<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description']?>" 
-								rel="tooltip" data-placement="bottom"  >
-									<img src="<?= $b['picture']?>" style="opacity:100"/>
-								</a>
-							</div>
-						</td>	
-						<td><?=$b['stylename']?> (<?= $b['name']?>)</td>		
-						<td><?= $b['description']?></td>	
-						<td><?= $b['weight']?></td>
-						<td><?= $b['type']?></td>									
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-	</div>
-</div>
-<div class="row-fluid">
-	<div class="span12">
+			</div>
 		
+		</div>
+		
+
+
+
+		<div class="row-fluid">
+			<div class="span12">
+				<form  action="/admin/dashboard/pointsetting/<?= $this->page_id ?>" method="post">
+					<h3>Point Setting Section</h3>
+					<div>
+						<div class="control-group">
+							<label class="control-label" for="point_like_normal">
+								Likes on Any Object(Post, Comment, Photos)
+							</label>
+							<div class="controls point-input">
+								<input type="text" id="point_like_normal" name="point_like_normal" value="<?=$this->setting['point_like_normal']?>" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="point_comment_normal">
+								Commenting on a User Post
+							</label>
+							<div class="controls point-input">
+								<input type="text" id="point_comment_normal" name="point_comment_normal" value="<?=$this->setting['point_comment_normal']?>" />
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label" for="point_like_admin">
+								Liking an Admin Object
+							</label>
+							<div class="controls point-input">
+								<input type="text" id="point_like_admin" name="point_like_admin" value="<?=$this->setting['point_like_admin']?>" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="point_comment_admin">
+								Commenting on an Admin Object
+							</label>
+							<div class="controls point-input">
+								<input type="text" id="point_comment_admin" name="point_comment_admin" value="<?=$this->setting['point_comment_admin']?>" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="bonus_duration">
+								Bonus Duration
+							</label>
+							<div class="controls point-input">
+								<input type="text" id="point_bonus_duration" name="point_bonus_duration" value="<?=$this->setting['point_bonus_duration']?>" /> minutes
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="point_post_normal">
+								Posting on the Fanpage
+							</label>
+							<div class="controls point-input">
+								<input type="text" id="point_post_normal" name="point_post_normal" value="<?=$this->setting['point_post_normal']?>" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="point_post_virginity">
+								Getting Any Interaction on a Post
+							</label>
+							<div class="controls point-input">
+								<input type="text" id="point_virginity" name="point_virginity" value="<?=$this->setting['point_virginity']?>" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="point_virginity">
+								Commenting Limit 
+							</label>
+							<div class="controls point-input">
+								<input type="text" id="point_comment_limit" name="point_comment_limit" value="<?=$this->setting['point_comment_limit']?>" />
+							</div>
+						</div>												
+					</div>
+					<input type="submit" name="confirm" value="Save Point Settings" />
+				</form>
+			</div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span12">
+				<table class="table" id="allBadgesTable">
+					<thead>
+						<tr>
+							<th><a>Badge Number</a></th>
+							<th><a>Active</a></th>
+							<th><a>Badge</a></th>
+							<th><a>Name</a></th>
+							<th><a>Description</a></th>
+							<th><a>Weight</a></th>
+							<th><a>Type</a></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach($this->allBadges as $b): ?>
+							<tr>
+								<td>
+									<?= $b['id']?>
+								</td>
+								<td>
+									<input type="checkbox" checked = "<?= $b['active']?>" name="<?=$b['id']?>" >
+								</td>
+								<td>
+									<div class="progress">
+										<div class="bar" style="width: 100%;"></div>
+										<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description']?>" 
+										rel="tooltip" data-placement="bottom"  >
+											<img src="<?= $b['picture']?>" style="opacity:100"/>
+										</a>
+									</div>
+								</td>	
+								<td><?=$b['stylename']?> (<?= $b['name']?>)</td>		
+								<td><?= $b['description']?></td>	
+								<td><?= $b['weight']?></td>
+								<td><?= $b['type']?></td>									
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span12">
+				<div title="Landing Page Setting">
+		    <form id='landing-dialog-form' action="/admin/fanpage/landingpage?id=<?= $this->page_id ?>" method="post">
+		    <fieldset>
+				<div class="control-group">
+					<label for="optionsCheckbox" class="control-label">Landing Page Image</label>
+					<div class="controls">
+						<label class="checkbox">
+							<input type="checkbox" value="1" id="enableLandingPageImage">
+								Enable Landing Page Image 
+						</label>
+					</div>
+					<div class="controls">
+						<label>Image Url</label>
+						<input name="landingImageUrl">
+					</div>	
+					<input type="submit" name="landing-confirm" value="Save Landing Page Settings" />
+				</div>
+			</fieldset>
+		    </form>
+		</div>
 	</div>
 </div>
 
-<div title="Landing Page Setting">
-    <form id='landing-dialog-form' action="/admin/fanpage/landingpage?id=<?= $this->page_id ?>" method="post">
-    <fieldset>
-		<div class="control-group">
-			<label for="optionsCheckbox" class="control-label">Landing Page Image</label>
-			<div class="controls">
-				<label class="checkbox">
-					<input type="checkbox" value="1" id="enableLandingPageImage">
-						Enable Landing Page Image 
-				</label>
-			</div>
-			<div class="controls">
-				<label>Image Url</label>
-				<input name="landingImageUrl">
-			</div>	
-			<input type="submit" name="landing-confirm" value="Save Landing Page Settings" />
-		</div>
-	</fieldset>
-    </form>
-</div>
 
+	</div>
+</div>
 <script>
 $(document).ready(function() {
 	$('#landing-dialog-form').submit(function(e) {
