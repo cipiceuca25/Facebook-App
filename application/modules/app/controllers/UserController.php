@@ -326,27 +326,29 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 		$isComment = strpos($this->_getParam('post_type'),'comment')?true:false;
 		$db = Zend_Db_Table::getDefaultAdapter();
 		try {
+			$db->beginTransaction();
+			
 			//$data['post_id'] = $this->_getParam('post_id');
 			$postId = $data['post_id'];
 			$fancrankFB = new Service_FancrankFBService();
-			$params =  array(
-				'access_token' => $data['access_token']
-			);
 			
-			$likeResponse = $fancrankFB->api("/$postId/likes", 'POST', $params);
+			$client = new Zend_Http_Client;
+			$client->setUri("https://graph.facebook.com/$postId/likes");
+			$client->setMethod(Zend_Http_Client::POST);
+			$client->setParameterGet('access_token', $data['access_token']);
+			
+			$likeResponse = $client->request()->getBody();
 			
 			// check connection problem
-			if(!is_bool($likeResponse)) {
-				echo 'relog';
-			}else {
+			if (isset($likeResponse) && $likeResponse == 'true' ) {
+				//echo 'relog';
+			} else {
 				// do nothing if false response 
 				if(!$likeResponse) return;
 			}
-			
 			//save object likes to fancrank database
 			//******* WE HAVE YET TO UPDATE THE POSTS DATABASE THRU THIS FUNCTION
 			
-			$db->beginTransaction();
 			//echo 'attempting insert data to like.';
 			//$likeModel->insert($data);
 
@@ -556,9 +558,12 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 					
 		} catch (Exception $e) {
 			//TO LOG
-			$db->rollBack();
+			if ($db->isConnected()) {
+				$db->rollBack();
+			}
 			//echo $e;
 		}
+		$this->_helper->json(array('fan_point'=>0));
 	}
 
 	public function unlikeAction() {
@@ -583,11 +588,21 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 			try {
 				//$data['post_id'] = $this->_getParam('post_id');
 				$postId = $data['post_id'];
-				$fancrankFB = new Service_FancrankFBService();
-				$params =  array(
-						'access_token' => $data['access_token']
-				);
-				$fancrankFB->api("/$postId/likes", 'DELETE', $params);
+				
+				$client = new Zend_Http_Client;
+				$client->setUri("https://graph.facebook.com/$postId/likes");
+				$client->setMethod(Zend_Http_Client::DELETE);
+				$client->setParameterGet('access_token', $data['access_token']);
+					
+				$likeResponse = $client->request()->getBody();
+					
+				// check connection problem
+				if (isset($likeResponse) && $likeResponse == 'true' ) {
+					echo 'relog';
+				} else {
+					// do nothing if false response
+					if(!$likeResponse) return;
+				}
 				
 				//save object likes to fancrank database
 				echo " trying to unlike";
@@ -629,25 +644,25 @@ class App_UserController extends Fancrank_App_Controller_BaseController
 						case 'status':
 							if($this->_getParam('target_id') != $data['fanpage_id']){
 								$fanstat->subLikeStatus($data['fanpage_id'], $data['facebook_user_id']);
-								$fanstat -> subGetLikeStatus($data['fanpage_id'], $data['target_id']);
+								$fanstat -> subGetLikeStatus($data['fanpage_id'], $post['facebook_user_id']);
 							}
 							break;
 						case 'photo':
 							if($this->_getParam('target_id') != $data['fanpage_id']){
 								$fanstat->subLikePhoto($data['fanpage_id'], $data['facebook_user_id']);
-								$fanstat -> subGetLikePhoto($data['fanpage_id'], $data['target_id']);
+								$fanstat -> subGetLikePhoto($data['fanpage_id'], $post['facebook_user_id']);
 							}
 							break;
 						case 'video':
 							if($this->_getParam('target_id') != $data['fanpage_id']){
 								$fanstat->subLikeVideo($data['fanpage_id'], $data['facebook_user_id']);
-								$fanstat -> subGetLikeVideo($data['fanpage_id'], $data['target_id']);
+								$fanstat -> subGetLikeVideo($data['fanpage_id'], $post['facebook_user_id']);
 							}
 							break;
 						case 'link':
 							if($this->_getParam('target_id') != $data['fanpage_id']){
 								$fanstat->subLikeLink($data['fanpage_id'], $data['facebook_user_id']);
-								$fanstat -> subGetLikeLink($data['fanpage_id'], $data['target_id']);
+								$fanstat -> subGetLikeLink($data['fanpage_id'], $post['facebook_user_id']);
 							}
 							break;
 				

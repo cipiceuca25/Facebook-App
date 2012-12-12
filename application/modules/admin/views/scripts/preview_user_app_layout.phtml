@@ -29,6 +29,7 @@
 		<script src="/js/libs/jquery.joyride-1.0.5.js"></script>
 		<script src="/bootstrap/js/bootstrap.js"></script>
 		<script src="/js/libs/enscroll-0.2.6.min.js"></script>
+		<script src="//connect.facebook.net/en_US/all.js"></script>
 		
 		<!-- This following javascripts are used to initialize the iframe look and feel -->
 		<script>
@@ -36,8 +37,7 @@
 			var baseAppUrl = "<?= $this->url() ?>";
 			var serverUrl = "<?= $this->fullServerUrl()?>";
 			var appId = "<?= $this->layout()->appKey ?>";
-
-			console.log('appId' + appId);
+			
 			var fanpageId = "<?= $this->fanpage_id?>";	
 			var fanpageName = "<?= $this->fanpage_name?>";	
 			
@@ -46,27 +46,7 @@
 			var userAccessToken = "<?= $this->facebook_user_access_token?>";
 			
 			//alert( accessToken);
-			var fb =false;
-			window.fbAsyncInit = function() {
-				FB.init({
-					 appId  : appId,
-					 status : true, // check login status
-					 cookie : true, // enable cookies to allow the server to access the session
-					 xfbml  : true// parse XFBML 
-				});
-
-				fb = true;
-				console.log(userId);
-				
-			};
 			
-		  // Load Facebook SDK Asynchronously
-			(function(d){
-				var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-				js = d.createElement('script'); js.id = id; js.async = true;
-				js.src = "//connect.facebook.net/en_US/all.js";
-				d.getElementsByTagName('head')[0].appendChild(js);
-			}(document));			
 		</script>
 		<script src="/js/admin/preview/cranker.js"></script>
 		<!-- End of iframe initialization -->
@@ -74,8 +54,8 @@
 		<link rel="stylesheet" href="/css/loadstyle1.css" />
 	</head>
 
-	<body style="overflow: hidden;"	>
-	<div id="fb-root"></div>
+	<body	>
+
 	<div class="container">
 		<div id="wrapper">
 			<!--
