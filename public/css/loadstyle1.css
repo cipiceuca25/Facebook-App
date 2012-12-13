@@ -1159,7 +1159,7 @@ background-color: @color-post-background-hover;
   position: relative;
 }
 .progress .bar {
-  background: #476dcc;
+  background: #647ab1;
   -webkit-box-shadow: 0 0 0 0;
   -moz-box-shadow: 0 0 0 0;
   box-shadow: 0 0 0 0;
@@ -1765,16 +1765,9 @@ background:@color-post-background-hover;
 }
 .cbadges.selected {
   outline: none;
-  transition: all 0.25s ease-in-out;
-  -webkit-transition: all 0.25s ease-in-out;
-  -moz-transition: all 0.25s ease-in-out;
-  -o-transition: all 0.25s ease-in-out;
-  -webkit-box-shadow: 0 0 12px #f7cb1e;
-  -moz-box-shadow: 0 0 12px #f7cb1e;
-  box-shadow: 0 0 12px #f7cb1e;
-  -webkit-box-shadow: 0 0 12px #f7cb1e;
-  -moz-box-shadow: 0 0 12px #f7cb1e;
-  box-shadow: 0 0 12px #f7cb1e;
+}
+.cbadges.selected .bar {
+  background-color: #476dcc;
 }
 .notifier {
   position: absolute;

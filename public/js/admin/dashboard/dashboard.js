@@ -241,12 +241,13 @@ function getHomeActivedFans(time){
 			    	
 			    	$('#tableholder').html('');
 			    	table = $('#tableholder').dataTable( {
-			    		"sDom" : "<'length'l>t<'table-info'i>",
+			    		"sDom" : "l<'table't>i",
 			            "aaData": tableData1,
 			            "aoColumns": [
 			                       
 			                
 		                    	   { "sTitle": "Name", 
+		                    		  "sClass": "table-post",
 			                    	  'mRender':function (data, type, full){
 
 			                    		return " <a class='username' data-id ="+ full[3] +" >" + data + "</a>"
@@ -254,8 +255,9 @@ function getHomeActivedFans(time){
 			                       },   
 			                       
 		         
-			                       { "sTitle": "Gender" },
-			                       { "sTitle": "Date" }
+			                       { "sTitle": "Gender","sClass": "table-post" },
+			                       { "sTitle": "Date",
+			                    	 "sClass": "date"}
 			                      
 			                   ],
 			            "aaSorting": [[ 2, "desc" ]],
@@ -908,8 +910,8 @@ function loadAdmin(){
 		},
 		success : function(data) {
 			$('#admin').html(data);
-			adminPostTable = $('#adminPostTable').dataTable({"sDom" : "tp", "aaSorting": [[ 6, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 15 } );
-			adminCommentTable = $('#adminCommentTable').dataTable({"sDom" : "tp", "aaSorting": [[ 4, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 15} );
+			adminPostTable = $('#adminPostTable').dataTable({"sDom" : "tp", "aaSorting": [[ 6, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 10 } );
+			adminCommentTable = $('#adminCommentTable').dataTable({"sDom" : "tp", "aaSorting": [[ 4, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 10} );
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);

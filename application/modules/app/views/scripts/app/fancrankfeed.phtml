@@ -107,7 +107,7 @@
 			echo $message; 
 				//echo preg_replace($reg_exUrl, "<a href=".$url[0][0]." target=_new>".$url[0][0]."</a> ", $m);
 			
-			?><br/>
+			?>
 			</div>
 		<?}	?>
 		<div class="graphical">	
@@ -245,14 +245,18 @@
 		
 			<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$post->id?>',<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>, true)" data-original-title="
 						<?php 	$likeslist = (isset($post->likes->data))?$post->likes->data:array();
-								$countlikes = count($likeslist);
-								for($i = 0; $i < $countlikes - 1; $i++){
-									echo $likeslist[$i]->name.', <br/>';
-								}
-
-								echo $likeslist[$i]->name;
-								if ($countlikes < $post->likes->count){
-									echo "<br/> and ".($post->likes->count - $countlikes)." others";
+								if($likeslist){
+									$countlikes = count($likeslist);
+									for($i = 0; $i < $countlikes - 1; $i++){
+										echo $likeslist[$i]->name.', <br/>';
+									}
+	
+									echo $likeslist[$i]->name;
+									if ($countlikes < $post->likes->count){
+										echo "<br/> and ".($post->likes->count - $countlikes)." others";
+									}
+								}else{
+									echo 'No one';
 								}
 						?><br/> Likes this.
 						">
@@ -489,10 +493,10 @@
 			<?php }?>
 	
 	</li>	
-	<li>
-	<!--  <div class="spacer"></div>-->
+	<!--  <<li>
+	div class="spacer"></div>
 	</li>		
-
+	-->
  <?php }?>
 <?php $count ++;?>
 

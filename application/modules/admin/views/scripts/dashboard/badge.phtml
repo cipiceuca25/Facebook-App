@@ -9,10 +9,12 @@
 				<span class="description">Most Awarded Badge:</span> 
 				<span class="amount"><?= $this->mostAwarded[0]['name']?></span>
 			</div>
+			<?php if($this->fanpage_level>2){?>
 			<div class="info">
 				<span class="description">Points Awarded from Badges:</span> 
 				<span class="amount"><?= $this->totalPoints?></span>
 			</div>
+			<?php }?>
 			<div class="info">
 				<span class="description">Badges Awarded:</span> 
 				<span class="amount"> Today - <?=$this->badgesbytime[2]['badges']?> | This Week - <?=$this->badgesbytime[1]['badges']?>| This Month - <?=$this->badgesbytime[0]['badges']?></span>

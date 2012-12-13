@@ -161,7 +161,11 @@
 										<div class="bar" style="width: 100%;"></div>
 										<a class="noclick" data-original-title="<?=$b['stylename'].' '. $b['name']. '<br/>'.$b['description']?>" 
 										rel="tooltip" data-placement="bottom"  >
-											<img src="<?= $b['picture']?>" style="opacity:100"/>
+											<?php if (strpos( $b['picture'], '.') === false){?>
+											<i class="sprite-<?= $b['picture']?>"></i>
+											<?php }else{ ?>
+												<img src="<?= $b['picture']?>"/>
+											<?}?>
 										</a>
 									</div>
 								</td>	

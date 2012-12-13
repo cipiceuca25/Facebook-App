@@ -769,15 +769,62 @@ padding:10px;
   -moz-border-radius: 0;
   border-radius: 0;
   position: relative;
+  height: 40px;
 }
 .progress .bar {
   background: #c4cde0;
   -webkit-box-shadow: 0 0 0 0;
   -moz-box-shadow: 0 0 0 0;
   box-shadow: 0 0 0 0;
+  height: 40px;
 }
 .progress img {
   width: 40px;
+}
+.progress a {
+  float: left;
+  position: relative;
+  top: -40px;
+}
+.table {
+  border: 2px solid #3b5998;
+}
+.table tr th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.table tr td {
+  vertical-align: middle;
+  padding: 5px;
+  text-align: right;
+}
+.table tr th {
+  text-align: right;
+  background-color: #3b5998;
+  padding: 5px;
+  color: white;
+}
+.table tr th a {
+  color: white;
+}
+.table tr td.table-post {
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+}
+.table tr th.table-post {
+  text-align: left;
+}
+.table tr td .table-post {
+  min-height: 60px;
+}
+.table tr th.date,
+.table tr td.date {
+  width: 130px;
+}
+.table tr th.number,
+.table tr td.number {
+  width: 100px;
 }
 [class^="sprite-"],
 [class*=" sprite-"] {

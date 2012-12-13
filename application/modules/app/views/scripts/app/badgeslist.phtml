@@ -1,0 +1,122 @@
+<?php switch($this->type){ ?>
+<?php case 'chosen':?>
+	<?php $cb = 0;?>
+	<?php foreach ($this->chosen_badges as $b): ?>
+		
+		<?php if ($b != 'undefined') {?>
+		
+		<div class="progress chosen-badges">
+			<div class="bar"></div>
+			<a data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . date('Y/m/d',strtotime(date($b['created_time'])))?>" 
+			class=noclick rel="tooltip" data-placement="top-left" >
+				<?php if (strpos( $b['picture'], '.') === false){?>
+					<i class="sprite-<?= $b['picture']?>"></i>
+				<?php }else{ ?>
+					<img src="<?= $b['picture']?>"/>
+				<?}?>
+			</a>
+			
+		</div>
+		<?php }else{?>
+			<?php $cb++;?>
+		<?php }?>
+	<?php endforeach;?>
+
+	<?php if ($cb == 3){?>
+		You haven't picked any badges.
+	<?php }?>
+	<?php break;?>
+<?php case 'earned':?>
+	<?php foreach ($this->badges as $b): ?>
+			<?php switch ($b['status']){ 
+				case '1': $state =  "pending";
+				break;
+				case '11':$state = "disapproved";
+				break;
+				case '': $state = '';
+				break;
+				default: 
+					$state = "approved";
+				break;
+		}?>
+		<div class="progress earned-badges" >
+			<div class="bar" ></div>
+			<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' . date('Y/m/d',strtotime(date($b['created_time'])))?>" 
+			 rel="tooltip" data-placement="top-left" <?php if ($b['redeemable']== 1) {?>class="redeemableBadge"<?php }else{?>class=noclick<?php }?> >
+				<?php if (strpos( $b['picture'], '.') === false){?>
+					<i class="sprite-<?= $b['picture']?>"></i>
+				<?php }else{ ?>
+					<img src="<?= $b['picture']?>"/>
+				<?}?>
+			</a>
+			<?php if ($b['redeemable']== 1) {?><div class="redeemable-icon  <?= $state?>">R</div> <?php }?>
+		</div>
+
+	<?php endforeach;?>
+	<script>
+$('#profile_earned_badges').enscroll({
+		showOnHover: true,
+		clickTrackToScroll: false,
+		verticalTrackClass: 'track3',
+		verticalHandleClass: 'handle3'
+	});</script>
+	
+	<?php break;?>
+<?php case 'redeemed':?>
+<div class="box">
+				<div class="title nopic">
+		
+					<div class="title-header nopic">
+						Redeemable Badges
+					</div>
+					<div class="tip2">
+						These are Badges that you have earned but have yet to redeem, please click on the badge to redeem it.
+					</div>
+				
+				</div>
+				<div class="post-container noline">
+					<div class="rvrow post" style="overflow:hidden; max-height:107px;">
+						<div id="redeem_badges_scroll" >
+	<?php foreach ($this->badges2 as $b): ?>
+			<?php switch ($b['status']){ 
+					case '1': $state =  "pending";
+					break;
+					case '11':$state = "disapproved";
+					break;
+					case '': $state = '';
+					break;
+					default: 
+						$state = "approved";
+					break;
+			}?>
+			
+			
+			<div class="progress earned-badges" >
+				<div class="bar"></div>
+				<a data-redeem-id="<?=$b['badge_id']?>" data-original-title="<?= $b['stylename'].' '.$b['name']. '<br/>'.$b['description'] . '<br/> Earned on ' .  date('Y/m/d',strtotime(date($b['created_time']))) ?>"
+					class="redeemableBadge " rel="tooltip" data-placement="top-left">
+					<?php if (strpos( $b['picture'], '.') === false){?>
+						<i class="sprite-<?= $b['picture']?>"></i>
+					<?php }else{ ?>
+						<img src="<?= $b['picture']?>"/>
+					<?}?>
+				</a>
+				<div class="redeemable-icon  <?= $state?>">R</div>  
+			</div>
+		
+		<?php endforeach;?>	
+				</div>
+						
+					</div>
+				</div>
+			</div>
+			<script>
+			$('#redeem_badges_scroll').enscroll({
+				showOnHover: true,
+				clickTrackToScroll: false,
+				verticalTrackClass: 'track3',
+				verticalHandleClass: 'handle3'
+			});
+			</script>
+	<?php break;?>
+<?php }?>

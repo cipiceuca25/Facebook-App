@@ -176,16 +176,20 @@
 					<div class="social like <?=$this->post->id?>"  <?php if(!isset($this->post->likes->count) || ($this->post->likes->count == 0)){?>style="display:none"<?php }?>>
 						<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$this->post->id?>',<? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>, false)" data-original-title="
 							<?php 	$likeslist = (isset($post->likes->data))?$post->likes->data:array();
+								if($likeslist){
 									$countlikes = count($likeslist);
-										for($i = 0; $i < $countlikes - 1; $i++){
-											echo $likeslist[$i]->name.', <br/>';
-										}
-										echo $likeslist[$i]->name;
-										if ($countlikes < $this->post->likes->count){
-											echo " and ".($this->post->likes->count - $countlikes)." others";
-										}
-							?><br/> Likes this.
-						">
+									for($i = 0; $i < $countlikes - 1; $i++){
+										echo $likeslist[$i]->name.', <br/>';
+									}
+	
+									echo $likeslist[$i]->name;
+									if ($countlikes < $post->likes->count){
+										echo "<br/> and ".($post->likes->count - $countlikes)." others";
+									}
+								}else{
+									echo 'No one';
+								}
+							?><br/> Likes this.">
 							<img src = "/img/thumbsup.png" />
 							<span class="like_<?= $this->post->id?>" data-like-count = <? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>>
 								<? if(isset($this->post->likes->count)){echo $this->post->likes->count;}else{echo '0';} ?>
