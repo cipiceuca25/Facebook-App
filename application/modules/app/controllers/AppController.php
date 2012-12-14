@@ -27,12 +27,12 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 		
 		if (APPLICATION_ENV != 'stage') {
 			$this->_fanpageId = $this->_getParam('id');
-			if(empty($this->_facebook_user->facebook_user_id)) {
+			if (empty($this->_facebook_user->facebook_user_id)) {
 				$this->_userId = $this->_getParam('user_id'); //set test user id from url
-			}else {
+			} else {
 				$this->_userId = $this->_facebook_user->facebook_user_id;
 			}
-		}else {
+		} else {
 			$this->_userId = $this->_facebook_user->facebook_user_id;
 			if (isset($_REQUEST['signed_request'])) {
 				$fb = new Service_FancrankFBService();
@@ -43,7 +43,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			}
 		}
 		
-		if(!empty($this->_fanpageId)) {
+		if (!empty($this->_fanpageId)) {
 			$fanpage = new Model_Fanpages();
 			$fanpage = $fanpage->find($this->_fanpageId)->current();
 			$this->_fanpageProfile = $fanpage;
@@ -53,14 +53,14 @@ class App_AppController extends Fancrank_App_Controller_BaseController
 			//$update_time = new Model_CronLog();
 			//$update_time = $update_time->getLastUpdate($this->_fanpageId);
 			//$this->_lastUpdateTime = $update_time[0]['end_time'];
-		}else {
+		} else {
 			
 			//$this->_redirect('http://www.fancrank.com');
 		}
 		
-		if(isset($this->_facebook_user->fancrankAppTour)) {
+		if (isset($this->_facebook_user->fancrankAppTour)) {
 			$this->view->tour = $this->_facebook_user->fancrankAppTour;
-		}else {
+		} else {
 			$this->_facebook_user->fancrankAppTour = 0;
 		}
 // 		$name = new Model_FacebookUsers();

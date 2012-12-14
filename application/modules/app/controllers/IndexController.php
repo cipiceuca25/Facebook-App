@@ -34,12 +34,12 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
 			$this->view->fanpage = $fanpageModel->findRow($this->data['page']['id']);
         }
 
-        if(empty($this->view->fanpage_id)) {
+        if (empty($this->view->fanpage_id)) {
         	$this->_redirect('http://www.fancrank.com');
         }
         //set the proper navbar
         $this->_helper->layout()->navbar = $this->view->getHelper('partial')->partial('partials/loggedout.phtml', array('fanpage_id' => $this->data['page']['id']));
-        if($this->_auth->hasIdentity()) {
+        if ($this->_auth->hasIdentity()) {
             //bring the user into the app if he is already logged in
         	$this->_facebook_user = $this->_auth->getIdentity();
         	if(!empty($this->data['user_id']) && $this->_facebook_user->facebook_user_id !== $this->data['user_id']) {
@@ -48,11 +48,26 @@ class App_IndexController extends Fancrank_App_Controller_BaseController
         		$this->_redirect('/app/app/index/' .$this->data['page']['id']);
         	}
 		}
+		
+		try {
+			$userAgent = Fancrank_Http_UserAgent::getInstance();
+			$device = $userAgent->getDevice();
+			$deviceName = $userAgent->getDeviceName();
+
+			if ( $device->getFeature('is_mobile') ) {
+				$this->_helper->layout->setLayout('mobile_landingpage_layout');
+				$this->_helper->layout()->device = $deviceName;
+			} else {
+				$this->_helper->layout->setLayout('default_layout');
+				$this->_helper->layout()->device = 'desktop';
+			}
+		} catch (Exception $e) {
+			//echo $e->getMessage();
+		}		
     }
 
     public function indexAction()
     {
-    	$this->_helper->layout->setLayout('default_layout');
     	$fanpageModel = new Model_Fanpages();
     	
     	$model = new Model_Rankings;

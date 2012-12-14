@@ -34,6 +34,37 @@ class App_Bootstrap extends Zend_Application_Module_Bootstrap
     }
     */
     
+    protected function _initFanpage() {
+		$router     = new Zend_Controller_Router_Rewrite();
+		$controller = Zend_Controller_Front::getInstance();
+		$uri = $_SERVER['REQUEST_URI'];
+		if (preg_match('/^\/page\//', trim($uri))) {
+			$nameParts = explode('?', str_replace('/page/', '', $uri));
+			$fanpageParam = preg_replace('/\/.*/', '', $nameParts[0]);
+
+			if (is_string($fanpageParam) && ! empty($fanpageParam) && ! is_numeric($fanpageParam)) {
+				try {
+					// init default db adapter
+					$config = new Zend_Config_Ini(APPLICATION_PATH . '/configs/application.ini', APPLICATION_ENV);
+					$adapter = Zend_Db::factory($config->resources->db);
+					Zend_Db_Table::setDefaultAdapter($adapter);
+					
+					$fanpageModel = new Model_Fanpages();
+					$fanpage = $fanpageModel->findByFanpageUsername($fanpageParam);
+					
+					// redirect to user app index controller if fanpage exists
+					if ($fanpage) {
+							$controller->getResponse()->setRedirect('/app/index/index/' .$fanpage->fanpage_id);
+					}
+				} catch (Exception $e) {
+					$log = new Zend_Log();
+					$log = Zend_Registry::get('appLogger');
+					$log->log($e->getMessage(), Zend_Log::WARN, 'route problem');
+				}
+			}
+		}
+    }
+    
     protected function _initViewHelper()
     {
     	$view = new Zend_View();

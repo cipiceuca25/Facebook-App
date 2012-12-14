@@ -180,6 +180,14 @@ class Model_DbTable_Fanpages extends Fancrank_Db_Table
         return $this->fetchAll($this->getAdapter()->quoteInto('fanpage_id = ?', $value), $order, $count, $offset);
     }
 
+    public function findByFanpageUsername($username) 
+    {
+    	$query = $this->select()
+    				->from($this->_name, array('*'))
+    				->where('fanpage_username = ?', $username);
+    	return $this->fetchRow($query);
+    }
+    
     public function countByFanpageId($value)
     {
         return $this->fetchRow($this->select()->from($this->_name, array('fanpage_id', 'num'=> 'COUNT(*)'))->where('fanpage_id = ?', $value))->num;

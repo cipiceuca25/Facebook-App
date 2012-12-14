@@ -48,6 +48,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             // add the REST route for the API module only
             $restRoute = new Fancrank_Rest_Route($frontController, array(), array('api'));
             $frontController->getRouter()->addRoute('rest', $restRoute);
+            
+            // add custom user route
+            $route = new Zend_Controller_Router_Route(
+            		'p/:username',
+            		array(
+            				'module' => 'web',
+            				'controller' => 'index',
+            				'action'     => 'index'
+            		)
+            );
+            
+            $frontController->getRouter()->addRoute('page', $route);
         }
     }
 

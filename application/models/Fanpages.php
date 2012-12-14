@@ -27,8 +27,6 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 		return $this->getAdapter()->fetchAll($select);
 		
 	}
-
-	
 	
 	public function getPostsStatByFanpageId($fanpage_id) {
 		$postModel = new Model_Posts();
