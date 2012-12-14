@@ -1146,6 +1146,7 @@ function loadSettings(){
 				max: defaultMax,
 				step: defaultStep
 			});	
+			loadLandingPageSettings();
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -1154,6 +1155,36 @@ function loadSettings(){
 	});
 	
 }
+
+function loadLandingPageSettings(){
+	
+	$.ajax({
+		type : "GET",
+		url : serverUrl + '/admin/fanpage/landingpage?id=' + fanpageId,
+		dataType : "html",
+		cache : false,
+		async : true,
+		beforeSend : function() {
+			
+			//destroyAll();
+		},
+		success : function(data) {
+			$('#landingpage').html(data);
+			
+			//loadGraph("#placeholder", 'Points');
+			//$('#placeholder').css({'width':'100%', 'height':'200px'});
+			//$('#placeholder').resize();
+		
+		},
+		error : function(xhr, errorMessage, thrownErro) {
+			console.log(xhr.statusText, errorMessage);
+			console.log('error getting point settings');
+		}
+	});
+	
+}
+
+
 
 function loadRedeem() {
 

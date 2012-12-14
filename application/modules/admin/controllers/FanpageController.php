@@ -272,7 +272,7 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 	}
 	
 	public function landingpageAction() {
-		$this->_helper->layout()->enableLayout();
+		$this->_helper->layout()->disableLayout();
 		$fanpageId = $this->_getParam('id');
 
 		$landingPageImageEnable = $this->_getParam('landingPageImageEnable');
@@ -314,7 +314,7 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 			$imageDestination = $this->getImageLocation();
 			$upload = new Zend_File_Transfer_Adapter_Http();
 			$upload//->addValidator('Count', false, 1)     // ensure only 1 file
-				->addValidator('Size', false, 1000000) // limit to 100K
+				->addValidator('Size', false, 3000000) // limit to 100K
 				->addValidator('Extension' ,false, 'png,jpg,gif');
 			
 			$imageFileName = 'landingpage_cover' .strrchr($upload->getFileName(), '.');
