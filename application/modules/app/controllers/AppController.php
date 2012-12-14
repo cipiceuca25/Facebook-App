@@ -1417,41 +1417,7 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     		$fan->fan_point = '?';
     	}
     	
-    	$badgesModel = new Model_BadgeEvents() ;
-    	$cb = $fan->getChosenBadges(); 
-    	$cb = str_replace("'", "", $cb);
-    	$cb = explode(',', $cb);
-    	//Zend_Debug::dump($cb);
-    	//exit();
-    	$chosenBadges = $badgesModel -> getChosenBadges($this->_fanpageId, $this->_userId, $cb);
-		
-    	if(empty($chosenBadges)){
-    		$chosenBadges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 3);
-    	}
-    	for($count=0;$count < count($chosenBadges); $count++){
-    		if ($chosenBadges[$count] != 'undefined'){    		
-    			$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
-    		}
-    	}
     	
-    	$badges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, false);
-    	for($count=0;$count < count($badges); $count++){
-    		$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
-    	}
-    	
-    	//$badges2 = $badgesModel -> getBadgesByFanpageIdAndFanIDUnread($this->_fanpageId, $this->_userId, false);
-    	$badges2 = $badgesModel -> getRedeemableBadges($this->_fanpageId, $this->_userId, false);
-    	for($count=0;$count < count($badges2); $count++){
-    		$badges2[$count]['description'] = str_replace('[quantity]',$badges2[$count]['quantity'] ,$badges2[$count]['description']);
-    	}
-    	//$badges = $this->badgeArray2D($this->_fanpageId, $this->_userId, 6);
-    	
-
-    
-
-    	$this->view->badges = $badges;
-    	$this->view->badges2 = $badges2;
-    	$this->view->chosen_badges = $chosenBadges;
     	$this->view->fan_exp = $fan_exp;
     	$this->view->fan_exp_required = ($fan_exp == '?')?'?':$fan_exp_required - $fan_exp;
     	$this->view->fan_level_exp = $fan_exp_required;
@@ -2392,6 +2358,58 @@ class App_AppController extends Fancrank_App_Controller_BaseController
     	}
     	
     }
+    
+    public function badgeslistAction(){
+    	$this->_helper->layout->disableLayout();
+    	
+    	
+    	$badgesModel = new Model_BadgeEvents() ;
+    	$fan = new Model_Fans($this->_userId, $this->_fanpageId);
+    	
+    	$type = $this->_request->getParam('type');
+    	
+    	switch($type){
+    		
+    		case 'earned':
+	    			$badges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, false);
+	    			for($count=0;$count < count($badges); $count++){
+	    				$badges[$count]['description'] = str_replace('[quantity]',$badges[$count]['quantity'] ,$badges[$count]['description']);
+	    			}
+	    			$this->view->badges = $badges;
+    			break;
+    		case 'chosen':
+	    			$cb = $fan->getChosenBadges();
+	    			$cb = str_replace("'", "", $cb);
+	    			$cb = explode(',', $cb);
+	    			//Zend_Debug::dump($cb);
+	    			//exit();
+	    			$chosenBadges = $badgesModel -> getChosenBadges($this->_fanpageId, $this->_userId, $cb);
+	    			 
+	    			if(empty($chosenBadges)){
+	    				$chosenBadges = $badgesModel -> getBadgesByFanpageIdAndFanID($this->_fanpageId, $this->_userId, 3);
+	    			}
+	    			for($count=0;$count < count($chosenBadges); $count++){
+	    				if ($chosenBadges[$count] != 'undefined'){
+	    					$chosenBadges[$count]['description'] = str_replace('[quantity]',$chosenBadges[$count]['quantity'] ,$chosenBadges[$count]['description']);
+	    				}
+	    			}
+	    			$this->view->chosen_badges = $chosenBadges;
+    			break;
+    		case 'redeemed':
+	    			$badges2 = $badgesModel -> getRedeemableBadges($this->_fanpageId, $this->_userId, false);
+	    			for($count=0;$count < count($badges2); $count++){
+	    				$badges2[$count]['description'] = str_replace('[quantity]',$badges2[$count]['quantity'] ,$badges2[$count]['description']);
+	    			}
+	    			$this->view->badges2 = $badges2;
+    			break;	
+    	
+    	}
+    	$this->view->type = $type;
+    	//$this->view->notifier = $notifier;
+    	//$this->view->upcoming = $badges;
+    	$this->render("badgeslist");
+    }
+    
     
 	public function upcomingbadgesAction(){
 		$this->_helper->layout->disableLayout();

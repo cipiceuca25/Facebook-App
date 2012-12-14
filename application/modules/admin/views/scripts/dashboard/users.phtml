@@ -1,11 +1,4 @@
-<style>
 
-.facebook-user-face {
-	width: 24px;
-	height: 24px;
-}
-
-</style>
 
 
 <div class="row-fluid">
@@ -16,7 +9,7 @@
 			<?php $count = 1;?>
 			<?php foreach ($this->topFan as $a){?>
 				<?= $count?>
-				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="small-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
 					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
 				<span><?=$a['count']?></span> <br/>
 				<? $count++?>
@@ -27,7 +20,7 @@
 			<?php $count = 1;?>
 			<?php foreach ($this->topFanAll as $a){?>
 				<?= $count?>
-				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="small-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
 					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
 				<span><?=$a['count']?></span> <br/>
 				<? $count++?>
@@ -38,7 +31,7 @@
 			<?php $count = 1;?>
 			<?php foreach ($this->fanFavorite as $a){?>
 				<?= $count?>
-				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="small-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
 					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
 				<span><?=$a['count']?></span> <br/>
 				<? $count++?>
@@ -50,7 +43,7 @@
 			<?php $count = 1;?>
 			<?php foreach ($this->topTalker as $a){?>
 				<?= $count?>
-				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="small-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
 					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
 				<span><?=$a['count']?></span> <br/>
 				<? $count++?>
@@ -62,7 +55,7 @@
 			<?php $count = 1;?>
 			<?php foreach ($this->topClicker as $a){?>
 				<?= $count?>
-				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="small-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
 					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
 				<span><?=$a['count']?></span> <br/>
 				<? $count++?>
@@ -74,7 +67,7 @@
 			<?php $count = 1;?>
 			<?php foreach ($this->topFollowed as $a){?>
 				<?= $count?>
-				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
+				<a class="username" data-id="<?= $a['facebook_user_id']?>"> <img class="small-face" src='https://graph.facebook.com/<?= $a['facebook_user_id']?>/picture'/> 
 					<span><?= $a['fan_first_name'] . ' ' . $a['fan_last_name']?></span> </a>
 				<span><?=$a['count']?></span> <br/>
 				<? $count++?>
@@ -84,36 +77,64 @@
 		
 	</div>
 	<div class="span10">
+		<h2>Top Fans -Deprecated Rmb to change</h2>
 		<table class="table" id="userTable">
 			<thead>
 				<tr>
 					
-					<th><a>Name</a></th>
-					<th><a>EXP</a></th>
-					<th><a >Level</a></th>
-					<th><a rel="tooltip"  data-original-title="Total # of Posts" data-placement="top"><img src="/img/post.png" /></a></th>
-					<th><a rel="tooltip"  data-original-title="Total # of Likes" data-placement="top"><img src="/img/thumbsup.png"/></a></th>
-					<th><a rel="tooltip" data-original-title="Total # of Comments" data-placement="top"><img src="/img/comment.png" /></a></th>
-					<th><a rel="tooltip"  data-original-title="Total # of Recieved Likes" data-placement="top"><img src="/img/rthumbsup.png" /></a></th>
-					<th><a rel="tooltip" data-original-title="Total # of Recieved Comments" data-placement="top"><img src="/img/rcomment.png" /></a></th>
-					<th><a rel="tooltip" data-original-title="Total Followers" data-placement="top"><img src="/img/eye_arrow.png" /></a></th>
-					<th><a rel="tooltip" data-original-title="Total Following" data-placement="top"><img src="/img/eye_arrow2.png" /></a></th>
+					<th class="table-user">Name</th>
+					<?php if($this->fanpage_level >1){?>
+						<th class="number">EXP</th>
+						<th class="number">Level</th>
+					<?php }?>
+					<?php if($this->fanpage_level >2){?>
+						<th class="number">Points</th>
+					<?php }?>
+					<th class="number">Posts<img src="/img/post.png" /></th>
+					<th class="number">Likes<img src="/img/thumbsup.png"/></th>
+					<th class="number">Comments<img src="/img/comment.png" /></th>
+					<th class="number">Received Likes<img src="/img/rthumbsup.png" /></th>
+					<th class="number">Received Comments<img src="/img/rcomment.png" /></th>
+					<th class="number">Followers<img src="/img/eye_arrow.png" /></th>
+					<th class="number">Following<img src="/img/eye_arrow2.png" /></th>
+
 				</tr>
 			</thead>
 			<tbody>
 				<?php foreach($this->topFanList as $fan): ?>
+	
 					<tr>
 					
-						<td class="name"><a  class="username" data-id="<?=$fan['facebook_user_id']?>"><?=$fan['fan_name']?></a></td>
-						<td class="points"><?=$fan['fan_exp']; ?></td>
-						<td class="level"><?=$fan['fan_level']?></td>
-						<td class="posts"><?=$fan['post_count']?></td>
-						<td class="likes"><?=$fan['like_count']?></td>
-						<td class="comments"><?=$fan['comment_count']?></td>
-						<td class="rlikes"><?=$fan['got_like_count']?></td>
-						<td class="rcomments"><?=$fan['got_comment_count']?></td>
-						<td class="followers"><?=$fan['follower']?></td>
-						<td class="followings"><?=$fan['following']?></td>															
+						<td class="table-user">
+							<div class="table-user">
+								<div class="gender <?=$fan['fan_gender']?>"></div>
+								<div class="photo">
+									<a class="username" data-id="<?=$fan['facebook_user_id']?>">
+										<img class="large-face" src='https://graph.facebook.com/<?= $fan['facebook_user_id']?>/picture'/>
+									</a>
+								</div>
+								<div class="text">
+									<a class="username" data-id="<?=$fan['facebook_user_id']?>">
+										<?=$fan['fan_name']?>
+									</a>
+								</div>
+							</div>
+						</td>
+						<?php if($this->fanpage_level >1){?>
+							<td class="number"><?=$fan['fan_exp']; ?></td>
+							<td class="number"><?=$fan['fan_level']?></td>
+						<?php }?>
+						<?php if($this->fanpage_level >2){?>
+							<td class="number"><?=$fan['points']?></td>
+						<?php }?>
+						<td class="number"><?=$fan['post_count']?></td>
+						<td class="number"><?=$fan['like_count']?></td>
+						<td class="number"><?=$fan['comment_count']?></td>
+						<td class="number"><?=$fan['got_like_count']?></td>
+						<td class="number"><?=$fan['got_comment_count']?></td>
+						<td class="number"><?=$fan['follower']?></td>
+						<td class="number"><?=$fan['following']?></td>			
+											
 					</tr>
 				<?php endforeach; ?>
 			</tbody>

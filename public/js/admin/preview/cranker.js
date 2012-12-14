@@ -192,7 +192,8 @@ function MouseWheelHandler() {  $("#toppost").height();
     		$('#info-box-container').animate({'top':'0px'},150, function(){});
     
     	}
-//}
+
+//} );
     
     //var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));  
 }
@@ -688,18 +689,13 @@ function getTopPost() {
 
 function like(post_id, post_type, target_id, target_name) {
 	// preview early terminate
-	return;
+	//return;
 	
-	if(post_type.indexOf('comment') != -1){
-		mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
-	}else{
-		mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
-	}
-	
+	/*
 	if (! isNaN(data.fan_point)) {
 		$('.my_fan_point').html(numberFormat(data.fan_point));
 		$('.my_fan_point_tooltip').attr('data-original-title', 'You have '+data.fan_point+ ' points');
-	}
+	}*/
 	num = parseInt($('.like_' + post_id).attr('data-like-count')) + 1;
 	$('.like_' + post_id).attr('data-like-count', num);
 	
@@ -739,13 +735,9 @@ function like(post_id, post_type, target_id, target_name) {
 
 function unlike(post_id, post_type, target_id, target_name) {
 	// preview early terminate;
-	return;
+
 	
-	if(post_type.indexOf('comment') != -1){
-		mes = $('.comment-container.'+post_id + ' .user .message').text().substring(0,99);
-	}else{
-		mes = $('.post-container.'+post_id + ' .post .message').text().substring(0,99);
-	}
+
 	num = parseInt($('.like_' + post_id).attr('data-like-count')) - 1;
 	if (num < 1){
 		num = 0;
@@ -1284,25 +1276,24 @@ function getRelation(target, ui) {
 
 function follow(target, name) {
 	// preview terminate;
-	return;
+	//return;
 	
 	ui = "follow_"+target;
-	
-	
 	if (target != userId) {
 		$('.' + ui).attr('onclick',	"unfollow('" + target + "','" + name + "','" + ui + "')");
 		$('.' + ui).attr('data-original-title', 'Click to Unfollow this User');
-		
+		$('.' + ui).html('<span class="btn btn-mini fc-Following">Following</span>');
 	}
 }
 
 function unfollow(target, name) {
 	// preview terminate
-	return;
+	//return;
 	
 	ui = "follow_"+target;
 	$('.' + ui).attr('onclick',	"follow('" + target + "','" + name + "','" + ui + "')");
 	$('.' + ui).attr('data-original-title', 'Click to Follow this User');
+	$('.' + ui).html('<span class="btn btn-mini fc-Follow">Follow</span>');
 
 }
 
@@ -1361,7 +1352,74 @@ function post(button) {
 			});
 			//addActivities('post-status', response.id, fanpageId, fanpage_name,mes.substring(0,99) );
 			$('#post_box').val(''); */
-			getFancrankfeed('post');
+			//getFancrankfeed('post');
+		$('#fancrankfeed').prepend(
+				"<li class='box post-container fakepost'>" +
+				"	<div class='user'>" +
+				"		<div class='user-badge'>" +
+				"			<a rel='tooltip-follow' class='noclick' data-original-title='You can't Follow an Admin'>" +
+				"				<span class='btn btn-mini fc-Fanpage disabled'>Admin</span>" +
+				"			</a>" +
+				"		</div>" +
+				"		<div class='photo'>" +
+				"			<a data-toggle='modal' class='noclick'>" +
+				"				<img class='large-face' src='https://graph.facebook.com/" + fanpageId + "/picture' onerror='ImgError(this)'" +
+				"			</a>" +
+				"		</div>" +
+				"		<div class='name'>" +
+				"			<a data-toggle='modal' class='noclick'>" + fanpageName + "</a>" + 
+				"		</div>" +
+				"	</div>" +
+				"	<div class='post'>" +
+				"		<div class='message'>" +
+						mes +
+				"		</div>" +
+				"		<div class='graphical'>" +
+				"		</div>" +
+				"	</div>" +
+				"	<div class='social'>" +
+				"		<a class='like-control like_control_fakepost' data-placement='top-left' rel='tooptip'" +
+				"		 data-original-title='Click to like this' onclick='like(\"fakepost\", \"status\"," +
+				"		 \"" + fanpageId + "\", \""+ fanpageName +"\")'>" +
+				"			Like" +
+				"		</a>" +
+				"		&middot;" +
+				"		<a onclick='comment_feed(\"fakepost\", \"status\", 0, true) class='commenthider_fakepost'>" +
+				"			Comment" +
+				"		</a> " +
+				"		&middot;" +
+				"		<a rel='tooltip' data-placement='top' class='time noclick' data-original-title='"
+						+ (new Date()).toLocaleString() + "' data-unix-time='" + Math.round((new Date()).getTime() / 1000) +"'>" +
+				"			Just Now" +
+				"		</a>" +
+	
+				"	</div>" +
+				"	<div class='social like fakepost' style='display:none'>" +
+				"		<a rel='tooltip' data-placement='top' onclick='' data-original-title='No one likes this yet'>" +
+				"			<img src='/img/thumbsup.png'/>" +
+				"			<span class='like_fakepost' data-like-count='0'>0 people</span> like this" +
+				"		</a>" +
+				"	</div>" +
+				"	<div class='social comment fakepost'>" +
+				"		<div id='post_fakepost' data-comment-count='0'>" +
+				"			<ul class='comments'></ul>" +
+				"			<div class='comment-container'>" +
+				"				<div class='photo'>" +
+				"					<img class='small-face' src='https://graph.facebook.com/" + fanpageId + "/picture' onerror='ImgError(this)' />" +
+				"				</div>" +
+				"				<form action='#' class='submit-form'>" +
+				"					<textarea class='comment-box' id='comment_box_fakepost'></textarea>" +
+				"					<a onclick='commentSubmit(this, \"fakepost\", \"status\", \" "+ fanpageId + "\", \" " + fanpageName + "\" , false)'>" +
+				"						<span class='btn btn-mini fc-comment'>Comment</span>" +
+				"					</a>" +
+				"				</form>" +
+				"			</div>" +
+				"		</div>" +
+				"	</div>" +
+	
+				"</li>"		);
+		
+		$('#post_box').val('')
 	}
 }
 

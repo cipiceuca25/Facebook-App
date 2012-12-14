@@ -26,35 +26,104 @@
 			<div class="span12">
 				<h2>Admin Posts</h2>
 				<?//php Zend_Debug::dump($this->adminPost)?>
-				<table class="table" id="adminPostTable">
+				<table class="table posts-table" id="adminPostTable">
 					<thead>
 						<tr>
+							<th class="table-type">Post Type</th>
+							<th class="table-post">Message</th>
+							<th class="view"></th>
+							<th class="number">Comments</th>
+							<th class="number">Likes</th>
+							<th class="number">Unique Users</th>
+							<?php if($this->fanpage_level >2){?>
+								<th class="number">Total Points Given</th>
+								<th class="number">Bonus</th>
+							<?php }?>
+							<th class="date">Created Time</th>
 							
-							<th><a>Message</a></th>
-							<th><a>Comments</a></th>
-							<th><a>Likes</a></th>
-							<th><a>Unique Users</a></th>
-							<th><a>Total Points Given</a>
-							<th><a>Bonus</a>
-							<th><a>Created Time</a>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach($this->adminPost as $post): ?>
 							<tr>
-							
-			
-								<td style="word-break:break-word;word-wrap: break-word; width:50%" >
-									<a class="post" data-post-id="<?= $post['post_id']?>">
-										<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_message'])); ?>
-									</a>
+								<td class="table-type <?= $post['post_type']?>">
+								
+									<? switch($post['post_type']){
+										case 'status':?>
+					
+												<i class="black-sprite-post-status"></i><div class="text">Status</div> 
+									
+											<?php break;?>
+											
+										<?php case 'photo'?>
+										
+												<i class="black-sprite-post-picture"></i><div class="text">Photo</div>
+									
+											<?php break;?>
+										
+										<?php case 'video'?>
+										
+												<i class="black-sprite-post-video"></i><div class="text">Video</div>
+									
+											<?php break;?>
+										
+										<?php case 'link'?>
+										
+												<i class="black-sprite-post-link"></i><div class="text">Link</div>
+										
+											<?php break;?>
+									<?php }?>
 								</td>
-								<td><?=$post['post_comments_count']?></td>
-								<td><?=$post['post_likes_count']?></td>
-								<td><?=$post['unique_user']?></td>
-								<td><?=$post['points']?></td>
-								<td><?=$post['bonus']?></td>
-								<td><?=$post['created_time']?></td>												
+								<td class="table-post"  >
+									<div class="table-post">
+									<?php switch ( $post['post_type'] ){ 
+										case "status":?>
+												<div class="message">
+												<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_message'])); ?>
+												</div>
+										<?php break;?>
+										<?php case 'photo':?>
+										
+												<div class="photo">
+													<img src ="<?=$post['picture']?>"/>
+												</div>
+												<div class="message">
+													<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_message'])); ?>
+												</div>
+									
+										<?php break;?>
+										<?php case 'video':?>
+												<div class="photo">
+													<img src ="<?=$post['picture']?>"/>
+												</div>
+												<div>
+													<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_message'])); ?>
+												</div>
+										<?php break;?>
+										<?php case 'link':?>
+										
+												<div class="photo">
+													<img src ="<?=$post['picture']?>"/>
+													</div>
+												<div class="link">
+													<div class="title"><?= $post['link']?></div>
+											
+													<div class="description"><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_caption']));?>:<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_description']));?></div>
+												</div>
+											
+										<?php break;?>
+									<?php }?>
+									</div>
+								</td>
+								<td class="view"> <a class="post" data-post-id="<?= $post['post_id']?>">View</a></td>
+								<td class="number"><?=$post['post_comments_count']?></td>
+								<td class="number"><?=$post['post_likes_count']?></td>
+								<td class="number"><?=$post['unique_user']?></td>
+								<?php if($this->fanpage_level >2){?>
+									<td class="number"><?=$post['points']?></td>
+									<td class="number"><?=$post['bonus']?></td>
+								<?php }?>
+								<td class="date"><?=$post['created_time']?></td>												
 							</tr>
 						<?php endforeach; ?>
 					</tbody>
@@ -70,22 +139,74 @@
 				<table class="table" id="adminCommentTable">
 					<thead>
 						<tr>
-							<th><a>Comments</a></th>
-							<th><a>Message</a></th>
-							<th><a>Original Post Owner</a>
-							<th><a>Likes</a></th>
-							<th><a>Created Time</a>
+							<th class="table-post" >Comments</th>
+							<th class="table-post">Message</th>
+							<th class="table-post">Original Post Owner</th>
+							<th class="number">Likes</th>
+							<th class="date">Created Time</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach($this->adminComment as $comment): ?>
 							<tr>
-								<td style="word-break:break-word;word-wrap: break-word; width:25%" ><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['comment_message'])); ?></td>
-								<td style="word-break:break-word;word-wrap: break-word; width:25%" ><a class="post" data-post-id="<?= $comment['comment_post_id']?>"><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['post_message'])); ?></a></td>
-								<td><a class="username" data-id="<?= $comment['p_facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $comment['p_facebook_user_id']?>/picture'/> 
-								<span><?= $comment['fan_first_name'] . ' ' . $comment['fan_last_name']?></span> </a></td>
-								<td><?=$comment['comment_likes_count']?></td>
-								<td><?=$comment['created_time']?></td>												
+								<td class="table-post" >
+									<div class="table-post">
+										<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['comment_message'])); ?>
+									</div>
+								</td>
+								<td class="table-post">
+									<div class="table-post">
+									<?php switch ( $comment['post_type'] ){ 
+										case "status":?>
+												<div class="message">
+												<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['post_message'])); ?>
+												</div>
+										<?php break;?>
+										<?php case 'photo':?>
+										
+												<div class="photo">
+													<img src ="<?=$comment['picture']?>"/>
+												</div>
+												<div class="message">
+													<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['post_message'])); ?>
+												</div>
+									
+										<?php break;?>
+										<?php case 'video':?>
+												<div class="photo">
+													<img src ="<?=$comment['picture']?>"/>
+												</div>
+												<div>
+													<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['post_message'])); ?>
+												</div>
+										<?php break;?>
+										<?php case 'link':?>
+										
+												<div class="photo">
+													<img src ="<?=$comment['picture']?>"/>
+													</div>
+												<div class="link">
+										
+											
+													<div class="caption"><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['post_caption']));?></div>
+											
+													<div class="description"><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$comment['post_description']));?></div>
+												</div>
+											
+										<?php break;?>
+									<?php }?>
+									</div>
+								</td>
+								<td class="table-user">
+									<a class="username" data-id="<?= $comment['p_facebook_user_id']?>"> <img class="facebook-user-face" src='https://graph.facebook.com/<?= $comment['p_facebook_user_id']?>/picture'/> 
+									<span><?= $comment['fan_first_name'] . ' ' . $comment['fan_last_name']?></span> </a>
+								</td>
+								<td class="number">
+									<?=$comment['comment_likes_count']?>
+								</td>
+								<td class="date">
+									<?=$comment['created_time']?>
+								</td>												
 							</tr>
 						<?php endforeach; ?>
 					</tbody>

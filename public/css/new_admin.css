@@ -155,6 +155,7 @@ a:hover {
 }
 table.fanpage {
   margin-bottom: 0px;
+  border: 0px solid;
 }
 table.fanpage th,
 table.fanpage td {
@@ -168,6 +169,9 @@ table.fanpage tbody tr:hover td {
 }
 table.fanpage img {
   margin: 5px ;
+}
+.table.fanpage tr td {
+  text-align: left;
 }
 .upgrade ul,
 ol {
@@ -724,18 +728,6 @@ padding:10px;
 .table-info {
   float: right;
 }
-#tableholder tr td {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-#tableholder thead {
-  text-align: left;
-}
-#tableholder tr:hover {
-  background-color: light-gray;
-}
 .lightbox {
   position: fixed;
   left: 0;
@@ -769,15 +761,248 @@ padding:10px;
   -moz-border-radius: 0;
   border-radius: 0;
   position: relative;
+  height: 40px;
 }
 .progress .bar {
   background: #c4cde0;
   -webkit-box-shadow: 0 0 0 0;
   -moz-box-shadow: 0 0 0 0;
   box-shadow: 0 0 0 0;
+  height: 40px;
 }
 .progress img {
   width: 40px;
+}
+.progress a {
+  float: left;
+  position: relative;
+  top: -40px;
+}
+.table {
+  border: 2px solid #3b5998;
+}
+.table tr th {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  vertical-align: middle;
+}
+.table tr td {
+  vertical-align: middle;
+  padding: 5px;
+}
+.table tr th {
+  text-align: left;
+  background-color: #3b5998;
+  padding: 5px;
+  color: white;
+}
+.table tr th a {
+  color: white;
+}
+.table tr td.table-post {
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+}
+.table tr th.table-post {
+  text-align: left;
+}
+.table tr td .table-user {
+  min-height: 40px;
+}
+.table tr td .table-post {
+  min-height: 60px;
+}
+.table tr th.date,
+.table tr td.date {
+  width: 130px;
+}
+.table tr th.number,
+.table tr td.number {
+  width: 100px;
+}
+.table tr td.number {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+.table tr {
+  border-top: 1px solid #EEE;
+}
+.table tr:first-of-type {
+  border-top: 0px solid #EEE;
+}
+.table tr td {
+  border-top: 0px solid #EEE;
+  border-right: 1px solid #EEE ;
+}
+.table tr td:last-of-type {
+  border-right: 0px solid #EEE;
+}
+.table td.table-user {
+  width: 180px;
+}
+.table th.table-user {
+  width: 180px;
+}
+.table td.table-type {
+  text-align: left;
+  width: 105px;
+}
+.table .th.table-type {
+  text-align: left;
+  width: 105px;
+}
+.table td.table-type i {
+  float: left;
+}
+.table td.table-type .text {
+  line-height: 40px;
+  font-weight: bold;
+}
+.table td.table-user .text {
+  line-height: 18px;
+  font-weight: bold;
+}
+.table td.view {
+  width: 50px;
+  text-align: center;
+}
+.table td.table-post .photo {
+  line-height: 0px;
+  float: left;
+  margin-right: 10px;
+  text-align: center;
+  width: 10%;
+}
+.table td.table-user .photo {
+  float: left;
+  margin-right: 10px;
+}
+.table td.table-post .message {
+  float: left;
+  width: 88%;
+}
+.table td.table-post .link {
+  float: left;
+  width: 88%;
+}
+.table td.table-post.status .message,
+.table td.table-post .link .message {
+  width: 100%;
+}
+.table td.table-post .title {
+  font-weight: bold;
+}
+.table td.table-post .description {
+  color: #959595;
+}
+.table tr:hover {
+  background-color: light-gray;
+}
+.small-face {
+  height: 24px;
+  width: 24px;
+}
+.large-face {
+  height: 40px;
+  width: 40px;
+}
+.gender {
+  height: 10px;
+  width: 10px;
+  background-color: gray;
+  position: absolute;
+  float: left;
+}
+.male {
+  background-color: lightblue;
+}
+.female {
+  background-color: #ff3f75;
+}
+.dataTables_paginate.paging_full_numbers {
+  width: 100%;
+  text-align: center;
+}
+.dataTables_paginate.paging_full_numbers .first.paginate_button {
+  border: 0px solid #3b5998;
+}
+.dataTables_paginate.paging_full_numbers .previous.paginate_button {
+  border: 0px solid #3b5998;
+}
+.dataTables_paginate.paging_full_numbers .next.paginate_button {
+  border: 0px solid #3b5998;
+}
+.dataTables_paginate.paging_full_numbers .last.paginate_button {
+  border: 0px solid #3b5998;
+}
+.dataTables_paginate.paging_full_numbers .paginate_active,
+.dataTables_paginate.paging_full_numbers .paginate_button {
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  min-width: 10px;
+  position: relative;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+}
+.dataTables_paginate.paging_full_numbers .paginate_active {
+  background-color: #3b5998;
+  color: white;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+[class^="black-sprite-"],
+[class*="black-sprite-"] {
+  display: inline-block;
+  width: 17px;
+  height: 16px;
+  *margin-right: .3em;
+  line-height: 14px;
+  vertical-align: text-top;
+  background: url('/img/badges/rv/icons-fc-sprite-black.png') no-repeat top left;
+}
+[class^="black-sprite-"]:last-child,
+[class*="black-sprite-"]:last-child {
+  *margin-left: 0;
+}
+.black-sprite-comment-general {
+  background-position: 0 0;
+  width: 40px;
+  height: 40px;
+}
+.black-sprite-like-general {
+  background-position: 0 -90px;
+  width: 40px;
+  height: 40px;
+}
+.black-sprite-post-general {
+  background-position: 0 -180px;
+  width: 40px;
+  height: 40px;
+}
+.black-sprite-post-link {
+  background-position: 0 -270px;
+  width: 40px;
+  height: 40px;
+}
+.black-sprite-post-picture {
+  background-position: 0 -360px;
+  width: 40px;
+  height: 40px;
+}
+.black-sprite-post-status {
+  background-position: 0 -450px;
+  width: 40px;
+  height: 40px;
+}
+.black-sprite-post-video {
+  background-position: 0 -540px;
+  width: 40px;
+  height: 40px;
 }
 [class^="sprite-"],
 [class*=" sprite-"] {

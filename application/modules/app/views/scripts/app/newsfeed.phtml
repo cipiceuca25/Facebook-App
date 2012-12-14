@@ -32,12 +32,19 @@
 				</div>
 				<div class="post">
 				<?php if ($this->fanpage_id == 216821905014540){?>
-					<img src="/img/jg-feature.png"/>
-					<br/>
-					<br/>
-					In love with Jason? Win a Signed Copy of Men's Health featuring Jason!
+					<div class="message">
+						In love with Jason? Win a Signed Copy of Men's Health Magazine featuring Jason!
+					</div>
+					<div class="graphical">
+						<div class="image">
+							<img src="/img/jg-feature2.png"/>
+						</div>
+					</div>
+					
 				<?php }else{?>
-					<img src="/img/thin-banner.jpg"/>
+					<div class="graphical">
+						<img src="/img/thin-banner.jpg"/>
+					</div>
 				<?php }?>
 				</div>
 			</div>
@@ -119,9 +126,12 @@
 						<?}?>
 							<div class="graphical">
 							<?php if ($post->type == 'photo') {?>
-								<a target="new" href="<?echo $this->escape($post->link)?> "> <img
-									src='<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> ' />
-								</a>
+								<div class="image">
+									<a onclick="popup_post('<?=$post->id?>', true)"> 
+										<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
+									</a>
+								</div>
+								
 							<?php }elseif ($post->type =='video') { ?>
 			
 								<?php if (strstr($this->escape($post->link), 'youtube.com')){
@@ -240,22 +250,20 @@
 								style="display: none" <?php }?>>
 		
 								<a rel="tooltip" data-placement="top" onclick="getLikesList('<?=$post->id?>',<? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>, true)" data-original-title=" 
-								<?php 	if (isset($post->likes->data)){
-											$likeslist = $post->likes->data;
-											$countlikes = count($likeslist);
-											for($i = 0; $i < $countlikes - 1; $i++){
-												echo $likeslist[$i]->name.', </br>';
-											}
-										
-											echo $likeslist[$i]->name;
-											
-											if ($countlikes < $post->likes->count){
-												echo "<br/> and ".($post->likes->count - $countlikes)." others";
-											}
-										}else{
-											
-										}
-										
+								<?php 	$likeslist = (isset($post->likes->data))?$post->likes->data:array();
+								if($likeslist){
+									$countlikes = count($likeslist);
+									for($i = 0; $i < $countlikes - 1; $i++){
+										echo $likeslist[$i]->name.', <br/>';
+									}
+	
+									echo $likeslist[$i]->name;
+									if ($countlikes < $post->likes->count){
+										echo "<br/> and ".($post->likes->count - $countlikes)." others";
+									}
+								}else{
+									echo 'No one';
+								}
 								?><br/> Likes this.
 								"> <img src = "/img/thumbsup.png" /> <span class="like_<?= $post->id?>" data-like-count = <? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>><? if(isset($post->likes->count)){echo $post->likes->count;}else{echo '0';} ?>
 		

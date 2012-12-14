@@ -90,9 +90,9 @@ var first_time_use = '<?= $this->first_time?>';
 		
 		<div style = "border:1px solid black; padding:5px; margin-bottom:10px">	
 			<div class="info">
-				<span class="description">New Facebook Interactions(no Admin): </span>
+				<span class="description">New Facebook Interactions(no Admin) : </span>
 				<br/>
-				<a onclick = "getHomeFacebookInteractions('all')"><span class="description">All: </span></a>
+				<a onclick = "getHomeFacebookInteractions('all')"><span class="description">All (Limited to 1000): </span></a>
 				<span class="amount"><?= $this->facebook_interactions[3]['all'] ?></span>
 				<br/>
 				<a onclick = "getHomeFacebookInteractions('month')"><span class="description">This Month: </span></a>
@@ -214,7 +214,7 @@ var first_time_use = '<?= $this->first_time?>';
 		<div class="row-fluid">
 			
 			<div class="span12">
-				<table id="tableholder" style="width:100%;"></table>
+				<table id="tableholder" class="table"></table>
 		
 			</div>
 		

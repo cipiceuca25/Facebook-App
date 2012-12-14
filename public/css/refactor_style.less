@@ -1324,7 +1324,7 @@ position:relative;
 }
 
 .progress .bar{
-background:@color-menu-hover;
+background:@color-menu-right-background;
 .box-shadow(0 0 0 0 );
 }
 
@@ -1973,21 +1973,17 @@ cursor:default;
 	background-color: @color-main-background;
 }
 
-
-
 .cbadges a{
 	cursor:pointer;
 }
 
 .cbadges.selected{
 	outline:none;
-    transition: all 0.25s ease-in-out;
-    -webkit-transition: all 0.25s ease-in-out;
-    -moz-transition: all 0.25s ease-in-out;
-	-o-transition: all 0.25s ease-in-out;
-	 .box-shadow(0 0 12px @color-you );
 }
 
+.cbadges.selected .bar{
+	background-color:@color-menu-hover;
+}
 
 .notifier{
 	position:absolute;
