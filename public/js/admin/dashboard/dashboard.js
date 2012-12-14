@@ -134,7 +134,7 @@ function getHomeFans(time){
 			    		
 			    	}
 			    	for(i=0; i < data[1].length; i++) {
-			    		tableData1.push([ data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].date)).toLocaleString(), data[1][i].facebook_user_id] );
+			    		tableData1.push([ data[1][i].fan_name,  (new Date(data[1][i].date)).toLocaleString(), data[1][i].facebook_user_id,data[1][i].fan_gender ] );
 			    	}
 			    	//var data = google.visualization.arrayToDataTable(tableData1);
 			    	//visualization = new google.visualization.Table(document.getElementById('tableholder'));
@@ -147,20 +147,43 @@ function getHomeFans(time){
 			    	
 			    	$('#tableholder').html('');
 			    	table = $('#tableholder').dataTable( {
-			    		"sDom" : "<'length'l>t<'table-info'i><'pages'p>",
+			    		"sDom" : "tp",
+			    		"sPaginationType": "full_numbers",
 			            "aaData": tableData1,
 			            "aoColumns": [
 			                      
 			                       { "sTitle": "Name", 
+			                    	   "sClass": "table-user",
 			                    	  'mRender':function (data, type, full){
-			                    		
-			                    		return " <a class='username' data-id ="+ full[3] +" >" + data + "</a>"
+			                    		  console.log(full);
+			                    		/*
+			                    		  <div class="gender <?=$fan['fan_gender']?>"></div>
+								<div class="photo">
+									<a class="username" data-id="<?=$fan['facebook_user_id']?>">
+										<img class="large-face" src='https://graph.facebook.com/<?= $fan['facebook_user_id']?>/picture'/>
+									</a>
+								</div>
+								<div class="text">
+									<a class="username" data-id="<?=$fan['facebook_user_id']?>">
+										<?=$fan['fan_name']?>
+									</a>
+								</div>
+			                    		  
+			                    		  
+			                    		  */
+			                    		return "<div class='table-user'><div class='gender " + full[3] + "'></div> " +
+			                    				"<div class='photo'><a class='username' data-id ="+ full[2] +" >" +
+			                    				" <img class='large-face' src='https://graph.facebook.com/" + full[2] + "/picture' onerror='ImgError(this)'/>" +
+			                    				"</a></div>" +
+			                    				"<div class ='text'><a class='username' data-id ="+ full[2] +" >" + data + "</a></div></div>";
 			                    	  }
 			                       },
-			                       { "sTitle": "Gender" },
-			                       { "sTitle": "Date Joined" }
+			      
+			                       { "sTitle": "Date Joined",
+			                    	   "sClass": "date",
+			                       }
 			                   ],
-			            "aaSorting": [[ 2, "desc" ]],
+			            "aaSorting": [[ 1, "desc" ]],
 			            "bAutoWidth": false,
 			    	});
 			    	
@@ -230,7 +253,7 @@ function getHomeActivedFans(time){
 			    	
 			    	for(i=0; i<data[1].length;i++){
 			    		
-			    		tableData1.push([data[1][i].fan_name, data[1][i].fan_gender, (new Date(data[1][i].first_login_time)).toLocaleString(), data[1][i].facebook_user_id, ]);
+			    		tableData1.push([data[1][i].fan_name, (new Date(data[1][i].first_login_time)).toLocaleString(), data[1][i].facebook_user_id, data[1][i].fan_gender ]);
 			    	}
 			    	
 			    	try{
@@ -241,21 +264,26 @@ function getHomeActivedFans(time){
 			    	
 			    	$('#tableholder').html('');
 			    	table = $('#tableholder').dataTable( {
-			    		"sDom" : "l<'table't>i",
+			    		"sDom" : "tp",
 			            "aaData": tableData1,
+			            "sPaginationType": "full_numbers",
 			            "aoColumns": [
 			                       
 			                
 		                    	   { "sTitle": "Name", 
-		                    		  "sClass": "table-post",
+		                    		  "sClass": "table-user",
 			                    	  'mRender':function (data, type, full){
 
-			                    		return " <a class='username' data-id ="+ full[3] +" >" + data + "</a>"
+			                    		return "<div class='table-user'><div class='gender " + full[3] + "'></div> " +
+	                    				"<div class='photo'><a class='username' data-id ="+ full[2] +" >" +
+	                    				" <img class='large-face' src='https://graph.facebook.com/" + full[2] + "/picture' onerror='ImgError(this)'/>" +
+	                    				"</a></div>" +
+	                    				"<div class ='text'><a class='username' data-id ="+ full[2] +" >" + data + "</a></div></div>";
 			                    	  }
 			                       },   
 			                       
 		         
-			                       { "sTitle": "Gender","sClass": "table-post" },
+			                    
 			                       { "sTitle": "Date",
 			                    	 "sClass": "date"}
 			                      
@@ -318,9 +346,9 @@ function getHomeFacebookInteractions(time){
 			    	
 			    	}
 			    	for(i=0; i < data[1].length; i++) {
-			    		tableData1.push([ data[1][i].type,/*,*/data[1][i].fan_name, data[1][i].fan_gender, data[1][i].post_message, 
+			    		tableData1.push([ data[1][i].type,/*,*/data[1][i].fan_name, data[1][i].post_message, 
 			    		                 /* data[1][i].post_type, data[1][i].picture, data[1][i].link, data[1][i].post_description,data[1][i].post_caption, */
-			    		                  (new Date(data[1][i].created_time)).toLocaleString(), data[1][i].facebook_user_id, data[1][i].post_id]);
+			    		                  (new Date(data[1][i].created_time)).toLocaleString(), data[1][i].facebook_user_id, data[1][i].fan_gender,  data[1][i].post_id]);
 			    	}
 			    
 			    	
@@ -332,19 +360,46 @@ function getHomeFacebookInteractions(time){
 			    	
 			    	$('#tableholder').html('');
 			    	table = $('#tableholder').dataTable( {
-			    		"sDom" : "<'length'l>t<'table-info'i>",
+			    		"sDom" : "tp",
+			    		"sPaginationType": "full_numbers",
 			    		"aaData": tableData1,
 			    		"aoColumns": [
-			    				   { "sTitle": "Type" },
+			    				   { "sTitle": "Type",
+			    					 "sClass": "table-type",
+			    					 "mRender":function(data, type, full){
+			    						 console.log(full);
+			    						 switch(data){
+			    						 	case 'post':
+			    						 		return '<i class="black-sprite-post-general"></i><div class="text">Post</div>'
+			    						 		break;
+			    						 	case 'like':
+			    						 		return '<i class="black-sprite-like-general"></i><div class="text">Like</div>'
+			    						 		break;
+			    						 	case 'comment':
+			    						 		return '<i class="black-sprite-comment-general"></i><div class="text">Comment</div>'
+			    						 		break;
+			    						 
+			    						 	default :
+			    						 		return '<i class="black-sprite-post-general"></i><div class="text">Post</div>'
+			    						 		break;
+			    						 }
+			    						 
+			    					 }
+			    				   },
 			    				   /*{ "sTitle": "Post Id" },*/
-			    				   { "sTitle": "Name", 
+			    				   { "sTitle": "Name",
+			    					 "sClass": "table-user",
 				                    	  'mRender':function (data, type, full){
 				                 
-				                    		return " <a class='username' data-id ="+ full[5] +" >" + data + "</a>"
+				                    		return "<div class='table-user'><div class='gender " + full[5] + "'></div> " +
+		                    				"<div class='photo'><a class='username' data-id ="+ full[4] +" >" +
+		                    				" <img class='large-face' src='https://graph.facebook.com/" + full[4] + "/picture' onerror='ImgError(this)'/>" +
+		                    				"</a></div>" +
+		                    				"<div class ='text'><a class='username' data-id ="+ full[4] +" >" + data + "</a></div></div>";
 				                    	  }
 				                     },
 			    				 
-			    				   { "sTitle": "Gender" },
+			    			
 			    				   { "sTitle": "Message",
 			    					   'mRender':function (data, type, full){
 				                    		if(full[0] != 'post'){
@@ -360,9 +415,10 @@ function getHomeFacebookInteractions(time){
 			    				   { "sTitle": "Link" },
 			    				   { "sTitle": "Post Description" },
 			    				   { "sTitle": "Post Caption" },*/
-			    				   { "sTitle": "Date" }
+			    				   { "sTitle": "Date",
+			    					 "sClass": "date"}
 			    			   ],
-			    		"aaSorting": [[ 4, "desc" ]],
+			    		"aaSorting": [[ 3, "desc" ]],
 			    		"bAutoWidth": false
 			    		   } );
 			    	
@@ -910,8 +966,8 @@ function loadAdmin(){
 		},
 		success : function(data) {
 			$('#admin').html(data);
-			adminPostTable = $('#adminPostTable').dataTable({"sDom" : "tp", "aaSorting": [[ 6, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 10 } );
-			adminCommentTable = $('#adminCommentTable').dataTable({"sDom" : "tp", "aaSorting": [[ 4, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 10} );
+			adminPostTable = $('#adminPostTable').dataTable({"sDom" : "tp", "aaSorting": [[ 6, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 10 , "sPaginationType": "full_numbers"} );
+			adminCommentTable = $('#adminCommentTable').dataTable({"sDom" : "tp", "aaSorting": [[ 4, "desc" ]], 'bAutoWidth':false,  "iDisplayLength": 10,  "sPaginationType": "full_numbers"} );
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);
@@ -935,7 +991,7 @@ function loadUsers(){
 		},
 		success : function(data) {
 			$('#users').html(data);
-			userTable = $('#userTable').dataTable({"sDom" : "t", "aaSorting": [[ 2, "desc" ]], "iDisplayLength": 50} );
+			userTable = $('#userTable').dataTable({"sDom" : "tp", "aaSorting": [[ 2, "desc" ]], "iDisplayLength": 10 , "sPaginationType": "full_numbers"} );
 		},
 		error : function(xhr, errorMessage, thrownErro) {
 			console.log(xhr.statusText, errorMessage);

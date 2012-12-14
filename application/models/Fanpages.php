@@ -988,13 +988,14 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 								left join fancrank.comments c
 								on c.comment_id = l.post_id 
 								
-								where l.fanpage_id = $fanpageId && l.facebook_user_id !=l.fanpage_id && yearweek(l.created_time) = yearweek(curdate())
+								where l.fanpage_id = $fanpageId && l.facebook_user_id !=l.fanpage_id
 								order by l.created_time DESC
 								)
 								) as a
 								left join fans f
 								on a.facebook_user_id = f.facebook_user_id  && f.fanpage_id = $fanpageId
-								order by a.created_time DESC" ;
+								order by a.created_time DESC 
+								limit 1000" ;
 					break;
 					
 			}
