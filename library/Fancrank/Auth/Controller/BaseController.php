@@ -148,11 +148,11 @@ class Fancrank_Auth_Controller_BaseController extends Fancrank_Controller_Action
         		$extra_parameters = http_build_query($params);
         	}
         	
-            $this->redirect(0, sprintf('%s?client_id=%s&redirect_uri=%s&%s', $this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
+            $this->oathRedirect(0, sprintf('%s?client_id=%s&redirect_uri=%s&%s', $this->config->authorize_url, $this->config->client_id, $this->callback, $extra_parameters));
         }
     }
 
-    private function redirect($delay, $url)
+    private function oathRedirect($delay, $url)
     {
         if ($delay > 0) {
             $target = sprintf('%s; url=%s', $delay, $url);

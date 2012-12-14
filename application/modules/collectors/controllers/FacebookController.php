@@ -2679,8 +2679,7 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	$facebookUserId = '100004566963982';
     	$redeemModel = new Model_RedeemTransactions();
     	$result = $redeemModel->getShippingList($fanpageId);
-    	Zend_Debug::dump($result);
-    	
+    	Zend_Debug::dump($redeemModel);
     }
     
     public function cleanmemcacheAction() {
@@ -2753,4 +2752,37 @@ class Collectors_FacebookController extends Fancrank_Collectors_Controller_BaseC
     	Zend_Debug::dump($result);
     }
     
+    public function test41Action() {
+    	echo 'hello';
+    	echo $this->_getParam('id');
+  		
+  		$bootstrap = $this->getInvokeArg('bootstrap');
+  		$userAgent = $bootstrap->getResource('useragent');
+  		
+  		Zend_Debug::dump($userAgent->getDevice());
+ 		try {
+ 			//Zend_Debug::dump($userAgent->getDevice()->getFeature('device'));
+ 			//echo $_SERVER['HTTP_USER_AGENT'] . "\n\n";
+ 			$userAgent = Fancrank_Http_UserAgent::getInstance();
+ 			
+ 			$device = $userAgent->getDevice();
+ 			
+ 			Zend_Debug::dump($device->getMaxImageHeight());
+ 			Zend_Debug::dump($device->getMaxImageWidth());
+			Zend_Debug::dump($userAgent->getDeviceName());
+			
+ 		} catch (Exception $e) {
+ 			echo $e->getMessage();
+ 		}
+ 		
+ 		//Zend_Debug::dump($userAgent);
+    }
+    
+    public function test42Action() {
+    	$fanpageParam = 'bigsmilenoteeth';
+		$fanpageModel = new Model_Fanpages();
+		$result = $fanpageModel->findByFanpageUsername($fanpageParam);
+		
+		Zend_Debug::dump($result);
+    }
 }

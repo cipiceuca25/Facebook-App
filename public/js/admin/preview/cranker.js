@@ -192,6 +192,7 @@ function MouseWheelHandler() {  $("#toppost").height();
     		$('#info-box-container').animate({'top':'0px'},150, function(){});
     
     	}
+
 //} );
     
     //var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));  

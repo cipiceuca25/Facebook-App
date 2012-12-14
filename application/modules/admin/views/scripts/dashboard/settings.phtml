@@ -47,7 +47,7 @@
 				</div>
 				
 				
-				<iframe id="previewIframe" src="http://www.fancrank.local/admin/preview/landingpage/<?= $this->page_id?>" style="width:830px; height:1000px; overflow:auto">
+				<iframe id="previewIframe" src="/admin/preview/landingpage/<?= $this->page_id?>" style="width:830px; height:1000px; overflow:auto">
 				</iframe>
 
 			</div>
@@ -203,7 +203,20 @@ $(document).ready(function() {
 
 	$('#btn-upload-cover').live('click', function(e) {
 		e.preventDefault();
-		$("#previewIframe").contents().find('.top-fan-last-week').toggle();	
+		//$("#previewIframe").contents().find('.top-fan-last-week').toggle();
+		$.ajax({
+    		type: "get",
+    		url:  "/admin/fanpage/landingpage/"+<?= $this->page_id ?>,
+    		cache: false,
+    		async: true,
+    		dataType: 'html',
+    		success: function( data ) {
+	    		$("#previewIframe").contents().find('.top-fan-last-week').html(data);
+    		},	
+    		error: function( xhr, errorMessage, thrownErro ) {
+    			console.log(xhr.statusText, errorMessage);
+    		}
+    	});			
 	});
 });
 </script>

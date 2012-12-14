@@ -272,7 +272,9 @@ class Admin_FanpageController extends Fancrank_Admin_Controller_BaseController
 	}
 	
 	public function landingpageAction() {
+
 		$this->_helper->layout()->disableLayout();
+
 		$fanpageId = $this->_getParam('id');
 
 		$landingPageImageEnable = $this->_getParam('landingPageImageEnable');

@@ -608,8 +608,14 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 		
 		Zend_Debug::dump($insights);
 		$this->view->pageFanData = json_encode($this->insightPageFansByCountry($insights));
+		$header = array('Name', 'Likes');
 		
+		$pageFanageData = $this->insightPageFansByAge($insights);
+		Zend_Debug::dump($pageFanageData);
+		$this->view->pageFanAgeData = json_encode($pageFanageData);
+		 
 		Zend_Debug::dump($this->view->pageFanData);
+		Zend_Debug::dump($this->view->pageFanAgeData);
 		$this->render("facebookinsights");
 	}
 	
@@ -1409,9 +1415,42 @@ class Admin_DashboardController extends Fancrank_Admin_Controller_BaseController
 				break;
 			}
 		}
-	
-		return $result;
+
+		$newResult = array();
+		foreach ($result as $key => $value) {
+			$country = Zend_Locale::getTranslation($key, 'Country', "en");
+			$newResult[$country] = $value;
+		}
+		
+		return $newResult;
 	}
+	
+	private function insightPageFansByAge($insightData) {
+		$result = array();
+		foreach ($insightData as $data) {
+			if (preg_match('/\/page_fans_gender_age\/lifetime$/', $data->id)) {
+				$value = $data->values[sizeof($data->values)-1];
+				$result = empty($value->value) ? 0 : $value->value;
+				break;
+			}
+		}
+	
+		$finalResult = array();
+		foreach ($result as $key=>$value) {
+			if (preg_match('/^F./', $key)) {
+				$key = str_replace('F.', 'Female ', $key);
+			} else if (preg_match('/^M./', $key)) {
+				$key = str_replace('M.', 'Male ', $key);
+			} else {
+				$key = str_replace ('U.', 'Unknown ', $key);
+			}
+			
+			$finalResult[] = array('name'=>$key, 'fans'=>$value);			
+		}
+		
+		return $finalResult;
+	}
+	
 	protected function getPost($fid,$postId){
 		$fp = new Model_Fanpages();
 		$fanpage = $fp->find($fid)->current();
