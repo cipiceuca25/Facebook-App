@@ -113,7 +113,7 @@
 		<div class="graphical">	
 		<?php if ($post->type == 'photo'){?>	
 			<div class="image">
-			<a onclick="popup_post('<?=$post->id?>', true)"> 
+				<a onclick="popup_post('<?=$post->id?>', true)"> 
 						<img src = '<?echo (str_replace('_s.jpg', '_n.jpg', $post->picture))?> '/>
 					</a></div>
 		<?php }elseif ($post->type =='video') { ?>
