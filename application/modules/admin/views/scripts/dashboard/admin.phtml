@@ -106,11 +106,9 @@
 													<img src ="<?=$post['picture']?>"/>
 													</div>
 												<div class="link">
-													
+													<div class="title"><?= $post['link']?></div>
 											
-													<div class="caption"><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_caption']));?></div>
-											
-													<div class="description"><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_description']));?></div>
+													<div class="description"><?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_caption']));?>:<?=stripcslashes(preg_replace('/^\'?(.*?(?=\'?$))\'?$/','$1' ,$post['post_description']));?></div>
 												</div>
 											
 										<?php break;?>

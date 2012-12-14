@@ -346,12 +346,12 @@ function getHomeFacebookInteractions(time){
 			    	
 			    	}
 			    	for(i=0; i < data[1].length; i++) {
-			    		tableData1.push([ data[1][i].type,/*,*/data[1][i].fan_name, data[1][i].post_message, 
+			    		tableData1.push([ data[1][i].type,/*,*/data[1][i].fan_name, data[1][i].post_message, data[1][i].facebook_user_id,
 			    		                 /* data[1][i].post_type, data[1][i].picture, data[1][i].link, data[1][i].post_description,data[1][i].post_caption, */
-			    		                  (new Date(data[1][i].created_time)).toLocaleString(), data[1][i].facebook_user_id, data[1][i].fan_gender,  data[1][i].post_id]);
+			    		                  (new Date(data[1][i].created_time)).toLocaleString(),  data[1][i].fan_gender,  data[1][i].post_id, data[1][i].post_type, data[1][i].picture, data[1][i].post_caption, data[1][i].post_description, data[1][i].link]);
 			    	}
 			    
-			    	
+			    	//console.log(data[1]);
 			    	try{
 			    		table.fnDestroy();
 			    	}catch(e){
@@ -367,7 +367,7 @@ function getHomeFacebookInteractions(time){
 			    				   { "sTitle": "Type",
 			    					 "sClass": "table-type",
 			    					 "mRender":function(data, type, full){
-			    						 console.log(full);
+			    						// console.log(full);
 			    						 switch(data){
 			    						 	case 'post':
 			    						 		return '<i class="black-sprite-post-general"></i><div class="text">Post</div>'
@@ -389,26 +389,48 @@ function getHomeFacebookInteractions(time){
 			    				   /*{ "sTitle": "Post Id" },*/
 			    				   { "sTitle": "Name",
 			    					 "sClass": "table-user",
-				                    	  'mRender':function (data, type, full){
-				                 
-				                    		return "<div class='table-user'><div class='gender " + full[5] + "'></div> " +
-		                    				"<div class='photo'><a class='username' data-id ="+ full[4] +" >" +
-		                    				" <img class='large-face' src='https://graph.facebook.com/" + full[4] + "/picture' onerror='ImgError(this)'/>" +
-		                    				"</a></div>" +
-		                    				"<div class ='text'><a class='username' data-id ="+ full[4] +" >" + data + "</a></div></div>";
-				                    	  }
+			                    	  'mRender':function (data, type, full){
+			                 
+			                    		return "<div class='table-user'><div class='gender " + full[5] + "'></div> " +
+	                    				"<div class='photo'><a class='username' data-id ="+ full[3] +" >" +
+	                    				"<img class='large-face' src='https://graph.facebook.com/" + full[3] + "/picture' onerror='ImgError(this)'/>" +
+	                    				"</a></div>" +
+	                    				"<div class ='text'><a class='username' data-id ="+ full[3] +" >" + data + "</a></div></div>";
+			                    	  }
 				                     },
 			    				 
 			    			
 			    				   { "sTitle": "Message",
-			    					   'mRender':function (data, type, full){
-				                    		if(full[0] != 'post'){
+			    					 "sClass": "table-post",
+			    					 "mRender":function(data, type, full){
+			    						 
+			    						if (full[7] == 'status' && full[0] != 'comment'){	
+				    							return "<div class='message'>" +( (data.length>100) ? (data.substr(0,99)+'...') : data) + '</div>';
+			    						}else if (full[7] == 'photo' && full[0] != 'comment'){
+				    				
+				    					 		return "<div class='photo'><img src='" + full[8] + "' /></div>" +
+				    					 				"<div class='message'>" +( (data.length>100) ? (data.substr(0,99)+'...') : data) + '</div>';
+			    						}else if (full[7] == 'video' && full[0] != 'comment'){
+				    							return "<div clas='photo'> <img src='" + full[8] + "' /></div>" +
+				    									"<div class='message'>" +( (data.length>100) ? (data.substr(0,99)+'...') : data) + '</div>';
+			    						}else if (full[7] == 'link' && full[0] != 'comment'){
+				    							return "<div class='photo'><img src='" + full[8] + "' /></div>" +
+				    									"<div class='message'>" +( (data.length>100) ? (data.substr(0,99)+'...') : data) + '</div>';
+			    						}
+			    						return "<div class='message'>" +( (data.length>100) ? (data.substr(0,99)+'...') : data )+ '</div>';
+			    					 }	  
+			    				   },
+			    				   { "sTitle": "",
+			    					 "sClass": "view",
+			    					 'mRender': function(data, type , full){
+			    							if(full[0] != 'post'){
 				                    			var s = full[6].split('_');
-				                    			console.log(s);
+				                    			//console.log(s);
 				                    			full[6] = s[0] +'_'+ s[1];
 				                    		}
-				                    		return " <a class='post' data-post-id ="+ full[6] +" >" + data + "</a>"
-				                    	  }
+			    						 return " <a class='post' data-post-id ="+ full[6] +" >View</a>";
+			    					 }
+			    					   
 			    				   },
 			    				   /*{ "sTitle": "Post Type" },
 			    				   { "sTitle": "Picture" },

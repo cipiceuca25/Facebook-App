@@ -875,14 +875,17 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 				
 					union
 				
-					SELECT 'comment' as type, comment_id, facebook_user_id, comment_message, comment_type, null as picture, null as link, null as post_description, null as post_caption, created_time  FROM fancrank.comments
-					where fanpage_id = $fanpageId && facebook_user_id != fanpage_id && month(created_time) = month(curdate()) && year(created_time) = year(curdate())
+					SELECT 'comment' as type, comment_id, c.facebook_user_id, comment_message, comment_type, p.picture as picture, p.link as link,
+					p.post_description as post_description, p.post_caption as post_caption, c.created_time  FROM fancrank.comments c
+					left join fancrank.posts p
+					on p.post_id = c.comment_post_id
+					where c.fanpage_id = $fanpageId  && c.facebook_user_id != c.fanpage_id && month(c.created_time) = month(curdate()) && year(c.created_time) = year(curdate())
 					union
 					(
 					SELECT 'like' as type, l.post_id, l.facebook_user_id,
 					if( p.post_message <=> null , c.comment_message, p.post_message ) as post_message,
 					l.post_type,
-					null as picture, null as link, null as post_description, null as post_caption,
+					p.picture as picture, p.link as link, p.post_description as post_description, p.post_caption as post_caption,
 					l.created_time
 					FROM fancrank.likes l
 					left join fancrank.posts p
@@ -907,15 +910,18 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 								
 							union
 								
-							SELECT 'comment' as type, comment_id, facebook_user_id, comment_message, comment_type, null as picture, null as link, null as post_description, null as post_caption, created_time  FROM fancrank.comments
-							where fanpage_id = $fanpageId && facebook_user_id != fanpage_id && yearweek(created_time) = yearweek(curdate())
-								
+							SELECT 'comment' as type, comment_id, c.facebook_user_id, comment_message, comment_type, p.picture as picture, p.link as link,
+							p.post_description as post_description, p.post_caption as post_caption, c.created_time  FROM fancrank.comments c
+							left join fancrank.posts p
+							on p.post_id = c.comment_post_id
+							where c.fanpage_id = $fanpageId  && c.facebook_user_id != c.fanpage_id && yearweek(c.created_time) = yearweek(curdate())
+										
 							union
 							(
 							SELECT 'like' as type, l.post_id, l.facebook_user_id,
 							if( p.post_message <=> null , c.comment_message, p.post_message ) as post_message,
 							l.post_type,
-							null as picture, null as link, null as post_description, null as post_caption,
+							p.picture as picture, p.link as link, p.post_description as post_description, p.post_caption as post_caption,
 							l.created_time
 							FROM fancrank.likes l
 							left join fancrank.posts p
@@ -939,15 +945,18 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 								
 								union 
 								
-								SELECT 'comment' as type, comment_id, facebook_user_id, comment_message, comment_type, null as picture, null as link, null as post_description, null as post_caption, created_time  FROM fancrank.comments
-								where fanpage_id = $fanpageId && facebook_user_id != fanpage_id && date(created_time) = date(curdate())
-								
+								SELECT 'comment' as type, comment_id, c.facebook_user_id, comment_message, comment_type, p.picture as picture, p.link as link,
+								p.post_description as post_description, p.post_caption as post_caption, c.created_time  FROM fancrank.comments c
+								left join fancrank.posts p
+								on p.post_id = c.comment_post_id
+								where c.fanpage_id = $fanpageId  && c.facebook_user_id != c.fanpage_id && date(c.created_time) = date(curdate())
+											
 								union 
 								(
 								SELECT 'like' as type, l.post_id, l.facebook_user_id, 
 								if( p.post_message <=> null , c.comment_message, p.post_message ) as post_message,
 								l.post_type,
-								null as picture, null as link, null as post_description, null as post_caption,
+								p.picture as picture, p.link as link, p.post_description as post_description, p.post_caption as post_caption,
 								l.created_time
 								 FROM fancrank.likes l
 								left join fancrank.posts p
@@ -971,8 +980,11 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 								
 								union 
 								
-								SELECT 'comment' as type, comment_id, facebook_user_id, comment_message, comment_type, null as picture, null as link, null as post_description, null as post_caption, created_time  FROM fancrank.comments
-								where fanpage_id = $fanpageId && facebook_user_id != fanpage_id 
+								SELECT 'comment' as type, comment_id, c.facebook_user_id, comment_message, comment_type, p.picture as picture, p.link as link,
+								p.post_description as post_description, p.post_caption as post_caption, c.created_time  FROM fancrank.comments c
+								left join fancrank.posts p
+								on p.post_id = c.comment_post_id
+								where c.fanpage_id = $fanpageId  && c.facebook_user_id != c.fanpage_id
 								
 								union 
 								
@@ -980,7 +992,7 @@ class Model_Fanpages extends Model_DbTable_Fanpages
 								SELECT 'like' as type, l.post_id, l.facebook_user_id, 
 								if( p.post_message <=> null , c.comment_message, p.post_message ) as post_message,
 								l.post_type,
-								null as picture, null as link, null as post_description, null as post_caption,
+								p.picture as picture, p.link as link, p.post_description as post_description, p.post_caption as post_caption,
 								l.created_time
 								 FROM fancrank.likes l
 								left join fancrank.posts p
